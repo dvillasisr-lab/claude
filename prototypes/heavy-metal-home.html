@@ -1,0 +1,523 @@
+<title>Heavy Metal Prostock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Big+Shoulders+Display:wght@700;900&family=Work+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Libre+Franklin:wght@400;500;600&display=swap">
+<style>
+/* Hallmark · three-direction preview · Heavy Metal Prostock homepage
+ * A · Técnico     · macrostructure: Stat-Led     · nav: N9 edge-aligned · footer: Ft4 dense colophon
+ * B · Brutalista  · macrostructure: Manifesto    · nav: N7 brutal slab  · footer: Ft5 statement
+ * C · Editorial   · macrostructure: Photographic · nav: N6 masthead     · footer: Ft6 letter close
+ * Each direction is a single fixed look (light concrete / dark-on-concrete / paper), set explicitly.
+ * pre-emit critique: P4 H4 E4 S5 R4 V5
+ */
+:root{
+  --space-2xs:4px;--space-xs:8px;--space-sm:12px;--space-md:16px;--space-lg:24px;--space-xl:40px;--space-2xl:64px;--space-3xl:96px;
+  --ease-out:cubic-bezier(.16,1,.3,1);--dur:180ms;
+  --switch-bg:#1b1d1c;--switch-ink:#f1f1ec;--switch-mute:#9da39f;--switch-on:#f2b705;
+}
+html,body{overflow-x:clip}
+body{margin:0;background:var(--bg,#eef0ec);color:var(--ink,#15181a);-webkit-font-smoothing:antialiased}
+.variant{padding-bottom:88px}
+h1,h2,h3{text-wrap:balance;font-style:normal;margin:0;overflow-wrap:anywhere;min-width:0}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus,#f2b705);outline-offset:3px}
+.wrap{max-width:1200px;margin-inline:auto;padding-inline:max(16px,4vw)}
+.ph{position:relative;max-width:100%;background:
+  repeating-linear-gradient(135deg,var(--ph-a) 0 10px,var(--ph-b) 10px 20px);
+  display:flex;align-items:flex-end;min-width:0}
+.ph span{font:500 11px/1.3 "IBM Plex Mono",ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;
+  background:var(--ph-label-bg);color:var(--ph-label-ink);padding:6px 8px;margin:10px}
+button,input{font:inherit}
+.note{font-size:13px}
+@media (prefers-reduced-motion:reduce){*{transition-duration:1ms!important;animation:none!important}}
+
+/* ─────────────── Switcher (preview chrome, Spanish) ─────────────── */
+.switch{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--switch-bg);color:var(--switch-ink);
+  padding:10px max(16px,4vw) calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  font:500 13px/1.2 "IBM Plex Mono",ui-monospace,monospace}
+.switch .lbl{color:var(--switch-mute)}
+.switch .tabs{display:flex;gap:6px;flex-wrap:wrap}
+.switch button{background:transparent;color:var(--switch-ink);border:1px solid #3c403e;padding:8px 12px;cursor:pointer;white-space:nowrap;
+  transition:background var(--dur) var(--ease-out),color var(--dur) var(--ease-out)}
+.switch button:hover{border-color:var(--switch-mute)}
+.switch button[aria-pressed="true"]{background:var(--switch-on);color:#15181a;border-color:var(--switch-on)}
+.switch .hint{color:var(--switch-mute);margin-left:auto}
+@media (max-width:640px){.switch .hint{display:none}}
+
+/* ═══════════════ A · TÉCNICO ═══════════════ */
+.v-tech{--bg:#eceee9;--ink:#15181a;--mute:#5d655f;--rule:#b9bfb9;--acc:#f2b705;--acc-ink:#15181a;--panel:#e2e5df;
+  --ph-a:#d6d9d3;--ph-b:#dfe2dc;--ph-label-bg:#15181a;--ph-label-ink:#eceee9;--focus:#15181a;
+  font-family:"Archivo",system-ui,sans-serif;font-stretch:100%;color:var(--ink);background:var(--bg)}
+.v-tech .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.t-nav{display:flex;justify-content:space-between;align-items:center;gap:var(--space-md);padding-block:var(--space-md);border-bottom:1px solid var(--ink);flex-wrap:wrap}
+.t-mark{font-weight:900;font-stretch:75%;font-size:22px;letter-spacing:.02em;text-decoration:none}
+.t-nav nav{display:flex;gap:var(--space-lg);flex-wrap:wrap}
+.t-nav nav a{font:500 12px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;text-decoration:none;white-space:nowrap;padding-block:6px}
+.t-nav nav a:hover{text-decoration:underline;text-underline-offset:4px}
+.t-cart{font:600 12px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;border:1px solid var(--ink);padding:10px 14px;text-decoration:none;white-space:nowrap}
+.t-hero{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:var(--space-xl);padding-block:var(--space-2xl) var(--space-xl);align-items:end}
+.t-fig{font-weight:900;font-stretch:62%;font-size:clamp(7rem,22vw,17rem);line-height:.8;letter-spacing:-.02em;font-variant-numeric:tabular-nums;display:flex;align-items:flex-start}
+.t-fig small{font-size:.22em;font-stretch:75%;margin:.25em 0 0 .12em;letter-spacing:.02em}
+.t-hero h1{font-weight:800;font-stretch:75%;font-size:clamp(2.2rem,4vw,3.4rem);line-height:1;text-transform:uppercase;margin-top:var(--space-lg)}
+.t-hero h1 mark{background:var(--acc);color:var(--acc-ink);padding:0 .12em}
+.t-lede{font-size:17px;line-height:1.55;max-width:44ch;color:var(--mute);margin-top:var(--space-md)}
+.t-ctas{display:flex;gap:var(--space-sm);flex-wrap:wrap;margin-top:var(--space-lg)}
+.t-btn{display:inline-block;font:600 13px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;padding:16px 20px;text-decoration:none;white-space:nowrap;border:1px solid var(--ink);transition:transform var(--dur) var(--ease-out)}
+.t-btn.primary{background:var(--ink);color:var(--bg)}
+.t-btn:hover{transform:translateY(-2px)}
+.t-btn:active{transform:translateY(0)}
+.t-photo{aspect-ratio:4/5}
+.t-sheet{border:1px solid var(--ink);display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+.t-sheet div{padding:var(--space-md);border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);min-width:0}
+.t-sheet div:nth-child(3n){border-right:0}
+.t-sheet div:nth-last-child(-n+3){border-bottom:0}
+.t-sheet dt{font:500 11px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--mute)}
+.t-sheet dd{overflow-wrap:anywhere;margin:8px 0 0;font-weight:800;font-stretch:75%;font-size:26px;text-transform:uppercase;font-variant-numeric:tabular-nums}
+.t-sheet .hot{background:var(--acc)}
+.t-sheet .hot dt{color:var(--acc-ink)}
+.t-sec{padding-block:var(--space-3xl) 0}
+.t-head{display:flex;justify-content:space-between;align-items:end;gap:var(--space-md);border-bottom:1px solid var(--ink);padding-bottom:var(--space-sm);flex-wrap:wrap}
+.t-head h2{font-weight:800;font-stretch:75%;font-size:clamp(2rem,4vw,3rem);text-transform:uppercase;line-height:1}
+.t-head a{font:500 12px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.t-skus{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-md);margin-top:var(--space-lg)}
+.t-sku .ph{aspect-ratio:1}
+.t-sku .meta{display:flex;justify-content:space-between;gap:var(--space-xs);margin-top:var(--space-sm);font:500 12px/1.3 "IBM Plex Mono",monospace;text-transform:uppercase}
+.t-sku h3{font-weight:700;font-size:17px;margin-top:4px}
+.t-table-wrap{overflow-x:auto;margin-top:var(--space-lg)}
+.t-table{width:100%;border-collapse:collapse;min-width:620px;font-variant-numeric:tabular-nums}
+.t-table th{font:500 11px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--mute);text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--rule)}
+.t-table td{padding:16px 12px 16px 0;border-bottom:1px solid var(--rule);font-size:16px;vertical-align:top}
+.t-table td:first-child{font:600 14px/1.3 "IBM Plex Mono",monospace;white-space:nowrap}
+.t-pill{font:600 11px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;padding:5px 8px;border:1px solid var(--ink);white-space:nowrap}
+.t-pill.done{border-color:var(--rule);color:var(--mute)}
+.t-spon{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:var(--space-xl);margin-top:var(--space-lg)}
+.t-spon p{font-size:18px;line-height:1.55;max-width:46ch}
+.t-spots{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
+.t-spots li{display:grid;grid-template-columns:3.5rem minmax(0,1fr) auto;gap:var(--space-md);padding:14px 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.t-spots b{font-weight:700}
+.t-spots .mono{font-size:12px;color:var(--mute);text-transform:uppercase;letter-spacing:.06em}
+.t-sign{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-xl);background:var(--ink);color:var(--bg);padding:var(--space-xl);margin-top:var(--space-3xl)}
+.t-sign h2{font-weight:800;font-stretch:75%;font-size:clamp(1.8rem,3.4vw,2.6rem);text-transform:uppercase;line-height:1}
+.t-sign p{color:#b8beb8;margin-top:var(--space-sm);line-height:1.5}
+.t-form{display:flex;gap:0;align-self:end;flex-wrap:wrap}
+.t-form label{flex-basis:100%;font:500 11px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em;color:#b8beb8;margin-bottom:8px}
+.t-form input{flex:1 1 200px;min-width:0;background:transparent;border:1px solid #6b736d;border-right:0;color:var(--bg);padding:14px}
+.t-form button{background:var(--acc);color:var(--acc-ink);border:0;padding:14px 18px;font:600 13px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;white-space:nowrap}
+.t-form .ok{flex-basis:100%;color:var(--acc);font:500 12px/1.4 "IBM Plex Mono",monospace;margin-top:8px}
+.t-foot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-lg);padding-block:var(--space-xl);font:400 12px/1.6 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.04em;color:var(--mute)}
+.t-foot b{color:var(--ink);font-weight:600;display:block;margin-bottom:6px}
+.t-foot a{display:block;text-decoration:none;white-space:nowrap}
+.t-foot a:hover{color:var(--ink)}
+@media (max-width:900px){
+  .t-hero,.t-spon,.t-sign{grid-template-columns:minmax(0,1fr)}
+  .t-photo{aspect-ratio:16/10}
+  .t-skus{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .t-foot{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:520px){
+  .t-sheet{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .t-sheet div{border-right:1px solid var(--rule)!important;border-bottom:1px solid var(--rule)!important}
+  .t-sheet div:nth-child(2n){border-right:0!important}
+  .t-nav nav{display:none}
+  .t-sheet dd{font-size:20px}
+  .t-sign{padding:var(--space-lg)}
+}
+
+/* ═══════════════ B · BRUTALISTA ═══════════════ */
+.v-brut{--bg:#d4d1ca;--ink:#121110;--slab:#121110;--slab-ink:#ebe7df;--acc:#d7261e;--acc-ink:#f6f2ea;--mute:#57534d;
+  --ph-a:#262422;--ph-b:#2e2c29;--ph-label-bg:#d7261e;--ph-label-ink:#f6f2ea;--focus:#d7261e;
+  font-family:"Work Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+.v-brut .d{font-family:"Big Shoulders Display","Arial Narrow",sans-serif;font-weight:900;text-transform:uppercase;line-height:.86;letter-spacing:.005em}
+.b-nav{background:var(--slab);color:var(--slab-ink);display:flex;align-items:stretch;justify-content:space-between;flex-wrap:wrap}
+.b-nav .d{font-size:28px;padding:16px max(16px,4vw);display:flex;align-items:center}
+.b-nav nav{display:flex;flex-wrap:wrap}
+.b-nav nav a{font-family:"Big Shoulders Display",sans-serif;font-weight:700;font-size:18px;text-transform:uppercase;letter-spacing:.04em;text-decoration:none;padding:20px 22px;border-left:3px solid var(--bg);white-space:nowrap}
+.b-nav nav a:hover{background:var(--acc);color:var(--acc-ink)}
+.b-nav nav a.cart{background:var(--acc);color:var(--acc-ink)}
+.b-hero{padding-block:var(--space-2xl) var(--space-xl);position:relative}
+.b-hero h1{font-size:clamp(4.2rem,13vw,10.5rem);transform:rotate(-2.5deg);transform-origin:left bottom}
+.b-hero h1 .blk{background:var(--acc);color:var(--acc-ink);padding:0 .08em;display:inline-block}
+.b-hero .sub{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--space-xl);align-items:end;margin-top:var(--space-2xl)}
+.b-hero .sub p{font-size:clamp(18px,2vw,22px);line-height:1.45;max-width:38ch;font-weight:500}
+.b-big{display:inline-block;background:var(--acc);color:var(--acc-ink);font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:28px;text-transform:uppercase;padding:22px 30px;text-decoration:none;white-space:nowrap;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);transition:transform var(--dur) var(--ease-out),box-shadow var(--dur) var(--ease-out)}
+.b-big:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 var(--ink)}
+.b-big:active{transform:translate(4px,4px);box-shadow:2px 2px 0 var(--ink)}
+.b-photo{aspect-ratio:21/9;margin-top:var(--space-xl);border:3px solid var(--ink)}
+.b-claims{background:var(--slab);color:var(--slab-ink);padding-block:var(--space-3xl)}
+.b-claims ol{list-style:none;margin:0;padding:0;display:grid;gap:var(--space-2xl)}
+.b-claims li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-xl);align-items:end;border-top:3px solid var(--slab-ink);padding-top:var(--space-md)}
+.b-claims .d{font-size:clamp(3rem,8vw,6.5rem)}
+.b-claims .d.red{color:var(--acc)}
+.b-claims p{font-size:18px;line-height:1.5;max-width:40ch;color:#c9c4bb}
+.b-sec{padding-block:var(--space-3xl) 0}
+.b-sec>.wrap>h2{font-size:clamp(3rem,9vw,7rem)}
+.b-gear{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;margin-top:var(--space-xl);border:3px solid var(--ink)}
+.b-item{border-right:3px solid var(--ink);min-width:0;display:flex;flex-direction:column}
+.b-item:last-child{border-right:0}
+.b-item.big{grid-column:span 3}
+.b-item.sm{grid-column:span 1}
+.b-item.md{grid-column:span 2}
+.b-item .ph{flex:1;min-height:220px}
+.b-item .cap{display:flex;justify-content:space-between;gap:var(--space-xs);padding:12px;border-top:3px solid var(--ink);background:var(--bg);font-weight:600;font-size:15px}
+.b-item .cap .d{font-size:22px;line-height:1}
+.b-sched{margin-top:var(--space-xl);border-top:3px solid var(--ink)}
+.b-row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.6fr) minmax(0,1fr);gap:var(--space-lg);padding-block:var(--space-lg);border-bottom:3px solid var(--ink);align-items:baseline}
+.b-row .d{font-size:clamp(2rem,4.5vw,3.4rem)}
+.b-row .where{font-size:17px;font-weight:500}
+.b-row .st{justify-self:end;font-family:"Big Shoulders Display",sans-serif;font-weight:700;text-transform:uppercase;font-size:18px;background:var(--ink);color:var(--slab-ink);padding:6px 10px;white-space:nowrap}
+.b-row .st.tbc{background:var(--acc);color:var(--acc-ink)}
+.b-spon{background:var(--acc);color:var(--acc-ink);margin-top:var(--space-3xl);padding-block:var(--space-3xl)}
+.b-spon .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:var(--space-xl);align-items:end}
+.b-spon h2{font-size:clamp(3.4rem,9vw,7.5rem);transform:rotate(-2deg)}
+.b-spon p{font-size:19px;line-height:1.5;font-weight:500}
+.b-spon .b-big{background:var(--slab);color:var(--slab-ink);margin-top:var(--space-lg)}
+.b-foot{background:var(--slab);color:var(--slab-ink);padding-block:var(--space-2xl)}
+.b-foot .d{font-size:clamp(3rem,10vw,8rem);color:var(--bg)}
+.b-foot form{display:flex;flex-wrap:wrap;gap:0;margin-top:var(--space-xl);max-width:640px}
+.b-foot label{flex-basis:100%;font-weight:600;margin-bottom:10px}
+.b-foot input{flex:1 1 220px;min-width:0;border:3px solid var(--slab-ink);background:transparent;color:var(--slab-ink);padding:16px;font-size:17px}
+.b-foot button{border:3px solid var(--acc);background:var(--acc);color:var(--acc-ink);font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:22px;text-transform:uppercase;padding:12px 22px;cursor:pointer}
+.b-foot .ok{flex-basis:100%;margin-top:10px;color:#f0a39c;font-weight:600}
+.b-foot .base{display:flex;justify-content:space-between;gap:var(--space-md);flex-wrap:wrap;margin-top:var(--space-2xl);font-size:14px;color:#a9a39a}
+@media (max-width:900px){
+  .b-hero .sub,.b-claims li,.b-spon .wrap{grid-template-columns:minmax(0,1fr)}
+  .b-gear{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .b-item.big{grid-column:span 2;border-right:0;border-bottom:3px solid var(--ink)}
+  .b-item.md,.b-item.sm{grid-column:span 1;border-bottom:3px solid var(--ink)}
+  .b-item.md:nth-of-type(3){border-right:0}
+  .b-row{grid-template-columns:minmax(0,1fr)}
+  .b-row .st{justify-self:start}
+  .b-photo{aspect-ratio:4/3}
+}
+@media (max-width:520px){.b-nav nav a{padding:14px 12px;font-size:16px}}
+
+/* ═══════════════ C · EDITORIAL ═══════════════ */
+.v-ed{--bg:#f3f3ef;--ink:#1d201c;--mute:#646a62;--rule:#cfd1ca;--acc:#2f5b3b;--acc-ink:#f3f3ef;
+  --ph-a:#c9ccc4;--ph-b:#d1d4cc;--ph-label-bg:#f3f3ef;--ph-label-ink:#1d201c;--focus:#2f5b3b;
+  font-family:"Libre Franklin",system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+.v-ed .serif{font-family:"Newsreader",Georgia,serif;font-weight:500}
+.e-mast{text-align:left;padding-block:var(--space-lg) var(--space-md);border-bottom:1px solid var(--ink)}
+.e-mast .top{display:flex;justify-content:space-between;gap:var(--space-md);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);flex-wrap:wrap}
+.e-mast .name{font-family:"Newsreader",Georgia,serif;font-weight:600;font-size:clamp(2.6rem,8vw,5.5rem);line-height:.95;letter-spacing:-.02em;margin-top:var(--space-sm)}
+.e-mast nav{display:flex;gap:var(--space-lg);margin-top:var(--space-md);flex-wrap:wrap}
+.e-mast nav a{font-size:14px;text-decoration:none;white-space:nowrap;padding-block:4px;border-bottom:1px solid transparent}
+.e-mast nav a:hover{border-color:var(--ink)}
+.e-mast nav a.cart{margin-left:auto;font-weight:600}
+.e-fold{margin-top:var(--space-lg)}
+.e-fold .ph{aspect-ratio:16/8}
+.e-cap{display:flex;justify-content:space-between;gap:var(--space-md);padding-top:var(--space-sm);font-size:13px;color:var(--mute);flex-wrap:wrap}
+.e-cap b{color:var(--ink);font-weight:600}
+.e-cap a{color:var(--acc);font-weight:600;text-underline-offset:3px;white-space:nowrap}
+.e-text{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:var(--space-xl);padding-block:var(--space-3xl)}
+.e-text h1,.e-text h2{font-family:"Newsreader",Georgia,serif;font-weight:500;font-size:clamp(1.9rem,3.4vw,2.8rem);line-height:1.08;letter-spacing:-.01em}
+.e-text .body{font-family:"Newsreader",Georgia,serif;font-size:21px;line-height:1.55;max-width:34em}
+.e-text .body p+p{margin-top:1em}
+.e-text .body a{color:var(--acc)}
+.e-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-lg);border-top:1px solid var(--rule);padding-top:var(--space-md);margin-top:var(--space-xl);font-size:13px;color:var(--mute)}
+.e-facts b{display:block;font-family:"Newsreader",Georgia,serif;font-size:24px;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+.e-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-md)}
+.e-pair .ph{aspect-ratio:4/5}
+.e-shop{padding-block:var(--space-3xl) 0}
+.e-shop-head{display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-md);flex-wrap:wrap}
+.e-shop-head h2{font-family:"Newsreader",Georgia,serif;font-weight:500;font-size:clamp(1.9rem,3.4vw,2.8rem)}
+.e-shop-head a{color:var(--acc);font-weight:600;white-space:nowrap}
+.e-goods{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:var(--space-lg);margin-top:var(--space-lg)}
+.e-good .ph{aspect-ratio:3/4}
+.e-good:first-child .ph{aspect-ratio:auto;height:100%;min-height:360px}
+.e-good:first-child{display:grid;grid-template-rows:minmax(0,1fr) auto}
+.e-good h3{font-family:"Newsreader",Georgia,serif;font-weight:500;font-size:20px;margin-top:var(--space-sm)}
+.e-good p{font-size:14px;color:var(--mute);margin-top:2px}
+.e-events{border-top:1px solid var(--ink)}
+.e-ev{display:grid;grid-template-columns:9rem minmax(0,1fr) auto;gap:var(--space-lg);padding-block:var(--space-md);border-bottom:1px solid var(--rule);align-items:baseline}
+.e-ev .date{font-family:"Newsreader",Georgia,serif;font-size:20px;font-variant-numeric:tabular-nums}
+.e-ev .what{font-size:16px}
+.e-ev .what span{display:block;font-size:14px;color:var(--mute);margin-top:2px}
+.e-ev .st{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--mute);white-space:nowrap}
+.e-letter{max-width:40rem;padding-block:var(--space-3xl)}
+.e-letter p{font-family:"Newsreader",Georgia,serif;font-size:22px;line-height:1.55}
+.e-letter p+p{margin-top:1em}
+.e-letter .sig{font-size:16px;font-family:"Libre Franklin",sans-serif;color:var(--mute)}
+.e-form{display:flex;flex-wrap:wrap;gap:var(--space-sm);margin-top:var(--space-lg)}
+.e-form label{flex-basis:100%;font-size:14px;font-weight:600}
+.e-form input{flex:1 1 240px;min-width:0;border:0;border-bottom:1px solid var(--ink);background:transparent;padding:12px 0;font-size:17px;color:var(--ink)}
+.e-form button{background:var(--acc);color:var(--acc-ink);border:0;padding:12px 20px;font-weight:600;cursor:pointer;white-space:nowrap}
+.e-form .ok{flex-basis:100%;color:var(--acc);font-size:14px}
+.e-foot{border-top:1px solid var(--ink);padding-block:var(--space-lg);display:flex;justify-content:space-between;gap:var(--space-md);flex-wrap:wrap;font-size:13px;color:var(--mute)}
+.e-foot nav{display:flex;gap:var(--space-md);flex-wrap:wrap}
+.e-foot a{text-decoration:none;white-space:nowrap}
+.e-foot a:hover{color:var(--ink)}
+@media (max-width:900px){
+  .e-text{grid-template-columns:minmax(0,1fr)}
+  .e-goods{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .e-good:first-child{grid-column:span 2}
+  .e-good:first-child .ph{min-height:0;aspect-ratio:4/3}
+  .e-fold .ph{aspect-ratio:4/3}
+}
+@media (max-width:560px){
+  .e-ev{grid-template-columns:minmax(0,1fr)}
+  .e-facts{grid-template-columns:minmax(0,1fr)}
+  .e-mast nav a.cart{margin-left:0}
+}
+</style>
+
+<!-- ═══════════════ A · TÉCNICO ═══════════════ -->
+<div class="variant v-tech" id="tecnico">
+  <div class="wrap">
+    <header class="t-nav">
+      <a class="t-mark" href="#tecnico">HEAVY METAL PRO STOCK</a>
+      <nav aria-label="Principal"><a href="#t-shop">Shop</a><a href="#t-sched">Schedule</a><a href="#t-spon">Sponsors</a><a href="#t-spec">The machine</a></nav>
+      <a class="t-cart" href="#t-shop">Cart (0)</a>
+    </header>
+
+    <section class="t-hero" id="t-spec">
+      <div>
+        <div class="t-fig" aria-label="300 feet">300<small>FT</small></div>
+        <h1>Full pull or nothing. <mark>10,000 lb</mark> against the sled.</h1>
+        <p class="t-lede">The Evil One is a Pro Stock puller built in Wisconsin around a CAT 3208 V8. We buy the diesel with every shirt you wear.</p>
+        <div class="t-ctas"><a class="t-btn primary" href="#t-shop">Shop team gear</a><a class="t-btn" href="#t-sched">See where we pull</a></div>
+      </div>
+      <div class="ph t-photo"><span>Foto · side-profile.jpg</span></div>
+    </section>
+
+    <dl class="t-sheet" aria-label="Spec sheet">
+      <div><dt>Class</dt><dd>Pro Stock</dd></div>
+      <div><dt>Engine</dt><dd>CAT 3208 V8</dd></div>
+      <div><dt>Horsepower</dt><dd>—</dd></div>
+      <div class="hot"><dt>Weight</dt><dd>10,000 lb</dd></div>
+      <div><dt>Tires</dt><dd>24.5-32</dd></div>
+      <div><dt>Home base</dt><dd>Wisconsin</dd></div>
+    </dl>
+
+    <section class="t-sec" id="t-shop">
+      <div class="t-head"><h2>Team gear</h2><a href="#t-shop">All products →</a></div>
+      <div class="t-skus">
+        <article class="t-sku"><div class="ph"><span>Foto producto</span></div><div class="meta"><span>HM-001</span><span>$ —</span></div><h3>Evil One tee</h3></article>
+        <article class="t-sku"><div class="ph"><span>Foto producto</span></div><div class="meta"><span>HM-002</span><span>$ —</span></div><h3>Team tee</h3></article>
+        <article class="t-sku"><div class="ph"><span>Foto producto</span></div><div class="meta"><span>HM-003</span><span>$ —</span></div><h3>Crew pack · both tees</h3></article>
+        <article class="t-sku"><div class="ph"><span>Foto producto</span></div><div class="meta"><span>HM-004</span><span>$ —</span></div><h3>Product to confirm</h3></article>
+      </div>
+    </section>
+
+    <section class="t-sec" id="t-sched">
+      <div class="t-head"><h2>Pull schedule · 2026</h2><a href="#t-sign">Get dates by email →</a></div>
+      <div class="t-table-wrap">
+        <table class="t-table">
+          <thead><tr><th>Date</th><th>Event</th><th>Location</th><th>Class</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>2026 · Fall</td><td>Green County Fall Nationals · Badger State Tractor Pullers</td><td>Monroe, WI</td><td>Pro Stock</td><td><span class="t-pill done">Pulled</span></td></tr>
+            <tr><td>TBC</td><td>Next event to confirm</td><td>—</td><td>Pro Stock</td><td><span class="t-pill">Date TBC</span></td></tr>
+            <tr><td>TBC</td><td>Next event to confirm</td><td>—</td><td>Pro Stock</td><td><span class="t-pill">Date TBC</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="t-sec" id="t-spon">
+      <div class="t-head"><h2>Sponsor placement</h2><a href="#t-spon">Sponsor packet →</a></div>
+      <div class="t-spon">
+        <div>
+          <p>Your logo rides with the Evil One to every pull. Four placements, each seen by a different crowd.</p>
+          <div class="t-ctas"><a class="t-btn primary" href="#t-spon">Become a sponsor</a></div>
+        </div>
+        <ol class="t-spots">
+          <li><span class="mono">P-01</span><b>Trailer</b><span class="mono">Every event</span></li>
+          <li><span class="mono">P-02</span><b>Team gear</b><span class="mono">Every shirt sold</span></li>
+          <li><span class="mono">P-03</span><b>This website</b><span class="mono">Sponsor page</span></li>
+          <li><span class="mono">P-04</span><b>Socials</b><span class="mono">Race-day posts</span></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="t-sign" id="t-sign">
+      <div><h2>Know where we pull next</h2><p>Event dates and new drops. One email per event, nothing else.</p></div>
+      <form class="t-form" data-demo>
+        <label for="t-email">Email</label>
+        <input id="t-email" type="email" required placeholder="you@example.com" autocomplete="email">
+        <button type="submit">Notify me</button>
+        <p class="ok" hidden>Saved. (Vista previa: el formulario no envía nada.)</p>
+      </form>
+    </section>
+
+    <footer class="t-foot">
+      <div><b>Heavy Metal Pro Stock</b>The Evil One<br>Wisconsin, USA</div>
+      <div><b>Shop</b><a href="#t-shop">Team gear</a><a href="#t-shop">Shipping</a><a href="#t-shop">Returns</a></div>
+      <div><b>Team</b><a href="#t-spec">The machine</a><a href="#t-sched">Schedule</a><a href="#t-spon">Sponsors</a></div>
+      <div><b>Follow</b><a href="#tecnico">Instagram</a><a href="#tecnico">Facebook</a><a href="#tecnico">YouTube</a></div>
+    </footer>
+  </div>
+</div>
+
+<!-- ═══════════════ B · BRUTALISTA ═══════════════ -->
+<div class="variant v-brut" id="brutalista" hidden>
+  <header class="b-nav">
+    <a class="d" href="#brutalista" style="text-decoration:none">Heavy Metal</a>
+    <nav aria-label="Principal"><a href="#b-gear">Gear</a><a href="#b-sched">Pulls</a><a href="#b-spon">Sponsor</a><a class="cart" href="#b-gear">Cart 0</a></nav>
+  </header>
+
+  <section class="b-hero wrap">
+    <h1 class="d">Ten thousand pounds.<br>One <span class="blk">evil</span> engine.</h1>
+    <div class="sub">
+      <p>Pro Stock tractor pulling out of Wisconsin. A CAT 3208 V8, a 300-foot track and one rule: full pull or nothing.</p>
+      <a class="b-big" href="#b-gear">Wear the metal</a>
+    </div>
+    <div class="ph b-photo"><span>Foto · rear-black-smoke.jpg</span></div>
+  </section>
+
+  <section class="b-claims">
+    <div class="wrap">
+      <ol>
+        <li><h2 class="d">We don't race the clock.</h2><p>A pull is one run against a sled that gets heavier the farther you drag it. Distance is the score.</p></li>
+        <li><h2 class="d red">Black smoke is the point.</h2><p>Diesel, steel and a crowd on the fence. That is the whole show, and we bring it to every county fair that will have us.</p></li>
+        <li><h2 class="d">Your shirt buys the fuel.</h2><p>Every order goes back into the tractor. No investors, no factory team. Just the crew and whoever wears the gear.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="b-sec" id="b-gear">
+    <div class="wrap">
+      <h2 class="d">The gear</h2>
+      <div class="b-gear">
+        <article class="b-item big"><div class="ph"><span>Foto producto</span></div><div class="cap"><span class="d">Evil One tee</span><span>$ —</span></div></article>
+        <article class="b-item md"><div class="ph"><span>Foto producto</span></div><div class="cap"><span class="d">Team tee</span><span>$ —</span></div></article>
+        <article class="b-item sm"><div class="ph"><span>Foto</span></div><div class="cap"><span class="d">Crew pack</span><span>$ —</span></div></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="b-sec" id="b-sched">
+    <div class="wrap">
+      <h2 class="d">Where we pull</h2>
+      <div class="b-sched">
+        <div class="b-row"><span class="d">Monroe, WI</span><span class="where">Green County Fall Nationals · Badger State Tractor Pullers · 2026</span><span class="st">Pulled</span></div>
+        <div class="b-row"><span class="d">Next pull</span><span class="where">Event and town to confirm</span><span class="st tbc">Date TBC</span></div>
+        <div class="b-row"><span class="d">Next pull</span><span class="where">Event and town to confirm</span><span class="st tbc">Date TBC</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="b-spon" id="b-spon">
+    <div class="wrap">
+      <h2 class="d">Ride with the Evil One.</h2>
+      <div>
+        <p>Your logo on the trailer, the team gear, this site and our race-day posts. In front of every crowd we pull for.</p>
+        <a class="b-big" href="#b-spon">Sponsor the team</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="b-foot">
+    <div class="wrap">
+      <p class="d">Full pull or nothing.</p>
+      <form data-demo>
+        <label for="b-email">Get the next pull date and new drops by email.</label>
+        <input id="b-email" type="email" required placeholder="you@example.com" autocomplete="email">
+        <button type="submit">Sign up</button>
+        <p class="ok" hidden>Saved. (Vista previa: el formulario no envía nada.)</p>
+      </form>
+      <div class="base"><span>Heavy Metal Pro Stock · Wisconsin</span><span>Instagram · Facebook · YouTube</span></div>
+    </div>
+  </footer>
+</div>
+
+<!-- ═══════════════ C · EDITORIAL ═══════════════ -->
+<div class="variant v-ed" id="editorial" hidden>
+  <div class="wrap">
+    <header class="e-mast">
+      <div class="top"><span>Pro Stock tractor pulling</span><span>Wisconsin · Season 2026</span></div>
+      <p class="name">Heavy Metal</p>
+      <nav aria-label="Principal"><a href="#e-shop">Shop</a><a href="#e-events">Events</a><a href="#e-story">The team</a><a href="#e-spon">Sponsors</a><a class="cart" href="#e-shop">Cart (0)</a></nav>
+    </header>
+
+    <section class="e-fold">
+      <div class="ph"><span>Foto · rear-black-smoke.jpg</span></div>
+      <div class="e-cap"><span><b>The Evil One</b> at the Green County Fall Nationals, Monroe, Wisconsin, 2026.</span><a href="#e-shop">Shop the team collection</a></div>
+    </section>
+
+    <section class="e-text" id="e-story">
+      <h1>A 10,000-pound tractor, a family crew, and a sled that fights back.</h1>
+      <div class="body">
+        <p>Heavy Metal pulls in the Pro Stock class with a CAT 3208 V8. Every run is 300 feet of track and a weight box that slides forward the farther we get. [Historia del equipo: 2 o 3 frases de quién está detrás y cómo empezó.]</p>
+        <p>The shirts pay for the diesel. If you wear one to a pull, come find us in the pits.</p>
+        <div class="e-facts"><div><b>CAT 3208</b>V8 diesel</div><div><b>10,000 lb</b>Pulling weight</div><div><b>24.5-32</b>Rear tires</div></div>
+      </div>
+    </section>
+
+    <section class="e-pair">
+      <div><div class="ph"><span>Foto · el equipo en pits</span></div><div class="e-cap"><span>The crew, before the first hook.</span></div></div>
+      <div><div class="ph"><span>Foto · side-profile.jpg</span></div><div class="e-cap"><span>Side profile. Pro Stock, Wisconsin plates.</span></div></div>
+    </section>
+
+    <section class="e-shop" id="e-shop">
+      <div class="e-shop-head"><h2>The team collection</h2><a href="#e-shop">See everything</a></div>
+      <div class="e-goods">
+        <article class="e-good"><div class="ph"><span>Foto producto · puesto</span></div><div><h3>Evil One tee</h3><p>Price to confirm</p></div></article>
+        <article class="e-good"><div class="ph"><span>Foto producto</span></div><h3>Team tee</h3><p>Price to confirm</p></article>
+        <article class="e-good"><div class="ph"><span>Foto producto</span></div><h3>Crew pack</h3><p>Both tees, one price</p></article>
+      </div>
+    </section>
+
+    <section class="e-text" id="e-events">
+      <h2>Where to find us this season</h2>
+      <div class="e-events">
+        <div class="e-ev"><span class="date">Fall 2026</span><span class="what">Green County Fall Nationals<span>Badger State Tractor Pullers · Monroe, WI</span></span><span class="st">Pulled</span></div>
+        <div class="e-ev"><span class="date">To confirm</span><span class="what">Next event<span>Town and date coming soon</span></span><span class="st">Upcoming</span></div>
+        <div class="e-ev"><span class="date">To confirm</span><span class="what">Next event<span>Town and date coming soon</span></span><span class="st">Upcoming</span></div>
+      </div>
+    </section>
+
+    <section class="e-fold" id="e-spon">
+      <div class="ph" style="aspect-ratio:16/7"><span>Foto · tráiler con logos de patrocinadores</span></div>
+      <div class="e-cap"><span><b>Sponsors</b> ride on the trailer, the team gear, this site and our race-day posts.</span><a href="#e-spon">Sponsor the team</a></div>
+    </section>
+
+    <section class="e-letter">
+      <p>We post the next pull here first, with the town, the date and what to bring to the fence.</p>
+      <form class="e-form" data-demo>
+        <label for="e-email">Your email</label>
+        <input id="e-email" type="email" required placeholder="you@example.com" autocomplete="email">
+        <button type="submit">Tell me where</button>
+        <p class="ok" hidden>Saved. (Vista previa: el formulario no envía nada.)</p>
+      </form>
+      <p class="sig" style="margin-top:var(--space-xl)">The Heavy Metal crew, Wisconsin</p>
+    </section>
+
+    <footer class="e-foot">
+      <span>Heavy Metal Pro Stock · The Evil One</span>
+      <nav aria-label="Pie"><a href="#e-shop">Shipping</a><a href="#e-shop">Returns</a><a href="#editorial">Instagram</a><a href="#editorial">Facebook</a><a href="#editorial">Contact</a></nav>
+    </footer>
+  </div>
+</div>
+
+<div class="switch" role="group" aria-label="Elegir estilo">
+  <span class="lbl">Estilo:</span>
+  <div class="tabs">
+    <button type="button" data-v="tecnico" aria-pressed="true">Técnico</button>
+    <button type="button" data-v="brutalista" aria-pressed="false">Brutalista</button>
+    <button type="button" data-v="editorial" aria-pressed="false">Editorial</button>
+  </div>
+  <span class="hint">Fotos y precios son marcadores de posición</span>
+</div>
+
+<script>
+(function(){
+  var ids=["tecnico","brutalista","editorial"];
+  var bgs={tecnico:"#eceee9",brutalista:"#d4d1ca",editorial:"#f3f3ef"};
+  var btns=document.querySelectorAll(".switch button");
+  function show(v){
+    if(ids.indexOf(v)<0)v="tecnico";
+    ids.forEach(function(id){document.getElementById(id).hidden=(id!==v)});
+    btns.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.v===v))});
+    document.body.style.setProperty("--bg",bgs[v]);
+    try{localStorage.setItem("hm-style",v)}catch(e){}
+  }
+  btns.forEach(function(b){b.addEventListener("click",function(){show(b.dataset.v);window.scrollTo(0,0)})});
+  var start=(location.hash||"").slice(1);
+  if(ids.indexOf(start)<0){try{start=localStorage.getItem("hm-style")}catch(e){start=null}}
+  show(start);
+  window.addEventListener("hashchange",function(){var h=location.hash.slice(1);if(ids.indexOf(h)>=0)show(h)});
+  document.querySelectorAll("form[data-demo]").forEach(function(f){
+    f.addEventListener("submit",function(e){e.preventDefault();f.querySelector(".ok").hidden=false})
+  });
+})();
+</script>
