@@ -2,7 +2,7 @@
 
 Nada de esto se carga solo. Leer este indice, elegir, y abrir solo el SKILL.md o agente elegido.
 
-Siempre activas (no hace falta este indice): consulting-deck, hallmark.
+Siempre activas (no hace falta este indice): consulting-deck, email-html-mjml, hallmark, shopify.
 
 ## Locales: leer `library/skills/<nombre>/SKILL.md`
 

@@ -6,6 +6,8 @@ Todo está apagado para ahorrar tokens. Las skills locales viven en `library/ski
 
 - `hallmark`: diseño de páginas y tiendas que no parecen hechas con IA.
 - `consulting-deck`: decks estilo McKinsey (escrita para este repo).
+- `shopify`: skill oficial de [Shopify/Shopify-AI-Toolkit](https://github.com/Shopify/Shopify-AI-Toolkit), sin el hook de telemetría y con `OPT_OUT_INSTRUMENTATION` en `.claude/settings.json`.
+- `email-html-mjml`: correos HTML con MJML, de [framix-team/skill-email-html-mjml](https://github.com/framix-team/skill-email-html-mjml).
 
 ## Skills locales (`library/skills/`)
 

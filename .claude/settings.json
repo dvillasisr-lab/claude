@@ -65,5 +65,9 @@
         "repo": "VoltAgent/awesome-claude-code-subagents"
       }
     }
+  },
+  "env": {
+    "OPT_OUT_INSTRUMENTATION": "true",
+    "DO_NOT_TRACK": "1"
   }
 }

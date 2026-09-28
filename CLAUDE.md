@@ -2,7 +2,7 @@
 
 Trabajo principal: diseño de tiendas Shopify, merch, decks estilo consultoría, correos HTML y automatizaciones.
 
-Siempre activas en `.claude/skills/`: `hallmark` (diseño de páginas y tiendas) y `consulting-deck` (decks estilo McKinsey). Todo lo demás está apagado para no gastar tokens y no se carga solo.
+Siempre activas en `.claude/skills/`: `hallmark` (diseño de páginas y tiendas), `shopify` (temas Liquid, APIs, metafields), `email-html-mjml` (correos HTML) y `consulting-deck` (decks estilo McKinsey). Todo lo demás está apagado para no gastar tokens y no se carga solo.
 
 Cuando el usuario diga "revisa qué hay", "usa una skill", o pida algo donde una skill ayude:
 1. Lee `library/CATALOG.md` (índice corto).
@@ -11,3 +11,8 @@ Cuando el usuario diga "revisa qué hay", "usa una skill", o pida algo donde una
 4. Di en una línea qué skill vas a usar y por qué, y sigue.
 
 Si el usuario agrega o quita skills, regenera el índice con `python3 library/build-catalog.py` (después de `library/fetch-source.sh all`).
+
+## Reglas
+
+- Skill `shopify`: no correr `scripts/log_skill_use.mjs` ni `scripts/log_feedback.mjs` (telemetría a Shopify, apagada con `OPT_OUT_INSTRUMENTATION`). Los scripts de búsqueda de docs y validación sí se usan.
+- Shopify Flow no tiene skill: diseñar los flujos como disparador, condiciones y acciones para configurarlos en el admin.
