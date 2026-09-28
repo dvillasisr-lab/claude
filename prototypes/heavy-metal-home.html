@@ -6,6 +6,7 @@
 /* Hallmark · three-direction preview · Heavy Metal Prostock homepage
  * A · Técnico     · macrostructure: Stat-Led     · nav: N9 edge-aligned · footer: Ft4 dense colophon
  * B · Brutalista  · macrostructure: Manifesto    · nav: N7 brutal slab  · footer: Ft5 statement
+ * D · Mezcla      · macrostructure: Manifesto hero + Stat-Led data blocks · nav: N7 slab + announce bar · footer: Ft7 newsletter-first
  * C · Editorial   · macrostructure: Photographic · nav: N6 masthead     · footer: Ft6 letter close
  * Each direction is a single fixed look (light concrete / dark-on-concrete / paper), set explicitly.
  * pre-emit critique: P4 H4 E4 S5 R4 V5
@@ -192,6 +193,104 @@ button,input{font:inherit}
 }
 @media (max-width:520px){.b-nav nav a{padding:14px 12px;font-size:16px}}
 
+/* ═══════════════ D · MEZCLA (brutalist voice, technical structure) ═══════════════ */
+.v-mix{--bg:#d4d1ca;--ink:#121110;--slab:#121110;--slab-ink:#ebe7df;--acc:#d7261e;--acc-ink:#f6f2ea;--mute:#57534d;--rule:#a8a39b;--panel:#cbc7bf;
+  --ph-a:#262422;--ph-b:#2e2c29;--ph-label-bg:#d7261e;--ph-label-ink:#f6f2ea;--focus:#d7261e;
+  font-family:"Work Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+.v-mix .d{font-family:"Big Shoulders Display","Arial Narrow",sans-serif;font-weight:900;text-transform:uppercase;line-height:.88}
+.v-mix .mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.m-next{background:var(--acc);color:var(--acc-ink);font:600 13px/1.3 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.06em;padding:10px max(16px,4vw);display:flex;gap:var(--space-md);justify-content:space-between;flex-wrap:wrap}
+.m-next a{white-space:nowrap}
+.m-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--slab);color:var(--slab-ink);display:flex;justify-content:space-between;align-items:stretch;flex-wrap:wrap}
+.m-nav .d{font-size:26px;padding:14px max(16px,4vw);text-decoration:none;display:flex;align-items:center}
+.m-nav nav{display:flex;flex-wrap:wrap}
+.m-nav nav a{font:600 13px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;text-decoration:none;padding:20px 18px;white-space:nowrap}
+.m-nav nav a:hover{color:var(--acc)}
+.m-nav nav a.cart{background:var(--acc);color:var(--acc-ink)}
+.m-hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:var(--space-xl);padding-block:var(--space-2xl) var(--space-xl);align-items:end}
+.m-hero h1{font-size:clamp(3.2rem,7.5vw,6.8rem);overflow-wrap:normal;transform:rotate(-2deg);transform-origin:left bottom}
+.m-hero h1 .blk{background:var(--acc);color:var(--acc-ink);padding:0 .08em;display:inline-block}
+.m-hero p{font-size:clamp(17px,1.8vw,20px);line-height:1.5;max-width:40ch;font-weight:500;margin-top:var(--space-xl)}
+.m-ctas{display:flex;gap:var(--space-md);flex-wrap:wrap;align-items:center;margin-top:var(--space-lg)}
+.m-big{display:inline-block;background:var(--acc);color:var(--acc-ink);font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:24px;text-transform:uppercase;padding:18px 26px;text-decoration:none;white-space:nowrap;border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);transition:transform var(--dur) var(--ease-out),box-shadow var(--dur) var(--ease-out)}
+.m-big:hover{transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+.m-big:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink)}
+.m-link{font:600 13px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;text-underline-offset:5px;white-space:nowrap}
+.m-photo{aspect-ratio:4/5;border:3px solid var(--ink)}
+.m-specs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border:3px solid var(--ink);background:var(--slab);color:var(--slab-ink)}
+.m-specs div{padding:14px 16px;border-right:1px solid #3b3834;min-width:0}
+.m-specs div:last-child{border-right:0}
+.m-specs dt{font:500 11px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em;color:#a9a39a}
+.m-specs dd{margin:8px 0 0;font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:28px;text-transform:uppercase;overflow-wrap:anywhere}
+.m-specs dd.red{color:var(--acc)}
+.m-sec{padding-block:var(--space-3xl) 0}
+.m-head{display:flex;justify-content:space-between;align-items:end;gap:var(--space-md);border-bottom:3px solid var(--ink);padding-bottom:var(--space-sm);flex-wrap:wrap}
+.m-head h2{font-size:clamp(2.8rem,6vw,4.6rem)}
+.m-shop{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--space-lg);margin-top:var(--space-lg)}
+.m-p .ph{aspect-ratio:1;border:3px solid var(--ink)}
+.m-p .row{display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-xs);margin-top:var(--space-sm)}
+.m-p h3{font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:24px;text-transform:uppercase;line-height:1}
+.m-p .price{font:600 14px/1 "IBM Plex Mono",monospace;white-space:nowrap}
+.m-p .sizes{display:flex;gap:4px;margin-top:var(--space-sm);flex-wrap:wrap}
+.m-p .sizes button{min-width:40px;padding:8px 6px;border:2px solid var(--ink);background:transparent;font:600 12px/1 "IBM Plex Mono",monospace;cursor:pointer;transition:background var(--dur) var(--ease-out)}
+.m-p .sizes button:hover{background:var(--panel)}
+.m-p .sizes button[aria-pressed="true"]{background:var(--ink);color:var(--slab-ink)}
+.m-p .add{width:100%;margin-top:var(--space-sm);padding:12px;border:0;background:var(--ink);color:var(--slab-ink);font:600 13px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;cursor:pointer}
+.m-p .add:hover{background:var(--acc)}
+.m-p .add:disabled{background:var(--rule);color:var(--mute);cursor:not-allowed}
+.m-p .fb{font:500 12px/1.3 "IBM Plex Mono",monospace;color:var(--acc);margin-top:6px;min-height:16px}
+.m-perks{display:flex;gap:var(--space-lg);flex-wrap:wrap;margin-top:var(--space-lg);font:500 12px/1.4 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.06em;color:var(--mute)}
+.m-band{background:var(--slab);color:var(--slab-ink);margin-top:var(--space-3xl);padding-block:var(--space-2xl)}
+.m-band .wrap{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:var(--space-xl);align-items:end}
+.m-band .d{font-size:clamp(3rem,8vw,6.5rem)}
+.m-band .d span{color:var(--acc)}
+.m-band p{font-size:18px;line-height:1.5;color:#c9c4bb;max-width:40ch}
+.m-video{aspect-ratio:16/9;margin-top:var(--space-xl);border:3px solid var(--slab-ink)}
+.m-table-wrap{overflow-x:auto;margin-top:var(--space-md)}
+.m-table{width:100%;border-collapse:collapse;min-width:640px;font-variant-numeric:tabular-nums}
+.m-table th{font:500 11px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--mute);text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--rule)}
+.m-table td{padding:18px 12px 18px 0;border-bottom:3px solid var(--ink);vertical-align:middle}
+.m-table td.when{font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:28px;text-transform:uppercase;white-space:nowrap}
+.m-table td.ev b{display:block;font-weight:600;font-size:17px}
+.m-table td.ev span{font-size:14px;color:var(--mute)}
+.m-pill{font:600 11px/1 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.08em;padding:6px 9px;white-space:nowrap;background:var(--acc);color:var(--acc-ink)}
+.m-pill.done{background:transparent;color:var(--mute);border:1px solid var(--rule)}
+.m-spon{background:var(--acc);color:var(--acc-ink);margin-top:var(--space-3xl);padding-block:var(--space-3xl)}
+.m-spon .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-xl)}
+.m-spon h2{font-size:clamp(3.2rem,8vw,6.5rem);transform:rotate(-2deg);transform-origin:left bottom}
+.m-spon p{font-size:19px;line-height:1.5;font-weight:500;margin-top:var(--space-lg);max-width:36ch}
+.m-spon .m-big{background:var(--slab);color:var(--slab-ink);margin-top:var(--space-lg)}
+.m-spots{list-style:none;margin:0;padding:0;border-top:3px solid var(--acc-ink);align-self:end}
+.m-spots li{display:grid;grid-template-columns:3.2rem minmax(0,1fr) auto;gap:var(--space-md);padding:16px 0;border-bottom:1px solid #f0a39c;align-items:baseline}
+.m-spots b{font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:26px;text-transform:uppercase;line-height:1}
+.m-spots .mono{font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.m-foot{background:var(--slab);color:var(--slab-ink);padding-block:var(--space-2xl)}
+.m-foot .top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-xl);align-items:end}
+.m-foot .d{font-size:clamp(2.8rem,7vw,5.5rem);color:var(--bg)}
+.m-foot form{display:flex;flex-wrap:wrap}
+.m-foot label{flex-basis:100%;font-weight:600;margin-bottom:10px}
+.m-foot input{flex:1 1 200px;min-width:0;border:3px solid var(--slab-ink);border-right:0;background:transparent;color:var(--slab-ink);padding:14px;font-size:16px}
+.m-foot button{border:3px solid var(--acc);background:var(--acc);color:var(--acc-ink);font-family:"Big Shoulders Display",sans-serif;font-weight:900;font-size:20px;text-transform:uppercase;padding:10px 20px;cursor:pointer}
+.m-foot .ok{flex-basis:100%;margin-top:10px;color:#f0a39c;font-weight:600}
+.m-foot .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-lg);margin-top:var(--space-2xl);padding-top:var(--space-lg);border-top:1px solid #3b3834;font:400 12px/1.8 "IBM Plex Mono",monospace;text-transform:uppercase;letter-spacing:.04em;color:#a9a39a}
+.m-foot .cols b{display:block;color:var(--slab-ink);font-weight:600}
+.m-foot .cols a{display:block;text-decoration:none;white-space:nowrap}
+.m-foot .cols a:hover{color:var(--slab-ink)}
+@media (max-width:900px){
+  .m-hero,.m-band .wrap,.m-spon .wrap,.m-foot .top{grid-template-columns:minmax(0,1fr)}
+  .m-photo{aspect-ratio:16/10}
+  .m-specs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .m-specs div{border-bottom:1px solid #3b3834}
+  .m-specs div:last-child{grid-column:span 2}
+  .m-shop{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:560px){
+  .m-nav nav a:not(.cart){display:none}
+  .m-specs dd{font-size:22px}
+  .m-foot .cols{grid-template-columns:minmax(0,1fr)}
+  .m-shop{gap:var(--space-md)}
+}
+
 /* ═══════════════ C · EDITORIAL ═══════════════ */
 .v-ed{--bg:#f3f3ef;--ink:#1d201c;--mute:#646a62;--rule:#cfd1ca;--acc:#2f5b3b;--acc-ink:#f3f3ef;
   --ph-a:#c9ccc4;--ph-b:#d1d4cc;--ph-label-bg:#f3f3ef;--ph-label-ink:#1d201c;--focus:#2f5b3b;
@@ -262,7 +361,7 @@ button,input{font:inherit}
 </style>
 
 <!-- ═══════════════ A · TÉCNICO ═══════════════ -->
-<div class="variant v-tech" id="tecnico">
+<div class="variant v-tech" id="tecnico" hidden>
   <div class="wrap">
     <header class="t-nav">
       <a class="t-mark" href="#tecnico">HEAVY METAL PRO STOCK</a>
@@ -489,10 +588,129 @@ button,input{font:inherit}
   </div>
 </div>
 
+<!-- ═══════════════ D · MEZCLA ═══════════════ -->
+<div class="variant v-mix" id="mezcla" hidden>
+  <div class="m-next"><span>Next pull · date to confirm</span><a href="#m-sched">See the schedule</a></div>
+  <header class="m-nav">
+    <a class="d" href="#mezcla">Heavy Metal</a>
+    <nav aria-label="Principal"><a href="#m-shop">Shop</a><a href="#m-sched">Schedule</a><a href="#m-spon">Sponsors</a><a class="cart" href="#m-shop" id="m-cart">Cart (0)</a></nav>
+  </header>
+
+  <div class="wrap">
+    <section class="m-hero">
+      <div>
+        <h1 class="d">Ten thousand pounds.<br>One <span class="blk">evil</span> engine.</h1>
+        <p>Pro Stock tractor pulling out of Wisconsin. Wear the team gear and you put diesel in the Evil One.</p>
+        <div class="m-ctas"><a class="m-big" href="#m-shop">Shop the gear</a><a class="m-link" href="#m-sched">Where we pull next →</a></div>
+      </div>
+      <div class="ph m-photo"><span>Foto · rear-black-smoke.jpg</span></div>
+    </section>
+
+    <dl class="m-specs" aria-label="The machine">
+      <div><dt>Class</dt><dd>Pro Stock</dd></div>
+      <div><dt>Engine</dt><dd>CAT 3208 V8</dd></div>
+      <div><dt>Weight</dt><dd class="red">10,000 lb</dd></div>
+      <div><dt>Tires</dt><dd>24.5-32</dd></div>
+      <div><dt>Track</dt><dd>300 ft</dd></div>
+    </dl>
+
+    <section class="m-sec" id="m-shop">
+      <div class="m-head"><h2 class="d">Team gear</h2><a class="m-link" href="#m-shop">All products →</a></div>
+      <div class="m-shop">
+        <article class="m-p" data-prod>
+          <div class="ph"><span>Foto producto</span></div>
+          <div class="row"><h3>Evil One tee</h3><span class="price">$ —</span></div>
+          <div class="sizes" role="group" aria-label="Size"><button type="button">S</button><button type="button">M</button><button type="button">L</button><button type="button">XL</button><button type="button">2XL</button></div>
+          <button type="button" class="add" disabled>Pick a size</button><p class="fb" aria-live="polite"></p>
+        </article>
+        <article class="m-p" data-prod>
+          <div class="ph"><span>Foto producto</span></div>
+          <div class="row"><h3>Team tee</h3><span class="price">$ —</span></div>
+          <div class="sizes" role="group" aria-label="Size"><button type="button">S</button><button type="button">M</button><button type="button">L</button><button type="button">XL</button><button type="button">2XL</button></div>
+          <button type="button" class="add" disabled>Pick a size</button><p class="fb" aria-live="polite"></p>
+        </article>
+        <article class="m-p" data-prod>
+          <div class="ph"><span>Foto producto</span></div>
+          <div class="row"><h3>Crew pack</h3><span class="price">$ —</span></div>
+          <div class="sizes" role="group" aria-label="Size"><button type="button">S</button><button type="button">M</button><button type="button">L</button><button type="button">XL</button><button type="button">2XL</button></div>
+          <button type="button" class="add" disabled>Pick a size</button><p class="fb" aria-live="polite"></p>
+        </article>
+        <article class="m-p" data-prod>
+          <div class="ph"><span>Foto producto</span></div>
+          <div class="row"><h3>Team hat</h3><span class="price">$ —</span></div>
+          <div class="sizes" role="group" aria-label="Size"><button type="button">One size</button></div>
+          <button type="button" class="add" disabled>Pick a size</button><p class="fb" aria-live="polite"></p>
+        </article>
+      </div>
+      <div class="m-perks"><span>Free US shipping over $[X]</span><span>Printed to order in the USA</span><span>Every order fuels the team</span></div>
+    </section>
+  </div>
+
+  <section class="m-band">
+    <div class="wrap">
+      <h2 class="d">Black smoke <span>is the point.</span></h2>
+      <p>One run, 300 feet, and a sled that gets heavier the farther you drag it. Distance is the score. Full pull or nothing.</p>
+    </div>
+    <div class="wrap"><div class="ph m-video"><span>Video · Green County Fall Nationals 2026 (enlace a YouTube)</span></div></div>
+  </section>
+
+  <div class="wrap">
+    <section class="m-sec" id="m-sched">
+      <div class="m-head"><h2 class="d">Where we pull</h2><a class="m-link" href="#m-join">Get dates by email →</a></div>
+      <div class="m-table-wrap">
+        <table class="m-table">
+          <thead><tr><th>When</th><th>Event</th><th>Where</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td class="when">TBC</td><td class="ev"><b>Next event</b><span>To confirm</span></td><td>—</td><td><span class="m-pill">Date TBC</span></td></tr>
+            <tr><td class="when">TBC</td><td class="ev"><b>Next event</b><span>To confirm</span></td><td>—</td><td><span class="m-pill">Date TBC</span></td></tr>
+            <tr><td class="when">Fall 26</td><td class="ev"><b>Green County Fall Nationals</b><span>Badger State Tractor Pullers</span></td><td>Monroe, WI</td><td><span class="m-pill done">Pulled</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <section class="m-spon" id="m-spon">
+    <div class="wrap">
+      <div>
+        <h2 class="d">Ride with the Evil One.</h2>
+        <p>Put your business in front of every crowd we pull for. Four placements, one sponsor packet.</p>
+        <a class="m-big" href="#m-spon">Get the sponsor packet</a>
+      </div>
+      <ol class="m-spots">
+        <li><span class="mono">01</span><b>Trailer</b><span class="mono">Every event</span></li>
+        <li><span class="mono">02</span><b>Team gear</b><span class="mono">Every shirt sold</span></li>
+        <li><span class="mono">03</span><b>This website</b><span class="mono">Sponsor page</span></li>
+        <li><span class="mono">04</span><b>Socials</b><span class="mono">Race-day posts</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <footer class="m-foot" id="m-join">
+    <div class="wrap">
+      <div class="top">
+        <p class="d">Full pull or nothing.</p>
+        <form data-demo>
+          <label for="m-email">Next pull date and new drops, straight to your inbox.</label>
+          <input id="m-email" type="email" required placeholder="you@example.com" autocomplete="email">
+          <button type="submit">Join the crew</button>
+          <p class="ok" hidden>Saved. (Vista previa: el formulario no envía nada.)</p>
+        </form>
+      </div>
+      <div class="cols">
+        <div><b>Heavy Metal Pro Stock</b>The Evil One · Wisconsin</div>
+        <div><b>Shop</b><a href="#m-shop">Team gear</a><a href="#m-shop">Shipping &amp; returns</a></div>
+        <div><b>Follow</b><a href="#mezcla">Instagram</a><a href="#mezcla">Facebook</a><a href="#mezcla">YouTube</a></div>
+      </div>
+    </div>
+  </footer>
+</div>
+
 <div class="switch" role="group" aria-label="Elegir estilo">
   <span class="lbl">Estilo:</span>
   <div class="tabs">
-    <button type="button" data-v="tecnico" aria-pressed="true">Técnico</button>
+    <button type="button" data-v="mezcla" aria-pressed="true">Mezcla</button>
+    <button type="button" data-v="tecnico" aria-pressed="false">Técnico</button>
     <button type="button" data-v="brutalista" aria-pressed="false">Brutalista</button>
     <button type="button" data-v="editorial" aria-pressed="false">Editorial</button>
   </div>
@@ -501,21 +719,33 @@ button,input{font:inherit}
 
 <script>
 (function(){
-  var ids=["tecnico","brutalista","editorial"];
-  var bgs={tecnico:"#eceee9",brutalista:"#d4d1ca",editorial:"#f3f3ef"};
+  var ids=["mezcla","tecnico","brutalista","editorial"];
+  var bgs={mezcla:"#d4d1ca",tecnico:"#eceee9",brutalista:"#d4d1ca",editorial:"#f3f3ef"};
   var btns=document.querySelectorAll(".switch button");
   function show(v){
-    if(ids.indexOf(v)<0)v="tecnico";
+    if(ids.indexOf(v)<0)v="mezcla";
     ids.forEach(function(id){document.getElementById(id).hidden=(id!==v)});
     btns.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.v===v))});
     document.body.style.setProperty("--bg",bgs[v]);
-    try{localStorage.setItem("hm-style",v)}catch(e){}
+    try{localStorage.setItem("hm-style-2",v)}catch(e){}
   }
   btns.forEach(function(b){b.addEventListener("click",function(){show(b.dataset.v);window.scrollTo(0,0)})});
   var start=(location.hash||"").slice(1);
-  if(ids.indexOf(start)<0){try{start=localStorage.getItem("hm-style")}catch(e){start=null}}
+  if(ids.indexOf(start)<0){try{start=localStorage.getItem("hm-style-2")}catch(e){start=null}}
   show(start);
   window.addEventListener("hashchange",function(){var h=location.hash.slice(1);if(ids.indexOf(h)>=0)show(h)});
+  var count=0;
+  document.querySelectorAll("[data-prod]").forEach(function(card){
+    var add=card.querySelector(".add"),fb=card.querySelector(".fb"),size=null;
+    card.querySelectorAll(".sizes button").forEach(function(b){
+      b.setAttribute("aria-pressed","false");
+      b.addEventListener("click",function(){
+        card.querySelectorAll(".sizes button").forEach(function(o){o.setAttribute("aria-pressed","false")});
+        b.setAttribute("aria-pressed","true");size=b.textContent;add.disabled=false;add.textContent="Add to cart";fb.textContent="";
+      });
+    });
+    add.addEventListener("click",function(){count++;document.getElementById("m-cart").textContent="Cart ("+count+")";fb.textContent="Added · "+size+" (vista previa)";});
+  });
   document.querySelectorAll("form[data-demo]").forEach(function(f){
     f.addEventListener("submit",function(e){e.preventDefault();f.querySelector(".ok").hidden=false})
   });
