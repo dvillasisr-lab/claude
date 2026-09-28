@@ -1,0 +1,328 @@
+<title>Evil One Scroll Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=IBM+Plex+Mono:wght@500;600&family=Work+Sans:wght@400;500;600&display=swap">
+<style>
+/* Hallmark · macrostructure: Feature Stack (3D, scroll-synced camera) · theme: custom (black · silver · white · yellow)
+ * single dark look by design · reduced motion: camera cuts, no smoke, no sound
+ */
+:root{color-scheme:dark;--black:#0b0c0d;--char:#141618;--line:#2a2d30;--silver:#b8bcc0;--silver-dim:#7a7f84;--white:#f4f5f2;--yellow:#f5c400;
+  --display:"Big Shoulders Display","Arial Narrow",sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace;--body:"Work Sans",system-ui,sans-serif;--ease-out:cubic-bezier(.16,1,.3,1)}
+html,body{overflow-x:clip}
+body{margin:0;background:var(--black);color:var(--white);font-family:var(--body)}
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block;z-index:0}
+.top{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:calc(12px + env(safe-area-inset-top,0px)) max(16px,4vw) 12px;background:linear-gradient(180deg,rgba(11,12,13,.85),rgba(11,12,13,0))}
+.logo{color:var(--white);font-family:var(--display);font-weight:900;font-size:24px;text-transform:uppercase;letter-spacing:.02em;text-decoration:none}
+.top nav{display:flex;gap:8px;align-items:center}
+.pill{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line);background:rgba(11,12,13,.6);color:var(--white);padding:10px 12px;cursor:pointer;white-space:nowrap;text-decoration:none}
+.pill[aria-pressed="true"]{border-color:var(--yellow);color:var(--yellow)}
+.pill.cart{background:var(--yellow);color:var(--black);border-color:var(--yellow)}
+.pill:focus-visible,.btn:focus-visible{outline:3px solid var(--white);outline-offset:3px}
+main{position:relative;z-index:10}
+.sec{min-height:100vh;display:flex;align-items:center;padding-inline:max(16px,4vw)}
+.sec.right{justify-content:flex-end}
+.panel{max-width:440px}
+.eyebrow{font:600 11px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--yellow);margin-bottom:12px}
+h1,h2{margin:0;font-family:var(--display);font-weight:900;text-transform:uppercase;font-style:normal;line-height:.88;text-wrap:balance;text-shadow:0 2px 24px rgba(0,0,0,.6)}
+h1{font-size:clamp(3.2rem,8vw,6.6rem)}
+h2{font-size:clamp(2.4rem,5.5vw,4.4rem)}
+h1 span,h2 span{color:var(--yellow)}
+.panel p{font-size:18px;line-height:1.55;color:var(--silver);margin:18px 0 0;text-shadow:0 1px 12px rgba(0,0,0,.8)}
+.btn{display:inline-block;font-family:var(--display);font-weight:900;font-size:20px;text-transform:uppercase;padding:14px 20px;white-space:nowrap;border:2px solid var(--yellow);background:var(--yellow);color:var(--black);cursor:pointer;text-decoration:none;transition:transform 160ms var(--ease-out)}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--white);border-color:var(--silver-dim)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
+.scrollcue{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:15;font:600 10px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--silver);transition:opacity 300ms}
+.dist{font-family:var(--display);font-weight:900;font-size:clamp(4rem,11vw,8rem);line-height:.85;color:var(--yellow);font-variant-numeric:tabular-nums}
+.dist small{font-size:.35em;color:var(--silver);margin-left:.1em}
+.hot{position:fixed;z-index:12;pointer-events:none;transform:translate(-50%,-50%);opacity:0;transition:opacity 200ms}
+.hot i{display:block;width:12px;height:12px;border-radius:50%;background:var(--yellow);box-shadow:0 0 0 6px rgba(245,196,0,.25)}
+.hot span{position:absolute;left:18px;top:-8px;white-space:nowrap;font:600 11px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;background:rgba(11,12,13,.85);border:1px solid var(--line);padding:6px 8px}
+.hot span b{display:block;font-family:var(--display);font-weight:900;font-size:20px;letter-spacing:0;color:var(--white)}
+.shop{min-height:100vh;padding:120px max(16px,4vw) 80px;display:grid;align-content:center}
+.shop-inner{background:rgba(11,12,13,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid var(--line);padding:clamp(18px,3vw,32px);max-width:1080px;width:100%;margin-inline:auto;box-sizing:border-box}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:24px}
+.card{background:var(--char);border:1px solid var(--line);display:flex;flex-direction:column;min-width:0}
+.ph{aspect-ratio:1;max-width:100%;background:repeating-linear-gradient(135deg,#1c1f22 0 10px,#22262a 10px 20px);display:flex;align-items:flex-end}
+.ph span{font:600 10px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;background:var(--black);color:var(--silver);padding:6px 8px;margin:8px}
+.card .body{padding:12px;display:grid;gap:8px}
+.card h3{margin:0;font-family:var(--display);font-weight:900;font-size:22px;text-transform:uppercase;line-height:1}
+.card .price{font:600 13px/1 var(--mono);color:var(--silver)}
+.card button{font:600 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:12px;border:0;background:var(--white);color:var(--black);cursor:pointer}
+.card button:hover{background:var(--yellow)}
+.fly{position:fixed;z-index:30;width:18px;height:18px;background:var(--yellow);pointer-events:none}
+.end{min-height:80vh;display:grid;place-items:center;text-align:center;padding-inline:max(16px,4vw)}
+.end form{display:flex;flex-wrap:wrap;gap:0;margin-top:24px;max-width:480px;margin-inline:auto}
+.end label{flex-basis:100%;color:var(--silver);margin-bottom:10px}
+.end input{flex:1 1 200px;min-width:0;background:rgba(11,12,13,.7);border:2px solid var(--silver-dim);border-right:0;color:var(--white);padding:14px;font-size:16px}
+.end .ok{flex-basis:100%;color:var(--yellow);margin-top:10px;font-weight:600}
+.note{position:relative;z-index:10;max-width:760px;margin-inline:auto;padding:24px max(16px,4vw) 60px;color:var(--silver);font-size:14px;line-height:1.6;border-top:1px solid var(--line);background:var(--black)}
+.note b{color:var(--white)}
+@media (max-width:760px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .sec{align-items:flex-end;padding-bottom:12vh}
+  .sec.right{justify-content:flex-start}
+  .panel p{font-size:16px}
+  .panel{background:linear-gradient(180deg,rgba(11,12,13,0),rgba(11,12,13,.7) 30%);padding:28px 0 8px;margin-inline:calc(-1 * max(16px,4vw));padding-inline:max(16px,4vw)}
+  .hot span{font-size:10px}.hot span b{font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){.btn,.scrollcue{transition:none}}
+</style>
+
+<canvas id="gl" aria-hidden="true"></canvas>
+<header class="top">
+  <a class="logo" href="#hero">Heavy Metal</a>
+  <nav><button class="pill" type="button" id="sound" aria-pressed="false">Sound: off</button><a class="pill cart" href="#shop" id="cart">Cart (0)</a></nav>
+</header>
+<div class="scrollcue" id="cue">Scroll ↓</div>
+<div class="hot" id="h-tire"><i></i><span>Rear tires<b>24.5-32</b></span></div>
+<div class="hot" id="h-engine"><i></i><span>Engine<b>CAT 3208 V8</b></span></div>
+<div class="hot" id="h-weight"><i></i><span>Front weights<b>10,000 lb total</b></span></div>
+
+<main>
+  <section class="sec" id="hero" data-k="0">
+    <div class="panel"><div class="eyebrow">Pro Stock · Wisconsin</div><h1>Ten thousand pounds. One <span>evil</span> engine.</h1>
+      <div class="row"><a class="btn" href="#shop">Shop the gear</a><a class="btn ghost" href="#pull">Watch it pull</a></div></div>
+  </section>
+  <section class="sec right" id="machine" data-k="1">
+    <div class="panel"><div class="eyebrow">The machine</div><h2>Built to drag the <span>sled.</span></h2>
+      <p>Matte black body, silver steel, and rear tires almost as tall as the crew. Every piece is there to put power into the dirt.</p></div>
+  </section>
+  <section class="sec" id="engine" data-k="2">
+    <div class="panel"><div class="eyebrow">CAT 3208 V8</div><h2>Black smoke is <span>the point.</span></h2>
+      <p>Turn the sound on and keep scrolling. The closer you get to the stack, the harder it runs.</p></div>
+  </section>
+  <section class="sec right" id="pull" data-k="3">
+    <div class="panel"><div class="eyebrow">The pull</div><div class="dist"><span id="ft">0</span><small>FT</small></div><h2>Full pull or <span>nothing.</span></h2>
+      <p>Scroll to drive. The sled gets heavier every foot.</p></div>
+  </section>
+  <section class="shop" id="shop" data-k="4">
+    <div class="shop-inner">
+      <div class="eyebrow">Team gear</div><h2>Wear the <span>metal.</span></h2>
+      <div class="grid">
+        <article class="card"><div class="ph"><span>Foto producto</span></div><div class="body"><h3>Evil One tee</h3><span class="price">$ —</span><button type="button" data-add>Add to cart</button></div></article>
+        <article class="card"><div class="ph"><span>Foto producto</span></div><div class="body"><h3>Team tee</h3><span class="price">$ —</span><button type="button" data-add>Add to cart</button></div></article>
+        <article class="card"><div class="ph"><span>Foto producto</span></div><div class="body"><h3>Team hat</h3><span class="price">$ —</span><button type="button" data-add>Add to cart</button></div></article>
+        <article class="card"><div class="ph"><span>Foto producto</span></div><div class="body"><h3>Truck decal</h3><span class="price">$ —</span><button type="button" data-add>Add to cart</button></div></article>
+      </div>
+    </div>
+  </section>
+  <section class="end" id="join" data-k="5">
+    <div><div class="eyebrow">Next pull</div><h2>Know where we <span>pull next.</span></h2>
+      <form id="join-form"><label for="email">Event dates and new drops. One email per event.</label><input id="email" type="email" required placeholder="you@example.com" autocomplete="email"><button class="btn" type="submit">Join the crew</button><p class="ok" hidden>Saved. (Vista previa: el formulario no envía nada.)</p></form></div>
+  </section>
+</main>
+<div class="note"><b>Demo · modelo 3D aproximado.</b> La experiencia completa (cámara que sigue el scroll, puntos de detalle, humo, sonido del motor generado en el navegador y productos que vuelan al carrito) ya funciona. El tractor es un modelo hecho a mano en código; con un escaneo real o un modelo profesional se reemplaza sin cambiar nada más.</div>
+
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const canvas=document.getElementById("gl");
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));
+renderer.outputColorSpace=THREE.SRGBColorSpace; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.05;
+renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+
+const scene=new THREE.Scene();
+{const c=document.createElement("canvas");c.width=16;c.height=256;const g=c.getContext("2d");const gr=g.createLinearGradient(0,0,0,256);
+  gr.addColorStop(0,"#121416");gr.addColorStop(0.55,"#44494f");gr.addColorStop(1,"#1d2023");g.fillStyle=gr;g.fillRect(0,0,16,256);
+  const bg=new THREE.CanvasTexture(c);bg.colorSpace=THREE.SRGBColorSpace;scene.background=bg}
+scene.fog=new THREE.Fog(0x2a2d31,16,40);
+const pmrem=new THREE.PMREMGenerator(renderer);
+scene.environment=pmrem.fromScene(new RoomEnvironment(),0.04).texture; scene.environmentIntensity=0.55;
+const camera=new THREE.PerspectiveCamera(34,1,0.1,100);
+
+const key=new THREE.DirectionalLight(0xffffff,2.6); key.position.set(-5,9,6); key.castShadow=true;
+key.shadow.mapSize.set(1024,1024); Object.assign(key.shadow.camera,{left:-7,right:7,top:7,bottom:-7,near:1,far:30}); key.shadow.bias=-0.0004; scene.add(key);
+const rim=new THREE.DirectionalLight(0xbfd4ff,1.6); rim.position.set(6,4,-6); scene.add(rim);
+scene.add(new THREE.HemisphereLight(0x9aa0a6,0x1a1612,0.5));
+
+function dirtTexture(){const c=document.createElement("canvas");c.width=c.height=512;const g=c.getContext("2d");g.fillStyle="#2a241f";g.fillRect(0,0,512,512);
+  for(let i=0;i<9000;i++){const v=30+Math.random()*40;g.fillStyle=`rgba(${v+20},${v+10},${v},${Math.random()*0.5})`;g.fillRect(Math.random()*512,Math.random()*512,1+Math.random()*3,1+Math.random()*3)}
+  for(let i=0;i<40;i++){g.strokeStyle="rgba(10,8,6,.35)";g.lineWidth=1+Math.random()*2;g.beginPath();const y=Math.random()*512;g.moveTo(0,y);g.lineTo(512,y+(Math.random()-.5)*10);g.stroke()}
+  const t=new THREE.CanvasTexture(c);t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(10,4);t.colorSpace=THREE.SRGBColorSpace;return t}
+const dirt=dirtTexture();
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(80,30),new THREE.MeshStandardMaterial({map:dirt,roughness:1}));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+const markers=new THREE.Group();scene.add(markers);
+const lineMat=new THREE.MeshBasicMaterial({color:0xf4f5f2,transparent:true,opacity:0.5}),finishMat=new THREE.MeshBasicMaterial({color:0xf5c400});
+for(let f=0;f<=300;f+=50){const m=new THREE.Mesh(new THREE.PlaneGeometry(0.12,12),f===300?finishMat:lineMat);m.rotation.x=-Math.PI/2;m.position.set(f*0.3048,0.01,0);m.userData.ft=f;markers.add(m)}
+
+// Materials
+const matte=new THREE.MeshPhysicalMaterial({color:0x121314,roughness:0.62,metalness:0.1,clearcoat:0.25,clearcoatRoughness:0.6});
+const satin=new THREE.MeshPhysicalMaterial({color:0x1a1b1d,roughness:0.4,metalness:0.3,clearcoat:0.4});
+const steel=new THREE.MeshStandardMaterial({color:0xc9cdd1,roughness:0.28,metalness:1});
+const brushed=new THREE.MeshStandardMaterial({color:0xaeb3b8,roughness:0.42,metalness:1});
+const rubber=new THREE.MeshStandardMaterial({color:0x2b2a28,roughness:0.95,metalness:0});
+const glass=new THREE.MeshPhysicalMaterial({color:0x222a33,roughness:0.15,metalness:0.2,transmission:0,clearcoat:1});
+const amber=new THREE.MeshStandardMaterial({color:0xff8a00,emissive:0xff6a00,emissiveIntensity:0.8});
+const cast=(o)=>{o.traverse(m=>{if(m.isMesh){m.castShadow=true;m.receiveShadow=true}});return o};
+
+// Tractor: x = forward, y = up, z = side. Rear axle at x=0.
+const tractor=new THREE.Group(); const body=new THREE.Group(); tractor.add(body); scene.add(tractor);
+
+function rearWheel(side){
+  const w=new THREE.Group(), R=0.9, Wd=0.66;
+  const tire=new THREE.Mesh(new THREE.CylinderGeometry(R,R,Wd,64,1),rubber); tire.rotation.x=Math.PI/2; w.add(tire);
+  const side1=new THREE.Mesh(new THREE.TorusGeometry(R-0.05,0.07,12,64),rubber); side1.position.z=Wd/2; w.add(side1);
+  const side2=side1.clone(); side2.position.z=-Wd/2; w.add(side2);
+  // chevron lugs
+  const lug=new THREE.BoxGeometry(0.11,0.07,Wd*0.52);
+  for(let i=0;i<30;i++){const a=i/30*Math.PI*2;
+    for(const s of [-1,1]){const m=new THREE.Mesh(lug,rubber); m.position.set(Math.cos(a)*(R+0.025),Math.sin(a)*(R+0.025),s*Wd*0.24); m.rotation.z=a; m.rotation.y=s*0.45; w.add(m)}}
+  // scalloped silver rim facing out
+  const face=side;
+  const rim=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.5,0.06,40),steel); rim.rotation.x=Math.PI/2; rim.position.z=face*(Wd/2-0.02); w.add(rim);
+  const hole=new THREE.Mesh(new THREE.CylinderGeometry(0.33,0.33,0.07,40),new THREE.MeshStandardMaterial({color:0x08090a,roughness:0.8})); hole.rotation.x=Math.PI/2; hole.position.z=face*(Wd/2-0.01); w.add(hole);
+  for(let i=0;i<14;i++){const a=i/14*Math.PI*2; const t=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.12,0.07),steel); t.position.set(Math.cos(a)*0.53,Math.sin(a)*0.53,face*(Wd/2-0.02)); t.rotation.z=a; w.add(t)}
+  w.position.set(0,R,side*0.98); return cast(w);
+}
+function frontWheel(side){
+  const w=new THREE.Group(), R=0.36, Wd=0.26;
+  const tire=new THREE.Mesh(new THREE.CylinderGeometry(R,R,Wd,40),rubber); tire.rotation.x=Math.PI/2; w.add(tire);
+  const hub=new THREE.Mesh(new THREE.CylinderGeometry(0.19,0.19,Wd+0.02,24),satin); hub.rotation.x=Math.PI/2; w.add(hub);
+  w.position.set(3.55,R,side*0.62); return cast(w);
+}
+const rearL=rearWheel(1), rearR=rearWheel(-1), frontL=frontWheel(1), frontR=frontWheel(-1);
+tractor.add(rearL,rearR,frontL,frontR);
+
+// chassis + hood (body lifts as a unit around the rear axle)
+const add=(geo,mat,x,y,z,rx=0,ry=0,rz=0)=>{const m=new THREE.Mesh(geo,mat);m.position.set(x,y,z);m.rotation.set(rx,ry,rz);body.add(m);return m};
+add(new RoundedBoxGeometry(4.2,0.45,0.9,4,0.06),matte,1.8,0.62,0);
+add(new RoundedBoxGeometry(2.6,0.95,1.18,5,0.12),matte,2.05,1.45,0);            // hood
+add(new RoundedBoxGeometry(0.9,0.8,1.12,5,0.18),matte,3.3,1.32,0,0,0,-0.35);      // sloped nose
+add(new RoundedBoxGeometry(0.9,0.55,1.0,4,0.06),matte,0.95,1.2,0);               // cowl
+add(new THREE.BoxGeometry(0.05,0.12,0.95),glass,3.72,1.42,0,0,0,-0.35);          // grille band
+add(new THREE.BoxGeometry(0.4,0.05,1.0),brushed,3.55,1.62,0,0,0,-0.35);          // headlight strip
+// side intercooler pipes
+for(const s of [1,-1]){const p=add(new THREE.CylinderGeometry(0.11,0.11,1.3,24),brushed,2.3,0.98,s*0.62,0,0,Math.PI/2); const e=add(new THREE.CylinderGeometry(0.07,0.07,0.4,16),brushed,1.55,0.98,s*0.62,0,0,Math.PI/2)}
+// stack + beacon
+add(new THREE.CylinderGeometry(0.13,0.13,0.9,28),steel,1.35,2.3,0);
+add(new THREE.CylinderGeometry(0.06,0.06,0.08,12),amber,1.7,1.97,0.1);
+// fenders
+for(const s of [1,-1]){const f=add(new THREE.CylinderGeometry(1.05,1.05,0.72,40,1,true,-Math.PI*0.15,Math.PI*0.7),matte,0,0.92,s*0.98,Math.PI/2,0,0); f.material=matte; f.scale.set(1,1,1)}
+// seat + steering + roll cage
+add(new RoundedBoxGeometry(0.5,0.5,0.55,3,0.08),satin,-0.05,1.35,0);
+add(new THREE.TorusGeometry(0.18,0.025,8,24),satin,0.45,1.65,0,0,Math.PI/2+0.3,0);
+const bar=(x1,y1,x2,y2,z)=>{const a=new THREE.Vector3(x1,y1,z),b=new THREE.Vector3(x2,y2,z),len=a.distanceTo(b);const m=add(new THREE.CylinderGeometry(0.035,0.035,len,10),satin,(x1+x2)/2,(y1+y2)/2,z);m.lookAt(b.x,b.y+0,b.z);m.rotateX(Math.PI/2);m.position.set((x1+x2)/2,(y1+y2)/2,z);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),b.clone().sub(a).normalize());return m};
+for(const z of [0.34,0.12,-0.12,-0.34]){bar(-0.35,1.1,-0.35,2.35,z);bar(0.25,1.1,0.25,2.35,z)}
+for(const y of [1.9,2.35]){for(const x of [-0.35,0.25]){const m=add(new THREE.CylinderGeometry(0.035,0.035,0.72,10),satin,x,y,0,Math.PI/2,0,0)}}
+bar(-0.35,2.35,0.25,2.35,0.34);bar(-0.35,2.35,0.25,2.35,-0.34);
+// front weight bracket + plates
+bar(3.3,0.62,4.25,0.62,0.4);bar(3.3,0.62,4.25,0.62,-0.4);bar(3.4,1.0,4.2,0.62,0.4);bar(3.4,1.0,4.2,0.62,-0.4);
+add(new RoundedBoxGeometry(0.35,0.62,1.05,3,0.05),matte,4.35,0.72,0);
+for(let i=0;i<3;i++)add(new THREE.BoxGeometry(0.06,0.5,0.95),brushed,4.1-i*0.1,0.7,0);
+cast(body);
+
+
+// Smoke + dirt
+function softTex(){const c=document.createElement("canvas");c.width=c.height=64;const g=c.getContext("2d");const r=g.createRadialGradient(32,32,0,32,32,32);r.addColorStop(0,"rgba(255,255,255,1)");r.addColorStop(0.4,"rgba(255,255,255,.55)");r.addColorStop(1,"rgba(255,255,255,0)");g.fillStyle=r;g.fillRect(0,0,64,64);return new THREE.CanvasTexture(c)}
+const soft=softTex(), smoke=[], dirtP=[];
+function puff(pos,vel,size,color,opacity,life,arr){const m=new THREE.Sprite(new THREE.SpriteMaterial({map:soft,alphaMap:soft,color,transparent:true,opacity,depthWrite:false,fog:false}));m.position.copy(pos);m.scale.setScalar(size);m.userData={vel,life,age:0,op:opacity,grow:size*1.6};scene.add(m);arr.push(m)}
+const stackTop=new THREE.Vector3(1.35,2.78,0);
+
+// Camera keyframes per section: [position, target]
+const KF=[
+  [[6.2,2.3,7.4],[1.8,1.0,0]],     // hero · 3/4 front
+  [[-1.4,1.2,4.4],[0.2,0.9,0.9]],  // machine · rear tire close
+  [[2.6,4.8,3.4],[1.4,2.0,0]],     // engine · stack from above
+  [[-6.0,2.0,6.2],[2.0,1.0,0]],    // pull · chase from behind
+  [[9.0,4.0,10.0],[3.2,1.0,0]],    // shop · wide, pulled back
+  [[7.5,1.2,-7.0],[2.0,1.2,0]]     // join · low hero from the other side
+];
+const secs=[...document.querySelectorAll("[data-k]")];
+function scrollK(){ // continuous index across sections based on section centers
+  const mid=innerHeight/2; let k=0;
+  for(let i=0;i<secs.length;i++){const r=secs[i].getBoundingClientRect(),c=r.top+r.height/2;
+    if(c<=mid){k=i;const n=secs[i+1];if(n){const rn=n.getBoundingClientRect(),cn=rn.top+rn.height/2;k=i+Math.min(1,Math.max(0,(mid-c)/(cn-c)))}}}
+  return k;
+}
+const lerp=(a,b,t)=>a+(b-a)*t, smooth=t=>t*t*(3-2*t);
+const camPos=new THREE.Vector3(...KF[0][0]), camTgt=new THREE.Vector3(...KF[0][1]), wantPos=new THREE.Vector3(), wantTgt=new THREE.Vector3();
+
+// Hotspots projected from 3D
+const hots=[["h-tire",new THREE.Vector3(0,1.3,1.35)],["h-engine",new THREE.Vector3(2.0,1.95,0.6)],["h-weight",new THREE.Vector3(4.35,1.1,0.55)]].map(([id,v])=>({el:document.getElementById(id),v}));
+
+// Engine sound (Web Audio, synthesized, starts only on click)
+let audio=null;
+function startAudio(){
+  const ac=new (window.AudioContext||window.webkitAudioContext)();
+  const master=ac.createGain();master.gain.value=0;master.connect(ac.destination);
+  const osc=ac.createOscillator();osc.type="sawtooth";osc.frequency.value=38;
+  const osc2=ac.createOscillator();osc2.type="square";osc2.frequency.value=19;
+  const lp=ac.createBiquadFilter();lp.type="lowpass";lp.frequency.value=260;lp.Q.value=4;
+  const og=ac.createGain();og.gain.value=0.5; const og2=ac.createGain();og2.gain.value=0.25;
+  osc.connect(og).connect(lp);osc2.connect(og2).connect(lp);
+  const len=ac.sampleRate*2,buf=ac.createBuffer(1,len,ac.sampleRate),d=buf.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1;
+  const noise=ac.createBufferSource();noise.buffer=buf;noise.loop=true;const bp=ac.createBiquadFilter();bp.type="bandpass";bp.frequency.value=900;bp.Q.value=0.8;const ng=ac.createGain();ng.gain.value=0.08;
+  noise.connect(bp).connect(ng).connect(lp);
+  lp.connect(master);osc.start();osc2.start();noise.start();
+  audio={ac,master,osc,osc2,lp,ng};
+}
+const soundBtn=document.getElementById("sound");
+soundBtn.addEventListener("click",()=>{
+  if(!audio){try{startAudio()}catch(e){soundBtn.textContent="Sound unavailable";return}}
+  const on=soundBtn.getAttribute("aria-pressed")!=="true";
+  soundBtn.setAttribute("aria-pressed",String(on));soundBtn.textContent=on?"Sound: on":"Sound: off";
+  if(on)audio.ac.resume();
+  audio.master.gain.setTargetAtTime(on?0.22:0,audio.ac.currentTime,0.08);
+});
+
+// Cart fly
+let count=0; const cart=document.getElementById("cart");
+document.querySelectorAll("[data-add]").forEach(b=>b.addEventListener("click",()=>{
+  const a=b.getBoundingClientRect(),c=cart.getBoundingClientRect();
+  const done=()=>{count++;cart.textContent=`Cart (${count})`;b.textContent="Added";setTimeout(()=>b.textContent="Add to cart",1400)};
+  if(reduce){done();return}
+  const f=document.createElement("div");f.className="fly";f.style.left=a.left+a.width/2-9+"px";f.style.top=a.top+a.height/2-9+"px";document.body.appendChild(f);
+  const dx=c.left+c.width/2-(a.left+a.width/2),dy=c.top+c.height/2-(a.top+a.height/2);
+  f.animate([{transform:"translate(0,0) rotate(0)"},{transform:`translate(${dx*0.5}px,${dy*0.5-80}px) rotate(180deg) scale(1.4)`},{transform:`translate(${dx}px,${dy}px) rotate(360deg) scale(.5)`}],{duration:650,easing:"cubic-bezier(.16,1,.3,1)"}).onfinish=()=>{f.remove();done();cart.animate([{transform:"scale(1)"},{transform:"scale(1.15)"},{transform:"scale(1)"}],{duration:220})};
+}));
+document.getElementById("join-form").addEventListener("submit",e=>{e.preventDefault();e.target.querySelector(".ok").hidden=false});
+
+function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.fov=w<760?50:34;camera.updateProjectionMatrix()}
+addEventListener("resize",resize);resize();
+
+const ftEl=document.getElementById("ft"), cue=document.getElementById("cue"), tmp=new THREE.Vector3();
+let last=performance.now(), dist=0, rev=0;
+function frame(now){
+  const dt=Math.min((now-last)/1000,0.05);last=now;
+  const k=scrollK(), i=Math.min(Math.floor(k),KF.length-2), t=smooth(k-i);
+  wantPos.set(...KF[i][0].map((v,j)=>lerp(v,KF[i+1][0][j],t))); wantTgt.set(...KF[i][1].map((v,j)=>lerp(v,KF[i+1][1][j],t)));
+  const damp=reduce?1:Math.min(1,dt*4); camPos.lerp(wantPos,damp); camTgt.lerp(wantTgt,damp);
+  camera.position.copy(camPos); camera.lookAt(camTgt);
+  cue.style.opacity=k<0.2?1:0;
+  // engine load rises toward the stack section; pull distance maps to section 3
+  const pullP=Math.min(1,Math.max(0,k-2.5)/1.0), nd=300*(1-Math.pow(1-Math.min(1,pullP),2));
+  const speed=(nd-dist)/Math.max(dt,0.001); dist=nd; ftEl.textContent=Math.round(dist);
+  const want=Math.max(Math.max(0,1-Math.abs(k-2)*1.2), Math.min(1,Math.abs(speed)/40));
+  rev+=(want-rev)*Math.min(1,dt*4);
+  if(audio){audio.osc.frequency.setTargetAtTime(38+rev*52,audio.ac.currentTime,0.05);audio.osc2.frequency.setTargetAtTime(19+rev*26,audio.ac.currentTime,0.05);audio.lp.frequency.setTargetAtTime(240+rev*900,audio.ac.currentTime,0.05);audio.ng.gain.setTargetAtTime(0.06+rev*0.12,audio.ac.currentTime,0.05)}
+  // motion
+  const ms=speed*0.3048; dirt.offset.x+=ms*dt/8;
+  markers.children.forEach(m=>{m.position.x=m.userData.ft*0.3048-dist*0.3048;m.visible=Math.abs(m.position.x)<30});
+  rearL.rotation.z-=ms*dt/0.9;rearR.rotation.z-=ms*dt/0.9;frontL.rotation.z-=ms*dt/0.36;frontR.rotation.z-=ms*dt/0.36;
+  const shake=reduce?0:(0.004+rev*0.012)*Math.sin(now/22)+(0.003+rev*0.008)*Math.sin(now/37);
+  body.position.y=shake; const lift=Math.min(1,Math.abs(ms)/6)*0.08+rev*0.015; tractor.rotation.z+=(lift-tractor.rotation.z)*Math.min(1,dt*5);
+  if(!reduce){
+    const n=(0.6+rev*14)*dt*8; for(let j=0;j<Math.floor(n)+(Math.random()<n%1?1:0);j++){tmp.copy(stackTop);tractor.localToWorld(tmp);
+      puff(tmp,new THREE.Vector3(-(0.6+Math.abs(ms)*0.5)-Math.random()*0.5,1.2+Math.random()*0.8+rev,(Math.random()-.5)*0.4),0.25+Math.random()*0.15,0x0e0e10,0.55*(0.45+rev*0.55),1.8,smoke)}
+    if(Math.abs(ms)>0.5){for(let j=0;j<3;j++){tmp.set(-0.5,0.1,(Math.random()>.5?1:-1)*0.98);tractor.localToWorld(tmp);
+      puff(tmp,new THREE.Vector3(-2-Math.random()*3-Math.abs(ms)*0.3,1+Math.random()*2.5,(Math.random()-.5)*1.5),0.1+Math.random()*0.1,0x6a5646,0.9,0.9,dirtP)}}
+  }
+  for(const arr of [smoke,dirtP]){for(let j=arr.length-1;j>=0;j--){const s=arr[j],u=s.userData;u.age+=dt;s.position.addScaledVector(u.vel,dt);if(arr===dirtP)u.vel.y-=9.8*dt;else u.vel.multiplyScalar(0.985);
+    const q=u.age/u.life;s.material.opacity=u.op*(1-q);if(arr===smoke)s.scale.setScalar(s.scale.x+u.grow*dt*0.9);if(q>=1||s.position.y<0){scene.remove(s);s.material.dispose();arr.splice(j,1)}}}
+  // hotspots visible around the machine section
+  const hv=Math.max(0,1-Math.abs(k-1)*2.2);
+  hots.forEach(h=>{tmp.copy(h.v);tractor.localToWorld(tmp);tmp.project(camera);const x=(tmp.x*0.5+0.5)*innerWidth,y=(-tmp.y*0.5+0.5)*innerHeight;
+    h.el.style.left=x+"px";h.el.style.top=y+"px";h.el.style.opacity=(tmp.z<1&&x>0&&x<innerWidth-120&&y>60&&y<innerHeight-40)?hv:0});
+  renderer.render(scene,camera); requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
