@@ -10,5 +10,60 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "superpowers@superpowers-dev": true,
+    "ecc@ecc": true,
+    "mattpocock-skills@mattpocock": true,
+    "marketing-skills@marketingskills": true,
+    "caveman@caveman": true,
+    "voltagent-core-dev@voltagent-subagents": true,
+    "voltagent-lang@voltagent-subagents": true,
+    "voltagent-infra@voltagent-subagents": true,
+    "voltagent-qa-sec@voltagent-subagents": true,
+    "voltagent-data-ai@voltagent-subagents": true,
+    "voltagent-dev-exp@voltagent-subagents": true,
+    "voltagent-domains@voltagent-subagents": true,
+    "voltagent-biz@voltagent-subagents": true,
+    "voltagent-meta@voltagent-subagents": true,
+    "voltagent-research@voltagent-subagents": true
+  },
+  "extraKnownMarketplaces": {
+    "superpowers-dev": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers"
+      }
+    },
+    "ecc": {
+      "source": {
+        "source": "github",
+        "repo": "affaan-m/ECC"
+      }
+    },
+    "mattpocock": {
+      "source": {
+        "source": "github",
+        "repo": "mattpocock/skills"
+      }
+    },
+    "marketingskills": {
+      "source": {
+        "source": "github",
+        "repo": "coreyhaines31/marketingskills"
+      }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
+    },
+    "voltagent-subagents": {
+      "source": {
+        "source": "github",
+        "repo": "VoltAgent/awesome-claude-code-subagents"
+      }
+    }
   }
 }
