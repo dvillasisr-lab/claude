@@ -13,7 +13,7 @@
   },
   "enabledPlugins": {
     "superpowers@superpowers-dev": true,
-    "ecc@ecc": true,
+    "ecc@ecc": false,
     "mattpocock-skills@mattpocock": true,
     "marketing-skills@marketingskills": true,
     "caveman@caveman": true,

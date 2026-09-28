@@ -21,7 +21,7 @@ Se instalan solos al abrir el repo en Claude Code (marketplaces en `extraKnownMa
 | Fuente | Plugin | Contexto fijo aprox. |
 |---|---|---|
 | [obra/superpowers](https://github.com/obra/superpowers) | `superpowers@superpowers-dev` | ~0.8k tokens |
-| [affaan-m/ECC](https://github.com/affaan-m/ECC) | `ecc@ecc` (386 skills, 68 agentes, hooks) | ~43.6k tokens |
+| [affaan-m/ECC](https://github.com/affaan-m/ECC) | `ecc@ecc` (386 skills, 68 agentes, hooks) | desactivado (~43.6k tokens si se activa) |
 | [mattpocock/skills](https://github.com/mattpocock/skills) | `mattpocock-skills@mattpocock` | ~1.6k tokens |
 | [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) | `marketing-skills@marketingskills` | ~13.6k tokens |
 | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) | `caveman@caveman` | ~1.8k tokens |
