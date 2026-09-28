@@ -32,6 +32,7 @@ def short(d, n=90):
 
 out = ["# Catalogo de skills y agentes", "",
        "Nada de esto se carga solo. Leer este indice, elegir, y abrir solo el SKILL.md o agente elegido.", "",
+       "Siempre activas (no hace falta este indice): " + ", ".join(sorted(os.path.basename(os.path.dirname(f)) for f in glob.glob(os.path.join(ROOT, "../.claude/skills/*/SKILL.md")))) + ".", "",
        "## Locales: leer `library/skills/<nombre>/SKILL.md`", ""]
 for f in sorted(glob.glob(os.path.join(ROOT, "skills/*/SKILL.md"))):
     n, d = meta(f)

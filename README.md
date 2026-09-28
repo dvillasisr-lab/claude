@@ -2,12 +2,17 @@
 
 Todo está apagado para ahorrar tokens. Las skills locales viven en `library/skills/` y el índice está en `library/CATALOG.md`. En cada sesión dile a Claude "revisa qué hay" y él elige y carga solo lo que necesita (ver `CLAUDE.md`).
 
+## Siempre activas (`.claude/skills/`)
+
+- `hallmark`: diseño de páginas y tiendas que no parecen hechas con IA.
+- `consulting-deck`: decks estilo McKinsey (escrita para este repo).
+
 ## Skills locales (`library/skills/`)
 
 | Fuente | Skills |
 |---|---|
 | [voltagent/awesome-design-md](https://github.com/voltagent/awesome-design-md) | `awesome-design-md` (DESIGN.md de ~70 marcas) |
-| [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) / [tasteskill.dev](https://www.tasteskill.dev/) | `image-to-code`, `design-taste-frontend`, `design-taste-frontend-v1`, `gpt-taste`, `high-end-visual-design`, `minimalist-ui`, `industrial-brutalist-ui`, `redesign-existing-projects`, `stitch-design-taste`, `brandkit`, `imagegen-frontend-web`, `imagegen-frontend-mobile`, `full-output-enforcement` |
+| [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) / [tasteskill.dev](https://www.tasteskill.dev/) | `image-to-code`, `design-taste-frontend`, `gpt-taste`, `high-end-visual-design`, `minimalist-ui`, `industrial-brutalist-ui`, `redesign-existing-projects`, `stitch-design-taste`, `brandkit`, `imagegen-frontend-web`, `imagegen-frontend-mobile`, `full-output-enforcement` |
 | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | `ui-ux-pro-max`, `design`, `design-system`, `ui-styling`, `brand`, `banner-design`, `slides` |
 | [vercel-labs/agent-skills](https://github.com/vercel-labs/agent-skills/tree/main/skills/web-design-guidelines) + [vercel.com/design/guidelines](https://vercel.com/design/guidelines) | `web-design-guidelines` (con copia local en `guidelines.md`) |
 | [Playwright agent CLI](https://playwright.dev/agent-cli/introduction) | `playwright-cli` (el binario `@playwright/cli` se instala con el hook `SessionStart`) |

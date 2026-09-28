@@ -1,6 +1,8 @@
 # Biblioteca de skills bajo demanda
 
-Las skills, plugins y subagentes de este repo están apagados para no gastar tokens. No se cargan solos.
+Trabajo principal: diseño de tiendas Shopify, merch, decks estilo consultoría, correos HTML y automatizaciones.
+
+Siempre activas en `.claude/skills/`: `hallmark` (diseño de páginas y tiendas) y `consulting-deck` (decks estilo McKinsey). Todo lo demás está apagado para no gastar tokens y no se carga solo.
 
 Cuando el usuario diga "revisa qué hay", "usa una skill", o pida algo donde una skill ayude:
 1. Lee `library/CATALOG.md` (índice corto).
