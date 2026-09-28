@@ -11,7 +11,7 @@ Each folder in `designs/<brand>/DESIGN.md` describes one product's visual langua
 
 ## How to use
 
-1. List what is available: `ls .claude/skills/awesome-design-md/designs`
+1. List what is available: `ls library/skills/awesome-design-md/designs`
 2. Read the matching `designs/<brand>/DESIGN.md` (only the ones you need, they are 20 to 40 KB each).
 3. Either follow it while building UI, or copy it into the project root as `DESIGN.md` so later work keeps the same system.
 4. When mixing brands, take tokens (color, type, radius, spacing) from one file and treat others as inspiration only.

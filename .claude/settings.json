@@ -12,21 +12,21 @@
     ]
   },
   "enabledPlugins": {
-    "superpowers@superpowers-dev": true,
+    "superpowers@superpowers-dev": false,
     "ecc@ecc": false,
-    "mattpocock-skills@mattpocock": true,
-    "marketing-skills@marketingskills": true,
-    "caveman@caveman": true,
-    "voltagent-core-dev@voltagent-subagents": true,
-    "voltagent-lang@voltagent-subagents": true,
-    "voltagent-infra@voltagent-subagents": true,
-    "voltagent-qa-sec@voltagent-subagents": true,
-    "voltagent-data-ai@voltagent-subagents": true,
-    "voltagent-dev-exp@voltagent-subagents": true,
-    "voltagent-domains@voltagent-subagents": true,
-    "voltagent-biz@voltagent-subagents": true,
-    "voltagent-meta@voltagent-subagents": true,
-    "voltagent-research@voltagent-subagents": true
+    "mattpocock-skills@mattpocock": false,
+    "marketing-skills@marketingskills": false,
+    "caveman@caveman": false,
+    "voltagent-core-dev@voltagent-subagents": false,
+    "voltagent-lang@voltagent-subagents": false,
+    "voltagent-infra@voltagent-subagents": false,
+    "voltagent-qa-sec@voltagent-subagents": false,
+    "voltagent-data-ai@voltagent-subagents": false,
+    "voltagent-dev-exp@voltagent-subagents": false,
+    "voltagent-domains@voltagent-subagents": false,
+    "voltagent-biz@voltagent-subagents": false,
+    "voltagent-meta@voltagent-subagents": false,
+    "voltagent-research@voltagent-subagents": false
   },
   "extraKnownMarketplaces": {
     "superpowers-dev": {

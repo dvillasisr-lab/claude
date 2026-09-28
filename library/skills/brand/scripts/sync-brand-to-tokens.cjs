@@ -36,7 +36,7 @@ const TAILWIND_CONFIGS = [
 ];
 // Sibling sub-skill, resolved from this file's location so it works in every
 // install context (plugin cache, project or --global CLI install), not only
-// when the process runs from a project root that contains .claude/skills/.
+// when the process runs from a project root that contains library/skills/.
 const GENERATE_TOKENS_SCRIPT = path.resolve(__dirname, '..', '..', 'design-system', 'scripts', 'generate-tokens.cjs');
 
 /**

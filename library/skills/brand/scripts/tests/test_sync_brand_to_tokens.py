@@ -64,7 +64,7 @@ def test_sync_parses_bundled_starter_template(tmp_path):
 
     # #474: the sibling design-system script is resolved from this skill's own
     # location, so the CSS regeneration must run even though tmp_path has no
-    # .claude/skills/ tree. Before the fix it was resolved from the working
+    # library/skills/ tree. Before the fix it was resolved from the working
     # directory and silently skipped in every layout but a project install.
     assert "Regenerated" in result.stdout, result.stdout
     css = tmp_path / "assets" / "design-tokens.css"

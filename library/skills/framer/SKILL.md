@@ -8,7 +8,7 @@ allowed-tools:
   - 'Bash(npx @framer/agent@latest:*)'
   - 'Read(/tmp/framer/*)'
   - 'Write(/tmp/framer/*)'
-  - 'Read(.claude/skills/framer/projects/**)'
+  - 'Read(library/skills/framer/projects/**)'
 ---
 
 If you didn't run this command before loading the skill, run it now:
@@ -36,7 +36,7 @@ What you can do with the Framer CLI:
 
 ### Permissions
 
-The Framer CLI requires network access (to download packages and connect to Framer servers) and file-system access outside the project directory (to install skills into `~/.agents/skills/` and `~/.claude/skills/`). In sandboxed environments, you must execute `npx @framer/agent@latest` commands with elevated permissions from the get-go. Do not try to execute them with the default sandboxed permissions; they will hang or fail.
+The Framer CLI requires network access (to download packages and connect to Framer servers) and file-system access outside the project directory (to install skills into `~/.agents/skills/` and `~/library/skills/`). In sandboxed environments, you must execute `npx @framer/agent@latest` commands with elevated permissions from the get-go. Do not try to execute them with the default sandboxed permissions; they will hang or fail.
 
 ### Session Management
 

@@ -1,6 +1,8 @@
 # Design skills para Claude Code
 
-Skills instaladas en `.claude/skills/` (se cargan solas al abrir este repo en Claude Code):
+Todo está apagado para ahorrar tokens. Las skills locales viven en `library/skills/` y el índice está en `library/CATALOG.md`. En cada sesión dile a Claude "revisa qué hay" y él elige y carga solo lo que necesita (ver `CLAUDE.md`).
+
+## Skills locales (`library/skills/`)
 
 | Fuente | Skills |
 |---|---|
@@ -16,17 +18,16 @@ Skills instaladas en `.claude/skills/` (se cargan solas al abrir este repo en Cl
 
 ## Plugins (en `.claude/settings.json`)
 
-Se instalan solos al abrir el repo en Claude Code (marketplaces en `extraKnownMarketplaces`, activados en `enabledPlugins`).
+Registrados en `extraKnownMarketplaces` pero todos apagados en `enabledPlugins`. Claude los lee bajo demanda con `library/fetch-source.sh`. Para activar uno de forma permanente, cambia su valor a `true`.
 
 | Fuente | Plugin | Contexto fijo aprox. |
 |---|---|---|
 | [obra/superpowers](https://github.com/obra/superpowers) | `superpowers@superpowers-dev` | ~0.8k tokens |
-| [affaan-m/ECC](https://github.com/affaan-m/ECC) | `ecc@ecc` (386 skills, 68 agentes, hooks) | desactivado (~43.6k tokens si se activa) |
+| [affaan-m/ECC](https://github.com/affaan-m/ECC) | `ecc@ecc` (386 skills, 68 agentes, hooks) | ~43.6k tokens si se activa |
 | [mattpocock/skills](https://github.com/mattpocock/skills) | `mattpocock-skills@mattpocock` | ~1.6k tokens |
 | [coreyhaines31/marketingskills](https://github.com/coreyhaines31/marketingskills) | `marketing-skills@marketingskills` | ~13.6k tokens |
 | [JuliusBrussee/caveman](https://github.com/JuliusBrussee/caveman) | `caveman@caveman` | ~1.8k tokens |
 | [VoltAgent/awesome-claude-code-subagents](https://github.com/VoltAgent/awesome-claude-code-subagents) | 10 plugins `voltagent-*@voltagent-subagents` (subagentes) | bajo |
 
-Para desactivar uno, cambia su valor a `false` en `enabledPlugins`.
 
 Local (fuera de la nube): `npm install -g @playwright/cli@latest`.
