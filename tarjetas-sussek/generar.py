@@ -175,9 +175,9 @@ CSS = """
   .dim{font-family:"IBM Plex Mono",monospace;font-size:1.45px;letter-spacing:.03px;fill:currentColor}
   .abs{position:absolute}
 
-  .lockup{display:flex;align-items:center;gap:2.2mm}
-  .lockup img{height:8.2mm;width:auto;display:block}
-  .word{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:3.2mm;line-height:1.04}
+  .lockup{display:flex;align-items:center;gap:3mm}
+  .lockup img{height:12.5mm;width:auto;display:block}
+  .word{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.6mm;line-height:1.02}
   .word span{display:block}
   .word span::first-letter{font-size:1.16em;font-weight:600}
 
@@ -202,7 +202,7 @@ CSS = """
   .back .cta{left:var(--m);top:36.4mm;font-family:"EB Garamond",Garamond,Georgia,serif;font-style:italic;font-size:2.35mm;color:var(--navy)}
   .block{left:var(--m);right:var(--m);bottom:var(--m);height:6.6mm;display:grid;grid-template-columns:7.4mm 1fr 1.25fr 2.1fr 1fr;border:.25mm solid var(--navy)}
   .block>div{border-left:.16mm solid var(--navy);padding:.8mm 1.3mm 0;display:flex;flex-direction:column;justify-content:space-between;padding-bottom:.9mm}
-  .block>div:first-child{border-left:0;background:var(--navy);align-items:center;justify-content:center;padding:0}
+  .block>div:first-child{border-left:0;align-items:center;justify-content:center;padding:0}
   .block img{height:4.6mm}
   .block small{font-family:"IBM Plex Mono",monospace;font-size:1.15mm;letter-spacing:.08mm;color:var(--muted);text-transform:uppercase}
   .block b{font-size:1.6mm;font-weight:700;letter-spacing:.12mm;color:var(--navy);white-space:nowrap}
@@ -217,7 +217,7 @@ FONTS = '<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,w
 LOCKUP = '<div class="abs lockup"><img src="sussek-icono.png" alt=""><div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div></div>'
 
 
-def build(p):
+def build(p, frase):
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -235,7 +235,7 @@ def build(p):
   {LOCKUP}
   <div class="abs pitch">
     <p>Machined parts &amp; assemblies</p>
-    <h2>Your print.<br><em>Our precision.</em></h2>
+    <h2>{frase}</h2>
   </div>
 </section>
 
@@ -246,7 +246,7 @@ def build(p):
     <dt>T</dt><dd>{p["tel"]}</dd><dt>E</dt><dd>{p["email"]}</dd>
     <dt>W</dt><dd>{p["web"]}</dd><dt>A</dt><dd>{p["dir"]}</dd>
   </dl>
-  <p class="abs cta">Send us your print. We'll machine it.</p>
+  <p class="abs cta">Request a quote at sussek.com</p>
   <div class="abs block">
     <div><img src="sussek-icono.png" alt=""></div>
     <div><small>Since</small><b>1960</b></div>
@@ -261,7 +261,13 @@ def build(p):
 """
 
 
+FRASES = {
+    "tarjeta-1": "From print<br><em>to part.</em>",
+    "tarjeta-2": "Precision<br><em>you can measure.</em>",
+    "tarjeta-3": "Tight tolerances.<br><em>On time.</em>",
+}
+
 if __name__ == "__main__":
-    out = Path(__file__).parent / "tarjeta.html"
-    out.write_text(build(PERSONA))
-    print("ok", out.name)
+    for name, frase in FRASES.items():
+        (Path(__file__).parent / f"{name}.html").write_text(build(PERSONA, frase))
+        print("ok", name)
