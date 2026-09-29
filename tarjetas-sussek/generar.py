@@ -939,8 +939,7 @@ def regla(p, troquel=True):
     ox, oy = cx + R * math.cos(ao), cy + R * math.sin(ao)
     back_art = (flange(cx, cy, R, hole)
                 + leader(ox - .15, oy + .1, ox - 3.2, oy + 4.2, ox - 11, f"Ø{2*R:.2f}", anchor="start")
-                + leader(hx - hole * .7, hy + hole * .7, hx - 4.2, 35.6, hx - 18.5, f"4× Ø{2*hole:.2f} THRU", anchor="start")
-                + fcf(hx - 18.5, 37.2, "pos", "Ø0.02", "A"))
+                + leader(hx - hole * .7, hy + hole * .7, hx - 4.2, 35.6, hx - 18.5, f"4× Ø{2*hole:.2f} THRU", anchor="start"))
     cls = "rg" + ("t" if troquel else "c")
     clip = ""
     if troquel:
@@ -966,12 +965,10 @@ def regla(p, troquel=True):
   .{cls}.back .data{{left:var(--m);top:22.5mm;color:var(--ink)}}
   .{cls}.back .data dt{{color:var(--navy)}}
   .{cls}.back .plain{{display:block;font-size:1.95mm;line-height:1.75}}
-  .{cls}.back .foot{{left:var(--m);right:var(--m);bottom:var(--m);display:flex;align-items:center;gap:2.6mm}}
-  .{cls}.back .foot img{{height:5.8mm;display:block}}
-  .{cls}.back .block{{flex:1;height:5.4mm;display:grid;grid-template-columns:1fr 1fr 1fr auto;border:.25mm solid var(--navy);font-size:1.45mm;font-weight:700;letter-spacing:.2mm;text-transform:uppercase}}
-  .{cls}.back .block>*{{display:flex;align-items:center;justify-content:center;padding:0 1.8mm;border-left:.18mm solid var(--navy)}}
-  .{cls}.back .block>:first-child{{border-left:0}}
-  .{cls}.back .block .geo{{background:var(--navy);color:#fff}}
+  .{cls}.back .foot{{left:var(--m);right:var(--m);bottom:var(--m);display:flex;align-items:center;gap:2.4mm;padding-top:2.2mm;border-top:.2mm solid #d5d8e4;font-size:1.45mm;font-weight:700;letter-spacing:.22mm;text-transform:uppercase}}
+  .{cls}.back .foot img{{height:4.6mm;display:block}}
+  .{cls}.back .foot .svc{{flex:1;color:var(--navy)}}
+  .{cls}.back .foot .geo{{color:var(--muted)}}
   .dieline{{background:#fff}}{clip}
 """
     if not troquel:
@@ -993,7 +990,7 @@ def regla(p, troquel=True):
   <div class="abs who"><h1>{p["nombre"]}</h1><p>{p["cargo"]}</p></div>
   <div class="abs data plain">{data_plain(p)}</div>
   <div class="abs foot"><img src="sussek-icono.png" alt="">
-    <div class="block"><div>Machining</div><div>Assembly</div><div>Engineering</div><div class="geo">USA · MX · CN</div></div>
+    <span class="svc">Machining · Assembly · Engineering</span><span class="geo">USA · MX · CN</span>
   </div>
 </section>"""
     if troquel:
