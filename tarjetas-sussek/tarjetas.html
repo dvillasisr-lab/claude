@@ -20,27 +20,30 @@
 
   /* FRENTE: logo oficial sobre blanco */
   .front{background:var(--paper)}
-  .front .inner{bottom:calc(var(--bleed) + 7.5mm);display:flex;align-items:center;justify-content:center}
+  .front .inner{bottom:calc(var(--bleed) + 7.5mm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.6mm}
+  .front .motto{font-family:"EB Garamond",Garamond,Georgia,serif;font-style:italic;color:var(--gray);font-size:2.5mm;letter-spacing:.1mm}
   .lockup{display:flex;align-items:center;gap:3.6mm}
-  .lockup img{height:17mm;width:auto;display:block}
-  .word{font-family:"EB Garamond",Garamond,Georgia,serif;color:var(--navy);font-weight:500;font-size:6.4mm;line-height:.98;letter-spacing:.08mm}
+  .lockup img{height:15mm;width:auto;display:block}
+  .word{font-family:"EB Garamond",Garamond,Georgia,serif;color:var(--navy);font-weight:500;font-size:5.6mm;line-height:.98;letter-spacing:.08mm}
   .word span{display:block}
   .word span::first-letter{font-size:1.18em;font-weight:600}
   .front .band{position:absolute;left:0;right:0;bottom:0;height:calc(var(--bleed) + 6.5mm);background:var(--navy);
     display:flex;align-items:flex-start;justify-content:center;padding-top:2.25mm}
   .front .band::before{content:"";position:absolute;left:0;right:0;top:0;height:.6mm;background:var(--steel)}
-  .front .band p{color:#fff;font-size:1.85mm;font-weight:600;letter-spacing:.9mm;text-transform:uppercase}
+  .front .band p{color:#fff;font-size:1.95mm;font-weight:700;letter-spacing:.42mm;text-transform:uppercase}
 
   /* REVERSO: datos sobre azul marino */
   .back{background:var(--navy);color:#fff}
   .back .edge{position:absolute;top:0;bottom:0;right:0;width:calc(var(--bleed) + 1.4mm);background:var(--steel);background-size:100% 100%;
     background-image:linear-gradient(180deg,#8e949b,#eef0f2 30%,#a9afb5 55%,#f4f6f7 75%,#8e949b)}
-  .back .inner{right:calc(var(--bleed) + 1.4mm + 4.5mm);display:grid;grid-template-columns:1fr auto;grid-template-rows:auto 1fr auto;column-gap:4mm}
+  .back .inner{right:calc(var(--bleed) + 1.4mm + 4.5mm);display:grid;grid-template-columns:1fr auto;grid-template-rows:auto 1fr auto auto;column-gap:4mm}
   .who{grid-column:1/2}
   .who h1{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5.2mm;line-height:1;letter-spacing:.05mm}
   .who p{font-size:1.9mm;font-weight:600;letter-spacing:.45mm;text-transform:uppercase;margin-top:1.5mm;color:#b9bede}
+  .what{grid-column:1/3;align-self:center;font-size:2.05mm;line-height:1.4;color:#dfe2f3;border-left:.5mm solid #b9bede;padding-left:2mm;margin-block:1.6mm}
+  .what b{color:#fff;font-weight:700}
   .back .icon{grid-column:2;grid-row:1/2;height:8.5mm;width:auto}
-  .data{grid-column:1/3;align-self:end;display:grid;grid-template-columns:auto 1fr;column-gap:2.4mm;row-gap:.85mm;font-size:2mm;line-height:1.3}
+  .data{grid-column:1/3;align-self:end;display:grid;grid-template-columns:auto 1fr;column-gap:2.4mm;row-gap:.55mm;font-size:2mm;line-height:1.3}
   .data dt{color:#9aa0c9;font-weight:700;font-size:1.65mm;letter-spacing:.3mm;padding-top:.2mm}
   .data dd{color:#fff}
   .foot{grid-column:1/3;margin-top:2.2mm;padding-top:1.6mm;border-top:.2mm solid rgba(255,255,255,.22);
@@ -62,8 +65,9 @@
       <img src="sussek-icono.png" alt="">
       <div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div>
     </div>
+    <p class="motto">Excellence Through Innovation</p>
   </div>
-  <div class="band"><p>Excellence Through Innovation</p></div>
+  <div class="band"><p>Precision Machining · Assembly · Engineering</p></div>
 </section>
 
 <!-- REVERSO: nombre y cargo son de ejemplo; datos de la planta de Waterloo tomados de sussek.com -->
@@ -75,13 +79,14 @@
       <p>Job Title</p>
     </div>
     <img class="icon" src="sussek-icono.png" alt="">
+    <p class="what"><b>Precision machined parts &amp; assemblies</b><br>for OEMs in aerospace, agriculture, construction, defense and more.</p>
     <dl class="data">
       <dt>TEL</dt><dd>920.478.2126</dd>
       <dt>EMAIL</dt><dd>sales@sussek.com</dd>
       <dt>WEB</dt><dd>sussek.com</dd>
       <dt>HQ</dt><dd>805 Pierce St · Waterloo, WI 53594</dd>
     </dl>
-    <div class="foot"><span>Precision Machining · Assembly</span><span><b>USA</b> · <b>México</b> · <b>China</b></span></div>
+    <div class="foot"><span>Turn-key solutions</span><span><b>USA</b> · <b>México</b> · <b>China</b></span></div>
   </div>
 </section>
 
