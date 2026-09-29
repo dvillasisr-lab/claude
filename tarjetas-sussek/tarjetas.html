@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <title>Sussek Machine Company · Tarjetas</title>
-<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Open+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   /* Tarjeta final 89 x 51 mm + 3 mm de sangrado por lado = 95 x 57 mm */
   @page { size: 95mm 57mm; margin: 0; }
   :root{
-    --navy:#202054; --navy-deep:#16163d; --ink:#1f1f1f; --gray:#565656; --paper:#ffffff; --mist:#F7F9FB;
+    --navy:#202054; --navy-deep:#17173f; --line:#c9d2ea; --ink:#1f1f1f; --gray:#565656;
     --steel:linear-gradient(90deg,#8e949b,#e9ecef 30%,#a9afb5 55%,#f4f6f7 75%,#8e949b);
     --bleed:3mm; --safe:5mm;
   }
@@ -16,39 +16,40 @@
   html,body{background:#d9dce1}
   body{font-family:"Open Sans",Helvetica,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .card{width:95mm;height:57mm;position:relative;overflow:hidden;page-break-after:always;break-after:page}
-  .inner{position:absolute;inset:calc(var(--bleed) + var(--safe))}
+  .draw{position:absolute;inset:0;width:95mm;height:57mm}
+  .dim{font-family:"IBM Plex Mono",monospace;font-size:1.55px;letter-spacing:.05px;fill:currentColor}
 
-  /* FRENTE: logo oficial sobre blanco */
-  .front{background:var(--paper)}
-  .front .inner{bottom:calc(var(--bleed) + 7.5mm);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.6mm}
-  .front .motto{font-family:"EB Garamond",Garamond,Georgia,serif;font-style:italic;color:var(--gray);font-size:2.5mm;letter-spacing:.1mm}
-  .lockup{display:flex;align-items:center;gap:3.6mm}
-  .lockup img{height:15mm;width:auto;display:block}
-  .word{font-family:"EB Garamond",Garamond,Georgia,serif;color:var(--navy);font-weight:500;font-size:5.6mm;line-height:.98;letter-spacing:.08mm}
+  /* FRENTE: plano técnico sobre azul marino */
+  .front{background:radial-gradient(120% 140% at 80% 45%,#28286a 0%,var(--navy) 45%,var(--navy-deep) 100%);color:#fff}
+  .front .grid{position:absolute;inset:0;opacity:.09;
+    background-image:linear-gradient(#fff .12mm,transparent .12mm),linear-gradient(90deg,#fff .12mm,transparent .12mm);
+    background-size:4mm 4mm;background-position:1mm 1.5mm}
+  .front .draw{color:var(--line)}
+  .front .lockup{position:absolute;left:calc(var(--bleed) + var(--safe));top:50%;transform:translateY(-58%);display:flex;align-items:center;gap:2.6mm}
+  .lockup img{height:11.5mm;width:auto;display:block}
+  .word{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.6mm;line-height:.98;letter-spacing:.05mm}
   .word span{display:block}
   .word span::first-letter{font-size:1.18em;font-weight:600}
-  .front .band{position:absolute;left:0;right:0;bottom:0;height:calc(var(--bleed) + 6.5mm);background:var(--navy);
-    display:flex;align-items:flex-start;justify-content:center;padding-top:2.25mm}
-  .front .band::before{content:"";position:absolute;left:0;right:0;top:0;height:.6mm;background:var(--steel)}
-  .front .band p{color:#fff;font-size:1.95mm;font-weight:700;letter-spacing:.42mm;text-transform:uppercase}
+  .front .caps{position:absolute;left:calc(var(--bleed) + var(--safe));bottom:calc(var(--bleed) + 4.6mm);
+    font-size:1.75mm;font-weight:700;letter-spacing:.38mm;text-transform:uppercase;line-height:1.55}
+  .front .caps i{display:block;width:10mm;height:.55mm;background:var(--steel);margin-bottom:1.6mm}
+  .front .caps span{color:#b9bede;font-weight:600}
 
-  /* REVERSO: datos sobre azul marino */
-  .back{background:var(--navy);color:#fff}
-  .back .edge{position:absolute;top:0;bottom:0;right:0;width:calc(var(--bleed) + 1.4mm);background:var(--steel);background-size:100% 100%;
-    background-image:linear-gradient(180deg,#8e949b,#eef0f2 30%,#a9afb5 55%,#f4f6f7 75%,#8e949b)}
-  .back .inner{right:calc(var(--bleed) + 1.4mm + 4.5mm);display:grid;grid-template-columns:1fr auto;grid-template-rows:auto 1fr auto auto;column-gap:4mm}
-  .who{grid-column:1/2}
-  .who h1{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5.2mm;line-height:1;letter-spacing:.05mm}
-  .who p{font-size:1.9mm;font-weight:600;letter-spacing:.45mm;text-transform:uppercase;margin-top:1.5mm;color:#b9bede}
-  .what{grid-column:1/3;align-self:center;font-size:2.05mm;line-height:1.4;color:#dfe2f3;border-left:.5mm solid #b9bede;padding-left:2mm;margin-block:1.6mm}
-  .what b{color:#fff;font-weight:700}
-  .back .icon{grid-column:2;grid-row:1/2;height:8.5mm;width:auto}
-  .data{grid-column:1/3;align-self:end;display:grid;grid-template-columns:auto 1fr;column-gap:2.4mm;row-gap:.55mm;font-size:2mm;line-height:1.3}
-  .data dt{color:#9aa0c9;font-weight:700;font-size:1.65mm;letter-spacing:.3mm;padding-top:.2mm}
-  .data dd{color:#fff}
-  .foot{grid-column:1/3;margin-top:2.2mm;padding-top:1.6mm;border-top:.2mm solid rgba(255,255,255,.22);
-    display:flex;justify-content:space-between;font-size:1.6mm;letter-spacing:.35mm;text-transform:uppercase;color:#9aa0c9}
-  .foot b{color:#fff;font-weight:600}
+  /* REVERSO: blanco con corte de eje y cuadro de rótulo */
+  .back{background:#fff;color:var(--navy)}
+  .back .draw{color:var(--navy);opacity:.6}
+  .back .dim{font-size:2.1px}
+  .back .inner{position:absolute;inset:calc(var(--bleed) + 4.6mm) calc(var(--bleed) + 4.6mm) calc(var(--bleed) + 4mm)}
+  .who h1{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5mm;line-height:1}
+  .who p{font-size:1.8mm;font-weight:700;letter-spacing:.42mm;text-transform:uppercase;margin-top:1.3mm;color:#6b6f95}
+  .data{position:absolute;left:0;bottom:8.2mm;display:grid;grid-template-columns:auto 1fr;column-gap:2.2mm;row-gap:.55mm;font-size:1.95mm;line-height:1.3;color:var(--ink)}
+  .data dt{font-family:"IBM Plex Mono",monospace;color:var(--navy);font-weight:500;font-size:1.6mm;padding-top:.2mm}
+  .block{position:absolute;left:0;right:0;bottom:0;height:5.6mm;display:grid;grid-template-columns:auto 1fr 1fr 1fr auto;
+    border:.25mm solid var(--navy);font-size:1.5mm;font-weight:700;letter-spacing:.28mm;text-transform:uppercase}
+  .block > *{display:flex;align-items:center;justify-content:center;padding:0 1.6mm;border-left:.18mm solid var(--navy)}
+  .block > :first-child{border-left:0;background:var(--navy);padding:0 1.2mm}
+  .block img{height:3.9mm}
+  .block .geo{background:var(--navy);color:#fff}
 
   @media screen{
     body{display:flex;flex-wrap:wrap;gap:10mm;padding:12mm;justify-content:center}
@@ -60,33 +61,64 @@
 
 <!-- FRENTE -->
 <section class="card front">
-  <div class="inner">
-    <div class="lockup">
-      <img src="sussek-icono.png" alt="">
-      <div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div>
-    </div>
-    <p class="motto">Excellence Through Innovation</p>
+  <div class="grid"></div>
+  <svg class="draw" viewBox="0 0 95 57">
+<path d="M91.200,27.500 L91.176,28.435 L93.912,29.417 L93.713,30.963 L90.817,31.216 L90.463,32.628 L90.176,33.518 L92.525,35.231 L91.898,36.658 L89.048,36.085 L88.311,37.340 L87.785,38.113 L89.556,40.418 L88.552,41.611 L85.979,40.259 L84.918,41.255 L84.196,41.849 L85.246,44.560 L83.947,45.421 L81.859,43.398 L80.561,44.055 L79.700,44.422 L79.944,47.319 L78.455,47.779 L77.021,45.250 L75.590,45.515 L74.661,45.624 L74.079,48.472 L72.520,48.495 L71.857,45.664 L70.410,45.515 L69.488,45.358 L68.127,47.927 L66.625,47.509 L66.786,44.606 L65.439,44.055 L64.599,43.645 L62.569,45.726 L61.246,44.902 L62.218,42.163 L61.082,41.255 L60.390,40.624 L57.857,42.049 L56.819,40.886 L58.524,38.531 L57.689,37.340 L57.204,36.540 L54.371,37.194 L53.703,35.785 L56.003,34.006 L55.537,32.628 L55.297,31.723 L52.395,31.553 L52.151,30.013 L54.858,28.954 L54.800,27.500 L54.824,26.565 L52.088,25.583 L52.287,24.037 L55.183,23.784 L55.537,22.372 L55.824,21.482 L53.475,19.769 L54.102,18.342 L56.952,18.915 L57.689,17.660 L58.215,16.887 L56.444,14.582 L57.448,13.389 L60.021,14.741 L61.082,13.745 L61.804,13.151 L60.754,10.440 L62.053,9.579 L64.141,11.602 L65.439,10.945 L66.300,10.578 L66.056,7.681 L67.545,7.221 L68.979,9.750 L70.410,9.485 L71.339,9.376 L71.921,6.528 L73.480,6.505 L74.143,9.336 L75.590,9.485 L76.512,9.642 L77.873,7.073 L79.375,7.491 L79.214,10.394 L80.561,10.945 L81.401,11.355 L83.431,9.274 L84.754,10.098 L83.782,12.837 L84.918,13.745 L85.610,14.376 L88.143,12.951 L89.181,14.114 L87.476,16.469 L88.311,17.660 L88.796,18.460 L91.629,17.806 L92.297,19.215 L89.997,20.994 L90.463,22.372 L90.703,23.277 L93.605,23.447 L93.849,24.987 L91.142,26.046Z" stroke="currentColor" fill="none" stroke-width=".32"/>
+<circle cx="73" cy="27.5" r="16.6" stroke="currentColor" fill="none" stroke-width=".14" stroke-dasharray="2.2 .6 .4 .6"/>
+<circle cx="73" cy="27.5" r="13.2" stroke="currentColor" fill="none" stroke-width=".26"/>
+<circle cx="73" cy="27.5" r="9.2" stroke="currentColor" fill="none" stroke-width=".14" stroke-dasharray="2.2 .6 .4 .6"/>
+<circle cx="80.967" cy="32.100" r="1.35" stroke="currentColor" fill="none" stroke-width=".26"/>
+<circle cx="73.000" cy="36.700" r="1.35" stroke="currentColor" fill="none" stroke-width=".26"/>
+<circle cx="65.033" cy="32.100" r="1.35" stroke="currentColor" fill="none" stroke-width=".26"/>
+<circle cx="65.033" cy="22.900" r="1.35" stroke="currentColor" fill="none" stroke-width=".26"/>
+<circle cx="73.000" cy="18.300" r="1.35" stroke="currentColor" fill="none" stroke-width=".26"/>
+<circle cx="80.967" cy="22.900" r="1.35" stroke="currentColor" fill="none" stroke-width=".26"/>
+<path d="M71.900,23.033 A4.6,4.6 0 1 0 74.100,23.033 L74.100,21.900 L71.900,21.900Z" stroke="currentColor" fill="none" stroke-width=".32"/>
+<path d="M48,27.5 H98 M73,2.5 V52.5" stroke="currentColor" fill="none" stroke-width=".12" stroke-dasharray="3 .7 .5 .7"/>
+<path d="M56.91,14.00 L51.91,9 H37" stroke="currentColor" fill="none" stroke-width=".14"/>
+<path d="M56.91,14.00 l-1.25,-.25 l.5,-.95z" fill="currentColor"/>
+<text x="37.4" y="8.3" class="dim">Ø42.000 ±0.005</text>
+<path d="M81.97,21.90 L86.97,12.40" stroke="currentColor" fill="none" stroke-width=".14"/>
+<text x="75.20" y="4.90" class="dim">6× Ø2.70 EQ SP</text>
+  </svg>
+  <div class="lockup">
+    <img src="sussek-icono.png" alt="">
+    <div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div>
   </div>
-  <div class="band"><p>Precision Machining · Assembly · Engineering</p></div>
+  <p class="caps"><i></i>Precision Machining<br><span>Assembly · Engineering</span></p>
 </section>
 
 <!-- REVERSO: nombre y cargo son de ejemplo; datos de la planta de Waterloo tomados de sussek.com -->
 <section class="card back">
-  <div class="edge"></div>
+  <svg class="draw" viewBox="0 0 95 57"><g transform="translate(27.4 -9.6) scale(.7)">
+<path d="M38,37.6 L45,37.6 L45,36.0 L55,36.0 L55,34.4 L67,34.4 L67,36.0 L78,36.0 L78,37.6 L85,37.6 L85,44.4 L78,44.4 L78,46.0 L67,46.0 L67,47.6 L55,47.6 L55,46.0 L45,46.0 L45,44.4 L38,44.4Z" stroke="currentColor" fill="none" stroke-width=".3"/>
+<path d="M45,36.0 V46.0" stroke="currentColor" fill="none" stroke-width=".2"/>
+<path d="M55,34.4 V47.6" stroke="currentColor" fill="none" stroke-width=".2"/>
+<path d="M67,34.4 V47.6" stroke="currentColor" fill="none" stroke-width=".2"/>
+<path d="M78,36.0 V46.0" stroke="currentColor" fill="none" stroke-width=".2"/>
+<path d="M35,41 H88" stroke="currentColor" fill="none" stroke-width=".12" stroke-dasharray="3 .7 .5 .7"/>
+<clipPath id="half"><path d="M38,44.4 L45,44.4 L45,46.0 L55,46.0 L55,47.6 L67,47.6 L67,46.0 L78,46.0 L78,44.4 L85,44.4 L85,41 L38,41Z"/></clipPath>
+<path d="M30.2,49 l8,-8 M31.5,49 l8,-8 M32.8,49 l8,-8 M34.1,49 l8,-8 M35.4,49 l8,-8 M36.7,49 l8,-8 M38.0,49 l8,-8 M39.3,49 l8,-8 M40.6,49 l8,-8 M41.9,49 l8,-8 M43.2,49 l8,-8 M44.5,49 l8,-8 M45.8,49 l8,-8 M47.1,49 l8,-8 M48.4,49 l8,-8 M49.7,49 l8,-8 M51.0,49 l8,-8 M52.3,49 l8,-8 M53.6,49 l8,-8 M54.900000000000006,49 l8,-8 M56.2,49 l8,-8 M57.5,49 l8,-8 M58.8,49 l8,-8 M60.1,49 l8,-8 M61.400000000000006,49 l8,-8 M62.7,49 l8,-8 M64.0,49 l8,-8 M65.3,49 l8,-8 M66.6,49 l8,-8 M67.9,49 l8,-8 M69.2,49 l8,-8 M70.5,49 l8,-8 M71.80000000000001,49 l8,-8 M73.1,49 l8,-8 M74.4,49 l8,-8 M75.7,49 l8,-8 M77.0,49 l8,-8 M78.30000000000001,49 l8,-8 M79.6,49 l8,-8 M80.9,49 l8,-8 M82.2,49 l8,-8 M83.5,49 l8,-8 M84.80000000000001,49 l8,-8 M86.1,49 l8,-8 M87.4,49 l8,-8 M88.7,49 l8,-8 " stroke="currentColor" fill="none" stroke-width=".1" clip-path="url(#half)"/>
+<path d="M61,34.4 V29.5 M59.5,29.5 H75" stroke="currentColor" fill="none" stroke-width=".12"/>
+<text x="61.6" y="28.8" class="dim">Ø13.200 h6</text>
+<path d="M47.3,34.0 L48.5,36.0 L50.9,32.0" stroke="currentColor" fill="none" stroke-width=".14"/><text x="50.4" y="31.5" class="dim">Ra 0.8</text>
+  </g></svg>
   <div class="inner">
     <div class="who">
       <h1>Full Name</h1>
       <p>Job Title</p>
     </div>
-    <img class="icon" src="sussek-icono.png" alt="">
-    <p class="what"><b>Precision machined parts &amp; assemblies</b><br>for OEMs in aerospace, agriculture, construction, defense and more.</p>
     <dl class="data">
-      <dt>TEL</dt><dd>920.478.2126</dd>
-      <dt>EMAIL</dt><dd>sales@sussek.com</dd>
-      <dt>WEB</dt><dd>sussek.com</dd>
-      <dt>HQ</dt><dd>805 Pierce St · Waterloo, WI 53594</dd>
+      <dt>T</dt><dd>920.478.2126</dd>
+      <dt>E</dt><dd>sales@sussek.com</dd>
+      <dt>W</dt><dd>sussek.com</dd>
+      <dt>A</dt><dd>805 Pierce St · Waterloo, WI 53594</dd>
     </dl>
-    <div class="foot"><span>Turn-key solutions</span><span><b>USA</b> · <b>México</b> · <b>China</b></span></div>
+    <div class="block">
+      <div><img src="sussek-icono.png" alt=""></div>
+      <div>Machining</div><div>Assembly</div><div>Engineering</div>
+      <div class="geo">USA · MX · CN</div>
+    </div>
   </div>
 </section>
 
