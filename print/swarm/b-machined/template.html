@@ -1,0 +1,131 @@
+<title>Heavy Metal · Machined</title>
+<style>
+@font-face{font-family:BS;src:url(file://{{FONTS}}/BigShoulders-Bold.ttf)}
+@font-face{font-family:GM;src:url(file://{{FONTS}}/GeistMono-Regular.ttf)}
+@font-face{font-family:GMB;src:url(file://{{FONTS}}/GeistMono-Bold.ttf)}
+@font-face{font-family:IS;src:url(file://{{FONTS}}/InstrumentSans-Regular.ttf)}
+@font-face{font-family:ISB;src:url(file://{{FONTS}}/InstrumentSans-Bold.ttf)}
+:root{--ink:#0b0c0d;--silver:#b9bdc2;--silver2:#8a8f95;--white:#f2f0e9;--y:#F5C400;--hair:rgba(210,214,219,.3)}
+html,body{margin:0;background:#2a2a2a}
+body{padding:24px;display:flex;flex-direction:column;gap:24px;align-items:flex-start}
+.card{position:relative;width:1125px;height:675px;overflow:hidden;background:var(--ink);flex:none}
+.abs{position:absolute}
+.mono{font-family:GM,monospace;text-transform:uppercase;letter-spacing:.22em;color:var(--silver);font-size:12px;line-height:1}
+/* guides (debug) */
+.guides .g{position:absolute;inset:37.5px;outline:1px solid rgba(255,0,0,.6);pointer-events:none;z-index:99}
+.guides .s{position:absolute;inset:75px;outline:1px dashed rgba(0,255,255,.6);pointer-events:none;z-index:99}
+/* print */
+body.print{padding:0;gap:0;background:none;display:block}
+body.print .card{zoom:.32;break-after:page;page-break-after:always}
+@page{size:3.75in 2.25in;margin:0}
+
+/* ---------- FRONT ---------- */
+#front .studio{inset:0;background:
+  radial-gradient(ellipse 640px 360px at 700px 395px,rgba(118,125,134,.6),rgba(64,68,74,.5) 38%,rgba(30,32,35,.35) 62%,rgba(11,12,13,0) 100%),linear-gradient(180deg,rgba(0,0,0,0) 0,rgba(0,0,0,0) 598px,rgba(24,26,29,1) 598px,rgba(11,12,13,1) 675px)}
+#front .floor{left:0;right:0;top:598px;height:1px;background:linear-gradient(90deg,rgba(210,214,219,0) 0,rgba(210,214,219,.28) 30%,rgba(210,214,219,.28) 80%,rgba(210,214,219,0) 100%)}
+#front .ruler{left:0;top:599px}
+#front .shadow{left:400px;top:584px;width:660px;height:28px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(0,0,0,.85),rgba(0,0,0,0) 70%);filter:blur(6px)}
+#front .tractor{left:310px;top:226px;width:740px;filter:contrast(1.06) saturate(.55) brightness(1.04) drop-shadow(0 0 .6px rgba(235,238,242,.55))}
+#front .refl{left:310px;top:598px;width:740px;transform:scaleY(-1);transform-origin:top;opacity:.2;filter:saturate(0) blur(1.2px);
+  -webkit-mask-image:linear-gradient(0deg,#000 0,rgba(0,0,0,0) 12%)}
+#front .logo{left:75px;top:75px;width:975px;height:auto;overflow:visible}
+#front .col{left:75px;top:256px;width:260px}
+#front .emb{left:75px;bottom:90px;width:84px;height:auto}
+#front .evil{font-family:BS;font-size:34px;line-height:.9;color:var(--y);letter-spacing:.01em;margin:0 0 16px}
+#front .col .mono{font-size:11px;line-height:1.8;letter-spacing:.18em}
+
+/* ---------- BACK ---------- */
+#back{background:var(--ink)}
+#back .logo{left:75px;top:75px;width:300px;height:auto}
+#back .tr{right:75px;top:82px;text-align:right;font-size:11.5px;line-height:1.7;color:var(--silver2)}
+#back .rule{left:75px;right:75px;height:1px;background:var(--hair)}
+#back .name{left:75px;top:200px;margin:0;font-family:BS;font-size:62px;line-height:.86;color:var(--white);letter-spacing:.01em}
+#back .role{left:77px;top:272px;font-size:12px;color:var(--silver)}
+#back .rows{left:75px;top:330px;width:510px}
+#back .row{display:flex;align-items:baseline;height:42px;border-top:1px solid var(--hair);box-sizing:border-box;padding-top:14px}
+#back .row:last-child{border-bottom:1px solid var(--hair);height:43px}
+#back .row .k{width:84px;font-size:11px;color:var(--silver2)}
+#back .row .v{font-family:GM,monospace;font-size:16.5px;color:var(--white);letter-spacing:.02em}
+#back .qr{right:75px;top:200px;width:168px;height:257px;background:linear-gradient(180deg,#eceef0,#d9dcdf);border-radius:4px;box-sizing:border-box;padding:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(0,0,0,.25)}
+#back .qr svg{display:block;width:132px;height:132px}
+#back .qr .cap{margin-top:16px;padding-top:14px;border-top:1px solid rgba(10,11,12,.28);font-family:GM;font-size:11px;letter-spacing:.2em;line-height:1.65;color:#2a2d31;text-transform:uppercase}
+#back .qcap{right:75px;top:386px;text-align:right;font-size:11px;line-height:1.7;color:var(--silver2)}
+#back .spec{left:75px;right:75px;top:540px;display:grid;grid-template-columns:255px 255px 297px 168px;border-top:1px solid var(--hair)}
+#back .spec div{padding:16px 0 0 0;border-left:1px solid var(--hair);padding-left:16px;height:44px;box-sizing:border-box}
+#back .spec div:first-child{border-left:0;padding-left:0}
+#back .spec b{display:block;font-family:GM;font-weight:400;font-size:11px;letter-spacing:.2em;color:var(--silver2);margin-bottom:9px}
+#back .spec span{font-family:GMB,monospace;font-size:14px;letter-spacing:.08em;color:var(--white)}
+#back .spec span.y{color:var(--y)}
+</style>
+
+<svg width="0" height="0" style="position:absolute">
+ <defs>
+  <!-- polished chrome: sky, horizon break, ground bounce -->
+  <linearGradient id="chromeL" x1="0" y1="0" x2="0" y2="1">
+   <stop offset="0" stop-color="#fbfcfd"/><stop offset=".30" stop-color="#e3e6e9"/>
+   <stop offset=".47" stop-color="#a7adb3"/><stop offset=".50" stop-color="#4b5056"/>
+   <stop offset=".56" stop-color="#7d838a"/><stop offset=".78" stop-color="#c7cbd0"/>
+   <stop offset="1" stop-color="#f1f3f5"/>
+  </linearGradient>
+  <linearGradient id="chromeS" x1="0" y1="0" x2="0" y2="1">
+   <stop offset="0" stop-color="#f4f5f6"/><stop offset=".48" stop-color="#c3c7cc"/>
+   <stop offset=".52" stop-color="#7f858b"/><stop offset="1" stop-color="#dfe2e5"/>
+  </linearGradient>
+  <filter id="brushed" x="-2%" y="-5%" width="104%" height="110%">
+   <feTurbulence type="fractalNoise" baseFrequency="0.0015 0.55" numOctaves="2" seed="7" result="n"/>
+   <feColorMatrix in="n" type="matrix" values="0 0 0 0 .5  0 0 0 0 .5  0 0 0 0 .5  1 0 0 0 0" result="g"/>
+   <feComposite in="SourceGraphic" in2="n" operator="arithmetic" k1="0" k2="1" k3=".10" k4="-.05" result="c"/>
+   <feComposite in="c" in2="SourceAlpha" operator="in" result="m"/>
+   <feOffset in="SourceAlpha" dy="4" result="o1"/><feComposite in="SourceAlpha" in2="o1" operator="out" result="e1"/>
+   <feFlood flood-color="#ffffff" flood-opacity=".95"/><feComposite in2="e1" operator="in" result="hi"/>
+   <feOffset in="SourceAlpha" dy="-4" result="o2"/><feComposite in="SourceAlpha" in2="o2" operator="out" result="e2"/>
+   <feFlood flood-color="#3a3e43" flood-opacity=".9"/><feComposite in2="e2" operator="in" result="lo"/>
+   <feMerge><feMergeNode in="m"/><feMergeNode in="hi"/><feMergeNode in="lo"/></feMerge>
+  </filter>
+  <mask id="embMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="1200">
+   <image href="{{EMBLEM}}" x="0" y="0" width="1200" height="1200"/>
+  </mask>
+ </defs>
+</svg>
+
+<!-- FRONT -->
+<div class="card" id="front">
+ <div class="abs studio"></div>
+ <div class="abs shadow"></div>
+ <img class="abs refl" src="{{TRACTOR}}" alt="">
+ <div class="abs floor"></div>
+ <svg class="abs ruler" width="1125" height="20" viewBox="0 0 1125 20"></svg>
+ <img class="abs tractor" src="{{TRACTOR}}" alt="Heavy Metal pulling tractor, The Evil One">
+ <svg class="abs logo" viewBox="10 0 2210 320" role="img" aria-label="Heavy Metal"><g filter="url(#brushed)">{{LOGO_LINE}}</g></svg>
+ <div class="abs col">
+  <p class="evil">&ldquo;THE EVIL ONE&rdquo;</p>
+  <div class="mono">ProStock Tractor Pulling<br>Waterloo, Wisconsin</div>
+ </div>
+ <svg class="abs emb" viewBox="240 140 720 920"><rect width="1200" height="1200" fill="url(#chromeL)" mask="url(#embMask)"/></svg>
+</div>
+
+<!-- BACK -->
+<div class="card" id="back">
+ <svg class="abs logo" viewBox="10 0 2210 320" role="img" aria-label="Heavy Metal">{{LOGO_LINE_S}}</svg>
+ <div class="abs mono tr">ProStock Class<br>Waterloo, Wisconsin</div>
+ <h1 class="abs name">NOMBRE APELLIDO</h1>
+ <div class="abs mono role">Team Owner &middot; Driver</div>
+ <div class="abs rows">
+  <div class="row"><span class="mono k">Tel</span><span class="v">(000) 000-0000</span></div>
+  <div class="row"><span class="mono k">Mail</span><span class="v">heavymetalevil72@gmail.com</span></div>
+  <div class="row"><span class="mono k">Shop</span><span class="v">heavymetalprostock.com</span></div>
+ </div>
+ <div class="abs qr"><svg viewBox="0 0 29 29" shape-rendering="crispEdges">{{QR}}</svg><div class="cap">Scan to<br>shop the gear</div></div>
+ <div class="abs spec">
+  <div><b class="mono">Engine</b><span>CAT 3208 V8</span></div>
+  <div><b class="mono">Weight</b><span>10,000 LB</span></div>
+  <div><b class="mono">Rear tires</b><span>24.5-32</span></div>
+  <div><b class="mono">Full pull</b><span class="y">300 FT</span></div>
+ </div>
+</div>
+
+<script>
+document.querySelectorAll('.ruler').forEach(r=>{const bk=r.closest('#back');let s='';for(let x=75,i=0;x<=1050.1;x+=975/75,i++){const L=bk?(i%5==0?6:3):(i%15==0?11:(i%5==0?7:4));s+=`<line x1="${x.toFixed(2)}" x2="${x.toFixed(2)}" y1="0" y2="${L}" stroke="rgba(205,210,216,${i%15==0?.5:.28})" stroke-width="1"/>`}r.innerHTML=s});
+if(location.hash==='#print')document.body.classList.add('print');
+if(location.hash==='#guides')document.querySelectorAll('.card').forEach(c=>{c.classList.add('guides');c.insertAdjacentHTML('beforeend','<i class="g"></i><i class="s"></i>')});
+</script>

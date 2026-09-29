@@ -1,0 +1,103 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Heavy Metal · Motorsport</title>
+<style>
+@font-face{font-family:BS;src:url(file://{{FONTS}}/BigShoulders-Bold.ttf)}
+@font-face{font-family:Mono;src:url(file://{{FONTS}}/IBMPlexMono-Regular.ttf);font-weight:400}
+@font-face{font-family:Mono;src:url(file://{{FONTS}}/IBMPlexMono-Bold.ttf);font-weight:700}
+:root{--ink:#0B0B0C;--paper:#F2F0E9;--silver:#A7A9AC;--dim:#83858A;--rule:#2A2B2E;--y:#F5C400}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#444;padding:20px;display:flex;flex-direction:column;gap:20px;align-items:flex-start}
+.card{position:relative;width:1125px;height:675px;overflow:hidden;background:var(--ink);color:var(--paper);font-family:Mono}
+.abs{position:absolute}
+.mono{font-family:Mono;text-transform:uppercase;letter-spacing:.16em}
+svg.logo-stack,svg.logo-line{display:block;overflow:visible}
+/* ---------- FRONT ---------- */
+#front .light{left:0;top:0;width:1125px;height:675px;background:radial-gradient(ellipse 520px 300px at 710px 410px,#1b1c1f 0%,rgba(11,11,12,0) 100%)}
+#front .col{top:0;width:1.5px;height:675px;background:#161719}
+#front .ground{left:0;top:572px;width:1125px;height:1.5px;background:#3A3B3F}
+#front .tick{top:572px;width:1.5px;height:12px;background:#5A5C60}
+#front .lab{top:586px;font-size:12px;line-height:14px;color:var(--dim)}
+#front .finish{left:75px;top:344px;width:5px;height:238px;background:var(--y)}
+#front .minors{left:75px;top:572px;width:975px;height:6px;background:repeating-linear-gradient(90deg,#3E4044 0 1.5px,transparent 1.5px 32.5px)}
+#front .lab.y{color:var(--y);font-weight:700}
+#front .logo-stack{left:75px;top:75px;height:178px}
+#front .evil{left:75px;top:276px;font-family:BS;font-size:46px;line-height:1;color:var(--y);letter-spacing:.01em}
+#front .pull{left:92px;top:342px;font-size:11px;line-height:14px;color:var(--paper)}
+#front .meta{right:75px;top:75px;text-align:right;font-size:12px;line-height:20px;color:var(--silver)}
+#front .shadow{left:480px;top:552px;width:590px;height:40px;background:radial-gradient(ellipse at center,rgba(0,0,0,.85) 0%,rgba(0,0,0,0) 70%)}
+#front .tractor{left:266px;top:190px;width:784px;transform-origin:83% 96.5%;transform:rotate(3deg);filter:brightness(1.12) contrast(1.04)}
+/* ---------- BACK ---------- */
+#back .col{width:1.5px;background:var(--rule)}
+#back .bminors{left:75px;top:560px;width:975px;height:6px;background:repeating-linear-gradient(90deg,#3E4044 0 1.5px,transparent 1.5px 32.5px)}
+#back .bfinish{left:75px;top:540px;width:5px;height:32px;background:var(--y)}
+#back .hr{left:0;width:1125px;height:1.5px;background:var(--rule)}
+#back .logo-line{left:75px;top:75px;height:36px}
+#back .hd{top:83px;font-size:12px;line-height:20px;color:var(--silver)}
+#back .name{left:75px;top:166px;font-family:BS;font-size:118px;line-height:.9;letter-spacing:.005em;text-transform:uppercase}
+#back .role{left:75px;top:392px;font-size:14px;color:var(--silver)}
+#back .qrtile{left:887.5px;top:168px;width:162.5px;height:162.5px;background:var(--paper);padding:18px}
+#back .qrtile svg{width:100%;height:100%;display:block}
+#back .qrcap{left:887.5px;top:344px;font-size:11px;line-height:16px;color:var(--silver)}
+#back .k{font-size:11px;color:var(--dim);display:block;margin-bottom:10px}
+#back .v{font-size:18px;letter-spacing:.01em;color:var(--paper);text-transform:none;display:block}
+#back .cell{top:466px}
+#back .spec{top:584px;font-size:11px;line-height:16px;color:var(--dim)}
+/* print */
+html.print body{background:none;padding:0;display:block}
+html.print .card{zoom:.32;break-after:page}
+@page{size:3.75in 2.25in;margin:0}
+</style></head><body>
+<script>if(location.hash==='#print')document.documentElement.classList.add('print')</script>
+
+<div class="card" id="front">
+  <div class="abs light"></div>
+  <div class="abs ground"></div>
+  <div class="abs finish"></div>
+  <div class="abs minors"></div>
+  <div class="abs tick" style="left:237.5px"></div><div class="abs tick" style="left:400px"></div><div class="abs tick" style="left:562.5px"></div><div class="abs tick" style="left:725px"></div><div class="abs tick" style="left:887.5px"></div><div class="abs tick" style="left:1048.5px"></div>
+  <div class="abs mono lab y" data-safe style="left:75px">300 FT</div>
+  <div class="abs mono lab" data-safe style="left:243px">250</div>
+  <div class="abs mono lab" data-safe style="left:405.5px">200</div>
+  <div class="abs mono lab" data-safe style="left:568px">150</div>
+  <div class="abs mono lab" data-safe style="left:730.5px">100</div>
+  <div class="abs mono lab" data-safe style="left:893px">50</div>
+  <div class="abs mono lab" data-safe style="right:81px">0</div>
+  <div class="abs shadow"></div>
+  <img class="abs tractor" src="{{TRACTOR}}">
+  <div class="abs" data-safe style="left:75px;top:75px">{{LOGO_STACK}}</div>
+  <div class="abs evil" data-safe>“THE EVIL ONE”</div>
+  <div class="abs mono pull" data-safe>Full pull</div>
+  <div class="abs mono meta" data-safe>ProStock Tractor Pulling<br>Waterloo, Wisconsin</div>
+</div>
+
+<div class="card" id="back">
+  <div class="abs col" style="left:400px;top:0;height:140px"></div><div class="abs col" style="left:725px;top:0;height:140px"></div>
+  <div class="abs col" style="left:400px;top:440px;height:235px"></div><div class="abs col" style="left:725px;top:440px;height:235px"></div>
+  <div class="abs hr" style="top:140px"></div>
+  <div class="abs hr" style="top:440px"></div>
+  <div class="abs hr" style="top:560px"></div>
+  <div class="abs bminors"></div>
+  <div class="abs" data-safe style="left:75px;top:75px">{{LOGO_LINE}}</div>
+  <div class="abs mono hd" data-safe style="left:412px;color:var(--y);font-weight:700">“The Evil One”</div>
+  <div class="abs mono hd" data-safe style="left:737px">Waterloo, Wisconsin</div>
+  <div class="abs name" data-safe>Nombre<br>Apellido</div>
+  <div class="abs mono role" data-safe>Team Owner · Driver</div>
+  <div class="abs qrtile" data-safe>{{QR}}</div>
+  <div class="abs mono qrcap" data-safe>Scan<br>Shop the gear</div>
+  <div class="abs cell mono" data-safe style="left:75px"><span class="k">Tel</span><span class="v">(000) 000-0000</span></div>
+  <div class="abs cell mono" data-safe style="left:412px"><span class="k">Mail</span><span class="v">heavymetalevil72@gmail.com</span></div>
+  <div class="abs cell mono" data-safe style="left:737px"><span class="k">Web</span><span class="v">heavymetalprostock.com</span></div>
+  <div class="abs mono spec" data-safe style="left:75px">CAT 3208 V8</div>
+  <div class="abs mono spec" data-safe style="left:412px">10,000 LB · 24.5-32</div>
+  <div class="abs mono spec" data-safe style="left:737px">ProStock · 300 FT</div>
+</div>
+
+<script>
+// tighten logo viewBoxes to the actual glyph bounds so alignment is optical, not padded
+document.querySelectorAll('svg.logo-stack,svg.logo-line').forEach(s=>{
+  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+  while(s.firstChild) g.appendChild(s.firstChild); s.appendChild(g);
+  const b=g.getBBox(); s.setAttribute('viewBox',`${b.x} ${b.y} ${b.width} ${b.height}`);
+  s.style.width=(parseFloat(getComputedStyle(s).height)*b.width/b.height)+'px';
+});
+</script>
+</body></html>

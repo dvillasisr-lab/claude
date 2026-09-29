@@ -1,0 +1,103 @@
+<title>Heavy Metal · Cover Card</title>
+<meta charset="utf-8">
+<style>
+{{FONTS}}
+:root{
+  --ink:#0A0B0C; --ink2:#111315; --bone:#F2F0E9; --silver:#A9ADB1; --dim:#83888D;
+  --rule:rgba(242,240,233,.16); --y:#F5C400;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#2a2b2d}
+body{padding:24px;display:flex;flex-direction:column;gap:24px;align-items:flex-start}
+.card{position:relative;width:1125px;height:675px;overflow:hidden;background:var(--ink);color:var(--bone);
+  font-family:'Mono',monospace;-webkit-font-smoothing:antialiased;flex:none}
+.abs{position:absolute}
+.mono{font-family:'Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;line-height:1}
+.rule{position:absolute;height:1px;background:var(--rule)}
+
+/* ---------- FRONT ---------- */
+#front .light{position:absolute;inset:0;
+  background:radial-gradient(ellipse 520px 300px at 730px 360px, rgba(214,219,226,.14), rgba(214,219,226,.04) 55%, rgba(214,219,226,0) 80%);}
+#front .mast{position:absolute;left:75px;top:75px;width:800px;height:auto;display:block}
+#front .issue{position:absolute;right:75px;top:75px;width:150px;height:108px;
+  display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-end;text-align:right;gap:7px;color:var(--silver)}
+#front .tractor{position:absolute;left:321px;top:208px;width:731px;height:auto;z-index:2;
+  filter:contrast(1.06) brightness(1.02)}
+#front .shadow{position:absolute;left:470px;top:546px;width:600px;height:26px;border-radius:50%;
+  background:rgba(0,0,0,.9);filter:blur(9px);transform:rotate(-3.6deg);z-index:1}
+#front .ground{top:578px;left:0;right:0;z-index:3}
+#front .coverline{position:absolute;left:75px;top:224px;width:230px;z-index:3}
+#front .evil{font-family:'Display';font-weight:700;font-size:60px;line-height:.88;color:var(--y);letter-spacing:.005em;text-transform:uppercase}
+#front .dek{font-family:'Serif';font-size:20px;line-height:1.18;color:var(--silver);margin-top:18px;width:260px;white-space:nowrap}
+#front .spec{position:absolute;left:75px;top:486px;z-index:3;display:grid;grid-template-columns:62px auto;row-gap:9px}
+#front .spec span:nth-child(odd){color:var(--dim)}
+#front .spec span{font-size:11px;letter-spacing:.14em}
+#front .finish{position:absolute;left:75px;top:548px;width:2px;height:30px;background:var(--y);z-index:4}
+#front .folio{position:absolute;top:588px;z-index:3;color:var(--silver)}
+
+/* ---------- BACK ---------- */
+#back .mini{position:absolute;left:75px;top:75px;width:190px;height:auto}
+#back .top-r{position:absolute;right:75px;top:83px;color:var(--silver)}
+#back .name{position:absolute;left:75px;top:160px;font-family:'Display';font-weight:700;font-size:78px;line-height:.9;
+  letter-spacing:.005em;text-transform:uppercase;color:var(--bone)}
+#back .role{position:absolute;left:77px;top:240px;font-family:'Serif';font-size:26px;color:var(--silver)}
+#back .toc{position:absolute;left:75px;top:318px;width:735px}
+#back .row{display:grid;grid-template-columns:44px 74px 1fr;align-items:baseline;height:64px;padding-top:25px;border-top:1px solid var(--rule)}
+#back .row:last-child{border-bottom:1px solid var(--rule)}
+#back .n{color:var(--y);font-size:12px;letter-spacing:.1em}
+#back .k{color:var(--dim);font-size:11px;letter-spacing:.16em}
+#back .v{font-size:20px;letter-spacing:.01em;color:var(--bone);text-transform:none}
+#back .qrbox{position:absolute;right:75px;top:318px;width:192px;height:193px;background:var(--bone);padding:20px}
+#back .qr{width:152px;height:152px;display:block}
+#back .qrcap{position:absolute;right:75px;top:530px;color:var(--silver);text-align:right}
+#back .emb{position:absolute;right:75px;top:150px;width:112px;height:auto;mix-blend-mode:screen;filter:brightness(.62)}
+#back .foot{top:568px;left:75px;right:75px}
+#back .folio{position:absolute;top:586px;color:var(--silver)}
+
+/* print */
+html.print body{padding:0;gap:0;background:none;display:block}
+html.print .card{zoom:.32;break-after:page}
+@page{size:3.75in 2.25in;margin:0}
+</style>
+<script>if(location.hash==='#print')document.documentElement.classList.add('print')</script>
+
+<section class="card" id="front">
+  <div class="light"></div>
+  {{LOGO_MAST}}
+  <div class="issue mono"><span>ProStock</span><span>Tractor</span><span>Pulling</span></div>
+
+  <div class="coverline">
+    <div class="evil">&ldquo;The Evil<br>One&rdquo;</div>
+    <p class="dek">Ten thousand pounds, one<br>CAT&nbsp;3208 V8 and three hundred<br>feet to prove it.</p>
+  </div>
+
+
+  <div class="shadow"></div>
+  <img class="tractor" src="{{TRACTOR}}" alt="">
+  <div class="rule ground"></div>
+  <div class="finish"></div>
+  <div class="folio mono" style="left:75px;color:var(--y)">300 FT &middot; Full pull</div>
+  <div class="folio mono" style="right:75px">Waterloo, Wisconsin</div>
+</section>
+
+<section class="card" id="back">
+  {{LOGO_SMALL}}
+  <div class="top-r mono">&ldquo;The Evil One&rdquo;</div>
+  <div class="rule" style="top:125px;left:75px;right:75px"></div>
+
+  <div class="name">Nombre Apellido</div>
+  <div class="role">Team Owner&ensp;&middot;&ensp;Driver</div>
+
+  <div class="toc mono">
+    <div class="row"><span class="n">01</span><span class="k">Tel</span><span class="v">(000) 000-0000</span></div>
+    <div class="row"><span class="n">02</span><span class="k">Mail</span><span class="v">heavymetalevil72@gmail.com</span></div>
+    <div class="row"><span class="n">03</span><span class="k">Web</span><span class="v">heavymetalprostock.com</span></div>
+  </div>
+
+  <div class="qrbox">{{QR}}</div>
+  <div class="qrcap mono"><span style="color:var(--y)">04</span>&nbsp;&nbsp;Scan &middot; Shop the gear</div>
+
+  <div class="rule foot"></div>
+  <div class="folio mono" style="left:75px">CAT 3208 V8 &middot; 10,000 LB &middot; ProStock</div>
+  <div class="folio mono" style="right:75px">Waterloo, Wisconsin</div>
+</section>
