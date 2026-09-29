@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sussek · diseno-3-blanco</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Open+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @page { size: 95mm 57mm; margin: 0; }
+  :root{
+    --navy:#202054; --navy-deep:#15153a; --line:#cdd5ee; --soft:#aab0d8; --ink:#1d1d22; --muted:#6b6f95; --glow:#f39a2b;
+    --steel:linear-gradient(90deg,#8e949b,#e9ecef 30%,#a9afb5 55%,#f4f6f7 75%,#8e949b);
+    --m:8.5mm;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#d9dce1}
+  body{font-family:"Open Sans",Helvetica,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .card{width:95mm;height:57mm;position:relative;overflow:hidden;page-break-after:always;break-after:page}
+  .draw{position:absolute;inset:0;width:95mm;height:57mm}
+  .dim{font-family:"IBM Plex Mono",monospace;font-size:1.45px;letter-spacing:.03px;fill:currentColor}
+  .abs{position:absolute}
+  .serif{font-family:"EB Garamond",Garamond,Georgia,serif}
+
+  .lockup{display:flex;align-items:center;gap:3mm}
+  .lockup img{height:12.5mm;width:auto;display:block}
+  .word{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.6mm;line-height:1.02}
+  .word span{display:block}
+  .word span::first-letter{font-size:1.16em;font-weight:600}
+
+  .who h1{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.8mm;line-height:1.05}
+  .who p{font-size:1.65mm;font-weight:700;letter-spacing:.24mm;text-transform:uppercase;margin-top:1.6mm}
+  .data{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:2.4mm;row-gap:.9mm;font-size:1.9mm;line-height:1.3}
+  .data dt{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:1.5mm}
+  .eyebrow{font-size:1.6mm;font-weight:700;letter-spacing:.2mm;text-transform:uppercase}
+
+  @media screen{
+    body{display:flex;flex-wrap:wrap;gap:10mm;padding:12mm;justify-content:center}
+    .card{box-shadow:0 2mm 6mm rgba(0,0,0,.22)}
+  }
+
+  .d3.front{background:linear-gradient(160deg,#ffffff 0%,#f3f4f8 100%);color:var(--navy)}
+  .d3.front .draw{color:#8a8fb4}
+  .d3.front .lockup-wrap{left:22.5mm;top:15.5mm}
+  .d3.front .lockup img{height:16mm}
+  .d3.front .word{font-size:5.4mm;color:var(--navy)}
+  .d3.front .foot{left:var(--m);right:var(--m);bottom:var(--m);display:flex;justify-content:space-between;align-items:baseline;border-top:.2mm solid #d5d8e4;padding-top:2mm}
+  .d3.front .foot em{font-size:2.6mm;color:var(--navy)}
+  .d3.front .foot span{font-size:1.5mm;font-weight:700;letter-spacing:.2mm;text-transform:uppercase;color:var(--muted)}
+  .d3.back{background:var(--navy-deep);color:#fff}
+  .d3.back .draw{color:#5d64a8}
+  .d3.back .who{left:var(--m);top:var(--m)}
+  .d3.back .who p{color:var(--soft)}
+  .d3.back .data{left:var(--m);top:23mm}
+  .d3.back .data dt{color:var(--soft)}
+  .d3.back .foot{left:var(--m);bottom:var(--m);display:flex;align-items:center;gap:2mm;font-size:1.5mm;font-weight:700;letter-spacing:.2mm;text-transform:uppercase;color:var(--soft)}
+  .d3.back .foot img{height:4.5mm}
+</style>
+</head>
+<body>
+<!-- Nombre y cargo son de ejemplo; datos de la planta de Waterloo tomados de sussek.com -->
+
+<section class="card front d3">
+  <svg class="draw" viewBox="0 0 95 57"><path d="M22.5,14.3 V9.2 M72.5,14.3 V9.2" stroke="currentColor" fill="none" stroke-width="0.11"/><path d="M22.5,10.2 H39.94 M55.06,10.2 H72.5" stroke="currentColor" fill="none" stroke-width="0.11"/><path d="M22.5,10.2 L23.694,9.831 L23.694,10.569Z" fill="currentColor"/><path d="M72.5,10.2 L71.306,10.569 L71.306,9.831Z" fill="currentColor"/><text x="47.5" y="10.7" class="dim" text-anchor="middle">50.000 ±0.005</text><path d="M21.5,15.5 H20.3 M21.5,31.5 H20.3" stroke="currentColor" fill="none" stroke-width="0.11"/><path d="M19.3,15.5 V31.5" stroke="currentColor" fill="none" stroke-width="0.11"/><path d="M19.3,15.5 L19.669,16.694 L18.931,16.694Z" fill="currentColor"/><path d="M19.3,31.5 L18.931,30.306 L19.669,30.306Z" fill="currentColor"/><text x="18.3" y="24" class="dim" text-anchor="end">16.000</text><path d="M23.2,30.8 L25.7,36 H37.5" stroke="currentColor" fill="none" stroke-width="0.11"/><path d="M23.2,30.8 L24.05,31.716 L23.385,32.036Z" fill="currentColor"/><text x="26.1" y="35.25" class="dim" text-anchor="start">R2.5 TYP</text><path d="M31.5,13 V34 M20,23.5 H43" stroke="currentColor" fill="none" stroke-width="0.11" stroke-dasharray="2.6 .7 .45 .7"/></svg>
+  <div class="abs lockup-wrap"><div class="lockup"><img src="sussek-icono.png" alt=""><div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div></div></div>
+  <div class="abs foot"><em class="serif">Precision you can measure.</em><span>Machined parts &amp; assemblies</span></div>
+</section>
+<section class="card back d3">
+  <svg class="draw" viewBox="0 0 95 57"><g opacity=".9"><circle cx="84" cy="22" r="17" stroke="currentColor" fill="none" stroke-width="0.3"/><circle cx="84" cy="22" r="16.4" stroke="currentColor" fill="none" stroke-width="0.11"/><circle cx="84" cy="22" r="9.86" stroke="currentColor" fill="none" stroke-width="0.17"/><circle cx="84" cy="22" r="13.26" stroke="currentColor" fill="none" stroke-width="0.11" stroke-dasharray="2.6 .7 .45 .7"/><circle cx="93.376" cy="31.376" r="1.05" stroke="currentColor" fill="none" stroke-width="0.3"/><path d="M91.676,31.376 H95.076 M93.376,29.676 V33.076" stroke="currentColor" fill="none" stroke-width="0.08800000000000001"/><circle cx="74.624" cy="31.376" r="1.05" stroke="currentColor" fill="none" stroke-width="0.3"/><path d="M72.924,31.376 H76.324 M74.624,29.676 V33.076" stroke="currentColor" fill="none" stroke-width="0.08800000000000001"/><circle cx="74.624" cy="12.624" r="1.05" stroke="currentColor" fill="none" stroke-width="0.3"/><path d="M72.924,12.624 H76.324 M74.624,10.924 V14.324" stroke="currentColor" fill="none" stroke-width="0.08800000000000001"/><circle cx="93.376" cy="12.624" r="1.05" stroke="currentColor" fill="none" stroke-width="0.3"/><path d="M91.676,12.624 H95.076 M93.376,10.924 V14.324" stroke="currentColor" fill="none" stroke-width="0.08800000000000001"/><path d="M83.1,16.29 A5.78,5.78 0 1 0 84.9,16.29 V15.12 H83.1Z" stroke="currentColor" fill="none" stroke-width="0.3"/><path d="M64.4,22 H103.6 M84,2.4 V41.6" stroke="currentColor" fill="none" stroke-width="0.11" stroke-dasharray="2.6 .7 .45 .7"/></g></svg>
+  <div class="abs who"><h1>Full Name</h1><p>Job Title</p></div>
+  <dl class="abs data"><dt>T</dt><dd>920.478.2126</dd><dt>E</dt><dd>sales@sussek.com</dd><dt>W</dt><dd>sussek.com</dd><dt>A</dt><dd>805 Pierce St · Waterloo, WI 53594</dd></dl>
+  <p class="abs foot"><img src="sussek-icono.png" alt="">Since 1960 · 250+ CNC · ISO 9001 · IATF · AS9100</p>
+</section>
+</body>
+</html>

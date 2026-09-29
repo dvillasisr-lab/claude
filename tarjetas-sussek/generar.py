@@ -5,7 +5,8 @@ una flecha con engrane helicoidal tallado y estrías (tallado CNC de 5 ejes,
 temple por inducción) y una brida con barrenos.
 
 Edita PERSONA y corre:  python3 generar.py
-Sale tarjeta.html (frente + reverso, 89 x 51 mm + 3 mm de sangrado).
+Salen 3 diseños distintos, cada uno como diseno-N.html (frente + reverso,
+89 x 51 mm + 3 mm de sangrado).
 """
 import math
 from pathlib import Path
@@ -160,12 +161,36 @@ def back_art():
     return "".join(out)
 
 
-CSS = """
+
+def dim_h(x1, x2, y, text, ext_from=None):
+    """Cota horizontal con líneas de extensión y texto al centro."""
+    out = []
+    if ext_from is not None:
+        out.append(f'<path d="M{f(x1)},{f(ext_from)} V{f(y-1)} M{f(x2)},{f(ext_from)} V{f(y-1)}" {S} stroke-width="{W3}"/>')
+    mid, gap = (x1 + x2) / 2, .52 * len(text) + .8
+    out.append(f'<path d="M{f(x1)},{f(y)} H{f(mid-gap)} M{f(mid+gap)},{f(y)} H{f(x2)}" {S} stroke-width="{W3}"/>')
+    out.append(arrow(x1, y, math.pi) + arrow(x2, y, 0))
+    out.append(f'<text x="{f(mid)}" y="{f(y+.5)}" class="dim" text-anchor="middle">{text}</text>')
+    return "".join(out)
+
+
+def dim_v(x, y1, y2, text, ext_from=None):
+    out = []
+    if ext_from is not None:
+        out.append(f'<path d="M{f(ext_from)},{f(y1)} H{f(x+1)} M{f(ext_from)},{f(y2)} H{f(x+1)}" {S} stroke-width="{W3}"/>')
+    mid = (y1 + y2) / 2
+    out.append(f'<path d="M{f(x)},{f(y1)} V{f(y2)}" {S} stroke-width="{W3}"/>')
+    out.append(arrow(x, y1, -math.pi / 2) + arrow(x, y2, math.pi / 2))
+    out.append(f'<text x="{f(x-1)}" y="{f(mid+.5)}" class="dim" text-anchor="end">{text}</text>')
+    return "".join(out)
+
+
+BASE_CSS = """
   @page { size: 95mm 57mm; margin: 0; }
   :root{
-    --navy:#202054; --navy-deep:#15153a; --line:#cdd5ee; --soft:#aab0d8; --ink:#1d1d22; --muted:#6b6f95;
+    --navy:#202054; --navy-deep:#15153a; --line:#cdd5ee; --soft:#aab0d8; --ink:#1d1d22; --muted:#6b6f95; --glow:#f39a2b;
     --steel:linear-gradient(90deg,#8e949b,#e9ecef 30%,#a9afb5 55%,#f4f6f7 75%,#8e949b);
-    --bleed:3mm; --m:8.5mm;
+    --m:8.5mm;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{background:#d9dce1}
@@ -174,6 +199,7 @@ CSS = """
   .draw{position:absolute;inset:0;width:95mm;height:57mm}
   .dim{font-family:"IBM Plex Mono",monospace;font-size:1.45px;letter-spacing:.03px;fill:currentColor}
   .abs{position:absolute}
+  .serif{font-family:"EB Garamond",Garamond,Georgia,serif}
 
   .lockup{display:flex;align-items:center;gap:3mm}
   .lockup img{height:12.5mm;width:auto;display:block}
@@ -181,31 +207,11 @@ CSS = """
   .word span{display:block}
   .word span::first-letter{font-size:1.16em;font-weight:600}
 
-  /* FRENTE */
-  .front{background:radial-gradient(110% 130% at 72% 70%,#2a2a6e 0%,var(--navy) 42%,var(--navy-deep) 100%);color:#fff}
-  .front .grid{position:absolute;inset:0;opacity:.07;background-image:linear-gradient(#fff .1mm,transparent .1mm),linear-gradient(90deg,#fff .1mm,transparent .1mm);background-size:3mm 3mm;background-position:.5mm .5mm}
-  .front .draw{color:var(--line)}
-  .front .lockup{left:var(--m);top:var(--m)}
-  .front .pitch{left:var(--m);bottom:var(--m)}
-  .pitch h2{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5.6mm;line-height:1.02;letter-spacing:-.02mm}
-  .pitch h2 em{font-style:italic;color:#fff}
-  .pitch p{margin-bottom:2.2mm;font-size:1.6mm;font-weight:600;letter-spacing:.2mm;text-transform:uppercase;color:var(--soft);line-height:1.6}
-
-  /* REVERSO */
-  .back{background:#fff;color:var(--navy)}
-  .back .draw{color:var(--navy)}
-  .back .who{left:var(--m);top:var(--m)}
   .who h1{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.8mm;line-height:1.05}
-  .who p{font-size:1.65mm;font-weight:700;letter-spacing:.24mm;text-transform:uppercase;margin-top:1.6mm;color:var(--muted)}
-  .back .data{left:var(--m);top:22mm;display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:2.4mm;row-gap:.9mm;font-size:1.9mm;line-height:1.3;color:var(--ink)}
-  .data dt{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:1.5mm;color:var(--navy)}
-  .back .cta{left:var(--m);top:36.4mm;font-family:"EB Garamond",Garamond,Georgia,serif;font-style:italic;font-size:2.35mm;color:var(--navy)}
-  .block{left:var(--m);right:var(--m);bottom:var(--m);height:6.6mm;display:grid;grid-template-columns:7.4mm 1fr 1.25fr 2.1fr 1fr;border:.25mm solid var(--navy)}
-  .block>div{border-left:.16mm solid var(--navy);padding:.8mm 1.3mm 0;display:flex;flex-direction:column;justify-content:space-between;padding-bottom:.9mm}
-  .block>div:first-child{border-left:0;align-items:center;justify-content:center;padding:0}
-  .block img{height:4.6mm}
-  .block small{font-family:"IBM Plex Mono",monospace;font-size:1.15mm;letter-spacing:.08mm;color:var(--muted);text-transform:uppercase}
-  .block b{font-size:1.6mm;font-weight:700;letter-spacing:.12mm;color:var(--navy);white-space:nowrap}
+  .who p{font-size:1.65mm;font-weight:700;letter-spacing:.24mm;text-transform:uppercase;margin-top:1.6mm}
+  .data{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:2.4mm;row-gap:.9mm;font-size:1.9mm;line-height:1.3}
+  .data dt{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:1.5mm}
+  .eyebrow{font-size:1.6mm;font-weight:700;letter-spacing:.2mm;text-transform:uppercase}
 
   @media screen{
     body{display:flex;flex-wrap:wrap;gap:10mm;padding:12mm;justify-content:center}
@@ -214,39 +220,52 @@ CSS = """
 """
 
 FONTS = '<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Open+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">'
-LOCKUP = '<div class="abs lockup"><img src="sussek-icono.png" alt=""><div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div></div>'
+WORD = '<div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div>'
+LOCKUP = f'<div class="lockup"><img src="sussek-icono.png" alt="">{WORD}</div>'
 
 
-def build(p, frase):
-    return f"""<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Sussek Machine Company · Tarjeta</title>
-{FONTS}
-<style>{CSS}</style>
-</head>
-<body>
-<!-- Nombre y cargo son de ejemplo; datos de la planta de Waterloo tomados de sussek.com -->
+def data_html(p):
+    return (f'<dt>T</dt><dd>{p["tel"]}</dd><dt>E</dt><dd>{p["email"]}</dd>'
+            f'<dt>W</dt><dd>{p["web"]}</dd><dt>A</dt><dd>{p["dir"]}</dd>')
 
-<section class="card front">
+
+# ---------- Diseño 1: PLANO (azul, flecha vertical, cuadro de rótulo) ----------
+
+def diseno_1(p):
+    css = """
+  .d1.front{background:radial-gradient(110% 130% at 72% 70%,#2a2a6e 0%,var(--navy) 42%,var(--navy-deep) 100%);color:#fff}
+  .d1.front .grid{position:absolute;inset:0;opacity:.07;background-image:linear-gradient(#fff .1mm,transparent .1mm),linear-gradient(90deg,#fff .1mm,transparent .1mm);background-size:3mm 3mm;background-position:.5mm .5mm}
+  .d1.front .draw{color:var(--line)}
+  .d1.front .lockup{left:var(--m);top:var(--m)}
+  .d1.front .pitch{left:var(--m);bottom:var(--m)}
+  .d1 .pitch h2{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5.6mm;line-height:1.02}
+  .d1 .pitch .eyebrow{margin-bottom:2.2mm;color:var(--soft)}
+  .d1.back{background:#fff;color:var(--navy)}
+  .d1.back .draw{color:var(--navy)}
+  .d1.back .who{left:var(--m);top:var(--m)}
+  .d1.back .who p{color:var(--muted)}
+  .d1.back .data{left:var(--m);top:22mm;color:var(--ink)}
+  .d1.back .data dt{color:var(--navy)}
+  .d1.back .cta{left:var(--m);top:36.4mm;font-style:italic;font-size:2.35mm}
+  .d1 .block{left:var(--m);right:var(--m);bottom:var(--m);height:6.6mm;display:grid;grid-template-columns:7.4mm 1fr 1.25fr 2.1fr 1fr;border:.25mm solid var(--navy)}
+  .d1 .block>div{border-left:.16mm solid var(--navy);padding:.8mm 1.3mm .9mm;display:flex;flex-direction:column;justify-content:space-between}
+  .d1 .block>div:first-child{border-left:0;align-items:center;justify-content:center;padding:0}
+  .d1 .block img{height:4.6mm}
+  .d1 .block small{font-family:"IBM Plex Mono",monospace;font-size:1.15mm;letter-spacing:.08mm;color:var(--muted);text-transform:uppercase}
+  .d1 .block b{font-size:1.6mm;font-weight:700;letter-spacing:.12mm;white-space:nowrap}
+"""
+    html = f"""
+<section class="card front d1">
   <div class="grid"></div>
   <svg class="draw" viewBox="0 0 95 57">{front_art()}</svg>
-  {LOCKUP}
-  <div class="abs pitch">
-    <p>Machined parts &amp; assemblies</p>
-    <h2>{frase}</h2>
-  </div>
+  <div class="abs lockup-wrap" style="left:8.5mm;top:8.5mm">{LOCKUP}</div>
+  <div class="abs pitch"><p class="eyebrow">Machined parts &amp; assemblies</p><h2>From print<br><em>to part.</em></h2></div>
 </section>
-
-<section class="card back">
+<section class="card back d1">
   <svg class="draw" viewBox="0 0 95 57">{back_art()}</svg>
   <div class="abs who"><h1>{p["nombre"]}</h1><p>{p["cargo"]}</p></div>
-  <dl class="abs data">
-    <dt>T</dt><dd>{p["tel"]}</dd><dt>E</dt><dd>{p["email"]}</dd>
-    <dt>W</dt><dd>{p["web"]}</dd><dt>A</dt><dd>{p["dir"]}</dd>
-  </dl>
-  <p class="abs cta">Request a quote at sussek.com</p>
+  <dl class="abs data">{data_html(p)}</dl>
+  <p class="abs cta serif">Request a quote at sussek.com</p>
   <div class="abs block">
     <div><img src="sussek-icono.png" alt=""></div>
     <div><small>Since</small><b>1960</b></div>
@@ -254,20 +273,126 @@ def build(p, frase):
     <div><small>Certified</small><b>ISO 9001 · IATF · AS9100</b></div>
     <div><small>Plants</small><b>US · MX · CN</b></div>
   </div>
-</section>
+</section>"""
+    return css, html
 
+
+# ---------- Diseño 2: FOTO (temple por inducción de su planta, duotono azul) ----------
+
+def diseno_2(p):
+    css = """
+  .d2.front{background:#101030 url(foto-temple.jpg) center/cover no-repeat;color:#fff}
+  .d2.front .shade{position:absolute;inset:0;background:
+      linear-gradient(90deg,rgba(16,16,48,.92) 0%,rgba(16,16,48,.7) 38%,rgba(16,16,48,0) 70%),
+      linear-gradient(0deg,rgba(16,16,48,.75) 0%,rgba(16,16,48,0) 45%)}
+  .d2.front .lockup-wrap{left:var(--m);top:var(--m)}
+  .d2.front .pitch{left:var(--m);bottom:var(--m)}
+  .d2 .pitch h2{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5.4mm;line-height:1.04}
+  .d2 .pitch em{color:#ffc27a}
+  .d2 .pitch .eyebrow{margin-bottom:2.2mm;color:#d7dbf0}
+  .d2 .pitch .eyebrow b{color:var(--glow)}
+  .d2.back{background:#fff;color:var(--navy)}
+  .d2.back .lockup-wrap{left:var(--m);top:var(--m)}
+  .d2.back .lockup img{height:10.5mm}
+  .d2.back .word{font-size:3.9mm;color:var(--navy)}
+  .d2.back .who{right:var(--m);top:var(--m);text-align:right}
+  .d2.back .who p{color:var(--muted)}
+  .d2.back .rule{left:var(--m);right:var(--m);top:25.5mm;height:.5mm;background:linear-gradient(90deg,var(--glow) 0 12mm,#e3e5ee 12mm)}
+  .d2.back .data{left:var(--m);top:29.5mm;color:var(--ink)}
+  .d2.back .data dt{color:var(--glow)}
+  .d2.back .caps{right:var(--m);bottom:var(--m);text-align:right;font-size:1.5mm;font-weight:700;letter-spacing:.18mm;text-transform:uppercase;line-height:1.9;color:var(--navy)}
+  .d2.back .caps span{color:var(--muted);font-weight:600}
+"""
+    html = f"""
+<section class="card front d2">
+  <div class="shade"></div>
+  <div class="abs lockup-wrap">{LOCKUP}</div>
+  <div class="abs pitch"><p class="eyebrow">Machining · Hobbing · <b>Heat treat</b></p><h2>Tight tolerances.<br><em>On time.</em></h2></div>
+</section>
+<section class="card back d2">
+  <div class="abs lockup-wrap">{LOCKUP}</div>
+  <div class="abs who"><h1>{p["nombre"]}</h1><p>{p["cargo"]}</p></div>
+  <i class="abs rule"></i>
+  <dl class="abs data">{data_html(p)}</dl>
+  <p class="abs caps">Since 1960 · 250+ CNC<br><span>ISO 9001 · IATF 16949 · AS9100</span><br>US · MX · CN</p>
+</section>"""
+    return css, html
+
+
+# ---------- Diseño 3: BLANCO (el logo acotado como si fuera una pieza) ----------
+
+def diseno_3_front():
+    # lockup centrado: ícono 16 mm de alto; medidas en mm de la tarjeta
+    ix1, ix2, iy1, iy2 = 22.5, 40.5, 15.5, 31.5          # caja del ícono
+    wx2 = 72.5                                          # fin del nombre
+    out = [dim_h(ix1, wx2, 10.2, "50.000 ±0.005", ext_from=iy1 - 1.2),
+           dim_v(ix1 - 3.2, iy1, iy2, "16.000", ext_from=ix1 - 1),
+           leader(ix1 + .7, iy2 - .7, ix1 + 3.2, 36, ix1 + 15, "R2.5 TYP")]
+    out.append(f'<path d="M{f((ix1+ix2)/2)},{f(iy1-2.5)} V{f(iy2+2.5)} M{f(ix1-2.5)},{f((iy1+iy2)/2)} H{f(ix2+2.5)}" {S} stroke-width="{W3}" {CL}/>')
+    return "".join(out)
+
+
+def diseno_3_back():
+    return f'<g opacity=".9">{flange(84, 22, 17)}</g>'
+
+
+def diseno_3(p):
+    css = """
+  .d3.front{background:linear-gradient(160deg,#ffffff 0%,#f3f4f8 100%);color:var(--navy)}
+  .d3.front .draw{color:#8a8fb4}
+  .d3.front .lockup-wrap{left:22.5mm;top:15.5mm}
+  .d3.front .lockup img{height:16mm}
+  .d3.front .word{font-size:5.4mm;color:var(--navy)}
+  .d3.front .foot{left:var(--m);right:var(--m);bottom:var(--m);display:flex;justify-content:space-between;align-items:baseline;border-top:.2mm solid #d5d8e4;padding-top:2mm}
+  .d3.front .foot em{font-size:2.6mm;color:var(--navy)}
+  .d3.front .foot span{font-size:1.5mm;font-weight:700;letter-spacing:.2mm;text-transform:uppercase;color:var(--muted)}
+  .d3.back{background:var(--navy-deep);color:#fff}
+  .d3.back .draw{color:#5d64a8}
+  .d3.back .who{left:var(--m);top:var(--m)}
+  .d3.back .who p{color:var(--soft)}
+  .d3.back .data{left:var(--m);top:23mm}
+  .d3.back .data dt{color:var(--soft)}
+  .d3.back .foot{left:var(--m);bottom:var(--m);display:flex;align-items:center;gap:2mm;font-size:1.5mm;font-weight:700;letter-spacing:.2mm;text-transform:uppercase;color:var(--soft)}
+  .d3.back .foot img{height:4.5mm}
+"""
+    html = f"""
+<section class="card front d3">
+  <svg class="draw" viewBox="0 0 95 57">{diseno_3_front()}</svg>
+  <div class="abs lockup-wrap">{LOCKUP}</div>
+  <div class="abs foot"><em class="serif">Precision you can measure.</em><span>Machined parts &amp; assemblies</span></div>
+</section>
+<section class="card back d3">
+  <svg class="draw" viewBox="0 0 95 57">{diseno_3_back()}</svg>
+  <div class="abs who"><h1>{p["nombre"]}</h1><p>{p["cargo"]}</p></div>
+  <dl class="abs data">{data_html(p)}</dl>
+  <p class="abs foot"><img src="sussek-icono.png" alt="">Since 1960 · 250+ CNC · ISO 9001 · IATF · AS9100</p>
+</section>"""
+    return css, html
+
+
+DISENOS = {"diseno-1-plano": diseno_1, "diseno-2-foto": diseno_2, "diseno-3-blanco": diseno_3}
+
+
+def page(title, css, body):
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{title}</title>
+{FONTS}
+<style>{BASE_CSS}{css}</style>
+</head>
+<body>
+<!-- Nombre y cargo son de ejemplo; datos de la planta de Waterloo tomados de sussek.com -->
+{body}
 </body>
 </html>
 """
 
 
-FRASES = {
-    "tarjeta-1": "From print<br><em>to part.</em>",
-    "tarjeta-2": "Precision<br><em>you can measure.</em>",
-    "tarjeta-3": "Tight tolerances.<br><em>On time.</em>",
-}
-
 if __name__ == "__main__":
-    for name, frase in FRASES.items():
-        (Path(__file__).parent / f"{name}.html").write_text(build(PERSONA, frase))
+    here = Path(__file__).parent
+    for name, fn in DISENOS.items():
+        css, body = fn(PERSONA)
+        (here / f"{name}.html").write_text(page(f"Sussek · {name}", css, body))
         print("ok", name)
