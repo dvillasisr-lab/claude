@@ -100,26 +100,54 @@ def shaft(x0, yc):
     return "".join(out), pos
 
 
+def gear_geom(R, N=22, alpha=20):
+    """Geometría de un engrane recto con diente de evolvente (medidas en mm)."""
+    m = 2 * R / (N + 2)                  # módulo
+    rp = m * N / 2                       # radio primitivo
+    rb = rp * math.cos(math.radians(alpha))
+    rf = rp - 1.25 * m
+    s = R / 21                           # escala para maza y barrenos
+    return dict(m=m, rp=rp, rb=rb, rf=rf, ra=R, N=N, bc=9.2 * s, hole=1.35 * s, hub=13.2 * s, s=s)
+
+
 def gear(cx, cy, R, N=22, w=.3):
-    """Engrane en vista frontal: dientes, círculo primitivo, maza, barrenos y cuñero."""
-    s = R / 21
-    Rr = 18.2 * s
+    """Engrane en vista frontal: dientes de evolvente, círculo primitivo, maza, barrenos y cuñero."""
+    g = gear_geom(R, N)
+    rb, rf, ra, rp = g["rb"], g["rf"], g["ra"], g["rp"]
+    inv = lambda a: math.tan(a) - a
+    al = math.radians(20)
+    half = math.pi / (2 * N) + inv(al)   # medio ancho angular del diente en el círculo base
+    flank = []                           # (radio, ángulo relativo) de un flanco, de la raíz a la punta
+    flank.append((rf, half))
+    steps = 8
+    r0 = max(rb, rf)
+    for i in range(steps + 1):
+        r = r0 + (ra - r0) * i / steps
+        flank.append((r, half - inv(math.acos(min(1, rb / r)))))
     pts = []
-    for i in range(N):
-        a, p = 2 * math.pi * i / N, 2 * math.pi / N
-        for fr, r in [(0, Rr), (.18, Rr), (.32, R), (.58, R), (.72, Rr)]:
-            pts.append((cx + r * math.cos(a + fr * p), cy + r * math.sin(a + fr * p)))
-    out = [f'<path d="M{" L".join(f"{f(x)},{f(y)}" for x, y in pts)}Z" {S} stroke-width="{w}"/>',
-           f'<circle cx="{f(cx)}" cy="{f(cy)}" r="{f(16.6*s)}" {S} stroke-width="{f(w*.45)}" {CL}/>',
-           f'<circle cx="{f(cx)}" cy="{f(cy)}" r="{f(13.2*s)}" {S} stroke-width="{f(w*.8)}"/>',
-           f'<circle cx="{f(cx)}" cy="{f(cy)}" r="{f(9.2*s)}" {S} stroke-width="{f(w*.45)}" {CL}/>']
+    for k in range(N):
+        c = 2 * math.pi * k / N
+        for r, t in flank:                              # flanco izquierdo, subiendo
+            pts.append((r, c - t))
+        for r, t in reversed(flank):                    # flanco derecho, bajando
+            pts.append((r, c + t))
+        # raíz hasta el siguiente diente
+        a1, a2 = c + half, c + 2 * math.pi / N - half
+        for j in range(1, 4):
+            pts.append((rf, a1 + (a2 - a1) * j / 4))
+    d = "M" + " L".join(f"{f(cx + r * math.cos(t))},{f(cy + r * math.sin(t))}" for r, t in pts) + "Z"
+    sc = g["s"]
+    out = [f'<path d="{d}" {S} stroke-width="{w}" stroke-linejoin="round"/>',
+           f'<circle cx="{f(cx)}" cy="{f(cy)}" r="{f(rp)}" {S} stroke-width="{f(w*.45)}" {CL}/>',
+           f'<circle cx="{f(cx)}" cy="{f(cy)}" r="{f(g["hub"])}" {S} stroke-width="{f(w*.8)}"/>',
+           f'<circle cx="{f(cx)}" cy="{f(cy)}" r="{f(g["bc"])}" {S} stroke-width="{f(w*.45)}" {CL}/>']
     for i in range(6):
-        a = math.pi / 6 + i * math.pi / 3
-        out.append(f'<circle cx="{f(cx+9.2*s*math.cos(a))}" cy="{f(cy+9.2*s*math.sin(a))}" r="{f(1.35*s)}" {S} stroke-width="{f(w*.8)}"/>')
-    r, k, h = 4.6 * s, 1.1 * s, 5.6 * s
+        t = math.pi / 6 + i * math.pi / 3
+        out.append(f'<circle cx="{f(cx+g["bc"]*math.cos(t))}" cy="{f(cy+g["bc"]*math.sin(t))}" r="{f(g["hole"])}" {S} stroke-width="{f(w*.8)}"/>')
+    r, k, h = 4.6 * sc, 1.1 * sc, 5.6 * sc
     yk = cy - math.sqrt(r * r - k * k)
     out.append(f'<path d="M{f(cx-k)},{f(yk)} A{f(r)},{f(r)} 0 1 0 {f(cx+k)},{f(yk)} V{f(cy-h)} H{f(cx-k)}Z" {S} stroke-width="{w}"/>')
-    e = R + 3.5 * s
+    e = R + 3.5 * sc
     out.append(f'<path d="M{f(cx-e)},{f(cy)} H{f(cx+e)} M{f(cx)},{f(cy-e)} V{f(cy+e)}" {S} stroke-width="{f(w*.4)}" {CL}/>')
     return "".join(out)
 
@@ -475,6 +503,7 @@ def concepto_1(p):
   <svg class="draw" viewBox="0 0 95 57">{"".join(back)}</svg>
   <div class="abs who"><h1>{p["nombre"]}</h1><p>{p["cargo"]}</p></div>
   <p class="abs line">{p["tel"]} · {p["dir"]}</p>
+  <p class="abs certs">ISO 9001 · IATF 16949 · AS9100 · 250+ CNC · USA · MX · CN</p>
   <div class="abs mark"><img src="sussek-icono.png" alt="">Sussek Machine Company</div>
 </section>"""
     return css, html, False
@@ -618,10 +647,20 @@ def ext_h(y, x_from, x_to):
 
 
 def gear_callout(cx, cy, R, x_end, y_text):
-    s = R / 21
+    """Cota de los barrenos con su medida real impresa (escala 1:1, mm)."""
+    g = gear_geom(R)
     a = -math.pi / 6
-    hx, hy = cx + 9.2 * s * math.cos(a), cy + 9.2 * s * math.sin(a)
-    return leader(hx + .8, hy - .8, hx + 4.5, y_text, x_end, "6× Ø2.70 EQ SP", anchor="end")
+    hx, hy = cx + g["bc"] * math.cos(a), cy + g["bc"] * math.sin(a)
+    txt = f"6× Ø{2*g['hole']:.2f} EQ SP ON Ø{2*g['bc']:.2f}"
+    return leader(hx + .8, hy - .8, hx + 4.5, y_text, x_end, txt, anchor="end")
+
+
+def gear_od_callout(cx, cy, R, x_end, y_text, N=22):
+    """Cota del diámetro exterior con dientes y módulo."""
+    g = gear_geom(R, N)
+    a = math.radians(160)
+    x1, y1 = cx + R * math.cos(a), cy + R * math.sin(a)
+    return leader(x1 - .2, y1 + .1, x1 - 3.6, y_text, x_end, f"Ø{2*R:.2f} · {N}T", anchor="start")
 
 
 # ---------- Variación 1: plano azul con engrane + logo acotado / correo anotado ----------
@@ -635,21 +674,24 @@ def variacion_1(p):
     wx2 = ix + iw + 3 + WORD_W[fs]
     cx, cy, R = 72.0, 28.5, 16.5
     art = [gear(cx, cy, R), gear_callout(cx, cy, R, 86.5, 9.8),
-           ext_v(ix, top - .8, 8.9), ext_v(wx2, top - .8, 8.9), dim_h(ix, wx2, 9.8, f"{wx2-ix:.3f} ±0.005"),
-           ext_h(iy1, ix - .8, 8.2), ext_h(iy2, ix - .8, 8.2), dim_v_rot(9.1, iy1, iy2, f"{ih:.3f}"),
-           leader(ix + .7, iy2 - .7, ix + 3, iy2 + 3.8, ix + 14, "R2.5 TYP")]
+           gear_od_callout(cx, cy, R, 38.5, 36.2),
+           ext_v(ix, top - .8, 8.9), ext_v(wx2, top - .8, 8.9), dim_h(ix, wx2, 9.8, f"{wx2-ix:.2f}"),
+           ext_h(iy1, ix - .8, 8.2), ext_h(iy2, ix - .8, 8.2), dim_v_rot(9.1, iy1, iy2, f"{ih:.2f}"),
+           leader(ix + .7, iy2 - .7, ix + 3, iy2 + 3.8, ix + 14, "R2.5 TYP"),
+           '<text x="86.5" y="48.5" class="dim" text-anchor="end">MM · SCALE 1:1</text>']
     email = p["email"]
     cw = 3.6 * .6
     x0 = 47.5 - cw * len(email) / 2
     at = email.index("@")
-    ym = 29.5
+    ym = 28.8
     back = [f'<text x="{f(x0)}" y="{f(ym)}" class="mail">{email}</text>',
             bracket(x0, x0 + cw * at, ym - 3.6, "our team"),
             bracket(x0 + cw * (at + 1), x0 + cw * len(email), ym - 3.6, "website"),
-            bracket(x0, x0 + cw * len(email), ym + 1.6, "send us your print", up=False)]
+            f'<path d="M{f(x0+1)},{f(ym+1.4)} v2.6 h3.2" {S} stroke-width="{W2}"/>' + arrow(x0 + 4.4, ym + 4, 0, 1, .4),
+            f'<text x="{f(x0+5.4)}" y="{f(ym+4.75)}" class="note">send us your print</text>']
     css = CONCEPT_CSS + f"""
   .v1.front{{background:radial-gradient(110% 130% at 75% 50%,#2a2a6e 0%,var(--navy) 45%,var(--navy-deep) 100%);color:#fff}}
-  .v1.front .grid{{position:absolute;inset:0;opacity:.07;background-image:linear-gradient(#fff .1mm,transparent .1mm),linear-gradient(90deg,#fff .1mm,transparent .1mm);background-size:3mm 3mm;background-position:.5mm .5mm}}
+  .v1.front .grid{{position:absolute;inset:0;opacity:.04;background-image:linear-gradient(#fff .1mm,transparent .1mm),linear-gradient(90deg,#fff .1mm,transparent .1mm);background-size:3mm 3mm;background-position:.5mm .5mm}}
   .v1.front .draw{{color:var(--line)}}
   .v1.front .lockup-wrap{{left:{ix}mm;top:{top}mm}}
   .v1.front .lockup img{{height:{ih}mm}}
@@ -660,7 +702,8 @@ def variacion_1(p):
   .v1.back .draw{{color:var(--navy)}}
   .v1.back .who{{left:0;right:0;top:var(--m);text-align:center}}
   .v1.back .who p{{color:var(--muted)}}
-  .v1.back .line{{left:0;right:0;top:39.5mm;text-align:center;font-size:1.85mm;color:var(--ink)}}
+  .v1.back .line{{left:0;right:0;top:36.9mm;text-align:center;font-size:1.85mm;color:var(--ink)}}
+  .v1.back .certs{{left:0;right:0;top:40.6mm;text-align:center;font-size:1.4mm;font-weight:700;letter-spacing:.2mm;color:var(--muted)}}
   .v1.back .mark{{left:0;right:0;bottom:var(--m);display:flex;justify-content:center;align-items:center;gap:1.6mm;font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:600;font-size:2.4mm}}
   .v1.back .mark img{{height:4.2mm}}
 """
@@ -675,6 +718,7 @@ def variacion_1(p):
   <svg class="draw" viewBox="0 0 95 57">{"".join(back)}</svg>
   <div class="abs who"><h1>{p["nombre"]}</h1><p>{p["cargo"]}</p></div>
   <p class="abs line">{p["tel"]} · {p["dir"]}</p>
+  <p class="abs certs">ISO 9001 · IATF 16949 · AS9100 · 250+ CNC · USA · MX · CN</p>
   <div class="abs mark"><img src="sussek-icono.png" alt="">Sussek Machine Company</div>
 </section>"""
     return css, html, False
@@ -726,7 +770,123 @@ def variacion_3(p):
     return css, front + back, False
 
 
-DISENOS = {"variacion-1-plano": variacion_1, "variacion-2-inspeccion": variacion_2, "variacion-3-globos": variacion_3}
+
+# ---------- Variación 5: TARJETA HERRAMIENTA (galgas de radio + reglas reales) ----------
+
+PX = 96 / 25.4   # px por mm (para el recorte de la vista previa)
+
+
+def tool_shape(mirror=False, k=1.0):
+    """Contorno de corte (con 3 mm de sangrado): esquina R5 convexa, muesca R2.5 cóncava, R1.5 en las otras.
+    mirror=True da el contorno visto desde el reverso; k escala a otras unidades (px para la vista previa)."""
+    X = (lambda x: (95 - x) * k) if mirror else (lambda x: x * k)
+    Y = lambda y: y * k
+    sw = (lambda v: 1 - v) if mirror else (lambda v: v)
+    arc = lambda r, flag, x, y: f"A{f(r*k)},{f(r*k)} 0 0 {sw(flag)} {f(X(x))},{f(Y(y))}"
+    return " ".join([f"M{f(X(8))},{f(Y(3))}", f"H{f(X(90.5))}", arc(1.5, 1, 92, 4.5), f"V{f(Y(51.5))}",
+                     arc(2.5, 0, 89.5, 54), f"H{f(X(4.5))}", arc(1.5, 1, 3, 52.5), f"V{f(Y(8))}",
+                     arc(5, 1, 8, 3), "Z"])
+
+
+def inch_ruler(x0, y, inches=3):
+    d, t = [], []
+    for k in range(inches * 16 + 1):
+        x = x0 + k * 25.4 / 16
+        L = 2.6 if k % 16 == 0 else 2.0 if k % 8 == 0 else 1.5 if k % 4 == 0 else 1.1 if k % 2 == 0 else .7
+        d.append(f"M{f(x)},{y} v{L}")
+        if k % 16 == 0:
+            t.append(f'<text x="{f(x+.6)}" y="{f(y+3.9)}" class="dim">{k//16}{" IN" if k == 0 else ""}</text>')
+    return f'<path d="{" ".join(d)}" {S} stroke-width=".15"/>' + "".join(t)
+
+
+def mm_ruler(x0, y, mm=70):
+    d, t = [], []
+    for k in range(mm + 1):
+        x = x0 + k
+        L = 2.6 if k % 10 == 0 else 1.7 if k % 5 == 0 else 1.0
+        d.append(f"M{f(x)},{y} v{-L}")
+        if k % 10 == 0:
+            t.append(f'<text x="{f(x)}" y="{f(y-3.6)}" class="dim" text-anchor="middle">{k//10 if k else "0 CM"}</text>')
+    return f'<path d="{" ".join(d)}" {S} stroke-width=".15"/>' + "".join(t)
+
+
+def variacion_5(p):
+    front_art = (inch_ruler(13, 3) + mm_ruler(6, 54)
+                 + '<text x="4.6" y="12.6" class="dim b">R5</text>'
+                 + '<text x="88.6" y="48.2" class="dim b" text-anchor="end">R2.5</text>')
+    css = CONCEPT_CSS + f"""
+  .v5.front{{background:radial-gradient(110% 130% at 70% 45%,#2a2a6e 0%,var(--navy) 45%,var(--navy-deep) 100%);color:#fff}}
+  .v5.front .draw{{color:var(--line)}}
+  .v5.front .lockup-wrap{{left:var(--m);top:19mm}}
+  .v5.front .lockup img{{height:12mm}}
+  .v5.front .word{{font-size:4.4mm}}
+  .v5.front .pitch{{right:var(--m);top:21mm;text-align:right}}
+  .v5 .pitch h2{{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5.4mm;line-height:1.02}}
+  .v5 .pitch p{{margin-top:2mm;font-family:"IBM Plex Mono",monospace;font-size:1.45mm;letter-spacing:.1mm;color:var(--soft)}}
+  .v5.back{{background:var(--paper);color:var(--ink)}}
+  .v5 .rep{{position:absolute;left:8mm;right:8mm;top:7.6mm;bottom:7.6mm;display:flex;flex-direction:column}}
+  .v5 .head{{display:flex;justify-content:space-between;align-items:baseline}}
+  .v5 .head h2{{font-family:"Archivo",Arial,sans-serif;font-stretch:78%;font-weight:900;font-size:3.9mm;letter-spacing:-.03mm;text-transform:uppercase}}
+  .v5 .k{{font-family:"IBM Plex Mono",monospace;font-size:1.3mm;text-transform:uppercase;color:#55575f}}
+  .v5 .sn{{font-family:"IBM Plex Mono",monospace;font-size:1.5mm;font-weight:600}}
+  .v5 .bar{{height:1.1mm;background:var(--ink);margin:1.1mm 0 1.6mm}}
+  .v5 .cols{{display:grid;grid-template-columns:1fr 1.15fr;gap:3.4mm}}
+  .v5 .part b{{display:block;font-family:"Archivo",Arial,sans-serif;font-stretch:90%;font-weight:800;font-size:3.1mm;line-height:1.05;margin-top:.3mm}}
+  .v5 .part span{{font-size:1.55mm;font-weight:600}}
+  .v5 .cont{{margin-top:1.8mm;display:grid;grid-template-columns:auto 1fr;column-gap:1.6mm;row-gap:.35mm;font-size:1.5mm;align-items:baseline}}
+  .v5 .cont dt{{font-family:"IBM Plex Mono",monospace;font-size:1.25mm;color:var(--navy);font-weight:600}}
+  .v5 .row{{display:flex;justify-content:space-between;align-items:baseline;gap:1.5mm;border-top:.15mm solid var(--ink);padding:.55mm 0;font-size:1.45mm}}
+  .v5 .row b{{font-weight:700;text-align:right;white-space:nowrap}}
+  .v5 .foot{{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;border-top:.5mm solid var(--ink);padding-top:1.2mm}}
+  .v5 .foot em{{font-family:"EB Garamond",Garamond,Georgia,serif;font-size:2.1mm}}
+  .v5 .stamp{{transform:rotate(-8deg) translate(-1mm,-.6mm);border:.45mm solid var(--navy);color:var(--navy);padding:.5mm 1.6mm .4mm;font-family:"Archivo",Arial,sans-serif;font-stretch:80%;font-weight:900;font-size:2.7mm;letter-spacing:.22mm;box-shadow:inset 0 0 0 .3mm var(--paper),inset 0 0 0 .5mm var(--navy);opacity:.9}}
+  .dieline{{background:#fff}}
+  @media screen{{
+    .v5.front{{clip-path:path('{tool_shape(k=PX)}')}}
+    .v5.back{{clip-path:path('{tool_shape(True, k=PX)}')}}
+    .dieline{{display:none}}
+  }}
+"""
+    html = f"""
+<section class="card front v5">
+  <svg class="draw" viewBox="0 0 95 57">{front_art}</svg>
+  <div class="abs lockup-wrap">{LOCKUP}</div>
+  <div class="abs pitch"><h2>From print<br><em>to part.</em></h2><p>MM + IN · SCALE 1:1 · MEASURE IT.</p></div>
+</section>
+<section class="card back v5">
+  <div class="rep">
+    <div class="head"><h2>Inspection Report</h2><span class="sn">S/N 000347</span></div>
+    <div class="bar"></div>
+    <div class="cols">
+      <div>
+        <div class="part"><span class="k">Part</span><b>{p["nombre"]}</b><span>{p["cargo"]}</span></div>
+        <dl class="cont">{data_html(p)}</dl>
+      </div>
+      <div>
+        <div class="row"><span class="k">Supplier</span><b>Sussek Machine Co.</b></div>
+        <div class="row"><span class="k">Process</span><b>Milling · Turning · Hobbing</b></div>
+        <div class="row"><span class="k">Capacity</span><b>250+ CNC</b></div>
+        <div class="row"><span class="k">Certified</span><b>ISO 9001 · IATF · AS9100</b></div>
+        <div class="row"><span class="k">Since</span><b>1960 · US · MX · CN</b></div>
+      </div>
+    </div>
+    <div class="foot"><em>Ready for your next part.</em><span class="stamp">APPROVED</span></div>
+  </div>
+</section>
+<section class="card dieline">
+  <svg class="draw" viewBox="0 0 95 57">
+    <rect x="0" y="0" width="95" height="57" fill="none" stroke="#bbb" stroke-width=".1" stroke-dasharray="1 .6"/>
+    <path d="{tool_shape()}" fill="none" stroke="#e6007e" stroke-width=".2"/>
+    <text x="47.5" y="24" class="dim" text-anchor="middle" fill="#e6007e" style="fill:#e6007e;font-size:2px">DIE LINE · TROQUEL (FRENTE)</text>
+    <text x="47.5" y="28" class="dim" text-anchor="middle" style="fill:#555;font-size:1.6px">89 × 51 MM · R5 CONVEXO SUP. IZQ. · R2.5 CÓNCAVO INF. DER. · R1.5 RESTO</text>
+    <text x="47.5" y="31" class="dim" text-anchor="middle" style="fill:#555;font-size:1.6px">SANGRADO 3 MM · NO IMPRIMIR ESTA PÁGINA</text>
+  </svg>
+</section>"""
+    return css, html, False
+
+
+DISENOS = {"variacion-1-plano": variacion_1, "variacion-2-inspeccion": variacion_2, "variacion-3-globos": variacion_3,
+           "variacion-5-herramienta": variacion_5}
 
 
 def page(title, css, body, vertical=False):

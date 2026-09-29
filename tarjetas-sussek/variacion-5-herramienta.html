@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sussek · variacion-5-herramienta</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Open+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Archivo:wdth,wght@62..125,500..900&display=swap" rel="stylesheet">
+<style>
+  @page { size: 95mm 57mm; margin: 0; }
+  :root{
+    --navy:#202054; --navy-deep:#15153a; --line:#cdd5ee; --soft:#aab0d8; --ink:#1d1d22; --muted:#6b6f95; --glow:#f39a2b;
+    --steel:linear-gradient(90deg,#8e949b,#e9ecef 30%,#a9afb5 55%,#f4f6f7 75%,#8e949b);
+    --m:8.5mm; --paper:#f5f3ee;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#d9dce1}
+  body{font-family:"Open Sans",Helvetica,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .card{width:95mm;height:57mm;position:relative;overflow:hidden;page-break-after:always;break-after:page}
+  .draw{position:absolute;inset:0;width:95mm;height:57mm}
+  .dim{font-family:"IBM Plex Mono",monospace;font-size:1.45px;letter-spacing:.03px;fill:currentColor}
+  .abs{position:absolute}
+  .serif{font-family:"EB Garamond",Garamond,Georgia,serif}
+
+  .lockup{display:flex;align-items:center;gap:3mm}
+  .lockup img{height:12.5mm;width:auto;display:block}
+  .word{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.6mm;line-height:1.02}
+  .word span{display:block}
+  .word span::first-letter{font-size:1.16em;font-weight:600}
+
+  .who h1{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.8mm;line-height:1.05}
+  .who p{font-size:1.65mm;font-weight:700;letter-spacing:.24mm;text-transform:uppercase;margin-top:1.6mm}
+  .data{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:2.4mm;row-gap:.9mm;font-size:1.9mm;line-height:1.3}
+  .data dt{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:1.5mm}
+  .eyebrow{font-size:1.6mm;font-weight:700;letter-spacing:.2mm;text-transform:uppercase}
+
+  @media screen{
+    body{display:flex;flex-wrap:wrap;gap:10mm;padding:12mm;justify-content:center}
+    .card{box-shadow:0 2mm 6mm rgba(0,0,0,.22)}
+  }
+
+  .dim.b{font-weight:600}
+  .lab{font-family:"IBM Plex Mono",monospace;font-size:1.4px;font-weight:600;letter-spacing:.06px;fill:currentColor}
+  .note{font-family:"EB Garamond",Garamond,Georgia,serif;font-style:italic;font-size:2.3px;fill:currentColor}
+  .mail{font-family:"IBM Plex Mono",monospace;font-size:3.6px;font-weight:500;fill:#1d1d22}
+
+  .v5.front{background:radial-gradient(110% 130% at 70% 45%,#2a2a6e 0%,var(--navy) 45%,var(--navy-deep) 100%);color:#fff}
+  .v5.front .draw{color:var(--line)}
+  .v5.front .lockup-wrap{left:var(--m);top:19mm}
+  .v5.front .lockup img{height:12mm}
+  .v5.front .word{font-size:4.4mm}
+  .v5.front .pitch{right:var(--m);top:21mm;text-align:right}
+  .v5 .pitch h2{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5.4mm;line-height:1.02}
+  .v5 .pitch p{margin-top:2mm;font-family:"IBM Plex Mono",monospace;font-size:1.45mm;letter-spacing:.1mm;color:var(--soft)}
+  .v5.back{background:var(--paper);color:var(--ink)}
+  .v5 .rep{position:absolute;left:8mm;right:8mm;top:7.6mm;bottom:7.6mm;display:flex;flex-direction:column}
+  .v5 .head{display:flex;justify-content:space-between;align-items:baseline}
+  .v5 .head h2{font-family:"Archivo",Arial,sans-serif;font-stretch:78%;font-weight:900;font-size:3.9mm;letter-spacing:-.03mm;text-transform:uppercase}
+  .v5 .k{font-family:"IBM Plex Mono",monospace;font-size:1.3mm;text-transform:uppercase;color:#55575f}
+  .v5 .sn{font-family:"IBM Plex Mono",monospace;font-size:1.5mm;font-weight:600}
+  .v5 .bar{height:1.1mm;background:var(--ink);margin:1.1mm 0 1.6mm}
+  .v5 .cols{display:grid;grid-template-columns:1fr 1.15fr;gap:3.4mm}
+  .v5 .part b{display:block;font-family:"Archivo",Arial,sans-serif;font-stretch:90%;font-weight:800;font-size:3.1mm;line-height:1.05;margin-top:.3mm}
+  .v5 .part span{font-size:1.55mm;font-weight:600}
+  .v5 .cont{margin-top:1.8mm;display:grid;grid-template-columns:auto 1fr;column-gap:1.6mm;row-gap:.35mm;font-size:1.5mm;align-items:baseline}
+  .v5 .cont dt{font-family:"IBM Plex Mono",monospace;font-size:1.25mm;color:var(--navy);font-weight:600}
+  .v5 .row{display:flex;justify-content:space-between;align-items:baseline;gap:1.5mm;border-top:.15mm solid var(--ink);padding:.55mm 0;font-size:1.45mm}
+  .v5 .row b{font-weight:700;text-align:right;white-space:nowrap}
+  .v5 .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;border-top:.5mm solid var(--ink);padding-top:1.2mm}
+  .v5 .foot em{font-family:"EB Garamond",Garamond,Georgia,serif;font-size:2.1mm}
+  .v5 .stamp{transform:rotate(-8deg) translate(-1mm,-.6mm);border:.45mm solid var(--navy);color:var(--navy);padding:.5mm 1.6mm .4mm;font-family:"Archivo",Arial,sans-serif;font-stretch:80%;font-weight:900;font-size:2.7mm;letter-spacing:.22mm;box-shadow:inset 0 0 0 .3mm var(--paper),inset 0 0 0 .5mm var(--navy);opacity:.9}
+  .dieline{background:#fff}
+  @media screen{
+    .v5.front{clip-path:path('M30.236,11.339 H342.047 A5.669,5.669 0 0 1 347.717,17.008 V194.646 A9.449,9.449 0 0 0 338.268,204.094 H17.008 A5.669,5.669 0 0 1 11.339,198.425 V30.236 A18.898,18.898 0 0 1 30.236,11.339 Z')}
+    .v5.back{clip-path:path('M328.819,11.339 H17.008 A5.669,5.669 0 0 0 11.339,17.008 V194.646 A9.449,9.449 0 0 1 20.787,204.094 H342.047 A5.669,5.669 0 0 0 347.717,198.425 V30.236 A18.898,18.898 0 0 0 328.819,11.339 Z')}
+    .dieline{display:none}
+  }
+</style>
+</head>
+<body>
+<!-- Nombre y cargo son de ejemplo; datos de la planta de Waterloo tomados de sussek.com -->
+
+<section class="card front v5">
+  <svg class="draw" viewBox="0 0 95 57"><path d="M13,3 v2.6 M14.588,3 v0.7 M16.175,3 v1.1 M17.762,3 v0.7 M19.35,3 v1.5 M20.938,3 v0.7 M22.525,3 v1.1 M24.112,3 v0.7 M25.7,3 v2.0 M27.288,3 v0.7 M28.875,3 v1.1 M30.462,3 v0.7 M32.05,3 v1.5 M33.638,3 v0.7 M35.225,3 v1.1 M36.812,3 v0.7 M38.4,3 v2.6 M39.987,3 v0.7 M41.575,3 v1.1 M43.162,3 v0.7 M44.75,3 v1.5 M46.337,3 v0.7 M47.925,3 v1.1 M49.512,3 v0.7 M51.1,3 v2.0 M52.688,3 v0.7 M54.275,3 v1.1 M55.862,3 v0.7 M57.45,3 v1.5 M59.037,3 v0.7 M60.625,3 v1.1 M62.212,3 v0.7 M63.8,3 v2.6 M65.387,3 v0.7 M66.975,3 v1.1 M68.562,3 v0.7 M70.15,3 v1.5 M71.737,3 v0.7 M73.325,3 v1.1 M74.912,3 v0.7 M76.5,3 v2.0 M78.087,3 v0.7 M79.675,3 v1.1 M81.263,3 v0.7 M82.85,3 v1.5 M84.438,3 v0.7 M86.025,3 v1.1 M87.612,3 v0.7 M89.2,3 v2.6" stroke="currentColor" fill="none" stroke-width=".15"/><text x="13.6" y="6.9" class="dim">0 IN</text><text x="39" y="6.9" class="dim">1</text><text x="64.4" y="6.9" class="dim">2</text><text x="89.8" y="6.9" class="dim">3</text><path d="M6,54 v-2.6 M7,54 v-1.0 M8,54 v-1.0 M9,54 v-1.0 M10,54 v-1.0 M11,54 v-1.7 M12,54 v-1.0 M13,54 v-1.0 M14,54 v-1.0 M15,54 v-1.0 M16,54 v-2.6 M17,54 v-1.0 M18,54 v-1.0 M19,54 v-1.0 M20,54 v-1.0 M21,54 v-1.7 M22,54 v-1.0 M23,54 v-1.0 M24,54 v-1.0 M25,54 v-1.0 M26,54 v-2.6 M27,54 v-1.0 M28,54 v-1.0 M29,54 v-1.0 M30,54 v-1.0 M31,54 v-1.7 M32,54 v-1.0 M33,54 v-1.0 M34,54 v-1.0 M35,54 v-1.0 M36,54 v-2.6 M37,54 v-1.0 M38,54 v-1.0 M39,54 v-1.0 M40,54 v-1.0 M41,54 v-1.7 M42,54 v-1.0 M43,54 v-1.0 M44,54 v-1.0 M45,54 v-1.0 M46,54 v-2.6 M47,54 v-1.0 M48,54 v-1.0 M49,54 v-1.0 M50,54 v-1.0 M51,54 v-1.7 M52,54 v-1.0 M53,54 v-1.0 M54,54 v-1.0 M55,54 v-1.0 M56,54 v-2.6 M57,54 v-1.0 M58,54 v-1.0 M59,54 v-1.0 M60,54 v-1.0 M61,54 v-1.7 M62,54 v-1.0 M63,54 v-1.0 M64,54 v-1.0 M65,54 v-1.0 M66,54 v-2.6 M67,54 v-1.0 M68,54 v-1.0 M69,54 v-1.0 M70,54 v-1.0 M71,54 v-1.7 M72,54 v-1.0 M73,54 v-1.0 M74,54 v-1.0 M75,54 v-1.0 M76,54 v-2.6" stroke="currentColor" fill="none" stroke-width=".15"/><text x="6" y="50.4" class="dim" text-anchor="middle">0 CM</text><text x="16" y="50.4" class="dim" text-anchor="middle">1</text><text x="26" y="50.4" class="dim" text-anchor="middle">2</text><text x="36" y="50.4" class="dim" text-anchor="middle">3</text><text x="46" y="50.4" class="dim" text-anchor="middle">4</text><text x="56" y="50.4" class="dim" text-anchor="middle">5</text><text x="66" y="50.4" class="dim" text-anchor="middle">6</text><text x="76" y="50.4" class="dim" text-anchor="middle">7</text><text x="4.6" y="12.6" class="dim b">R5</text><text x="88.6" y="48.2" class="dim b" text-anchor="end">R2.5</text></svg>
+  <div class="abs lockup-wrap"><div class="lockup"><img src="sussek-icono.png" alt=""><div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div></div></div>
+  <div class="abs pitch"><h2>From print<br><em>to part.</em></h2><p>MM + IN · SCALE 1:1 · MEASURE IT.</p></div>
+</section>
+<section class="card back v5">
+  <div class="rep">
+    <div class="head"><h2>Inspection Report</h2><span class="sn">S/N 000347</span></div>
+    <div class="bar"></div>
+    <div class="cols">
+      <div>
+        <div class="part"><span class="k">Part</span><b>Full Name</b><span>Job Title</span></div>
+        <dl class="cont"><dt>T</dt><dd>920.478.2126</dd><dt>E</dt><dd>sales@sussek.com</dd><dt>W</dt><dd>sussek.com</dd><dt>A</dt><dd>805 Pierce St · Waterloo, WI 53594</dd></dl>
+      </div>
+      <div>
+        <div class="row"><span class="k">Supplier</span><b>Sussek Machine Co.</b></div>
+        <div class="row"><span class="k">Process</span><b>Milling · Turning · Hobbing</b></div>
+        <div class="row"><span class="k">Capacity</span><b>250+ CNC</b></div>
+        <div class="row"><span class="k">Certified</span><b>ISO 9001 · IATF · AS9100</b></div>
+        <div class="row"><span class="k">Since</span><b>1960 · US · MX · CN</b></div>
+      </div>
+    </div>
+    <div class="foot"><em>Ready for your next part.</em><span class="stamp">APPROVED</span></div>
+  </div>
+</section>
+<section class="card dieline">
+  <svg class="draw" viewBox="0 0 95 57">
+    <rect x="0" y="0" width="95" height="57" fill="none" stroke="#bbb" stroke-width=".1" stroke-dasharray="1 .6"/>
+    <path d="M8,3 H90.5 A1.5,1.5 0 0 1 92,4.5 V51.5 A2.5,2.5 0 0 0 89.5,54 H4.5 A1.5,1.5 0 0 1 3,52.5 V8 A5,5 0 0 1 8,3 Z" fill="none" stroke="#e6007e" stroke-width=".2"/>
+    <text x="47.5" y="24" class="dim" text-anchor="middle" fill="#e6007e" style="fill:#e6007e;font-size:2px">DIE LINE · TROQUEL (FRENTE)</text>
+    <text x="47.5" y="28" class="dim" text-anchor="middle" style="fill:#555;font-size:1.6px">89 × 51 MM · R5 CONVEXO SUP. IZQ. · R2.5 CÓNCAVO INF. DER. · R1.5 RESTO</text>
+    <text x="47.5" y="31" class="dim" text-anchor="middle" style="fill:#555;font-size:1.6px">SANGRADO 3 MM · NO IMPRIMIR ESTA PÁGINA</text>
+  </svg>
+</section>
+</body>
+</html>
