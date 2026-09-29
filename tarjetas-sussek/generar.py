@@ -8,6 +8,7 @@ Edita PERSONA y corre:  python3 generar.py
 Salen 3 diseños distintos, cada uno como diseno-N.html (frente + reverso,
 89 x 51 mm + 3 mm de sangrado).
 """
+import json
 import math
 from pathlib import Path
 
@@ -254,8 +255,12 @@ BASE_CSS = """
   .abs{position:absolute}
   .serif{font-family:"EB Garamond",Garamond,Georgia,serif}
 
-  .lockup{display:flex;align-items:center;gap:3mm}
-  .lockup img{height:12.5mm;width:auto;display:block}
+  .lockup{--ih:12.5mm;display:flex;align-items:flex-start}
+  .lockup img{height:var(--ih);width:auto;display:block}
+  .lockup .wm{height:calc(var(--ih) * .987);width:auto;margin:calc(var(--ih) * .033) 0 0 calc(var(--ih) * .099);display:block;overflow:visible}
+  .wm .ini{fill:var(--ini, currentColor)}
+  .wm .rest{fill:var(--rest, currentColor)}
+  .c1.front .wm, .d2.back .wm, .d3.front .wm{--ini:#202054;--rest:#26262b}
   .word{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.6mm;line-height:1.02}
   .word span{display:block}
   .word span::first-letter{font-size:1.16em;font-weight:600}
@@ -274,7 +279,11 @@ BASE_CSS = """
 
 FONTS = '<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Open+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Archivo:wdth,wght@62..125,500..900&display=swap" rel="stylesheet">'
 WORD = '<div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div>'
-LOCKUP = f'<div class="lockup"><img src="sussek-icono.png" alt="">{WORD}</div>'
+# Nombre vectorizado del logo original (sussek.com): iniciales azules y resto gris oscuro
+_WM = json.loads((Path(__file__).parent / "sussek-nombre.json").read_text())
+WORDMARK = (f'<svg class="wm" viewBox="0 0 {_WM["w"]} {_WM["h"]}" role="img" aria-label="Sussek Machine Company">'
+            f'<path class="ini" d="{_WM["ini"]}"/><path class="rest" d="{_WM["rest"]}"/></svg>')
+LOCKUP = f'<div class="lockup"><img src="sussek-icono.png" alt="">{WORDMARK}</div>'
 
 
 def data_plain(p):
@@ -350,7 +359,7 @@ def diseno_2(p):
   .d2 .pitch .eyebrow b{color:var(--glow)}
   .d2.back{background:#fff;color:var(--navy)}
   .d2.back .lockup-wrap{left:var(--m);top:var(--m)}
-  .d2.back .lockup img{height:10.5mm}
+  .d2.back .lockup{--ih:10.5mm}
   .d2.back .word{font-size:3.9mm;color:var(--navy)}
   .d2.back .who{right:var(--m);top:var(--m);text-align:right}
   .d2.back .who p{color:var(--muted)}
@@ -398,7 +407,7 @@ def diseno_3(p):
   .d3.front{background:linear-gradient(160deg,#ffffff 0%,#f3f4f8 100%);color:var(--navy)}
   .d3.front .draw{color:#8a8fb4}
   .d3.front .lockup-wrap{left:22.5mm;top:15.5mm}
-  .d3.front .lockup img{height:16mm}
+  .d3.front .lockup{--ih:16mm}
   .d3.front .word{font-size:5.4mm;color:var(--navy)}
   .d3.front .foot{left:var(--m);right:var(--m);bottom:var(--m);display:flex;justify-content:space-between;align-items:baseline;border-top:.2mm solid #d5d8e4;padding-top:2mm}
   .d3.front .foot em{font-size:2.6mm;color:var(--navy)}
@@ -486,7 +495,7 @@ def concepto_1(p):
   .c1.front{background:#fff;color:var(--navy)}
   .c1.front .draw{color:var(--navy)}
   .c1.front .lockup-wrap{left:var(--m);top:var(--m)}
-  .c1.front .lockup img{height:9mm}
+  .c1.front .lockup{--ih:9mm}
   .c1.front .word{font-size:3.3mm;color:var(--navy)}
   .c1.front .tag{right:var(--m);top:var(--m);text-align:right;font-family:"IBM Plex Mono",monospace;font-size:1.45mm;line-height:1.7;color:var(--muted)}
   .c1.front .tag b{color:var(--navy);font-weight:600}
@@ -536,6 +545,7 @@ def concepto_2(p):
   .c2.back .grid{position:absolute;inset:0;opacity:.07;background-image:linear-gradient(#fff .1mm,transparent .1mm),linear-gradient(90deg,#fff .1mm,transparent .1mm);background-size:3mm 3mm}
   .c2.back .logo{left:0;right:0;top:14mm;display:flex;flex-direction:column;align-items:center;gap:3.4mm;text-align:center}
   .c2.back .logo img{height:17mm}
+  .c2.back .logo .wm{height:15mm;width:auto}
   .c2.back .logo .word{font-size:5mm}
   .c2.back .rule{left:50%;top:57mm;width:10mm;margin-left:-5mm;height:.5mm;background:var(--steel)}
   .c2.back .data{left:0;right:0;bottom:12mm;display:block;text-align:center;font-size:1.9mm;line-height:1.85}
@@ -561,7 +571,7 @@ def concepto_2(p):
 </section>
 <section class="card back c2">
   <div class="grid"></div>
-  <div class="abs logo"><img src="sussek-icono.png" alt="">{WORD}</div>
+  <div class="abs logo"><img src="sussek-icono.png" alt="">{WORDMARK}</div>
   <i class="abs rule"></i>
   <p class="abs data">{p["tel"]}<br>{p["email"]}<br>{p["web"]}<br><span class="dim2">{p["dir"]}</span></p>
 </section>"""
@@ -588,7 +598,8 @@ def concepto_3(p):
   .c3 .eng{text-shadow:0 .14mm 0 rgba(255,255,255,.65)}
   .c3.back .eng{text-shadow:0 -.12mm 0 rgba(0,0,0,.5)}
   .c3.front .lockup-wrap{left:12.5mm;top:12mm}
-  .c3.front .lockup img{height:11mm;filter:drop-shadow(0 .2mm .3mm rgba(0,0,0,.35))}
+  .c3.front .lockup{--ih:11mm}
+  .c3.front .lockup img{filter:drop-shadow(0 .2mm .3mm rgba(0,0,0,.35))}
   .c3.front .word{font-size:4.1mm}
   .c3.front .made{right:12.5mm;top:12.6mm;text-align:right;font-family:"IBM Plex Mono",monospace;font-size:1.4mm;line-height:1.75;font-weight:600;letter-spacing:.08mm}
   .c3.front .cells{left:12.5mm;right:12.5mm;bottom:12mm;display:grid;grid-template-columns:1.5fr 1fr 1fr;border:.25mm solid var(--navy)}
@@ -631,8 +642,8 @@ def concepto_3(p):
 # =====================================================================
 
 ICON_AR = 249 / 221          # ancho/alto del ícono
-WORD_W = {4.4: 17.85}        # ancho medido del nombre (mm) según tamaño de letra
-WORD_H = {4.4: 15.84}
+WM_AR = 209 / 149           # ancho/alto del nombre vectorizado
+WM_H, WM_TOP, WM_GAP = .987, .033, .099   # proporciones respecto al alto del ícono (logo original)
 
 
 def dim_v_rot(x, y1, y2, text):
@@ -673,10 +684,9 @@ def gear_od_callout(cx, cy, R, x_end, y_text, N=22):
 def variacion_1(p):
     ix, top, ih, fs = 12.0, 13.0, 12.0, 4.4
     iw = ih * ICON_AR
-    lh = max(ih, WORD_H[fs])
-    iy1 = top + (lh - ih) / 2
+    iy1 = top
     iy2 = iy1 + ih
-    wx2 = ix + iw + 3 + WORD_W[fs]
+    wx2 = ix + iw + ih * WM_GAP + ih * WM_H * WM_AR
     cx, cy, R = 72.0, 28.5, 16.5
     art = [gear(cx, cy, R), gear_callout(cx, cy, R, 86.5, 9.8),
            gear_od_callout(cx, cy, R, 38.5, 36.2),
@@ -699,7 +709,7 @@ def variacion_1(p):
   .v1.front .grid{{position:absolute;inset:0;opacity:.04;background-image:linear-gradient(#fff .1mm,transparent .1mm),linear-gradient(90deg,#fff .1mm,transparent .1mm);background-size:3mm 3mm;background-position:.5mm .5mm}}
   .v1.front .draw{{color:var(--line)}}
   .v1.front .lockup-wrap{{left:{ix}mm;top:{top}mm}}
-  .v1.front .lockup img{{height:{ih}mm}}
+  .v1.front .lockup{{--ih:{ih}mm}}
   .v1.front .word{{font-size:{fs}mm}}
   .v1.front .pitch{{left:var(--m);bottom:var(--m)}}
   .v1 .pitch h2{{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5.4mm;line-height:1.02}}
@@ -849,7 +859,7 @@ def variacion_5(p):
   .v5.front{{background:radial-gradient(110% 130% at 70% 45%,#2a2a6e 0%,var(--navy) 45%,var(--navy-deep) 100%);color:#fff}}
   .v5.front .draw{{color:var(--line)}}
   .v5.front .lockup-wrap{{left:var(--m);top:19mm}}
-  .v5.front .lockup img{{height:12mm}}
+  .v5.front .lockup{{--ih:12mm}}
   .v5.front .word{{font-size:4.4mm}}
   .v5.front .pitch{{right:var(--m);top:21mm;text-align:right}}
   .v5 .pitch h2{{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5.4mm;line-height:1.02}}
@@ -952,8 +962,8 @@ def regla(p, troquel=True):
     css = CONCEPT_CSS + f"""
   .{cls}.front{{background:radial-gradient(110% 130% at 70% 45%,#2a2a6e 0%,var(--navy) 45%,var(--navy-deep) 100%);color:#fff}}
   .{cls}.front .draw{{color:var(--line)}}
-  .{cls}.front .lockup-wrap{{left:var(--m);top:19mm}}
-  .{cls}.front .lockup img{{height:12mm}}
+  .{cls}.front .lockup-wrap{{left:var(--m);top:19.5mm}}
+  .{cls}.front .lockup{{--ih:13.5mm}}
   .{cls}.front .word{{font-size:4.4mm}}
   .{cls}.front .pitch{{right:var(--m);top:21mm;text-align:right}}
   .{cls} .pitch h2{{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5.4mm;line-height:1.02}}
@@ -965,7 +975,7 @@ def regla(p, troquel=True):
   .{cls}.back .data{{left:var(--m);top:22.5mm;color:var(--ink)}}
   .{cls}.back .data dt{{color:var(--navy)}}
   .{cls}.back .plain{{display:block;font-size:1.95mm;line-height:1.75}}
-  .{cls}.back .foot{{left:var(--m);right:var(--m);bottom:var(--m);display:flex;align-items:center;gap:2.4mm;padding-top:2.2mm;border-top:.2mm solid #d5d8e4;font-size:1.45mm;font-weight:700;letter-spacing:.22mm;text-transform:uppercase}}
+  .{cls}.back .foot{{left:var(--m);right:var(--m);bottom:var(--m);display:flex;align-items:center;gap:2.4mm;font-size:1.45mm;font-weight:700;letter-spacing:.22mm;text-transform:uppercase}}
   .{cls}.back .foot img{{height:4.6mm;display:block}}
   .{cls}.back .foot .svc{{flex:1;color:var(--navy)}}
   .{cls}.back .foot .geo{{color:var(--muted)}}
