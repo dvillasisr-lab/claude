@@ -929,7 +929,24 @@ def variacion_5(p):
 
 # ---------- Tarjeta REGLA: frente con reglas reales / reverso con brida y cuadro de rótulo ----------
 
-def regla(p, troquel=True):
+TEMAS = {
+    # frente: fondo, líneas, texto, texto suave, iniciales y resto del nombre | reverso: fondo, tinta, texto, suave
+    "azul":    dict(bg="radial-gradient(110% 130% at 70% 45%,#2a2a6e 0%,#202054 45%,#15153a 100%)", line="#cdd5ee",
+                    txt="#fff", soft="#aab0d8", ini="#fff", rest="#fff",
+                    bbg="#fff", bink="#202054", btxt="#1d1d22", bsoft="#6b6f95"),
+    "grafito": dict(bg="radial-gradient(110% 130% at 70% 45%,#34363b 0%,#1f1f1f 50%,#141416 100%)", line="#c9ccd1",
+                    txt="#fff", soft="#9a9ea6", ini="#fff", rest="#fff",
+                    bbg="#fff", bink="#1f1f1f", btxt="#1f1f1f", bsoft="#6d7078", accent="#202054"),
+    "acero":   dict(bg="linear-gradient(120deg,#f1f2f4 0%,#e3e6ea 45%,#f4f5f7 70%,#d9dce1 100%)", line="#202054",
+                    txt="#202054", soft="#565656", ini="#202054", rest="#1f1f1f",
+                    bbg="#202054", bink="#cdd5ee", btxt="#fff", bsoft="#aab0d8", back_dark=True),
+    "blanco":  dict(bg="#fff", line="#202054", txt="#202054", soft="#565656", ini="#202054", rest="#1f1f1f",
+                    bbg="#f3f4f7", bink="#202054", btxt="#1d1d22", bsoft="#6b6f95"),
+}
+
+
+def regla(p, troquel=True, tema="azul"):
+    t = TEMAS[tema]
     x_in = 13 if troquel else 8.5
     if troquel:
         W, H, B = 95, 57, 3
@@ -950,7 +967,7 @@ def regla(p, troquel=True):
     back_art = (flange(cx, cy, R, hole)
                 + leader(ox - .15, oy + .1, ox - 3.2, oy + 4.2, ox - 11, f"Ø{2*R:.2f}", anchor="start")
                 + leader(hx - hole * .7, hy + hole * .7, hx - 4.2, 35.6, hx - 18.5, f"4× Ø{2*hole:.2f} THRU", anchor="start"))
-    cls = "rg" + ("t" if troquel else "c")
+    cls = "rg" + ("t" if troquel else "c") + tema
     clip = ""
     if troquel:
         clip = f"""
@@ -960,25 +977,26 @@ def regla(p, troquel=True):
     .dieline{{display:none}}
   }}"""
     css = CONCEPT_CSS + f"""
-  .{cls}.front{{background:radial-gradient(110% 130% at 70% 45%,#2a2a6e 0%,var(--navy) 45%,var(--navy-deep) 100%);color:#fff}}
-  .{cls}.front .draw{{color:var(--line)}}
+  .{cls}.front{{background:{t["bg"]};color:{t["txt"]}}}
+  .{cls}.front .draw{{color:{t["line"]}}}
+  .{cls}.front .wm{{--ini:{t["ini"]};--rest:{t["rest"]}}}
   .{cls}.front .lockup-wrap{{left:var(--m);top:19.5mm}}
   .{cls}.front .lockup{{--ih:13.5mm}}
   .{cls}.front .word{{font-size:4.4mm}}
   .{cls}.front .pitch{{right:var(--m);top:21mm;text-align:right}}
   .{cls} .pitch h2{{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5.4mm;line-height:1.02}}
-  .{cls} .pitch p{{margin-top:2mm;font-family:"IBM Plex Mono",monospace;font-size:1.45mm;letter-spacing:.1mm;color:var(--soft)}}
-  .{cls}.back{{background:#fff;color:var(--navy)}}
-  .{cls}.back .draw{{color:var(--navy)}}
+  .{cls} .pitch p{{margin-top:2mm;font-family:"IBM Plex Mono",monospace;font-size:1.45mm;letter-spacing:.1mm;color:{t["soft"]}}}
+  .{cls}.back{{background:{t["bbg"]};color:{t.get("accent", t["bink"]) if not t.get("back_dark") else "#fff"}}}
+  .{cls}.back .draw{{color:{t["bink"]}}}
   .{cls}.back .who{{left:var(--m);top:var(--m)}}
-  .{cls}.back .who p{{color:var(--muted)}}
-  .{cls}.back .data{{left:var(--m);top:22.5mm;color:var(--ink)}}
+  .{cls}.back .who p{{color:{t["bsoft"]}}}
+  .{cls}.back .data{{left:var(--m);top:22.5mm;color:{t["btxt"]}}}
   .{cls}.back .data dt{{color:var(--navy)}}
   .{cls}.back .plain{{display:block;font-size:1.95mm;line-height:1.75}}
   .{cls}.back .foot{{left:var(--m);right:var(--m);bottom:var(--m);display:flex;align-items:center;gap:2.4mm;font-size:1.45mm;font-weight:700;letter-spacing:.22mm;text-transform:uppercase}}
   .{cls}.back .foot img{{height:4.6mm;display:block}}
-  .{cls}.back .foot .svc{{flex:1;color:var(--navy)}}
-  .{cls}.back .foot .geo{{color:var(--muted)}}
+  .{cls}.back .foot .svc{{flex:1;color:{t.get("accent", t["btxt"] if t.get("back_dark") else t["bink"])}}}
+  .{cls}.back .foot .geo{{color:{t["bsoft"]}}}
   .dieline{{background:#fff}}{clip}
 """
     if not troquel:
@@ -1019,7 +1037,10 @@ def regla(p, troquel=True):
 
 DISENOS = {"variacion-1-plano": variacion_1, "variacion-2-inspeccion": variacion_2, "variacion-3-globos": variacion_3,
            "variacion-5-herramienta": variacion_5,
-           "regla-troquel": lambda p: regla(p, True), "regla-cuadrada": lambda p: regla(p, False)}
+           "regla-troquel": lambda p: regla(p, True), "regla-cuadrada": lambda p: regla(p, False),
+           "regla-color-grafito": lambda p: regla(p, False, "grafito"),
+           "regla-color-acero": lambda p: regla(p, False, "acero"),
+           "regla-color-blanco": lambda p: regla(p, False, "blanco")}
 
 
 def page(title, css, body, vertical=False):
