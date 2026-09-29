@@ -17,6 +17,14 @@ The best business card this team could have. Portfolio / award quality (think Ty
 5. Direction the tractor faces: **left** (the pull goes left). If a finish/300 ft device is used, it sits ahead of the tractor, on the left.
 6. No em or en dashes in any copy. No italic headlines. No gradients-as-decoration, no generic stock textures.
 
+## Client taste learned from direct feedback (weight these heavily)
+- Rejected ALL round-0 candidates (`print/swarm/a-editorial`, `b-machined`, `c-motorsport`; council notes in `ROUND0_FEEDBACK.md`). They are the floor.
+- Wants HEAVY METAL **big**. Complained twice that the name "doesn't show enough".
+- Prefers the logo in **flat white** (said "que las letras HEAVY METAL sean solo blancas"), not chrome gradients. Yellow logo is acceptable as a single accent.
+- Complained the tractor was "cortado" (cropped) when stack/cage/wheels were cut. Wants the tractor bigger and fully visible.
+- Rejected a design that looked like the Facebook banner shrunk down. Wants real editorial design, portfolio/award level, Pinterest-viral.
+- Likes: "“THE EVIL ONE”" in yellow with quotes, black background, the engine-open photo, the finish line ahead on the left, the profile badge ring idea.
+
 ## What the client liked
 - The chrome/white logo on black, the yellow accent, the real engine-open tractor photo, "THE EVIL ONE" in yellow.
 - The Facebook cover and profile badge in `ref/` define the brand look. The card should belong to the same family but be its own, better, piece.
