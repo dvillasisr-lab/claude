@@ -1,0 +1,11 @@
+# Calibrated Force
+
+**Philosophy:** Power, recorded. The work treats brute mechanical force the way a metrology lab treats a gauge block: with silence, precision and reverence. Nothing shouts. The loudness of the subject is carried entirely by how carefully it is measured.
+
+**Space and form.** Every surface is a calibrated field. A strict hairline grid divides the plane into compartments the way an inspection plate divides a machine into its facts. Most compartments stay nearly empty; the emptiness is deliberate tension, the held breath before load. Form arrives as silhouettes and scales, never as illustration: a profile reduced to a single flat shape, a ruler whose ticks accumulate with patient regularity until one of them breaks rank. Each alignment must look like the result of countless refinements, the product of someone who has spent a career setting type on steel.
+
+**Color and material.** Two substrates only: carbon black and brushed-aluminum grey, as if one side were stamped and the other machined. Silver and white carry information. A single industrial yellow appears once per surface, and only where something has been achieved or must not be missed. Continuous-tone imagery is translated into halftone dots, so that photographs become fields of measured marks, industrial rather than pictorial. Painstaking attention to value: the blacks are never flat, the greys never accidental.
+
+**Scale and rhythm.** Extreme contrast of size is the engine. Monumental letterforms sit beside microscopic monospaced labels that read like part numbers, tolerances and serials. Rhythm is mechanical: repeated ticks, repeated dots, repeated rules, each spaced to the unit. Repetition is not decoration; it is evidence that something was counted.
+
+**Composition and hierarchy.** One dominant gesture per surface, then a quiet chain of subordinate facts read in order, like a spec plate read top to bottom. Text is sparse and clinical, uppercase, set small with generous tracking, never a sentence where a label will do. Registration crosshairs and corner marks frame the field as a document of record. The finished object must feel meticulously crafted, master-level in execution, the kind of artifact that looks as if it took weeks to calibrate and could be filed in an engineering archive.
