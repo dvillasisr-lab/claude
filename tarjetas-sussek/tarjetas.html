@@ -1,102 +1,87 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <title>Sussek Machine Company · Tarjetas</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
   /* Tarjeta final 89 x 51 mm + 3 mm de sangrado por lado = 95 x 57 mm */
   @page { size: 95mm 57mm; margin: 0; }
   :root{
-    --ink:#15171A; --steel:#2A2E33; --paper:#EFEBE3; --orange:#E4571B; --muted:#8C8F93;
+    --navy:#202054; --navy-deep:#16163d; --ink:#1f1f1f; --gray:#565656; --paper:#ffffff; --mist:#F7F9FB;
+    --steel:linear-gradient(90deg,#8e949b,#e9ecef 30%,#a9afb5 55%,#f4f6f7 75%,#8e949b);
     --bleed:3mm; --safe:5mm;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{background:#d9d6d0}
-  body{font-family:"Archivo",Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  html,body{background:#d9dce1}
+  body{font-family:"Open Sans",Helvetica,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .card{width:95mm;height:57mm;position:relative;overflow:hidden;page-break-after:always;break-after:page}
   .inner{position:absolute;inset:calc(var(--bleed) + var(--safe))}
 
-  /* FRENTE */
-  .front{background:var(--ink);color:var(--paper)}
-  .front .grid{position:absolute;inset:0;opacity:.07;
-    background-image:linear-gradient(var(--paper) .15mm,transparent .15mm),linear-gradient(90deg,var(--paper) .15mm,transparent .15mm);
-    background-size:5mm 5mm;background-position:3mm 3mm}
-  .front .stripe{position:absolute;left:0;right:0;bottom:0;height:calc(var(--bleed) + 3.2mm);
-    background:repeating-linear-gradient(-45deg,var(--orange) 0 2.2mm,var(--ink) 2.2mm 4.4mm)}
-  .front .inner{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:3mm;bottom:calc(var(--bleed) + 6mm)}
+  /* FRENTE: logo oficial sobre blanco */
+  .front{background:var(--paper)}
+  .front .inner{bottom:calc(var(--bleed) + 7.5mm);display:flex;align-items:center;justify-content:center}
   .lockup{display:flex;align-items:center;gap:3.6mm}
-  .mark{width:15mm;height:15mm;flex:none}
-  .word{line-height:.86}
-  .word b{display:block;font-weight:900;font-stretch:125%;font-size:9.6mm;letter-spacing:.2mm}
-  .word span{display:block;font-weight:500;font-stretch:125%;font-size:2.35mm;letter-spacing:1.05mm;margin-top:1.6mm;color:var(--orange)}
-  .front .tag{font-family:"IBM Plex Mono",monospace;font-size:1.9mm;letter-spacing:.35mm;color:var(--muted);text-transform:uppercase}
+  .lockup img{height:17mm;width:auto;display:block}
+  .word{font-family:"EB Garamond",Garamond,Georgia,serif;color:var(--navy);font-weight:500;font-size:6.4mm;line-height:.98;letter-spacing:.08mm}
+  .word span{display:block}
+  .word span::first-letter{font-size:1.18em;font-weight:600}
+  .front .band{position:absolute;left:0;right:0;bottom:0;height:calc(var(--bleed) + 6.5mm);background:var(--navy);
+    display:flex;align-items:flex-start;justify-content:center;padding-top:2.25mm}
+  .front .band::before{content:"";position:absolute;left:0;right:0;top:0;height:.6mm;background:var(--steel)}
+  .front .band p{color:#fff;font-size:1.85mm;font-weight:600;letter-spacing:.9mm;text-transform:uppercase}
 
-  /* REVERSO */
-  .back{background:var(--paper);color:var(--ink)}
-  .back .rail{position:absolute;top:0;bottom:0;left:0;width:calc(var(--bleed) + 2.4mm);background:var(--orange)}
-  .back .inner{left:calc(var(--bleed) + 2.4mm + 4.5mm);display:grid;grid-template-rows:auto 1fr auto}
-  .who h1{font-weight:800;font-stretch:112%;font-size:4.5mm;letter-spacing:.05mm;line-height:1}
-  .who p{font-family:"IBM Plex Mono",monospace;font-size:1.95mm;letter-spacing:.3mm;text-transform:uppercase;margin-top:1.4mm;color:#5b5f64}
-  .data{align-self:end;display:grid;grid-template-columns:auto 1fr;column-gap:2.6mm;row-gap:.95mm;
-    font-family:"IBM Plex Mono",monospace;font-size:2.05mm;line-height:1.25}
-  .data dt{color:var(--orange);font-weight:500;letter-spacing:.2mm}
-  .data dd{color:var(--ink)}
-  .foot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:2.2mm;padding-top:1.8mm;border-top:.2mm solid #c9c4ba}
-  .foot .mini{display:flex;align-items:center;gap:1.4mm;font-weight:900;font-stretch:125%;font-size:2.1mm;letter-spacing:.35mm}
-  .foot .mini svg{width:4mm;height:4mm}
-  .foot .serial{font-family:"IBM Plex Mono",monospace;font-size:1.6mm;color:var(--muted);letter-spacing:.2mm}
+  /* REVERSO: datos sobre azul marino */
+  .back{background:var(--navy);color:#fff}
+  .back .edge{position:absolute;top:0;bottom:0;right:0;width:calc(var(--bleed) + 1.4mm);background:var(--steel);background-size:100% 100%;
+    background-image:linear-gradient(180deg,#8e949b,#eef0f2 30%,#a9afb5 55%,#f4f6f7 75%,#8e949b)}
+  .back .inner{right:calc(var(--bleed) + 1.4mm + 4.5mm);display:grid;grid-template-columns:1fr auto;grid-template-rows:auto 1fr auto;column-gap:4mm}
+  .who{grid-column:1/2}
+  .who h1{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5.2mm;line-height:1;letter-spacing:.05mm}
+  .who p{font-size:1.9mm;font-weight:600;letter-spacing:.45mm;text-transform:uppercase;margin-top:1.5mm;color:#b9bede}
+  .back .icon{grid-column:2;grid-row:1/2;height:8.5mm;width:auto}
+  .data{grid-column:1/3;align-self:end;display:grid;grid-template-columns:auto 1fr;column-gap:2.4mm;row-gap:.85mm;font-size:2mm;line-height:1.3}
+  .data dt{color:#9aa0c9;font-weight:700;font-size:1.65mm;letter-spacing:.3mm;padding-top:.2mm}
+  .data dd{color:#fff}
+  .foot{grid-column:1/3;margin-top:2.2mm;padding-top:1.6mm;border-top:.2mm solid rgba(255,255,255,.22);
+    display:flex;justify-content:space-between;font-size:1.6mm;letter-spacing:.35mm;text-transform:uppercase;color:#9aa0c9}
+  .foot b{color:#fff;font-weight:600}
 
   @media screen{
     body{display:flex;flex-wrap:wrap;gap:10mm;padding:12mm;justify-content:center}
-    .card{box-shadow:0 2mm 6mm rgba(0,0,0,.25)}
+    .card{box-shadow:0 2mm 6mm rgba(0,0,0,.22)}
   }
 </style>
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute">
-  <defs>
-    <!-- Monograma: tuerca hexagonal con una S de trazo recto -->
-    <symbol id="nut" viewBox="0 0 100 100">
-      <polygon points="50,3 90.7,26.5 90.7,73.5 50,97 9.3,73.5 9.3,26.5" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="round"/>
-      <path d="M67 33 H42 a9 9 0 0 0 0 18 H58 a9 9 0 0 1 0 18 H33" fill="none" stroke="#E4571B" stroke-width="9" stroke-linecap="square"/>
-    </symbol>
-  </defs>
-</svg>
-
 <!-- FRENTE -->
 <section class="card front">
-  <div class="grid"></div>
   <div class="inner">
     <div class="lockup">
-      <svg class="mark"><use href="#nut"/></svg>
-      <div class="word"><b>SUSSEK</b><span>MACHINE COMPANY</span></div>
+      <img src="sussek-icono.png" alt="">
+      <div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div>
     </div>
-    <p class="tag">Maquinado · Fabricación · Mantenimiento industrial</p>
   </div>
-  <div class="stripe"></div>
+  <div class="band"><p>Excellence Through Innovation</p></div>
 </section>
 
-<!-- REVERSO (datos de ejemplo: reemplazar) -->
+<!-- REVERSO: nombre y cargo son de ejemplo; datos de la planta de Waterloo tomados de sussek.com -->
 <section class="card back">
-  <div class="rail"></div>
+  <div class="edge"></div>
   <div class="inner">
     <div class="who">
-      <h1>Nombre Apellido</h1>
-      <p>Director de Operaciones</p>
+      <h1>Full Name</h1>
+      <p>Job Title</p>
     </div>
+    <img class="icon" src="sussek-icono.png" alt="">
     <dl class="data">
-      <dt>T</dt><dd>+52 55 0000 0000</dd>
-      <dt>E</dt><dd>nombre@sussekmachine.com</dd>
-      <dt>W</dt><dd>sussekmachine.com</dd>
-      <dt>D</dt><dd>Calle Industrial 000, Ciudad, País</dd>
+      <dt>TEL</dt><dd>920.478.2126</dd>
+      <dt>EMAIL</dt><dd>sales@sussek.com</dd>
+      <dt>WEB</dt><dd>sussek.com</dd>
+      <dt>HQ</dt><dd>805 Pierce St · Waterloo, WI 53594</dd>
     </dl>
-    <div class="foot">
-      <div class="mini"><svg><use href="#nut"/></svg>SUSSEK</div>
-      <div class="serial">SMC · EST. 2026</div>
-    </div>
+    <div class="foot"><span>Precision Machining · Assembly</span><span><b>USA</b> · <b>México</b> · <b>China</b></span></div>
   </div>
 </section>
 
