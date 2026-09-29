@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sussek · variante-3-regla</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&family=Open+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @page { size: 95mm 57mm; margin: 0; }
+  :root{
+    --navy:#202054; --navy-deep:#17173f; --line:#c9d2ea; --soft:#b3b8dc; --ink:#1f1f22; --mist:#f3f4f7;
+    --steel:linear-gradient(90deg,#8e949b,#e9ecef 30%,#a9afb5 55%,#f4f6f7 75%,#8e949b);
+    --bleed:3mm; --safe:5.5mm; --m:calc(var(--bleed) + var(--safe));
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#d9dce1}
+  body{font-family:"Open Sans",Helvetica,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .card{width:95mm;height:57mm;position:relative;overflow:hidden;page-break-after:always;break-after:page}
+  .draw{position:absolute;inset:0;width:95mm;height:57mm}
+  .dim{font-family:"IBM Plex Mono",monospace;font-size:1.5px;letter-spacing:.04px;fill:currentColor}
+  .abs{position:absolute}
+
+  .lockup{display:flex;align-items:center;gap:3mm}
+  .lockup img{height:11mm;width:auto;display:block}
+  .word{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.3mm;line-height:1.06;letter-spacing:.02mm}
+  .word span{display:block}
+  .word span::first-letter{font-size:1.16em;font-weight:600}
+  .caps{font-size:1.7mm;font-weight:700;letter-spacing:.24mm;text-transform:uppercase;line-height:1.75}
+  .caps .sub{font-weight:600}
+  .rule{display:block;width:9mm;height:.5mm;background:var(--steel);margin-bottom:2mm}
+
+  .who h1{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5mm;line-height:1.05;letter-spacing:.01mm}
+  .who p{font-size:1.75mm;font-weight:700;letter-spacing:.26mm;text-transform:uppercase;margin-top:1.8mm}
+  .data{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:2.6mm;row-gap:1mm;font-size:1.95mm;line-height:1.3}
+  .data dt{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:1.55mm}
+
+  @media screen{
+    body{display:flex;flex-wrap:wrap;gap:10mm;padding:12mm;justify-content:center}
+    .card{box-shadow:0 2mm 6mm rgba(0,0,0,.22)}
+  }
+
+  .v3.front{background:radial-gradient(130% 120% at 50% 30%,#29296c 0%,var(--navy) 50%,var(--navy-deep) 100%);color:#fff}
+  .v3.front .draw{color:var(--line)}
+  .v3.front .lockup-wrap{left:0;right:0;top:12mm;display:flex;justify-content:center}
+  .v3.front .lockup img{height:13mm}
+  .v3.front .word{font-size:5mm}
+  .v3.front .caps{left:0;right:0;top:36mm;text-align:center;color:#fff}
+  .v3.front .caps .sub{color:var(--soft)}
+  .v3.back{background:#fff;color:var(--navy)}
+  .v3.back .draw{color:var(--navy)}
+  .v3.back .who-wrap{left:var(--m);top:calc(var(--m) + 2mm)}
+  .v3.back .who p{color:#6b6f95}
+  .v3.back .data-wrap{left:var(--m);bottom:calc(var(--m) + 7mm);color:var(--ink)}
+  .v3.back .data dt{color:var(--navy)}
+  .v3.back .band{left:0;right:0;bottom:0;height:calc(var(--bleed) + 7.2mm);background:var(--navy);color:#fff;display:flex;align-items:flex-start;justify-content:space-between;padding:2.7mm var(--m) 0;font-size:1.5mm;font-weight:700;letter-spacing:.22mm;text-transform:uppercase}
+  .v3.back .band::before{content:"";position:absolute;left:0;right:0;top:0;height:.5mm;background:var(--steel)}
+  .v3.back .band span:last-child{color:var(--soft)}
+</style>
+</head>
+<body>
+<!-- Nombre y cargo son de ejemplo; datos de la planta de Waterloo tomados de sussek.com -->
+
+<section class="card front v3"><svg class="draw" viewBox="0 0 95 57"><path d="M7,54 v-2.6 M8,54 v-1.0 M9,54 v-1.0 M10,54 v-1.0 M11,54 v-1.0 M12,54 v-1.6 M13,54 v-1.0 M14,54 v-1.0 M15,54 v-1.0 M16,54 v-1.0 M17,54 v-2.6 M18,54 v-1.0 M19,54 v-1.0 M20,54 v-1.0 M21,54 v-1.0 M22,54 v-1.6 M23,54 v-1.0 M24,54 v-1.0 M25,54 v-1.0 M26,54 v-1.0 M27,54 v-2.6 M28,54 v-1.0 M29,54 v-1.0 M30,54 v-1.0 M31,54 v-1.0 M32,54 v-1.6 M33,54 v-1.0 M34,54 v-1.0 M35,54 v-1.0 M36,54 v-1.0 M37,54 v-2.6 M38,54 v-1.0 M39,54 v-1.0 M40,54 v-1.0 M41,54 v-1.0 M42,54 v-1.6 M43,54 v-1.0 M44,54 v-1.0 M45,54 v-1.0 M46,54 v-1.0 M47,54 v-2.6 M48,54 v-1.0 M49,54 v-1.0 M50,54 v-1.0 M51,54 v-1.0 M52,54 v-1.6 M53,54 v-1.0 M54,54 v-1.0 M55,54 v-1.0 M56,54 v-1.0 M57,54 v-2.6 M58,54 v-1.0 M59,54 v-1.0 M60,54 v-1.0 M61,54 v-1.0 M62,54 v-1.6 M63,54 v-1.0 M64,54 v-1.0 M65,54 v-1.0 M66,54 v-1.0 M67,54 v-2.6 M68,54 v-1.0 M69,54 v-1.0 M70,54 v-1.0 M71,54 v-1.0 M72,54 v-1.6 M73,54 v-1.0 M74,54 v-1.0 M75,54 v-1.0 M76,54 v-1.0 M77,54 v-2.6 M78,54 v-1.0 M79,54 v-1.0 M80,54 v-1.0 M81,54 v-1.0 M82,54 v-1.6 M83,54 v-1.0 M84,54 v-1.0 M85,54 v-1.0 M86,54 v-1.0 M87,54 v-2.6" stroke="currentColor" fill="none" stroke-width=".16"/><text x="7" y="50.10" class="dim" text-anchor="middle">0</text><text x="17" y="50.10" class="dim" text-anchor="middle">1</text><text x="27" y="50.10" class="dim" text-anchor="middle">2</text><text x="37" y="50.10" class="dim" text-anchor="middle">3</text><text x="47" y="50.10" class="dim" text-anchor="middle">4</text><text x="57" y="50.10" class="dim" text-anchor="middle">5</text><text x="67" y="50.10" class="dim" text-anchor="middle">6</text><text x="77" y="50.10" class="dim" text-anchor="middle">7</text><text x="87" y="50.10" class="dim" text-anchor="middle">8</text><circle cx="11" cy="11" r="0.88" stroke="currentColor" fill="none" stroke-width=".14"/><path d="M9.4,11 H12.6 M11,9.4 V12.6" stroke="currentColor" fill="none" stroke-width=".14"/><circle cx="84" cy="11" r="0.88" stroke="currentColor" fill="none" stroke-width=".14"/><path d="M82.4,11 H85.6 M84,9.4 V12.6" stroke="currentColor" fill="none" stroke-width=".14"/></svg>
+  <div class="abs lockup-wrap"><div class="lockup"><img src="sussek-icono.png" alt=""><div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div></div></div>
+  <p class="abs caps">Precision Machining <span class="sub">· Assembly · Engineering</span></p>
+</section>
+<section class="card back v3"><svg class="draw" viewBox="0 0 95 57"><g opacity=".5"><path d="M112.800,3.000 L112.777,3.980 L115.916,5.008 L115.724,6.630 L112.432,6.898 L112.091,8.383 L111.815,9.324 L114.581,11.130 L113.976,12.647 L110.727,12.053 L110.013,13.400 L109.503,14.237 L111.708,16.697 L110.730,18.006 L107.745,16.591 L106.708,17.708 L105.999,18.384 L107.491,21.331 L106.208,22.342 L103.691,20.203 L102.400,21.013 L101.540,21.483 L102.219,24.716 L100.718,25.361 L98.840,22.643 L97.383,23.091 L96.431,23.323 L96.250,26.621 L94.634,26.855 L93.523,23.744 L92.000,23.800 L91.020,23.777 L89.992,26.916 L88.370,26.724 L88.102,23.432 L86.617,23.091 L85.676,22.815 L83.870,25.581 L82.353,24.976 L82.947,21.727 L81.600,21.013 L80.763,20.503 L78.303,22.708 L76.994,21.730 L78.409,18.745 L77.292,17.708 L76.616,16.999 L73.669,18.491 L72.658,17.208 L74.797,14.691 L73.987,13.400 L73.517,12.540 L70.284,13.219 L69.639,11.718 L72.357,9.840 L71.909,8.383 L71.677,7.431 L68.379,7.250 L68.145,5.634 L71.256,4.523 L71.200,3.000 L71.223,2.020 L68.084,0.992 L68.276,-0.630 L71.568,-0.898 L71.909,-2.383 L72.185,-3.324 L69.419,-5.130 L70.024,-6.647 L73.273,-6.053 L73.987,-7.400 L74.497,-8.237 L72.292,-10.697 L73.270,-12.006 L76.255,-10.591 L77.292,-11.708 L78.001,-12.384 L76.509,-15.331 L77.792,-16.342 L80.309,-14.203 L81.600,-15.013 L82.460,-15.483 L81.781,-18.716 L83.282,-19.361 L85.160,-16.643 L86.617,-17.091 L87.569,-17.323 L87.750,-20.621 L89.366,-20.855 L90.477,-17.744 L92.000,-17.800 L92.980,-17.777 L94.008,-20.916 L95.630,-20.724 L95.898,-17.432 L97.383,-17.091 L98.324,-16.815 L100.130,-19.581 L101.647,-18.976 L101.053,-15.727 L102.400,-15.013 L103.237,-14.503 L105.697,-16.708 L107.006,-15.730 L105.591,-12.745 L106.708,-11.708 L107.384,-10.999 L110.331,-12.491 L111.342,-11.208 L109.203,-8.691 L110.013,-7.400 L110.483,-6.540 L113.716,-7.219 L114.361,-5.718 L111.643,-3.840 L112.091,-2.383 L112.323,-1.431 L115.621,-1.250 L115.855,0.366 L112.744,1.477Z" stroke="currentColor" fill="none" stroke-width="0.34"/>
+<circle cx="92" cy="3" r="18.971" stroke="currentColor" fill="none" stroke-width="0.153" stroke-dasharray="2.4 .7 .45 .7"/>
+<circle cx="92" cy="3" r="15.086" stroke="currentColor" fill="none" stroke-width="0.272"/>
+<circle cx="92" cy="3" r="10.514" stroke="currentColor" fill="none" stroke-width="0.153" stroke-dasharray="2.4 .7 .45 .7"/>
+<circle cx="101.106" cy="8.257" r="1.543" stroke="currentColor" fill="none" stroke-width="0.272"/>
+<circle cx="92.000" cy="13.514" r="1.543" stroke="currentColor" fill="none" stroke-width="0.272"/>
+<circle cx="82.894" cy="8.257" r="1.543" stroke="currentColor" fill="none" stroke-width="0.272"/>
+<circle cx="82.894" cy="-2.257" r="1.543" stroke="currentColor" fill="none" stroke-width="0.272"/>
+<circle cx="92.000" cy="-7.514" r="1.543" stroke="currentColor" fill="none" stroke-width="0.272"/>
+<circle cx="101.106" cy="-2.257" r="1.543" stroke="currentColor" fill="none" stroke-width="0.272"/>
+<path d="M90.743,-2.105 A5.257,5.257 0 1 0 93.257,-2.105 V-3.400 H90.743Z" stroke="currentColor" fill="none" stroke-width="0.34"/>
+<path d="M64.000,3 H120.000 M92,-25.000 V31.000" stroke="currentColor" fill="none" stroke-width="0.136" stroke-dasharray="2.4 .7 .45 .7"/></g><path d="M7,3 v2.6 M8,3 v1.0 M9,3 v1.0 M10,3 v1.0 M11,3 v1.0 M12,3 v1.6 M13,3 v1.0 M14,3 v1.0 M15,3 v1.0 M16,3 v1.0 M17,3 v2.6 M18,3 v1.0 M19,3 v1.0 M20,3 v1.0 M21,3 v1.0 M22,3 v1.6 M23,3 v1.0 M24,3 v1.0 M25,3 v1.0 M26,3 v1.0 M27,3 v2.6 M28,3 v1.0 M29,3 v1.0 M30,3 v1.0 M31,3 v1.0 M32,3 v1.6 M33,3 v1.0 M34,3 v1.0 M35,3 v1.0 M36,3 v1.0 M37,3 v2.6 M38,3 v1.0 M39,3 v1.0 M40,3 v1.0 M41,3 v1.0 M42,3 v1.6 M43,3 v1.0 M44,3 v1.0 M45,3 v1.0 M46,3 v1.0 M47,3 v2.6" stroke="currentColor" fill="none" stroke-width=".16"/></svg>
+  <div class="abs who-wrap"><div class="who"><h1>Full Name</h1><p>Job Title</p></div></div>
+  <div class="abs data-wrap"><dl class="data"><dt>T</dt><dd>920.478.2126</dd><dt>E</dt><dd>sales@sussek.com</dd><dt>W</dt><dd>sussek.com</dd><dt>A</dt><dd>805 Pierce St · Waterloo, WI 53594</dd></dl></div>
+  <div class="abs band"><span>Precision Machining · Assembly · Engineering</span><span>USA · MX · CN</span></div>
+</section>
+</body>
+</html>
