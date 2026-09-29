@@ -1,0 +1,93 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Heavy Metal · Iconic</title>
+<style>
+@font-face{font-family:BS;src:url(file://{{FONTS}}/BigShoulders-Bold.ttf);font-weight:700}
+@font-face{font-family:Plex;src:url(file://{{FONTS}}/IBMPlexMono-Regular.ttf);font-weight:400}
+@font-face{font-family:Plex;src:url(file://{{FONTS}}/IBMPlexMono-Bold.ttf);font-weight:700}
+:root{--ink:#0B0B0C;--bone:#F2F0E9;--silver:#A9ADB1;--y:#F5C400;--rule:#3A3D42}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#555;padding:20px;display:flex;flex-direction:column;gap:20px}
+.card{width:1125px;height:675px;position:relative;overflow:hidden;background:var(--ink);color:var(--bone)}
+.abs{position:absolute}
+svg{display:block}
+.mono{font-family:Plex;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+/* ---------- FRONT ---------- */
+#front .light{position:absolute;inset:0;background:radial-gradient(ellipse 480px 250px at 700px 265px,#1f2023 0%,rgba(11,11,12,0) 100%)}
+#front .floor{position:absolute;left:330px;top:370px;width:760px;height:110px;border-radius:50%;background:radial-gradient(closest-side,#18191b,rgba(11,11,12,0))}
+#front .logo-line{position:absolute;left:75px;top:464.5px;width:975px;height:135.5px}
+#front .tractor{position:absolute;left:330px;top:75px;width:720px}
+#front .sh{position:absolute;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.95),rgba(0,0,0,0))}
+#front .evil{position:absolute;left:75px;top:77px;font-family:BS;font-weight:700;font-size:56px;line-height:.8;color:var(--y);letter-spacing:.01em;text-transform:uppercase}
+/* ---------- BACK ---------- */
+#back .name{position:absolute;left:72px;top:77px;font-family:BS;font-weight:700;font-size:84px;line-height:.74;letter-spacing:.01em;text-transform:uppercase;padding-top:3px}
+#back .role{position:absolute;left:75px;top:170px;font-size:25px;line-height:1;color:var(--silver)}
+#back .contact{position:absolute;left:75px;bottom:71px;font-family:Plex;font-size:32px;line-height:40px;letter-spacing:.02em;color:var(--bone)}
+#back .contact div{height:50px}
+#back .contact div:last-child{height:40px}
+#back .contact .loc{font-size:25px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--silver)}
+#back .seal{position:absolute;left:0;top:0;width:1125px;height:675px;overflow:visible}
+#back .seal text{font-family:Plex;font-weight:700;font-size:25px;fill:var(--silver)}
+#back .qrtile{position:absolute;left:717.5px;top:263.5px;width:212px;height:212px;background:var(--bone);padding:22px}
+#back .qr{width:168px;height:168px}
+@media print{body{background:none;padding:0;display:block}}
+</style>
+<script>if(location.hash==='#print'){document.write('<style>@page{size:3.75in 2.25in;margin:0}body{padding:0;background:none;display:block}.card{zoom:.32;break-after:page}</style>')}</script>
+</head><body>
+<div class="card" id="front">
+  <div class="light"></div>
+  <div class="floor"></div>
+  <div class="sh" style="left:856px;top:386px;width:200px;height:26px"></div>
+  <div class="sh" style="left:518px;top:427px;width:132px;height:20px"></div>
+  <img class="tractor" src="{{TRACTOR}}" alt="">
+  {{LOGO_LINE}}
+  <div class="evil" data-safe="evil">“The Evil One”</div>
+</div>
+<div class="card" id="back">
+  <div class="name" data-safe="name">Nombre Apellido</div>
+  <div class="role mono" data-safe="role">Team Owner · Driver</div>
+  <div class="contact" data-safe="contact"><div>(000) 000-0000</div><div>heavymetalevil72@gmail.com</div><div>heavymetalprostock.com</div><div class="loc">Waterloo, Wisconsin</div></div>
+  <svg class="seal" viewBox="0 0 1125 675">
+    <circle cx="823.5" cy="369.5" r="225.0" fill="none" stroke="#F5C400" stroke-width="3"/>
+    <text x="659.10" y="281.45" transform="rotate(-61.827 659.10 281.45)" text-anchor="middle">P</text>
+    <text x="668.07" y="266.43" transform="rotate(-56.451 668.07 266.43)" text-anchor="middle">R</text>
+    <text x="678.41" y="252.32" transform="rotate(-51.075 678.41 252.32)" text-anchor="middle">O</text>
+    <text x="690.03" y="239.24" transform="rotate(-45.698 690.03 239.24)" text-anchor="middle">S</text>
+    <text x="702.82" y="227.31" transform="rotate(-40.322 702.82 227.31)" text-anchor="middle">T</text>
+    <text x="716.67" y="216.63" transform="rotate(-34.946 716.67 216.63)" text-anchor="middle">O</text>
+    <text x="731.47" y="207.29" transform="rotate(-29.570 731.47 207.29)" text-anchor="middle">C</text>
+    <text x="747.07" y="199.38" transform="rotate(-24.193 747.07 199.38)" text-anchor="middle">K</text>
+    <text x="780.15" y="188.11" transform="rotate(-13.441 780.15 188.11)" text-anchor="middle">T</text>
+    <text x="797.34" y="184.84" transform="rotate(-8.064 797.34 184.84)" text-anchor="middle">R</text>
+    <text x="814.75" y="183.21" transform="rotate(-2.688 814.75 183.21)" text-anchor="middle">A</text>
+    <text x="832.25" y="183.21" transform="rotate(2.688 832.25 183.21)" text-anchor="middle">C</text>
+    <text x="849.66" y="184.84" transform="rotate(8.064 849.66 184.84)" text-anchor="middle">T</text>
+    <text x="866.85" y="188.11" transform="rotate(13.441 866.85 188.11)" text-anchor="middle">O</text>
+    <text x="883.65" y="192.97" transform="rotate(18.817 883.65 192.97)" text-anchor="middle">R</text>
+    <text x="915.53" y="207.29" transform="rotate(29.570 915.53 207.29)" text-anchor="middle">P</text>
+    <text x="930.33" y="216.63" transform="rotate(34.946 930.33 216.63)" text-anchor="middle">U</text>
+    <text x="944.18" y="227.31" transform="rotate(40.322 944.18 227.31)" text-anchor="middle">L</text>
+    <text x="956.97" y="239.24" transform="rotate(45.698 956.97 239.24)" text-anchor="middle">L</text>
+    <text x="968.59" y="252.32" transform="rotate(51.075 968.59 252.32)" text-anchor="middle">I</text>
+    <text x="978.93" y="266.43" transform="rotate(56.451 978.93 266.43)" text-anchor="middle">N</text>
+    <text x="987.90" y="281.45" transform="rotate(61.827 987.90 281.45)" text-anchor="middle">G</text>
+    <text x="674.97" y="510.06" transform="rotate(46.579 674.97 510.06)" text-anchor="middle">S</text>
+    <text x="687.52" y="522.24" transform="rotate(41.676 687.52 522.24)" text-anchor="middle">C</text>
+    <text x="701.08" y="533.31" transform="rotate(36.773 701.08 533.31)" text-anchor="middle">A</text>
+    <text x="715.53" y="543.17" transform="rotate(31.870 715.53 543.17)" text-anchor="middle">N</text>
+    <text x="746.68" y="559.02" transform="rotate(22.064 746.68 559.02)" text-anchor="middle">·</text>
+    <text x="780.08" y="569.34" transform="rotate(12.258 780.08 569.34)" text-anchor="middle">S</text>
+    <text x="797.32" y="572.32" transform="rotate(7.355 797.32 572.32)" text-anchor="middle">H</text>
+    <text x="814.75" y="573.81" transform="rotate(2.452 814.75 573.81)" text-anchor="middle">O</text>
+    <text x="832.25" y="573.81" transform="rotate(-2.452 832.25 573.81)" text-anchor="middle">P</text>
+    <text x="866.92" y="569.34" transform="rotate(-12.258 866.92 569.34)" text-anchor="middle">T</text>
+    <text x="883.84" y="564.90" transform="rotate(-17.161 883.84 564.90)" text-anchor="middle">H</text>
+    <text x="900.32" y="559.02" transform="rotate(-22.064 900.32 559.02)" text-anchor="middle">E</text>
+    <text x="931.47" y="543.17" transform="rotate(-31.870 931.47 543.17)" text-anchor="middle">G</text>
+    <text x="945.92" y="533.31" transform="rotate(-36.773 945.92 533.31)" text-anchor="middle">E</text>
+    <text x="959.48" y="522.24" transform="rotate(-41.676 959.48 522.24)" text-anchor="middle">A</text>
+    <text x="972.03" y="510.06" transform="rotate(-46.579 972.03 510.06)" text-anchor="middle">R</text>
+    <circle cx="628.0" cy="369.5" r="4" fill="#A9ADB1"/><circle cx="1019.0" cy="369.5" r="4" fill="#A9ADB1"/>
+  </svg>
+  <div class="qrtile" data-safe="qrtile">{{QR}}</div>
+</div>
+</body></html>

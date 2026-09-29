@@ -1,0 +1,38 @@
+{
+ "tractor": {
+  "angle": 9,
+  "w": 700,
+  "right": 1035,
+  "cap": 447,
+  "bite": 4,
+  "rim": 0.35,
+  "rim_blur": 1.0
+ },
+ "seal": {
+  "cx": 842.5,
+  "cy": 337.5,
+  "r": 205,
+  "stroke": 5,
+  "disc": 142,
+  "fs": 30,
+  "track": 0.1,
+  "qr": 150,
+  "top": "PROSTOCK TRACTOR PULLING",
+  "bottom": "WATERLOO, WISCONSIN"
+ },
+ "vars": {
+  "LW": 560,
+  "LH": 320,
+  "LX": 680,
+  "LY": 300,
+  "LCORE": "#25262a",
+  "POST_W": 7,
+  "POST_T": 255,
+  "POST_H": 185,
+  "CSS_EXTRA": "#front .evil{font-size:60px;color:var(--y);letter-spacing:.01em} #front .l1{font-size:32px} #front .l2{font-size:36px;color:var(--y)} #back .name{font-size:96px;line-height:86px;letter-spacing:.01em} #back .role{font-size:32px} #back .contact{font-family:Plex;font-weight:400;font-size:32px;letter-spacing:.01em;color:var(--bone)} #back .bpost{position:absolute;left:75px;width:7px;background:var(--y)}",
+  "FRONT_TEXT": "<div class=\"t bs evil\" data-safe=\"evil\" style=\"left:73px\" data-cap=\"75\">“The Evil One”</div>\n  <div class=\"t mono l1\" data-safe=\"l1\" style=\"left:98px\" data-cap=\"255\">Full Pull</div>\n  <div class=\"t mono l2\" data-safe=\"l2\" style=\"left:99px\" data-cap=\"293\">300 FT</div>",
+  "BACK": "<div class=\"t bs name\" data-safe=\"name\" style=\"left:99px\" data-cap=\"130\">Nombre<br>Apellido</div>\n  <div class=\"t mono role\" data-safe=\"role\" style=\"left:99px\" data-cap=\"300\">Team Owner · Driver</div>\n  <div class=\"bpost\" style=\"top:422px;height:123px\"></div>\n  <div class=\"t contact\" data-safe=\"c1\" style=\"left:99px\" data-base=\"445\">(000) 000-0000</div><div class=\"t contact\" data-safe=\"c2\" style=\"left:99px\" data-base=\"495\">heavymetalevil72@gmail.com</div><div class=\"t contact\" data-safe=\"c3\" style=\"left:99px\" data-base=\"545\">heavymetalprostock.com</div>\n  {{SEAL}}",
+  "TRACK": "<div class=\"track\" data-safe=\"track\" style=\"position:absolute;left:75px;top:440px;width:975px;height:3px;background:#A9ADB1\"></div>",
+  "ARC_FS": 30
+ }
+}

@@ -1,0 +1,38 @@
+{
+ "angle": 12,
+ "cap": 466,
+ "bite": 2,
+ "ttop": 75,
+ "tright": 1049,
+ "seal": {
+  "cx": 842.5,
+  "cy": 337.5,
+  "r": 205,
+  "stroke": 5,
+  "disc": 158,
+  "fs": 28,
+  "track": 0.16,
+  "qr": 174,
+  "top": "PROSTOCK TRACTOR PULLING",
+  "bottom": "WATERLOO, WISCONSIN"
+ },
+ "css": {
+  "EVIL_L": 73,
+  "EVIL_T": 388,
+  "EVIL_FS": 64,
+  "POST_T": 75,
+  "POST_H": 293,
+  "FT_L": 97,
+  "FT_T": 71,
+  "FT_HTML": "<div class=\"ft mono\" data-safe=\"ft\">300 FT</div>",
+  "NAME_L": 74,
+  "NAME_T": 80,
+  "NAME_FS": 96,
+  "NAME_LH": 86,
+  "ROLE_T": 274,
+  "CON_T": 348,
+  "CON_LH": 50,
+  "LSM_T": 555,
+  "LSM_W": 322
+ }
+}

@@ -1,0 +1,63 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Heavy Metal · Iconic · Round 2</title>
+<!--
+PRESS NOTES (Heavy Metal business card, round 2)
+Trim 3.5 x 2 in, bleed 0.125 in all round (PDF MediaBox 3.75 x 2.25 in, TrimBox [9 9 261 153] pt, BleedBox = MediaBox). Safe area 0.25 in inside the edge of the file (0.125 in inside trim).
+Ground: rich black C40 M30 Y30 K100 (TAC 200). Build the areas under the back contact type and seal type as K100 only if the printer prefers, or trap small knockout type.
+Bone #F2F0E9: paper white knockout (no ink), or a 3% K tint if an uncoated warm stock is not used.
+Yellow #F5C400: C0 M22 Y100 K2, or PMS 7408 C as a spot. Spread trap 0.2 pt on the yellow title, the yellow post and the yellow seal ring.
+Silver #A9ADB1 type (6.7 pt Plex Mono Bold): single K tint about K40, never a 4 colour grey.
+Tractor image placed at about 540 ppi. Shadow lift applied for dot gain; request a hard proof on the chosen stock.
+QR encodes https://heavymetalprostock.com (vector, 29 modules, 6 px = 0.51 mm per module, quiet zone over 4 modules).
+-->
+<style>
+@font-face{font-family:BS;src:url(file://{{FONTS}}/BigShoulders-Bold.ttf);font-weight:700}
+@font-face{font-family:Plex;src:url(file://{{FONTS}}/IBMPlexMono-Regular.ttf);font-weight:400}
+@font-face{font-family:Plex;src:url(file://{{FONTS}}/IBMPlexMono-Bold.ttf);font-weight:700}
+:root{--ink:#0B0B0C;--bone:#F2F0E9;--silver:#A9ADB1;--y:#F5C400}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+body{background:#555;padding:20px;display:flex;flex-direction:column;gap:20px}
+.card{width:1125px;height:675px;position:relative;overflow:hidden;background:var(--ink);color:var(--bone);flex:none}
+svg{display:block}
+.mono{font-family:Plex;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--silver)}
+/* ---------- FRONT: the name is the ground ---------- */
+#front .light{position:absolute;inset:0;background:radial-gradient(ellipse 470px 260px at 690px 270px,#1d1e21 0%,rgba(11,11,12,0) 100%)}
+#front .logo-line{position:absolute;left:75px;top:464.5px;width:975px;height:135.5px}
+#front .tractor{position:absolute;left:{{TL}}px;top:{{TT}}px;width:{{TW}}px}
+#front .evil{position:absolute;left:{{EVIL_L}}px;top:{{EVIL_T}}px;font-family:BS;font-weight:700;font-size:{{EVIL_FS}}px;line-height:1;color:var(--y);letter-spacing:.01em;text-transform:uppercase;white-space:nowrap}
+#front .post{position:absolute;left:75px;width:5px;background:var(--y);top:{{POST_T}}px;height:{{POST_H}}px}
+#front .ft{position:absolute;left:{{FT_L}}px;top:{{FT_T}}px;font-size:28px;line-height:1}
+/* ---------- BACK ---------- */
+#back .name{position:absolute;left:{{NAME_L}}px;top:{{NAME_T}}px;font-family:BS;font-weight:700;font-size:{{NAME_FS}}px;line-height:{{NAME_LH}}px;letter-spacing:.01em;text-transform:uppercase}
+#back .role{position:absolute;left:75px;top:{{ROLE_T}}px;font-size:28px;line-height:1}
+#back .contact{position:absolute;left:75px;top:{{CON_T}}px;font-family:Plex;font-size:32px;line-height:{{CON_LH}}px;letter-spacing:.01em;color:var(--bone)}
+#back .logo-sm{position:absolute;left:75px;top:{{LSM_T}}px;width:{{LSM_W}}px}
+#back .seal{position:absolute;left:0;top:0;width:1125px;height:675px}
+#back .seal text{font-family:Plex;font-weight:700;font-size:28px;fill:var(--silver)}
+#back .qr{position:absolute;left:{{QRX}}px;top:{{QRY}}px;width:{{QRS}}px;height:{{QRS}}px}
+</style>
+<script>if(location.hash==='#print'){document.write('<style>@page{size:3.75in 2.25in;margin:0}html,body{padding:0;margin:0;background:#0B0B0C;display:block}.card{break-after:page}</style>')}</script>
+</head><body>
+<div class="card" id="front">
+  <div class="light"></div>
+  <img class="tractor" src="{{TRACTOR}}" alt="The Evil One, engine open, front wheels up">
+  {{LOGO}}
+  <div class="post" data-safe="post"></div>
+  <div class="evil" data-safe="evil">“The Evil One”</div>
+  {{FT_HTML}}
+</div>
+<div class="card" id="back">
+  <div class="name" data-safe="name">Nombre<br>Apellido</div>
+  <div class="role mono" data-safe="role">Team Owner · Driver</div>
+  <div class="contact" data-safe="contact"><div>(000) 000-0000</div><div>heavymetalevil72@gmail.com</div><div>heavymetalprostock.com</div></div>
+  {{LOGO_SM}}
+  <svg class="seal" viewBox="0 0 1125 675" data-safe="seal">
+    <circle cx="{{CX}}" cy="{{CY}}" r="{{R}}" fill="none" stroke="#F5C400" stroke-width="{{STROKE}}"/>
+    <circle cx="{{CX}}" cy="{{CY}}" r="{{DISC}}" fill="#F2F0E9"/>
+    {{ARCS}}
+    {{DOTS}}
+  </svg>
+  {{QR}}
+</div>
+</body></html>

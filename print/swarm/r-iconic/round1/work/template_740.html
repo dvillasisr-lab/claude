@@ -1,0 +1,61 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Heavy Metal · Iconic</title>
+<style>
+@font-face{font-family:BS;src:url(file://{{FONTS}}/BigShoulders-Bold.ttf);font-weight:700}
+@font-face{font-family:Plex;src:url(file://{{FONTS}}/IBMPlexMono-Regular.ttf);font-weight:400}
+@font-face{font-family:Plex;src:url(file://{{FONTS}}/IBMPlexMono-Bold.ttf);font-weight:700}
+:root{--ink:#0B0B0C;--bone:#F2F0E9;--silver:#A9ADB1;--y:#F5C400;--rule:#3A3D42}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#555;padding:20px;display:flex;flex-direction:column;gap:20px}
+.card{width:1125px;height:675px;position:relative;overflow:hidden;background:var(--ink);color:var(--bone)}
+.abs{position:absolute}
+svg{display:block}
+.mono{font-family:Plex;letter-spacing:.14em;text-transform:uppercase}
+/* ---------- FRONT ---------- */
+#front .light{position:absolute;inset:0;background:radial-gradient(ellipse 480px 250px at 700px 265px,#1f2023 0%,rgba(11,11,12,0) 100%)}
+#front .floor{position:absolute;left:330px;top:370px;width:760px;height:110px;border-radius:50%;background:radial-gradient(closest-side,#18191b,rgba(11,11,12,0))}
+#front .logo-line{position:absolute;left:75px;top:464.5px;width:975px;height:135.5px}
+#front .tractor{position:absolute;left:310px;top:75px;width:740px}
+#front .sh{position:absolute;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.95),rgba(0,0,0,0))}
+#front .evil{position:absolute;left:75px;top:77px;font-family:BS;font-weight:700;font-size:56px;line-height:.8;color:var(--y);letter-spacing:.01em;text-transform:uppercase}
+/* ---------- BACK ---------- */
+#back .name{position:absolute;left:72px;top:77px;font-family:BS;font-weight:700;font-size:84px;line-height:.74;letter-spacing:.01em;text-transform:uppercase;padding-top:3px}
+#back .role{position:absolute;left:75px;top:170px;font-size:25px;line-height:1;color:var(--silver)}
+#back .contact{position:absolute;left:75px;bottom:71px;font-family:Plex;font-size:32px;line-height:40px;letter-spacing:.02em;color:var(--bone)}
+#back .contact div{height:50px}
+#back .contact div:last-child{height:40px}
+#back .contact .loc{font-size:25px;letter-spacing:.14em;text-transform:uppercase;color:var(--silver)}
+#back .seal{position:absolute;left:0;top:0;width:1125px;height:675px;overflow:visible}
+#back .seal text{font-family:Plex;font-weight:700;font-size:25px;letter-spacing:.1em;fill:var(--silver)}
+#back .qrtile{position:absolute;left:717.5px;top:263.5px;width:212px;height:212px;background:var(--bone);padding:22px}
+#back .qr{width:168px;height:168px}
+@media print{body{background:none;padding:0;display:block}}
+</style>
+<script>if(location.hash==='#print'){document.write('<style>@page{size:3.75in 2.25in;margin:0}body{padding:0;background:none;display:block}.card{zoom:.32;break-after:page}</style>')}</script>
+</head><body>
+<div class="card" id="front">
+  <div class="light"></div>
+  <div class="floor"></div>
+  <div class="sh" style="left:856px;top:386px;width:200px;height:26px"></div>
+  <div class="sh" style="left:518px;top:427px;width:132px;height:20px"></div>
+  <img class="tractor" src="{{TRACTOR}}" alt="">
+  {{LOGO_LINE}}
+  <div class="evil" data-safe="evil">“The Evil One”</div>
+</div>
+<div class="card" id="back">
+  <div class="name" data-safe="name">Nombre Apellido</div>
+  <div class="role mono" data-safe="role">Team Owner · Driver</div>
+  <div class="contact" data-safe="contact"><div>(000) 000-0000</div><div>heavymetalevil72@gmail.com</div><div>heavymetalprostock.com</div><div class="loc">Waterloo, Wisconsin</div></div>
+  <svg class="seal" viewBox="0 0 1125 675">
+    <defs>
+      <path id="arcTop" d="M 637.0 369.5 A 186.5 186.5 0 0 1 1010.0 369.5"/>
+      <path id="arcBot" d="M 619.0 369.5 A 204.5 204.5 0 0 0 1028.0 369.5"/>
+    </defs>
+    <circle cx="823.5" cy="369.5" r="225.0" fill="none" stroke="#F5C400" stroke-width="3"/>
+    <text><textPath href="#arcTop" startOffset="50%" text-anchor="middle">PROSTOCK TRACTOR PULLING</textPath></text>
+    <text><textPath href="#arcBot" startOffset="50%" text-anchor="middle">SCAN · SHOP THE GEAR</textPath></text>
+    <circle cx="628.0" cy="369.5" r="4" fill="#A9ADB1"/><circle cx="1019.0" cy="369.5" r="4" fill="#A9ADB1"/>
+  </svg>
+  <div class="qrtile" data-safe="qrtile">{{QR}}</div>
+</div>
+</body></html>

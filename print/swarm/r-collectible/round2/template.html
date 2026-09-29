@@ -1,0 +1,110 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Heavy Metal · Collectible</title>
+<!--
+PRINT SPEC (Heavy Metal business card, two-sided)
+Trim 3.5 x 2 in, bleed 0.125 in all sides (document 3.75 x 2.25 in, 1125 x 675 px at 300 dpi).
+Safe zone 0.25 in from bleed edge (x 75..1050, y 75..600 px). TrimBox [9 9 261 153] pt, BleedBox = MediaBox.
+Ground (#0A0A0B): rich black C60 M40 Y40 K100. Build a K-only knockout under all type smaller than 9 pt, or ask the printer to trap it.
+Window panel (#1F2024): K 88 only, no CMY, so it separates from the rich black ground.
+Rules (#3A3D42): K 75 only, 2 px = 0.48 pt minimum.
+Yellow #F5C400: C0 M22 Y100 K2 (or PMS 7408 C).
+Bone type and logo #F4F3EF: paper knockout (no ink). Silver type #B8BBBF: K 30 only.
+QR: 29 modules, 150 px = 0.5 in (5.2 px / 0.44 mm per module), dark K100 on paper tile, quiet zone 4+ modules.
+Smallest type: 24 px = 5.8 pt (QR caption, dark on paper); every reversed label 25 px = 6 pt Plex Mono Bold or larger.
+Hard proof on the chosen stock before the run.
+-->
+<style>
+@font-face{font-family:BS;src:url(file://{{FONTS}}/BigShoulders-Bold.ttf)}
+@font-face{font-family:Mono;src:url(file://{{FONTS}}/IBMPlexMono-Regular.ttf);font-weight:400}
+@font-face{font-family:Mono;src:url(file://{{FONTS}}/IBMPlexMono-Bold.ttf);font-weight:700}
+:root{--ink:#0A0A0B;--win:#1F2024;--paper:#F4F3EF;--silver:#B8BBBF;--rule:#3A3D42;--y:#F5C400}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#444;padding:20px;display:flex;flex-direction:column;gap:20px;align-items:flex-start}
+.card{position:relative;width:1125px;height:675px;overflow:hidden;background:var(--ink);color:var(--paper);font-family:Mono}
+.abs{position:absolute}
+.mono{white-space:nowrap;font-family:Mono;text-transform:uppercase;letter-spacing:.12em;font-weight:700}
+svg.logo{display:block;overflow:visible}
+
+/* ---------- FRONT ---------- */
+#front .logo-line{width:975px}
+#front .window{left:{{WIN_L}}px;top:{{WIN_T}}px;right:0;bottom:0;background:var(--win)}
+#front .tractor{left:{{TR_L}}px;top:{{TR_T}}px;width:{{TR_W}}px;filter:drop-shadow(0 0 1px rgba(244,243,239,.30))}
+#front .sh{background:radial-gradient(ellipse at center,rgba(0,0,0,.9) 0%,rgba(0,0,0,0) 70%)}
+#front .evil{left:75px;top:{{EVIL_T}}px;font-family:BS;font-size:{{EVIL_FS}}px;line-height:1;color:var(--y);letter-spacing:{{EVIL_LS}}em;white-space:nowrap}
+#front .post{left:75px;width:5px;background:var(--y)}
+#front .pull{left:98px}
+#front .pull .k{display:block;font-size:25px;line-height:1;color:var(--silver)}
+#front .pull .v{display:block;font-family:BS;font-size:62px;line-height:1;margin-top:{{PULL_GAP}}px;letter-spacing:.005em;color:var(--paper)}
+#front .pull .v small{font-family:Mono;font-weight:700;font-size:25px;letter-spacing:.12em;margin-left:10px;color:var(--paper)}
+
+/* ---------- BACK ---------- */
+#back .hr{height:2px;background:var(--rule)}
+#back .vr{width:2px;background:var(--rule)}
+#back .logo-stack{width:{{BL_W}}px}
+#back .badge{left:75px;top:75px;width:{{BADGE}}px;height:{{BADGE}}px}
+#back .ttl{left:{{TTL_L}}px;top:{{TTL_T}}px;font-family:BS;font-size:50px;line-height:1;color:var(--y);letter-spacing:.01em}
+#back .sub{left:{{TTL_L}}px;top:{{SUB_T}}px;font-size:25px;line-height:1;color:var(--silver);letter-spacing:.138em}
+#back .stat{top:{{STAT_T}}px;width:217px}
+#back .stat .k{font-size:25px;color:var(--silver);display:block;line-height:1}
+#back .stat .v{white-space:nowrap;font-family:BS;font-size:62px;line-height:1;display:block;letter-spacing:.005em;margin-top:{{STAT_GAP}}px}
+#back .stat .v small{font-family:Mono;font-weight:700;font-size:25px;letter-spacing:.12em;margin-left:10px;color:var(--paper)}
+#back .name{font-family:BS;font-size:{{NAME_FS}}px;line-height:1;text-transform:uppercase;letter-spacing:.005em}
+#back .role{font-size:25px;line-height:1;color:var(--silver)}
+#back .ct{font-size:30px;line-height:{{CT_LH}}px;letter-spacing:0;font-weight:400;text-transform:none}
+#back .ct i{font-style:normal;display:inline-block;width:{{CT_LBL}}px;font-size:25px;font-weight:700;letter-spacing:.12em;color:var(--silver);text-transform:uppercase}
+#back .qrtile{background:var(--paper)}
+#back .qrtile svg{position:absolute;display:block}
+#back .qrtile .cap{position:absolute;left:0;right:0;font-size:24px;line-height:1;color:#0A0A0B;text-align:center;letter-spacing:.02em;padding-left:.02em}
+
+/* print */
+html.print body{background:none;padding:0;display:block}
+html.print .card{zoom:.32;break-after:page}
+@page{size:3.75in 2.25in;margin:0}
+</style></head><body>
+<script>if(location.hash==='#print')document.documentElement.classList.add('print')</script>
+
+<div class="card" id="front">
+  <div class="abs window"></div>
+  <div class="abs sh" style="left:{{SHR_X}}px;top:{{SHR_Y}}px;width:230px;height:22px"></div>
+  <div class="abs sh" style="left:{{SHF_X}}px;top:{{SHF_Y}}px;width:170px;height:18px"></div>
+  <img class="abs tractor" src="{{TRACTOR}}">
+  <div class="abs" data-safe id="flogo" style="left:75px;top:75px">{{LOGO_LINE}}</div>
+  <div class="abs evil" data-safe id="evil">“THE EVIL ONE”</div>
+  <div class="abs post" style="top:{{POST_T}}px;height:{{POST_H}}px"></div>
+  <div class="abs mono pull" data-safe style="top:{{PULL_T}}px"><span class="k">Full pull</span><span class="v">300<small>FT</small></span></div>
+</div>
+
+<div class="card" id="back">
+  <svg class="abs badge" data-safe viewBox="0 0 {{BADGE}} {{BADGE}}">
+    <circle cx="{{BADGE_C}}" cy="{{BADGE_C}}" r="{{BADGE_R}}" fill="#1F2024" stroke="#F5C400" stroke-width="3"/>
+  </svg>
+  <div class="abs" id="blogo" style="left:{{BL_L}}px;top:{{BL_T}}px">{{LOGO_STACK}}</div>
+  <div class="abs ttl" data-safe id="ttl">“THE EVIL ONE”</div>
+  <div class="abs mono sub" data-safe id="sub">ProStock tractor pulling · Waterloo, Wisconsi<span style="letter-spacing:0">n</span></div>
+  <div class="abs hr" style="left:75px;width:975px;top:{{R1}}px"></div>
+  <div class="abs stat mono" data-safe style="left:75px"><span class="k">CAT V8</span><span class="v">3208</span></div>
+  <div class="abs vr" style="left:314px;top:{{R1}}px;height:{{VR_H}}px"></div>
+  <div class="abs stat mono" data-safe style="left:336px"><span class="k">Weight</span><span class="v">10,000<small>LB</small></span></div>
+  <div class="abs vr" style="left:575px;top:{{R1}}px;height:{{VR_H}}px"></div>
+  <div class="abs stat mono" data-safe style="left:597px"><span class="k">Rear tires</span><span class="v">24.5-32</span></div>
+  <div class="abs vr" style="left:836px;top:{{R1}}px;height:{{VR_H}}px"></div>
+  <div class="abs stat mono" data-safe style="left:858px;width:192px"><span class="k">Full pull</span><span class="v" style="color:var(--y)">300<small>FT</small></span></div>
+  <div class="abs hr" style="left:75px;width:975px;top:{{R2}}px"></div>
+  <div class="abs name" data-safe id="name" style="left:75px;top:{{NAME_T}}px"><span style="margin-left:-3px">Nombre Apellido</span></div>
+  <div class="abs mono role" data-safe id="role" style="left:75px;top:{{ROLE_T}}px">Team Owner · Driver</div>
+  <div class="abs mono ct" data-safe id="ct" style="left:75px;top:{{CT_T}}px"><i>Tel</i>(000) 000-0000<br><i>Mail</i>heavymetalevil72@gmail.com<br><i>Web</i>heavymetalprostock.com</div>
+  <div class="abs qrtile mono" data-safe id="qrt" style="left:836px;top:{{QT_T}}px;width:214px;height:{{QT_H}}px">
+    <div style="position:absolute;left:{{QR_X}}px;top:{{QR_Y}}px;width:{{QR_S}}px;height:{{QR_S}}px">{{QR}}</div>
+    <span class="cap" style="top:{{CAP_T}}px">Shop the gear</span>
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('svg.logo').forEach(s=>{
+  const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+  while(s.firstChild) g.appendChild(s.firstChild); s.appendChild(g);
+  const b=g.getBBox(); s.setAttribute('viewBox',`${b.x} ${b.y} ${b.width} ${b.height}`);
+  s.style.height=(parseFloat(getComputedStyle(s).width)*b.height/b.width)+'px';
+});
+document.querySelectorAll('.qrtile svg').forEach(s=>{s.style.width='100%';s.style.height='100%';s.style.position='static'});
+</script>
+</body></html>

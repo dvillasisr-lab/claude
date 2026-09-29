@@ -1,0 +1,41 @@
+{
+ "tractor": {
+  "angle": 9,
+  "w": 700,
+  "right": 1035,
+  "cap": 465,
+  "bite": 8,
+  "rim": 0.35,
+  "rim_blur": 1.0
+ },
+ "seal": {
+  "cx": 842,
+  "cy": 338,
+  "r": 205,
+  "stroke": 5,
+  "disc": 158,
+  "fs": 28,
+  "track": 0.12,
+  "qr": 174,
+  "top": "PROSTOCK TRACTOR PULLING",
+  "bottom": "WATERLOO, WISCONSIN"
+ },
+ "vars": {
+  "LW": 560,
+  "LH": 320,
+  "LX": 680,
+  "LY": 300,
+  "LCORE": "#25262a",
+  "POST_W": 7,
+  "POST_T": 250,
+  "POST_H": 215,
+  "CSS_EXTRA": "#front .evil{font-size:68px;color:var(--y);letter-spacing:.01em} #front .l1{font-size:32px} #front .l2{font-size:36px;color:var(--y)} #back .name{font-size:112px;line-height:106px;letter-spacing:.01em} #back .role{font-size:32px} #back .contact{font-family:Plex;font-weight:400;font-size:32px;letter-spacing:.01em;color:var(--bone)} #back .bpost{position:absolute;left:75px;width:7px;background:var(--y)}",
+  "FRONT_TEXT": "<div class=\"t bs evil\" data-safe=\"evil\" style=\"left:73px\" data-cap=\"76\">“The Evil One”</div>\n  <div class=\"t mono l1\" data-safe=\"l1\" style=\"left:101px\" data-cap=\"250\">Full Pull</div>\n  <div class=\"t mono l2\" data-safe=\"l2\" style=\"left:102px\" data-cap=\"288\">300 FT</div>",
+  "BACK": "<div class=\"t bs name\" data-safe=\"name\" style=\"left:98px\" data-cap=\"130.5\">Nombre<br>Apellido</div>\n  <div class=\"t mono role\" data-safe=\"role\" style=\"left:103px\" data-cap=\"{{ROLE_CAP}}\">Team Owner · Driver</div>\n  <div class=\"bpost\" data-safe=\"bpost\" style=\"top:{{BPOST_T}}px;height:{{BPOST_H}}px\"></div>\n  <div class=\"t contact\" data-safe=\"c1\" style=\"left:100px\" data-base=\"446\">(000) 000-0000</div><div class=\"t contact\" data-safe=\"c2\" style=\"left:100px\" data-base=\"496\">heavymetalevil72@gmail.com</div><div class=\"t contact\" data-safe=\"c3\" style=\"left:100px\" data-base=\"546\">heavymetalprostock.com</div>\n  {{SEAL}}",
+  "TRACK": "<div class=\"track\" data-safe=\"track\" style=\"position:absolute;left:75px;top:465px;width:975px;height:4px;background:#F2F0E9\"></div>",
+  "ARC_FS": 28,
+  "ROLE_CAP": 350,
+  "BPOST_T": 423,
+  "BPOST_H": 123
+ }
+}

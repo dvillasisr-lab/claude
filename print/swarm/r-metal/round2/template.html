@@ -1,0 +1,70 @@
+<meta charset="utf-8">
+<title>Heavy Metal · "The Evil One" · business card</title>
+<style>
+@font-face{font-family:BS;src:url(file://{{FONTS}}/BigShoulders-Bold.ttf)}
+@font-face{font-family:PM;src:url(file://{{FONTS}}/IBMPlexMono-Regular.ttf)}
+@font-face{font-family:PMB;src:url(file://{{FONTS}}/IBMPlexMono-Bold.ttf)}
+:root{--ink:#0A0A0B;--bone:#F2F0E9;--silver:#CDD0D3;--dim:#A9ADB1;--rule:#3A3D42;--y:#F5C400}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#444;padding:20px;display:flex;flex-direction:column;gap:20px}
+.card{position:relative;width:1125px;height:675px;overflow:hidden;background:var(--ink);color:var(--bone);flex:none}
+.abs{position:absolute}
+/* two type voices on both faces: LABEL = PMB 25px .14em caps; VALUE = PM 30px, 0 tracking */
+.lab{font-family:PMB;font-size:25px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);line-height:1;white-space:nowrap}
+.val{font-family:PM;font-size:30px;letter-spacing:0;color:var(--bone);line-height:1;white-space:nowrap}
+
+/* ================= FRONT: the cover ================= */
+#front .logo-line{position:absolute;left:70.6px;top:71.2px;width:989.5px;height:auto;display:block}
+#front .sigil{position:absolute;left:0;top:0;width:1125px;height:675px}
+#front .tractor{position:absolute;width:var(--tw);left:var(--tl);top:var(--tt)}
+#front .sh{position:absolute;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,1),rgba(0,0,0,.6) 55%,rgba(0,0,0,0))}
+#front .title{position:absolute;font-family:BS;color:var(--y);font-size:var(--ts);line-height:var(--tlh);letter-spacing:0;text-transform:uppercase;white-space:nowrap}
+#front .title .q{position:absolute;right:100%}
+#front .title span{position:relative;display:block}
+
+/* ================= BACK: the back sleeve ================= */
+#back .logo-sm{position:absolute;display:block}
+#back .hr{position:absolute;left:75px;width:975px;height:2px;background:var(--rule)}
+#back .name{position:absolute;left:72px;font-family:BS;font-size:100px;line-height:1;text-transform:uppercase;color:var(--bone);letter-spacing:.005em;white-space:nowrap}
+#back .label{position:absolute}
+#back .label svg.qr{position:absolute;display:block}
+#back .dot{display:inline-block;width:22px;height:22px;border-radius:50%;background:var(--y);vertical-align:-2px;margin-right:16px}
+
+@page{size:3.75in 2.25in;margin:0}
+</style>
+<script>if(location.hash=='#print'){document.write('<style>body{background:none;padding:0;display:block}.card{zoom:.32;break-after:page}</style>')}</script>
+
+<!-- FRONT -->
+<div class="card" id="front" style="--tw:722px;--tl:342px;--tt:239px;--ts:90px;--tlh:.9">
+  <svg class="sigil" viewBox="0 0 1125 675"><circle cx="660" cy="420" r="170" fill="#16171A"/><circle cx="660" cy="420" r="175" fill="none" stroke="#F5C400" stroke-width="10"/></svg>
+  <div class="sh" style="left:880px;top:556px;width:210px;height:18px"></div>
+  <div class="sh" style="left:520px;top:592px;width:130px;height:14px;opacity:.8"></div>
+  <img class="tractor" src="{{TRACTOR}}" alt="">
+  {{LOGO_LINE}}
+  <div class="lab" data-safe="kick" style="position:absolute;left:75px;top:234.5px;color:var(--bone)">HM 300</div>
+  <div class="lab" data-safe="kick2" style="position:absolute;left:75px;top:268.5px">33 1/3 RPM</div>
+  <div class="title" data-safe="title" style="left:112px;bottom:68.8px"><span><i class="q" style="font-style:normal">“</i>THE</span><span>EVIL</span><span>ONE”</span></div>
+</div>
+
+<!-- BACK -->
+<div class="card" id="back">
+  {{LOGO_LINE_SM}}
+  <div class="abs" data-safe="hdr-r" style="right:74px;top:73.5px;color:var(--y);font-family:BS;font-size:36px;letter-spacing:.02em;line-height:1;white-space:nowrap">“THE EVIL ONE”</div>
+  <div class="hr" style="top:134px"></div>
+
+  <div class="name" data-safe="name" style="top:160px">NOMBRE APELLIDO</div>
+  <div class="lab" data-safe="role" style="position:absolute;left:75px;top:272px;color:var(--silver)">Team Owner · Driver</div>
+
+  <div class="lab" data-safe="sideA" style="position:absolute;left:75px;top:328px"><span class="dot"></span>Side A</div>
+  <div class="abs" data-safe="a1" style="left:75px;top:366px"><span class="lab" style="display:inline-block;width:190px">A1 Call</span><span class="val">(000) 000-0000</span></div>
+  <div class="abs" data-safe="a2" style="left:75px;top:404px"><span class="lab" style="display:inline-block;width:190px">A2 Write</span><span class="val">heavymetalevil72@gmail.com</span></div>
+  <div class="abs" data-safe="a3" style="left:75px;top:442px"><span class="lab" style="display:inline-block;width:190px">A3 Shop</span><span class="val">heavymetalprostock.com</span></div>
+  <div class="abs" data-safe="a4" style="left:75px;top:480px"><span class="lab" style="display:inline-block;width:190px">A4 Base</span><span class="val">WATERLOO, WISCONSIN</span></div>
+
+  <div class="label" data-safe="disc" style="left:800px;top:168px;width:250px;height:250px;border-radius:50%;background:var(--y)">{{QR}}<div class="lab" data-safe="lbl-cat" style="position:absolute;left:0;width:250px;text-align:center;padding-left:.14em;top:15px;color:var(--ink)">HM 300</div><div class="lab" data-safe="lbl-rpm" style="position:absolute;left:0;width:250px;text-align:center;padding-left:.14em;top:209px;color:var(--ink)">33 1/3</div></div>
+  <div class="lab" data-safe="qrcap" style="position:absolute;left:800px;width:250px;text-align:center;top:440px;padding-left:.14em;line-height:38px">Scan to shop<br>the gear</div>
+
+  <div class="hr" style="top:537px"></div>
+  <div class="abs" data-safe="sideB" style="left:75px;top:568px;width:975px;display:flex;align-items:baseline"><span class="lab" style="width:190px"><span class="dot"></span>Side B</span><span class="val" style="flex:1;display:flex;justify-content:space-between"><span>CAT 3208 V8</span><span>10,000 LB</span><span>24.5-32</span><span style="color:var(--y)">300 FT</span></span></div>
+</div>
+</div>

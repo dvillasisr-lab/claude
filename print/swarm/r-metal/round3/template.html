@@ -1,0 +1,85 @@
+<meta charset="utf-8">
+<title>Heavy Metal · "The Evil One" · business card</title>
+<style>
+@font-face{font-family:BS;src:url(file://{{FONTS}}/BigShoulders-Bold.ttf)}
+@font-face{font-family:PM;src:url(file://{{FONTS}}/IBMPlexMono-Regular.ttf)}
+@font-face{font-family:PMB;src:url(file://{{FONTS}}/IBMPlexMono-Bold.ttf)}
+/* Every colour is a press colour. build/post.py maps these exact sRGB values to CMYK builds:
+   ink   #0A0A0B  rich black C40 M30 Y30 K100
+   bone  #F2F0E9  paper (knockout)
+   y     #F5C400  C0 M22 Y100 K2
+   dim   #A9ADB1  K40 only
+   sil   #CDD0D3  K22 only
+   rule  #3A3D42  K80 only
+   qr    #0A0A0C  K100 overprint */
+:root{--ink:#0A0A0B;--bone:#F2F0E9;--silver:#CDD0D3;--dim:#A9ADB1;--rule:#3A3D42;--y:#F5C400}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#444;padding:20px;display:flex;flex-direction:column;gap:20px}
+.card{position:relative;width:1125px;height:675px;overflow:hidden;background:var(--ink);color:var(--bone);flex:none}
+.abs{position:absolute}
+/* two type voices, both faces: LABEL = Plex Mono Bold 25px (6 pt) .14em caps; VALUE = Plex Mono 30px (7.2 pt) */
+.lab{font-family:PMB;font-size:25px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);line-height:1;white-space:nowrap}
+.val{font-family:PM;font-size:30px;letter-spacing:0;color:var(--bone);line-height:1;white-space:nowrap}
+
+/* ================= FRONT: the cover ================= */
+#front .logo-line{position:absolute;left:70.6px;top:71.2px;width:989.5px;height:auto;display:block}
+#front .sun{position:absolute;left:0;top:0;width:1125px;height:675px}
+#front .tractor{position:absolute;width:var(--tw);left:var(--tl);top:var(--tt)}
+#front .title{position:absolute;font-family:BS;color:var(--y);font-size:var(--ts);line-height:var(--tlh);letter-spacing:0;text-transform:uppercase;white-space:nowrap}
+#front .title .q{position:absolute;right:100%;font-style:normal}
+#front .title span{position:relative;display:block}
+#front .ground{position:absolute;height:2px;background:var(--rule)}
+#front .post{position:absolute;width:5px;background:var(--y)}
+
+/* ================= BACK: the liner notes ================= */
+#back .logo-sm{position:absolute;display:block}
+#back .hr{position:absolute;left:75px;width:975px;height:2px;background:var(--rule)}
+#back .name{position:absolute;left:72px;font-family:BS;font-size:100px;line-height:1;text-transform:uppercase;color:var(--bone);letter-spacing:.005em;white-space:nowrap}
+#back .disc{position:absolute;border-radius:50%;background:var(--y)}
+#back .disc svg.qr{position:absolute;display:block}
+#back .row{position:absolute;left:75px}
+#back .row .lab{display:inline-block;width:190px}
+#back .spec{position:absolute}
+#back .spec .val{display:block;margin-top:9px}
+
+@page{size:3.75in 2.25in;margin:0}
+</style>
+<script>if(location.hash=='#print'){document.write('<style>body{background:none;padding:0;display:block}.card{zoom:.32;break-after:page}</style>')}</script>
+
+<!-- FRONT -->
+<div class="card" id="front" style="--tw:{{TW}}px;--tl:{{TL}}px;--tt:{{TT}}px;--ts:80px;--tlh:.9">
+  <svg class="sun" viewBox="0 0 1125 675"><circle cx="{{CX}}" cy="{{CY}}" r="{{R}}" fill="none" stroke="#F5C400" stroke-width="10"/></svg>
+  <div class="ground" style="left:75px;top:599px;width:{{GW}}px"></div>
+  <img class="tractor" src="{{TRACTOR}}" alt="">
+  {{LOGO_LINE}}
+  <div class="lab" data-safe="kick1" style="position:absolute;left:75px;top:234.5px">ProStock</div>
+  <div class="lab" data-safe="kick2" style="position:absolute;left:75px;top:268.5px">Tractor Pulling</div>
+  <div class="title" data-safe="title" style="left:108px;top:{{TTOP}}px"><span><i class="q">“</i>THE</span><span>EVIL</span><span>ONE”</span></div>
+  <div class="post" style="left:75px;top:{{PTOP}}px;height:{{PH}}px"></div>
+  <div class="lab" data-safe="fin1" style="position:absolute;left:112px;top:{{F1}}px;color:var(--bone)">300 FT</div>
+</div>
+
+<!-- BACK -->
+<div class="card" id="back">
+  {{LOGO_LINE_SM}}
+  <div class="abs" data-safe="hdr-r" style="right:74px;top:73.5px;color:var(--y);font-family:BS;font-size:36px;letter-spacing:.02em;line-height:1;white-space:nowrap">“THE EVIL ONE”</div>
+  <div class="hr" style="top:134px"></div>
+
+  <div class="name" data-safe="name" style="top:160px">NOMBRE APELLIDO</div>
+  <div class="lab" data-safe="role" style="position:absolute;left:75px;top:{{RT}}px;color:var(--silver)">Team Owner · Driver</div>
+  <div class="lab" data-safe="team" style="position:absolute;left:75px;top:{{TT2}}px;color:var(--silver)">ProStock Tractor Pulling</div>
+
+  <div class="row" data-safe="a1" style="top:{{R1}}px"><span class="lab">Call</span><span class="val">(000) 000-0000</span></div>
+  <div class="row" data-safe="a2" style="top:{{R2}}px"><span class="lab">Write</span><span class="val">heavymetalevil72@gmail.com</span></div>
+  <div class="row" data-safe="a3" style="top:{{R3}}px"><span class="lab">Shop</span><span class="val">heavymetalprostock.com</span></div>
+  <div class="row" data-safe="a4" style="top:{{R4}}px"><span class="lab">Base</span><span class="val">WATERLOO, WISCONSIN</span></div>
+
+  <div class="disc" data-safe="disc" style="left:{{DL}}px;top:{{DT}}px;width:{{DD}}px;height:{{DD}}px">{{QR}}</div>
+  <div class="lab" data-safe="qrcap" style="position:absolute;left:{{DL}}px;width:{{DD}}px;text-align:center;top:{{QC}}px;padding-left:.14em;line-height:36px">Scan to shop<br>the gear</div>
+
+  <div class="hr" style="top:{{HR2}}px"></div>
+  <div class="spec" data-safe="s1" style="left:75px;top:{{SP}}px"><span class="lab">Engine</span><span class="val">CAT 3208 V8</span></div>
+  <div class="spec" data-safe="s2" style="left:{{C2}}px;top:{{SP}}px"><span class="lab">Weight</span><span class="val">10,000 LB</span></div>
+  <div class="spec" data-safe="s3" style="left:{{C3}}px;top:{{SP}}px"><span class="lab">Rear Tires</span><span class="val">24.5-32</span></div>
+  <div class="spec" data-safe="s4" style="left:{{C4}}px;top:{{SP}}px"><span class="lab">Full Pull</span><span class="val" style="font-family:PMB;color:var(--y)">300 FT</span></div>
+</div>

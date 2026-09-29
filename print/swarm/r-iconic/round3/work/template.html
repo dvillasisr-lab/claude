@@ -1,0 +1,74 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Heavy Metal · The Track</title>
+<!--
+PRESS NOTES (Heavy Metal business card, round 3)
+Trim 3.5 x 2 in, bleed 0.125 in (MediaBox 3.75 x 2.25 in, TrimBox [9 9 261 153] pt, BleedBox = MediaBox). Safe area 0.125 in inside trim.
+cards.pdf is the press file: DeviceCMYK throughout, output intent GRACoL 2006 Coated (TR006).
+  Ground        rich black  C40 M30 Y30 K100 (TAC 200)
+  Light pool    K only lift C40 M30 Y30 K100 -> K78 (the CMY plates never change, so it cannot mis-register or shift hue)
+  Bone          #F2F0E9 = paper (0/0/0/0), knockout
+  Yellow        #F5C400 = C0 M22 Y100 K2 (or PMS 7408 C spot); 0.2 pt spread trap
+  Silver type   #A9ADB1 = C40 M30 Y30 K40, the ground's own CMY with K reduced, so only the K plate knocks out
+  QR modules    K100 only on paper. 29 modules at exactly 6 px (0.51 mm), on the pixel grid; decodes in OpenCV at 100, 60 and 33 percent.
+                Bone disc r 158 keeps the full 4 module quiet zone inside the circle (quiet box corner r 157).
+  Tractor       converted to CMYK through GRACoL TR006 after a curves pass (shadows 30>55, 60>95, highlights capped 240)
+-->
+<style>
+@font-face{font-family:BS;src:url(file://{{FONTS}}/BigShoulders-Bold.ttf);font-weight:700}
+@font-face{font-family:Plex;src:url(file://{{FONTS}}/IBMPlexMono-Regular.ttf);font-weight:400}
+@font-face{font-family:Plex;src:url(file://{{FONTS}}/IBMPlexMono-Bold.ttf);font-weight:700}
+:root{--ink:#0B0B0C;--bone:#F2F0E9;--silver:#A9ADB1;--y:#F5C400}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;text-rendering:geometricPrecision}
+body{background:#555;padding:20px;display:flex;flex-direction:column;gap:20px}
+.card{width:1125px;height:675px;position:relative;overflow:hidden;background:var(--ink);color:var(--bone);flex:none}
+svg{display:block}
+.t{position:absolute;line-height:1;white-space:nowrap}
+.mono{font-family:Plex;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--silver)}
+.bs{font-family:BS;font-weight:700;text-transform:uppercase}
+/* ---------- FRONT ---------- */
+#front .light{position:absolute;inset:0;background:radial-gradient(ellipse {{LW}}px {{LH}}px at {{LX}}px {{LY}}px,{{LCORE}} 0%,rgba(11,11,12,0) 100%)}
+#front .logo-line{position:absolute;left:75px;top:464.5px;width:975px;height:135.5px}
+#front .tractor{position:absolute;left:{{TL}}px;top:{{TT}}px;width:{{TW}}px}
+#front .post{position:absolute;left:75px;width:{{POST_W}}px;background:var(--y);top:{{POST_T}}px;height:{{POST_H}}px}
+{{CSS_EXTRA}}
+#back .seal text{font-family:Plex;font-weight:700;font-size:{{ARC_FS}}px;fill:var(--silver)}
+</style>
+<script>if(location.hash==='#print'){document.write('<style>@page{size:3.75in 2.25in;margin:0}html,body{padding:0;margin:0;background:#0B0B0C;display:block}.card{break-after:page}</style>')}</script>
+<script>
+// place every .t so its cap top (data-cap) or baseline (data-base) lands on an exact pixel line
+function layout(){
+  const c=document.createElement('canvas').getContext('2d');
+  document.querySelectorAll('.t').forEach(el=>{
+    const cs=getComputedStyle(el); const fs=parseFloat(cs.fontSize);
+    c.font=`${cs.fontWeight} ${fs}px ${cs.fontFamily}`;
+    const capA=c.measureText('H').actualBoundingBoxAscent;
+    // baseline offset of the first line within the element
+    const probe=document.createElement('span'); probe.style.cssText='display:inline-block;width:0;height:0;vertical-align:baseline';
+    el.insertBefore(probe, el.firstChild);
+    el.style.top='0px';
+    const base=probe.getBoundingClientRect().top-el.getBoundingClientRect().top;
+    probe.remove();
+    const z=parseFloat(getComputedStyle(el.closest('.card')).zoom)||1;
+    let top;
+    if(el.dataset.cap!==undefined) top=parseFloat(el.dataset.cap)-(base/z-capA);
+    else top=parseFloat(el.dataset.base)-base/z;
+    el.style.top=top+'px';
+  });
+  document.body.dataset.ready=1;
+}
+document.addEventListener('DOMContentLoaded',()=>document.fonts.ready.then(layout));
+</script>
+</head><body>
+<div class="card" id="front">
+  <div class="light"></div>
+  {{LOGO}}
+  {{TRACK}}
+  <img class="tractor" src="{{TRACTOR}}" alt="The Evil One, engine open, standing on the name">
+  <div class="post" data-safe="post"></div>
+  {{FRONT_TEXT}}
+</div>
+<div class="card" id="back">
+  {{BACK}}
+</div>
+</body></html>
