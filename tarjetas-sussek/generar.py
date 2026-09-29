@@ -885,8 +885,89 @@ def variacion_5(p):
     return css, html, False
 
 
+
+# ---------- Tarjeta REGLA: frente con reglas reales / reverso con brida y cuadro de rótulo ----------
+
+def regla(p, troquel=True):
+    x_in = 13 if troquel else 8.5
+    front_art = inch_ruler(x_in, 3) + mm_ruler(x_in - 7 if troquel else 8.5, 54)
+    if troquel:
+        front_art += ('<text x="4.6" y="12.6" class="dim b">R5</text>'
+                      '<text x="88.6" y="48.2" class="dim b" text-anchor="end">R2.5</text>')
+    # reverso: brida redonda a escala 1:1 (mm)
+    cx, cy, R = 74.0, 22.5, 10.5
+    bc, hole = R * .78, 1.05
+    a = math.radians(225)
+    hx, hy = cx + bc * math.cos(a), cy + bc * math.sin(a)
+    back_art = (flange(cx, cy, R)
+                + leader(hx - .75, hy - .75, hx - 3.4, 9.6, hx - 15.5, f"4× Ø{2*hole:.2f} THRU", anchor="start")
+                + leader(cx + R * math.cos(math.radians(-40)) + .1, cy + R * math.sin(math.radians(-40)) - .1,
+                         cx + 10.6, 9.6, 86.5, f"Ø{2*R:.2f}", anchor="end")
+                + fcf(cx - 8.2, cy + R + 3.2, "pos", f"Ø0.02", "A"))
+    cls = "rg" + ("t" if troquel else "c")
+    clip = ""
+    if troquel:
+        clip = f"""
+  @media screen{{
+    .{cls}.front{{clip-path:path('{tool_shape(k=PX)}')}}
+    .{cls}.back{{clip-path:path('{tool_shape(True, k=PX)}')}}
+    .dieline{{display:none}}
+  }}"""
+    css = CONCEPT_CSS + f"""
+  .{cls}.front{{background:radial-gradient(110% 130% at 70% 45%,#2a2a6e 0%,var(--navy) 45%,var(--navy-deep) 100%);color:#fff}}
+  .{cls}.front .draw{{color:var(--line)}}
+  .{cls}.front .lockup-wrap{{left:var(--m);top:19mm}}
+  .{cls}.front .lockup img{{height:12mm}}
+  .{cls}.front .word{{font-size:4.4mm}}
+  .{cls}.front .pitch{{right:var(--m);top:21mm;text-align:right}}
+  .{cls} .pitch h2{{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5.4mm;line-height:1.02}}
+  .{cls} .pitch p{{margin-top:2mm;font-family:"IBM Plex Mono",monospace;font-size:1.45mm;letter-spacing:.1mm;color:var(--soft)}}
+  .{cls}.back{{background:#fff;color:var(--navy)}}
+  .{cls}.back .draw{{color:var(--navy)}}
+  .{cls}.back .who{{left:var(--m);top:var(--m)}}
+  .{cls}.back .who p{{color:var(--muted)}}
+  .{cls}.back .data{{left:var(--m);top:22.5mm;color:var(--ink)}}
+  .{cls}.back .data dt{{color:var(--navy)}}
+  .{cls}.back .foot{{left:var(--m);right:var(--m);bottom:var(--m);display:flex;align-items:center;gap:2.6mm}}
+  .{cls}.back .foot img{{height:5.8mm;display:block}}
+  .{cls}.back .block{{flex:1;height:5.4mm;display:grid;grid-template-columns:1fr 1fr 1fr auto;border:.25mm solid var(--navy);font-size:1.45mm;font-weight:700;letter-spacing:.2mm;text-transform:uppercase}}
+  .{cls}.back .block>*{{display:flex;align-items:center;justify-content:center;padding:0 1.8mm;border-left:.18mm solid var(--navy)}}
+  .{cls}.back .block>:first-child{{border-left:0}}
+  .{cls}.back .block .geo{{background:var(--navy);color:#fff}}
+  .dieline{{background:#fff}}{clip}
+"""
+    front_note = "MM + IN · SCALE 1:1 · MEASURE IT."
+    html = f"""
+<section class="card front {cls}">
+  <svg class="draw" viewBox="0 0 95 57">{front_art}</svg>
+  <div class="abs lockup-wrap">{LOCKUP}</div>
+  <div class="abs pitch"><h2>From print<br><em>to part.</em></h2><p>{front_note}</p></div>
+</section>
+<section class="card back {cls}">
+  <svg class="draw" viewBox="0 0 95 57">{back_art}</svg>
+  <div class="abs who"><h1>{p["nombre"]}</h1><p>{p["cargo"]}</p></div>
+  <dl class="abs data">{data_html(p)}</dl>
+  <div class="abs foot"><img src="sussek-icono.png" alt="">
+    <div class="block"><div>Machining</div><div>Assembly</div><div>Engineering</div><div class="geo">USA · MX · CN</div></div>
+  </div>
+</section>"""
+    if troquel:
+        html += f"""
+<section class="card dieline">
+  <svg class="draw" viewBox="0 0 95 57">
+    <rect x="0" y="0" width="95" height="57" fill="none" stroke="#bbb" stroke-width=".1" stroke-dasharray="1 .6"/>
+    <path d="{tool_shape()}" fill="none" stroke="#e6007e" stroke-width=".2"/>
+    <text x="47.5" y="24" class="dim" text-anchor="middle" style="fill:#e6007e;font-size:2px">DIE LINE · TROQUEL (FRENTE)</text>
+    <text x="47.5" y="28" class="dim" text-anchor="middle" style="fill:#555;font-size:1.6px">89 × 51 MM · R5 CONVEXO SUP. IZQ. · R2.5 CÓNCAVO INF. DER. · R1.5 RESTO</text>
+    <text x="47.5" y="31" class="dim" text-anchor="middle" style="fill:#555;font-size:1.6px">SANGRADO 3 MM · NO IMPRIMIR ESTA PÁGINA</text>
+  </svg>
+</section>"""
+    return css, html, False
+
+
 DISENOS = {"variacion-1-plano": variacion_1, "variacion-2-inspeccion": variacion_2, "variacion-3-globos": variacion_3,
-           "variacion-5-herramienta": variacion_5}
+           "variacion-5-herramienta": variacion_5,
+           "regla-troquel": lambda p: regla(p, True), "regla-cuadrada": lambda p: regla(p, False)}
 
 
 def page(title, css, body, vertical=False):
