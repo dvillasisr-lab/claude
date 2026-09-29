@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sussek · concepto-1-globos</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Open+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Archivo:wdth,wght@62..125,500..900&display=swap" rel="stylesheet">
+<style>
+  @page { size: 95mm 57mm; margin: 0; }
+  :root{
+    --navy:#202054; --navy-deep:#15153a; --line:#cdd5ee; --soft:#aab0d8; --ink:#1d1d22; --muted:#6b6f95; --glow:#f39a2b;
+    --steel:linear-gradient(90deg,#8e949b,#e9ecef 30%,#a9afb5 55%,#f4f6f7 75%,#8e949b);
+    --m:8.5mm; --paper:#f5f3ee;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#d9dce1}
+  body{font-family:"Open Sans",Helvetica,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .card{width:95mm;height:57mm;position:relative;overflow:hidden;page-break-after:always;break-after:page}
+  .draw{position:absolute;inset:0;width:95mm;height:57mm}
+  .dim{font-family:"IBM Plex Mono",monospace;font-size:1.45px;letter-spacing:.03px;fill:currentColor}
+  .abs{position:absolute}
+  .serif{font-family:"EB Garamond",Garamond,Georgia,serif}
+
+  .lockup{display:flex;align-items:center;gap:3mm}
+  .lockup img{height:12.5mm;width:auto;display:block}
+  .word{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.6mm;line-height:1.02}
+  .word span{display:block}
+  .word span::first-letter{font-size:1.16em;font-weight:600}
+
+  .who h1{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.8mm;line-height:1.05}
+  .who p{font-size:1.65mm;font-weight:700;letter-spacing:.24mm;text-transform:uppercase;margin-top:1.6mm}
+  .data{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:2.4mm;row-gap:.9mm;font-size:1.9mm;line-height:1.3}
+  .data dt{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:1.5mm}
+  .eyebrow{font-size:1.6mm;font-weight:700;letter-spacing:.2mm;text-transform:uppercase}
+
+  @media screen{
+    body{display:flex;flex-wrap:wrap;gap:10mm;padding:12mm;justify-content:center}
+    .card{box-shadow:0 2mm 6mm rgba(0,0,0,.22)}
+  }
+
+  .dim.b{font-weight:600}
+  .lab{font-family:"IBM Plex Mono",monospace;font-size:1.4px;font-weight:600;letter-spacing:.06px;fill:currentColor}
+  .note{font-family:"EB Garamond",Garamond,Georgia,serif;font-style:italic;font-size:2.3px;fill:currentColor}
+  .mail{font-family:"IBM Plex Mono",monospace;font-size:3.6px;font-weight:500;fill:#1d1d22}
+
+  .c1.front{background:#fff;color:var(--navy)}
+  .c1.front .draw{color:var(--navy)}
+  .c1.front .lockup-wrap{left:var(--m);top:var(--m)}
+  .c1.front .lockup img{height:9mm}
+  .c1.front .word{font-size:3.3mm;color:var(--navy)}
+  .c1.front .tag{right:var(--m);top:var(--m);text-align:right;font-family:"IBM Plex Mono",monospace;font-size:1.45mm;line-height:1.7;color:var(--muted)}
+  .c1.front .tag b{color:var(--navy);font-weight:600}
+  .c1.back{background:var(--paper);color:var(--navy)}
+  .c1.back .draw{color:var(--navy)}
+  .c1.back .who{left:0;right:0;top:var(--m);text-align:center}
+  .c1.back .who p{color:var(--muted)}
+  .c1.back .line{left:0;right:0;top:39.5mm;text-align:center;font-size:1.85mm;line-height:1.8;color:var(--ink)}
+  .c1.back .mark{left:0;right:0;bottom:var(--m);display:flex;justify-content:center;align-items:center;gap:1.6mm;font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:600;font-size:2.4mm;color:var(--navy)}
+  .c1.back .mark img{height:4.2mm}
+</style>
+</head>
+<body>
+<!-- Nombre y cargo son de ejemplo; datos de la planta de Waterloo tomados de sussek.com -->
+
+<section class="card front c1">
+  <svg class="draw" viewBox="0 0 95 57"><path d="M15,30.4 L15.5,29.9 L18.5,29.9 L19,30.4 L19,28.9 L19,28.9 L26.5,28.9 L26.5,28.9 L26.5,24.6 L27,24.1 L36,24.1 L36.5,24.6 L36.5,27.5 L36.5,27.5 L39.1,27.5 L39.1,27.5 L39.1,28 L39.1,28 L52.1,28 L52.1,28 L52.1,28.8 L52.1,28.8 L53.3,28.8 L53.3,28.8 L53.3,28.9 L53.3,28.9 L79.3,28.9 L79.3,28.9 L79.3,36.1 L79.3,36.1 L53.3,36.1 L53.3,36.1 L53.3,36.2 L53.3,36.2 L52.1,36.2 L52.1,36.2 L52.1,37 L52.1,37 L39.1,37 L39.1,37 L39.1,37.5 L39.1,37.5 L36.5,37.5 L36.5,37.5 L36.5,40.4 L36,40.9 L27,40.9 L26.5,40.4 L26.5,36.1 L26.5,36.1 L19,36.1 L19,36.1 L19,34.6 L18.5,35.1 L15.5,35.1 L15,34.6Z" stroke="currentColor" fill="none" stroke-width="0.3"/><path d="M15,29.9 V35.1" stroke="currentColor" fill="none" stroke-width="0.17"/><path d="M19,28.9 V36.1" stroke="currentColor" fill="none" stroke-width="0.17"/><path d="M26.5,24.1 V40.9" stroke="currentColor" fill="none" stroke-width="0.17"/><path d="M36.5,27.5 V37.5" stroke="currentColor" fill="none" stroke-width="0.17"/><path d="M39.1,28 V37" stroke="currentColor" fill="none" stroke-width="0.17"/><path d="M52.1,28.8 V36.2" stroke="currentColor" fill="none" stroke-width="0.17"/><path d="M53.3,28.9 V36.1" stroke="currentColor" fill="none" stroke-width="0.17"/><clipPath id="gclip"><rect x="26.5" y="24.6" width="10" height="15.8"/></clipPath><path d="M21.5,24.1 l3.2,16.8 M22.75,24.1 l3.2,16.8 M24,24.1 l3.2,16.8 M25.25,24.1 l3.2,16.8 M26.5,24.1 l3.2,16.8 M27.75,24.1 l3.2,16.8 M29,24.1 l3.2,16.8 M30.25,24.1 l3.2,16.8 M31.5,24.1 l3.2,16.8 M32.75,24.1 l3.2,16.8 M34,24.1 l3.2,16.8 M35.25,24.1 l3.2,16.8 M36.5,24.1 l3.2,16.8 M37.75,24.1 l3.2,16.8 " stroke="currentColor" fill="none" stroke-width="0.11" clip-path="url(#gclip)"/><path d="M26.5,25.4 H36.5 M26.5,39.6 H36.5" stroke="currentColor" fill="none" stroke-width="0.11" stroke-dasharray=".9 .5"/><path d="M39.7,29.4 H51.5 M39.7,30.9 H51.5 M39.7,34.1 H51.5 M39.7,35.6 H51.5 " stroke="currentColor" fill="none" stroke-width="0.11"/><path d="M12,32.5 H82.3" stroke="currentColor" fill="none" stroke-width="0.11" stroke-dasharray="2.6 .7 .45 .7"/><path d="M31.5,40.9 L31.5,42.5" stroke="currentColor" fill="none" stroke-width="0.11"/><circle cx="31.5" cy="40.9" r=".35" fill="currentColor"/><circle cx="31.5" cy="44.2" r="1.7" stroke="currentColor" fill="none" stroke-width="0.17"/><text x="31.5" y="44.82" class="dim b" text-anchor="middle">1</text><text x="31.5" y="48.1" class="lab" text-anchor="middle">5-AXIS</text><text x="31.5" y="49.9" class="lab" text-anchor="middle">HOBBING</text><path d="M45.6,37 L47.1,42.5" stroke="currentColor" fill="none" stroke-width="0.11"/><circle cx="45.6" cy="37" r=".35" fill="currentColor"/><circle cx="47.1" cy="44.2" r="1.7" stroke="currentColor" fill="none" stroke-width="0.17"/><text x="47.1" y="44.82" class="dim b" text-anchor="middle">2</text><text x="47.1" y="48.1" class="lab" text-anchor="middle">INDUCTION</text><text x="47.1" y="49.9" class="lab" text-anchor="middle">HARDENED</text><path d="M62.3,36.1 L64.3,42.5" stroke="currentColor" fill="none" stroke-width="0.11"/><circle cx="62.3" cy="36.1" r=".35" fill="currentColor"/><circle cx="64.3" cy="44.2" r="1.7" stroke="currentColor" fill="none" stroke-width="0.17"/><text x="64.3" y="44.82" class="dim b" text-anchor="middle">3</text><text x="64.3" y="48.1" class="lab" text-anchor="middle">CNC TURNED</text><text x="64.3" y="49.9" class="lab" text-anchor="middle">& GROUND</text><path d="M75.3,36.1 L77.8,42.5" stroke="currentColor" fill="none" stroke-width="0.11"/><circle cx="75.3" cy="36.1" r=".35" fill="currentColor"/><circle cx="77.8" cy="44.2" r="1.7" stroke="currentColor" fill="none" stroke-width="0.17"/><text x="77.8" y="44.82" class="dim b" text-anchor="middle">4</text><text x="77.8" y="48.1" class="lab" text-anchor="middle">ASSEMBLED</text><text x="77.8" y="49.9" class="lab" text-anchor="middle">& SHIPPED</text></svg>
+  <div class="abs lockup-wrap"><div class="lockup"><img src="sussek-icono.png" alt=""><div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div></div></div>
+  <p class="abs tag">DWG <b>SMC-1960</b><br>REV <b>A</b> · SCALE <b>1:1</b></p>
+</section>
+<section class="card back c1">
+  <svg class="draw" viewBox="0 0 95 57"><text x="30.22" y="29.5" class="mail">sales@sussek.com</text><path d="M30.22,25.9 v-1.2 H41.02 v1.2 M35.62,24.7 v-1.2" stroke="currentColor" fill="none" stroke-width="0.17"/><text x="35.62" y="22" class="note" text-anchor="middle">our team</text><path d="M43.18,25.9 v-1.2 H64.78 v1.2 M53.98,24.7 v-1.2" stroke="currentColor" fill="none" stroke-width="0.17"/><text x="53.98" y="22" class="note" text-anchor="middle">website</text><path d="M30.22,31.1 v1.2 H64.78 v-1.2 M47.5,32.3 v1.2" stroke="currentColor" fill="none" stroke-width="0.17"/><text x="47.5" y="35.7" class="note" text-anchor="middle">send us your print</text></svg>
+  <div class="abs who"><h1>Full Name</h1><p>Job Title</p></div>
+  <p class="abs line">920.478.2126 · 805 Pierce St · Waterloo, WI 53594</p>
+  <div class="abs mark"><img src="sussek-icono.png" alt="">Sussek Machine Company</div>
+</section>
+</body>
+</html>

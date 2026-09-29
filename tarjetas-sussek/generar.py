@@ -190,7 +190,7 @@ BASE_CSS = """
   :root{
     --navy:#202054; --navy-deep:#15153a; --line:#cdd5ee; --soft:#aab0d8; --ink:#1d1d22; --muted:#6b6f95; --glow:#f39a2b;
     --steel:linear-gradient(90deg,#8e949b,#e9ecef 30%,#a9afb5 55%,#f4f6f7 75%,#8e949b);
-    --m:8.5mm;
+    --m:8.5mm; --paper:#f5f3ee;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{background:#d9dce1}
@@ -219,7 +219,7 @@ BASE_CSS = """
   }
 """
 
-FONTS = '<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Open+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">'
+FONTS = '<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Open+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Archivo:wdth,wght@62..125,500..900&display=swap" rel="stylesheet">'
 WORD = '<div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div>'
 LOCKUP = f'<div class="lockup"><img src="sussek-icono.png" alt="">{WORD}</div>'
 
@@ -370,10 +370,212 @@ def diseno_3(p):
     return css, html
 
 
-DISENOS = {"diseno-1-plano": diseno_1, "diseno-2-foto": diseno_2, "diseno-3-blanco": diseno_3}
+
+# =====================================================================
+# Conceptos: la tarjeta cuenta algo (inspirados en las referencias)
+# =====================================================================
+
+def balloon(x_feat, y_feat, x, y, n, label):
+    """Globo numerado de plano con su etiqueta en dos renglones debajo."""
+    l1, l2 = label
+    return (f'<path d="M{f(x_feat)},{f(y_feat)} L{f(x)},{f(y-1.7)}" {S} stroke-width="{W3}"/>'
+            f'<circle cx="{f(x_feat)}" cy="{f(y_feat)}" r=".35" fill="currentColor"/>'
+            f'<circle cx="{f(x)}" cy="{f(y)}" r="1.7" {S} stroke-width="{W2}"/>'
+            f'<text x="{f(x)}" y="{f(y+.62)}" class="dim b" text-anchor="middle">{n}</text>'
+            f'<text x="{f(x)}" y="{f(y+3.9)}" class="lab" text-anchor="middle">{l1}</text>'
+            f'<text x="{f(x)}" y="{f(y+5.7)}" class="lab" text-anchor="middle">{l2}</text>')
 
 
-def page(title, css, body):
+def bracket(x1, x2, y, label, up=True):
+    """Corchete de anotación sobre (o bajo) un texto, con su etiqueta."""
+    s = -1 if up else 1
+    mid = (x1 + x2) / 2
+    return (f'<path d="M{f(x1)},{f(y)} v{f(s*1.2)} H{f(x2)} v{f(-s*1.2)} M{f(mid)},{f(y+s*1.2)} v{f(s*1.2)}" {S} stroke-width="{W2}"/>'
+            f'<text x="{f(mid)}" y="{f(y+s*(3.9 if up else 4.6))}" class="note" text-anchor="middle">{label}</text>')
+
+
+CONCEPT_CSS = """
+  .dim.b{font-weight:600}
+  .lab{font-family:"IBM Plex Mono",monospace;font-size:1.4px;font-weight:600;letter-spacing:.06px;fill:currentColor}
+  .note{font-family:"EB Garamond",Garamond,Georgia,serif;font-style:italic;font-size:2.3px;fill:currentColor}
+  .mail{font-family:"IBM Plex Mono",monospace;font-size:3.6px;font-weight:500;fill:#1d1d22}
+"""
+
+
+# ---------- Concepto 1: GLOBOS (la pieza explica lo que hacen) ----------
+
+def concepto_1(p):
+    yc = 32.5
+    body, pos = shaft(15, yc)
+    ga, gb, gr = pos["gear"]
+    sa, sb, sr = pos["spl"]
+    b2a, b2b, b2r = pos["brg2"]
+    art = [body,
+           balloon((ga+gb)/2, yc+gr, (ga+gb)/2, 44.2, 1, ("5-AXIS", "HOBBING")),
+           balloon((sa+sb)/2, yc+sr, (sa+sb)/2+1.5, 44.2, 2, ("INDUCTION", "HARDENED")),
+           balloon(b2a+9, yc+b2r, b2a+11, 44.2, 3, ("CNC TURNED", "& GROUND")),
+           balloon(b2b-4, yc+b2r, b2b-1.5, 44.2, 4, ("ASSEMBLED", "& SHIPPED"))]
+    # reverso: correo anotado con corchetes (monoespaciada: 2.16 mm por letra)
+    email = p["email"]
+    cw = 3.6 * .6
+    x0 = 47.5 - cw * len(email) / 2
+    at = email.index("@")
+    ym = 29.5
+    back = [f'<text x="{f(x0)}" y="{f(ym)}" class="mail">{email}</text>',
+            bracket(x0, x0 + cw * at, ym - 3.6, "our team"),
+            bracket(x0 + cw * (at + 1), x0 + cw * len(email), ym - 3.6, "website"),
+            bracket(x0, x0 + cw * len(email), ym + 1.6, "send us your print", up=False)]
+    css = CONCEPT_CSS + """
+  .c1.front{background:#fff;color:var(--navy)}
+  .c1.front .draw{color:var(--navy)}
+  .c1.front .lockup-wrap{left:var(--m);top:var(--m)}
+  .c1.front .lockup img{height:9mm}
+  .c1.front .word{font-size:3.3mm;color:var(--navy)}
+  .c1.front .tag{right:var(--m);top:var(--m);text-align:right;font-family:"IBM Plex Mono",monospace;font-size:1.45mm;line-height:1.7;color:var(--muted)}
+  .c1.front .tag b{color:var(--navy);font-weight:600}
+  .c1.back{background:var(--paper);color:var(--navy)}
+  .c1.back .draw{color:var(--navy)}
+  .c1.back .who{left:0;right:0;top:var(--m);text-align:center}
+  .c1.back .who p{color:var(--muted)}
+  .c1.back .line{left:0;right:0;top:39.5mm;text-align:center;font-size:1.85mm;line-height:1.8;color:var(--ink)}
+  .c1.back .mark{left:0;right:0;bottom:var(--m);display:flex;justify-content:center;align-items:center;gap:1.6mm;font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:600;font-size:2.4mm;color:var(--navy)}
+  .c1.back .mark img{height:4.2mm}
+"""
+    html = f"""
+<section class="card front c1">
+  <svg class="draw" viewBox="0 0 95 57">{"".join(art)}</svg>
+  <div class="abs lockup-wrap">{LOCKUP}</div>
+  <p class="abs tag">DWG <b>SMC-1960</b><br>REV <b>A</b> · SCALE <b>1:1</b></p>
+</section>
+<section class="card back c1">
+  <svg class="draw" viewBox="0 0 95 57">{"".join(back)}</svg>
+  <div class="abs who"><h1>{p["nombre"]}</h1><p>{p["cargo"]}</p></div>
+  <p class="abs line">{p["tel"]} · {p["dir"]}</p>
+  <div class="abs mark"><img src="sussek-icono.png" alt="">Sussek Machine Company</div>
+</section>"""
+    return css, html, False
+
+
+# ---------- Concepto 2: REPORTE DE INSPECCIÓN (vertical, como tabla nutricional) ----------
+
+def concepto_2(p):
+    css = CONCEPT_CSS + """
+  .c2.front{background:var(--paper);color:var(--ink)}
+  .c2 .report{position:absolute;left:7.2mm;right:7.2mm;top:7.2mm;bottom:7.2mm;border:.35mm solid var(--ink);padding:2.6mm 2.8mm;display:flex;flex-direction:column}
+  .c2 .report h2{font-family:"Archivo",Arial,sans-serif;font-stretch:78%;font-weight:900;font-size:5.5mm;line-height:.95;letter-spacing:-.05mm;text-transform:uppercase}
+  .c2 .thick{height:1.8mm;background:var(--ink);margin:1.6mm 0 1.4mm}
+  .c2 .mid{height:.9mm;background:var(--ink);margin:1.4mm 0 1.2mm}
+  .c2 .k{font-family:"IBM Plex Mono",monospace;font-size:1.45mm;text-transform:uppercase;color:#55575f}
+  .c2 .part b{display:block;font-family:"Archivo",Arial,sans-serif;font-stretch:90%;font-weight:800;font-size:3.9mm;line-height:1.05;margin-top:.5mm}
+  .c2 .part span{font-size:1.8mm;font-weight:600}
+  .c2 .row{display:flex;justify-content:space-between;align-items:baseline;gap:2mm;border-top:.18mm solid var(--ink);padding:.95mm 0;font-size:1.72mm}
+  .c2 .row b{font-weight:700;text-align:right}
+  .c2 .result{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+  .c2 .result .k{line-height:1.6;white-space:nowrap}
+  .c2 .stamp{transform:rotate(-9deg);border:.5mm solid var(--navy);color:var(--navy);padding:.8mm 2mm .6mm;font-family:"Archivo",Arial,sans-serif;font-stretch:80%;font-weight:900;font-size:3.3mm;letter-spacing:.25mm;box-shadow:inset 0 0 0 .35mm var(--paper),inset 0 0 0 .6mm var(--navy);opacity:.9}
+  .c2 .sign{font-family:"EB Garamond",Garamond,Georgia,serif;font-style:italic;font-size:2.2mm;margin-top:1.8mm}
+  .c2.back{background:var(--navy);color:#fff}
+  .c2.back .grid{position:absolute;inset:0;opacity:.07;background-image:linear-gradient(#fff .1mm,transparent .1mm),linear-gradient(90deg,#fff .1mm,transparent .1mm);background-size:3mm 3mm}
+  .c2.back .logo{left:0;right:0;top:14mm;display:flex;flex-direction:column;align-items:center;gap:3.4mm;text-align:center}
+  .c2.back .logo img{height:17mm}
+  .c2.back .logo .word{font-size:5mm}
+  .c2.back .rule{left:50%;top:57mm;width:10mm;margin-left:-5mm;height:.5mm;background:var(--steel)}
+  .c2.back .data{left:0;right:0;bottom:12mm;display:block;text-align:center;font-size:1.9mm;line-height:1.85}
+  .c2.back .data .dim2{color:var(--soft)}
+"""
+    html = f"""
+<section class="card front c2">
+  <div class="report">
+    <h2>Inspection<br>Report</h2>
+    <div class="thick"></div>
+    <div class="part"><span class="k">Part</span><b>{p["nombre"]}</b><span>{p["cargo"]}</span></div>
+    <div class="mid"></div>
+    <div class="row"><span class="k">Supplier</span><b>Sussek Machine Co.</b></div>
+    <div class="row"><span class="k">Process</span><b>Milling · Turning · Hobbing</b></div>
+    <div class="row"><span class="k">Capacity</span><b>250+ CNC centers</b></div>
+    <div class="row"><span class="k">Certified</span><b>ISO 9001 · IATF · AS9100</b></div>
+    <div class="row"><span class="k">Since</span><b>1960</b></div>
+    <div class="row"><span class="k">Tolerance</span><b>±0.005</b></div>
+    <div class="thick"></div>
+    <div class="result"><span class="k">Result<br>100% checked</span><span class="stamp">APPROVED</span></div>
+    <p class="sign">Ready for your next part.</p>
+  </div>
+</section>
+<section class="card back c2">
+  <div class="grid"></div>
+  <div class="abs logo"><img src="sussek-icono.png" alt="">{WORD}</div>
+  <i class="abs rule"></i>
+  <p class="abs data">{p["tel"]}<br>{p["email"]}<br>{p["web"]}<br><span class="dim2">{p["dir"]}</span></p>
+</section>"""
+    return css, html, True
+
+
+# ---------- Concepto 3: PLACA DE MÁQUINA (acero con remaches) ----------
+
+RIVETS = "".join(f'<i class="rivet" style="left:{x}mm;top:{y}mm"></i>' for x, y in [(6.2, 6.2), (86.6, 6.2), (6.2, 48.6), (86.6, 48.6)])
+
+
+def concepto_3(p):
+    css = CONCEPT_CSS + """
+  .c3.front{color:var(--navy);background:
+      repeating-linear-gradient(90deg,rgba(255,255,255,.10) 0 .12mm,rgba(0,0,0,.035) .12mm .26mm,rgba(255,255,255,0) .26mm .5mm),
+      linear-gradient(120deg,#c9cdd3 0%,#eef0f2 28%,#b3b9c0 50%,#e7eaed 72%,#aeb4bb 100%)}
+  .c3.back{color:#fff;background:
+      repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 .12mm,rgba(0,0,0,.06) .12mm .26mm,rgba(255,255,255,0) .26mm .5mm),
+      linear-gradient(120deg,#1a1a45 0%,#2a2a66 35%,#191942 60%,#26265c 100%)}
+  .c3 .rivet{position:absolute;width:3.2mm;height:3.2mm;margin:-1.6mm 0 0 -1.6mm;border-radius:50%;
+      background:radial-gradient(circle at 35% 30%,#ffffff 0%,#d4d8dd 25%,#8c939b 70%,#5d636b 100%);box-shadow:0 .2mm .35mm rgba(0,0,0,.45),inset 0 -.2mm .3mm rgba(0,0,0,.3)}
+  .c3 .frame{position:absolute;left:9.5mm;right:9.5mm;top:9mm;bottom:9mm;border:.3mm solid currentColor;border-radius:1.2mm}
+  .c3.front .frame{box-shadow:0 .15mm 0 rgba(255,255,255,.7)}
+  .c3 .eng{text-shadow:0 .14mm 0 rgba(255,255,255,.65)}
+  .c3.back .eng{text-shadow:0 -.12mm 0 rgba(0,0,0,.5)}
+  .c3.front .lockup-wrap{left:12.5mm;top:12mm}
+  .c3.front .lockup img{height:11mm;filter:drop-shadow(0 .2mm .3mm rgba(0,0,0,.35))}
+  .c3.front .word{font-size:4.1mm}
+  .c3.front .made{right:12.5mm;top:12.6mm;text-align:right;font-family:"IBM Plex Mono",monospace;font-size:1.4mm;line-height:1.75;font-weight:600;letter-spacing:.08mm}
+  .c3.front .cells{left:12.5mm;right:12.5mm;bottom:12mm;display:grid;grid-template-columns:1.5fr 1fr 1fr;border:.25mm solid var(--navy)}
+  .c3.front .cells>div{padding:.8mm 1.3mm .9mm;border-left:.2mm solid var(--navy)}
+  .c3.front .cells>div:first-child{border-left:0}
+  .c3.front .cells>div.wide{grid-column:1/4;border-left:0;border-top:.2mm solid var(--navy)}
+  .c3 small{display:block;font-family:"IBM Plex Mono",monospace;font-size:1.1mm;letter-spacing:.1mm;opacity:.75}
+  .c3.front .cells b{font-size:1.65mm;font-weight:700;letter-spacing:.1mm;white-space:nowrap}
+  .c3.back .who{left:12.5mm;top:12.5mm}
+  .c3.back .who p{color:var(--soft)}
+  .c3.back .data{left:12.5mm;bottom:12.5mm;font-size:1.85mm}
+  .c3.back .data dt{color:var(--soft)}
+  .c3.back .tag{right:12.5mm;top:13mm;text-align:right;font-family:"IBM Plex Mono",monospace;font-size:1.4mm;line-height:1.75;color:var(--soft)}
+  .c3.back .tag img{height:6.5mm;display:block;margin:0 0 1.4mm auto}
+"""
+    html = f"""
+<section class="card front c3">
+  <div class="frame"></div>{RIVETS}
+  <div class="abs lockup-wrap eng">{LOCKUP}</div>
+  <p class="abs made eng">MADE IN<br>USA · MX · CN</p>
+  <div class="abs cells eng">
+    <div><small>MODEL</small><b>PRECISION PARTS</b></div>
+    <div><small>CAPACITY</small><b>250+ CNC</b></div>
+    <div><small>EST.</small><b>1960</b></div>
+    <div class="wide"><small>CERTIFIED</small><b>ISO 9001 · IATF 16949 · AS9100</b></div>
+  </div>
+</section>
+<section class="card back c3">
+  <div class="frame" style="color:rgba(255,255,255,.35)"></div>{RIVETS}
+  <div class="abs who eng"><h1>{p["nombre"]}</h1><p>{p["cargo"]}</p></div>
+  <p class="abs tag"><img src="sussek-icono.png" alt="">S/N SMC-1960</p>
+  <dl class="abs data eng">{data_html(p)}</dl>
+</section>"""
+    return css, html, False
+
+
+DISENOS = {"concepto-1-globos": concepto_1, "concepto-2-inspeccion": concepto_2, "concepto-3-placa": concepto_3}
+
+
+def page(title, css, body, vertical=False):
+    if vertical:
+        css += """
+  @page { size: 57mm 95mm; margin: 0; }
+  .card{width:57mm;height:95mm}
+"""
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -393,6 +595,6 @@ def page(title, css, body):
 if __name__ == "__main__":
     here = Path(__file__).parent
     for name, fn in DISENOS.items():
-        css, body = fn(PERSONA)
-        (here / f"{name}.html").write_text(page(f"Sussek · {name}", css, body))
+        css, body, vertical = fn(PERSONA)
+        (here / f"{name}.html").write_text(page(f"Sussek · {name}", css, body, vertical))
         print("ok", name)

@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sussek · concepto-3-placa</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Open+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Archivo:wdth,wght@62..125,500..900&display=swap" rel="stylesheet">
+<style>
+  @page { size: 95mm 57mm; margin: 0; }
+  :root{
+    --navy:#202054; --navy-deep:#15153a; --line:#cdd5ee; --soft:#aab0d8; --ink:#1d1d22; --muted:#6b6f95; --glow:#f39a2b;
+    --steel:linear-gradient(90deg,#8e949b,#e9ecef 30%,#a9afb5 55%,#f4f6f7 75%,#8e949b);
+    --m:8.5mm; --paper:#f5f3ee;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#d9dce1}
+  body{font-family:"Open Sans",Helvetica,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .card{width:95mm;height:57mm;position:relative;overflow:hidden;page-break-after:always;break-after:page}
+  .draw{position:absolute;inset:0;width:95mm;height:57mm}
+  .dim{font-family:"IBM Plex Mono",monospace;font-size:1.45px;letter-spacing:.03px;fill:currentColor}
+  .abs{position:absolute}
+  .serif{font-family:"EB Garamond",Garamond,Georgia,serif}
+
+  .lockup{display:flex;align-items:center;gap:3mm}
+  .lockup img{height:12.5mm;width:auto;display:block}
+  .word{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.6mm;line-height:1.02}
+  .word span{display:block}
+  .word span::first-letter{font-size:1.16em;font-weight:600}
+
+  .who h1{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.8mm;line-height:1.05}
+  .who p{font-size:1.65mm;font-weight:700;letter-spacing:.24mm;text-transform:uppercase;margin-top:1.6mm}
+  .data{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:2.4mm;row-gap:.9mm;font-size:1.9mm;line-height:1.3}
+  .data dt{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:1.5mm}
+  .eyebrow{font-size:1.6mm;font-weight:700;letter-spacing:.2mm;text-transform:uppercase}
+
+  @media screen{
+    body{display:flex;flex-wrap:wrap;gap:10mm;padding:12mm;justify-content:center}
+    .card{box-shadow:0 2mm 6mm rgba(0,0,0,.22)}
+  }
+
+  .dim.b{font-weight:600}
+  .lab{font-family:"IBM Plex Mono",monospace;font-size:1.4px;font-weight:600;letter-spacing:.06px;fill:currentColor}
+  .note{font-family:"EB Garamond",Garamond,Georgia,serif;font-style:italic;font-size:2.3px;fill:currentColor}
+  .mail{font-family:"IBM Plex Mono",monospace;font-size:3.6px;font-weight:500;fill:#1d1d22}
+
+  .c3.front{color:var(--navy);background:
+      repeating-linear-gradient(90deg,rgba(255,255,255,.10) 0 .12mm,rgba(0,0,0,.035) .12mm .26mm,rgba(255,255,255,0) .26mm .5mm),
+      linear-gradient(120deg,#c9cdd3 0%,#eef0f2 28%,#b3b9c0 50%,#e7eaed 72%,#aeb4bb 100%)}
+  .c3.back{color:#fff;background:
+      repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 .12mm,rgba(0,0,0,.06) .12mm .26mm,rgba(255,255,255,0) .26mm .5mm),
+      linear-gradient(120deg,#1a1a45 0%,#2a2a66 35%,#191942 60%,#26265c 100%)}
+  .c3 .rivet{position:absolute;width:3.2mm;height:3.2mm;margin:-1.6mm 0 0 -1.6mm;border-radius:50%;
+      background:radial-gradient(circle at 35% 30%,#ffffff 0%,#d4d8dd 25%,#8c939b 70%,#5d636b 100%);box-shadow:0 .2mm .35mm rgba(0,0,0,.45),inset 0 -.2mm .3mm rgba(0,0,0,.3)}
+  .c3 .frame{position:absolute;left:9.5mm;right:9.5mm;top:9mm;bottom:9mm;border:.3mm solid currentColor;border-radius:1.2mm}
+  .c3.front .frame{box-shadow:0 .15mm 0 rgba(255,255,255,.7)}
+  .c3 .eng{text-shadow:0 .14mm 0 rgba(255,255,255,.65)}
+  .c3.back .eng{text-shadow:0 -.12mm 0 rgba(0,0,0,.5)}
+  .c3.front .lockup-wrap{left:12.5mm;top:12mm}
+  .c3.front .lockup img{height:11mm;filter:drop-shadow(0 .2mm .3mm rgba(0,0,0,.35))}
+  .c3.front .word{font-size:4.1mm}
+  .c3.front .made{right:12.5mm;top:12.6mm;text-align:right;font-family:"IBM Plex Mono",monospace;font-size:1.4mm;line-height:1.75;font-weight:600;letter-spacing:.08mm}
+  .c3.front .cells{left:12.5mm;right:12.5mm;bottom:12mm;display:grid;grid-template-columns:1.5fr 1fr 1fr;border:.25mm solid var(--navy)}
+  .c3.front .cells>div{padding:.8mm 1.3mm .9mm;border-left:.2mm solid var(--navy)}
+  .c3.front .cells>div:first-child{border-left:0}
+  .c3.front .cells>div.wide{grid-column:1/4;border-left:0;border-top:.2mm solid var(--navy)}
+  .c3 small{display:block;font-family:"IBM Plex Mono",monospace;font-size:1.1mm;letter-spacing:.1mm;opacity:.75}
+  .c3.front .cells b{font-size:1.65mm;font-weight:700;letter-spacing:.1mm;white-space:nowrap}
+  .c3.back .who{left:12.5mm;top:12.5mm}
+  .c3.back .who p{color:var(--soft)}
+  .c3.back .data{left:12.5mm;bottom:12.5mm;font-size:1.85mm}
+  .c3.back .data dt{color:var(--soft)}
+  .c3.back .tag{right:12.5mm;top:13mm;text-align:right;font-family:"IBM Plex Mono",monospace;font-size:1.4mm;line-height:1.75;color:var(--soft)}
+  .c3.back .tag img{height:6.5mm;display:block;margin:0 0 1.4mm auto}
+</style>
+</head>
+<body>
+<!-- Nombre y cargo son de ejemplo; datos de la planta de Waterloo tomados de sussek.com -->
+
+<section class="card front c3">
+  <div class="frame"></div><i class="rivet" style="left:6.2mm;top:6.2mm"></i><i class="rivet" style="left:86.6mm;top:6.2mm"></i><i class="rivet" style="left:6.2mm;top:48.6mm"></i><i class="rivet" style="left:86.6mm;top:48.6mm"></i>
+  <div class="abs lockup-wrap eng"><div class="lockup"><img src="sussek-icono.png" alt=""><div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div></div></div>
+  <p class="abs made eng">MADE IN<br>USA · MX · CN</p>
+  <div class="abs cells eng">
+    <div><small>MODEL</small><b>PRECISION PARTS</b></div>
+    <div><small>CAPACITY</small><b>250+ CNC</b></div>
+    <div><small>EST.</small><b>1960</b></div>
+    <div class="wide"><small>CERTIFIED</small><b>ISO 9001 · IATF 16949 · AS9100</b></div>
+  </div>
+</section>
+<section class="card back c3">
+  <div class="frame" style="color:rgba(255,255,255,.35)"></div><i class="rivet" style="left:6.2mm;top:6.2mm"></i><i class="rivet" style="left:86.6mm;top:6.2mm"></i><i class="rivet" style="left:6.2mm;top:48.6mm"></i><i class="rivet" style="left:86.6mm;top:48.6mm"></i>
+  <div class="abs who eng"><h1>Full Name</h1><p>Job Title</p></div>
+  <p class="abs tag"><img src="sussek-icono.png" alt="">S/N SMC-1960</p>
+  <dl class="abs data eng"><dt>T</dt><dd>920.478.2126</dd><dt>E</dt><dd>sales@sussek.com</dd><dt>W</dt><dd>sussek.com</dd><dt>A</dt><dd>805 Pierce St · Waterloo, WI 53594</dd></dl>
+</section>
+</body>
+</html>

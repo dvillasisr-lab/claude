@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sussek · concepto-2-inspeccion</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Open+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Archivo:wdth,wght@62..125,500..900&display=swap" rel="stylesheet">
+<style>
+  @page { size: 95mm 57mm; margin: 0; }
+  :root{
+    --navy:#202054; --navy-deep:#15153a; --line:#cdd5ee; --soft:#aab0d8; --ink:#1d1d22; --muted:#6b6f95; --glow:#f39a2b;
+    --steel:linear-gradient(90deg,#8e949b,#e9ecef 30%,#a9afb5 55%,#f4f6f7 75%,#8e949b);
+    --m:8.5mm; --paper:#f5f3ee;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#d9dce1}
+  body{font-family:"Open Sans",Helvetica,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .card{width:95mm;height:57mm;position:relative;overflow:hidden;page-break-after:always;break-after:page}
+  .draw{position:absolute;inset:0;width:95mm;height:57mm}
+  .dim{font-family:"IBM Plex Mono",monospace;font-size:1.45px;letter-spacing:.03px;fill:currentColor}
+  .abs{position:absolute}
+  .serif{font-family:"EB Garamond",Garamond,Georgia,serif}
+
+  .lockup{display:flex;align-items:center;gap:3mm}
+  .lockup img{height:12.5mm;width:auto;display:block}
+  .word{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.6mm;line-height:1.02}
+  .word span{display:block}
+  .word span::first-letter{font-size:1.16em;font-weight:600}
+
+  .who h1{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.8mm;line-height:1.05}
+  .who p{font-size:1.65mm;font-weight:700;letter-spacing:.24mm;text-transform:uppercase;margin-top:1.6mm}
+  .data{display:grid;grid-template-columns:auto 1fr;align-items:baseline;column-gap:2.4mm;row-gap:.9mm;font-size:1.9mm;line-height:1.3}
+  .data dt{font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:1.5mm}
+  .eyebrow{font-size:1.6mm;font-weight:700;letter-spacing:.2mm;text-transform:uppercase}
+
+  @media screen{
+    body{display:flex;flex-wrap:wrap;gap:10mm;padding:12mm;justify-content:center}
+    .card{box-shadow:0 2mm 6mm rgba(0,0,0,.22)}
+  }
+
+  .dim.b{font-weight:600}
+  .lab{font-family:"IBM Plex Mono",monospace;font-size:1.4px;font-weight:600;letter-spacing:.06px;fill:currentColor}
+  .note{font-family:"EB Garamond",Garamond,Georgia,serif;font-style:italic;font-size:2.3px;fill:currentColor}
+  .mail{font-family:"IBM Plex Mono",monospace;font-size:3.6px;font-weight:500;fill:#1d1d22}
+
+  .c2.front{background:var(--paper);color:var(--ink)}
+  .c2 .report{position:absolute;left:7.2mm;right:7.2mm;top:7.2mm;bottom:7.2mm;border:.35mm solid var(--ink);padding:2.6mm 2.8mm;display:flex;flex-direction:column}
+  .c2 .report h2{font-family:"Archivo",Arial,sans-serif;font-stretch:78%;font-weight:900;font-size:5.5mm;line-height:.95;letter-spacing:-.05mm;text-transform:uppercase}
+  .c2 .thick{height:1.8mm;background:var(--ink);margin:1.6mm 0 1.4mm}
+  .c2 .mid{height:.9mm;background:var(--ink);margin:1.4mm 0 1.2mm}
+  .c2 .k{font-family:"IBM Plex Mono",monospace;font-size:1.45mm;text-transform:uppercase;color:#55575f}
+  .c2 .part b{display:block;font-family:"Archivo",Arial,sans-serif;font-stretch:90%;font-weight:800;font-size:3.9mm;line-height:1.05;margin-top:.5mm}
+  .c2 .part span{font-size:1.8mm;font-weight:600}
+  .c2 .row{display:flex;justify-content:space-between;align-items:baseline;gap:2mm;border-top:.18mm solid var(--ink);padding:.95mm 0;font-size:1.72mm}
+  .c2 .row b{font-weight:700;text-align:right}
+  .c2 .result{display:flex;justify-content:space-between;align-items:center;margin-top:auto}
+  .c2 .result .k{line-height:1.6;white-space:nowrap}
+  .c2 .stamp{transform:rotate(-9deg);border:.5mm solid var(--navy);color:var(--navy);padding:.8mm 2mm .6mm;font-family:"Archivo",Arial,sans-serif;font-stretch:80%;font-weight:900;font-size:3.3mm;letter-spacing:.25mm;box-shadow:inset 0 0 0 .35mm var(--paper),inset 0 0 0 .6mm var(--navy);opacity:.9}
+  .c2 .sign{font-family:"EB Garamond",Garamond,Georgia,serif;font-style:italic;font-size:2.2mm;margin-top:1.8mm}
+  .c2.back{background:var(--navy);color:#fff}
+  .c2.back .grid{position:absolute;inset:0;opacity:.07;background-image:linear-gradient(#fff .1mm,transparent .1mm),linear-gradient(90deg,#fff .1mm,transparent .1mm);background-size:3mm 3mm}
+  .c2.back .logo{left:0;right:0;top:14mm;display:flex;flex-direction:column;align-items:center;gap:3.4mm;text-align:center}
+  .c2.back .logo img{height:17mm}
+  .c2.back .logo .word{font-size:5mm}
+  .c2.back .rule{left:50%;top:57mm;width:10mm;margin-left:-5mm;height:.5mm;background:var(--steel)}
+  .c2.back .data{left:0;right:0;bottom:12mm;display:block;text-align:center;font-size:1.9mm;line-height:1.85}
+  .c2.back .data .dim2{color:var(--soft)}
+
+  @page { size: 57mm 95mm; margin: 0; }
+  .card{width:57mm;height:95mm}
+</style>
+</head>
+<body>
+<!-- Nombre y cargo son de ejemplo; datos de la planta de Waterloo tomados de sussek.com -->
+
+<section class="card front c2">
+  <div class="report">
+    <h2>Inspection<br>Report</h2>
+    <div class="thick"></div>
+    <div class="part"><span class="k">Part</span><b>Full Name</b><span>Job Title</span></div>
+    <div class="mid"></div>
+    <div class="row"><span class="k">Supplier</span><b>Sussek Machine Co.</b></div>
+    <div class="row"><span class="k">Process</span><b>Milling · Turning · Hobbing</b></div>
+    <div class="row"><span class="k">Capacity</span><b>250+ CNC centers</b></div>
+    <div class="row"><span class="k">Certified</span><b>ISO 9001 · IATF · AS9100</b></div>
+    <div class="row"><span class="k">Since</span><b>1960</b></div>
+    <div class="row"><span class="k">Tolerance</span><b>±0.005</b></div>
+    <div class="thick"></div>
+    <div class="result"><span class="k">Result<br>100% checked</span><span class="stamp">APPROVED</span></div>
+    <p class="sign">Ready for your next part.</p>
+  </div>
+</section>
+<section class="card back c2">
+  <div class="grid"></div>
+  <div class="abs logo"><img src="sussek-icono.png" alt=""><div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div></div>
+  <i class="abs rule"></i>
+  <p class="abs data">920.478.2126<br>sales@sussek.com<br>sussek.com<br><span class="dim2">805 Pierce St · Waterloo, WI 53594</span></p>
+</section>
+</body>
+</html>
