@@ -100,6 +100,30 @@ def shaft(x0, yc):
     return "".join(out), pos
 
 
+def gear(cx, cy, R, N=22, w=.3):
+    """Engrane en vista frontal: dientes, círculo primitivo, maza, barrenos y cuñero."""
+    s = R / 21
+    Rr = 18.2 * s
+    pts = []
+    for i in range(N):
+        a, p = 2 * math.pi * i / N, 2 * math.pi / N
+        for fr, r in [(0, Rr), (.18, Rr), (.32, R), (.58, R), (.72, Rr)]:
+            pts.append((cx + r * math.cos(a + fr * p), cy + r * math.sin(a + fr * p)))
+    out = [f'<path d="M{" L".join(f"{f(x)},{f(y)}" for x, y in pts)}Z" {S} stroke-width="{w}"/>',
+           f'<circle cx="{f(cx)}" cy="{f(cy)}" r="{f(16.6*s)}" {S} stroke-width="{f(w*.45)}" {CL}/>',
+           f'<circle cx="{f(cx)}" cy="{f(cy)}" r="{f(13.2*s)}" {S} stroke-width="{f(w*.8)}"/>',
+           f'<circle cx="{f(cx)}" cy="{f(cy)}" r="{f(9.2*s)}" {S} stroke-width="{f(w*.45)}" {CL}/>']
+    for i in range(6):
+        a = math.pi / 6 + i * math.pi / 3
+        out.append(f'<circle cx="{f(cx+9.2*s*math.cos(a))}" cy="{f(cy+9.2*s*math.sin(a))}" r="{f(1.35*s)}" {S} stroke-width="{f(w*.8)}"/>')
+    r, k, h = 4.6 * s, 1.1 * s, 5.6 * s
+    yk = cy - math.sqrt(r * r - k * k)
+    out.append(f'<path d="M{f(cx-k)},{f(yk)} A{f(r)},{f(r)} 0 1 0 {f(cx+k)},{f(yk)} V{f(cy-h)} H{f(cx-k)}Z" {S} stroke-width="{w}"/>')
+    e = R + 3.5 * s
+    out.append(f'<path d="M{f(cx-e)},{f(cy)} H{f(cx+e)} M{f(cx)},{f(cy-e)} V{f(cy+e)}" {S} stroke-width="{f(w*.4)}" {CL}/>')
+    return "".join(out)
+
+
 def flange(cx, cy, R=10.5):
     """Brida en vista frontal: 4 barrenos pasados, maza, barreno central con cuñero."""
     out = [f'<circle cx="{cx}" cy="{cy}" r="{R}" {S} stroke-width="{W}"/>',
@@ -567,7 +591,142 @@ def concepto_3(p):
     return css, html, False
 
 
-DISENOS = {"concepto-1-globos": concepto_1, "concepto-2-inspeccion": concepto_2, "concepto-3-placa": concepto_3}
+
+# =====================================================================
+# Variaciones finales: combinan los elementos elegidos
+# =====================================================================
+
+ICON_AR = 249 / 221          # ancho/alto del ícono
+WORD_W = {4.4: 17.85}        # ancho medido del nombre (mm) según tamaño de letra
+WORD_H = {4.4: 15.84}
+
+
+def dim_v_rot(x, y1, y2, text):
+    """Cota vertical con el texto girado, centrado sobre la línea."""
+    mid, gap = (y1 + y2) / 2, .52 * len(text) + .7
+    return (f'<path d="M{f(x)},{f(y1)} V{f(mid-gap)} M{f(x)},{f(mid+gap)} V{f(y2)}" {S} stroke-width="{W3}"/>'
+            + arrow(x, y1, -math.pi / 2) + arrow(x, y2, math.pi / 2)
+            + f'<text x="{f(x)}" y="{f(mid+.5)}" class="dim" text-anchor="middle" transform="rotate(-90 {f(x)} {f(mid)})">{text}</text>')
+
+
+def ext_v(x, y_from, y_to):
+    return f'<path d="M{f(x)},{f(y_from)} V{f(y_to)}" {S} stroke-width="{W3}"/>'
+
+
+def ext_h(y, x_from, x_to):
+    return f'<path d="M{f(x_from)},{f(y)} H{f(x_to)}" {S} stroke-width="{W3}"/>'
+
+
+def gear_callout(cx, cy, R, x_end, y_text):
+    s = R / 21
+    a = -math.pi / 6
+    hx, hy = cx + 9.2 * s * math.cos(a), cy + 9.2 * s * math.sin(a)
+    return leader(hx + .8, hy - .8, hx + 4.5, y_text, x_end, "6× Ø2.70 EQ SP", anchor="end")
+
+
+# ---------- Variación 1: plano azul con engrane + logo acotado / correo anotado ----------
+
+def variacion_1(p):
+    ix, top, ih, fs = 12.0, 13.0, 12.0, 4.4
+    iw = ih * ICON_AR
+    lh = max(ih, WORD_H[fs])
+    iy1 = top + (lh - ih) / 2
+    iy2 = iy1 + ih
+    wx2 = ix + iw + 3 + WORD_W[fs]
+    cx, cy, R = 72.0, 28.5, 16.5
+    art = [gear(cx, cy, R), gear_callout(cx, cy, R, 86.5, 9.8),
+           ext_v(ix, top - .8, 8.9), ext_v(wx2, top - .8, 8.9), dim_h(ix, wx2, 9.8, f"{wx2-ix:.3f} ±0.005"),
+           ext_h(iy1, ix - .8, 8.2), ext_h(iy2, ix - .8, 8.2), dim_v_rot(9.1, iy1, iy2, f"{ih:.3f}"),
+           leader(ix + .7, iy2 - .7, ix + 3, iy2 + 3.8, ix + 14, "R2.5 TYP")]
+    email = p["email"]
+    cw = 3.6 * .6
+    x0 = 47.5 - cw * len(email) / 2
+    at = email.index("@")
+    ym = 29.5
+    back = [f'<text x="{f(x0)}" y="{f(ym)}" class="mail">{email}</text>',
+            bracket(x0, x0 + cw * at, ym - 3.6, "our team"),
+            bracket(x0 + cw * (at + 1), x0 + cw * len(email), ym - 3.6, "website"),
+            bracket(x0, x0 + cw * len(email), ym + 1.6, "send us your print", up=False)]
+    css = CONCEPT_CSS + f"""
+  .v1.front{{background:radial-gradient(110% 130% at 75% 50%,#2a2a6e 0%,var(--navy) 45%,var(--navy-deep) 100%);color:#fff}}
+  .v1.front .grid{{position:absolute;inset:0;opacity:.07;background-image:linear-gradient(#fff .1mm,transparent .1mm),linear-gradient(90deg,#fff .1mm,transparent .1mm);background-size:3mm 3mm;background-position:.5mm .5mm}}
+  .v1.front .draw{{color:var(--line)}}
+  .v1.front .lockup-wrap{{left:{ix}mm;top:{top}mm}}
+  .v1.front .lockup img{{height:{ih}mm}}
+  .v1.front .word{{font-size:{fs}mm}}
+  .v1.front .pitch{{left:var(--m);bottom:var(--m)}}
+  .v1 .pitch h2{{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5.4mm;line-height:1.02}}
+  .v1.back{{background:var(--paper);color:var(--navy)}}
+  .v1.back .draw{{color:var(--navy)}}
+  .v1.back .who{{left:0;right:0;top:var(--m);text-align:center}}
+  .v1.back .who p{{color:var(--muted)}}
+  .v1.back .line{{left:0;right:0;top:39.5mm;text-align:center;font-size:1.85mm;color:var(--ink)}}
+  .v1.back .mark{{left:0;right:0;bottom:var(--m);display:flex;justify-content:center;align-items:center;gap:1.6mm;font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:600;font-size:2.4mm}}
+  .v1.back .mark img{{height:4.2mm}}
+"""
+    html = f"""
+<section class="card front v1">
+  <div class="grid"></div>
+  <svg class="draw" viewBox="0 0 95 57">{"".join(art)}</svg>
+  <div class="abs lockup-wrap">{LOCKUP}</div>
+  <div class="abs pitch"><h2>From print<br><em>to part.</em></h2></div>
+</section>
+<section class="card back v1">
+  <svg class="draw" viewBox="0 0 95 57">{"".join(back)}</svg>
+  <div class="abs who"><h1>{p["nombre"]}</h1><p>{p["cargo"]}</p></div>
+  <p class="abs line">{p["tel"]} · {p["dir"]}</p>
+  <div class="abs mark"><img src="sussek-icono.png" alt="">Sussek Machine Company</div>
+</section>"""
+    return css, html, False
+
+
+# ---------- Variación 2: reporte de inspección / reverso azul con logo acotado ----------
+
+def variacion_2(p):
+    css, html, _ = concepto_2(p)
+    ih, top = 17.0, 16.0
+    iw = ih * ICON_AR
+    ix1, ix2 = 28.5 - iw / 2, 28.5 + iw / 2
+    iy2 = top + ih
+    art = [ext_v(ix1, top - .8, 11.6), ext_v(ix2, top - .8, 11.6), dim_h(ix1, ix2, 12.5, f"{iw:.3f}"),
+           ext_h(top, ix1 - .8, 13.9), ext_h(iy2, ix1 - .8, 13.9), dim_v_rot(14.8, top, iy2, f"{ih:.3f}"),
+           f'<path d="M28.5,{f(top-2.2)} V{f(iy2+2.2)} M{f(ix1-2)},{f(top+ih/2)} H{f(ix2+2.2)}" {S} stroke-width="{W3}" {CL}/>']
+    svg = f'<svg class="draw" viewBox="0 0 57 95" style="width:57mm;height:95mm;color:var(--line)">{"".join(art)}</svg>'
+    html = html.replace('<div class="grid"></div>', '<div class="grid"></div>' + svg)
+    css = css.replace(".c2.back .logo{left:0;right:0;top:14mm;", ".c2.back .logo{left:0;right:0;top:16mm;")
+    return css, html, True
+
+
+# ---------- Variación 3: pieza con globos / reverso azul con engrane ----------
+
+def variacion_3(p):
+    css, html, _ = concepto_1(p)
+    front = html[:html.index('<section class="card back c1">')]
+    cx, cy, R = 73.0, 28.5, 17.0
+    art = gear(cx, cy, R) + gear_callout(cx, cy, R, 86.5, 9.8)
+    css += """
+  .c1.back2{background:radial-gradient(110% 130% at 78% 50%,#2a2a6e 0%,var(--navy) 45%,var(--navy-deep) 100%);color:#fff}
+  .c1.back2 .grid{position:absolute;inset:0;opacity:.07;background-image:linear-gradient(#fff .1mm,transparent .1mm),linear-gradient(90deg,#fff .1mm,transparent .1mm);background-size:3mm 3mm;background-position:.5mm .5mm}
+  .c1.back2 .draw{color:var(--line)}
+  .c1.back2 .who{left:var(--m);top:var(--m)}
+  .c1.back2 .who p{color:var(--soft)}
+  .c1.back2 .data{left:var(--m);top:22.5mm}
+  .c1.back2 .data dt{color:var(--soft)}
+  .c1.back2 .mark2{left:var(--m);bottom:var(--m);display:flex;align-items:center;gap:1.6mm;font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:600;font-size:2.4mm}
+  .c1.back2 .mark2 img{height:4.2mm}
+"""
+    back = f"""
+<section class="card c1 back2">
+  <div class="grid"></div>
+  <svg class="draw" viewBox="0 0 95 57">{art}</svg>
+  <div class="abs who"><h1>{p["nombre"]}</h1><p>{p["cargo"]}</p></div>
+  <dl class="abs data">{data_html(p)}</dl>
+  <div class="abs mark2"><img src="sussek-icono.png" alt="">Sussek Machine Company</div>
+</section>"""
+    return css, front + back, False
+
+
+DISENOS = {"variacion-1-plano": variacion_1, "variacion-2-inspeccion": variacion_2, "variacion-3-globos": variacion_3}
 
 
 def page(title, css, body, vertical=False):
