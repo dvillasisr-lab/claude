@@ -810,6 +810,31 @@ def mm_ruler(x0, y, mm=70):
     return f'<path d="{" ".join(d)}" {S} stroke-width=".15"/>' + "".join(t)
 
 
+def inch_ruler_edge(x0, y_trim, y_bleed, inches=3):
+    """Regla en pulgadas cuyas rayas nacen en el sangrado: tras el corte tocan la orilla."""
+    s_ = 1 if y_bleed < y_trim else -1
+    d, t = [], []
+    for k in range(inches * 16 + 1):
+        x = x0 + k * 25.4 / 16
+        L = 2.6 if k % 16 == 0 else 2.0 if k % 8 == 0 else 1.5 if k % 4 == 0 else 1.1 if k % 2 == 0 else .7
+        d.append(f"M{f(x)},{f(y_bleed)} V{f(y_trim + s_*L)}")
+        if k % 16 == 0:
+            t.append(f'<text x="{f(x+.6)}" y="{f(y_trim + s_*3.9)}" class="dim">{k//16}{" IN" if k == 0 else ""}</text>')
+    return f'<path d="{" ".join(d)}" {S} stroke-width=".15"/>' + "".join(t)
+
+
+def mm_ruler_edge(x0, y_trim, y_bleed, mm=70):
+    s_ = 1 if y_bleed < y_trim else -1
+    d, t = [], []
+    for k in range(mm + 1):
+        x = x0 + k
+        L = 2.6 if k % 10 == 0 else 1.7 if k % 5 == 0 else 1.0
+        d.append(f"M{f(x)},{f(y_bleed)} V{f(y_trim + s_*L)}")
+        if k % 10 == 0:
+            t.append(f'<text x="{f(x)}" y="{f(y_trim + s_*3.6)}" class="dim" text-anchor="middle">{k//10 if k else "0 CM"}</text>')
+    return f'<path d="{" ".join(d)}" {S} stroke-width=".15"/>' + "".join(t)
+
+
 def variacion_5(p):
     front_art = (inch_ruler(13, 3) + mm_ruler(6, 54)
                  + '<text x="4.6" y="12.6" class="dim b">R5</text>'
@@ -890,7 +915,12 @@ def variacion_5(p):
 
 def regla(p, troquel=True):
     x_in = 13 if troquel else 8.5
-    front_art = inch_ruler(x_in, 3) + mm_ruler(x_in - 7 if troquel else 8.5, 54)
+    if troquel:
+        W, H, B = 95, 57, 3
+        front_art = inch_ruler(x_in, 3) + mm_ruler(x_in - 7, 54)
+    else:
+        W, H, B = 95.25, 57.15, 3.175            # 3.5 x 2 in + 1/8 in de sangrado
+        front_art = inch_ruler_edge(8.5, B, 0) + mm_ruler_edge(8.5, H - B, H)
     if troquel:
         front_art += ('<text x="4.6" y="12.6" class="dim b">R5</text>'
                       '<text x="88.6" y="48.2" class="dim b" text-anchor="end">R2.5</text>')
@@ -936,15 +966,22 @@ def regla(p, troquel=True):
   .{cls}.back .block .geo{{background:var(--navy);color:#fff}}
   .dieline{{background:#fff}}{clip}
 """
+    if not troquel:
+        css += f"""
+  @page {{ size: {W}mm {H}mm; margin: 0; }}
+  .card{{width:{W}mm;height:{H}mm}}
+  .draw{{width:{W}mm;height:{H}mm}}
+  @media screen{{ .card{{clip-path:inset({B}mm round .4mm)}} }}
+"""
     front_note = "MM + IN · SCALE 1:1 · MEASURE IT."
     html = f"""
 <section class="card front {cls}">
-  <svg class="draw" viewBox="0 0 95 57">{front_art}</svg>
+  <svg class="draw" viewBox="0 0 {W} {H}">{front_art}</svg>
   <div class="abs lockup-wrap">{LOCKUP}</div>
   <div class="abs pitch"><h2>From print<br><em>to part.</em></h2><p>{front_note}</p></div>
 </section>
 <section class="card back {cls}">
-  <svg class="draw" viewBox="0 0 95 57">{back_art}</svg>
+  <svg class="draw" viewBox="0 0 {W} {H}">{back_art}</svg>
   <div class="abs who"><h1>{p["nombre"]}</h1><p>{p["cargo"]}</p></div>
   <dl class="abs data">{data_html(p)}</dl>
   <div class="abs foot"><img src="sussek-icono.png" alt="">
