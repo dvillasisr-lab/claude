@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Sussek Machine Company · Tarjetas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Tarjeta final 89 x 51 mm + 3 mm de sangrado por lado = 95 x 57 mm */
+  @page { size: 95mm 57mm; margin: 0; }
+  :root{
+    --ink:#15171A; --steel:#2A2E33; --paper:#EFEBE3; --orange:#E4571B; --muted:#8C8F93;
+    --bleed:3mm; --safe:5mm;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:#d9d6d0}
+  body{font-family:"Archivo",Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .card{width:95mm;height:57mm;position:relative;overflow:hidden;page-break-after:always;break-after:page}
+  .inner{position:absolute;inset:calc(var(--bleed) + var(--safe))}
+
+  /* FRENTE */
+  .front{background:var(--ink);color:var(--paper)}
+  .front .grid{position:absolute;inset:0;opacity:.07;
+    background-image:linear-gradient(var(--paper) .15mm,transparent .15mm),linear-gradient(90deg,var(--paper) .15mm,transparent .15mm);
+    background-size:5mm 5mm;background-position:3mm 3mm}
+  .front .stripe{position:absolute;left:0;right:0;bottom:0;height:calc(var(--bleed) + 3.2mm);
+    background:repeating-linear-gradient(-45deg,var(--orange) 0 2.2mm,var(--ink) 2.2mm 4.4mm)}
+  .front .inner{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:3mm;bottom:calc(var(--bleed) + 6mm)}
+  .lockup{display:flex;align-items:center;gap:3.6mm}
+  .mark{width:15mm;height:15mm;flex:none}
+  .word{line-height:.86}
+  .word b{display:block;font-weight:900;font-stretch:125%;font-size:9.6mm;letter-spacing:.2mm}
+  .word span{display:block;font-weight:500;font-stretch:125%;font-size:2.35mm;letter-spacing:1.05mm;margin-top:1.6mm;color:var(--orange)}
+  .front .tag{font-family:"IBM Plex Mono",monospace;font-size:1.9mm;letter-spacing:.35mm;color:var(--muted);text-transform:uppercase}
+
+  /* REVERSO */
+  .back{background:var(--paper);color:var(--ink)}
+  .back .rail{position:absolute;top:0;bottom:0;left:0;width:calc(var(--bleed) + 2.4mm);background:var(--orange)}
+  .back .inner{left:calc(var(--bleed) + 2.4mm + 4.5mm);display:grid;grid-template-rows:auto 1fr auto}
+  .who h1{font-weight:800;font-stretch:112%;font-size:4.5mm;letter-spacing:.05mm;line-height:1}
+  .who p{font-family:"IBM Plex Mono",monospace;font-size:1.95mm;letter-spacing:.3mm;text-transform:uppercase;margin-top:1.4mm;color:#5b5f64}
+  .data{align-self:end;display:grid;grid-template-columns:auto 1fr;column-gap:2.6mm;row-gap:.95mm;
+    font-family:"IBM Plex Mono",monospace;font-size:2.05mm;line-height:1.25}
+  .data dt{color:var(--orange);font-weight:500;letter-spacing:.2mm}
+  .data dd{color:var(--ink)}
+  .foot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:2.2mm;padding-top:1.8mm;border-top:.2mm solid #c9c4ba}
+  .foot .mini{display:flex;align-items:center;gap:1.4mm;font-weight:900;font-stretch:125%;font-size:2.1mm;letter-spacing:.35mm}
+  .foot .mini svg{width:4mm;height:4mm}
+  .foot .serial{font-family:"IBM Plex Mono",monospace;font-size:1.6mm;color:var(--muted);letter-spacing:.2mm}
+
+  @media screen{
+    body{display:flex;flex-wrap:wrap;gap:10mm;padding:12mm;justify-content:center}
+    .card{box-shadow:0 2mm 6mm rgba(0,0,0,.25)}
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <!-- Monograma: tuerca hexagonal con una S de trazo recto -->
+    <symbol id="nut" viewBox="0 0 100 100">
+      <polygon points="50,3 90.7,26.5 90.7,73.5 50,97 9.3,73.5 9.3,26.5" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="round"/>
+      <path d="M67 33 H42 a9 9 0 0 0 0 18 H58 a9 9 0 0 1 0 18 H33" fill="none" stroke="#E4571B" stroke-width="9" stroke-linecap="square"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- FRENTE -->
+<section class="card front">
+  <div class="grid"></div>
+  <div class="inner">
+    <div class="lockup">
+      <svg class="mark"><use href="#nut"/></svg>
+      <div class="word"><b>SUSSEK</b><span>MACHINE COMPANY</span></div>
+    </div>
+    <p class="tag">Maquinado · Fabricación · Mantenimiento industrial</p>
+  </div>
+  <div class="stripe"></div>
+</section>
+
+<!-- REVERSO (datos de ejemplo: reemplazar) -->
+<section class="card back">
+  <div class="rail"></div>
+  <div class="inner">
+    <div class="who">
+      <h1>Nombre Apellido</h1>
+      <p>Director de Operaciones</p>
+    </div>
+    <dl class="data">
+      <dt>T</dt><dd>+52 55 0000 0000</dd>
+      <dt>E</dt><dd>nombre@sussekmachine.com</dd>
+      <dt>W</dt><dd>sussekmachine.com</dd>
+      <dt>D</dt><dd>Calle Industrial 000, Ciudad, País</dd>
+    </dl>
+    <div class="foot">
+      <div class="mini"><svg><use href="#nut"/></svg>SUSSEK</div>
+      <div class="serial">SMC · EST. 2026</div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
