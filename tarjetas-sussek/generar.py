@@ -152,7 +152,7 @@ def gear(cx, cy, R, N=22, w=.3):
     return "".join(out)
 
 
-def flange(cx, cy, R=10.5):
+def flange(cx, cy, R=10.5, hole=1.05):
     """Brida en vista frontal: 4 barrenos pasados, maza, barreno central con cuñero."""
     out = [f'<circle cx="{cx}" cy="{cy}" r="{R}" {S} stroke-width="{W}"/>',
            f'<circle cx="{cx}" cy="{cy}" r="{f(R-.6)}" {S} stroke-width="{W3}"/>',
@@ -161,8 +161,9 @@ def flange(cx, cy, R=10.5):
     for i in range(4):
         a = math.pi / 4 + i * math.pi / 2
         hx, hy = cx + R * .78 * math.cos(a), cy + R * .78 * math.sin(a)
-        out.append(f'<circle cx="{f(hx)}" cy="{f(hy)}" r="1.05" {S} stroke-width="{W}"/>')
-        out.append(f'<path d="M{f(hx-1.7)},{f(hy)} H{f(hx+1.7)} M{f(hx)},{f(hy-1.7)} V{f(hy+1.7)}" {S} stroke-width="{W3*.8}"/>')
+        c = hole + .65
+        out.append(f'<circle cx="{f(hx)}" cy="{f(hy)}" r="{f(hole)}" {S} stroke-width="{W}"/>')
+        out.append(f'<path d="M{f(hx-c)},{f(hy)} H{f(hx+c)} M{f(hx)},{f(hy-c)} V{f(hy+c)}" {S} stroke-width="{W3*.8}"/>')
     r, k, h = R * .34, .9, R * .34 + 1.1
     yk = cy - math.sqrt(r * r - k * k)
     out.append(f'<path d="M{f(cx-k)},{f(yk)} A{f(r)},{f(r)} 0 1 0 {f(cx+k)},{f(yk)} V{f(cy-h)} H{f(cx-k)}Z" {S} stroke-width="{W}"/>')
@@ -274,6 +275,10 @@ BASE_CSS = """
 FONTS = '<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Open+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Archivo:wdth,wght@62..125,500..900&display=swap" rel="stylesheet">'
 WORD = '<div class="word"><span>Sussek</span><span>Machine</span><span>Company</span></div>'
 LOCKUP = f'<div class="lockup"><img src="sussek-icono.png" alt="">{WORD}</div>'
+
+
+def data_plain(p):
+    return f'<p>{p["tel"]}</p><p>{p["email"]}</p><p>{p["web"]}</p><p>{p["dir"]}</p>'
 
 
 def data_html(p):
@@ -831,7 +836,8 @@ def mm_ruler_edge(x0, y_trim, y_bleed, mm=70):
         L = 2.6 if k % 10 == 0 else 1.7 if k % 5 == 0 else 1.0
         d.append(f"M{f(x)},{f(y_bleed)} V{f(y_trim + s_*L)}")
         if k % 10 == 0:
-            t.append(f'<text x="{f(x)}" y="{f(y_trim + s_*3.6)}" class="dim" text-anchor="middle">{k//10 if k else "0 CM"}</text>')
+            lab, anc, dx = (str(k // 10), "middle", 0) if k else ("0 CM", "start", -.45)
+            t.append(f'<text x="{f(x+dx)}" y="{f(y_trim + s_*3.6)}" class="dim" text-anchor="{anc}">{lab}</text>')
     return f'<path d="{" ".join(d)}" {S} stroke-width=".15"/>' + "".join(t)
 
 
@@ -920,20 +926,21 @@ def regla(p, troquel=True):
         front_art = inch_ruler(x_in, 3) + mm_ruler(x_in - 7, 54)
     else:
         W, H, B = 95.25, 57.15, 3.175            # 3.5 x 2 in + 1/8 in de sangrado
-        front_art = inch_ruler_edge(8.5, B, 0) + mm_ruler_edge(8.5, H - B, H)
+        front_art = inch_ruler_edge(8.5, B, 0) + mm_ruler_edge(7.5, H - B, H, mm=80)
     if troquel:
         front_art += ('<text x="4.6" y="12.6" class="dim b">R5</text>'
                       '<text x="88.6" y="48.2" class="dim b" text-anchor="end">R2.5</text>')
     # reverso: brida redonda a escala 1:1 (mm)
-    cx, cy, R = 74.0, 22.5, 10.5
-    bc, hole = R * .78, 1.05
-    a = math.radians(225)
+    cx, cy, R = 78.0, 15.5, 22.0
+    bc, hole = R * .78, R * .1
+    a = math.radians(135)                       # el barreno que queda completo a la vista
     hx, hy = cx + bc * math.cos(a), cy + bc * math.sin(a)
-    back_art = (flange(cx, cy, R)
-                + leader(hx - .75, hy - .75, hx - 3.4, 9.6, hx - 15.5, f"4× Ø{2*hole:.2f} THRU", anchor="start")
-                + leader(cx + R * math.cos(math.radians(-40)) + .1, cy + R * math.sin(math.radians(-40)) - .1,
-                         cx + 10.6, 9.6, 86.5, f"Ø{2*R:.2f}", anchor="end")
-                + fcf(cx - 8.2, cy + R + 3.2, "pos", f"Ø0.02", "A"))
+    ao = math.radians(168)
+    ox, oy = cx + R * math.cos(ao), cy + R * math.sin(ao)
+    back_art = (flange(cx, cy, R, hole)
+                + leader(ox - .15, oy + .1, ox - 3.2, oy + 4.2, ox - 11, f"Ø{2*R:.2f}", anchor="start")
+                + leader(hx - hole * .7, hy + hole * .7, hx - 4.2, 35.6, hx - 18.5, f"4× Ø{2*hole:.2f} THRU", anchor="start")
+                + fcf(hx - 18.5, 37.2, "pos", "Ø0.02", "A"))
     cls = "rg" + ("t" if troquel else "c")
     clip = ""
     if troquel:
@@ -958,6 +965,7 @@ def regla(p, troquel=True):
   .{cls}.back .who p{{color:var(--muted)}}
   .{cls}.back .data{{left:var(--m);top:22.5mm;color:var(--ink)}}
   .{cls}.back .data dt{{color:var(--navy)}}
+  .{cls}.back .plain{{display:block;font-size:1.95mm;line-height:1.75}}
   .{cls}.back .foot{{left:var(--m);right:var(--m);bottom:var(--m);display:flex;align-items:center;gap:2.6mm}}
   .{cls}.back .foot img{{height:5.8mm;display:block}}
   .{cls}.back .block{{flex:1;height:5.4mm;display:grid;grid-template-columns:1fr 1fr 1fr auto;border:.25mm solid var(--navy);font-size:1.45mm;font-weight:700;letter-spacing:.2mm;text-transform:uppercase}}
@@ -983,7 +991,7 @@ def regla(p, troquel=True):
 <section class="card back {cls}">
   <svg class="draw" viewBox="0 0 {W} {H}">{back_art}</svg>
   <div class="abs who"><h1>{p["nombre"]}</h1><p>{p["cargo"]}</p></div>
-  <dl class="abs data">{data_html(p)}</dl>
+  <div class="abs data plain">{data_plain(p)}</div>
   <div class="abs foot"><img src="sussek-icono.png" alt="">
     <div class="block"><div>Machining</div><div>Assembly</div><div>Engineering</div><div class="geo">USA · MX · CN</div></div>
   </div>
