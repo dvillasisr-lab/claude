@@ -75,6 +75,8 @@
 .fb .body{color:#CFCCC3}
 @media (max-width:760px){.fb{grid-template-columns:1fr}}
 
+.xs-row .card__media a{display:block;text-decoration:none}
+@media (max-width:760px){.xs-row{display:grid;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:62%;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter);scroll-padding-inline:var(--gutter)}.xs-row .card{scroll-snap-align:start}}
 .xs-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px;margin-bottom:24px}
 </style>
 </head>
@@ -264,7 +266,7 @@
         <h2 class="h2" id="xs-t">Gear up for pull day</h2>
         <a class="link" href="shop.html">Shop all</a>
       </div>
-      <div class="grid g3">
+      <div class="grid g3 xs-row">
         <article class="card">
           <div class="card__media">
             <a href="product.html" tabindex="-1" aria-hidden="true"><div class="ph" style="--ar:4/5"><div class="ph__tag"><b>Foto · 4:5</b>Evil One Tee plana sobre fondo liso</div></div></a>

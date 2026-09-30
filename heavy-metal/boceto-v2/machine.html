@@ -12,7 +12,9 @@
 /* THE MACHINE v2 · ficha técnica clara. Solo variables de hm.css.
    Prefijo mx- = futura sección Liquid hm-machine-*. */
 html,body{overflow-x:clip}
-.mx-head{display:grid;gap:12px;margin-bottom:clamp(28px,4vw,48px);max-width:60rem}
+.mx-head{display:grid;gap:12px;align-content:start;margin-bottom:clamp(28px,4vw,48px);max-width:60rem}
+.card__media a{text-decoration:none;display:block}
+.card{gap:6px}.card__media{margin-bottom:6px}
 .mx-head--row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px 32px;max-width:none}
 
 /* 1 · hero: título claro, una sola foto oscura grande */
@@ -36,7 +38,7 @@ html,body{overflow-x:clip}
 .hs:hover .hs__dot{transform:scale(1.1)}
 .hs[aria-expanded="true"] .hs__dot{background:var(--accent);box-shadow:0 0 0 6px rgba(245,196,0,.3)}
 .hs--flip{flex-direction:row-reverse}
-@media (max-width:760px){.hs__lbl{display:none}.hs__dot{width:28px;height:28px}}
+@media (max-width:760px){.hs__lbl{display:none}.hs__dot{width:28px;height:28px}.mx-stage .ph{--ar:4/3!important}.mx-stage .ph__tag{display:none}}
 .mx-panels{background:var(--surface);padding:clamp(20px,2.4vw,32px)}
 .mx-panel{display:grid;gap:14px}
 .mx-panel__meta{display:flex;justify-content:space-between;gap:12px;color:var(--mute)}
@@ -50,6 +52,7 @@ html,body{overflow-x:clip}
 
 /* 3 · spec grid */
 .mx-specs{margin:0;row-gap:clamp(24px,3vw,36px)}
+.mx-specs .spec,.mx-facts .spec{align-content:start}
 .mx-specs small{display:block;margin-top:4px;font-size:var(--t-sm);font-weight:400;font-stretch:100%;text-transform:none;color:var(--mute);letter-spacing:0}
 
 /* 4 · banda oscura editorial */
@@ -61,7 +64,7 @@ html,body{overflow-x:clip}
 
 /* 5 · Cat V8 vs the field */
 .mx-vs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap)}
-.mx-eng{background:var(--bg);padding:clamp(20px,3vw,40px);display:grid;gap:16px;align-content:start}
+.mx-eng{background:var(--surface);padding:clamp(20px,3vw,40px);display:grid;gap:16px;align-content:start}
 .mx-eng--us{background:var(--ink);color:var(--night-ink)}
 .mx-eng--us .label{color:var(--accent)}
 .mx-eng p{margin:0}

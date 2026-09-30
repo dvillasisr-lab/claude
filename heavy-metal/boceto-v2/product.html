@@ -54,8 +54,8 @@
 .opt input:checked+.cswatch{border-color:var(--ink)}
 .opt input:focus-visible+.cswatch,.opt input:focus-visible+.size{outline:2px solid var(--ink);outline-offset:3px}
 
-#size-set{position:relative}
-.sg-link{position:absolute;top:-6px;right:0}
+.opt__legend--full{width:100%;justify-content:space-between;align-items:center}
+.sg-link{padding-block:4px}
 .linkbtn{background:none;border:0;padding:6px 0;font-size:var(--t-xs);font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;cursor:pointer;color:var(--ink)}
 .sizes{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
 .size{display:grid;place-items:center;min-height:48px;background:var(--surface);border:1px solid var(--line);cursor:pointer;font-size:var(--t-sm);font-weight:600;letter-spacing:.04em;transition:border-color .15s}
@@ -186,8 +186,7 @@
         </fieldset>
 
         <fieldset class="opt" id="size-set" aria-describedby="size-msg">
-          <legend class="opt__legend">Size: <b id="size-name">Select a size</b></legend>
-          <button class="linkbtn sg-link" type="button" id="sg-open" aria-haspopup="dialog" aria-controls="sg">Size guide</button>
+          <legend class="opt__legend opt__legend--full"><span>Size: <b id="size-name">Select a size</b></span><button class="linkbtn sg-link" type="button" id="sg-open" aria-haspopup="dialog" aria-controls="sg">Size guide</button></legend>
           <div class="sizes">
             <input type="radio" name="size" id="s-s" value="S"><label class="size" for="s-s">S</label>
             <input type="radio" name="size" id="s-m" value="M"><label class="size" for="s-m">M</label>
@@ -468,14 +467,24 @@
 
   /* barra sticky móvil: aparece cuando el botón principal sale por arriba */
   var satc = $('satc'), satcBtn = $('satc-btn');
+  function setBar(on) {
+    if (satc.classList.contains('is-on') === on) return;
+    satc.classList.toggle('is-on', on);
+    satc.setAttribute('aria-hidden', String(!on));
+    satcBtn.tabIndex = on ? 0 : -1;
+  }
+  var atc = $('atc');
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (en) {
-      var on = !en[0].isIntersecting && en[0].boundingClientRect.top < 0;
-      satc.classList.toggle('is-on', on);
-      satc.setAttribute('aria-hidden', String(!on));
-      satcBtn.tabIndex = on ? 0 : -1;
-    }).observe($('atc'));
+      setBar(!en[0].isIntersecting && en[0].boundingClientRect.top < 0);
+    }).observe(atc);
   }
+  /* respaldo para saltos grandes (anclas) donde el observer no cruza el umbral */
+  var tick = false;
+  window.addEventListener('scroll', function () {
+    if (tick) return; tick = true;
+    requestAnimationFrame(function () { tick = false; setBar(atc.getBoundingClientRect().bottom < 0); });
+  }, { passive: true });
   syncBar();
 })();
 </script>
