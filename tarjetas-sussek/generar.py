@@ -983,7 +983,7 @@ def regla(p, troquel=True, tema="azul"):
   .{cls}.front .lockup-wrap{{left:var(--m);top:19.5mm}}
   .{cls}.front .lockup{{--ih:13.5mm}}
   .{cls}.front .word{{font-size:4.4mm}}
-  .{cls}.front .pitch{{right:var(--m);top:21mm;text-align:right}}
+  .{cls}.front .pitch{{right:var(--m);top:17.5mm;text-align:right}}
   .{cls} .pitch h2{{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:5.4mm;line-height:1.02}}
   .{cls} .pitch p{{margin-top:2mm;font-family:"IBM Plex Mono",monospace;font-size:1.45mm;letter-spacing:.1mm;color:{t["soft"]}}}
   .{cls}.back{{background:{t["bbg"]};color:{t.get("accent", t["bink"]) if not t.get("back_dark") else "#fff"}}}
@@ -1011,7 +1011,7 @@ def regla(p, troquel=True, tema="azul"):
 <section class="card front {cls}">
   <svg class="draw" viewBox="0 0 {W} {H}">{front_art}</svg>
   <div class="abs lockup-wrap">{LOCKUP}</div>
-  <div class="abs pitch"><h2>From print<br><em>to part.</em></h2><p>{front_note}</p></div>
+  <div class="abs pitch"><h2>Excellence<br><em>Through<br>Innovation</em></h2><p>{front_note}</p></div>
 </section>
 <section class="card back {cls}">
   <svg class="draw" viewBox="0 0 {W} {H}">{back_art}</svg>
