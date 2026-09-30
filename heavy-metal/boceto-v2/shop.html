@@ -1,0 +1,311 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Shop all · Heavy Metal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R5 V4 */
+html,body{overflow-x:clip}
+.shead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 16px;margin-bottom:clamp(20px,2.4vw,32px)}
+.shead .link{white-space:nowrap}
+.pgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:4px;row-gap:clamp(28px,3vw,44px);list-style:none;margin:0;padding:0}
+.card{gap:12px}
+.card__media>a.ph{text-decoration:none}
+.card__txt{display:grid;gap:2px}
+.pgrid .card__txt,.pgrid .card__meta{padding-inline:clamp(4px,.8vw,10px)}
+.card__media .ph__tag{font-size:10px}
+@media (max-width:760px){.pgrid{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:2px}}
+
+/* colección: pills, toolbar pegajosa, grid 4/2 con fotos casi pegadas (SKIMS) */
+.crumbs ol{list-style:none;margin:0;padding:clamp(16px,2vw,24px) 0 0;display:flex;gap:8px;font-size:var(--t-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.crumbs li+li::before{content:"/";margin-right:8px}
+.crumbs a{text-decoration:none}
+.crumbs a:hover{text-decoration:underline;text-underline-offset:3px}
+.shop__head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;padding-block:clamp(16px,2.4vw,32px) clamp(16px,2vw,24px)}
+.shop__head p{margin:0;font-size:var(--t-sm)}
+.pills{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-block:2px 16px;margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter)}
+.pills::-webkit-scrollbar{display:none}
+.pill{flex:none;min-height:40px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:transparent;font-size:var(--t-xs);font-weight:600;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;cursor:pointer}
+.pill:hover{border-color:var(--ink)}
+.pill[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.toolbar{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header) + 1px);z-index:40;background:var(--bg);display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:10px;margin-bottom:clamp(16px,2vw,24px);border-block:1px solid var(--line)}
+.tbtn{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0;background:none;border:0;font-size:var(--t-xs);font-weight:600;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.tbtn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6}
+.sort{display:flex;align-items:center;gap:8px}
+.sort label{font-size:var(--t-xs);font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.sort select{min-height:40px;max-width:52vw;padding:0 28px 0 10px;border:1px solid var(--line);border-radius:0;background:var(--surface);color:var(--ink);font:inherit;font-size:var(--t-sm)}
+.anchor{position:absolute;top:0;left:0;width:1px;height:1px}
+.edit{grid-column:span 2;position:relative;display:block;text-decoration:none;color:var(--night-ink)}
+.edit .ph{height:100%}
+.edit__txt{position:absolute;inset:auto 0 0 0;z-index:2;display:grid;gap:10px;justify-items:start;padding:clamp(16px,2.4vw,32px)}
+.edit__sub{display:block;margin:0;color:#CFCCC3;max-width:36ch;font-size:var(--t-sm)}
+.edit .ph__tag{position:absolute;top:0;left:0}
+.edit:hover .link{text-decoration-thickness:2px}
+.seen{display:grid;justify-items:center;gap:10px;padding-block:clamp(40px,5vw,64px) 8px;font-size:var(--t-sm);color:var(--mute)}
+.seen .meter{width:min(240px,60vw)}
+.empty{padding-block:40px;text-align:center;color:var(--mute)}
+/* panel de filtros (izquierda; el carrito vive a la derecha) */
+.fpanel{position:fixed;top:0;left:0;bottom:0;z-index:81;width:min(400px,100vw);background:var(--surface);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.fpanel__head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
+.fpanel__body{flex:1;overflow-y:auto;padding:8px 20px 20px}
+.fpanel fieldset{border:0;border-bottom:1px solid var(--line);margin:0;padding:18px 0}
+.fpanel legend{padding:0;margin-bottom:10px;font-size:var(--t-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+.opts{display:grid;gap:4px}
+.opts--size{grid-template-columns:repeat(auto-fill,minmax(88px,1fr))}
+.opt{display:flex;align-items:center;gap:10px;min-height:36px;font-size:var(--t-sm);cursor:pointer}
+.opt input{width:18px;height:18px;margin:0;accent-color:var(--ink)}
+.opt .swatch{flex:none}
+.fpanel__foot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:10px;padding:16px 20px;border-top:1px solid var(--line)}
+.fpanel__foot .btn{padding:0 1em}
+@media (max-width:760px){.edit .ph{--ar:4/3!important}}
+</style>
+</head><body>
+<div data-hm-header data-current="shop"></div>
+<main class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">Shop all</li></ol></nav>
+  <div class="shop__head"><h1 class="h1">Shop all</h1><p class="muted num" id="count" aria-live="polite">14 products</p></div>
+  <div class="pills" role="group" aria-label="Category">
+<button class="pill" type="button" data-pill="all" aria-pressed="true">All</button>
+<button class="pill" type="button" data-pill="tees" aria-pressed="false">Tees</button>
+<button class="pill" type="button" data-pill="sweats" aria-pressed="false">Sweatshirts</button>
+<button class="pill" type="button" data-pill="hats" aria-pressed="false">Hats</button>
+<button class="pill" type="button" data-pill="kids" aria-pressed="false">Kids</button>
+<button class="pill" type="button" data-pill="gear" aria-pressed="false">Stickers &amp; Gear</button>
+<button class="pill" type="button" data-pill="ride" aria-pressed="false">Ride With Us</button>
+  </div>
+  <div class="toolbar">
+    <button class="tbtn" type="button" id="filter-open" aria-controls="fpanel" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Filter <span id="fcount"></span></button>
+    <div class="sort"><label for="sort">Sort</label><select id="sort" name="sort"><option value="featured">Featured</option><option value="best">Best selling</option><option value="new">Newest</option><option value="az">A to Z</option></select></div>
+  </div>
+  <h2 class="vh">Products</h2>
+  <div class="pgrid" id="grid">
+<article class="card" data-cat="tees" data-colors="matte-black smoke-gray" data-tags="best" data-i="0"><span class="anchor" id="tees"></span><span class="anchor" id="best"></span>
+  <div class="card__media">
+    <a class="ph" style="--ar:4/5" href="product.html" tabindex="-1" aria-hidden="true"><span class="ph__tag"><b>Foto · 4:5</b>Playera plana sobre hueso, logo al frente</span></a>
+    <div class="card__badges"><span class="badge">Best seller</span></div>
+    <button class="btn btn--light btn--block card__add" type="button" data-add="Evil One Tee|Matte Black / M|$XX">Add · $XX<span class="vh"> Evil One Tee</span></button>
+  </div>
+  <div class="card__txt"><h3 class="card__name"><a href="product.html">Evil One Tee</a></h3><p class="card__sub">Front logo tee</p></div>
+  <div class="card__meta"><span class="num">$XX</span><span class="swatches" role="img" aria-label="2 colors: Matte Black, Smoke Gray"><span class="swatch" style="--sw:var(--ink)"></span><span class="swatch" style="--sw:#8C8A82"></span></span></div>
+</article>
+<article class="card" data-cat="tees" data-colors="matte-black" data-tags="new" data-i="1"><span class="anchor" id="new"></span>
+  <div class="card__media">
+    <a class="ph" style="--ar:4/5" href="product.html" tabindex="-1" aria-hidden="true"><span class="ph__tag"><b>Foto · 4:5</b>Playera plana, gráfico del rayo del primer arranque</span></a>
+    <div class="card__badges"><span class="badge badge--ink">New</span></div>
+    <button class="btn btn--light btn--block card__add" type="button" data-add="Lightning Strike Tee|Matte Black / M|$XX">Add · $XX<span class="vh"> Lightning Strike Tee</span></button>
+  </div>
+  <div class="card__txt"><h3 class="card__name"><a href="product.html">Lightning Strike Tee</a></h3><p class="card__sub">First fire-up graphic</p></div>
+  <div class="card__meta"><span class="num">$XX</span><span class="swatches" role="img" aria-label="1 color: Matte Black"><span class="swatch" style="--sw:var(--ink)"></span></span></div>
+</article>
+<article class="card" data-cat="tees" data-colors="matte-black bone" data-tags="" data-i="2">
+  <div class="card__media">
+    <a class="ph" style="--ar:4/5" href="product.html" tabindex="-1" aria-hidden="true"><span class="ph__tag"><b>Foto · 4:5</b>Manga larga de espalda, estampado completo</span></a>
+    
+    <button class="btn btn--light btn--block card__add" type="button" data-add="Full Pull or Nothing Long Sleeve|Matte Black / M|$XX">Add · $XX<span class="vh"> Full Pull or Nothing Long Sleeve</span></button>
+  </div>
+  <div class="card__txt"><h3 class="card__name"><a href="product.html">Full Pull or Nothing Long Sleeve</a></h3><p class="card__sub">Long sleeve, back print</p></div>
+  <div class="card__meta"><span class="num">$XX</span><span class="swatches" role="img" aria-label="2 colors: Matte Black, Bone"><span class="swatch" style="--sw:var(--ink)"></span><span class="swatch" style="--sw:#E9E6DC"></span></span></div>
+</article>
+<article class="card" data-cat="tees" data-colors="smoke-gray" data-tags="" data-i="3">
+  <div class="card__media">
+    <a class="ph" style="--ar:4/5" href="product.html" tabindex="-1" aria-hidden="true"><span class="ph__tag"><b>Foto · 4:5</b>Playera gris con ficha técnica del motor</span></a>
+    
+    <button class="btn btn--light btn--block card__add" type="button" data-add="Cat V8 Spec Tee|Smoke Gray / M|$XX">Add · $XX<span class="vh"> Cat V8 Spec Tee</span></button>
+  </div>
+  <div class="card__txt"><h3 class="card__name"><a href="product.html">Cat V8 Spec Tee</a></h3><p class="card__sub">Spec sheet print</p></div>
+  <div class="card__meta"><span class="num">$XX</span><span class="swatches" role="img" aria-label="1 color: Smoke Gray"><span class="swatch" style="--sw:#8C8A82"></span></span></div>
+</article>
+<a class="edit" href="story.html" data-edit>
+  <span class="ph ph--dark" style="--ar:8/5"><span class="ph__tag"><b>Foto · 8:5</b>Tractor en el taller de Waterloo, luz baja, humo al fondo</span></span>
+  <span class="edit__txt"><span class="label" style="color:var(--accent)">Why we sell merch</span><span class="h2">Every order keeps us pulling</span><span class="edit__sub">Designed by the team, printed on demand. Every sale goes back into the tractor.</span><span class="link" style="text-decoration:underline">Our story</span></span>
+</a>
+<article class="card" data-cat="sweats" data-colors="matte-black smoke-gray" data-tags="best" data-i="4"><span class="anchor" id="sweats"></span>
+  <div class="card__media">
+    <a class="ph" style="--ar:4/5" href="product.html" tabindex="-1" aria-hidden="true"><span class="ph__tag"><b>Foto · 4:5</b>Hoodie plano, capucha acomodada</span></a>
+    <div class="card__badges"><span class="badge">Best seller</span></div>
+    <button class="btn btn--light btn--block card__add" type="button" data-add="680 CI Hoodie|Matte Black / M|$XX">Add · $XX<span class="vh"> 680 CI Hoodie</span></button>
+  </div>
+  <div class="card__txt"><h3 class="card__name"><a href="product.html">680 CI Hoodie</a></h3><p class="card__sub">Pullover hoodie</p></div>
+  <div class="card__meta"><span class="num">$XX</span><span class="swatches" role="img" aria-label="2 colors: Matte Black, Smoke Gray"><span class="swatch" style="--sw:var(--ink)"></span><span class="swatch" style="--sw:#8C8A82"></span></span></div>
+</article>
+<article class="card" data-cat="sweats" data-colors="bone" data-tags="new" data-i="5">
+  <div class="card__media">
+    <a class="ph" style="--ar:4/5" href="product.html" tabindex="-1" aria-hidden="true"><span class="ph__tag"><b>Foto · 4:5</b>Crewneck hueso plano, logo al pecho</span></a>
+    <div class="card__badges"><span class="badge badge--ink">New</span></div>
+    <button class="btn btn--light btn--block card__add" type="button" data-add="The Evil One Crewneck|Bone / M|$XX">Add · $XX<span class="vh"> The Evil One Crewneck</span></button>
+  </div>
+  <div class="card__txt"><h3 class="card__name"><a href="product.html">The Evil One Crewneck</a></h3><p class="card__sub">Crewneck sweatshirt</p></div>
+  <div class="card__meta"><span class="num">$XX</span><span class="swatches" role="img" aria-label="1 color: Bone"><span class="swatch" style="--sw:#E9E6DC"></span></span></div>
+</article>
+<article class="card" data-cat="hats" data-colors="black" data-tags="best" data-i="6"><span class="anchor" id="hats"></span>
+  <div class="card__media">
+    <a class="ph" style="--ar:4/5" href="product.html" tabindex="-1" aria-hidden="true"><span class="ph__tag"><b>Foto · 4:5</b>Gorra de tres cuartos sobre hueso</span></a>
+    
+    <button class="btn btn--light btn--block card__add" type="button" data-add="Crew Cap|Black / M|$XX">Add · $XX<span class="vh"> Crew Cap</span></button>
+  </div>
+  <div class="card__txt"><h3 class="card__name"><a href="product.html">Crew Cap</a></h3><p class="card__sub">Structured crew cap</p></div>
+  <div class="card__meta"><span class="num">$XX</span><span class="swatches" role="img" aria-label="1 color: Black"><span class="swatch" style="--sw:var(--ink)"></span></span></div>
+</article>
+<article class="card" data-cat="hats" data-colors="black safety-yellow" data-tags="new" data-i="7">
+  <div class="card__media">
+    <a class="ph" style="--ar:4/5" href="product.html" tabindex="-1" aria-hidden="true"><span class="ph__tag"><b>Foto · 4:5</b>Beanie doblado, parche al frente</span></a>
+    
+    <button class="btn btn--light btn--block card__add" type="button" data-add="Evil One Beanie|Black / M|$XX">Add · $XX<span class="vh"> Evil One Beanie</span></button>
+  </div>
+  <div class="card__txt"><h3 class="card__name"><a href="product.html">Evil One Beanie</a></h3><p class="card__sub">Cuffed knit beanie</p></div>
+  <div class="card__meta"><span class="num">$XX</span><span class="swatches" role="img" aria-label="2 colors: Black, Safety Yellow"><span class="swatch" style="--sw:var(--ink)"></span><span class="swatch" style="--sw:var(--accent)"></span></span></div>
+</article>
+<article class="card" data-cat="kids" data-colors="matte-black" data-tags="new" data-i="8"><span class="anchor" id="kids"></span>
+  <div class="card__media">
+    <a class="ph" style="--ar:4/5" href="product.html" tabindex="-1" aria-hidden="true"><span class="ph__tag"><b>Foto · 4:5</b>Playera infantil plana</span></a>
+    
+    <button class="btn btn--light btn--block card__add" type="button" data-add="Little Evil One Kids Tee|Matte Black / M|$XX">Add · $XX<span class="vh"> Little Evil One Kids Tee</span></button>
+  </div>
+  <div class="card__txt"><h3 class="card__name"><a href="product.html">Little Evil One Kids Tee</a></h3><p class="card__sub">Youth sizes</p></div>
+  <div class="card__meta"><span class="num">$XX</span><span class="swatches" role="img" aria-label="1 color: Matte Black"><span class="swatch" style="--sw:var(--ink)"></span></span></div>
+</article>
+<article class="card" data-cat="kids" data-colors="smoke-gray" data-tags="" data-i="9">
+  <div class="card__media">
+    <a class="ph" style="--ar:4/5" href="product.html" tabindex="-1" aria-hidden="true"><span class="ph__tag"><b>Foto · 4:5</b>Hoodie infantil gris plano</span></a>
+    
+    <button class="btn btn--light btn--block card__add" type="button" data-add="Kids Hoodie|Smoke Gray / M|$XX">Add · $XX<span class="vh"> Kids Hoodie</span></button>
+  </div>
+  <div class="card__txt"><h3 class="card__name"><a href="product.html">Kids Hoodie</a></h3><p class="card__sub">Youth pullover hoodie</p></div>
+  <div class="card__meta"><span class="num">$XX</span><span class="swatches" role="img" aria-label="1 color: Smoke Gray"><span class="swatch" style="--sw:#8C8A82"></span></span></div>
+</article>
+<article class="card" data-cat="gear" data-colors="" data-tags="" data-i="10"><span class="anchor" id="gear"></span>
+  <div class="card__media">
+    <a class="ph" style="--ar:4/5" href="product.html" tabindex="-1" aria-hidden="true"><span class="ph__tag"><b>Foto · 4:5</b>Stickers abiertos en abanico</span></a>
+    
+    <button class="btn btn--light btn--block card__add" type="button" data-add="Sticker Pack|One size|$XX">Add · $XX<span class="vh"> Sticker Pack</span></button>
+  </div>
+  <div class="card__txt"><h3 class="card__name"><a href="product.html">Sticker Pack</a></h3><p class="card__sub">Die-cut sticker set</p></div>
+  <div class="card__meta"><span class="num">$XX</span></div>
+</article>
+<article class="card" data-cat="gear" data-colors="" data-tags="" data-i="11">
+  <div class="card__media">
+    <a class="ph" style="--ar:4/5" href="product.html" tabindex="-1" aria-hidden="true"><span class="ph__tag"><b>Foto · 4:5</b>Koozie con lata en la mesa del pit</span></a>
+    
+    <button class="btn btn--light btn--block card__add" type="button" data-add="Hook Alert Koozie|One size|$XX">Add · $XX<span class="vh"> Hook Alert Koozie</span></button>
+  </div>
+  <div class="card__txt"><h3 class="card__name"><a href="product.html">Hook Alert Koozie</a></h3><p class="card__sub">Keep it cold</p></div>
+  <div class="card__meta"><span class="num">$XX</span></div>
+</article>
+<article class="card" data-cat="tees hats" data-colors="" data-tags="best" data-i="12">
+  <div class="card__media">
+    <a class="ph" style="--ar:4/5" href="product.html" tabindex="-1" aria-hidden="true"><span class="ph__tag"><b>Foto · 4:5</b>Playera doblada con gorra encima</span></a>
+    <div class="card__badges"><span class="badge badge--line">Save $X</span></div>
+    <button class="btn btn--light btn--block card__add" type="button" data-add="Crew Pack bundle|One size|$XX">Add · $XX<span class="vh"> Crew Pack bundle</span></button>
+  </div>
+  <div class="card__txt"><h3 class="card__name"><a href="product.html">Crew Pack bundle</a></h3><p class="card__sub">Tee plus cap</p></div>
+  <div class="card__meta"><span class="num">$XX</span></div>
+</article>
+<article class="card" data-cat="ride" data-colors="" data-tags="" data-i="13"><span class="anchor" id="ride"></span>
+  <div class="card__media">
+    <a class="ph ph--dark" style="--ar:4/5" href="product.html" tabindex="-1" aria-hidden="true"><span class="ph__tag"><b>Foto · 4:5</b>Nombres de fans en el panel del tractor</span></a>
+    <div class="card__badges"><span class="badge badge--ink">Limited</span></div>
+    <button class="btn btn--light btn--block card__add" type="button" data-add="Ride With The Evil One|Crew name|$XX">Add my name · $XX<span class="vh"> Ride With The Evil One</span></button>
+  </div>
+  <div class="card__txt"><h3 class="card__name"><a href="product.html">Ride With The Evil One</a></h3><p class="card__sub">Your name, all season</p></div>
+  <div class="card__meta"><span class="num">$XX</span></div>
+</article>
+  </div>
+  <p class="empty" id="empty" hidden>Nothing matches those filters. <button class="tbtn" type="button" onclick="document.getElementById('clear').click()" style="text-decoration:underline">Clear filters</button></p>
+  <div class="seen"><span id="seen-t">You've seen 14 of 14</span><div class="meter" style="--fill:100%" aria-hidden="true"><span></span></div></div>
+  <p class="note">Pills y panel de filtros se arman con la app gratis Search &amp; Discovery de Shopify (categoría, talla y color salen de las variantes). El orden "Featured" lo decide la dueña a mano en la colección.</p>
+  <p class="note" style="margin-bottom:var(--sect)">El tile oscuro es el único momento del tractor en la tienda: se edita como bloque de colección y se puede cambiar por drop sin tocar código.</p>
+</main>
+
+<div class="scrim" id="fscrim" hidden></div>
+<aside class="fpanel" id="fpanel" role="dialog" aria-modal="true" aria-labelledby="fpanel-t" hidden>
+  <div class="fpanel__head"><p class="label" id="fpanel-t">Filter</p><button class="icon-btn" type="button" id="filter-close" aria-label="Close filters"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg></button></div>
+  <form id="fform" class="fpanel__body" style="display:block">
+    <fieldset><legend>Category</legend><div class="opts">
+<label class="opt"><input type="checkbox" name="cat" value="tees">Tees</label>
+<label class="opt"><input type="checkbox" name="cat" value="sweats">Sweatshirts</label>
+<label class="opt"><input type="checkbox" name="cat" value="hats">Hats</label>
+<label class="opt"><input type="checkbox" name="cat" value="kids">Kids</label>
+<label class="opt"><input type="checkbox" name="cat" value="gear">Stickers &amp; Gear</label>
+<label class="opt"><input type="checkbox" name="cat" value="ride">Ride With Us</label>
+    </div></fieldset>
+    <fieldset><legend>Size</legend><div class="opts opts--size">
+<label class="opt"><input type="checkbox" name="size" value="s">S</label>
+<label class="opt"><input type="checkbox" name="size" value="m">M</label>
+<label class="opt"><input type="checkbox" name="size" value="l">L</label>
+<label class="opt"><input type="checkbox" name="size" value="xl">XL</label>
+<label class="opt"><input type="checkbox" name="size" value="2xl">2XL</label>
+<label class="opt"><input type="checkbox" name="size" value="youth">Youth</label>
+<label class="opt"><input type="checkbox" name="size" value="os">One size</label>
+    </div></fieldset>
+    <fieldset><legend>Color</legend><div class="opts">
+<label class="opt"><input type="checkbox" name="color" value="matte-black"><span class="swatch" style="--sw:var(--ink)"></span>Matte Black</label>
+<label class="opt"><input type="checkbox" name="color" value="smoke-gray"><span class="swatch" style="--sw:#8C8A82"></span>Smoke Gray</label>
+<label class="opt"><input type="checkbox" name="color" value="bone"><span class="swatch" style="--sw:#E9E6DC"></span>Bone</label>
+<label class="opt"><input type="checkbox" name="color" value="black"><span class="swatch" style="--sw:var(--ink)"></span>Black</label>
+<label class="opt"><input type="checkbox" name="color" value="safety-yellow"><span class="swatch" style="--sw:var(--accent)"></span>Safety Yellow</label>
+    </div></fieldset>
+  </form>
+  <div class="fpanel__foot"><button class="btn btn--ghost" type="button" id="clear">Clear</button><button class="btn" type="submit" form="fform" id="apply">Show 14 products</button></div>
+</aside>
+
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function(){
+  var grid=document.getElementById('grid'), cards=[].slice.call(grid.querySelectorAll('.card')), edit=grid.querySelector('[data-edit]');
+  var pills=[].slice.call(document.querySelectorAll('[data-pill]')), sortSel=document.getElementById('sort');
+  var panel=document.getElementById('fpanel'), fscrim=document.getElementById('fscrim'), openB=document.getElementById('filter-open'), form=document.getElementById('fform');
+  var CATS=['tees','sweats','hats','kids','gear','ride'];
+  var SIZES={tees:'s m l xl 2xl',sweats:'s m l xl 2xl',kids:'youth',hats:'os',gear:'os',ride:''};
+  var st={cat:[],color:[],size:[]};
+  function sizesOf(c){return c.dataset.cat.split(' ').map(function(k){return SIZES[k]||''}).join(' ').split(' ')}
+  function hit(list,vals){return !list.length||list.some(function(v){return vals.indexOf(v)>-1})}
+  function render(){
+    var mode=sortSel.value, shown=[];
+    var order=cards.slice().sort(function(a,b){
+      function rank(c){var t=c.dataset.tags;return mode==='new'?(t==='new'?0:1):mode==='best'?(t==='best'?0:1):0}
+      if(mode==='az'){return a.querySelector('.card__name').textContent.localeCompare(b.querySelector('.card__name').textContent)}
+      return rank(a)-rank(b)||a.dataset.i-b.dataset.i;
+    });
+    order.forEach(function(c){
+      var ok=hit(st.cat,c.dataset.cat.split(' '))&&hit(st.color,c.dataset.colors.split(' '))&&hit(st.size,sizesOf(c));
+      c.hidden=!ok; grid.appendChild(c); if(ok)shown.push(c);
+    });
+    var filtered=st.cat.length||st.color.length||st.size.length;
+    edit.hidden=filtered||shown.length<5;
+    if(!edit.hidden)grid.insertBefore(edit,shown[4]);
+    var n=shown.length;
+    document.getElementById('count').textContent=n+(n===1?' product':' products');
+    document.getElementById('seen-t').textContent="You've seen "+n+' of '+n;
+    document.getElementById('empty').hidden=n>0;
+    var fc=st.cat.length+st.color.length+st.size.length;
+    document.getElementById('fcount').textContent=fc?'('+fc+')':'';
+    pills.forEach(function(p){var k=p.dataset.pill;p.setAttribute('aria-pressed',String(k==='all'?!st.cat.length:(st.cat.length===1&&st.cat[0]===k)))});
+    [].forEach.call(form.elements,function(el){if(el.type==='checkbox')el.checked=st[el.name].indexOf(el.value)>-1});
+  }
+  pills.forEach(function(p){p.addEventListener('click',function(){st.cat=p.dataset.pill==='all'?[]:[p.dataset.pill];render()})});
+  sortSel.addEventListener('change',render);
+  var lastF=null;
+  function openP(){lastF=document.activeElement;panel.hidden=fscrim.hidden=false;openB.setAttribute('aria-expanded','true');document.body.style.overflow='hidden';document.getElementById('filter-close').focus()}
+  function closeP(){panel.hidden=fscrim.hidden=true;openB.setAttribute('aria-expanded','false');document.body.style.overflow='';render();if(lastF)lastF.focus()}
+  openB.addEventListener('click',openP);
+  document.getElementById('filter-close').addEventListener('click',closeP);
+  fscrim.addEventListener('click',closeP);
+  panel.addEventListener('keydown',function(e){if(e.key==='Escape')closeP()});
+  form.addEventListener('change',function(){
+    st={cat:[],color:[],size:[]};
+    [].forEach.call(form.elements,function(el){if(el.type==='checkbox'&&el.checked)st[el.name].push(el.value)});
+    var n=cards.filter(function(c){return hit(st.cat,c.dataset.cat.split(' '))&&hit(st.color,c.dataset.colors.split(' '))&&hit(st.size,sizesOf(c))}).length;
+    document.getElementById('apply').textContent='Show '+n+(n===1?' product':' products');
+  });
+  form.addEventListener('submit',function(e){e.preventDefault();closeP()});
+  document.getElementById('clear').addEventListener('click',function(){st={cat:[],color:[],size:[]};form.reset();document.getElementById('apply').textContent='Show 14 products';render()});
+  /* shop.html#tees etc.: filtra por la categoría y baja al primer producto */
+  function fromHash(){
+    var h=location.hash.slice(1);
+    if(CATS.indexOf(h)>-1){st.cat=[h];render();var a=document.getElementById(h);if(a)a.scrollIntoView()}
+  }
+  window.addEventListener('hashchange',fromHash);
+  render(); fromHash();
+})();
+</script>
+</body></html>

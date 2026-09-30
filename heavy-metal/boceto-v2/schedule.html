@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Schedule · Heavy Metal</title>
+<meta name="description" content="Heavy Metal is in testing season. Get Hook Alerts by email or text the moment The Evil One hooks to the sled on the NTPA and PPL Badger State circuits.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Schedule: estado honesto (temporada de pruebas), alertas al centro, vista previa de cómo se verá el calendario. */
+.sc-hero{padding-block:clamp(40px,6vw,80px) clamp(32px,4vw,56px)}
+.sc-hero__in{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:var(--gap) clamp(24px,5vw,80px);align-items:end}
+.status{display:inline-flex;align-items:center;gap:10px;font-size:var(--t-xs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--ink);padding:6px 12px;margin:0 0 20px}
+.status i{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--ink)}
+.sc-hero .lede{margin-top:20px}
+@media (max-width:860px){.sc-hero__in{grid-template-columns:1fr}}
+
+/* 3 pasos */
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);counter-reset:s}
+.steps li{border-top:2px solid var(--ink);padding-top:18px;display:grid;gap:10px;align-content:start}
+.steps li p{margin:0;color:var(--soft);max-width:36ch}
+.steps__n{font-family:var(--f-sans);font-stretch:125%;font-weight:800;font-size:var(--t-2xl);line-height:1;font-variant-numeric:tabular-nums}
+@media (max-width:760px){.steps{grid-template-columns:1fr}}
+
+/* alertas */
+.alerts{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:var(--gap) clamp(24px,5vw,80px);align-items:start}
+.alerts__intro{display:grid;gap:18px}
+.alerts__intro p{margin:0}
+.alerts__perks{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:var(--t-sm);color:var(--soft)}
+.alerts__perks li{display:flex;gap:10px}
+.alerts__perks li::before{content:"";flex:none;width:6px;height:6px;margin-top:.55em;background:var(--ink)}
+.form{display:grid;gap:18px;background:var(--bg);padding:clamp(20px,3vw,36px)}
+.form__row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+@media (max-width:560px){.form__row{grid-template-columns:1fr}}
+.opt{font-weight:400;letter-spacing:.02em;text-transform:none;color:var(--mute)}
+.check{display:grid;grid-template-columns:22px minmax(0,1fr);gap:10px;align-items:start;font-size:var(--t-sm);color:var(--soft)}
+.check input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--ink)}
+.legal{font-size:var(--t-xs);line-height:1.5;color:var(--mute);margin:0}
+.legal a{color:var(--soft)}
+.err{font-size:var(--t-xs);color:var(--sale);margin:0}
+.ok{display:grid;gap:8px;border-left:3px solid var(--ink);padding:12px 16px;background:var(--surface)}
+.ok p{margin:0}
+@media (max-width:860px){.alerts{grid-template-columns:1fr}}
+
+/* vista previa: tarjeta de evento de ejemplo */
+.prev-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px;margin-bottom:clamp(24px,3vw,40px)}
+.events{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+@media (max-width:960px){.events{grid-template-columns:1fr}}
+.ev{position:relative;background:var(--surface);border:1px dashed #9C9A93;padding:20px;display:grid;gap:16px;align-content:start}
+.ev__tag{justify-self:start}
+.ev__date{display:flex;align-items:baseline;gap:12px}
+.ev__day{font-family:var(--f-sans);font-stretch:125%;font-weight:800;font-size:var(--t-3xl);line-height:.9;font-variant-numeric:tabular-nums}
+.ev__mon{font-size:var(--t-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.ev__name{font-size:var(--t-lg);font-weight:700;margin:0;text-transform:uppercase;letter-spacing:.04em}
+.ev dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px;font-size:var(--t-sm)}
+.ev dt{font-size:var(--t-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);padding-top:2px}
+.ev dd{margin:0;color:var(--text);font-variant-numeric:tabular-nums}
+.ev__foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid var(--line);padding-top:14px}
+.ev__res{font-family:var(--f-sans);font-stretch:112%;font-weight:700;font-size:var(--t-xl);font-variant-numeric:tabular-nums}
+.ev__res small{font-size:var(--t-xs);font-weight:600;letter-spacing:.12em;color:var(--mute);margin-left:4px}
+
+/* ligas */
+.leagues{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap)}
+.league{border-top:1px solid var(--line);padding-top:18px;display:grid;gap:10px;align-content:start}
+.league p{margin:0;color:var(--soft)}
+.stream{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:clamp(24px,3vw,36px);padding:16px 20px;background:var(--surface);border:1px solid var(--line)}
+.stream p{margin:0}
+@media (max-width:620px){.leagues{grid-template-columns:1fr}}
+
+/* banda oscura corta con Facebook */
+.fb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--gap) clamp(24px,5vw,80px);align-items:center}
+.fb p{margin:0}
+.fb .body{color:#CFCCC3}
+@media (max-width:760px){.fb{grid-template-columns:1fr}}
+
+.xs-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px;margin-bottom:24px}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="schedule"></div>
+
+<main id="main">
+  <!-- Hero: estado honesto -->
+  <section class="sc-hero" aria-labelledby="sc-h1">
+    <div class="wrap sc-hero__in">
+      <div>
+        <p class="status"><i aria-hidden="true"></i>Testing season · 2026</p>
+        <h1 class="h-hero" id="sc-h1">Schedule</h1>
+        <p class="lede">No dates yet, and we will not guess. The Evil One is in testing, chasing its first full pull. When a pull is confirmed, it goes here first, and to Hook Alerts the same day.</p>
+        <div class="btn-row" style="margin-top:28px">
+          <a class="btn" href="#alerts">Get Hook Alerts</a>
+          <a class="btn btn--ghost" href="https://www.facebook.com/heavymetalprostock/" rel="noopener">Follow on Facebook</a>
+        </div>
+      </div>
+      <div class="ph ph--dark" style="--ar:5/4">
+        <div class="ph__tag"><b>Foto · 5:4</b>The Evil One en pruebas, frente del tractor levantado, humo negro, atardecer</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Qué sigue -->
+  <section class="sect sect--white" aria-labelledby="next-t">
+    <div class="wrap">
+      <div class="prev-head">
+        <h2 class="h2" id="next-t">What happens next</h2>
+        <p class="muted" style="margin:0;font-size:var(--t-sm)">Three steps between now and the first full pull.</p>
+      </div>
+      <ol class="steps">
+        <li>
+          <span class="steps__n" aria-hidden="true">01</span>
+          <h3 class="h3">Test and fix</h3>
+          <p>We run the tractor, find what breaks and fix it in the shop in Waterloo.</p>
+        </li>
+        <li>
+          <span class="steps__n" aria-hidden="true">02</span>
+          <h3 class="h3">Confirm the pulls</h3>
+          <p>Once the tractor is ready, we lock in pulls on the NTPA and PPL Badger State circuits and post them here.</p>
+        </li>
+        <li>
+          <span class="steps__n" aria-hidden="true">03</span>
+          <h3 class="h3">Hook Alerts go out</h3>
+          <p>On pull day you get one message when we hook to the sled, with the stream link when there is one.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Hook Alerts -->
+  <section class="sect" id="alerts" aria-labelledby="alerts-t">
+    <div class="wrap alerts">
+      <div class="alerts__intro">
+        <p class="label muted">Hook Alerts</p>
+        <h2 class="h1" id="alerts-t">Know when we hook</h2>
+        <p class="lede">Be there, or watch live, for the first full pull. Sign up once and we tell you when The Evil One is on the track.</p>
+        <ul class="alerts__perks">
+          <li>New pull dates as soon as they are confirmed</li>
+          <li>A heads up when we hook, with the stream link</li>
+          <li>The result, win or lose</li>
+          <li>First look at new merch drops</li>
+        </ul>
+      </div>
+
+      <form class="form" id="alert-form" novalidate aria-describedby="alert-legal">
+        <div class="form__row">
+          <div class="field">
+            <label for="al-email">Email</label>
+            <input class="input" id="al-email" name="email" type="email" autocomplete="email" required aria-describedby="al-email-err">
+            <p class="err" id="al-email-err" hidden>Enter a valid email so we can reach you.</p>
+          </div>
+          <div class="field">
+            <label for="al-phone">Mobile <span class="opt">(optional, for texts)</span></label>
+            <input class="input" id="al-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel">
+          </div>
+        </div>
+        <label class="check" for="al-sms">
+          <input id="al-sms" name="sms" type="checkbox">
+          <span>Text me Hook Alerts at the number above.</span>
+        </label>
+        <p class="legal" id="alert-legal">By checking the box, you agree to receive recurring automated text messages from Heavy Metal Pro Stock at the number provided. Message frequency varies, about one per event. Msg and data rates may apply. Reply STOP to cancel, HELP for help. Consent is not a condition of purchase. See our <a href="#">Privacy Policy</a> and <a href="#">SMS Terms</a>.</p>
+        <button class="btn btn--block" type="submit">Get Hook Alerts</button>
+        <div id="alert-status" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+    <div class="wrap">
+      <p class="note">El formulario es solo visual. En la tienda se conecta a la lista de email y SMS (por ejemplo Shopify Forms o Klaviyo) con el texto de consentimiento que exija la herramienta.</p>
+    </div>
+  </section>
+
+  <!-- Cómo se verá la temporada -->
+  <section class="sect sect--white" aria-labelledby="preview-t">
+    <div class="wrap">
+      <div class="prev-head">
+        <div>
+          <p class="label muted" style="margin-bottom:10px">Preview</p>
+          <h2 class="h2" id="preview-t">How the season will show here</h2>
+        </div>
+        <p class="body" style="margin:0;max-width:46ch">These are example layouts, not real events. Every pull will get a card like this, with the result added after the run.</p>
+      </div>
+      <div class="events">
+        <article class="ev" aria-label="Example event card, upcoming">
+          <span class="badge badge--line ev__tag">Example event card</span>
+          <div class="ev__date"><span class="ev__day">XX</span><span class="ev__mon">Month · 20XX</span></div>
+          <p class="ev__name">XX County Fair</p>
+          <dl>
+            <dt>City</dt><dd>City, WI</dd>
+            <dt>League</dt><dd>NTPA</dd>
+            <dt>Class</dt><dd>Pro Stock</dd>
+            <dt>Stream</dt><dd><a href="#" aria-disabled="true">Full Pull Live (link)</a></dd>
+          </dl>
+          <div class="ev__foot"><span class="label muted">Result</span><span class="ev__res">XXX.XX<small>ft</small></span></div>
+        </article>
+        <article class="ev" aria-label="Example event card, upcoming">
+          <span class="badge badge--line ev__tag">Example event card</span>
+          <div class="ev__date"><span class="ev__day">XX</span><span class="ev__mon">Month · 20XX</span></div>
+          <p class="ev__name">XX County Fair</p>
+          <dl>
+            <dt>City</dt><dd>City, WI</dd>
+            <dt>League</dt><dd>PPL Badger State</dd>
+            <dt>Class</dt><dd>Pro Stock</dd>
+            <dt>Stream</dt><dd>Stream link if available</dd>
+          </dl>
+          <div class="ev__foot"><span class="label muted">Result</span><span class="ev__res">XXX.XX<small>ft</small></span></div>
+        </article>
+        <article class="ev" aria-label="Example event card, past with result">
+          <span class="badge badge--line ev__tag">Example event card</span>
+          <div class="ev__date"><span class="ev__day">XX</span><span class="ev__mon">Month · 20XX</span></div>
+          <p class="ev__name">XX Tractor Pull</p>
+          <dl>
+            <dt>City</dt><dd>City, ST</dd>
+            <dt>League</dt><dd>NTPA</dd>
+            <dt>Class</dt><dd>Pro Stock</dd>
+            <dt>Stream</dt><dd><a href="#" aria-disabled="true">Replay (link)</a></dd>
+          </dl>
+          <div class="ev__foot"><span class="label muted">Result</span><span class="ev__res">XXX.XX<small>ft</small></span></div>
+        </article>
+      </div>
+      <p class="note">Las 3 tarjetas son ejemplo de diseño con valores XX, no eventos reales. Cuando haya fechas, cada jalada se carga como una entrada (metaobjeto en Shopify) y la tarjeta se llena sola.</p>
+    </div>
+  </section>
+
+  <!-- Ligas -->
+  <section class="sect" aria-labelledby="leagues-t">
+    <div class="wrap">
+      <h2 class="h2" id="leagues-t" style="margin-bottom:clamp(24px,3vw,40px)">Where we pull</h2>
+      <div class="leagues">
+        <div class="league">
+          <p class="label">NTPA</p>
+          <h3 class="h3">National Tractor Pullers Association</h3>
+          <p>The national circuit for truck and tractor pulling.</p>
+        </div>
+        <div class="league">
+          <p class="label">PPL Badger State</p>
+          <h3 class="h3">Our home state circuit</h3>
+          <p>Pulls around Wisconsin, close to the shop in Waterloo.</p>
+        </div>
+      </div>
+      <div class="stream">
+        <span class="badge">Watch live</span>
+        <p>NTPA events stream on Full Pull Live. We post the link in each Hook Alert.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Facebook -->
+  <section class="sect sect--night" aria-labelledby="fb-t">
+    <div class="wrap fb">
+      <div class="ph ph--dark" style="--ar:16/9">
+        <div class="ph__tag"><b>Foto · 16:9</b>Equipo en el taller trabajando en el tractor de noche</div>
+      </div>
+      <div style="display:grid;gap:16px">
+        <h2 class="h2" id="fb-t">Shop updates, day by day</h2>
+        <p class="body">Testing notes, shop work and pull day photos go up on Facebook first.</p>
+        <div><a class="btn btn--light" href="https://www.facebook.com/heavymetalprostock/" rel="noopener">Follow on Facebook</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cross-sell -->
+  <section class="sect" aria-labelledby="xs-t">
+    <div class="wrap">
+      <div class="xs-head">
+        <h2 class="h2" id="xs-t">Gear up for pull day</h2>
+        <a class="link" href="shop.html">Shop all</a>
+      </div>
+      <div class="grid g3">
+        <article class="card">
+          <div class="card__media">
+            <a href="product.html" tabindex="-1" aria-hidden="true"><div class="ph" style="--ar:4/5"><div class="ph__tag"><b>Foto · 4:5</b>Evil One Tee plana sobre fondo liso</div></div></a>
+            <div class="card__badges"><span class="badge">Best seller</span></div>
+            <button class="btn btn--block card__add" type="button" data-add="Evil One Tee|Matte Black / M|$XX">Quick add</button>
+          </div>
+          <h3 class="card__name"><a href="product.html">Evil One Tee</a></h3>
+          <p class="card__sub">2 colors</p>
+          <div class="card__meta"><span class="num">$XX</span><span class="swatches"><span class="swatch" style="--sw:var(--ink)" title="Matte Black"></span><span class="swatch" style="--sw:#8C8A82" title="Smoke Gray"></span></span></div>
+        </article>
+        <article class="card">
+          <div class="card__media">
+            <a href="product.html" tabindex="-1" aria-hidden="true"><div class="ph" style="--ar:4/5"><div class="ph__tag"><b>Foto · 4:5</b>Crew Cap de frente sobre fondo liso</div></div></a>
+            <button class="btn btn--block card__add" type="button" data-add="Crew Cap|Black / One size|$XX">Quick add</button>
+          </div>
+          <h3 class="card__name"><a href="product.html">Crew Cap</a></h3>
+          <p class="card__sub">Black, one size</p>
+          <div class="card__meta"><span class="num">$XX</span><span class="swatches"><span class="swatch" style="--sw:var(--ink)" title="Black"></span></span></div>
+        </article>
+        <article class="card">
+          <div class="card__media">
+            <a href="product.html" tabindex="-1" aria-hidden="true"><div class="ph" style="--ar:4/5"><div class="ph__tag"><b>Foto · 4:5</b>Hook Alert Koozie con lata, fondo liso</div></div></a>
+            <button class="btn btn--block card__add" type="button" data-add="Hook Alert Koozie|One size|$XX">Quick add</button>
+          </div>
+          <h3 class="card__name"><a href="product.html">Hook Alert Koozie</a></h3>
+          <p class="card__sub">For the stands</p>
+          <div class="card__meta"><span class="num">$XX</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+/* Hook Alerts: validación simple y confirmación anunciada por aria-live */
+(function () {
+  var form = document.getElementById('alert-form');
+  var email = document.getElementById('al-email');
+  var phone = document.getElementById('al-phone');
+  var sms = document.getElementById('al-sms');
+  var err = document.getElementById('al-email-err');
+  var status = document.getElementById('alert-status');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    status.innerHTML = '';
+    var ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim());
+    err.hidden = ok;
+    email.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    if (!ok) { email.focus(); return; }
+    var texts = sms.checked && phone.value.trim();
+    status.innerHTML = '<div class="ok"><p><b>You are on the list.</b></p><p>We will email ' +
+      email.value.trim().replace(/[<>&"]/g, '') + (texts ? ' and text your phone' : '') +
+      ' when we hook. Until then: <a href="shop.html">shop the drop</a>.</p></div>';
+    form.querySelector('button[type="submit"]').textContent = 'You are in';
+  });
+})();
+</script>
+</body>
+</html>

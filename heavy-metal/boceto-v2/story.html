@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Our Story · Heavy Metal</title>
+<meta name="description" content="How The Evil One got built: an idea in Tomah in 2014, a first bolt in 2020, a first fire in 2026. A Pro Stock pulling tractor from Waterloo, Wisconsin.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Our Story: revista clara. Una columna de lectura, años grandes al margen, dos momentos oscuros. */
+.st-hero{padding-block:clamp(40px,6vw,80px) 0}
+.st-hero__top{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--gap) clamp(24px,5vw,80px);align-items:end;margin-bottom:clamp(28px,4vw,48px)}
+.st-hero__top .label{margin-bottom:18px}
+.st-hero__facts{display:flex;flex-wrap:wrap;gap:8px 28px;margin:22px 0 0;padding:0;list-style:none;font-size:var(--t-sm);color:var(--mute)}
+.st-hero__facts b{color:var(--ink);font-weight:600}
+@media (max-width:760px){.st-hero__top{grid-template-columns:1fr}.st-hero__ph{--ar:4/3!important}}
+
+/* índice de capítulos */
+.st-toc{display:flex;flex-wrap:wrap;gap:6px 22px;list-style:none;margin:0;padding:18px 0;border-bottom:1px solid var(--line)}
+.st-toc a{text-decoration:none;font-size:var(--t-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--soft)}
+.st-toc a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:4px}
+.st-toc span{color:var(--mute);font-variant-numeric:tabular-nums;margin-right:6px}
+
+/* capítulo: año al margen, texto al centro, foto a la derecha */
+.ch{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,5fr) minmax(0,4fr);gap:var(--gap) clamp(20px,3.5vw,56px);padding-block:clamp(48px,6vw,88px);border-top:1px solid var(--line);align-items:start}
+.ch:first-child{border-top:0}
+.ch__year{position:sticky;top:calc(var(--header) + 24px);display:grid;gap:8px}
+.ch__num{font-family:var(--f-sans);font-stretch:125%;font-weight:800;font-size:clamp(3rem,7vw,6rem);line-height:.85;letter-spacing:-.02em;font-variant-numeric:tabular-nums;text-transform:uppercase;margin:0}
+.ch__num small{display:block;font-size:var(--t-sm);font-weight:600;letter-spacing:.12em;font-stretch:100%;color:var(--mute);margin-bottom:10px}
+.ch__text{display:grid;gap:16px}
+.ch__text p{margin:0;color:var(--text);max-width:58ch}
+.ch__text .h2{margin-bottom:4px}
+.ch__aside{display:grid;gap:10px}
+.ch__cap{font-size:var(--t-xs);color:var(--mute);margin:0}
+.ch--flip .ch__aside{order:0}
+@media (max-width:960px){
+  .ch{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}
+  .ch__aside{grid-column:2}
+}
+@media (max-width:620px){
+  .ch{grid-template-columns:1fr}
+  .ch__aside{grid-column:auto}
+  .ch__year{position:static}
+}
+
+/* momento oscuro: el rayo */
+.bolt{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:var(--gap) clamp(24px,4vw,64px);align-items:center}
+.bolt__q{margin:0;display:grid;gap:22px}
+.bolt__q p{margin:0;font-family:var(--f-sans);font-stretch:112%;font-weight:700;font-size:var(--t-3xl);line-height:1.02;text-transform:uppercase;letter-spacing:-.01em;text-wrap:balance}
+.bolt__q footer{font-size:var(--t-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#B9B6AC}
+.bolt__lead{color:#CFCCC3;max-width:52ch;margin:0}
+.bolt .label{color:var(--accent)}
+@media (max-width:860px){.bolt{grid-template-columns:1fr}}
+
+/* ahora: temporada de pruebas */
+.now{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--gap) clamp(24px,5vw,80px);align-items:start}
+.now__status{display:inline-flex;align-items:center;gap:10px;font-size:var(--t-xs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--ink);padding:6px 12px;margin-bottom:18px}
+.now__status i{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 2px var(--ink)}
+.now__list{list-style:none;margin:0;padding:0;display:grid}
+.now__list li{display:grid;grid-template-columns:3ch minmax(0,1fr);gap:14px;padding-block:16px;border-top:1px solid var(--line);color:var(--soft)}
+.now__list li:last-child{border-bottom:1px solid var(--line)}
+.now__list b{color:var(--ink);font-variant-numeric:tabular-nums}
+@media (max-width:860px){.now{grid-template-columns:1fr}}
+
+/* crew */
+.crew-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px;margin-bottom:clamp(24px,3vw,40px)}
+.crew{display:grid;grid-template-columns:minmax(0,2fr) repeat(3,minmax(0,1fr));gap:var(--gap)}
+.crew__lead{grid-row:span 2}
+.person{display:grid;gap:10px;align-content:start}
+.person p{margin:0}
+.person__name{font-size:var(--t-sm);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.person__role{font-size:var(--t-sm);color:var(--mute)}
+.person--ph .person__name{color:var(--mute)}
+.crew__lead .person__name{font-size:var(--t-lg)}
+@media (max-width:860px){.crew{grid-template-columns:repeat(2,minmax(0,1fr))}.crew__lead{grid-column:1/-1;grid-row:auto}}
+
+/* hermanos */
+.bros{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--gap) clamp(24px,5vw,80px);align-items:center}
+.bros__pics{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--gap)}
+.bros__pics .ph:last-child{margin-top:clamp(24px,5vw,72px)}
+.bros__text{display:grid;gap:16px}
+.bros__text p{margin:0}
+.anthem{display:flex;align-items:center;gap:14px;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:var(--t-sm);color:var(--soft);margin-top:8px}
+.anthem svg{flex:none;width:28px;height:28px}
+.anthem b{color:var(--ink);font-weight:600}
+@media (max-width:860px){.bros{grid-template-columns:1fr}}
+
+/* cierre */
+.end{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--gap)}
+.end__tile{display:grid;gap:14px;align-content:start}
+.end__tile p{margin:0}
+@media (max-width:620px){.end{grid-template-columns:1fr}}
+
+/* revelado suave al hacer scroll: visible si no hay JS, sin movimiento con reduced motion */
+.rv-on .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.rv-on .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv-on .rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="story"></div>
+
+<main id="main">
+  <!-- Hero -->
+  <section class="st-hero" aria-labelledby="story-h1">
+    <div class="wrap">
+      <div class="st-hero__top">
+        <div>
+          <p class="label muted">The Evil One · Waterloo, Wisconsin</p>
+          <h1 class="h-hero" id="story-h1">Our Story</h1>
+        </div>
+        <div>
+          <p class="lede">One idea, one family shop and a lot of nights. This is how a heavy metal fan from Wisconsin built a Pro Stock pulling tractor by hand.</p>
+          <ul class="st-hero__facts">
+            <li><b>2014</b> the idea</li>
+            <li><b>2020</b> first bolt</li>
+            <li><b>2026</b> first fire</li>
+          </ul>
+        </div>
+      </div>
+      <div class="ph ph--dark st-hero__ph" style="--ar:21/9">
+        <div class="ph__tag"><b>Foto · 21:9 · a sangre</b>The Evil One de perfil en el taller de Waterloo, luz baja, humo del escape, carrocería negro mate</div>
+      </div>
+      <nav aria-label="Chapters">
+        <ol class="st-toc">
+          <li><a href="#ch-2014"><span>01</span>The idea</a></li>
+          <li><a href="#ch-2020"><span>02</span>First bolt</a></li>
+          <li><a href="#ch-2026"><span>03</span>First fire</a></li>
+          <li><a href="#ch-pull"><span>04</span>First pull</a></li>
+          <li><a href="#ch-now"><span>05</span>Now</a></li>
+          <li><a href="#crew"><span>06</span>The crew</a></li>
+          <li><a href="#brothers"><span>07</span>Brothers</a></li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <!-- Capítulos -->
+  <div class="wrap">
+    <article class="ch rv" id="ch-2014" aria-labelledby="ch-2014-t">
+      <div class="ch__year"><p class="ch__num"><small>Chapter 01 · Tomah, WI</small>2014</p></div>
+      <div class="ch__text">
+        <h2 class="h2" id="ch-2014-t">It started with an idea</h2>
+        <p>In 2014, in Tomah, Wisconsin, Chris F. decided to build a pulling tractor. He had always been a heavy metal fan, so the name was never up for debate.</p>
+        <p>The tractor would be called Heavy Metal. The nickname came later, and it stuck: The Evil One.</p>
+      </div>
+      <figure class="ch__aside" style="margin:0">
+        <div class="ph" style="--ar:4/5"><div class="ph__tag"><b>Foto de archivo · 4:5</b>Primer boceto a mano del tractor o foto de Chris en 2014</div></div>
+        <figcaption class="ch__cap">The first sketch. Redrawn more times than anyone can count.</figcaption>
+      </figure>
+    </article>
+
+    <article class="ch rv" id="ch-2020" aria-labelledby="ch-2020-t">
+      <div class="ch__year"><p class="ch__num"><small>Chapter 02 · February</small>2020</p></div>
+      <div class="ch__text">
+        <h2 class="h2" id="ch-2020-t">The first bolt</h2>
+        <p>In February 2020 the first bolt went in, in the family shop in Waterloo, Wisconsin. From there, almost everything was built by hand.</p>
+        <p>Nights and weekends. Parts made, fitted, pulled off and made again. The whole family turned that shop into a second home, because building Heavy Metal was never a solo job.</p>
+      </div>
+      <figure class="ch__aside" style="margin:0">
+        <div class="ph" style="--ar:4/5"><div class="ph__tag"><b>Foto · 4:5</b>Chasis desnudo en el taller, herramientas en la pared, luz de día</div></div>
+        <figcaption class="ch__cap">The family shop, Waterloo, WI.</figcaption>
+      </figure>
+    </article>
+  </div>
+
+  <!-- Momento oscuro 1: el rayo -->
+  <section class="sect sect--night" id="ch-2026" aria-labelledby="ch-2026-t">
+    <div class="wrap">
+      <div class="bolt rv">
+        <div style="display:grid;gap:24px">
+          <p class="label">Chapter 03 · 2026</p>
+          <h2 class="h2" id="ch-2026-t">First fire</h2>
+          <p class="bolt__lead">In 2026 Chris stood in the shop and turned the engine over for the first time. At that exact moment, lightning struck and the power went out.</p>
+          <blockquote class="bolt__q">
+            <p>Some would call it a coincidence. We call it a sign.</p>
+            <footer>The Heavy Metal crew</footer>
+          </blockquote>
+        </div>
+        <div class="ph ph--dark ph--video" style="--ar:4/5">
+          <div class="ph__tag"><b>Video · 4:5 · sin sonido</b>Primer arranque: humo negro del escape en el taller a oscuras</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <article class="ch rv" id="ch-pull" aria-labelledby="ch-pull-t">
+      <div class="ch__year"><p class="ch__num"><small>Chapter 04 · 2026</small>Pull 1</p></div>
+      <div class="ch__text">
+        <h2 class="h2" id="ch-pull-t">The first pull ended early</h2>
+        <p>The first pull did not go the way anyone hoped. A small issue came up and the run ended before it should have. We will not sugarcoat it.</p>
+        <p>But getting Heavy Metal onto a real track at all, after building it with our own hands, was already something to be proud of. The pull did not finish that day. The story was just getting started.</p>
+      </div>
+      <figure class="ch__aside" style="margin:0">
+        <div class="ph" style="--ar:4/5"><div class="ph__tag"><b>Foto · 4:5</b>El tractor en la pista con el sled detrás, público al fondo</div></div>
+        <figcaption class="ch__cap">First time on a real track.</figcaption>
+      </figure>
+    </article>
+  </div>
+
+  <!-- Ahora -->
+  <section class="sect sect--white" id="ch-now" aria-labelledby="ch-now-t">
+    <div class="wrap now rv">
+      <div>
+        <p class="now__status"><i aria-hidden="true"></i>Testing season</p>
+        <p class="label muted" style="margin-bottom:10px">Chapter 05 · Now</p>
+        <h2 class="h1" id="ch-now-t">Chasing the first full pull</h2>
+      </div>
+      <div style="display:grid;gap:22px">
+        <p class="lede">Right now it is testing season. Every run teaches us something, and every fix gets us closer to the one thing we want: a full pull.</p>
+        <ul class="now__list">
+          <li><b>01</b><span>Test, find what breaks, fix it in the shop.</span></li>
+          <li><b>02</b><span>Go back out on the NTPA and PPL Badger State circuits.</span></li>
+          <li><b>03</b><span>Pull all the way to the end of the track.</span></li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn btn--ghost" href="schedule.html">See the schedule</a>
+          <a class="btn btn--ghost" href="machine.html">Meet the machine</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Crew -->
+  <section class="sect" id="crew" aria-labelledby="crew-t">
+    <div class="wrap">
+      <div class="crew-head">
+        <div>
+          <p class="label muted" style="margin-bottom:10px">Chapter 06</p>
+          <h2 class="h2" id="crew-t">The crew</h2>
+        </div>
+        <p class="body" style="margin:0;max-width:44ch">A family team. The people who hold the wrenches, run the pits and keep the lights on.</p>
+      </div>
+      <div class="crew">
+        <div class="person crew__lead rv">
+          <div class="ph ph--dark" style="--ar:4/5"><div class="ph__tag"><b>Retrato · 4:5</b>Chris F. en el asiento del tractor, casco en la mano</div></div>
+          <p class="person__name">Chris F.</p>
+          <p class="person__role">Owner and driver</p>
+        </div>
+        <div class="person person--ph rv">
+          <div class="ph" style="--ar:1/1"><div class="ph__tag"><b>Placeholder · 1:1</b>Retrato del equipo</div></div>
+          <p class="person__name">Crew member (placeholder)</p>
+          <p class="person__role">Role to confirm</p>
+        </div>
+        <div class="person person--ph rv">
+          <div class="ph" style="--ar:1/1"><div class="ph__tag"><b>Placeholder · 1:1</b>Retrato del equipo</div></div>
+          <p class="person__name">Crew member (placeholder)</p>
+          <p class="person__role">Role to confirm</p>
+        </div>
+        <div class="person person--ph rv">
+          <div class="ph" style="--ar:1/1"><div class="ph__tag"><b>Placeholder · 1:1</b>Retrato del equipo</div></div>
+          <p class="person__name">Crew member (placeholder)</p>
+          <p class="person__role">Role to confirm</p>
+        </div>
+        <div class="person person--ph rv">
+          <div class="ph" style="--ar:1/1"><div class="ph__tag"><b>Placeholder · 1:1</b>Retrato del equipo</div></div>
+          <p class="person__name">Crew member (placeholder)</p>
+          <p class="person__role">Role to confirm</p>
+        </div>
+        <div class="person person--ph rv">
+          <div class="ph" style="--ar:1/1"><div class="ph__tag"><b>Placeholder · 1:1</b>Retrato del equipo</div></div>
+          <p class="person__name">Crew member (placeholder)</p>
+          <p class="person__role">Role to confirm</p>
+        </div>
+        <div class="person person--ph rv">
+          <div class="ph" style="--ar:1/1"><div class="ph__tag"><b>Placeholder · 1:1</b>Retrato del equipo</div></div>
+          <p class="person__name">Crew member (placeholder)</p>
+          <p class="person__role">Role to confirm</p>
+        </div>
+      </div>
+      <p class="note">Solo Chris F. está confirmado aquí. Nombres, roles y fotos del resto del equipo (y las mascotas) los confirma la dueña antes de publicar; la sección crece con las tarjetas que haga falta.</p>
+    </div>
+  </section>
+
+  <!-- Hermanos -->
+  <section class="sect sect--white" id="brothers" aria-labelledby="brothers-t">
+    <div class="wrap bros">
+      <div class="bros__pics rv">
+        <div class="ph ph--dark" style="--ar:3/4"><div class="ph__tag"><b>Foto · 3:4</b>Heavy Metal, negro mate, en pista</div></div>
+        <div class="ph ph--dark" style="--ar:3/4"><div class="ph__tag"><b>Foto · 3:4 · con permiso</b>Diesel Ross en Europa</div></div>
+      </div>
+      <div class="bros__text rv">
+        <p class="label muted">Chapter 07 · Friends on the circuit</p>
+        <h2 class="h2" id="brothers-t">Brothers across the ocean</h2>
+        <p class="body">Heavy Metal has a brother in Europe: Diesel Ross, a Pro Stock tractor owned by Gert Stessens from Belgium.</p>
+        <p class="body">We met Gert at a pull in the Netherlands. Between the look of the two tractors and the friendship between Gert and Chris, Heavy Metal and Diesel Ross are tractor brothers.</p>
+        <p class="anthem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
+          <span>Walk-up song: <b>Fear of the Dark</b>, Iron Maiden</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cierre -->
+  <section class="sect" aria-labelledby="end-t">
+    <div class="wrap">
+      <h2 class="vh" id="end-t">Be part of it</h2>
+      <div class="end">
+        <a class="end__tile rv" href="shop.html#new" style="text-decoration:none">
+          <div class="ph" style="--ar:16/9"><div class="ph__tag"><b>Foto · 16:9</b>Drop actual: tee y hoodie sobre la llanta trasera</div></div>
+          <p class="h3">Wear the story</p>
+          <p class="muted" style="font-size:var(--t-sm)">Merch designed by the team. Printed on demand.</p>
+          <span class="btn">Shop the drop</span>
+        </a>
+        <a class="end__tile rv" href="schedule.html#alerts" style="text-decoration:none">
+          <div class="ph ph--dark" style="--ar:16/9"><div class="ph__tag"><b>Foto · 16:9</b>El gancho del sled a punto de engancharse</div></div>
+          <p class="h3">Be there for the first full pull</p>
+          <p class="muted" style="font-size:var(--t-sm)">One message when we hook. No spam.</p>
+          <span class="btn btn--ghost">Get Hook Alerts</span>
+        </a>
+      </div>
+      <p class="note">La cita del primer arranque usa la frase aprobada ("Some would call it a coincidence..."). La otra frase de Chris del tema actual trae groserías; si la quieren, se decide con la dueña.</p>
+    </div>
+  </section>
+</main>
+
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+/* revelado suave: solo con JS, IntersectionObserver y sin reduced motion; lo que ya está en pantalla aparece al instante */
+(function () {
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var els = [].slice.call(document.querySelectorAll('.rv'));
+  var vh = window.innerHeight;
+  els.forEach(function (el) { if (el.getBoundingClientRect().top < vh) el.classList.add('in'); });
+  document.documentElement.classList.add('rv-on');
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { rootMargin: '0px 0px -8% 0px' });
+  els.forEach(function (el) { if (!el.classList.contains('in')) io.observe(el); });
+})();
+</script>
+</body>
+</html>
