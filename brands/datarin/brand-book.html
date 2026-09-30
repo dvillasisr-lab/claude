@@ -169,23 +169,27 @@ tr:last-child td{border-bottom:0}
 footer{padding-block:48px 64px;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1.5rem}
 .files{display:grid;gap:.4rem;font-family:var(--f-mono);font-size:.8125rem}
 
-@media (prefers-reduced-motion:no-preference){
-  .anim .dotm{animation:drop 4.8s cubic-bezier(.3,1.4,.5,1) infinite;transform-box:fill-box;transform-origin:50% 100%}
-  @keyframes drop{0%,58%,100%{transform:none}66%{transform:translateY(-120%)}74%{transform:translateY(0) scale(1.18,.82)}80%{transform:none}}
-}
+.chipx{font-size:.8125rem;padding:5px 12px;border:1px solid var(--line);border-radius:99px;background:var(--bg)}
+.chipx.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn{font-family:var(--f-display);font-weight:500;font-size:.9375rem;padding:10px 18px;border-radius:99px;background:var(--cobalto);color:#fff}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.sw,.opt,.stage,.chart,.device,.spec,.vocab div,.box,.tile{border-radius:14px}
+.tablewrap,.traits,.facts{border-radius:14px;overflow:hidden}
+.ratio{border-radius:10px;overflow:hidden}
+.card,.slide,.post,.banner,.sig{border-radius:12px}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
-    <symbol id="wm" viewBox="0 -760 3194 780"><path fill="currentColor" d="M440.0 0.0H552.0V-720.0L440.0 -680.0V-463.7947082519531C397.99468994140625 -492.92791748046875 346.99102783203125 -510.0 292.0 -510.0C148.40596771240234 -510.0 32.0 -393.5940246582031 32.0 -250.0C32.0 -106.40596771240234 148.40596771240234 10.0 292.0 10.0C346.99102783203125 10.0 397.99468994140625 -7.072075366973877 440.0 -36.20529556274414ZM440.0 -250.0C440.0 -158.3649139404297 373.7381286621094 -84.08000183105469 292.0 -84.08000183105469C210.26185607910156 -84.08000183105469 144.0 -158.3649139404297 144.0 -250.0C144.0 -341.63507080078125 210.26185607910156 -415.9200134277344 292.0 -415.9200134277344C373.7381286621094 -415.9200134277344 440.0 -341.63507080078125 440.0 -250.0ZM1026.0 0.0H1138.0V-506.0L1026.0 -466.0V-463.7947082519531C983.9946899414062 -492.92791748046875 932.9910278320312 -510.0 878.0 -510.0C734.4059677124023 -510.0 618.0 -393.5940246582031 618.0 -250.0C618.0 -106.40596771240234 734.4059677124023 10.0 878.0 10.0C932.9910278320312 10.0 983.9946899414062 -7.072075366973877 1026.0 -36.20529556274414ZM1026.0 -250.0C1026.0 -158.3649139404297 959.7381286621094 -84.08000183105469 878.0 -84.08000183105469C796.2618560791016 -84.08000183105469 730.0 -158.3649139404297 730.0 -250.0C730.0 -341.63507080078125 796.2618560791016 -415.9200134277344 878.0 -415.9200134277344C959.7381286621094 -415.9200134277344 1026.0 -341.63507080078125 1026.0 -250.0ZM1254.0 0.0H1366.0V-405.9200134277344H1460.0V-500.0H1366.0V-640.0L1254.0 -600.0V-500.0H1180.0V-405.9200134277344H1254.0ZM1890.0 0.0H2002.0V-506.0L1890.0 -466.0V-463.7947082519531C1847.9946899414062 -492.92791748046875 1796.9910278320312 -510.0 1742.0 -510.0C1598.4059677124023 -510.0 1482.0 -393.5940246582031 1482.0 -250.0C1482.0 -106.40596771240234 1598.4059677124023 10.0 1742.0 10.0C1796.9910278320312 10.0 1847.9946899414062 -7.072075366973877 1890.0 -36.20529556274414ZM1890.0 -250.0C1890.0 -158.3649139404297 1823.7381286621094 -84.08000183105469 1742.0 -84.08000183105469C1660.2618560791016 -84.08000183105469 1594.0 -158.3649139404297 1594.0 -250.0C1594.0 -341.63507080078125 1660.2618560791016 -415.9200134277344 1742.0 -415.9200134277344C1823.7381286621094 -415.9200134277344 1890.0 -341.63507080078125 1890.0 -250.0ZM2088.0 0.0H2200.0V-317.8219909667969H2208.373779296875C2227.242965698242 -375.1213073730469 2275.9226989746094 -415.9200134277344 2333.0 -415.9200134277344C2370.215057373047 -415.9200134277344 2403.8601684570312 -398.57568359375 2428.0 -370.6220703125V-490.9007263183594C2398.786163330078 -503.2011413574219 2366.6870727539062 -510.0 2333.0 -510.0C2283.9694061279297 -510.0 2238.302749633789 -495.5972900390625 2200.0 -470.7918701171875V-506.0L2088.0 -466.0ZM2474.0 0.0H2586.0V-506.0L2474.0 -466.0ZM2672.0 0.0H2784.0V-265.0C2784.0 -348.3507995605469 2843.546127319336 -415.9200134277344 2917.0 -415.9200134277344C2990.453857421875 -415.9200134277344 3050.0 -348.3507995605469 3050.0 -265.0V0.0H3162.0V-266.0H3161.998016357422C3161.4591674804688 -400.84979248046875 3051.9762573242188 -510.0 2917.0 -510.0C2867.9694061279297 -510.0 2822.302749633789 -495.5972900390625 2784.0 -470.7918701171875V-506.0L2672.0 -466.0Z"/><circle class="dotm" cx="2530.0" cy="-665" r="69.4" style="fill:var(--dot)"/></symbol>
-    <symbol id="ic" viewBox="0 0 1000 1000"><g transform="translate(213.2 772.5) scale(0.7527)"><path fill="currentColor" d="M440.0 0.0H552.0V-720.0L440.0 -680.0V-463.7947082519531C397.99468994140625 -492.92791748046875 346.99102783203125 -510.0 292.0 -510.0C148.40596771240234 -510.0 32.0 -393.5940246582031 32.0 -250.0C32.0 -106.40596771240234 148.40596771240234 10.0 292.0 10.0C346.99102783203125 10.0 397.99468994140625 -7.072075366973877 440.0 -36.20529556274414ZM440.0 -250.0C440.0 -158.3649139404297 373.7381286621094 -84.08000183105469 292.0 -84.08000183105469C210.26185607910156 -84.08000183105469 144.0 -158.3649139404297 144.0 -250.0C144.0 -341.63507080078125 210.26185607910156 -415.9200134277344 292.0 -415.9200134277344C373.7381286621094 -415.9200134277344 440.0 -341.63507080078125 440.0 -250.0Z"/><circle cx="661" cy="-665" r="69.4" style="fill:var(--dot)"/></g></symbol>
+    <symbol id="wm" viewBox="31 -720 3136 730"><path fill="currentColor" d="M262 10Q197 10 144.5 -23.0Q92 -56 61.5 -112.5Q31 -169 31 -239Q31 -310 61.5 -366.5Q92 -423 144.5 -456.5Q197 -490 262 -490Q317 -490 359.5 -466.5Q402 -443 427.0 -402.0Q452 -361 452 -309V-171Q452 -119 427.5 -78.0Q403 -37 360.0 -13.5Q317 10 262 10ZM280 -94Q321 -94 351.5 -112.5Q382 -131 399.0 -164.0Q416 -197 416 -240Q416 -283 399.0 -316.0Q382 -349 351.5 -367.5Q321 -386 281 -386Q240 -386 209.5 -367.5Q179 -349 161.5 -316.0Q144 -283 144 -240Q144 -197 161.5 -164.0Q179 -131 209.5 -112.5Q240 -94 280 -94ZM519 0H409V-129L428 -246L409 -362V-720H519ZM824 10Q759 10 706.5 -23.0Q654 -56 623.5 -112.5Q593 -169 593 -239Q593 -310 623.5 -366.5Q654 -423 706.5 -456.5Q759 -490 824 -490Q879 -490 921.5 -466.5Q964 -443 989.0 -402.0Q1014 -361 1014 -309V-171Q1014 -119 989.5 -78.0Q965 -37 922.0 -13.5Q879 10 824 10ZM842 -94Q903 -94 940.5 -135.0Q978 -176 978 -240Q978 -283 961.0 -316.0Q944 -349 913.5 -367.5Q883 -386 842 -386Q802 -386 771.5 -367.5Q741 -349 723.5 -316.0Q706 -283 706 -240Q706 -197 723.5 -164.0Q741 -131 771.5 -112.5Q802 -94 842 -94ZM971 0V-129L990 -246L971 -362V-480H1081V0ZM1250 0V-680H1360V0ZM1135 -380V-480H1475V-380ZM1730 10Q1665 10 1612.5 -23.0Q1560 -56 1529.5 -112.5Q1499 -169 1499 -239Q1499 -310 1529.5 -366.5Q1560 -423 1612.5 -456.5Q1665 -490 1730 -490Q1785 -490 1827.5 -466.5Q1870 -443 1895.0 -402.0Q1920 -361 1920 -309V-171Q1920 -119 1895.5 -78.0Q1871 -37 1828.0 -13.5Q1785 10 1730 10ZM1748 -94Q1809 -94 1846.5 -135.0Q1884 -176 1884 -240Q1884 -283 1867.0 -316.0Q1850 -349 1819.5 -367.5Q1789 -386 1748 -386Q1708 -386 1677.5 -367.5Q1647 -349 1629.5 -316.0Q1612 -283 1612 -240Q1612 -197 1629.5 -164.0Q1647 -131 1677.5 -112.5Q1708 -94 1748 -94ZM1877 0V-129L1896 -246L1877 -362V-480H1987V0ZM2093 0V-480H2203V0ZM2203 -267 2165 -286Q2165 -377 2205.5 -433.5Q2246 -490 2328 -490Q2364 -490 2393.0 -477.0Q2422 -464 2447 -435L2375 -361Q2362 -375 2346.0 -381.0Q2330 -387 2309 -387Q2263 -387 2233.0 -358.0Q2203 -329 2203 -267ZM2507 0V-480H2617V0ZM2562 -568Q2534 -568 2515.5 -587.0Q2497 -606 2497 -634Q2497 -662 2515.5 -681.0Q2534 -700 2562 -700Q2591 -700 2609.0 -681.0Q2627 -662 2627 -634Q2627 -606 2609.0 -587.0Q2591 -568 2562 -568ZM3057 0V-277Q3057 -325 3026.5 -356.0Q2996 -387 2948 -387Q2916 -387 2891.0 -373.0Q2866 -359 2852.0 -334.0Q2838 -309 2838 -277L2795 -301Q2795 -356 2819.0 -398.5Q2843 -441 2885.5 -465.5Q2928 -490 2981 -490Q3035 -490 3077.0 -462.5Q3119 -435 3143.0 -391.5Q3167 -348 3167 -301V0ZM2728 0V-480H2838V0Z"/></symbol>
+    <symbol id="ic" viewBox="0 0 1000 1000"><path transform="translate(289.0 772.3) scale(0.7671)" fill="currentColor" d="M262 10Q197 10 144.5 -23.0Q92 -56 61.5 -112.5Q31 -169 31 -239Q31 -310 61.5 -366.5Q92 -423 144.5 -456.5Q197 -490 262 -490Q317 -490 359.5 -466.5Q402 -443 427.0 -402.0Q452 -361 452 -309V-171Q452 -119 427.5 -78.0Q403 -37 360.0 -13.5Q317 10 262 10ZM280 -94Q321 -94 351.5 -112.5Q382 -131 399.0 -164.0Q416 -197 416 -240Q416 -283 399.0 -316.0Q382 -349 351.5 -367.5Q321 -386 281 -386Q240 -386 209.5 -367.5Q179 -349 161.5 -316.0Q144 -283 144 -240Q144 -197 161.5 -164.0Q179 -131 209.5 -112.5Q240 -94 280 -94ZM519 0H409V-129L428 -246L409 -362V-720H519Z"/></symbol>
   </defs>
 </svg>
 
 <div class="wrap">
 <header>
-  <div class="top"><span class="label">Manual de marca · v2.0</span><span class="label">datarin.com</span></div>
-  <svg class="w hero" viewBox="0 -760 3194 780" role="img" aria-label="datarin"><path fill="currentColor" d="M440.0 0.0H552.0V-720.0L440.0 -680.0V-463.7947082519531C397.99468994140625 -492.92791748046875 346.99102783203125 -510.0 292.0 -510.0C148.40596771240234 -510.0 32.0 -393.5940246582031 32.0 -250.0C32.0 -106.40596771240234 148.40596771240234 10.0 292.0 10.0C346.99102783203125 10.0 397.99468994140625 -7.072075366973877 440.0 -36.20529556274414ZM440.0 -250.0C440.0 -158.3649139404297 373.7381286621094 -84.08000183105469 292.0 -84.08000183105469C210.26185607910156 -84.08000183105469 144.0 -158.3649139404297 144.0 -250.0C144.0 -341.63507080078125 210.26185607910156 -415.9200134277344 292.0 -415.9200134277344C373.7381286621094 -415.9200134277344 440.0 -341.63507080078125 440.0 -250.0ZM1026.0 0.0H1138.0V-506.0L1026.0 -466.0V-463.7947082519531C983.9946899414062 -492.92791748046875 932.9910278320312 -510.0 878.0 -510.0C734.4059677124023 -510.0 618.0 -393.5940246582031 618.0 -250.0C618.0 -106.40596771240234 734.4059677124023 10.0 878.0 10.0C932.9910278320312 10.0 983.9946899414062 -7.072075366973877 1026.0 -36.20529556274414ZM1026.0 -250.0C1026.0 -158.3649139404297 959.7381286621094 -84.08000183105469 878.0 -84.08000183105469C796.2618560791016 -84.08000183105469 730.0 -158.3649139404297 730.0 -250.0C730.0 -341.63507080078125 796.2618560791016 -415.9200134277344 878.0 -415.9200134277344C959.7381286621094 -415.9200134277344 1026.0 -341.63507080078125 1026.0 -250.0ZM1254.0 0.0H1366.0V-405.9200134277344H1460.0V-500.0H1366.0V-640.0L1254.0 -600.0V-500.0H1180.0V-405.9200134277344H1254.0ZM1890.0 0.0H2002.0V-506.0L1890.0 -466.0V-463.7947082519531C1847.9946899414062 -492.92791748046875 1796.9910278320312 -510.0 1742.0 -510.0C1598.4059677124023 -510.0 1482.0 -393.5940246582031 1482.0 -250.0C1482.0 -106.40596771240234 1598.4059677124023 10.0 1742.0 10.0C1796.9910278320312 10.0 1847.9946899414062 -7.072075366973877 1890.0 -36.20529556274414ZM1890.0 -250.0C1890.0 -158.3649139404297 1823.7381286621094 -84.08000183105469 1742.0 -84.08000183105469C1660.2618560791016 -84.08000183105469 1594.0 -158.3649139404297 1594.0 -250.0C1594.0 -341.63507080078125 1660.2618560791016 -415.9200134277344 1742.0 -415.9200134277344C1823.7381286621094 -415.9200134277344 1890.0 -341.63507080078125 1890.0 -250.0ZM2088.0 0.0H2200.0V-317.8219909667969H2208.373779296875C2227.242965698242 -375.1213073730469 2275.9226989746094 -415.9200134277344 2333.0 -415.9200134277344C2370.215057373047 -415.9200134277344 2403.8601684570312 -398.57568359375 2428.0 -370.6220703125V-490.9007263183594C2398.786163330078 -503.2011413574219 2366.6870727539062 -510.0 2333.0 -510.0C2283.9694061279297 -510.0 2238.302749633789 -495.5972900390625 2200.0 -470.7918701171875V-506.0L2088.0 -466.0ZM2474.0 0.0H2586.0V-506.0L2474.0 -466.0ZM2672.0 0.0H2784.0V-265.0C2784.0 -348.3507995605469 2843.546127319336 -415.9200134277344 2917.0 -415.9200134277344C2990.453857421875 -415.9200134277344 3050.0 -348.3507995605469 3050.0 -265.0V0.0H3162.0V-266.0H3161.998016357422C3161.4591674804688 -400.84979248046875 3051.9762573242188 -510.0 2917.0 -510.0C2867.9694061279297 -510.0 2822.302749633789 -495.5972900390625 2784.0 -470.7918701171875V-506.0L2672.0 -466.0Z"/><circle cx="2530.0" cy="-665" r="69.4" style="fill:var(--dot)"/></svg>
+  <div class="top"><span class="label">Manual de marca · v3.0</span><span class="label">datarin.com</span></div>
+  <svg class="w hero" viewBox="31 -720 3136 730" role="img" aria-label="datarin"><path fill="currentColor" d="M262 10Q197 10 144.5 -23.0Q92 -56 61.5 -112.5Q31 -169 31 -239Q31 -310 61.5 -366.5Q92 -423 144.5 -456.5Q197 -490 262 -490Q317 -490 359.5 -466.5Q402 -443 427.0 -402.0Q452 -361 452 -309V-171Q452 -119 427.5 -78.0Q403 -37 360.0 -13.5Q317 10 262 10ZM280 -94Q321 -94 351.5 -112.5Q382 -131 399.0 -164.0Q416 -197 416 -240Q416 -283 399.0 -316.0Q382 -349 351.5 -367.5Q321 -386 281 -386Q240 -386 209.5 -367.5Q179 -349 161.5 -316.0Q144 -283 144 -240Q144 -197 161.5 -164.0Q179 -131 209.5 -112.5Q240 -94 280 -94ZM519 0H409V-129L428 -246L409 -362V-720H519ZM824 10Q759 10 706.5 -23.0Q654 -56 623.5 -112.5Q593 -169 593 -239Q593 -310 623.5 -366.5Q654 -423 706.5 -456.5Q759 -490 824 -490Q879 -490 921.5 -466.5Q964 -443 989.0 -402.0Q1014 -361 1014 -309V-171Q1014 -119 989.5 -78.0Q965 -37 922.0 -13.5Q879 10 824 10ZM842 -94Q903 -94 940.5 -135.0Q978 -176 978 -240Q978 -283 961.0 -316.0Q944 -349 913.5 -367.5Q883 -386 842 -386Q802 -386 771.5 -367.5Q741 -349 723.5 -316.0Q706 -283 706 -240Q706 -197 723.5 -164.0Q741 -131 771.5 -112.5Q802 -94 842 -94ZM971 0V-129L990 -246L971 -362V-480H1081V0ZM1250 0V-680H1360V0ZM1135 -380V-480H1475V-380ZM1730 10Q1665 10 1612.5 -23.0Q1560 -56 1529.5 -112.5Q1499 -169 1499 -239Q1499 -310 1529.5 -366.5Q1560 -423 1612.5 -456.5Q1665 -490 1730 -490Q1785 -490 1827.5 -466.5Q1870 -443 1895.0 -402.0Q1920 -361 1920 -309V-171Q1920 -119 1895.5 -78.0Q1871 -37 1828.0 -13.5Q1785 10 1730 10ZM1748 -94Q1809 -94 1846.5 -135.0Q1884 -176 1884 -240Q1884 -283 1867.0 -316.0Q1850 -349 1819.5 -367.5Q1789 -386 1748 -386Q1708 -386 1677.5 -367.5Q1647 -349 1629.5 -316.0Q1612 -283 1612 -240Q1612 -197 1629.5 -164.0Q1647 -131 1677.5 -112.5Q1708 -94 1748 -94ZM1877 0V-129L1896 -246L1877 -362V-480H1987V0ZM2093 0V-480H2203V0ZM2203 -267 2165 -286Q2165 -377 2205.5 -433.5Q2246 -490 2328 -490Q2364 -490 2393.0 -477.0Q2422 -464 2447 -435L2375 -361Q2362 -375 2346.0 -381.0Q2330 -387 2309 -387Q2263 -387 2233.0 -358.0Q2203 -329 2203 -267ZM2507 0V-480H2617V0ZM2562 -568Q2534 -568 2515.5 -587.0Q2497 -606 2497 -634Q2497 -662 2515.5 -681.0Q2534 -700 2562 -700Q2591 -700 2609.0 -681.0Q2627 -662 2627 -634Q2627 -606 2609.0 -587.0Q2591 -568 2562 -568ZM3057 0V-277Q3057 -325 3026.5 -356.0Q2996 -387 2948 -387Q2916 -387 2891.0 -373.0Q2866 -359 2852.0 -334.0Q2838 -309 2838 -277L2795 -301Q2795 -356 2819.0 -398.5Q2843 -441 2885.5 -465.5Q2928 -490 2981 -490Q3035 -490 3077.0 -462.5Q3119 -435 3143.0 -391.5Q3167 -348 3167 -301V0ZM2728 0V-480H2838V0Z"/></svg>
   <p class="lede"><strong>Datarin convierte los datos que una empresa ya genera en dashboards, automatizaciones y agentes de IA.</strong> Esta guía define cómo se ve y cómo habla la marca: logo, color, tipografía, sistema gráfico, tono de voz y aplicaciones.</p>
 </header>
 
@@ -200,12 +204,12 @@ footer{padding-block:48px 64px;display:flex;justify-content:space-between;align-
       <dt>Propósito</dt><dd>Que las empresas decidan con datos y no con corazonadas.</dd>
       <dt>Promesa</dt><dd>De la fuente de datos a la decisión.</dd>
       <dt>Para quién</dt><dd>Empresas medianas en Latinoamérica y EE. UU. que hoy pierden horas armando reportes a mano.</dd>
-      <dt>Idea central</dt><dd>Todo sube hacia la derecha. Un punto marca lo que importa.</dd>
+      <dt>Idea central</dt><dd>Solo lo necesario. Un color señala lo que importa.</dd>
     </dl>
     <div class="traits">
       <div class="trait"><h3><span class="dt"></span>Claro</h3><p class="muted">Una idea por frase, un mensaje por pantalla. Si algo necesita explicación, se explica.</p></div>
       <div class="trait"><h3><span class="dt"></span>Preciso</h3><p class="muted">Números reales, fuentes nombradas, alcances concretos. Nada de promesas infladas.</p></div>
-      <div class="trait"><h3><span class="dt"></span>En movimiento</h3><p class="muted">Seguridad técnica con energía. Hablamos como el analista que ya resolvió esto y quiere mostrarte el resultado.</p></div>
+      <div class="trait"><h3><span class="dt"></span>Cercano</h3><p class="muted">Seguridad técnica sin arrogancia. Hablamos como el analista que ya resolvió esto y te lo explica sin jerga.</p></div>
     </div>
   </div>
 </section>
@@ -214,82 +218,74 @@ footer{padding-block:48px 64px;display:flex;justify-content:space-between;align-
   <div class="rail"><span class="num">02</span><span class="label">Logo</span></div>
   <div class="body">
     <div class="intro">
-      <h2>Dibujado desde cero con dos piezas: un círculo y un asta.</h2>
-      <p class="muted">El wordmark no sale de una fuente existente. Cada letra se construye con el mismo círculo y la misma asta de 112 unidades. Todas las astas terminan en un corte que sube hacia la derecha, como una gráfica que crece. El punto de la i es el punto de dato: el único color del logo.</p>
+      <h2>Solo la palabra, bien dibujada.</h2>
+      <p class="muted">El wordmark usa Outfit Medium en minúsculas, convertido a contornos. Ajustamos el espacio entre cada par de letras para que se lea como una sola pieza: la a y la t se acercan, la r y la i respiran. Es geométrico y redondo: limpio como un dashboard y cercano como una conversación.</p>
     </div>
     <div class="stage">
-      <svg class="construct" viewBox="-60 -960 3320 1110" role="img" aria-label="Construcción del wordmark: línea base, altura de x, ascendente, círculo base, corte ascendente y punto de dato">
-        <line class="g" x1="-60" x2="3260" y1="0" y2="0"/>
-        <line class="g" x1="-60" x2="3260" y1="-500" y2="-500"/>
-        <line class="g" x1="-60" x2="3260" y1="-720" y2="-720"/>
-        <use href="#wm" x="0" y="-760" width="3194" height="780"/>
-        <circle class="a" cx="292" cy="-250" r="260" stroke-dasharray="16 12"/>
-        <line class="a" x1="330" y1="-641" x2="700" y2="-773"/>
-        <circle class="a" cx="2530.0" cy="-665" r="95.4"/>
-        <text x="-60" y="80">línea base</text>
-        <text x="-60" y="-530">altura x · 500</text>
-        <text x="-60" y="-750">ascendente · 720</text>
-        <text class="ac" x="720" y="-800">corte ascendente · 19,7°</text>
-        <text class="ac" x="2350" y="-830">punto de dato</text>
+      <svg class="construct" viewBox="-120 -1000 3420 1150" role="img" aria-label="Construcción del wordmark con línea base, altura de x, ascendente y área de protección">
+        <line class="g" x1="-120" x2="3300" y1="0" y2="0"/>
+        <line class="g" x1="-120" x2="3300" y1="-480" y2="-480"/>
+        <line class="g" x1="-120" x2="3300" y1="-720" y2="-720"/>
+        <use href="#wm" x="31" y="-720" width="3136" height="730"/>
+        <rect class="a" x="3190" y="-480" width="80" height="480" stroke-dasharray="14 10"/>
+        <text x="-120" y="80">línea base</text>
+        <text x="-120" y="-510">altura x · 480</text>
+        <text x="-120" y="-750">ascendente · 720</text>
+        <text class="ac" x="2560" y="-880">x = unidad de medida</text>
       </svg>
     </div>
     <div class="facts">
-      <div><b>Círculo base</b><span>Todas las curvas salen del mismo círculo de 520 unidades.</span></div>
-      <div><b>Asta de 112</b><span>El mismo grosor en todas las letras. Las curvas se afinan un 16% arriba y abajo para verse parejas.</span></div>
-      <div><b>Corte a 19,7°</b><span>Cada asta sube 40 unidades en su ancho. Es la firma de la marca.</span></div>
-      <div><b>Punto de dato</b><span>Un círculo de 1,24 veces el asta. Va en cobalto o en el mismo color del logo.</span></div>
+      <div><b>Outfit Medium</b><span>Geométrica, con la "a" de un solo piso. Es la misma familia de los titulares.</span></div>
+      <div><b>Minúsculas</b><span>Siempre "datarin" en el logo. En texto corrido escribimos Datarin.</span></div>
+      <div><b>Espaciado óptico</b><span>Pares a-t y t-a más cerrados, el resto a −1,2%. No se modifica.</span></div>
+      <div><b>Un color</b><span>El logo va siempre en un solo color: tinta, blanco o cobalto.</span></div>
     </div>
 
     <div class="versions">
-      <div class="ver"><div class="tile t-paper"><svg class="w" viewBox="0 0 3194 780" aria-label="datarin"><use href="#wm"/></svg></div><span class="label">Principal · tinta con punto cobalto</span></div>
-      <div class="ver"><div class="tile t-ink"><svg class="w" viewBox="0 0 3194 780" aria-label="datarin"><use href="#wm"/></svg></div><span class="label">Negativo · sobre tinta</span></div>
-      <div class="ver"><div class="tile t-cobalt"><svg class="w" viewBox="0 0 3194 780" aria-label="datarin"><use href="#wm"/></svg></div><span class="label">Sobre cobalto · todo blanco</span></div>
-      <div class="ver"><div class="tile t-mono"><svg class="w" viewBox="0 0 3194 780" aria-label="datarin"><use href="#wm"/></svg></div><span class="label">Una tinta · sellos, grabado, bordado</span></div>
+      <div class="ver"><div class="tile t-paper"><svg class="w" viewBox="0 0 3136 730" aria-label="datarin"><use href="#wm"/></svg></div><span class="label">Principal · tinta sobre papel</span></div>
+      <div class="ver"><div class="tile t-ink"><svg class="w" viewBox="0 0 3136 730" aria-label="datarin"><use href="#wm"/></svg></div><span class="label">Negativo · blanco sobre tinta</span></div>
+      <div class="ver"><div class="tile t-cobalt"><svg class="w" viewBox="0 0 3136 730" aria-label="datarin"><use href="#wm"/></svg></div><span class="label">Blanco sobre cobalto</span></div>
+      <div class="ver"><div class="tile t-paper" style="color:#1F4BFF"><svg class="w" viewBox="0 0 3136 730" aria-label="datarin"><use href="#wm"/></svg></div><span class="label">Cobalto sobre papel · uso puntual</span></div>
     </div>
 
     <div class="rules">
       <div class="rule">
-        <div class="box"><svg viewBox="-420 -1180 4034 1620" style="width:100%;max-width:380px;height:auto" aria-label="Área de protección">
-          <rect x="-278" y="-1038" width="3750" height="1336" fill="none" stroke="var(--accent)" stroke-width="7" stroke-dasharray="22 16"/>
-          <circle cx="-139" cy="-899" r="139" fill="var(--accent)" opacity=".18"/>
-          <circle cx="3333" cy="159" r="139" fill="var(--accent)" opacity=".18"/>
-          <use href="#wm" x="0" y="-760" width="3194" height="780"/></svg></div>
+        <div class="box"><svg viewBox="-620 -1320 4376 1970" style="width:100%;max-width:380px;height:auto" aria-label="Área de protección">
+          <rect x="-449" y="-1200" width="4034" height="1690" fill="none" stroke="var(--accent)" stroke-width="7" stroke-dasharray="22 16"/>
+          <rect x="-449" y="-1200" width="480" height="480" fill="var(--accent)" opacity=".14"/>
+          <rect x="3105" y="10" width="480" height="480" fill="var(--accent)" opacity=".14"/>
+          <use href="#wm" x="31" y="-720" width="3136" height="730"/></svg></div>
         <h3>Área de protección</h3>
-        <p class="muted">Deja libre alrededor del logo al menos 2 veces el punto de dato. Ningún texto, borde o imagen entra en esa zona.</p>
+        <p class="muted">Deja libre alrededor del logo al menos una altura de x. Ningún texto, borde o imagen entra en esa zona.</p>
       </div>
       <div class="rule">
         <div class="box"><div class="sizes">
-          <figure><svg viewBox="0 0 3194 780" width="72" aria-label="datarin a 72 px"><use href="#wm"/></svg><figcaption class="label">72 px</figcaption></figure>
-          <figure><svg viewBox="0 0 3194 780" width="120" aria-label="datarin a 120 px"><use href="#wm"/></svg><figcaption class="label">120 px</figcaption></figure>
-          <figure><svg viewBox="0 0 3194 780" width="180" aria-label="datarin a 180 px"><use href="#wm"/></svg><figcaption class="label">180 px</figcaption></figure>
+          <figure><svg viewBox="0 0 3136 730" width="72" aria-label="datarin a 72 px"><use href="#wm"/></svg><figcaption class="label">72 px</figcaption></figure>
+          <figure><svg viewBox="0 0 3136 730" width="120" aria-label="datarin a 120 px"><use href="#wm"/></svg><figcaption class="label">120 px</figcaption></figure>
+          <figure><svg viewBox="0 0 3136 730" width="180" aria-label="datarin a 180 px"><use href="#wm"/></svg><figcaption class="label">180 px</figcaption></figure>
         </div></div>
         <h3>Tamaño mínimo</h3>
         <p class="muted">Wordmark: 72 px de ancho en pantalla y 18 mm impreso. Por debajo de eso usa el ícono.</p>
       </div>
       <div class="rule">
         <div class="box"><div class="icons">
-          <svg viewBox="0 0 1000 1000" width="88" style="color:#F7F8FA;--dot:#6F8CFF" aria-label="Ícono datarin"><rect width="1000" height="1000" rx="220" fill="#0B0F17"/><use href="#ic"/></svg>
-          <svg viewBox="0 0 1000 1000" width="56" style="color:#FFFFFF;--dot:#FFFFFF" aria-label="Ícono datarin cobalto"><rect width="1000" height="1000" rx="220" fill="#1F4BFF"/><use href="#ic"/></svg>
-          <svg viewBox="0 0 1000 1000" width="32" style="color:#0B0F17;--dot:#1F4BFF" aria-label="Ícono datarin claro"><rect width="1000" height="1000" rx="220" fill="#F7F8FA" stroke="#E4E7EE" stroke-width="20"/><use href="#ic"/></svg>
-          <svg viewBox="0 0 1000 1000" width="16" style="color:#F7F8FA;--dot:#6F8CFF" aria-label="Favicon datarin"><rect width="1000" height="1000" rx="220" fill="#0B0F17"/><use href="#ic"/></svg>
+          <svg viewBox="0 0 1000 1000" width="88" style="color:#FFFFFF" aria-label="Ícono datarin"><rect width="1000" height="1000" rx="220" fill="#0B0F17"/><use href="#ic"/></svg>
+          <svg viewBox="0 0 1000 1000" width="56" style="color:#FFFFFF" aria-label="Ícono datarin cobalto"><rect width="1000" height="1000" rx="220" fill="#1F4BFF"/><use href="#ic"/></svg>
+          <svg viewBox="0 0 1000 1000" width="32" style="color:#0B0F17" aria-label="Ícono datarin claro"><rect width="1000" height="1000" rx="220" fill="#F7F8FA" stroke="#E4E7EE" stroke-width="20"/><use href="#ic"/></svg>
+          <svg viewBox="0 0 1000 1000" width="16" style="color:#FFFFFF" aria-label="Favicon datarin"><rect width="1000" height="1000" rx="220" fill="#0B0F17"/><use href="#ic"/></svg>
         </div></div>
         <h3>Ícono</h3>
-        <p class="muted">La d del logo con el punto de dato arriba a la derecha. Para favicon, avatares, app y redes.</p>
+        <p class="muted">La "d" del logo dentro de un cuadrado redondeado. Para favicon, avatares, app y redes.</p>
       </div>
-    </div>
-
-    <div class="motion">
-      <div class="tile t-ink anim"><svg class="w" viewBox="0 0 3194 780" aria-label="datarin animado"><use href="#wm"/></svg></div>
-      <div class="intro"><h3>En movimiento</h3><p class="muted">En video, web y presentaciones el punto de dato cae sobre la i y rebota una vez, como un dato que aterriza. Dura menos de un segundo y nunca se repite más de una vez por pantalla.</p></div>
     </div>
 
     <div class="intro"><h3>Usos incorrectos</h3></div>
     <div class="donts">
-      <div class="dont"><div class="tile"><span class="x">✕</span><svg class="w" viewBox="0 0 3194 780" style="transform:scaleX(1.35)"><use href="#wm"/></svg></div><p class="muted">No estirar ni deformar.</p></div>
-      <div class="dont"><div class="tile"><span class="x">✕</span><svg class="w" viewBox="0 0 3194 780" style="color:var(--accent)"><use href="#wm"/></svg></div><p class="muted">No pintar las letras de cobalto. El color vive solo en el punto.</p></div>
-      <div class="dont"><div class="tile"><span class="x">✕</span><span style="font-family:Georgia,serif;font-size:1.7rem">Datarin</span></div><p class="muted">No reescribirlo con una fuente.</p></div>
-      <div class="dont"><div class="tile"><span class="x">✕</span><svg class="w" viewBox="0 0 3194 780" style="transform:rotate(-8deg)"><use href="#wm"/></svg></div><p class="muted">No rotarlo. El movimiento ya está en los cortes.</p></div>
-      <div class="dont"><div class="tile" style="background:linear-gradient(135deg,#8FA6FF,#E8971C)"><span class="x">✕</span><svg class="w" viewBox="0 0 3194 780"><use href="#wm"/></svg></div><p class="muted">No usarlo sobre fondos con poco contraste.</p></div>
+      <div class="dont"><div class="tile"><span class="x">✕</span><svg class="w" viewBox="0 0 3136 730" style="transform:scaleX(1.35)"><use href="#wm"/></svg></div><p class="muted">No estirar ni deformar.</p></div>
+      <div class="dont"><div class="tile"><span class="x">✕</span><span style="font-family:var(--f-display);font-weight:500;font-size:1.5rem;letter-spacing:.28em">datarin</span></div><p class="muted">No cambiar el espaciado entre letras.</p></div>
+      <div class="dont"><div class="tile"><span class="x">✕</span><span style="font-family:Georgia,serif;font-size:1.7rem">Datarin</span></div><p class="muted">No reescribirlo con otra fuente ni en mayúsculas.</p></div>
+      <div class="dont"><div class="tile"><span class="x">✕</span><svg class="w" viewBox="0 0 3136 730" style="transform:rotate(-8deg)"><use href="#wm"/></svg></div><p class="muted">No rotarlo ni inclinarlo.</p></div>
+      <div class="dont"><div class="tile" style="background:linear-gradient(135deg,#8FA6FF,#E8971C)"><span class="x">✕</span><svg class="w" viewBox="0 0 3136 730"><use href="#wm"/></svg></div><p class="muted">No usarlo sobre fondos con poco contraste.</p></div>
     </div>
   </div>
 </section>
@@ -304,7 +300,7 @@ footer{padding-block:48px 64px;display:flex;justify-content:space-between;align-
     <div class="swatches">
       <div class="sw"><div class="chip" style="background:#0B0F17"></div><div class="meta"><b>Tinta</b><span>#0B0F17</span><span>RGB 11 15 23</span><span>Texto, logo, fondos oscuros</span></div></div>
       <div class="sw"><div class="chip" style="background:#F7F8FA"></div><div class="meta"><b>Papel</b><span>#F7F8FA</span><span>RGB 247 248 250</span><span>Fondo principal</span></div></div>
-      <div class="sw"><div class="chip" style="background:#1F4BFF"></div><div class="meta"><b>Cobalto</b><span>#1F4BFF</span><span>RGB 31 75 255</span><span>Punto de dato, links, CTA</span></div></div>
+      <div class="sw"><div class="chip" style="background:#1F4BFF"></div><div class="meta"><b>Cobalto</b><span>#1F4BFF</span><span>RGB 31 75 255</span><span>Links, CTA, dato destacado</span></div></div>
       <div class="sw"><div class="chip" style="background:#6F8CFF"></div><div class="meta"><b>Cobalto claro</b><span>#6F8CFF</span><span>RGB 111 140 255</span><span>Cobalto sobre fondo oscuro</span></div></div>
       <div class="sw"><div class="chip" style="background:#4B5364"></div><div class="meta"><b>Grafito</b><span>#4B5364</span><span>RGB 75 83 100</span><span>Texto secundario, series base</span></div></div>
       <div class="sw"><div class="chip" style="background:#E4E7EE"></div><div class="meta"><b>Niebla</b><span>#E4E7EE</span><span>RGB 228 231 238</span><span>Líneas, grillas, bordes</span></div></div>
@@ -325,7 +321,7 @@ footer{padding-block:48px 64px;display:flex;justify-content:space-between;align-
   <div class="body">
     <div class="intro">
       <h2>Outfit para titulares, Geist para leer, Geist Mono para los números.</h2>
-      <p class="muted">Outfit comparte la geometría del logo: círculos puros y la "a" de un solo piso. Geist es cómoda para párrafos largos. Geist Mono tiene cifras de ancho fijo, así que las columnas de números se alinean solas. Las tres son gratuitas en Google Fonts.</p>
+      <p class="muted">Outfit es la misma familia del logo: círculos puros y la "a" de un solo piso. Geist es cómoda para párrafos largos. Geist Mono tiene cifras de ancho fijo, así que las columnas de números se alinean solas. Las tres son gratuitas en Google Fonts.</p>
     </div>
     <div class="specimen">
       <div class="spec"><span class="label">Outfit · 500 600</span><div class="big" style="font-family:var(--f-display);font-weight:600">Aa</div><p class="muted">Titulares y datos destacados. SemiBold con espaciado −2%.</p></div>
@@ -346,30 +342,30 @@ footer{padding-block:48px 64px;display:flex;justify-content:space-between;align-
   <div class="rail"><span class="num">05</span><span class="label">Sistema gráfico</span></div>
   <div class="body">
     <div class="intro">
-      <h2>El corte y el punto salen del logo y trabajan en todas partes.</h2>
-      <p class="muted">La marca tiene solo dos recursos gráficos, y los dos vienen del wordmark. El corte ascendente de 19,7° se usa en barras, recortes de foto y separadores. El punto de dato marca el valor que importa. No usamos íconos decorativos, ilustraciones de stock ni degradados.</p>
+      <h2>Formas redondas y un solo color que señala.</h2>
+      <p class="muted">El sistema sale de la geometría del logo: terminaciones redondas, círculos y mucho espacio. En cada composición, el cobalto marca una sola cosa: el dato, el botón o la frase que importa. No usamos íconos decorativos, ilustraciones de stock ni degradados.</p>
     </div>
     <div class="chart">
       <div style="display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap"><h3>Horas de reportería manual por semana</h3><span class="label">Ejemplo ilustrativo de estilo</span></div>
-      <svg viewBox="0 0 640 250" role="img" aria-label="Gráfico de ejemplo: barras con el corte ascendente, bajan de 24 a 4 horas en 8 semanas; la última barra está resaltada">
+      <svg viewBox="0 0 640 250" role="img" aria-label="Gráfico de ejemplo: barras redondeadas que bajan de 24 a 4 horas en 8 semanas; la última barra está resaltada">
         <g class="gl"><line x1="44" x2="628" y1="20" y2="20"/><line x1="44" x2="628" y1="80" y2="80"/><line x1="44" x2="628" y1="140" y2="140"/><line x1="44" x2="628" y1="200" y2="200"/></g>
         <g class="ax"><text x="36" y="24" text-anchor="end">30</text><text x="36" y="84" text-anchor="end">20</text><text x="36" y="144" text-anchor="end">10</text><text x="36" y="204" text-anchor="end">0</text></g>
-        <polygon class="bar" points="66,200 110,200 110,56 66,71.7"/><text class="ax" x="88" y="222" text-anchor="middle">S1</text><polygon class="bar" points="138,200 182,200 182,62 138,77.7"/><text class="ax" x="160" y="222" text-anchor="middle">S2</text><polygon class="bar" points="210,200 254,200 254,80 210,95.7"/><text class="ax" x="232" y="222" text-anchor="middle">S3</text><polygon class="bar" points="282,200 326,200 326,104 282,119.7"/><text class="ax" x="304" y="222" text-anchor="middle">S4</text><polygon class="bar" points="354,200 398,200 398,140 354,155.7"/><text class="ax" x="376" y="222" text-anchor="middle">S5</text><polygon class="bar" points="426,200 470,200 470,158 426,173.7"/><text class="ax" x="448" y="222" text-anchor="middle">S6</text><polygon class="bar" points="498,200 542,200 542,170 498,185.7"/><text class="ax" x="520" y="222" text-anchor="middle">S7</text><polygon class="hi" points="570,200 614,200 614,176 570,191.7"/><text class="ax" x="592" y="222" text-anchor="middle">S8</text><text x="592" y="166" text-anchor="middle" style="font-family:var(--f-mono);font-size:13px;fill:var(--text)">4 h</text>
+        <path class="bar" d="M66,200 V78 a22,22 0 0 1 44,0 V200 Z"/><text class="ax" x="88" y="222" text-anchor="middle">S1</text><path class="bar" d="M138,200 V84 a22,22 0 0 1 44,0 V200 Z"/><text class="ax" x="160" y="222" text-anchor="middle">S2</text><path class="bar" d="M210,200 V102 a22,22 0 0 1 44,0 V200 Z"/><text class="ax" x="232" y="222" text-anchor="middle">S3</text><path class="bar" d="M282,200 V126 a22,22 0 0 1 44,0 V200 Z"/><text class="ax" x="304" y="222" text-anchor="middle">S4</text><path class="bar" d="M354,200 V162 a22,22 0 0 1 44,0 V200 Z"/><text class="ax" x="376" y="222" text-anchor="middle">S5</text><path class="bar" d="M426,200 V180 a22,22 0 0 1 44,0 V200 Z"/><text class="ax" x="448" y="222" text-anchor="middle">S6</text><path class="bar" d="M498,200 V192 a22,22 0 0 1 44,0 V200 Z"/><text class="ax" x="520" y="222" text-anchor="middle">S7</text><path class="hi" d="M570,200 V198 a22,22 0 0 1 44,0 V200 Z"/><text class="ax" x="592" y="222" text-anchor="middle">S8</text><text x="592" y="166" text-anchor="middle" style="font-family:var(--f-mono);font-size:13px;fill:var(--text)">4 h</text>
       </svg>
-      <p class="muted" style="font-size:.875rem">Barras en grafito con el mismo corte del logo. Solo la barra que cuenta la historia va en cobalto, con su valor en Geist Mono.</p>
+      <p class="muted" style="font-size:.875rem">Barras en grafito con las puntas redondas. Solo la barra que cuenta la historia va en cobalto, con su valor en Geist Mono.</p>
     </div>
     <div class="devices">
       <div class="device">
-        <svg viewBox="0 0 300 170" role="img" aria-label="Foto recortada con el corte ascendente"><polygon points="0,40 300,-68 300,170 0,170" fill="#4B5364"/><text x="20" y="150" style="font-family:var(--f-mono);font-size:11px;fill:#F7F8FA">FOTO</text></svg>
-        <h3>Recorte de foto</h3><p class="muted" style="font-size:.875rem">Las fotos pueden cortarse arriba con el mismo ángulo, siempre subiendo hacia la derecha.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px"><span class="chipx">Power BI</span><span class="chipx">BigQuery</span><span class="chipx on">Forecast</span><span class="chipx">Snowflake</span></div>
+        <h3>Etiquetas</h3><p class="muted" style="font-size:.875rem">Píldoras con borde fino para tecnologías y categorías. La activa va en cobalto.</p>
       </div>
       <div class="device">
-        <svg viewBox="0 0 300 170" role="img" aria-label="Separador con el corte ascendente"><polygon points="0,110 300,2 300,170 0,170" style="fill:var(--text)"/><circle cx="262" cy="46" r="12" style="fill:var(--dot)"/></svg>
-        <h3>Separador de secciones</h3><p class="muted" style="font-size:.875rem">En web y decks, el cambio de fondo entre secciones usa el corte en vez de una línea recta.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="btn">Agenda un diagnóstico</span><span class="btn ghost">Ver casos</span></div>
+        <h3>Botones</h3><p class="muted" style="font-size:.875rem">Un solo botón principal en cobalto por pantalla. El secundario va con borde.</p>
       </div>
       <div class="device">
-        <ul class="bullets"><li>Viñetas con el punto de dato.</li><li>Un solo punto cobalto por gráfico.</li><li>Esquinas rectas en todo, salvo el ícono y las etiquetas tipo píldora.</li></ul>
-        <h3>Listas y reglas</h3><p class="muted" style="font-size:.875rem">El punto reemplaza a cualquier viñeta o ícono de check.</p>
+        <ul class="bullets"><li>Viñetas con un círculo pequeño.</li><li>Un solo elemento cobalto por composición.</li><li>Radios generosos en botones y etiquetas; tarjetas con esquina suave.</li></ul>
+        <h3>Listas y reglas</h3><p class="muted" style="font-size:.875rem">El círculo reemplaza a cualquier viñeta o ícono de check.</p>
       </div>
     </div>
   </div>
@@ -417,14 +413,14 @@ footer{padding-block:48px 64px;display:flex;justify-content:space-between;align-
 <section class="ch">
   <div class="rail"><span class="num">07</span><span class="label">Aplicaciones</span></div>
   <div class="body">
-    <div class="intro"><h2>La marca en uso.</h2><p class="muted">Tinta, papel, un punto cobalto y el corte que sube. Si una pieza necesita más que eso, probablemente tiene demasiado.</p></div>
+    <div class="intro"><h2>La marca en uso.</h2><p class="muted">Tinta, papel y un solo color que señala. Si una pieza necesita más que eso, probablemente tiene demasiado.</p></div>
     <div class="apps">
-      <div class="app"><div class="card front shadow"><svg viewBox="0 0 3194 780" style="width:46%;height:auto" aria-label="datarin"><use href="#wm"/></svg><span style="font-size:.8rem;color:#9AA2B2">Decisiones con datos, no con corazonadas.</span></div><span class="label">Tarjeta · frente</span></div>
-      <div class="app"><div class="card back shadow"><svg viewBox="0 0 3194 780" style="width:30%;height:auto" aria-label="datarin"><use href="#wm"/></svg><div class="who"><b>Nombre Apellido</b><span>Cargo</span><span class="mono">nombre@datarin.com · datarin.com</span></div></div><span class="label">Tarjeta · reverso</span></div>
-      <div class="app"><div class="slide"><svg viewBox="0 0 3194 780" style="width:22%;height:auto" aria-label="datarin"><use href="#wm"/></svg><div class="t">Diagnóstico de datos comerciales</div><div class="foot"><span>PROPUESTA · CLIENTE</span><span>01</span></div></div><span class="label">Portada de presentación</span></div>
-      <div class="app"><div class="post"><svg viewBox="0 0 3194 780" style="width:38%;height:auto" aria-label="datarin"><use href="#wm"/></svg><div class="t">Tus datos existen. Tus respuestas no.</div></div><span class="label">Post para redes · 1:1</span></div>
-      <div class="app" style="grid-column:1/-1"><div class="banner"><div class="t">De la fuente de datos a la decisión.</div><svg viewBox="0 0 3194 780" style="width:clamp(90px,16%,180px);height:auto;flex:none" aria-label="datarin"><use href="#wm"/></svg></div><span class="label">Banner de LinkedIn · 4:1</span></div>
-      <div class="app"><div class="sig"><div><b>Nombre Apellido</b><br>Cargo</div><svg viewBox="0 0 3194 780" style="width:110px;height:auto" aria-label="datarin"><use href="#wm"/></svg><span class="mono">datarin.com</span></div><span class="label">Firma de correo</span></div>
+      <div class="app"><div class="card front shadow"><svg viewBox="0 0 3136 730" style="width:46%;height:auto" aria-label="datarin"><use href="#wm"/></svg><span style="font-size:.8rem;color:#9AA2B2">Decisiones con datos, no con corazonadas.</span></div><span class="label">Tarjeta · frente</span></div>
+      <div class="app"><div class="card back shadow"><svg viewBox="0 0 3136 730" style="width:30%;height:auto" aria-label="datarin"><use href="#wm"/></svg><div class="who"><b>Nombre Apellido</b><span>Cargo</span><span class="mono">nombre@datarin.com · datarin.com</span></div></div><span class="label">Tarjeta · reverso</span></div>
+      <div class="app"><div class="slide"><svg viewBox="0 0 3136 730" style="width:22%;height:auto" aria-label="datarin"><use href="#wm"/></svg><div class="t">Diagnóstico de datos comerciales</div><div class="foot"><span>PROPUESTA · CLIENTE</span><span>01</span></div></div><span class="label">Portada de presentación</span></div>
+      <div class="app"><div class="post"><svg viewBox="0 0 3136 730" style="width:38%;height:auto" aria-label="datarin"><use href="#wm"/></svg><div class="t">Tus datos existen. Tus respuestas no.</div></div><span class="label">Post para redes · 1:1</span></div>
+      <div class="app" style="grid-column:1/-1"><div class="banner"><div class="t">De la fuente de datos a la decisión.</div><svg viewBox="0 0 3136 730" style="width:clamp(90px,16%,180px);height:auto;flex:none" aria-label="datarin"><use href="#wm"/></svg></div><span class="label">Banner de LinkedIn · 4:1</span></div>
+      <div class="app"><div class="sig"><div><b>Nombre Apellido</b><br>Cargo</div><svg viewBox="0 0 3136 730" style="width:110px;height:auto" aria-label="datarin"><use href="#wm"/></svg><span class="mono">datarin.com</span></div><span class="label">Firma de correo</span></div>
     </div>
   </div>
 </section>
@@ -432,10 +428,9 @@ footer{padding-block:48px 64px;display:flex;justify-content:space-between;align-
 <footer>
   <div class="files">
     <span class="label">Archivos · brands/datarin/logo/</span>
-    <span>datarin-wordmark.svg · datarin-wordmark-negativo.svg</span>
-    <span>datarin-wordmark-tinta.svg · datarin-wordmark-blanco.svg</span>
+    <span>datarin-wordmark.svg · datarin-wordmark-blanco.svg · datarin-wordmark-cobalto.svg</span>
     <span>datarin-icono.svg · datarin-icono-cobalto.svg · datarin-icono-claro.svg</span>
   </div>
-  <svg viewBox="0 0 3194 780" width="110" style="color:var(--text)" aria-label="datarin"><use href="#wm"/></svg>
+  <svg viewBox="0 0 3136 730" width="110" style="color:var(--text)" aria-label="datarin"><use href="#wm"/></svg>
 </footer>
 </div>
