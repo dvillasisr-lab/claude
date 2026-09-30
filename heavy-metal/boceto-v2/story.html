@@ -94,7 +94,7 @@
 @media (max-width:620px){.end{grid-template-columns:1fr}}
 
 /* revelado suave al hacer scroll: visible si no hay JS, sin movimiento con reduced motion */
-.rv-on .rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+.rv-on .rv{opacity:.35;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
 .rv-on .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.rv-on .rv{opacity:1;transform:none}}
 </style>

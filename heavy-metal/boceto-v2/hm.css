@@ -83,7 +83,7 @@ button{font:inherit;color:inherit}
 .ph--video::after{content:"";position:absolute;left:50%;top:50%;width:64px;height:64px;transform:translate(-50%,-50%);border-radius:50%;background:rgba(255,255,255,.9) no-repeat center/18px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 12'%3E%3Cpath d='M0 0l10 6-10 6z' fill='%23111110'/%3E%3C/svg%3E")}
 
 /* barra de anuncio + header */
-.announce{background:var(--ink);color:var(--surface);font-size:var(--t-xs);font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:9px var(--gutter)}
+.announce{margin:0;background:var(--ink);color:var(--surface);font-size:var(--t-xs);font-weight:500;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:9px var(--gutter)}
 .announce a{color:var(--accent);text-underline-offset:3px}
 .draftbar{background:var(--accent);color:var(--ink);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:6px var(--gutter);display:flex;flex-wrap:wrap;gap:4px 16px;justify-content:center}
 .draftbar a{color:var(--ink)}
