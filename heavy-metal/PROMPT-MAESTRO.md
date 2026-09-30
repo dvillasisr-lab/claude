@@ -17,8 +17,8 @@ Dominio: heavymetalprostock.com. Idioma del sitio: inglés (EE.UU.). Moneda USD.
 HECHOS DE MARCA (usar tal cual, son reales)
 - Nació en 2014 en Tomah, Wisconsin. Chris, fan del heavy metal, decidió construir un tractor
   de pulling y el nombre nunca estuvo en discusión.
-- 12 años de construcción de noches y fines de semana, en un taller familiar en Waterloo, WI.
-  Casi todo es hecho a mano, nada es de catálogo.
+- El primer tornillo se puso en febrero de 2020. Años de noches y fines de semana en un taller
+  familiar en Waterloo, WI. Casi todo es hecho a mano, nada es de catálogo.
 - 2026: al arrancar el motor por primera vez cayó un rayo y se fue la luz. "Some would call it
   a coincidence. We call it a sign."
 - Primer pull: un problema menor terminó la corrida antes de tiempo. Meta de la temporada:
@@ -28,8 +28,14 @@ HECHOS DE MARCA (usar tal cual, son reales)
 - Peso 10,000 lb, llantas 24.5-32. Carrocería Challenger negro mate, humo negro.
 - Hermano en Europa: Diesel Ross, Pro Stock de Gert Stessens (Bélgica).
 - Canción de entrada: Fear of the Dark, Iron Maiden.
-- Datos por confirmar: piloto {{PILOTO}}, caballos {{HP}}, redes {{REDES}},
-  calendario {{CALENDARIO}}, resultados {{RESULTADOS}}, envío gratis desde {{MONTO}}.
+- Dueño y piloto: Chris F. Facebook: https://www.facebook.com/heavymetalprostock/
+- Temporada de pruebas: todavía no hay calendario ni resultados. Mostrar "Testing season"
+  con alta de alertas, nunca fechas inventadas.
+- Caballos de fuerza: secreto a propósito. Mostrar "CLASSIFIED" como parte de la marca.
+- Merch diseñado por el equipo e impreso bajo demanda con Printly.
+- Fotos y videos: usar placeholders con proporción y descripción de la toma (el equipo tiene
+  el material y lo cargará después).
+- Por confirmar: envío gratis desde {{MONTO}}, Instagram, TikTok y YouTube.
 
 OBJETIVOS (en este orden) Y CÓMO SE MIDEN
 1. Vender merch: tasa de conversión objetivo 3% o más, ticket promedio con bundles.
@@ -71,7 +77,7 @@ PÁGINAS Y SECCIONES
       cuenta regresiva (desde metaobjeto).
    b. Drop actual: 3 o 4 productos, stock limitado real, contador si hay fecha, bundle con
       ahorro real calculado.
-   c. "Lightning Strike": historia en scroll en 4 momentos (2014, 12 años, el rayo, 680 ci).
+   c. "Lightning Strike": historia en scroll en 5 momentos (2014 la idea, feb 2020 el primer tornillo, 2026 el rayo, 680 ci, el primer full pull).
    d. The Machine teaser: tractor recortado con 4 hotspots y cifras grandes.
    e. Watch it pull: video destacado + lista de clips.
    f. Ride With The Evil One: micro patrocinio con muro de nombres.

@@ -59,14 +59,18 @@ La base es mejor que el 95% de los sitios de pulling (identidad oscura, telemetr
 | 11 | Limpieza técnica: fuentes, imágenes responsive, JS sin bucle, movimiento reducido, contraste, JSON-LD (SportsTeam, SportsEvent, Product, FAQ) | CWV + SEO + a11y | S/M |
 | 12 | Carrito drawer, página de contraseña y 404 con la marca | Consistencia | S |
 
-## Lo que necesito de ti (no lo invento)
+## Datos confirmados (30 sep 2026)
 
-1. ¿Tienen Instagram, Facebook, TikTok o YouTube propios? Si no, conviene abrirlos con el mismo nombre.
-2. Nombre del piloto y del equipo que aparezca públicamente.
-3. Calendario 2027 (o lo que quede de 2026) y resultados reales.
-4. Caballos de fuerza (o decidir mostrar "680 ci" en su lugar).
-5. Productos reales: diseños, precios, proveedor (print on demand o inventario).
-6. Monto para envío gratis.
-7. Cifras reales para patrocinio: seguidores, vistas de videos, pulls por temporada.
-8. Qué hacer con la frase "f#cking evil".
-9. Video del tractor en buena calidad (horizontal, si existe). Las fotos actuales son de celular y verticales; una sesión profesional de un día sube todo un nivel.
+- Facebook: https://www.facebook.com/heavymetalprostock/ . Dueño y piloto: Chris F.
+- Primer tornillo: febrero 2020 (la idea nació en 2014).
+- Temporada de pruebas: sin calendario ni resultados todavía.
+- Caballos de fuerza: no se publican. Propuesta: mostrar "CLASSIFIED" en vez de "UNKNOWN".
+- Merch: diseños propios, impresión bajo demanda con Printly.
+- Fotos y videos: placeholders por ahora.
+
+## Pendientes
+
+1. Monto para envío gratis.
+2. Instagram, TikTok o YouTube (conviene abrirlos con el mismo nombre).
+3. Qué hacer con la frase "f#cking evil" (recomendación: solo en merch).
+4. Cifras para patrocinio cuando existan (seguidores, vistas, pulls).
