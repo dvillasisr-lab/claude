@@ -59,7 +59,7 @@
 .sp-map__fig{margin:0;display:grid;gap:14px}
 .sp-map__stage{align-items:stretch}
 .sp-map__stage svg{position:absolute;inset:0;width:100%;height:100%}
-.sp-map__tag{position:absolute;top:0;right:0}
+.sp-map__tag{margin:0 0 14px;max-width:100%}
 .sp-sil .b{fill:var(--card);stroke:var(--line2);stroke-width:3}
 .sp-sil .w{fill:var(--steel);stroke:var(--line2);stroke-width:3}
 .sp-sil .t{fill:none;stroke:var(--bg);stroke-width:14;stroke-dasharray:6 10}
@@ -286,7 +286,6 @@
             <circle class="w" cx="780" cy="412" r="70"/>
             <circle class="h" cx="780" cy="412" r="24"/>
           </svg>
-          <div class="ph__tag sp-map__tag"><b>Foto · perfil lateral 2:1</b>Recorte del tractor de costado, fondo neutro</div>
           <button class="sp-hot" type="button" data-zone="hood" data-status="available" style="--x:64%;--y:48%" aria-label="Zone 1: Hood, available" aria-pressed="false">1</button>
           <button class="sp-hot" type="button" data-zone="side" data-status="available" style="--x:50%;--y:61%" aria-label="Zone 2: Side panel, available" aria-pressed="false">2</button>
           <button class="sp-hot" type="button" data-zone="fender" data-status="available" style="--x:13%;--y:40%" aria-label="Zone 3: Rear fender, available" aria-pressed="false">3</button>
@@ -295,6 +294,7 @@
           <button class="sp-hot" type="button" data-zone="wheel" data-status="available" style="--x:22%;--y:70%" aria-label="Zone 6: Wheel center, available" aria-pressed="false">6</button>
         </div>
         <figcaption>
+          <div class="ph__tag sp-map__tag"><b>Foto · perfil lateral 2:1</b>Recorte del tractor de costado, fondo neutro. La silueta es solo guía para ubicar las zonas.</div>
           <ul class="sp-legend" aria-label="Legend">
             <li><span class="sp-dot" aria-hidden="true"></span>Available</li>
             <li><span class="sp-dot sp-dot--res" aria-hidden="true"></span>League reserved</li>
