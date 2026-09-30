@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Machine</title>
+<meta name="description" content="Heavy Metal, The Evil One: a Pro Stock pulling tractor from Waterloo, Wisconsin, running the only Caterpillar 3208 V8 in a class dominated by John Deere inline sixes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="boceto.css">
+<style>
+/* THE MACHINE · ficha técnica. Solo variables de boceto.css, sin colores nuevos.
+   Cada bloque .mx-* es una sección Liquid futura (hm-machine-*). */
+html,body{overflow-x:clip}
+.mx-h2{font-size:var(--t-2xl)}
+.mx-head{display:grid;gap:12px;margin-bottom:clamp(28px,4vw,48px)}
+.mx-head .lede{font-size:var(--t-md)}
+.mx-notes{display:grid;gap:12px;margin-top:clamp(24px,3vw,40px)}
+
+/* regla con marcas de medición: el hilo conductor de la página */
+.mx-ruler{position:relative;height:18px;border-top:1px solid var(--line2);
+  background:
+    repeating-linear-gradient(90deg,var(--line2) 0 1px,transparent 1px 10%) top left/100% 12px no-repeat,
+    repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 2%) top left/100% 6px no-repeat}
+.mx-ruler::after{content:"";position:absolute;right:0;top:0;width:1px;height:12px;background:var(--line2)}
+.mx-dim{display:flex;justify-content:space-between;gap:12px;font-family:var(--f-cond);font-size:var(--t-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--mute);padding-top:6px}
+
+/* 1 · hero */
+.mx-hero{padding-block:clamp(40px,6vw,88px) 0}
+.mx-hero__top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--gap);align-items:end}
+.mx-hero h1{overflow-wrap:anywhere;min-width:0}
+.mx-hero .lede{margin-top:18px}
+.mx-block{margin:0;border:1px solid var(--line2);display:grid;grid-template-columns:auto auto;min-width:260px}
+.mx-block div{padding:10px 14px;border-bottom:1px solid var(--line)}
+.mx-block div:nth-child(odd){border-right:1px solid var(--line)}
+.mx-block div:nth-last-child(-n+2){border-bottom:0}
+.mx-block dt{font-family:var(--f-cond);font-size:var(--t-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
+.mx-block dd{margin:2px 0 0;font-family:var(--f-cond);font-weight:700;font-size:var(--t-md);letter-spacing:.06em;text-transform:uppercase;font-variant-numeric:tabular-nums}
+.mx-hero__rig{margin-top:clamp(28px,4vw,56px)}
+.mx-hero__rig .ph{border-bottom:0}
+.mx-ground{height:6px;background:var(--dirt)}
+@media (max-width:760px){
+  .mx-hero__top{grid-template-columns:1fr}
+  .mx-block{min-width:0}
+}
+
+/* 2 · diagrama con hotspots */
+.mx-diag__grid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:var(--gap);align-items:start}
+.mx-fig{margin:0}
+.mx-stage{position:relative}
+.mx-stage .ph{align-items:flex-start;justify-content:flex-end}
+.mx-stage .ph__tag{max-width:40%}
+.mx-stage::before,.mx-stage::after{content:"";position:absolute;width:14px;height:14px;border-color:var(--mute);border-style:solid;z-index:1;pointer-events:none}
+.mx-stage::before{top:-5px;left:-5px;border-width:1px 0 0 1px}
+.mx-stage::after{bottom:-5px;right:-5px;border-width:0 1px 1px 0}
+.mx-fig figcaption{font-family:var(--f-cond);font-size:var(--t-sm);letter-spacing:.04em;color:var(--mute);margin-top:12px;max-width:60ch}
+
+.hs{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);z-index:2;
+  width:44px;height:44px;padding:0;border:0;background:transparent;color:var(--bone);cursor:pointer;display:grid;place-items:center}
+.hs__dot{position:relative;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--accent);background:var(--bg);transition:background .15s,transform .15s}
+.hs__dot::before,.hs__dot::after{content:"";position:absolute;background:var(--accent);left:50%;top:50%;transform:translate(-50%,-50%)}
+.hs__dot::before{width:30px;height:1px}
+.hs__dot::after{width:1px;height:30px}
+.hs__lbl{position:absolute;left:calc(50% + 18px);top:50%;transform:translateY(-50%);white-space:nowrap;
+  font-family:var(--f-cond);font-weight:700;font-size:var(--t-xs);letter-spacing:.14em;text-transform:uppercase;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);border:1px solid var(--line2);padding:3px 8px;font-variant-numeric:tabular-nums}
+.hs__lbl b{color:var(--accent);font-weight:700;margin-right:6px}
+.hs--flip .hs__lbl{left:auto;right:calc(50% + 18px)}
+.hs:hover .hs__dot{transform:scale(1.15)}
+.hs[aria-expanded="true"] .hs__dot{background:var(--accent)}
+.hs[aria-expanded="true"] .hs__lbl{border-color:var(--accent);color:var(--bone)}
+.hs:focus-visible{outline-offset:0}
+
+.mx-panel{border:1px solid var(--line2);background:var(--card);padding:clamp(16px,2vw,24px);display:grid;gap:16px}
+.mx-panel[hidden]{display:none}
+.mx-panel__meta{display:flex;justify-content:space-between;gap:12px}
+.mx-panel__meta .data{font-size:var(--t-sm);color:var(--mute)}
+.mx-panel__val{font-family:var(--f-display);font-size:var(--t-3xl);line-height:.9;text-transform:uppercase;margin:0;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.mx-panel__val.classified{color:var(--accent);letter-spacing:.04em}
+.mx-panel__sub{font-family:var(--f-cond);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-size:var(--t-sm);margin:-8px 0 0}
+.mx-panel p.body{margin:0}
+.mx-sponsor{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-top:1px solid var(--line2);padding-top:14px}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 12px;border:1px solid var(--accent);color:var(--accent);
+  font-family:var(--f-cond);font-weight:700;font-size:var(--t-sm);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;white-space:nowrap}
+.chip::before{content:"";width:7px;height:7px;background:var(--accent)}
+.chip:hover{background:var(--accent);color:var(--accent-ink)}
+.chip:hover::before{background:var(--accent-ink)}
+
+@media (max-width:960px){.mx-diag__grid{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:860px){.hs__lbl{display:none}}
+@media (max-width:600px){
+  .hs{width:32px;height:32px}
+  .hs__dot{width:14px;height:14px}
+  .hs__dot::before{width:22px}.hs__dot::after{height:22px}
+  .mx-stage .ph__tag{display:none}
+}
+
+/* 3 · tabla de specs (dl) */
+.mx-specs{margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px var(--gap)}
+.mx-specs .spec dd{font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.mx-specs .spec small{display:block;margin-top:6px;font-family:var(--f-body);font-size:var(--t-sm);text-transform:none;color:var(--mute);line-height:1.4}
+@media (max-width:960px){.mx-specs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:420px){.mx-specs{grid-template-columns:minmax(0,1fr)}}
+
+/* 4 · Cat V8 vs el campo */
+.mx-vs__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap)}
+.mx-eng{border:1px solid var(--line2);padding:clamp(16px,2.5vw,28px);display:grid;gap:18px;align-content:start}
+.mx-eng--us{border-top:3px solid var(--accent)}
+.mx-eng h3{margin:0;font-size:var(--t-xl)}
+.mx-cyl{display:grid;gap:6px;justify-content:start;padding-block:8px}
+.mx-cyl__row{display:flex;gap:6px}
+.mx-cyl i{width:26px;height:26px;border:1.5px solid var(--bone);border-radius:50%;display:block}
+.mx-eng--us .mx-cyl i{border-color:var(--accent)}
+.mx-cyl--v .mx-cyl__row:last-child{margin-left:16px}
+.mx-table{width:100%;border-collapse:collapse;margin-top:clamp(24px,3vw,40px);font-variant-numeric:tabular-nums}
+.mx-table th,.mx-table td{text-align:left;padding:14px 12px;border-bottom:1px solid var(--line2);vertical-align:top}
+.mx-table thead th{font-family:var(--f-cond);font-size:var(--t-xs);letter-spacing:.16em;text-transform:uppercase;color:var(--mute);font-weight:600}
+.mx-table tbody th{font-family:var(--f-cond);font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--soft);font-size:var(--t-sm);width:28%}
+.mx-table td{font-family:var(--f-cond);font-weight:700;font-size:var(--t-lg);letter-spacing:.03em}
+.mx-table td.us{color:var(--bone)}
+.mx-table td.them{color:var(--soft);font-weight:500}
+.mx-table thead th.us{color:var(--accent)}
+.mx-tablewrap{overflow-x:auto}
+@media (max-width:600px){
+  .mx-vs__grid{grid-template-columns:minmax(0,1fr)}
+  .mx-table th,.mx-table td{padding:12px 8px}
+  .mx-table td{font-size:var(--t-md)}
+}
+
+/* 5 · build log */
+.mx-log{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap)}
+.mx-card{display:grid;gap:14px;align-content:start;text-decoration:none;border-top:1px solid var(--line2);padding-top:14px}
+.mx-card__date{font-family:var(--f-cond);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:var(--t-sm);color:var(--accent);font-variant-numeric:tabular-nums}
+.mx-card h3{margin:0;font-size:var(--t-xl)}
+.mx-card p{margin:0;color:var(--soft)}
+.mx-card__more{font-family:var(--f-cond);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:var(--t-sm);white-space:nowrap;border-bottom:2px solid var(--line2);justify-self:start;padding-bottom:2px}
+.mx-card:hover .mx-card__more{border-bottom-color:var(--accent)}
+.mx-log__foot{margin-top:clamp(24px,3vw,40px)}
+@media (max-width:960px){.mx-log{grid-template-columns:minmax(0,1fr)}.mx-card{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);column-gap:var(--gap)}.mx-card .ph{grid-row:span 4}}
+@media (max-width:600px){.mx-card{grid-template-columns:minmax(0,1fr)}.mx-card .ph{grid-row:auto}}
+
+/* 6 · FAQ */
+.mx-faq__grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:var(--gap);align-items:start}
+.mx-faq details{border-top:1px solid var(--line2)}
+.mx-faq details:last-child{border-bottom:1px solid var(--line2)}
+.mx-faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 0;
+  font-family:var(--f-cond);font-weight:700;font-size:var(--t-lg);letter-spacing:.04em;text-transform:uppercase}
+.mx-faq summary::-webkit-details-marker{display:none}
+.mx-faq summary::after{content:"+";font-family:var(--f-body);font-weight:400;font-size:var(--t-xl);color:var(--accent);line-height:1}
+.mx-faq details[open] summary::after{content:"\2212"}
+.mx-faq details p{margin:0 0 20px;max-width:60ch;color:var(--soft)}
+.mx-faq details p strong{color:var(--accent);font-family:var(--f-cond);letter-spacing:.14em;text-transform:uppercase}
+@media (max-width:860px){.mx-faq__grid{grid-template-columns:minmax(0,1fr)}}
+
+/* 7 · CTA */
+.mx-cta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-block:1px solid var(--line2)}
+.mx-cta__half{padding:clamp(32px,5vw,64px) var(--gutter);display:grid;gap:18px;align-content:start}
+.mx-cta__half + .mx-cta__half{border-left:1px solid var(--line2)}
+.mx-cta__half p{margin:0;color:var(--soft);max-width:44ch}
+@media (max-width:760px){.mx-cta{grid-template-columns:minmax(0,1fr)}.mx-cta__half + .mx-cta__half{border-left:0;border-top:1px solid var(--line2)}}
+</style>
+</head>
+<body>
+<div class="draftbar"><span>Boceto v1 · no es el sitio en vivo</span><a href="index.html">Home</a><a href="machine.html">The Machine</a><a href="sponsors.html">Sponsors</a><a href="product.html">Producto</a></div>
+<header class="hdr"><div class="wrap hdr__in">
+  <a class="logo" href="index.html">Heavy <span>Metal</span></a>
+  <nav class="nav" aria-label="Main"><a href="index.html#shop">Shop</a><a href="machine.html" aria-current="page">The Machine</a><a href="index.html#schedule">Schedule</a><a href="index.html#story">The Team</a><a href="sponsors.html">Sponsors</a></nav>
+  <a class="cart" href="product.html">Cart (0)</a>
+</div></header>
+
+<main>
+
+<!-- sección: hm-machine-hero -->
+<section class="mx-hero" aria-labelledby="mx-title">
+  <div class="wrap">
+    <div class="mx-hero__top">
+      <div>
+        <p class="eyebrow">Heavy Metal · The Evil One · Pro Stock</p>
+        <h1 class="display d4" id="mx-title">The Machine</h1>
+        <p class="lede">A Caterpillar 3208 V8 in a John Deere world. Ten thousand pounds of matte black, built almost entirely by hand in a family shop in Waterloo, Wisconsin.</p>
+      </div>
+      <dl class="mx-block" aria-label="Title block">
+        <div><dt>Class</dt><dd>Pro Stock</dd></div>
+        <div><dt>Body</dt><dd>Challenger</dd></div>
+        <div><dt>Home base</dt><dd>Waterloo, WI</dd></div>
+        <div><dt>Finish</dt><dd>Matte black</dd></div>
+        <div><dt>Circuits</dt><dd>NTPA · PPL</dd></div>
+        <div><dt>Horsepower</dt><dd class="accent">Classified</dd></div>
+      </dl>
+    </div>
+    <div class="mx-hero__rig">
+      <div class="ph" style="--ar:21/9"><div class="ph__tag"><b>Recorte PNG transparente · 21:9</b>Perfil lateral completo del tractor, frente a la izquierda, sin fondo, apoyado sobre la línea de tierra</div></div>
+      <div class="mx-ground" aria-hidden="true"></div>
+      <div class="mx-ruler" aria-hidden="true"></div>
+      <div class="mx-dim" aria-hidden="true"><span>Side elevation</span><span>Scale N.T.S.</span><span>Sheet 1 of 1</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- sección: hm-machine-hotspots (bloques: hotspot con x, y, valor, foto, patrocinador) -->
+<section class="sect" id="anatomy" aria-labelledby="anatomy-h">
+  <div class="wrap">
+    <div class="mx-head">
+      <h2 class="display mx-h2" id="anatomy-h">Anatomy of the Evil One</h2>
+      <p class="lede">Five points on the drawing. Select one to read the spec and see who rides on that part.</p>
+    </div>
+
+    <div class="mx-diag__grid">
+      <figure class="mx-fig">
+        <div class="mx-stage">
+          <div class="ph" style="--ar:21/9"><div class="ph__tag"><b>Mismo recorte PNG · 21:9</b>Se reutiliza el archivo del hero; los puntos se colocan en % desde el editor</div></div>
+          <button class="hs" type="button" style="--x:34%;--y:40%" aria-expanded="true" aria-controls="hp-engine" aria-label="Engine" data-hs><span class="hs__dot" aria-hidden="true"></span><span class="hs__lbl"><b>01</b>Engine</span></button>
+          <button class="hs" type="button" style="--x:22%;--y:62%" aria-expanded="false" aria-controls="hp-disp" aria-label="Displacement" data-hs><span class="hs__dot" aria-hidden="true"></span><span class="hs__lbl"><b>02</b>Displacement</span></button>
+          <button class="hs" type="button" style="--x:45%;--y:18%" aria-expanded="false" aria-controls="hp-power" aria-label="Turbo and power" data-hs><span class="hs__dot" aria-hidden="true"></span><span class="hs__lbl"><b>03</b>Turbo / Power</span></button>
+          <button class="hs" type="button" style="--x:8%;--y:70%" aria-expanded="false" aria-controls="hp-weight" aria-label="Weight" data-hs><span class="hs__dot" aria-hidden="true"></span><span class="hs__lbl"><b>04</b>Weight</span></button>
+          <button class="hs hs--flip" type="button" style="--x:77%;--y:62%" aria-expanded="false" aria-controls="hp-tires" aria-label="Tires" data-hs><span class="hs__dot" aria-hidden="true"></span><span class="hs__lbl"><b>05</b>Tires</span></button>
+        </div>
+        <div class="mx-ruler" aria-hidden="true" style="margin-top:14px"></div>
+        <figcaption>Heavy Metal side elevation with five marked points: engine, displacement, turbo and power, weight, tires.</figcaption>
+      </figure>
+
+      <div class="mx-panels">
+        <article class="mx-panel" id="hp-engine" aria-labelledby="hp-engine-h">
+          <div class="mx-panel__meta"><h3 class="eyebrow" id="hp-engine-h">Engine</h3><span class="data">01 / 05</span></div>
+          <p class="mx-panel__val">Cat 3208 V8</p>
+          <p class="mx-panel__sub">Caterpillar · reverse flow</p>
+          <div class="ph" style="--ar:4/3"><div class="ph__tag"><b>Foto detalle · 4:3</b>El Cat 3208 con el cofre abierto, luz lateral dura sobre el bloque</div></div>
+          <p class="body">The only Cat V8 in the Pro Stock field. Not a Deere, on purpose.</p>
+          <div class="mx-sponsor"><span class="eyebrow">Sponsor this part</span><a class="chip" href="sponsors.html">Available</a></div>
+        </article>
+        <article class="mx-panel" id="hp-disp" aria-labelledby="hp-disp-h">
+          <div class="mx-panel__meta"><h3 class="eyebrow" id="hp-disp-h">Displacement</h3><span class="data">02 / 05</span></div>
+          <p class="mx-panel__val">680 CI</p>
+          <p class="mx-panel__sub">636 CI stock</p>
+          <div class="ph" style="--ar:4/3"><div class="ph__tag"><b>Foto detalle · 4:3</b>Bloque del motor en el taller, primer plano con herramientas</div></div>
+          <p class="body">Left the factory at 636 cubic inches. Built out to 680.</p>
+          <div class="mx-sponsor"><span class="eyebrow">Sponsor this part</span><a class="chip" href="sponsors.html">Available</a></div>
+        </article>
+        <article class="mx-panel" id="hp-power" aria-labelledby="hp-power-h">
+          <div class="mx-panel__meta"><h3 class="eyebrow" id="hp-power-h">Turbo / Power</h3><span class="data">03 / 05</span></div>
+          <p class="mx-panel__val classified">Classified</p>
+          <p class="mx-panel__sub">Horsepower not disclosed</p>
+          <div class="ph" style="--ar:4/3"><div class="ph__tag"><b>Foto detalle · 4:3</b>Escape con humo negro a contraluz, sin mostrar el turbo de cerca</div></div>
+          <p class="body">We know. The sled knows. That is enough.</p>
+          <div class="mx-sponsor"><span class="eyebrow">Sponsor this part</span><a class="chip" href="sponsors.html">Available</a></div>
+        </article>
+        <article class="mx-panel" id="hp-weight" aria-labelledby="hp-weight-h">
+          <div class="mx-panel__meta"><h3 class="eyebrow" id="hp-weight-h">Weight</h3><span class="data">04 / 05</span></div>
+          <p class="mx-panel__val">10,000 LB</p>
+          <p class="mx-panel__sub">Pro Stock</p>
+          <div class="ph" style="--ar:4/3"><div class="ph__tag"><b>Foto detalle · 4:3</b>Pesas delanteras y bastidor, ángulo bajo</div></div>
+          <p class="body">Ten thousand pounds of matte black, hooked to a sled that wants it to stop.</p>
+          <div class="mx-sponsor"><span class="eyebrow">Sponsor this part</span><a class="chip" href="sponsors.html">Available</a></div>
+        </article>
+        <article class="mx-panel" id="hp-tires" aria-labelledby="hp-tires-h">
+          <div class="mx-panel__meta"><h3 class="eyebrow" id="hp-tires-h">Tires</h3><span class="data">05 / 05</span></div>
+          <p class="mx-panel__val">24.5-32</p>
+          <p class="mx-panel__sub">Rear</p>
+          <div class="ph" style="--ar:4/3"><div class="ph__tag"><b>Foto detalle · 4:3</b>Llanta trasera con tierra en las barras, a ras de piso</div></div>
+          <p class="body">Where everything above meets the dirt.</p>
+          <div class="mx-sponsor"><span class="eyebrow">Sponsor this part</span><a class="chip" href="sponsors.html">Available</a></div>
+        </article>
+      </div>
+    </div>
+
+    <div class="mx-notes">
+      <p class="note">Cada punto es un bloque de la sección (x, y en %, valor, foto, texto). El patrocinador sale de un metaobjeto "sponsor_zone": si la parte está tomada se muestra el logo; si no, el chip "Available" lleva a Sponsors. El primer punto queda abierto para que la página esté completa sin tocar nada.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- sección: hm-machine-specs -->
+<section class="sect" id="specs" aria-labelledby="specs-h">
+  <div class="wrap">
+    <div class="mx-head">
+      <h2 class="display mx-h2" id="specs-h">Spec sheet</h2>
+    </div>
+    <dl class="mx-specs">
+      <div class="spec"><dt>Engine</dt><dd>Cat 3208 V8</dd></div>
+      <div class="spec"><dt>Configuration</dt><dd>Reverse flow</dd></div>
+      <div class="spec"><dt>Displacement</dt><dd>680 CI<small>636 CI stock, built out</small></dd></div>
+      <div class="spec"><dt>Horsepower</dt><dd class="classified">Classified<small>Ask the sled.</small></dd></div>
+      <div class="spec"><dt>Turbo</dt><dd class="classified">Classified</dd></div>
+      <div class="spec"><dt>Weight</dt><dd>10,000 LB</dd></div>
+      <div class="spec"><dt>Tires</dt><dd>24.5-32</dd></div>
+      <div class="spec"><dt>Body</dt><dd>Challenger<small>Matte black</small></dd></div>
+      <div class="spec"><dt>Fabrication</dt><dd>Custom built<small>Nearly every part, nothing off the shelf</small></dd></div>
+      <div class="spec"><dt>Class</dt><dd>Pro Stock</dd></div>
+      <div class="spec"><dt>Circuits</dt><dd>NTPA<small>PPL Badger State</small></dd></div>
+      <div class="spec"><dt>Home base</dt><dd>Waterloo, WI</dd></div>
+      <div class="spec"><dt>First bolt</dt><dd>Feb 2020</dd></div>
+      <div class="spec"><dt>First start</dt><dd>2026<small>Lightning struck. The power went out.</small></dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- sección: hm-machine-versus -->
+<section class="sect sect--card" id="cat-vs-deere" aria-labelledby="vs-h">
+  <div class="wrap">
+    <div class="mx-head">
+      <h2 class="display mx-h2" id="vs-h">Cat V8 vs the field</h2>
+      <p class="lede">Pro Stock is a John Deere inline six class. Heavy Metal runs a Caterpillar 3208 V8, the only one in the field.</p>
+    </div>
+
+    <div class="mx-vs__grid">
+      <div class="mx-eng mx-eng--us">
+        <p class="eyebrow eyebrow--accent">Heavy Metal</p>
+        <h3 class="display">Cat 3208 V8</h3>
+        <div class="mx-cyl mx-cyl--v" aria-hidden="true">
+          <div class="mx-cyl__row"><i></i><i></i><i></i><i></i></div>
+          <div class="mx-cyl__row"><i></i><i></i><i></i><i></i></div>
+        </div>
+        <p class="data" style="margin:0">8 cylinders · two banks · 680 CI</p>
+      </div>
+      <div class="mx-eng">
+        <p class="eyebrow">Typical Pro Stock</p>
+        <h3 class="display">Inline 6</h3>
+        <div class="mx-cyl" aria-hidden="true">
+          <div class="mx-cyl__row"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <p class="data" style="margin:0;color:var(--soft)">6 cylinders · one bank · John Deere based</p>
+      </div>
+    </div>
+
+    <div class="mx-tablewrap">
+      <table class="mx-table">
+        <caption class="eyebrow" style="text-align:left;padding-bottom:12px">Engine comparison</caption>
+        <thead><tr><th scope="col">Spec</th><th scope="col" class="us">Heavy Metal</th><th scope="col">Typical Pro Stock</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Make</th><td class="us">Caterpillar 3208</td><td class="them">John Deere based</td></tr>
+          <tr><th scope="row">Layout</th><td class="us">V8</td><td class="them">Inline 6</td></tr>
+          <tr><th scope="row">Cylinders</th><td class="us">8</td><td class="them">6</td></tr>
+          <tr><th scope="row">Displacement</th><td class="us">680 CI</td><td class="them">Varies by build</td></tr>
+          <tr><th scope="row">In the field</th><td class="us">The only one</td><td class="them">The majority</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mx-notes">
+      <p class="note">SEO: "Cat 3208 pulling tractor" casi no tiene competencia y esta sección responde la búsqueda con una frase citable ("the only Cat V8 in the Pro Stock field"). Es el ángulo que Google e IA van a asociar con Heavy Metal. Del lado Deere no ponemos cifras: solo lo que es verdad para toda la clase.</p>
+    </div>
+  </div>
+</section>
+
+<!-- sección: hm-machine-buildlog (3 artículos del blog "The Build") -->
+<section class="sect" id="build" aria-labelledby="build-h">
+  <div class="wrap">
+    <div class="mx-head">
+      <h2 class="display mx-h2" id="build-h">From the build log</h2>
+      <p class="lede">Nights and weekends in a family shop. The whole story lives in The Build.</p>
+    </div>
+    <div class="mx-log">
+      <a class="mx-card" href="#">
+        <div class="ph" style="--ar:4/3"><div class="ph__tag"><b>Foto · 4:3</b>Bastidor desnudo en el taller de Waterloo, febrero 2020</div></div>
+        <span class="mx-card__date">Feb 2020</span>
+        <h3 class="display">The first bolt</h3>
+        <p>Where it started. Almost everything since has been built by hand.</p>
+        <span class="mx-card__more">Read in The Build</span>
+      </a>
+      <a class="mx-card" href="#">
+        <div class="ph" style="--ar:4/3"><div class="ph__tag"><b>Foto · 4:3</b>El tractor en el taller de noche, solo la luz de trabajo</div></div>
+        <span class="mx-card__date">2026</span>
+        <h3 class="display">Lightning start</h3>
+        <p>First fire-up. Lightning struck and the power went out. Some would call it a coincidence. We call it a sign.</p>
+        <span class="mx-card__more">Read in The Build</span>
+      </a>
+      <a class="mx-card" href="#">
+        <div class="ph" style="--ar:4/3"><div class="ph__tag"><b>Foto · 4:3</b>Primer pull, tractor enganchado al trineo desde atrás</div></div>
+        <span class="mx-card__date">Testing season</span>
+        <h3 class="display">The first pull</h3>
+        <p>A minor issue ended the run early. The goal this season: the first full pull.</p>
+        <span class="mx-card__more">Read in The Build</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<!-- sección: hm-machine-faq (+ JSON-LD FAQPage) -->
+<section class="sect mx-faq" id="faq" aria-labelledby="faq-h">
+  <div class="wrap mx-faq__grid">
+    <div class="mx-head">
+      <h2 class="display mx-h2" id="faq-h">Questions from the fence line</h2>
+      <p class="lede">Short answers. The kind you can repeat at the pits.</p>
+    </div>
+    <div>
+      <details open>
+        <summary>What is Pro Stock?</summary>
+        <p>Pro Stock is a tractor pulling class for heavily modified diesel farm tractors. Each tractor drags a weight transfer sled down a dirt track; the farthest pull wins, and reaching the end of the track is a full pull. Heavy Metal runs Pro Stock at 10,000 lb in NTPA and PPL Badger State.</p>
+      </details>
+      <details>
+        <summary>Why a Cat?</summary>
+        <p>Because nobody else runs one. The class is dominated by John Deere inline sixes; Heavy Metal runs a Caterpillar 3208 V8, reverse flow, built out from 636 to 680 cubic inches. It is the only Cat V8 in the field.</p>
+      </details>
+      <details>
+        <summary>How much horsepower?</summary>
+        <p><strong>Classified.</strong></p>
+      </details>
+      <details>
+        <summary>Where can I see it pull?</summary>
+        <p>At NTPA and PPL Badger State events. This is a testing season, so there is no confirmed schedule yet. <a href="index.html#schedule">Join Hook Alert</a> and we will tell you before we hook.</p>
+      </details>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="mx-notes">
+      <p class="note">El FAQ sale del mismo contenido que el JSON-LD FAQPage (abajo en el código). Respuestas de una o dos frases para que Google y los asistentes de IA las citen tal cual. La de caballos de fuerza es "Classified" a propósito: es marca, no hueco.</p>
+    </div>
+  </div>
+</section>
+
+<!-- sección: hm-machine-cta -->
+<section class="mx-cta" aria-label="Get involved">
+  <div class="mx-cta__half">
+    <h2 class="display mx-h2">Sponsor the machine</h2>
+    <p>Put your name on a part that drags a sled at NTPA and PPL Badger State pulls.</p>
+    <div class="btn-row"><a class="btn btn--accent" href="sponsors.html">Get the media kit</a></div>
+  </div>
+  <div class="mx-cta__half">
+    <h2 class="display mx-h2">Shop the drop</h2>
+    <p>Team designed shirts and gear. Every order keeps us pulling.</p>
+    <div class="btn-row"><a class="btn" href="index.html#shop">Shop the drop</a></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="ftr"><div class="wrap ftr__in">
+  <div><div class="logo">Heavy <span>Metal</span></div><p>Pro Stock pulling tractor · Waterloo, Wisconsin<br>NTPA · PPL Badger State</p></div>
+  <div><p class="eyebrow">Follow</p><p><a href="https://www.facebook.com/heavymetalprostock/">Facebook</a></p></div>
+  <div><p class="eyebrow">Help</p><p>Shipping · Returns · Contact</p></div>
+</div></footer>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "What is Pro Stock?", "acceptedAnswer": {"@type": "Answer", "text": "Pro Stock is a tractor pulling class for heavily modified diesel farm tractors. Each tractor drags a weight transfer sled down a dirt track; the farthest pull wins, and reaching the end of the track is a full pull. Heavy Metal runs Pro Stock at 10,000 lb in NTPA and PPL Badger State."}},
+    {"@type": "Question", "name": "Why a Cat?", "acceptedAnswer": {"@type": "Answer", "text": "Because nobody else runs one. The class is dominated by John Deere inline sixes; Heavy Metal runs a Caterpillar 3208 V8, reverse flow, built out from 636 to 680 cubic inches. It is the only Cat V8 in the field."}},
+    {"@type": "Question", "name": "How much horsepower?", "acceptedAnswer": {"@type": "Answer", "text": "Classified."}},
+    {"@type": "Question", "name": "Where can I see it pull?", "acceptedAnswer": {"@type": "Answer", "text": "At NTPA and PPL Badger State events. This is a testing season, so there is no confirmed schedule yet. Join Hook Alert and we will tell you before we hook."}}
+  ]
+}
+</script>
+<script>
+/* Hotspots: un botón abre su panel; el primero queda abierto. Sin JS se ven todos los paneles. */
+(function(){
+  var btns=[].slice.call(document.querySelectorAll('[data-hs]'));
+  if(!btns.length) return;
+  var narrow=window.matchMedia('(max-width:960px)');
+  var calm=window.matchMedia('(prefers-reduced-motion: reduce)');
+  function open(btn,scroll){
+    btns.forEach(function(b){
+      var on=b===btn;
+      b.setAttribute('aria-expanded',on?'true':'false');
+      document.getElementById(b.getAttribute('aria-controls')).hidden=!on;
+    });
+    if(scroll&&narrow.matches){
+      document.getElementById(btn.getAttribute('aria-controls')).scrollIntoView({block:'nearest',behavior:calm.matches?'auto':'smooth'});
+    }
+  }
+  btns.forEach(function(b){b.addEventListener('click',function(){open(b,true)})});
+  open(btns[0],false);
+})();
+</script>
+</body>
+</html>

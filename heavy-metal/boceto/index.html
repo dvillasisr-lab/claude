@@ -1,0 +1,473 @@
+<title>Heavy Metal Boceto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="boceto.css">
+<style>
+/* Hallmark · pre-emit critique: P5 H5 E4 S5 R4 V5
+   HOME. Cada <section data-shopify="..."> = una futura sección Liquid (hm-*). Solo variables de boceto.css. */
+body{overflow-x:clip}
+.sect-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px;margin-bottom:clamp(28px,4vw,56px)}
+.sect-head .eyebrow{margin-bottom:10px}
+.link{font-family:var(--f-cond);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:var(--t-sm);color:var(--bone);text-decoration:none;border-bottom:2px solid var(--accent);padding-bottom:4px}
+.link:hover{color:var(--accent)}
+.chip{display:inline-block;font-family:var(--f-cond);font-weight:700;font-size:var(--t-xs);letter-spacing:.14em;text-transform:uppercase;background:var(--accent);color:var(--accent-ink);padding:3px 8px}
+.chip--ghost{background:transparent;color:var(--soft);border:1px solid var(--line2)}
+.stack{display:grid;gap:16px}
+.note{margin-block:24px 0}
+
+/* ---------- 1. HERO ---------- */
+.hero{padding-bottom:clamp(40px,6vw,72px)}
+.hero__media{position:relative}
+.hero__media .ph{border-inline:0;align-items:flex-start;max-height:78svh}
+.hero__media::after{content:"";position:absolute;inset:auto 0 0;height:45%;background:linear-gradient(to bottom,rgba(11,11,10,0),var(--bg));pointer-events:none}
+@media (max-width:700px){.hero__media .ph{--ar:4/5 !important}}
+.hero__h1{font-size:clamp(5rem,23vw,17rem);line-height:.8;margin-top:-.42em;position:relative;z-index:2}
+.hero__h1 span{display:block}
+.hero__h1 span:last-child{color:transparent;-webkit-text-stroke:2px var(--bone)}
+.hero__row{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px 48px;align-items:end;margin-top:clamp(20px,3vw,36px)}
+.hero__sub{font-family:var(--f-cond);font-weight:600;font-size:var(--t-lg);letter-spacing:.14em;text-transform:uppercase;color:var(--soft);margin:0 0 20px}
+.hero__sub b{color:var(--bone);font-weight:700}
+.hero__meta{font-family:var(--f-cond);font-size:var(--t-sm);letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:0;justify-self:end;text-align:right}
+.hero__meta b{display:block;color:var(--bone);font-size:var(--t-lg);letter-spacing:.06em}
+.hero__track{margin-top:clamp(28px,4vw,48px)}
+.hero__track .track{height:34px}
+.hero__track .track__ticks{font-size:var(--t-xs);padding-inline:8px}
+.hero__next{display:flex;flex-wrap:wrap;gap:6px 16px;align-items:baseline;margin:14px 0 0;font-family:var(--f-cond);font-size:var(--t-md);letter-spacing:.1em;text-transform:uppercase;color:var(--soft)}
+.hero__next strong{color:var(--accent);font-weight:700}
+.hero__next a{color:var(--bone)}
+@media (max-width:700px){.hero__row{grid-template-columns:1fr}.hero__meta{justify-self:start;text-align:left}.hero__h1 span:last-child{-webkit-text-stroke-width:1.5px}}
+/* Momento de movimiento: el scroll "jala" el tractor por la pista */
+@supports (animation-timeline: scroll()){
+  .hero__track .track__fill{animation:pull linear both;animation-timeline:scroll(root);animation-range:0 60vh}
+}
+@keyframes pull{from{width:0}to{width:100%}}
+
+/* ---------- 2. THE DROP ---------- */
+.prod{display:grid;gap:14px;align-content:start}
+.prod__media{position:relative;display:block}
+.prod__media .chip{position:absolute;top:12px;left:12px;z-index:2}
+.prod h3{font-family:var(--f-cond);font-weight:700;font-size:var(--t-lg);letter-spacing:.06em;text-transform:uppercase;margin:0;line-height:1.1}
+.prod h3 a{text-decoration:none}
+.prod h3 a:hover{color:var(--accent)}
+.prod__row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.prod__price{color:var(--soft);font-size:var(--t-lg)}
+.qadd{min-height:44px;padding:0 1em;font-size:var(--t-sm)}
+.bundle{margin-top:var(--gap);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);border:1px solid var(--line2);background:var(--card)}
+.bundle__body{padding:clamp(24px,4vw,48px);display:grid;gap:18px;align-content:center}
+.bundle__list{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-family:var(--f-cond);font-size:var(--t-lg);letter-spacing:.06em;text-transform:uppercase;color:var(--soft)}
+.bundle__list li::before{content:"+ ";color:var(--accent)}
+.bundle .ph{border:0}
+@media (max-width:760px){.bundle{grid-template-columns:1fr}}
+
+/* ---------- 3. LIGHTNING STRIKE ---------- */
+.story{timeline-scope:--story;display:grid;grid-template-columns:120px minmax(0,1fr);gap:clamp(24px,5vw,80px)}
+@property --p{syntax:"<number>";inherits:true;initial-value:.8}
+.srail{position:sticky;top:calc(var(--header) + 32px);align-self:start;height:min(62svh,560px);display:grid;grid-template-columns:28px 1fr;gap:12px}
+.srail__bar{position:relative;border-inline:1px solid var(--line2);background:linear-gradient(180deg,var(--dirt),var(--steel));overflow:hidden}
+.srail__fill{position:absolute;inset:0;transform-origin:top;transform:scaleY(var(--p));background:linear-gradient(180deg,rgba(245,196,0,.15),rgba(245,196,0,.5));border-bottom:2px solid var(--accent)}
+.srail__ticks{display:flex;flex-direction:column;justify-content:space-between;font-family:var(--f-cond);font-size:var(--t-xs);letter-spacing:.1em;color:var(--mute)}
+.srail__ticks span:last-child{color:var(--accent)}
+.beats{list-style:none;margin:0;padding:0;display:grid;gap:clamp(72px,12vw,160px);view-timeline:--story block}
+.beat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:center}
+.beat:nth-child(even) .beat__media{order:-1}
+.beat__year{font-size:clamp(4.5rem,14vw,10rem);line-height:.82;color:var(--bone)}
+.beat__year small{font-size:.32em;color:var(--mute);vertical-align:top;margin-left:.1em}
+.beat h3{font-family:var(--f-cond);font-weight:700;font-size:var(--t-xl);letter-spacing:.06em;text-transform:uppercase;margin:18px 0 10px;line-height:1.1}
+.beat p{margin:0;color:var(--soft);max-width:46ch}
+.beat blockquote{margin:18px 0 0;padding-left:16px;border-left:3px solid var(--accent);font-family:var(--f-cond);font-size:var(--t-xl);line-height:1.2;color:var(--bone);max-width:28ch}
+.beat--last .beat__year{color:transparent;-webkit-text-stroke:2px var(--accent)}
+.loading{display:inline-flex;align-items:center;gap:10px;margin-top:18px;font-family:var(--f-cond);font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.loading i{display:block;width:120px;height:8px;border:1px solid var(--accent);background:linear-gradient(90deg,var(--accent) 0 80%,transparent 80%)}
+.story__aside{margin-top:clamp(56px,8vw,96px);padding-top:20px;border-top:1px solid var(--line2);display:flex;flex-wrap:wrap;gap:12px 40px;font-family:var(--f-cond);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-size:var(--t-sm)}
+.story__aside b{color:var(--bone);font-weight:700}
+@media (max-width:860px){
+  .story{grid-template-columns:1fr}
+  .srail{top:calc(var(--header) + 8px);height:auto;grid-template-columns:1fr;gap:6px;z-index:5;background:var(--bg);padding-block:8px}
+  .srail__bar{height:14px;border-inline:0;border-block:1px solid var(--line2);background:linear-gradient(90deg,var(--dirt),var(--steel))}
+  .srail__fill{transform-origin:left;transform:scaleX(var(--p));border-bottom:0;border-right:2px solid var(--accent)}
+  .srail__ticks{flex-direction:row}
+  .beat,.beat:nth-child(even){grid-template-columns:1fr}
+  .beat:nth-child(even) .beat__media{order:0}
+}
+@supports (animation-timeline: view()){
+  .srail{animation:rail linear both;animation-timeline:--story;animation-range:entry 30% exit 60%}
+  .beat__text,.beat__media{animation:rise linear both;animation-timeline:view();animation-range:entry 0% cover 35%}
+}
+@keyframes rail{from{--p:0}to{--p:.8}}
+@keyframes rise{from{opacity:.25;transform:translateY(48px)}to{opacity:1;transform:none}}
+
+/* ---------- 4. THE MACHINE ---------- */
+.machine{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:center}
+.hs-stage{position:relative}
+.hs{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);width:40px;height:40px;border-radius:50%;border:2px solid var(--accent);background:rgba(11,11,10,.8);color:var(--accent);font-family:var(--f-cond);font-weight:700;font-size:var(--t-md);cursor:pointer;padding:0;z-index:3}
+.hs::before{content:"";position:absolute;inset:-8px;border-radius:50%;border:1px solid rgba(245,196,0,.5);animation:ping 2.4s ease-out infinite}
+.hs__lbl{position:absolute;left:50%;bottom:calc(100% + 10px);transform:translateX(-50%);white-space:nowrap;background:var(--bg);border:1px solid var(--line2);border-top:2px solid var(--accent);padding:8px 12px;font-family:var(--f-cond);font-weight:600;font-size:var(--t-sm);letter-spacing:.08em;text-transform:uppercase;color:var(--bone);opacity:0;visibility:hidden;transition:opacity .15s}
+.hs__lbl b{display:block;color:var(--mute);font-size:var(--t-xs);letter-spacing:.14em}
+.hs:hover .hs__lbl,.hs:focus-visible .hs__lbl,.hs[aria-expanded="true"] .hs__lbl{opacity:1;visibility:visible}
+.hs--r .hs__lbl{left:auto;right:-6px;transform:none}
+.hs--l .hs__lbl{left:-6px;transform:none}
+@keyframes ping{from{transform:scale(.8);opacity:1}to{transform:scale(1.5);opacity:0}}
+.specs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 24px;margin:28px 0 32px}
+.specs dd{font-size:clamp(1.5rem,2.6vw,2.25rem)}
+.hs-legend{margin:16px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--f-cond);font-size:var(--t-sm);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.hs-legend b{color:var(--accent);margin-right:6px}
+@media (max-width:960px){.machine{grid-template-columns:1fr}}
+
+/* ---------- 5. WATCH IT PULL ---------- */
+.watch{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:var(--gap)}
+.clips{list-style:none;margin:0;padding:0;display:grid;gap:var(--gap);align-content:start}
+.clips p{margin:8px 0 0;font-family:var(--f-cond);font-size:var(--t-sm);letter-spacing:.1em;text-transform:uppercase;color:var(--soft)}
+.clips .ph--video::after{width:48px;height:48px}
+.clips .ph--video::before{border-width:8px 0 8px 14px}
+@media (max-width:860px){.watch{grid-template-columns:1fr}.clips{grid-template-columns:repeat(3,minmax(0,1fr))}.clips .ph__tag{display:none}}
+@media (max-width:520px){.clips{grid-template-columns:1fr}.clips .ph__tag{display:block}}
+
+/* ---------- 6. RIDE WITH THE EVIL ONE ---------- */
+.ride{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,72px)}
+.tiers{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.tier{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 20px;align-items:center;padding:20px 22px;border:1px solid var(--line2);background:var(--bg)}
+.tier h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:var(--t-xl);text-transform:uppercase;letter-spacing:.02em;line-height:1}
+.tier p{margin:0;color:var(--soft);font-size:var(--t-sm);grid-column:1}
+.tier__price{grid-row:1/span 2;grid-column:2;font-size:var(--t-xl);text-align:right}
+.tier--big{border-color:var(--accent)}
+.tier--big h3 .chip{vertical-align:middle;margin-left:8px}
+.wall{background:var(--bg);border:1px solid var(--line2);padding:clamp(20px,3vw,36px);position:relative}
+.wall__lbl{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:20px}
+.wall ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.wall li{font-family:var(--f-cond);font-weight:700;font-size:var(--t-md);letter-spacing:.14em;text-transform:uppercase;padding:6px 12px;border:1px solid var(--line2);color:var(--soft)}
+.wall li.big{font-family:var(--f-display);font-weight:400;font-size:var(--t-xl);color:var(--bone);border-color:var(--bone)}
+@media (max-width:860px){.ride{grid-template-columns:1fr}}
+
+/* ---------- 7. SCHEDULE ---------- */
+.sched{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(28px,5vw,72px);align-items:start}
+.state{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-cond);font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.state i{width:10px;height:10px;border-radius:50%;background:var(--accent);animation:blink 1.6s steps(2) infinite}
+@keyframes blink{50%{opacity:.2}}
+.next{list-style:none;margin:28px 0 0;padding:0;counter-reset:n;display:grid;gap:0}
+.next li{counter-increment:n;display:grid;grid-template-columns:48px minmax(0,1fr);gap:16px;padding:16px 0;border-top:1px solid var(--line2);color:var(--soft)}
+.next li::before{content:"0" counter(n);font-family:var(--f-cond);font-weight:700;color:var(--mute);letter-spacing:.1em}
+.next b{color:var(--bone);display:block;font-family:var(--f-cond);letter-spacing:.08em;text-transform:uppercase}
+.alert{border:1px solid var(--line2);background:var(--card);padding:clamp(22px,3.5vw,40px);display:grid;gap:18px}
+.alert h3{margin:0}
+.alert .opt{text-transform:none;letter-spacing:.02em;color:var(--mute)}
+.consent{display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;align-items:start;font-size:var(--t-xs);color:var(--mute);line-height:1.45}
+.consent input{width:20px;height:20px;margin:0;accent-color:var(--accent)}
+.alert__msg{min-height:1.5em;margin:0;font-family:var(--f-cond);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+@media (max-width:860px){.sched{grid-template-columns:1fr}}
+
+/* ---------- 8. SPONSORS ---------- */
+.slots{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-block:28px}
+.slot{aspect-ratio:3/2;border:1px dashed var(--line2);display:grid;place-items:center;font-family:var(--f-cond);font-weight:600;font-size:var(--t-sm);letter-spacing:.14em;text-transform:uppercase;color:var(--mute);text-align:center;padding:8px}
+.slot:first-child{border-color:rgba(245,196,0,.6);color:var(--accent)}
+.spons-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px 32px}
+.spons-foot p{margin:0;color:var(--soft);font-family:var(--f-cond);font-size:var(--t-lg);letter-spacing:.06em}
+@media (max-width:860px){.slots{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:520px){.slots{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+@media (prefers-reduced-motion:reduce){
+  .srail{--p:.8}
+  .hero__track .track__fill{width:0}
+  .beat__text,.beat__media{opacity:1;transform:none}
+}
+</style>
+
+<div class="draftbar"><span>Boceto v1 · no es el sitio en vivo</span><a href="index.html" aria-current="page">Home</a><a href="machine.html">The Machine</a><a href="sponsors.html">Sponsors</a><a href="product.html">Producto</a></div>
+<header class="hdr"><div class="wrap hdr__in">
+  <a class="logo" href="index.html" aria-current="page">Heavy <span>Metal</span></a>
+  <nav class="nav" aria-label="Main"><a href="index.html#shop">Shop</a><a href="machine.html">The Machine</a><a href="index.html#schedule">Schedule</a><a href="index.html#story">The Team</a><a href="sponsors.html">Sponsors</a></nav>
+  <a class="cart" href="product.html">Cart (0)</a>
+</div></header>
+
+<main>
+
+<!-- 1. HERO · hm-hero -->
+<section class="hero" data-shopify="hm-hero" aria-labelledby="hero-title">
+  <div class="hero__media">
+    <div class="ph ph--video" style="--ar:16/9"><div class="ph__tag"><b>Video loop · 16:9 desktop · 9:16 móvil · 8 s · póster primero</b>Pull completo desde el costado, a ras de piso: tierra volando, humo negro, cofre Challenger negro mate</div></div>
+  </div>
+  <div class="wrap">
+    <h1 class="display hero__h1" id="hero-title"><span>Heavy</span><span>Metal</span></h1>
+    <div class="hero__row">
+      <div>
+        <p class="hero__sub"><b>The Evil One</b> · Pro Stock Tractor · Waterloo, WI</p>
+        <div class="btn-row">
+          <a class="btn btn--accent" href="#shop">Shop the Drop</a>
+          <a class="btn" href="sponsors.html">Sponsor the Machine</a>
+        </div>
+      </div>
+      <p class="hero__meta">Walk-up song<b>Fear of the Dark · Iron Maiden</b></p>
+    </div>
+    <div class="hero__track">
+      <div class="track" role="img" aria-label="300 foot pulling track"><div class="track__fill"></div><div class="track__ticks" aria-hidden="true"><span>0 FT</span><span>100 FT</span><span>200 FT</span><span>300 FT</span></div></div>
+      <p class="hero__next"><strong>Next pull:</strong> <span>Testing season</span> <a href="#schedule">Get Hook Alerts</a></p>
+    </div>
+    <p class="note">El video va como fachada con póster (sin autoplay pesado) para cuidar el LCP. La barra de 300 ft se llena con el scroll: es el "momento" de la marca y se repite en la historia. Cuando exista el metaobjeto pull_event, aquí aparece el próximo evento con cuenta regresiva.</p>
+  </div>
+</section>
+
+<!-- 2. THE DROP · hm-drop -->
+<section class="sect" id="shop" data-shopify="hm-drop" aria-labelledby="shop-title">
+  <div class="wrap">
+    <div class="sect-head">
+      <div><p class="eyebrow eyebrow--accent">The Drop · Designed by the crew</p><h2 class="display d3" id="shop-title">Wear the smoke</h2></div>
+      <a class="link" href="product.html">Shop all</a>
+    </div>
+    <div class="grid g4">
+      <article class="prod">
+        <a class="prod__media" href="product.html" aria-label="Evil One Tee"><div class="ph" style="--ar:4/5"><div class="ph__tag"><b>Foto · 4:5</b>Playera negra de frente, colgada en el taller</div></div></a>
+        <h3><a href="product.html">Evil One Tee</a></h3>
+        <div class="prod__row"><span class="data prod__price">$XX</span><button class="btn qadd" type="button">Quick add</button></div>
+      </article>
+      <article class="prod">
+        <a class="prod__media" href="product.html" aria-label="Lightning Strike Tee, limited"><span class="chip">Limited</span><div class="ph" style="--ar:4/5"><div class="ph__tag"><b>Foto · 4:5</b>Espalda de la playera con el rayo, en persona del crew</div></div></a>
+        <h3><a href="product.html">Lightning Strike Tee</a></h3>
+        <div class="prod__row"><span class="data prod__price">$XX</span><button class="btn qadd" type="button">Quick add</button></div>
+      </article>
+      <article class="prod">
+        <a class="prod__media" href="product.html" aria-label="680 CI Hoodie"><div class="ph" style="--ar:4/5"><div class="ph__tag"><b>Foto · 4:5</b>Hoodie en banco de trabajo junto al motor Cat</div></div></a>
+        <h3><a href="product.html">680 CI Hoodie</a></h3>
+        <div class="prod__row"><span class="data prod__price">$XX</span><button class="btn qadd" type="button">Quick add</button></div>
+      </article>
+      <article class="prod">
+        <a class="prod__media" href="product.html" aria-label="Crew Cap"><div class="ph" style="--ar:4/5"><div class="ph__tag"><b>Foto · 4:5</b>Gorra sobre la llanta 24.5-32, luz lateral</div></div></a>
+        <h3><a href="product.html">Crew Cap</a></h3>
+        <div class="prod__row"><span class="data prod__price">$XX</span><button class="btn qadd" type="button">Quick add</button></div>
+      </article>
+    </div>
+
+    <article class="bundle" aria-labelledby="bundle-title">
+      <div class="ph" style="--ar:16/10"><div class="ph__tag"><b>Foto · 16:10</b>Tee, hoodie y gorra acomodados sobre el cofre negro mate</div></div>
+      <div class="bundle__body">
+        <p class="eyebrow eyebrow--accent">Bundle</p>
+        <h3 class="display d2" id="bundle-title">The Crew Pack</h3>
+        <ul class="bundle__list"><li>Evil One Tee</li><li>680 CI Hoodie</li><li>Crew Cap</li></ul>
+        <p class="data" style="font-size:var(--t-xl);margin:0">$XX <span style="color:var(--mute);font-size:var(--t-md)">· save $XX vs. separate</span></p>
+        <div class="btn-row"><a class="btn btn--accent" href="product.html">Get the Crew Pack</a></div>
+        <p class="body" style="margin:0;font-size:var(--t-sm)">Designed by the team. Printed on demand. Every order keeps us pulling.</p>
+      </div>
+    </article>
+    <p class="note">Precios y ahorro del bundle en $XX hasta confirmarlos; el ahorro se calcula solo en Liquid con compare_at_price. Free US shipping over $XX: la barra de envío gratis va en el carrito cuando exista el monto.</p>
+  </div>
+</section>
+
+<!-- 3. LIGHTNING STRIKE · hm-story -->
+<section class="sect sect--card" id="story" data-shopify="hm-story" aria-labelledby="story-title">
+  <div class="wrap">
+    <div class="sect-head">
+      <div><p class="eyebrow eyebrow--accent">The Lightning Strike</p><h2 class="display d3" id="story-title">Twelve years<br>to the hook</h2></div>
+      <p class="lede" style="max-width:36ch">One heavy metal fan. One family shop. One tractor nobody else would build.</p>
+    </div>
+
+    <div class="story">
+      <div class="srail" aria-hidden="true">
+        <div class="srail__bar"><div class="srail__fill"></div></div>
+        <div class="srail__ticks"><span>0 FT</span><span>100</span><span>200</span><span>300 FT</span></div>
+      </div>
+
+      <ol class="beats">
+        <li class="beat">
+          <div class="beat__text">
+            <p class="display beat__year">2014</p>
+            <h3>The idea · Tomah, WI</h3>
+            <p>Chris is a heavy metal fan. He decided to build a pulling tractor. The name was never up for debate.</p>
+          </div>
+          <div class="beat__media"><div class="ph" style="--ar:4/3"><div class="ph__tag"><b>Foto · 4:3 · archivo</b>Chris de joven o primer boceto del tractor, foto de archivo real</div></div></div>
+        </li>
+        <li class="beat">
+          <div class="beat__text">
+            <p class="display beat__year">2020<small>FEB</small></p>
+            <h3>First bolt · Waterloo, WI</h3>
+            <p>Years of nights and weekends in a family shop. Almost everything built by hand. Nothing ordered from a catalog.</p>
+          </div>
+          <div class="beat__media"><div class="ph" style="--ar:4/3"><div class="ph__tag"><b>Foto · 4:3</b>Chasis desnudo en el taller, manos con grasa, luz de lámpara</div></div></div>
+        </li>
+        <li class="beat">
+          <div class="beat__text">
+            <p class="display beat__year">2026</p>
+            <h3>First fire. Then the lightning.</h3>
+            <p>The first time the engine started, lightning struck and the power went out.</p>
+            <blockquote>Some would call it a coincidence. We call it a sign.</blockquote>
+          </div>
+          <div class="beat__media"><div class="ph ph--video" style="--ar:4/3"><div class="ph__tag"><b>Video · 4:3 · si existe</b>Primer arranque del Cat en el taller; si no hay toma, foto del cielo esa noche</div></div></div>
+        </li>
+        <li class="beat">
+          <div class="beat__text">
+            <p class="display beat__year">680<small>CI</small></p>
+            <h3>The only Cat V8 in the class</h3>
+            <p>Caterpillar 3208 V8, reverse flow. 636 cubic inches from the factory, built to 680. In a class ruled by John Deere inline sixes, it stands alone.</p>
+          </div>
+          <div class="beat__media"><div class="ph" style="--ar:4/3"><div class="ph__tag"><b>Foto · 4:3 · detalle</b>Motor Cat 3208 de cerca, múltiples y turbo</div></div></div>
+        </li>
+        <li class="beat beat--last">
+          <div class="beat__text">
+            <p class="display beat__year">300<small>FT</small></p>
+            <h3>The first full pull</h3>
+            <p>The first hook ended early with a small issue. This is a testing season, and every run gets us closer to the end of the track.</p>
+            <p class="loading" aria-label="Loading">Loading <i aria-hidden="true"></i></p>
+          </div>
+          <div class="beat__media"><div class="ph" style="--ar:4/3"><div class="ph__tag"><b>Foto · 4:3</b>El tractor enganchado al trineo, pista vacía por delante</div></div></div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="story__aside">
+      <span>Owner &amp; driver <b>Chris F</b></span>
+      <span>Brother in Europe <b>Diesel Ross · Gert Stessens, Belgium</b></span>
+      <span>Leagues <b>NTPA · PPL Badger State</b></span>
+    </div>
+    <p class="note">La barra lateral de 300 ft se llena mientras se lee la historia y se detiene en 80%: el último tramo es el primer full pull que aún no pasa. Sin soporte de scroll-driven animations (Safari, Firefox) todo se ve completo y quieto.</p>
+  </div>
+</section>
+
+<!-- 4. THE MACHINE TEASER · hm-machine-teaser -->
+<section class="sect" data-shopify="hm-machine-teaser" aria-labelledby="machine-title">
+  <div class="wrap machine">
+    <div>
+      <div class="hs-stage">
+        <div class="ph" style="--ar:16/10"><div class="ph__tag"><b>Recorte PNG · 16:10 · fondo transparente</b>Tractor de perfil completo, lado izquierdo, sin fondo</div></div>
+        <button class="hs" type="button" style="--x:38%;--y:34%" aria-expanded="false"><span aria-hidden="true">1</span><span class="hs__lbl"><b>Engine</b>Cat 3208 V8 reverse flow</span></button>
+        <button class="hs hs--r" type="button" style="--x:78%;--y:62%" aria-expanded="false"><span aria-hidden="true">2</span><span class="hs__lbl"><b>Tires</b>24.5-32</span></button>
+        <button class="hs" type="button" style="--x:55%;--y:22%" aria-expanded="false"><span aria-hidden="true">3</span><span class="hs__lbl"><b>Body</b>Challenger, matte black</span></button>
+        <button class="hs hs--l" type="button" style="--x:22%;--y:14%" aria-expanded="false"><span aria-hidden="true">4</span><span class="hs__lbl"><b>Exhaust</b>Black smoke only</span></button>
+      </div>
+      <ol class="hs-legend"><li><b>1</b>Engine</li><li><b>2</b>Tires</li><li><b>3</b>Body</li><li><b>4</b>Exhaust</li></ol>
+    </div>
+    <div>
+      <p class="eyebrow eyebrow--accent">The Machine</p>
+      <h2 class="display d3" id="machine-title">Built, not bought</h2>
+      <dl class="specs">
+        <div class="spec"><dt>Class</dt><dd>Pro Stock</dd></div>
+        <div class="spec"><dt>Engine</dt><dd>Cat 3208 V8</dd></div>
+        <div class="spec"><dt>Displacement</dt><dd class="data">680 CI</dd></div>
+        <div class="spec"><dt>Horsepower</dt><dd class="classified">Classified</dd></div>
+        <div class="spec"><dt>Weight</dt><dd class="data">10,000 LB</dd></div>
+        <div class="spec"><dt>Tires</dt><dd class="data">24.5-32</dd></div>
+      </dl>
+      <a class="btn btn--accent" href="machine.html">Open the spec sheet</a>
+    </div>
+  </div>
+</section>
+
+<!-- 5. WATCH IT PULL · hm-video -->
+<section class="sect sect--steel" data-shopify="hm-video" aria-labelledby="watch-title">
+  <div class="wrap">
+    <div class="sect-head">
+      <div><p class="eyebrow">Watch it pull</p><h2 class="display d3" id="watch-title">Hear it before you see it</h2></div>
+      <a class="link" href="https://www.facebook.com/heavymetalprostock/">More on Facebook</a>
+    </div>
+    <div class="watch">
+      <div class="ph ph--video" style="--ar:16/9"><div class="ph__tag"><b>Video destacado · 16:9 · fachada con póster</b>Pull desde la tribuna, cámara sigue al tractor hasta el final de la corrida</div></div>
+      <ul class="clips">
+        <li><div class="ph ph--video" style="--ar:16/9"><div class="ph__tag"><b>Clip · 16:9</b>Arranque en frío del Cat</div></div><p>Cold start in the shop</p></li>
+        <li><div class="ph ph--video" style="--ar:16/9"><div class="ph__tag"><b>Clip · 16:9</b>Enganche al trineo</div></div><p>Hooking to the sled</p></li>
+        <li><div class="ph ph--video" style="--ar:16/9"><div class="ph__tag"><b>Clip · 16:9</b>Humo negro en cámara lenta</div></div><p>Black smoke, slow motion</p></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 6. RIDE WITH THE EVIL ONE · hm-ride -->
+<section class="sect" data-shopify="hm-ride" aria-labelledby="ride-title">
+  <div class="wrap">
+    <div class="sect-head">
+      <div><p class="eyebrow eyebrow--accent">Ride With The Evil One</p><h2 class="display d3" id="ride-title">Put your name<br>on the machine</h2></div>
+      <p class="lede" style="max-width:40ch">Your name goes on the tractor and down the track with us. Every name funds the next hook.</p>
+    </div>
+    <div class="ride">
+      <ul class="tiers">
+        <li class="tier">
+          <h3>Crew Name</h3><span class="data tier__price">$XX</span>
+          <p>Your name on the crew panel for the season.</p>
+        </li>
+        <li class="tier">
+          <h3>Crew + Tee</h3><span class="data tier__price">$XX</span>
+          <p>Your name on the panel plus an Evil One Tee.</p>
+        </li>
+        <li class="tier tier--big">
+          <h3>Big Name <span class="chip">Limited</span></h3><span class="data tier__price accent">$XX</span>
+          <p>Larger lettering in a featured spot. Few spots per season.</p>
+        </li>
+        <li style="margin-top:8px"><a class="btn btn--accent" href="product.html">Ride with us</a></li>
+      </ul>
+      <div class="wall" aria-labelledby="wall-title">
+        <div class="wall__lbl"><p class="eyebrow" id="wall-title">The name wall</p><span class="chip chip--ghost">Example names</span></div>
+        <ul aria-label="Example names, not real sponsors">
+          <li class="big">The Miller Family</li><li>Jake R.</li><li>Shop Dog Rusty</li><li>Anna &amp; Tom</li>
+          <li>Grandpa Walt</li><li class="big">Sled Pullers Local</li><li>Kayla B.</li><li>Night Shift Crew</li>
+          <li>Big Dave</li><li>Hank &amp; Sons</li><li>M. Kowalski</li><li>Team Diesel Dust</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">Se vende como producto de Shopify con variantes; el nombre viaja en line item properties y Shopify Flow crea la entrada del muro para moderar antes de publicar. Los nombres de arriba son de ejemplo y no salen en el sitio real.</p>
+  </div>
+</section>
+
+<!-- 7. SCHEDULE + HOOK ALERT · hm-schedule -->
+<section class="sect sect--card" id="schedule" data-shopify="hm-schedule" aria-labelledby="sched-title">
+  <div class="wrap sched">
+    <div>
+      <p class="state"><i aria-hidden="true"></i>Testing season</p>
+      <h2 class="display d3" id="sched-title">No dates yet.<br>Just smoke.</h2>
+      <p class="lede" style="margin-top:20px">We are testing, tuning and chasing our first full pull. When a date is locked, Hook Alert subscribers hear it first.</p>
+      <ol class="next">
+        <li><div><b>Test and tune</b>Shop runs and test hooks on the 680.</div></li>
+        <li><div><b>Lock the season</b>NTPA and PPL Badger State dates go up here.</div></li>
+        <li><div><b>Hook</b>Alerts go out before every pull. Then we go for 300 FT.</div></li>
+      </ol>
+    </div>
+    <form class="alert" id="hook-alert" novalidate>
+      <p class="eyebrow eyebrow--accent">Hook Alert</p>
+      <h3 class="display d2">Know before we hook.</h3>
+      <div class="field"><label for="ha-email">Email</label><input class="input" id="ha-email" name="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="ha-phone">Mobile <span class="opt">(optional, for SMS)</span></label><input class="input" id="ha-phone" name="phone" type="tel" autocomplete="tel"></div>
+      <label class="consent" for="ha-sms"><input id="ha-sms" name="sms" type="checkbox"><span>Yes, text me Hook Alerts from Heavy Metal. Msg frequency varies, about one per event. Msg &amp; data rates may apply. Reply STOP to cancel, HELP for help. Consent is not a condition of purchase.</span></label>
+      <button class="btn btn--accent" type="submit">Get Hook Alerts</button>
+      <p class="alert__msg" id="ha-msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<!-- 8. SPONSORS · hm-sponsors -->
+<section class="sect" data-shopify="hm-sponsors" aria-labelledby="spons-title">
+  <div class="wrap">
+    <div class="sect-head">
+      <div><p class="eyebrow">Sponsors</p><h2 class="display d3" id="spons-title">Your name, in black smoke</h2></div>
+    </div>
+    <ul class="slots" style="list-style:none;padding:0" aria-label="Open sponsor spots">
+      <li class="slot">Your logo here</li><li class="slot">Your logo here</li><li class="slot">Your logo here</li><li class="slot">Your logo here</li><li class="slot">Your logo here</li>
+    </ul>
+    <div class="spons-foot">
+      <p>NTPA pulls stream live on Full Pull Live. Put your brand on the only Cat V8 in Pro Stock.</p>
+      <a class="btn btn--accent" href="sponsors.html">Sponsor the Machine</a>
+    </div>
+    <p class="note">No hay patrocinadores confirmados: se muestran espacios vacíos en lugar de logos inventados. En Shopify esta sección se llena desde un metaobjeto "sponsor" y los espacios vacíos desaparecen al cargar logos reales.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="ftr"><div class="wrap ftr__in">
+  <div><div class="logo">Heavy <span>Metal</span></div><p>Pro Stock pulling tractor · Waterloo, Wisconsin<br>NTPA · PPL Badger State</p></div>
+  <div><p class="eyebrow">Follow</p><p><a href="https://www.facebook.com/heavymetalprostock/">Facebook</a></p></div>
+  <div><p class="eyebrow">Help</p><p>Shipping · Returns · Contact</p></div>
+</div></footer>
+
+<script>
+// Hotspots: toque en móvil abre/cierra la etiqueta; Esc cierra.
+document.querySelectorAll('.hs').forEach(function(b){
+  b.addEventListener('click',function(){
+    var open=b.getAttribute('aria-expanded')==='true';
+    document.querySelectorAll('.hs').forEach(function(o){o.setAttribute('aria-expanded','false')});
+    b.setAttribute('aria-expanded',String(!open));
+  });
+  b.addEventListener('keydown',function(e){if(e.key==='Escape')b.setAttribute('aria-expanded','false')});
+});
+// Formulario de boceto: no envía nada, solo confirma.
+document.getElementById('hook-alert').addEventListener('submit',function(e){
+  e.preventDefault();
+  var email=document.getElementById('ha-email'),msg=document.getElementById('ha-msg');
+  if(!email.value||!email.checkValidity()){msg.textContent='Enter a valid email.';email.focus();return;}
+  msg.textContent="You're on the list. We'll warn you before we hook.";
+});
+</script>
