@@ -14,6 +14,9 @@
    Página de producto (plantilla product.json). Solo variables de boceto.css, sin colores nuevos.
    Bloques Shopify marcados con comentarios "shopify: sección / bloque". */
 html,body{overflow-x:clip}
+[hidden]{display:none!important}
+.opt{position:relative}
+.opt>.linkbtn{position:absolute;top:-4px;right:0}
 .vh{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 
 /* breadcrumb */
@@ -73,8 +76,7 @@ html,body{overflow-x:clip}
 .opt{border:0;margin:0;padding:0;min-width:0}
 .opt legend{padding:0;margin-bottom:10px;display:flex;justify-content:space-between;align-items:baseline;width:100%;gap:12px;font-family:var(--f-cond);font-weight:600;font-size:var(--t-sm);letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
 .opt legend b{color:var(--bone);font-weight:700}
-.opt__head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px}
-.opt__head legend{margin:0;width:auto}
+.opt legend.legend--pad{justify-content:flex-start;padding-right:120px}
 .linkbtn{background:none;border:0;padding:4px 0;color:var(--bone);font-family:var(--f-cond);font-weight:600;font-size:var(--t-sm);letter-spacing:.1em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;cursor:pointer;white-space:nowrap}
 .linkbtn:hover{color:var(--accent)}
 .opt input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
@@ -325,10 +327,8 @@ html,body{overflow-x:clip}
         </fieldset>
 
         <fieldset class="opt" id="size-set" aria-describedby="size-msg size-hint">
-          <div class="opt__head">
-            <legend>Size <b id="size-name">Pick one</b></legend>
-            <button class="linkbtn" type="button" id="sg-open" aria-haspopup="dialog">Size guide</button>
-          </div>
+          <legend class="legend--pad">Size <b id="size-name">Pick one</b></legend>
+          <button class="linkbtn" type="button" id="sg-open" aria-haspopup="dialog">Size guide</button>
           <div class="sizes">
             <input type="radio" name="size" id="size-s" value="S"><label class="size" for="size-s">S</label>
             <input type="radio" name="size" id="size-m" value="M"><label class="size" for="size-m">M</label>
