@@ -1,14 +1,17 @@
 # Datarin · identidad de marca
 
+Sistema gráfico: el corte ascendente (barras, recortes de foto, separadores) y el punto de dato (viñetas, valor destacado en gráficos). Sin íconos decorativos ni degradados.
+
 Manual completo: `brand-book.html` (ábrelo en el navegador).
 
 ## Logo
-- Wordmark `datarin` en minúsculas, Geist SemiBold en contornos, espaciado −2,8%.
-- El punto de la i es un cuadrado cobalto del ancho del trazo: el **punto de dato**.
-- Ícono `d.` para favicon y avatares.
-- Área de protección: 3 veces el cuadrado. Tamaño mínimo: 72 px / 18 mm.
+- Wordmark `datarin` en minúsculas, dibujado desde cero (no es una fuente): un círculo base de 520 unidades y astas de 112.
+- Todas las astas terminan en un **corte ascendente** de 19,7° (suben 40 unidades en su ancho), como una gráfica que crece.
+- El punto de la i es un círculo cobalto de 1,24 veces el asta: el **punto de dato**.
+- Ícono: la `d` con el punto de dato arriba a la derecha.
+- Área de protección: 2 veces el punto. Tamaño mínimo: 72 px / 18 mm.
 
-Archivos en `logo/`: `datarin-wordmark.svg`, `-negativo`, `-tinta`, `-blanco`, `datarin-icono.svg`, `datarin-icono-cobalto.svg`.
+Archivos en `logo/`: `datarin-wordmark.svg`, `-negativo`, `-tinta`, `-blanco`, `datarin-icono.svg`, `datarin-icono-cobalto.svg`, `datarin-icono-claro.svg`.
 
 ## Color
 | Token | Hex | Uso |
@@ -24,10 +27,10 @@ Archivos en `logo/`: `datarin-wordmark.svg`, `-negativo`, `-tinta`, `-blanco`, `
 Proporción: Papel 60 · Tinta 30 · Cobalto 8 · Ámbar 2.
 
 ## Tipografía
-Geist (400, 500, 600) para todo; Geist Mono (400, 500) para cifras, etiquetas y ejes. Ambas en Google Fonts.
+Outfit (500, 600) para titulares, Geist (400, 500) para texto y Geist Mono (400, 500) para cifras, etiquetas y ejes. Las tres en Google Fonts.
 
 ## Tono de voz
-Claro, preciso, sereno. Tuteo, español neutro.
+Claro, preciso, en movimiento. Tuteo, español neutro.
 1. Números antes que adjetivos.
 2. La decisión es el protagonista; la herramienta es el medio.
 3. Frases cortas, una idea por frase.
