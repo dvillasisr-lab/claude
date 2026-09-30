@@ -791,6 +791,9 @@ def variacion_3(p):
 PX = 96 / 25.4   # px por mm (para el recorte de la vista previa)
 
 
+RC, RN = .188 * 25.4, .094 * 25.4   # radios de galga: 3/16 in convexo y 3/32 in cóncavo
+
+
 def tool_shape(mirror=False, k=1.0):
     """Contorno de corte (con 3 mm de sangrado): esquina R5 convexa, muesca R2.5 cóncava, R1.5 en las otras.
     mirror=True da el contorno visto desde el reverso; k escala a otras unidades (px para la vista previa)."""
@@ -798,9 +801,10 @@ def tool_shape(mirror=False, k=1.0):
     Y = lambda y: y * k
     sw = (lambda v: 1 - v) if mirror else (lambda v: v)
     arc = lambda r, flag, x, y: f"A{f(r*k)},{f(r*k)} 0 0 {sw(flag)} {f(X(x))},{f(Y(y))}"
-    return " ".join([f"M{f(X(8))},{f(Y(3))}", f"H{f(X(90.5))}", arc(1.5, 1, 92, 4.5), f"V{f(Y(51.5))}",
-                     arc(2.5, 0, 89.5, 54), f"H{f(X(4.5))}", arc(1.5, 1, 3, 52.5), f"V{f(Y(8))}",
-                     arc(5, 1, 8, 3), "Z"])
+    rc, rn = RC, RN
+    return " ".join([f"M{f(X(3+rc))},{f(Y(3))}", f"H{f(X(90.5))}", arc(1.5, 1, 92, 4.5), f"V{f(Y(54-rn))}",
+                     arc(rn, 0, 92 - rn, 54), f"H{f(X(4.5))}", arc(1.5, 1, 3, 52.5), f"V{f(Y(3+rc))}",
+                     arc(rc, 1, 3 + rc, 3), "Z"])
 
 
 def inch_ruler(x0, y, inches=3):
@@ -823,6 +827,12 @@ def mm_ruler(x0, y, mm=70):
         if k % 10 == 0:
             t.append(f'<text x="{f(x)}" y="{f(y-3.6)}" class="dim" text-anchor="middle">{k//10 if k else "0 CM"}</text>')
     return f'<path d="{" ".join(d)}" {S} stroke-width=".15"/>' + "".join(t)
+
+
+def inch(mm, dec=3):
+    """Cota en pulgadas al estilo de planos de EE. UU.: 3 decimales y sin cero inicial (.188)."""
+    v = f"{mm / 25.4:.{dec}f}"
+    return v[1:] if v.startswith("0.") else v
 
 
 def inch_ruler_edge(x0, y_trim, y_bleed, inches=3):
@@ -853,8 +863,8 @@ def mm_ruler_edge(x0, y_trim, y_bleed, mm=70):
 
 def variacion_5(p):
     front_art = (inch_ruler(13, 3) + mm_ruler(6, 54)
-                 + '<text x="4.6" y="12.6" class="dim b">R5</text>'
-                 + '<text x="88.6" y="48.2" class="dim b" text-anchor="end">R2.5</text>')
+                 + '<text x="4.6" y="12.6" class="dim b">R.188</text>'
+                 + '<text x="88.6" y="48.2" class="dim b" text-anchor="end">R.094</text>')
     css = CONCEPT_CSS + f"""
   .v5.front{{background:radial-gradient(110% 130% at 70% 45%,#2a2a6e 0%,var(--navy) 45%,var(--navy-deep) 100%);color:#fff}}
   .v5.front .draw{{color:var(--line)}}
@@ -919,7 +929,7 @@ def variacion_5(p):
     <rect x="0" y="0" width="95" height="57" fill="none" stroke="#bbb" stroke-width=".1" stroke-dasharray="1 .6"/>
     <path d="{tool_shape()}" fill="none" stroke="#e6007e" stroke-width=".2"/>
     <text x="47.5" y="24" class="dim" text-anchor="middle" fill="#e6007e" style="fill:#e6007e;font-size:2px">DIE LINE · TROQUEL (FRENTE)</text>
-    <text x="47.5" y="28" class="dim" text-anchor="middle" style="fill:#555;font-size:1.6px">89 × 51 MM · R5 CONVEXO SUP. IZQ. · R2.5 CÓNCAVO INF. DER. · R1.5 RESTO</text>
+    <text x="47.5" y="28" class="dim" text-anchor="middle" style="fill:#555;font-size:1.6px">89 × 51 MM · R.188 IN CONVEXO SUP. IZQ. · R.094 IN CÓNCAVO INF. DER. · R1.5 MM RESTO</text>
     <text x="47.5" y="31" class="dim" text-anchor="middle" style="fill:#555;font-size:1.6px">SANGRADO 3 MM · NO IMPRIMIR ESTA PÁGINA</text>
   </svg>
 </section>"""
@@ -955,18 +965,18 @@ def regla(p, troquel=True, tema="azul"):
         W, H, B = 95.25, 57.15, 3.175            # 3.5 x 2 in + 1/8 in de sangrado
         front_art = inch_ruler_edge(8.5, B, 0) + mm_ruler_edge(7.5, H - B, H, mm=80)
     if troquel:
-        front_art += ('<text x="4.6" y="12.6" class="dim b">R5</text>'
-                      '<text x="88.6" y="48.2" class="dim b" text-anchor="end">R2.5</text>')
+        front_art += ('<text x="4.6" y="12.6" class="dim b">R.188</text>'
+                      '<text x="88.6" y="48.2" class="dim b" text-anchor="end">R.094</text>')
     # reverso: brida redonda a escala 1:1 (mm)
-    cx, cy, R = 78.0, 15.5, 22.0
-    bc, hole = R * .78, R * .1
+    cx, cy, R = 78.0, 15.5, 1.750 * 25.4 / 2
+    bc, hole = R * .78, .188 * 25.4 / 2
     a = math.radians(135)                       # el barreno que queda completo a la vista
     hx, hy = cx + bc * math.cos(a), cy + bc * math.sin(a)
     ao = math.radians(168)
     ox, oy = cx + R * math.cos(ao), cy + R * math.sin(ao)
     back_art = (flange(cx, cy, R, hole)
-                + leader(ox - .15, oy + .1, ox - 3.2, oy + 4.2, ox - 11, f"Ø{2*R:.2f}", anchor="start")
-                + leader(hx - hole * .7, hy + hole * .7, hx - 4.2, 35.6, hx - 18.5, f"4× Ø{2*hole:.2f} THRU", anchor="start"))
+                + leader(ox - .15, oy + .1, ox - 3.2, oy + 4.2, ox - 11, f"Ø{inch(2*R)}", anchor="start")
+                + leader(hx - hole * .7, hy + hole * .7, hx - 4.2, 35.6, hx - 18.5, f"4× Ø{inch(2*hole)} THRU", anchor="start"))
     cls = "rg" + ("t" if troquel else "c") + tema
     clip = ""
     if troquel:
@@ -1028,7 +1038,7 @@ def regla(p, troquel=True, tema="azul"):
     <rect x="0" y="0" width="95" height="57" fill="none" stroke="#bbb" stroke-width=".1" stroke-dasharray="1 .6"/>
     <path d="{tool_shape()}" fill="none" stroke="#e6007e" stroke-width=".2"/>
     <text x="47.5" y="24" class="dim" text-anchor="middle" style="fill:#e6007e;font-size:2px">DIE LINE · TROQUEL (FRENTE)</text>
-    <text x="47.5" y="28" class="dim" text-anchor="middle" style="fill:#555;font-size:1.6px">89 × 51 MM · R5 CONVEXO SUP. IZQ. · R2.5 CÓNCAVO INF. DER. · R1.5 RESTO</text>
+    <text x="47.5" y="28" class="dim" text-anchor="middle" style="fill:#555;font-size:1.6px">89 × 51 MM · R.188 IN CONVEXO SUP. IZQ. · R.094 IN CÓNCAVO INF. DER. · R1.5 MM RESTO</text>
     <text x="47.5" y="31" class="dim" text-anchor="middle" style="fill:#555;font-size:1.6px">SANGRADO 3 MM · NO IMPRIMIR ESTA PÁGINA</text>
   </svg>
 </section>"""
