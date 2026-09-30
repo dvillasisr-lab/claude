@@ -1,0 +1,66 @@
+<section class="hm hm-gallery" aria-labelledby="hm-gal-title">
+  <div class="hm-head hm-wrap">
+    <div class="hm-head__text"><p class="hm-eyebrow">{{ section.settings.eyebrow }}</p><h2 class="hm-gallery__tag" id="hm-gal-title">TAG <span style="color:#F5C400">{{ section.settings.hashtag }}</span></h2></div>
+    <div class="hm-row">
+      {%- if section.settings.instagram != blank -%}<a class="hm-btn hm-btn--ghost hm-btn--sm" href="{{ section.settings.instagram }}" target="_blank" rel="noopener"><span>FOLLOW ON INSTAGRAM</span></a>{%- endif -%}
+      {%- if section.settings.facebook != blank -%}<a class="hm-btn hm-btn--ghost hm-btn--sm" href="{{ section.settings.facebook }}" target="_blank" rel="noopener"><span>FOLLOW ON FACEBOOK</span></a>{%- endif -%}
+    </div>
+  </div>
+  <div class="hm-gallery__strip">
+    {%- for round in (1..2) -%}
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}<div class="hm-gallery__item"{% if round == 2 %} aria-hidden="true"{% endif %}>{% render 'hm-img', image: block.settings.image, fallback: 'hm-rear.jpg', alt: 'Heavy Metal at the pull', sizes: '360px' %}</div>{%- endfor -%}
+      {%- else -%}
+        {%- for f in (1..6) -%}{%- assign fname = "hm-rear.jpg,hm-front-white.jpg,hm-grandstand.jpg,hm-driver-crew.jpg,hm-side.jpg,hm-engine.jpg" | split: ',' -%}<div class="hm-gallery__item"{% if round == 2 %} aria-hidden="true"{% endif %}><img src="{{ fname[forloop.index0] | asset_url }}" width="1050" height="1400" alt="Heavy Metal at the pull" loading="lazy"></div>{%- endfor -%}
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "HM Gallery",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "04 / FROM THE TRACK"
+    },
+    {
+      "type": "text",
+      "id": "hashtag",
+      "label": "Hashtag",
+      "default": "#HEAVYMETALPULLING"
+    },
+    {
+      "type": "url",
+      "id": "instagram",
+      "label": "Instagram link"
+    },
+    {
+      "type": "url",
+      "id": "facebook",
+      "label": "Facebook link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Gallery"
+    }
+  ]
+}
+{% endschema %}
+

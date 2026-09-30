@@ -1,0 +1,172 @@
+<section class="hm hm-drop" id="shop" aria-labelledby="hm-drop-title">
+  <div class="hm-trust"><div class="hm-trust__item"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink:0"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z" fill="none" stroke="#F5C400" stroke-width="1.8" stroke-linejoin="round"/><circle cx="7" cy="17.5" r="1.8" fill="none" stroke="#F5C400" stroke-width="1.8"/><circle cx="17" cy="17.5" r="1.8" fill="none" stroke="#F5C400" stroke-width="1.8"/></svg><div><div class="hm-trust__title">{{ section.settings.trust_1_title }}</div><div class="hm-trust__sub">{{ section.settings.trust_1_sub }}</div></div></div><div class="hm-trust__item"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink:0"><circle cx="12" cy="12" r="9" fill="none" stroke="#F5C400" stroke-width="1.8"/><path d="M12 7v5l3 2" fill="none" stroke="#F5C400" stroke-width="1.8" stroke-linecap="round"/></svg><div><div class="hm-trust__title">{{ section.settings.trust_2_title }}</div><div class="hm-trust__sub">{{ section.settings.trust_2_sub }}</div></div></div><div class="hm-trust__item"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink:0"><rect x="5" y="10" width="14" height="10" rx="1.5" fill="none" stroke="#F5C400" stroke-width="1.8"/><path d="M8 10V7a4 4 0 0 1 8 0v3" fill="none" stroke="#F5C400" stroke-width="1.8"/></svg><div><div class="hm-trust__title">{{ section.settings.trust_3_title }}</div><div class="hm-trust__sub">{{ section.settings.trust_3_sub }}</div></div></div><div class="hm-trust__item"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink:0"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z" fill="none" stroke="#F5C400" stroke-width="1.8" stroke-linejoin="round"/></svg><div><div class="hm-trust__title">{{ section.settings.trust_4_title }}</div><div class="hm-trust__sub">{{ section.settings.trust_4_sub }}</div></div></div></div>
+  <div class="hm-head">
+    <div class="hm-head__text"><p class="hm-eyebrow">{{ section.settings.eyebrow }}</p><h2 class="hm-h2" id="hm-drop-title">{{ section.settings.title_1 }} <span class="hm-chrome">{{ section.settings.title_2 }}</span></h2></div>
+    <a class="hm-link" href="{{ section.settings.collection.url | default: '/collections/all' }}">SHOP ALL GEAR →</a>
+  </div>
+  <div class="hm-products">
+  {%- assign coll = section.settings.collection -%}
+  {%- if coll != blank and coll.products.size > 0 -%}
+    {%- for product in coll.products limit: 3 -%}
+      {%- assign badge = '' -%}
+      {%- for tag in product.tags -%}{%- if tag contains 'badge:' -%}{%- assign badge = tag | remove: 'badge:' -%}{%- endif -%}{%- endfor -%}
+      <div class="hm-card">
+        <a class="hm-card__media" href="{{ product.url }}">
+          {%- if product.featured_image -%}{{ product.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', alt: product.title, widths: '400, 600, 900', sizes: '(min-width: 1100px) 25vw, 50vw' }}{%- else -%}<span class="hm-placeholder">{{ product.title }}</span>{%- endif -%}
+          {%- if badge != '' -%}<span class="hm-card__badge">{{ badge }}</span>{%- endif -%}
+        </a>
+        <div class="hm-card__row"><a class="hm-card__title" href="{{ product.url }}">{{ product.title }}</a><span class="hm-card__price">{{ product.price | money_without_trailing_zeros }}</span></div>
+        {%- form 'product', product, class: 'hm-pform' -%}
+          {%- if product.has_only_default_variant -%}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <div class="hm-card__note">{{ product.metafields.custom.card_note | default: 'One size' }}</div>
+          {%- else -%}
+            <fieldset class="hm-sizes"><legend class="visually-hidden">Size</legend>
+            {%- for v in product.variants -%}
+              <input type="radio" id="v-{{ section.id }}-{{ v.id }}" name="id" value="{{ v.id }}"{% if v == product.selected_or_first_available_variant %} checked{% endif %}{% unless v.available %} disabled{% endunless %}>
+              <label for="v-{{ section.id }}-{{ v.id }}">{{ v.title }}</label>
+            {%- endfor -%}
+            </fieldset>
+          {%- endif -%}
+          <button type="submit" class="hm-btn hm-btn--solid hm-btn--sm hm-btn--full"{% unless product.available %} disabled{% endunless %}><span>{% if product.available %}ADD TO CART{% else %}SOLD OUT{% endif %}</span></button>
+        {%- endform -%}
+      </div>
+    {%- endfor -%}
+  {%- else -%}
+    {%- assign demo = 'Evil One Tee,Team Tee,Can Sleeve (by Printify)' | split: ',' -%}
+    {%- assign demo_price = '$35,$35,$12' | split: ',' -%}
+    {%- assign demo_note = 'Born in a lightning storm. Built to pull. Wear it to the track or anywhere loud.,Show your Heavy Metal colors, at the track or anywhere else.,Keep it cold while the tractor gets hot.' | split: ',' -%}
+    {%- for i in (0..2) -%}
+      <div class="hm-card"><div class="hm-card__media"><span class="hm-placeholder">Choose your merch collection in the theme editor</span></div><div class="hm-card__row"><span class="hm-card__title">{{ demo[i] }}</span><span class="hm-card__price">{{ demo_price[i] }}</span></div><div class="hm-card__note">{{ demo_note[i] }}</div></div>
+    {%- endfor -%}
+  {%- endif -%}
+  </div>
+  <p style="margin:0;font-size:14px;color:#8C8A82">More drops coming: hats, hoodies, stickers, fan flags &amp; gloves.</p>
+  {%- if section.settings.show_bundle -%}
+  {%- assign bp = section.settings.bundle_product -%}
+  <div class="hm-bundle">
+    <div style="display:flex;align-items:center;gap:28px;flex-wrap:wrap"><div class="hm-bundle__name">{{ section.settings.bundle_name }}</div><div><div class="hm-bundle__title">{{ section.settings.bundle_title }}</div><div class="hm-muted" style="font-size:16px">{{ section.settings.bundle_text }}</div></div></div>
+    <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+      {%- if bp != blank -%}<div class="hm-bundle__price">{%- if bp.compare_at_price > bp.price -%}<s>{{ bp.compare_at_price | money_without_trailing_zeros }}</s>{%- endif -%}<strong>{{ bp.price | money_without_trailing_zeros }}</strong></div>{%- endif -%}
+      <a class="hm-btn hm-btn--solid" href="{{ bp.url | default: '/collections/all' }}"><span>GET THE BUNDLE</span></a>
+    </div>
+  </div>
+  {%- endif -%}
+</section>
+{% schema %}
+{
+  "name": "HM Shop (The Drop)",
+  "settings": [
+    {
+      "type": "text",
+      "id": "trust_1_title",
+      "label": "Promise 1 title",
+      "default": "FREE US SHIPPING"
+    },
+    {
+      "type": "text",
+      "id": "trust_1_sub",
+      "label": "Promise 1 detail",
+      "default": "On orders over $[X]"
+    },
+    {
+      "type": "text",
+      "id": "trust_2_title",
+      "label": "Promise 2 title",
+      "default": "SHIPS IN 5 DAYS"
+    },
+    {
+      "type": "text",
+      "id": "trust_2_sub",
+      "label": "Promise 2 detail",
+      "default": "Printed to order in the USA"
+    },
+    {
+      "type": "text",
+      "id": "trust_3_title",
+      "label": "Promise 3 title",
+      "default": "SECURE CHECKOUT"
+    },
+    {
+      "type": "text",
+      "id": "trust_3_sub",
+      "label": "Promise 3 detail",
+      "default": "Cards, Apple Pay, Shop Pay"
+    },
+    {
+      "type": "text",
+      "id": "trust_4_title",
+      "label": "Promise 4 title",
+      "default": "FUELS THE TEAM"
+    },
+    {
+      "type": "text",
+      "id": "trust_4_sub",
+      "label": "Promise 4 detail",
+      "default": "Every order keeps us pulling"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "01 / THE DROP"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Title",
+      "default": "WEAR THE"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Title (chrome word)",
+      "default": "METAL"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Merch collection (first 3 products show: two tees + the can sleeve)"
+    },
+    {
+      "type": "paragraph",
+      "content": "Tip: add a tag like badge:BESTSELLER, badge:NEW or badge:LIMITED to a product to show its label."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_bundle",
+      "label": "Show Crew Pack bundle",
+      "default": true
+    },
+    {
+      "type": "product",
+      "id": "bundle_product",
+      "label": "Bundle product"
+    },
+    {
+      "type": "text",
+      "id": "bundle_name",
+      "label": "Bundle name",
+      "default": "CREW PACK"
+    },
+    {
+      "type": "text",
+      "id": "bundle_title",
+      "label": "Bundle contents",
+      "default": "BOTH TEES, ONE PRICE"
+    },
+    {
+      "type": "text",
+      "id": "bundle_text",
+      "label": "Bundle text",
+      "default": "Get the Evil One tee and the Team tee together and save."
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Shop (The Drop)"
+    }
+  ]
+}
+{% endschema %}
+

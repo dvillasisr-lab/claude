@@ -1,0 +1,112 @@
+{%- comment -%} Blueprint-style full spec sheet page (/pages/spec-sheet) {%- endcomment -%}
+<style>
+  .hm-bp{--bp-navy:#1A2230;--bp-line:rgba(150,180,220,.16);--bp-text:#B9C7DA;background:var(--bp-navy);color:#F2F0E9;overflow:hidden}
+  .hm-bp__grid{position:absolute;inset:0;pointer-events:none}
+  .hm-bp__top{position:relative;padding:70px 64px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:32px;flex-wrap:wrap}
+  .hm-bp__box{border:1px solid var(--bp-line);padding:18px 22px;text-align:right;font-family:'Barlow Condensed',sans-serif}
+  .hm-bp__rig{position:relative !important;margin-top:20px;height:420px !important;max-height:420px !important;overflow:hidden !important}
+  .hm-bp__rig img{position:absolute !important;top:50% !important;left:50% !important;transform:translate(-50%,-50%) !important;width:auto !important;height:80% !important;max-width:62% !important;max-height:80% !important;object-fit:contain;filter:drop-shadow(0 30px 40px rgba(0,0,0,.55))}
+  .hm-bp__callouts{position:relative;padding:0 64px;display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:-40px}
+  .hm-bp__col{display:flex;flex-direction:column;gap:34px}
+  .hm-bp__col.is-right{align-items:flex-end;text-align:right}
+  .hm-bp__label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:3px;color:#F5C400}
+  .hm-bp__value{font-family:'Anton',Impact,sans-serif;font-size:26px;line-height:1;text-transform:uppercase}
+  .hm-bp__foot{position:relative;padding:40px 64px 70px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--bp-line);margin-top:40px;flex-wrap:wrap;gap:16px;font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:3px;color:var(--bp-text)}
+  @media (max-width:760px){
+    .hm-bp__top{padding:44px 20px 0}
+    .hm-bp__callouts{padding:0 20px;grid-template-columns:1fr;gap:18px}
+    .hm-bp__col.is-right{align-items:flex-start;text-align:left}
+    .hm-bp__foot{padding:28px 20px 44px}
+    .hm-bp__rig{height:280px !important;max-height:280px !important}
+    .hm-bp__rig img{max-width:84% !important;height:78% !important;max-height:78% !important}
+    .hm-bp-photos{padding:44px 20px !important;grid-template-columns:1fr !important}
+    .hm-bp-cta{padding:0 20px 60px !important;padding-top:36px !important}
+  }
+</style>
+<section class="hm hm-bp" style="position:relative">
+  <svg class="hm-bp__grid" width="100%" height="100%" aria-hidden="true"><defs><pattern id="hmGrid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(150,180,220,.14)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(#hmGrid)"/></svg>
+  <div class="hm-bp__top">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <p class="hm-eyebrow" style="color:#B9C7DA">TECHNICAL DATA SHEET &middot; DOC HM-01</p>
+      <h1 style="margin:0;font-family:'Anton',Impact,sans-serif;font-size:clamp(48px,7vw,96px);line-height:.9;transform:skewX(-8deg);transform-origin:left bottom;text-transform:uppercase">{{ section.settings.title_1 }}<br><span style="color:transparent;-webkit-text-stroke:2px #F2F0E9">{{ section.settings.title_2 }}</span></h1>
+    </div>
+    <div class="hm-bp__box">
+      <div style="font-size:13px;letter-spacing:3px;color:#B9C7DA">MODEL</div>
+      <div style="font-family:'Anton',Impact,sans-serif;font-size:26px">{{ section.settings.model }}</div>
+      <div style="font-size:13px;letter-spacing:3px;color:#B9C7DA;margin-top:10px">CLASS</div>
+      <div style="font-family:'Anton',Impact,sans-serif;font-size:26px;color:#F5C400">{{ section.settings.class }}</div>
+      <div style="font-size:13px;letter-spacing:3px;color:#B9C7DA;margin-top:10px">HOME BASE</div>
+      <div style="font-family:'Anton',Impact,sans-serif;font-size:26px">{{ section.settings.home_base }}</div>
+      <div style="font-size:13px;letter-spacing:3px;color:#B9C7DA;margin-top:10px">CIRCUITS</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;line-height:1.3">{{ section.settings.circuits }}</div>
+    </div>
+  </div>
+  <div class="hm-bp__rig">{% render 'hm-img', image: section.settings.rig_image, fallback: 'hm-tractor-cutout.png', alt: 'Heavy Metal, side profile, background removed', sizes: '60vw' %}</div>
+  <div class="hm-bp__callouts">
+    <div class="hm-bp__col">
+      {%- for block in section.blocks -%}{%- if block.type == 'spec' and forloop.index0 < 4 -%}
+      <div><div class="hm-bp__label">0{{ forloop.index }} &middot; {{ block.settings.label }}</div><div class="hm-bp__value">{{ block.settings.value }}</div></div>
+      {%- endif -%}{%- endfor -%}
+    </div>
+    <div class="hm-bp__col is-right">
+      {%- for block in section.blocks -%}{%- if block.type == 'spec' and forloop.index0 >= 4 -%}
+      <div><div class="hm-bp__label">{{ block.settings.label }} &middot; 0{{ forloop.index }}</div><div class="hm-bp__value">{{ block.settings.value }}</div></div>
+      {%- endif -%}{%- endfor -%}
+    </div>
+  </div>
+  <div style="position:relative;padding:40px 64px 0"><div style="border-left:2px solid #F5C400;padding-left:14px"><div style="font-family:'Anton',Impact,sans-serif;font-size:22px;line-height:1.3;text-transform:uppercase">&ldquo;{{ section.settings.quote }}&rdquo;</div><div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;letter-spacing:2px;color:var(--bp-text);margin-top:8px">{{ section.settings.quote_sub }}</div></div></div>
+  <div class="hm-bp__foot"><span>SCALE N.T.S. &middot; SHEET 1 OF 1 &middot; REV {{ "now" | date: "%Y" }}</span><span>HEAVYMETALPROSTOCK.COM</span></div>
+</section>
+
+<section class="hm-bp-photos" style="background:#0B0B0A;padding:90px 64px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px">
+  <div style="height:420px;position:relative;overflow:hidden;border:1px solid #2A2A26">{% render 'hm-img', image: section.settings.engine_image, fallback: 'hm-engine.jpg', alt: 'The Heavy Metal engine', class: 'hm-cover', sizes: '(min-width: 760px) 48vw, 100vw' %}</div>
+  <div style="height:420px;position:relative;overflow:hidden;border:1px solid #2A2A26">{% render 'hm-img', image: section.settings.action_image, fallback: 'hm-rear.jpg', alt: 'Heavy Metal pulling with black smoke', class: 'hm-cover', sizes: '(min-width: 760px) 48vw, 100vw' %}</div>
+</section>
+<section class="hm-bp-cta" style="background:#0B0B0A;padding:0 64px 100px;display:flex;align-items:center;justify-content:space-between;gap:32px;border-top:1px solid #2A2A26;padding-top:56px;flex-wrap:wrap">
+  <div style="display:flex;flex-direction:column;gap:10px"><div style="font-family:'Anton',Impact,sans-serif;font-size:40px;line-height:1">WANT TO SEE IT RUN?</div><div style="font-size:17px;color:#A8A59A">Watch the full pull on the home page.</div></div>
+  <a class="hm-btn hm-btn--solid" href="/#watch"><span>WATCH IT PULL &rarr;</span></a>
+</section>
+{% schema %}
+{
+  "name": "HM Spec Sheet (blueprint)",
+  "settings": [
+    { "type": "text", "id": "title_1", "label": "Title line 1", "default": "FULL PULL" },
+    { "type": "text", "id": "title_2", "label": "Title line 2 (outline)", "default": "OR NOTHING" },
+    { "type": "text", "id": "model", "label": "Model", "default": "1015 CHALLENGER" },
+    { "type": "text", "id": "class", "label": "Class", "default": "PRO STOCK" },
+    { "type": "text", "id": "home_base", "label": "Home base", "default": "WATERLOO, WI" },
+    { "type": "text", "id": "circuits", "label": "Circuits", "default": "NTPA &amp; PPL Badger State" },
+    { "type": "text", "id": "quote", "label": "Quote", "default": "This thing is f#cking evil." },
+    { "type": "text", "id": "quote_sub", "label": "Quote subtext", "default": "Everything on it is custom-built." },
+    { "type": "image_picker", "id": "rig_image", "label": "Tractor cutout (background removed, PNG)" },
+    { "type": "image_picker", "id": "engine_image", "label": "Engine photo" },
+    { "type": "image_picker", "id": "action_image", "label": "Action photo" }
+  ],
+  "blocks": [
+    {
+      "type": "spec",
+      "name": "Spec",
+      "limit": 8,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "ENGINE" },
+        { "type": "text", "id": "value", "label": "Value", "default": "CAT V8" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Spec Sheet (blueprint)",
+      "blocks": [
+        { "type": "spec", "settings": { "label": "ENGINE", "value": "CAT 3208 V8 (REVERSE-FLOW)" } },
+        { "type": "spec", "settings": { "label": "DISPLACEMENT", "value": "680 CU IN (636 STOCK)" } },
+        { "type": "spec", "settings": { "label": "TURBO", "value": "SINGLE, LARGE" } },
+        { "type": "spec", "settings": { "label": "HORSEPOWER", "value": "UNKNOWN" } },
+        { "type": "spec", "settings": { "label": "WEIGHT", "value": "10,000 LB" } },
+        { "type": "spec", "settings": { "label": "TIRES", "value": "24.5-32" } },
+        { "type": "spec", "settings": { "label": "TRANSMISSION", "value": "UNKNOWN" } },
+        { "type": "spec", "settings": { "label": "CHASSIS", "value": "CUSTOM-BUILT" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

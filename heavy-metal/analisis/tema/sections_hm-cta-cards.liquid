@@ -1,0 +1,86 @@
+<section class="hm hm-cards" id="schedule">
+  <div class="hm-cards__sched">
+    <div style="display:flex;flex-direction:column;gap:14px"><p class="hm-eyebrow" style="color:#0B0B0A;font-weight:700">{{ section.settings.sched_eyebrow }}</p><h2 class="hm-h2">{{ section.settings.sched_title }}</h2><p>{{ section.settings.sched_text }}</p></div>
+    {%- form 'customer', id: 'hm-schedule-form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter,pull-schedule">
+      {%- if form.posted_successfully? -%}<p class="hm-form-msg">YOU'RE IN. WE'LL LET YOU KNOW WHERE WE PULL NEXT.</p>
+      {%- else -%}
+      <div style="display:flex;flex-direction:column;gap:10px"><label class="hm-label" for="hm-sched-email">YOUR EMAIL</label><div class="hm-field"><input id="hm-sched-email" type="email" name="contact[email]" required autocomplete="email" placeholder="name@email.com"><button type="submit">NOTIFY ME</button></div>{%- if form.errors -%}<p class="hm-form-msg">{{ form.errors | default_errors }}</p>{%- endif -%}</div>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+  <div class="hm-cards__spon">
+    {% render 'hm-img', image: section.settings.spon_image, fallback: 'hm-front-white.jpg', alt: '', class: 'hm-cover hm-kb2', sizes: '(min-width: 760px) 50vw, 100vw' %}
+    <div class="hm-shade"></div>
+    <div class="hm-cards__spon-inner">
+      <div style="display:flex;flex-direction:column;gap:14px"><p class="hm-eyebrow">{{ section.settings.spon_eyebrow }}</p><h2 class="hm-h2">{{ section.settings.spon_title_1 }}<br><span class="hm-chrome">{{ section.settings.spon_title_2 }}</span></h2><p>{{ section.settings.spon_text }}</p></div>
+      <a class="hm-btn hm-btn--solid" href="{{ section.settings.spon_url }}" style="align-self:flex-start"><span>BECOME A SPONSOR →</span></a>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "HM Schedule + Sponsors",
+  "settings": [
+    {
+      "type": "text",
+      "id": "sched_eyebrow",
+      "label": "Schedule eyebrow",
+      "default": "06 / PULL SCHEDULE"
+    },
+    {
+      "type": "text",
+      "id": "sched_title",
+      "label": "Schedule title",
+      "default": "NEXT SEASON IS LOADING"
+    },
+    {
+      "type": "text",
+      "id": "sched_text",
+      "label": "Schedule text",
+      "default": "Be the first to know where Heavy Metal pulls next, plus new merch drops."
+    },
+    {
+      "type": "image_picker",
+      "id": "spon_image",
+      "label": "Sponsor card photo"
+    },
+    {
+      "type": "text",
+      "id": "spon_eyebrow",
+      "label": "Sponsor eyebrow",
+      "default": "07 / SPONSORS"
+    },
+    {
+      "type": "text",
+      "id": "spon_title_1",
+      "label": "Sponsor title",
+      "default": "RIDE WITH"
+    },
+    {
+      "type": "text",
+      "id": "spon_title_2",
+      "label": "Sponsor title (chrome)",
+      "default": "THE EVIL ONE"
+    },
+    {
+      "type": "text",
+      "id": "spon_text",
+      "label": "Sponsor text",
+      "default": "Your logo on our team gear, the trailer, this website and our socials, in front of every crowd we pull for."
+    },
+    {
+      "type": "text",
+      "id": "spon_url",
+      "label": "Sponsor page link",
+      "default": "/pages/sponsors"
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Schedule + Sponsors"
+    }
+  ]
+}
+{% endschema %}
+

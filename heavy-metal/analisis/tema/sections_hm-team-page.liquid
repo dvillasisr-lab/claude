@@ -1,0 +1,293 @@
+{%- comment -%} Full "The Team" page (/pages/about) {%- endcomment -%}
+<style>
+  .hm-tm-hero{position:relative;height:560px;overflow:hidden}
+  .hm-tm-hero__text{position:absolute;left:64px;right:64px;bottom:64px;display:flex;flex-direction:column;gap:14px}
+  .hm-tm-intro{padding:90px 64px 0;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:start}
+  .hm-tm-intro__img{position:relative;height:600px;overflow:hidden;border:1px solid #2A2A26}
+  .hm-tm-tag{position:absolute;top:-14px;left:30px;background:#F5C400;color:#0B0B0A;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;padding:5px 12px;transform:skewX(-10deg);z-index:2}
+  .hm-tm-tag span{display:inline-block;transform:skewX(10deg)}
+  .hm-beat{position:relative;padding-left:46px;margin-bottom:40px}
+  .hm-beat:last-child{margin-bottom:0}
+  .hm-beat__n{position:absolute;left:0;top:4px;width:30px;height:30px;border-radius:50%;border:2px solid #F5C400;background:#0B0B0A;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;color:#F5C400}
+  .hm-spine{position:relative}
+  .hm-spine::before{content:'';position:absolute;left:15px;top:10px;bottom:10px;width:2px;background:linear-gradient(180deg,#F5C400,rgba(245,196,0,0) 95%)}
+  .hm-beat p{margin:0 0 14px;font-size:19px;line-height:1.65;color:#D8D5CB}
+  .hm-tm-ticks{padding:60px 64px 0;position:relative}
+  .hm-tm-ticks__line{position:absolute;left:60px;right:60px;top:42px;height:2px;background:#2A2A26}
+  .hm-tm-ticks__row{position:relative;display:flex;gap:20px;flex-wrap:wrap}
+  .hm-tm-tick{display:flex;flex-direction:column;align-items:center;gap:10px;flex:1;min-width:120px}
+  .hm-tm-lightning{padding:60px 64px 0}
+  .hm-bolt-wrap{margin:10px 0 0;display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center}
+  .hm-tm-quoterow{padding:56px 64px 0;display:grid;grid-template-columns:.85fr 1.15fr;gap:56px;align-items:start}
+  .hm-bolt-headline{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:clamp(34px,6vw,92px);text-transform:uppercase;line-height:1.03;color:#F2F0E9;transform:skewX(-6deg);transform-origin:left}
+  .hm-tm-quote{border:1px solid #2A2A26;background:#121210;padding:34px 32px;position:relative}
+  .hm-tm-quote__tag{position:absolute;top:-14px;left:26px;background:#0B0B0A;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:12px;letter-spacing:2px;color:#F5C400;padding:0 10px}
+  .hm-tm-quote__text{font-family:'Anton',Impact,sans-serif;font-size:46px;text-transform:uppercase;line-height:1.15}
+  .hm-tm-quote__by{font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:2px;color:#A8A59A;margin-top:10px}
+  .hm-tm-proud{padding:56px 64px 0}
+  .hm-tm-proud__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+  .hm-tm-proud__item{border-top:2px solid #F5C400;padding-top:16px}
+  .hm-tm-proud__item h4{font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:17px;text-transform:uppercase;margin:0 0 8px}
+  .hm-tm-proud__item p{margin:0;font-size:16px;line-height:1.55;color:#A8A59A}
+  .hm-tm-diff{padding:56px 64px 0;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  .hm-tm-diff__img{position:relative;height:340px;overflow:hidden;border:1px solid #2A2A26}
+  .hm-tm-banner{padding:40px 64px 0}
+  .hm-tm-banner__inner{padding:28px 40px;background:#F5C400;transform:skewX(-4deg)}
+  .hm-tm-banner__text{transform:skewX(4deg);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;color:#0B0B0A;letter-spacing:.3px}
+  .hm-tm-brothers{padding:70px 64px 0;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+  .hm-tm-brothers__box{border:1px solid #2A2A26;background:#121210;padding:32px}
+  .hm-tm-crew{padding:70px 64px 100px;display:flex;flex-direction:column;gap:40px}
+  .hm-tm-crew__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+  .hm-tm-card{border:1px solid #2A2A26;background:#121210;display:flex;align-items:center;gap:16px;padding:18px 20px}
+  .hm-tm-card__avatar{width:64px;height:64px;border-radius:50%;border:2px solid #F5C400;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;background:#16160f}
+  .hm-tm-card__name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:17px;letter-spacing:.5px;line-height:1.3}
+  .hm-tm-card__role{font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1px;color:#F5C400;text-transform:uppercase;line-height:1.3}
+  .hm-tm-cta{padding:0 64px 110px;display:flex;align-items:center;justify-content:space-between;gap:32px;border-top:1px solid #2A2A26;padding-top:56px;flex-wrap:wrap}
+  @media (max-width:760px){
+    .hm-tm-hero{height:460px}
+    .hm-tm-hero__text{left:20px;right:20px;bottom:36px}
+    .hm-tm-intro{padding:56px 20px 0;grid-template-columns:1fr;gap:28px}
+    .hm-tm-intro__img{height:360px}
+    .hm-tm-ticks{padding:44px 20px 0}
+    .hm-tm-lightning{padding:44px 20px 0}
+    .hm-bolt-wrap{grid-template-columns:1fr;gap:14px}
+    .hm-bolt-wrap svg{width:70px;height:140px}
+    .hm-tm-quoterow{padding:44px 20px 0;grid-template-columns:1fr;gap:28px}
+    .hm-tm-proud{padding:44px 20px 0}
+    .hm-tm-proud__grid{grid-template-columns:1fr}
+    .hm-tm-diff{padding:44px 20px 0;grid-template-columns:1fr}
+    .hm-tm-banner{padding:30px 20px 0}
+    .hm-tm-banner__inner{padding:22px 24px}
+    .hm-tm-banner__text{font-size:17px}
+    .hm-tm-brothers{padding:44px 20px 0;grid-template-columns:1fr;gap:24px}
+    .hm-tm-crew{padding:56px 20px 70px}
+    .hm-tm-crew__grid{grid-template-columns:1fr 1fr;gap:14px}
+    .hm-tm-cta{padding:0 20px 70px}
+  }
+</style>
+<section class="hm hm-tm-hero">
+  {% render 'hm-img', image: section.settings.hero_image, fallback: 'hm-crew.jpg', alt: 'The crew next to Heavy Metal in the pits', class: 'hm-cover', sizes: '100vw', loading: 'eager' %}
+  <div class="hm-shade"></div>
+  <div class="hm-tm-hero__text">
+    <p class="hm-eyebrow">{{ section.settings.eyebrow }}</p>
+    <h1 style="margin:0;font-family:'Anton',Impact,sans-serif;font-size:clamp(48px,7.4vw,112px);line-height:.9;transform:skewX(-8deg);transform-origin:left bottom;text-transform:uppercase">{{ section.settings.title_1 }}<br><span style="color:transparent;-webkit-text-stroke:2px #F2F0E9">{{ section.settings.title_2 }}</span></h1>
+  </div>
+</section>
+
+<section class="hm hm-tm-intro">
+  <div>
+    <p class="hm-eyebrow">OUR STORY</p>
+    <h2 class="hm-h2" style="font-size:clamp(40px,4.4vw,64px);margin:6px 0 18px">{{ section.settings.story_title_1 }} <span class="hm-chrome">{{ section.settings.story_title_2 }}</span></h2>
+    <div class="rte" style="font-size:22px;line-height:1.7;color:#D8D5CB;margin-bottom:34px">{{ section.settings.story_text }}</div>
+    <p style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:4px;color:#F5C400;margin:0 0 18px">HOW IT ALL STARTED &middot; TOMAH, WI</p>
+    <div class="hm-spine">
+      <div class="hm-beat"><div class="hm-beat__n">01</div><p style="font-size:23px">{{ section.settings.ch1_title }}</p><p>{{ section.settings.ch1_text }}</p></div>
+      <div class="hm-beat" style="margin-bottom:0"><div class="hm-beat__n">02</div><p>{{ section.settings.ch1b_text }}</p></div>
+    </div>
+  </div>
+  <div class="hm-tm-intro__img">
+    <div class="hm-tm-tag"><span>TOMAH &rarr; WATERLOO</span></div>
+    {% render 'hm-img', image: section.settings.story_image, fallback: 'hm-hero.jpg', alt: 'Heavy Metal pulling with a huge cloud of black smoke', class: 'hm-cover', sizes: '(min-width: 760px) 45vw, 100vw' %}
+  </div>
+</section>
+
+<section class="hm-tm-ticks">
+  <div class="hm-tm-ticks__line"></div>
+  <div class="hm-tm-ticks__row">
+    {%- for block in section.blocks -%}{%- if block.type == 'milestone' -%}
+    <div class="hm-tm-tick">
+      <div style="font-family:'Anton',Impact,sans-serif;font-size:28px;color:#F5C400;line-height:1">{{ block.settings.year }}</div>
+      <div style="width:14px;height:14px;border-radius:50%;background:#0B0B0A;border:3px solid #F5C400"></div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;letter-spacing:1px;color:#D8D5CB;text-align:center;line-height:1.3">{{ block.settings.label }}</div>
+    </div>
+    {%- endif -%}{%- endfor -%}
+  </div>
+</section>
+
+<section class="hm hm-tm-lightning">
+  <div class="hm-spine">
+    <div class="hm-beat" style="max-width:640px;margin-bottom:0"><div class="hm-beat__n"><svg width="12" height="16" viewBox="0 0 12 16"><polygon points="8,0 1,9 5,9 3,16 11,6 7,6" fill="#F5C400"/></svg></div><p style="font-size:20px">{{ section.settings.ch2_text }}</p></div>
+  </div>
+  <div class="hm-bolt-wrap">
+    <svg width="140" height="280" viewBox="0 0 140 280" aria-hidden="true">
+      <defs><filter id="boltGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="9" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+      <polygon points="88,0 20,150 58,150 30,280 122,105 78,105" fill="#F5C400" filter="url(#boltGlow)"/>
+    </svg>
+    <div class="hm-bolt-headline">{{ section.settings.ch2_title }}</div>
+  </div>
+</section>
+
+<section class="hm hm-tm-quoterow">
+  <div class="hm-tm-quote">
+    <div class="hm-tm-quote__tag">FROM THE DRIVER&#39;S SEAT</div>
+    <div class="hm-tm-quote__text">&ldquo;{{ section.settings.pull_quote }}&rdquo;</div>
+    <div class="hm-tm-quote__by">{{ section.settings.pull_quote_by }}</div>
+  </div>
+  <div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;color:#A8A59A;margin-bottom:18px">{{ section.settings.ch2b_text }}</div>
+    <div class="hm-spine">
+      <div class="hm-beat" style="margin-bottom:0"><div class="hm-beat__n">04</div><p>{{ section.settings.ch3_text }}</p><p>{{ section.settings.ch3b_text }}</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="hm-tm-proud">
+  <p style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;letter-spacing:3px;color:#F5C400;margin:0 0 18px">PROUDEST MOMENTS</p>
+  <div class="hm-tm-proud__grid">
+    <div class="hm-tm-proud__item"><h4>THE FIRST PULL</h4><p>It didn't end the way we wanted, but getting the tractor we built at home onto a real track is something we'll never forget.</p></div>
+    <div class="hm-tm-proud__item"><h4>A GREAT DYNO SESSION</h4><p>The day the numbers confirmed what we already felt: all the work was paying off.</p></div>
+    <div class="hm-tm-proud__item"><h4>BEST RESULTS: TBD</h4><p>A work in progress. The Evil One is just getting started.</p></div>
+  </div>
+</section>
+
+<section class="hm-tm-diff">
+  <div class="hm-spine">
+    <div class="hm-beat" style="margin-bottom:0"><div class="hm-beat__n">05</div><p>{{ section.settings.ch5_text }}</p><p>{{ section.settings.ch5b_text }}</p></div>
+  </div>
+  <div class="hm-tm-diff__img">{% render 'hm-img', image: section.settings.engine_image, fallback: 'hm-engine.jpg', alt: 'Heavy Metal engine', class: 'hm-cover', sizes: '(min-width: 760px) 45vw, 100vw' %}</div>
+</section>
+
+<section class="hm-tm-banner">
+  <div class="hm-tm-banner__inner"><div class="hm-tm-banner__text">{{ section.settings.season_text }}</div></div>
+</section>
+
+<section class="hm hm-tm-brothers">
+  <div class="hm-tm-brothers__img" style="position:relative;height:320px;overflow:hidden;border:1px solid #2A2A26">{% render 'hm-img', image: section.settings.brothers_image, fallback: 'hm-front-white.jpg', alt: 'Heavy Metal on the track', class: 'hm-cover', sizes: '(min-width: 760px) 50vw, 100vw' %}</div>
+  <div class="hm-tm-brothers__box">
+    <p class="hm-eyebrow">{{ section.settings.brothers_eyebrow }}</p>
+    <h3 style="font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:28px;text-transform:uppercase;color:#F2F0E9;margin:10px 0 14px">{{ section.settings.brothers_title }}</h3>
+    <div class="rte" style="font-size:16px;line-height:1.6;color:#D8D5CB">{{ section.settings.brothers_text }}</div>
+    <p style="margin:18px 0 0;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:2px;color:#F5C400;text-transform:uppercase">{{ section.settings.anthem }}</p>
+  </div>
+</section>
+
+<section class="hm hm-tm-crew">
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <p class="hm-eyebrow">MEET THE CREW</p>
+    <h2 class="hm-h2" style="font-size:clamp(40px,4.4vw,64px)">THE PEOPLE BEHIND THE PULL</h2>
+  </div>
+  <div class="hm-tm-crew__grid">
+    {%- for block in section.blocks -%}{%- if block.type == 'member' -%}
+    <div class="hm-tm-card" {{ block.shopify_attributes }}>
+      <div class="hm-tm-card__avatar">
+        {%- if block.settings.photo -%}
+          {{ block.settings.photo | image_url: width: 130 | image_tag: alt: block.settings.name, loading: 'lazy', style: 'width:100%;height:100%;object-fit:cover' }}
+        {%- elsif block.settings.is_mascot -%}
+          {%- if block.settings.mascot_color == 'black' -%}
+          <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="34" r="26" fill="#0B0B0A" stroke="#3A3A34" stroke-width="1.5"/>
+            <ellipse cx="14" cy="20" rx="8" ry="12" fill="#0B0B0A" stroke="#3A3A34" stroke-width="1.3"/>
+            <ellipse cx="50" cy="20" rx="8" ry="12" fill="#0B0B0A" stroke="#3A3A34" stroke-width="1.3"/>
+            <ellipse cx="23" cy="30" rx="3.4" ry="4" fill="#3A3A34"/><ellipse cx="42" cy="38" rx="3" ry="3.4" fill="#3A3A34"/>
+            <circle cx="27" cy="34" r="1.8" fill="#F2F0E9"/><circle cx="39" cy="34" r="1.8" fill="#F2F0E9"/>
+            <ellipse cx="32" cy="42" rx="4" ry="3" fill="#3A3A34"/>
+          </svg>
+          {%- else -%}
+          <svg width="64" height="64" viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="34" r="26" fill="#F2F0E9" stroke="#2E2E2B" stroke-width="1.5"/>
+            <ellipse cx="14" cy="20" rx="8" ry="12" fill="#F2F0E9" stroke="#2E2E2B" stroke-width="1.3"/>
+            <ellipse cx="50" cy="20" rx="8" ry="12" fill="#F2F0E9" stroke="#2E2E2B" stroke-width="1.3"/>
+            <ellipse cx="23" cy="30" rx="3.4" ry="4" fill="#2E2E2B"/><ellipse cx="42" cy="38" rx="3" ry="3.4" fill="#2E2E2B"/>
+            <circle cx="27" cy="34" r="1.8" fill="#2E2E2B"/><circle cx="39" cy="34" r="1.8" fill="#2E2E2B"/>
+            <ellipse cx="32" cy="42" rx="4" ry="3" fill="#2E2E2B"/>
+          </svg>
+          {%- endif -%}
+        {%- else -%}
+          <span style="font-family:'Anton',Impact,sans-serif;font-size:22px;color:#F5C400">{{ block.settings.initials }}</span>
+        {%- endif -%}
+      </div>
+      <div>
+        <div class="hm-tm-card__name">{{ block.settings.name }}</div>
+        <div class="hm-tm-card__role">{{ block.settings.role }}</div>
+      </div>
+    </div>
+    {%- endif -%}{%- endfor -%}
+  </div>
+</section>
+
+<section class="hm hm-tm-cta">
+  <div style="display:flex;flex-direction:column;gap:10px"><div style="font-family:'Anton',Impact,sans-serif;font-size:40px;line-height:1">WANT TO BACK THE TEAM?</div><div style="font-size:17px;color:#A8A59A">Shop the merch or become a sponsor.</div></div>
+  <div style="display:flex;gap:16px;flex-wrap:wrap"><a class="hm-btn hm-btn--ghost" href="{{ routes.all_products_collection_url }}"><span>SHOP TEAM GEAR</span></a><a class="hm-btn hm-btn--solid" href="/pages/sponsors"><span>BECOME A SPONSOR</span></a></div>
+</section>
+{% schema %}
+{
+  "name": "HM Team page",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Hero photo" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "THE TEAM" },
+    { "type": "text", "id": "title_1", "label": "Title line 1", "default": "BUILT IN WISCONSIN." },
+    { "type": "text", "id": "title_2", "label": "Title line 2 (outline)", "default": "BUILT TO PULL." },
+    { "type": "text", "id": "story_title_1", "label": "Story title", "default": "THE EVIL" },
+    { "type": "text", "id": "story_title_2", "label": "Story title (chrome word)", "default": "ONE" },
+    { "type": "richtext", "id": "story_text", "label": "Story (short teaser)", "default": "<p>It started in 2014 in Tomah, Wisconsin, with one idea. Chris had always been a heavy metal fan, so when he decided to build a pulling tractor, the name was never up for debate. That idea became a Pro Stock tractor. And that tractor was nicknamed The Evil One.</p>" },
+    { "type": "text", "id": "ch1_title", "label": "Beat 01 title", "default": "TWELVE YEARS IN THE MAKING" },
+    { "type": "textarea", "id": "ch1_text", "label": "Beat 01 text", "default": "Heavy Metal wasn't built overnight. The idea was born in 2014, and it took twelve years to turn it into a running machine, because when almost everything on a tractor is custom built, nothing about it is quick." },
+    { "type": "textarea", "id": "ch1b_text", "label": "Beat 02 text", "default": "Twelve years of nights and weekends stolen from work and family. Twelve years of sketches redrawn more times than anyone can count. A shop in Waterloo, Wisconsin that the whole family turned into a second home, because building Heavy Metal was never a solo job." },
+    { "type": "image_picker", "id": "story_image", "label": "Story photo (tall)" },
+    { "type": "textarea", "id": "ch2_text", "label": "Beat 03 text", "default": "Then, in 2026, the moment came. Chris stood in the shop and turned the engine over for the first time." },
+    { "type": "text", "id": "ch2_title", "label": "Lightning headline", "default": "AT THAT EXACT MOMENT, LIGHTNING STRUCK, AND THE POWER WENT OUT." },
+    { "type": "text", "id": "pull_quote", "label": "Pull quote", "default": "This thing is f#cking evil." },
+    { "type": "text", "id": "pull_quote_by", "label": "Pull quote attribution", "default": "CHRIS, OWNER &amp; DRIVER" },
+    { "type": "textarea", "id": "ch2b_text", "label": "Sign line", "default": "Some would call it a coincidence. We call it a sign. From that night on, there was no doubt about what we had built." },
+    { "type": "textarea", "id": "ch3_text", "label": "Beat 04 text (rough start)", "default": "The first pull didn't go the way anyone hoped. A small, unexpected issue came up and the run ended before it should have. It was a disappointing day. We won't sugarcoat it." },
+    { "type": "textarea", "id": "ch3b_text", "label": "Beat 04 text, cont.", "default": "But getting Heavy Metal onto a real track at all, after twelve years of building it with our own hands, was already something to be proud of. The pull didn't finish that day. The story was just getting started." },
+    { "type": "textarea", "id": "ch5_text", "label": "Beat 05 text (what's different)", "default": "What makes Heavy Metal different is under the hood: a Caterpillar 3208 V8, reverse flow, a setup you won't find on any other tractor on the track. Stock, it measures 636 cubic inches. Ours doesn't: we built it out to 680." },
+    { "type": "textarea", "id": "ch5b_text", "label": "Beat 05 text, cont.", "default": "And that's really the whole philosophy behind this build. Nearly everything on Heavy Metal is custom-built. Nothing about it is off the shelf, and nothing about it was quick." },
+    { "type": "image_picker", "id": "engine_image", "label": "Engine photo" },
+    { "type": "text", "id": "season_text", "label": "Season banner text", "default": "This season, we're chasing our first full pull: about 20 competitions on the NTPA and PPL Badger State circuits. No exhibitions. Every time it hits the track, it's there to pull." },
+    { "type": "image_picker", "id": "brothers_image", "label": "Tractor brothers photo" },
+    { "type": "text", "id": "brothers_eyebrow", "label": "Brothers eyebrow", "default": "FRIENDS ON THE CIRCUIT" },
+    { "type": "text", "id": "brothers_title", "label": "Brothers title", "default": "TRACTOR BROTHERS" },
+    { "type": "richtext", "id": "brothers_text", "label": "Brothers text", "default": "<p>Heavy Metal has a little brother across the ocean: Diesel Ross, a Pro Stock tractor in Europe owned by Gert Stessens from Belgium. We met Gert at a pull in the Netherlands, and between the look of the two tractors and the friendship between Gert and Chris, Heavy Metal and Diesel Ross are considered tractor brothers.</p>" },
+    { "type": "text", "id": "anthem", "label": "Walk-up song", "default": "Walk-up song: Fear of the Dark &middot; Iron Maiden" }
+  ],
+  "blocks": [
+    {
+      "type": "milestone",
+      "name": "Timeline milestone",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "year", "label": "Year / label", "default": "2014" },
+        { "type": "text", "id": "label", "label": "Caption", "default": "Idea is born" }
+      ]
+    },
+    {
+      "type": "member",
+      "name": "Crew member",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Name" },
+        { "type": "text", "id": "role", "label": "Role", "default": "Role" },
+        { "type": "text", "id": "initials", "label": "Initials (used if no photo)", "default": "NN" },
+        { "type": "image_picker", "id": "photo", "label": "Photo (optional; shows initials if left blank)" },
+        { "type": "checkbox", "id": "is_mascot", "label": "This is a team mascot (dog icon)", "default": false },
+        { "type": "select", "id": "mascot_color", "label": "Mascot color (used only if mascot)", "options": [ { "value": "white", "label": "White with spots" }, { "value": "black", "label": "Black" } ], "default": "white" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Team page",
+      "blocks": [
+        { "type": "milestone", "settings": { "year": "2014", "label": "Idea is born (Tomah, WI)" } },
+        { "type": "milestone", "settings": { "year": "2026", "label": "Engine fires, lightning strikes" } },
+        { "type": "milestone", "settings": { "year": "2026", "label": "First pull attempt" } },
+        { "type": "milestone", "settings": { "year": "TODAY", "label": "2026 &middot; in testing" } },
+        { "type": "member", "settings": { "name": "Chris F.", "role": "Owner, Driver &amp; Crew Chief", "initials": "CF" } },
+        { "type": "member", "settings": { "name": "Isela F.", "role": "Manager, Marketing &amp; PR", "initials": "IF" } },
+        { "type": "member", "settings": { "name": "Cindy F.", "role": "Operations &amp; Accounting", "initials": "CF" } },
+        { "type": "member", "settings": { "name": "Daniel", "role": "Pit Crew", "initials": "D" } },
+        { "type": "member", "settings": { "name": "Daniela V.", "role": "Social Media &amp; Marketing", "initials": "DV" } },
+        { "type": "member", "settings": { "name": "Jared F.", "role": "Pit Crew", "initials": "JF" } },
+        { "type": "member", "settings": { "name": "Jim F.", "role": "Pit Crew", "initials": "JF" } },
+        { "type": "member", "settings": { "name": "Tony B.", "role": "Pit Crew", "initials": "TB" } },
+        { "type": "member", "settings": { "name": "Jeff L.", "role": "Pit Crew", "initials": "JL" } },
+        { "type": "member", "settings": { "name": "John W.", "role": "Pit Crew", "initials": "JW" } },
+        { "type": "member", "settings": { "name": "Brad S.", "role": "Pit Crew", "initials": "BS" } },
+        { "type": "member", "settings": { "name": "Cricket F.", "role": "Team Mascot", "is_mascot": true, "mascot_color": "white" } },
+        { "type": "member", "settings": { "name": "Turbo", "role": "Team Mascot", "is_mascot": true, "mascot_color": "black" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

@@ -1,0 +1,75 @@
+<section class="hm hm-team" id="team" aria-labelledby="hm-team-title">
+  <div class="hm-team__img">{% render 'hm-img', image: section.settings.image, fallback: 'hm-crew.jpg', alt: 'The crew next to Heavy Metal in the pits', sizes: '(min-width: 760px) 50vw, 100vw' %}</div>
+  <div class="hm-team__text">
+    <p class="hm-eyebrow">{{ section.settings.eyebrow }}</p>
+    <h2 class="hm-h2" id="hm-team-title" style="font-size:clamp(44px,5vw,72px)">{{ section.settings.title_1 }}<br><span class="hm-outline">{{ section.settings.title_2 }}</span></h2>
+    <div class="rte">{{ section.settings.story }}</div>
+    <div class="hm-row"><a class="hm-btn hm-btn--ghost hm-btn--sm" href="{{ section.settings.btn1_url }}"><span>{{ section.settings.btn1_label }}</span></a><a class="hm-btn hm-btn--solid hm-btn--sm" href="{{ section.settings.btn2_url }}"><span>{{ section.settings.btn2_label }}</span></a></div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "HM The Team",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Photo"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "05 / THE TEAM"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Title line 1",
+      "default": "BUILT IN WISCONSIN."
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Title line 2 (outline)",
+      "default": "BUILT TO PULL."
+    },
+    {
+      "type": "richtext",
+      "id": "story",
+      "label": "Story",
+      "default": "<p>[STORY: 2 or 3 sentences on how Heavy Metal started, who is behind it and what drives the team.]</p>"
+    },
+    {
+      "type": "text",
+      "id": "btn1_label",
+      "label": "Button 1",
+      "default": "MEET THE CREW"
+    },
+    {
+      "type": "text",
+      "id": "btn1_url",
+      "label": "Button 1 link",
+      "default": "/pages/about"
+    },
+    {
+      "type": "text",
+      "id": "btn2_label",
+      "label": "Button 2",
+      "default": "SHOP TEAM GEAR"
+    },
+    {
+      "type": "url",
+      "id": "btn2_url",
+      "label": "Button 2 link",
+      "default": "/collections/all"
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM The Team"
+    }
+  ]
+}
+{% endschema %}
+

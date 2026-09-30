@@ -1,0 +1,50 @@
+<section class="hm hm-shero" aria-labelledby="hm-shero-title">
+  {% render 'hm-img', image: section.settings.image, fallback: 'hm-grandstand.jpg', alt: 'Heavy Metal in front of a packed grandstand', class: 'hm-cover hm-kb', sizes: '100vw', loading: 'eager' %}
+  <div class="hm-shade"></div>
+  <div class="hm-shero__text">
+    <div style="display:flex;flex-direction:column;gap:16px"><p class="hm-eyebrow">{{ section.settings.eyebrow }}</p><h1 id="hm-shero-title">{{ section.settings.title_1 }}<br><span class="hm-chrome">{{ section.settings.title_2 }}</span></h1><p>{{ section.settings.text }}</p></div>
+    <div class="hm-row"><a class="hm-btn hm-btn--solid" href="#tiers"><span>SEE THE TIERS</span></a><a class="hm-btn hm-btn--ghost" href="#kit"><span>BECOME A SPONSOR</span></a></div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "HM Sponsors hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Photo"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "SPONSORSHIP · SEASON [YEAR]"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Title",
+      "default": "RIDE WITH"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Title (chrome)",
+      "default": "THE EVIL ONE"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "We're now looking for our first sponsors. Every event draws 5,000+ fans in the stands, and the brands who join now won't just be one more logo, they'll be part of the story from the beginning."
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Sponsors hero"
+    }
+  ]
+}
+{% endschema %}
+
