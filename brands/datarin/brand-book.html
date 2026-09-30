@@ -1,0 +1,412 @@
+<title>Datarin Brand Book</title>
+<!-- Hallmark · pre-emit critique: P5 H4 E4 S5 R5 V4 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: ficha técnica. Rail izquierdo con índice de capítulo en mono, columna de contenido a la derecha; el logo es el único elemento grande. */
+:root{
+  --tinta:#0B0F17; --papel:#F7F8FA; --cobalto:#1F4BFF; --cobalto-claro:#6F8CFF;
+  --grafito:#4B5364; --niebla:#E4E7EE; --ambar:#E8971C;
+  --bg:var(--papel); --surface:#FFFFFF; --text:var(--tinta); --muted:#5A6272; --line:var(--niebla);
+  --accent:var(--cobalto); --dot:var(--cobalto); --invert-bg:var(--tinta); --invert-text:var(--papel);
+  --f-sans:"Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono:"Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --s-1:.75rem; --s0:.9375rem; --s1:1.125rem; --s2:1.5rem; --s3:2.25rem; --s4:3.5rem;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark; --bg:#0B0F17; --surface:#121826; --text:#EEF0F5; --muted:#9AA2B2; --line:#232B3B;
+    --accent:var(--cobalto-claro); --dot:var(--cobalto-claro); --invert-bg:#F7F8FA; --invert-text:#0B0F17;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark; --bg:#0B0F17; --surface:#121826; --text:#EEF0F5; --muted:#9AA2B2; --line:#232B3B;
+  --accent:var(--cobalto-claro); --dot:var(--cobalto-claro); --invert-bg:#F7F8FA; --invert-text:#0B0F17;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--f-sans);font-size:var(--s0);line-height:1.6;padding-inline:clamp(16px,5vw,64px);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1120px;margin:0 auto}
+h1,h2,h3{font-weight:600;letter-spacing:-.025em;line-height:1.1;text-wrap:balance;margin:0}
+h2{font-size:var(--s3)} h3{font-size:var(--s1);letter-spacing:-.01em}
+p{margin:0;max-width:62ch}
+.mono,.label{font-family:var(--f-mono)}
+.label{font-size:var(--s-1);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+svg.wm{display:block;color:var(--text)}
+
+/* header */
+header{padding-block:clamp(40px,8vw,96px) clamp(32px,6vw,72px);display:grid;gap:var(--s3);border-bottom:1px solid var(--line)}
+.top{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+header .wm{width:min(100%,760px);height:auto}
+.lede{font-size:var(--s1);max-width:52ch;color:var(--muted)}
+.lede strong{color:var(--text);font-weight:500}
+
+/* chapters */
+section.ch{display:grid;grid-template-columns:180px 1fr;gap:clamp(20px,4vw,56px);padding-block:clamp(48px,7vw,88px);border-bottom:1px solid var(--line)}
+.rail{display:flex;flex-direction:column;gap:.4rem;align-self:start;position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px)}
+.rail .num{font-family:var(--f-mono);font-size:var(--s-1);color:var(--accent)}
+.body{display:grid;gap:var(--s3);min-width:0}
+.intro{display:grid;gap:.9rem}
+@media (max-width:760px){section.ch{grid-template-columns:1fr}.rail{position:static;flex-direction:row;gap:.75rem}}
+
+/* essence */
+.traits{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.trait{background:var(--bg);padding:var(--s2);display:grid;gap:.5rem;align-content:start}
+.trait h3{display:flex;align-items:center;gap:.6rem}
+.sq{width:.55em;height:.55em;background:var(--dot);display:inline-block;flex:none}
+.kv{display:grid;grid-template-columns:140px 1fr;gap:.6rem 1.5rem}
+.kv dt{font-family:var(--f-mono);font-size:var(--s-1);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:.2rem}
+.kv dd{margin:0;font-size:var(--s1);font-weight:500;letter-spacing:-.01em}
+@media (max-width:520px){.kv{grid-template-columns:1fr}.kv dd{margin-bottom:.6rem}}
+
+/* logo */
+.stage{background:var(--surface);border:1px solid var(--line);padding:clamp(24px,5vw,56px);overflow-x:auto}
+.construct{width:100%;min-width:520px;height:auto;color:var(--text)}
+.construct .guide{stroke:var(--accent);stroke-width:4;stroke-dasharray:14 12;fill:none}
+.construct text{font-family:var(--f-mono);font-size:44px;fill:var(--muted)}
+.construct .hl{fill:none;stroke:var(--accent);stroke-width:5}
+.versions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:520px){.versions{grid-template-columns:1fr}}
+.ver{display:grid;gap:.6rem}
+.ver .tile{aspect-ratio:16/9;max-width:100%;display:grid;place-items:center;padding:12%;border:1px solid var(--line)}
+.ver .tile svg{width:100%;height:auto}
+.t-paper{background:#F7F8FA;color:#0B0F17;--dot:#1F4BFF}
+.t-ink{background:#0B0F17;color:#F7F8FA;--dot:#6F8CFF;border-color:#0B0F17!important}
+.t-cobalt{background:#1F4BFF;color:#FFFFFF;--dot:#FFFFFF;border-color:#1F4BFF!important}
+.t-mono{background:#FFFFFF;color:#0B0F17;--dot:#0B0F17}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--s2)}
+.rule{display:grid;gap:.75rem;align-content:start}
+.clear{background:var(--surface);border:1px solid var(--line);padding:24px;display:grid;place-items:center}
+.clear svg{width:100%;max-width:420px;height:auto;color:var(--text)}
+.sizes{display:flex;align-items:flex-end;gap:28px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);padding:24px}
+.sizes figure{margin:0;display:grid;gap:.5rem}
+.icons{display:flex;gap:20px;align-items:flex-end;flex-wrap:wrap}
+.icons svg{display:block}
+.donts{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px}
+.dont{display:grid;gap:.5rem}
+.dont .tile{background:var(--surface);border:1px solid var(--line);aspect-ratio:3/2;display:grid;place-items:center;padding:14%;position:relative;overflow:hidden}
+.dont .tile svg{width:100%;height:auto}
+.dont .x{position:absolute;top:8px;right:10px;font-family:var(--f-mono);font-size:var(--s-1);color:#D6452B}
+.dont p{font-size:.875rem}
+
+/* color */
+.swatches{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.sw{border:1px solid var(--line);background:var(--surface);display:grid}
+.sw .chip{aspect-ratio:4/3;max-width:100%}
+.sw .meta{padding:14px;display:grid;gap:.2rem;font-size:.875rem}
+.sw .meta b{font-weight:600;font-size:var(--s0)}
+.sw .meta span{font-family:var(--f-mono);font-size:var(--s-1);color:var(--muted);font-variant-numeric:tabular-nums}
+.ratio{display:flex;height:56px;border:1px solid var(--line)}
+.ratio div{display:flex;align-items:flex-end;padding:8px;font-family:var(--f-mono);font-size:var(--s-1)}
+.ratio-legend{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem}
+
+/* type */
+.specimen{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.spec{background:var(--surface);border:1px solid var(--line);padding:var(--s2);display:grid;gap:1rem;align-content:start}
+.spec .big{font-size:clamp(3rem,8vw,5.5rem);line-height:1;letter-spacing:-.04em;font-weight:600}
+.spec .big.m{font-family:var(--f-mono);font-weight:400;letter-spacing:-.02em}
+.scale{display:grid;border-top:1px solid var(--line)}
+.scale .row{display:grid;grid-template-columns:130px 1fr;gap:1rem;align-items:baseline;padding-block:14px;border-bottom:1px solid var(--line)}
+.scale .row span:last-child{overflow-wrap:anywhere}
+@media (max-width:520px){.scale .row{grid-template-columns:1fr;gap:.25rem}}
+
+/* chart */
+.chart{background:var(--surface);border:1px solid var(--line);padding:clamp(16px,3vw,28px);display:grid;gap:1rem}
+.chart svg{width:100%;height:auto;display:block}
+.chart .ax{font-family:var(--f-mono);font-size:12px;fill:var(--muted)}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.bullets{display:grid;gap:.6rem;padding:0;margin:0;list-style:none}
+.bullets li{display:flex;gap:.75rem;align-items:baseline}
+.bullets li::before{content:"";width:.5em;height:.5em;background:var(--dot);flex:none;transform:translateY(-.08em)}
+
+/* voice */
+.principles{display:grid;gap:0;border-top:1px solid var(--line)}
+.pr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:1.5rem;padding-block:22px;border-bottom:1px solid var(--line)}
+.pr .ex{display:grid;gap:.5rem;font-size:.9375rem}
+.say{display:grid;grid-template-columns:52px 1fr;gap:.6rem;align-items:baseline}
+.say .tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.yes .tag{color:var(--accent)} .no .tag{color:var(--muted)} .no q{color:var(--muted);text-decoration:line-through;text-decoration-color:var(--muted)}
+q{quotes:"“" "”"}
+@media (max-width:640px){.pr{grid-template-columns:1fr}}
+.vocab{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.vocab div{background:var(--surface);border:1px solid var(--line);padding:var(--s2);display:grid;gap:.8rem;align-content:start}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pills span{font-size:.875rem;padding:4px 10px;border:1px solid var(--line);background:var(--bg)}
+.pills.off span{color:var(--muted);text-decoration:line-through}
+.channels{overflow-x:auto;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;min-width:640px;background:var(--surface)}
+th,td{text-align:left;vertical-align:top;padding:14px 16px;border-bottom:1px solid var(--line);font-size:.9375rem}
+th{font-family:var(--f-mono);font-size:var(--s-1);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:400}
+tr:last-child td{border-bottom:0}
+
+/* applications */
+.apps{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.card{aspect-ratio:85/55;max-width:100%;padding:7%;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 1px 2px rgba(11,15,23,.08),0 8px 24px rgba(11,15,23,.08)}
+.card.front{background:#0B0F17;color:#F7F8FA;--dot:#6F8CFF}
+.card.back{background:#FFFFFF;color:#0B0F17;--dot:#1F4BFF}
+.card svg{width:44%;height:auto;color:inherit}
+.card .who{display:grid;gap:.15rem;font-size:.8125rem;line-height:1.4}
+.card .who b{font-size:.9375rem;font-weight:600}
+.card .who .mono{font-size:.75rem;color:#5A6272}
+.card.front .tl{font-size:.8125rem;color:#9AA2B2}
+.banner{grid-column:1/-1;background:#0B0F17;color:#F7F8FA;--dot:#6F8CFF;aspect-ratio:4/1;max-width:100%;padding:4% 5%;display:flex;flex-direction:column;justify-content:space-between;gap:.5rem;overflow:hidden}
+.banner .h{font-size:clamp(1.1rem,3.4vw,2.4rem);font-weight:600;letter-spacing:-.03em;line-height:1.05;max-width:18ch}
+.banner svg{width:clamp(80px,14%,160px);height:auto;color:inherit}
+.sig{background:#FFFFFF;color:#0B0F17;border:1px solid var(--line);padding:22px;display:grid;gap:.9rem;font-size:.875rem;--dot:#1F4BFF}
+.sig svg{width:110px;height:auto;color:#0B0F17}
+.sig .mono{font-size:.75rem;color:#5A6272}
+footer{padding-block:48px 64px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.files{display:grid;gap:.4rem;font-family:var(--f-mono);font-size:.8125rem}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="wm" viewBox="0 -760 3289 812"><path fill="currentColor" d="M260 12Q192 12 142.5 -22.0Q93 -56 66.0 -119.0Q39 -182 39 -267Q39 -352 66.0 -415.0Q93 -478 143.0 -512.0Q193 -546 260 -546Q316 -546 358.5 -523.0Q401 -500 423 -458V-710H551V0H429L426 -79Q404 -36 360.0 -12.0Q316 12 260 12ZM299 -92Q339 -92 366.5 -112.0Q394 -132 408.5 -171.5Q423 -211 423 -267Q423 -324 408.5 -363.0Q394 -402 366.5 -422.0Q339 -442 299 -442Q241 -442 206.5 -395.5Q172 -349 172 -267Q172 -187 206.5 -139.5Q241 -92 299 -92ZM818 12Q734 12 683.0 -26.5Q632 -65 632 -134Q632 -203 675.0 -242.0Q718 -281 806 -298L983 -333Q983 -390 957.0 -418.5Q931 -447 880 -447Q834 -447 807.5 -425.5Q781 -404 771 -364L641 -370Q657 -455 719.0 -500.5Q781 -546 880 -546Q994 -546 1052.5 -488.5Q1111 -431 1111 -324V-130Q1111 -109 1118.5 -101.0Q1126 -93 1141 -93H1158V0Q1152 2 1138.5 3.0Q1125 4 1111 4Q1078 4 1052.0 -6.5Q1026 -17 1012.0 -43.5Q998 -70 998 -116L1009 -108Q1001 -73 974.5 -45.5Q948 -18 908.0 -3.0Q868 12 818 12ZM844 -81Q887 -81 918.0 -98.0Q949 -115 966.0 -145.0Q983 -175 983 -216V-246L845 -218Q802 -209 783.5 -191.5Q765 -174 765 -146Q765 -115 785.5 -98.0Q806 -81 844 -81ZM1429 0Q1349 0 1311.5 -37.0Q1274 -74 1274 -153V-659H1402V-165Q1402 -128 1418.0 -113.5Q1434 -99 1468 -99H1543V0ZM1190 -435V-534H1543V-435ZM1769 12Q1685 12 1634.0 -26.5Q1583 -65 1583 -134Q1583 -203 1626.0 -242.0Q1669 -281 1757 -298L1934 -333Q1934 -390 1908.0 -418.5Q1882 -447 1831 -447Q1785 -447 1758.5 -425.5Q1732 -404 1722 -364L1592 -370Q1608 -455 1670.0 -500.5Q1732 -546 1831 -546Q1945 -546 2003.5 -488.5Q2062 -431 2062 -324V-130Q2062 -109 2069.5 -101.0Q2077 -93 2092 -93H2109V0Q2103 2 2089.5 3.0Q2076 4 2062 4Q2029 4 2003.0 -6.5Q1977 -17 1963.0 -43.5Q1949 -70 1949 -116L1960 -108Q1952 -73 1925.5 -45.5Q1899 -18 1859.0 -3.0Q1819 12 1769 12ZM1795 -81Q1838 -81 1869.0 -98.0Q1900 -115 1917.0 -145.0Q1934 -175 1934 -216V-246L1796 -218Q1753 -209 1734.5 -191.5Q1716 -174 1716 -146Q1716 -115 1736.5 -98.0Q1757 -81 1795 -81ZM2166 0V-534H2286L2291 -386L2280 -388Q2292 -465 2325.5 -499.5Q2359 -534 2417 -534H2466V-424H2416Q2375 -424 2348.0 -412.0Q2321 -400 2307.5 -374.5Q2294 -349 2294 -308V0ZM2547 0V-534H2675V0ZM2788 0V-534H2904L2909 -384L2894 -390Q2902 -446 2927.0 -480.0Q2952 -514 2988.0 -530.0Q3024 -546 3067 -546Q3126 -546 3166.5 -520.0Q3207 -494 3228.0 -448.5Q3249 -403 3249 -343V0H3121V-302Q3121 -347 3112.0 -378.0Q3103 -409 3082.5 -425.5Q3062 -442 3028 -442Q2977 -442 2946.5 -406.0Q2916 -370 2916 -302V0Z"/><rect class="d" x="2547" y="-719" width="128" height="128" style="fill:var(--dot)"/></symbol>
+    <symbol id="ic" viewBox="0 0 1000 1000"><g transform="translate(201.1 780.0) scale(0.7887)"><path fill="currentColor" d="M260 12Q192 12 142.5 -22.0Q93 -56 66.0 -119.0Q39 -182 39 -267Q39 -352 66.0 -415.0Q93 -478 143.0 -512.0Q193 -546 260 -546Q316 -546 358.5 -523.0Q401 -500 423 -458V-710H551V0H429L426 -79Q404 -36 360.0 -12.0Q316 12 260 12ZM299 -92Q339 -92 366.5 -112.0Q394 -132 408.5 -171.5Q423 -211 423 -267Q423 -324 408.5 -363.0Q394 -402 366.5 -422.0Q339 -442 299 -442Q241 -442 206.5 -395.5Q172 -349 172 -267Q172 -187 206.5 -139.5Q241 -92 299 -92Z"/><rect x="591" y="-128" width="128" height="128" style="fill:var(--dot)"/></g></symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+<header>
+  <div class="top"><span class="label">Manual de marca · v1.0</span><span class="label">datarin.com</span></div>
+  <svg class="wm" viewBox="0 -760 3289 812" role="img" aria-label="datarin"><path fill="currentColor" d="M260 12Q192 12 142.5 -22.0Q93 -56 66.0 -119.0Q39 -182 39 -267Q39 -352 66.0 -415.0Q93 -478 143.0 -512.0Q193 -546 260 -546Q316 -546 358.5 -523.0Q401 -500 423 -458V-710H551V0H429L426 -79Q404 -36 360.0 -12.0Q316 12 260 12ZM299 -92Q339 -92 366.5 -112.0Q394 -132 408.5 -171.5Q423 -211 423 -267Q423 -324 408.5 -363.0Q394 -402 366.5 -422.0Q339 -442 299 -442Q241 -442 206.5 -395.5Q172 -349 172 -267Q172 -187 206.5 -139.5Q241 -92 299 -92ZM818 12Q734 12 683.0 -26.5Q632 -65 632 -134Q632 -203 675.0 -242.0Q718 -281 806 -298L983 -333Q983 -390 957.0 -418.5Q931 -447 880 -447Q834 -447 807.5 -425.5Q781 -404 771 -364L641 -370Q657 -455 719.0 -500.5Q781 -546 880 -546Q994 -546 1052.5 -488.5Q1111 -431 1111 -324V-130Q1111 -109 1118.5 -101.0Q1126 -93 1141 -93H1158V0Q1152 2 1138.5 3.0Q1125 4 1111 4Q1078 4 1052.0 -6.5Q1026 -17 1012.0 -43.5Q998 -70 998 -116L1009 -108Q1001 -73 974.5 -45.5Q948 -18 908.0 -3.0Q868 12 818 12ZM844 -81Q887 -81 918.0 -98.0Q949 -115 966.0 -145.0Q983 -175 983 -216V-246L845 -218Q802 -209 783.5 -191.5Q765 -174 765 -146Q765 -115 785.5 -98.0Q806 -81 844 -81ZM1429 0Q1349 0 1311.5 -37.0Q1274 -74 1274 -153V-659H1402V-165Q1402 -128 1418.0 -113.5Q1434 -99 1468 -99H1543V0ZM1190 -435V-534H1543V-435ZM1769 12Q1685 12 1634.0 -26.5Q1583 -65 1583 -134Q1583 -203 1626.0 -242.0Q1669 -281 1757 -298L1934 -333Q1934 -390 1908.0 -418.5Q1882 -447 1831 -447Q1785 -447 1758.5 -425.5Q1732 -404 1722 -364L1592 -370Q1608 -455 1670.0 -500.5Q1732 -546 1831 -546Q1945 -546 2003.5 -488.5Q2062 -431 2062 -324V-130Q2062 -109 2069.5 -101.0Q2077 -93 2092 -93H2109V0Q2103 2 2089.5 3.0Q2076 4 2062 4Q2029 4 2003.0 -6.5Q1977 -17 1963.0 -43.5Q1949 -70 1949 -116L1960 -108Q1952 -73 1925.5 -45.5Q1899 -18 1859.0 -3.0Q1819 12 1769 12ZM1795 -81Q1838 -81 1869.0 -98.0Q1900 -115 1917.0 -145.0Q1934 -175 1934 -216V-246L1796 -218Q1753 -209 1734.5 -191.5Q1716 -174 1716 -146Q1716 -115 1736.5 -98.0Q1757 -81 1795 -81ZM2166 0V-534H2286L2291 -386L2280 -388Q2292 -465 2325.5 -499.5Q2359 -534 2417 -534H2466V-424H2416Q2375 -424 2348.0 -412.0Q2321 -400 2307.5 -374.5Q2294 -349 2294 -308V0ZM2547 0V-534H2675V0ZM2788 0V-534H2904L2909 -384L2894 -390Q2902 -446 2927.0 -480.0Q2952 -514 2988.0 -530.0Q3024 -546 3067 -546Q3126 -546 3166.5 -520.0Q3207 -494 3228.0 -448.5Q3249 -403 3249 -343V0H3121V-302Q3121 -347 3112.0 -378.0Q3103 -409 3082.5 -425.5Q3062 -442 3028 -442Q2977 -442 2946.5 -406.0Q2916 -370 2916 -302V0Z"/><rect class="d" x="2547" y="-719" width="128" height="128" style="fill:var(--dot)"/></svg>
+  <p class="lede"><strong>Datarin convierte los datos que una empresa ya genera en dashboards, automatizaciones y agentes de IA.</strong> Esta guía define cómo se ve y cómo habla la marca: logo, color, tipografía, sistema gráfico y tono de voz.</p>
+</header>
+
+<section class="ch" id="esencia">
+  <div class="rail"><span class="num">01</span><span class="label">Esencia</span></div>
+  <div class="body">
+    <div class="intro">
+      <h2>Una marca que se ve como un buen dashboard: limpia, exacta y sin ruido.</h2>
+      <p class="muted">Los clientes de Datarin ya tienen datos. Lo que les falta es claridad. La identidad existe para transmitir exactamente eso, así que todo lo que no aporta información se queda afuera.</p>
+    </div>
+    <dl class="kv">
+      <dt>Propósito</dt><dd>Que las empresas decidan con datos y no con corazonadas.</dd>
+      <dt>Promesa</dt><dd>De la fuente de datos a la decisión.</dd>
+      <dt>Para quién</dt><dd>Empresas medianas en Latinoamérica y EE. UU. que hoy pierden horas armando reportes a mano.</dd>
+      <dt>Idea central</dt><dd>El punto de dato: una señal pequeña y precisa que cambia la decisión.</dd>
+    </dl>
+    <div class="traits">
+      <div class="trait"><h3><span class="sq"></span>Claro</h3><p class="muted">Una idea por frase, un mensaje por pantalla. Si algo necesita explicación, se explica.</p></div>
+      <div class="trait"><h3><span class="sq"></span>Preciso</h3><p class="muted">Números reales, fuentes nombradas, alcances concretos. Nada de promesas infladas.</p></div>
+      <div class="trait"><h3><span class="sq"></span>Sereno</h3><p class="muted">Seguridad técnica sin arrogancia. Hablamos como el analista senior que ya resolvió esto antes.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="logo">
+  <div class="rail"><span class="num">02</span><span class="label">Logo</span></div>
+  <div class="body">
+    <div class="intro">
+      <h2>Solo letras. El único gesto es el punto de la i.</h2>
+      <p class="muted">El wordmark usa Geist SemiBold en minúsculas con el espaciado cerrado un 2,8%. El punto de la i se reemplaza por un cuadrado exacto del ancho del trazo: el punto de dato. Es la única pieza de color y la firma de toda la identidad. Los archivos están en contornos, no dependen de tener la fuente instalada.</p>
+    </div>
+    <div class="stage">
+      <svg class="construct" viewBox="-60 -880 3420 1010" role="img" aria-label="Construcción del wordmark con línea base, altura de x y ascendente">
+        <line class="guide" x1="-60" x2="3360" y1="0" y2="0"/>
+        <line class="guide" x1="-60" x2="3360" y1="-534" y2="-534"/>
+        <line class="guide" x1="-60" x2="3360" y1="-710" y2="-710"/>
+        <use href="#wm" x="0" y="-760" width="3289" height="812"/>
+        <rect class="hl" x="2527" y="-739" width="168" height="168"/>
+        <text x="-60" y="100">línea base</text>
+        <text x="-60" y="-560">altura x</text>
+        <text x="-60" y="-740">ascendente</text>
+        <text x="2740" y="-780">x = ancho de trazo</text>
+      </svg>
+    </div>
+
+    <div class="versions">
+      <div class="ver"><div class="tile t-paper"><svg viewBox="0 -760 3289 812" aria-label="datarin"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg></div><span class="label">Principal · tinta sobre papel</span></div>
+      <div class="ver"><div class="tile t-ink"><svg viewBox="0 -760 3289 812" aria-label="datarin"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg></div><span class="label">Negativo · papel sobre tinta</span></div>
+      <div class="ver"><div class="tile t-cobalt"><svg viewBox="0 -760 3289 812" aria-label="datarin"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg></div><span class="label">Sobre cobalto · todo blanco</span></div>
+      <div class="ver"><div class="tile t-mono"><svg viewBox="0 -760 3289 812" aria-label="datarin"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg></div><span class="label">Una tinta · sellos, grabado, fax</span></div>
+    </div>
+
+    <div class="rules">
+      <div class="rule">
+        <div class="clear">
+          <svg viewBox="-500 -1260 4289 1812" aria-label="Área de protección">
+            <rect x="-384" y="-1144" width="4057" height="1580" fill="none" stroke="var(--accent)" stroke-width="6" stroke-dasharray="20 16"/>
+            <rect x="-384" y="-1144" width="384" height="384" fill="var(--accent)" opacity=".14"/>
+            <rect x="3289" y="52" width="384" height="384" fill="var(--accent)" opacity=".14"/>
+            <use href="#wm" x="0" y="-760" width="3289" height="812"/>
+          </svg>
+        </div>
+        <h3>Área de protección</h3>
+        <p class="muted">Deja libre alrededor del logo al menos 3 veces el cuadrado del punto (3x). Ningún texto, borde o imagen entra en esa zona.</p>
+      </div>
+      <div class="rule">
+        <div class="sizes">
+          <figure><svg viewBox="0 -760 3289 812" width="72" aria-label="datarin 72 px"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg><figcaption class="label">72 px</figcaption></figure>
+          <figure><svg viewBox="0 -760 3289 812" width="120" aria-label="datarin 120 px"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg><figcaption class="label">120 px</figcaption></figure>
+          <figure><svg viewBox="0 -760 3289 812" width="180" aria-label="datarin 180 px"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg><figcaption class="label">180 px</figcaption></figure>
+        </div>
+        <h3>Tamaño mínimo</h3>
+        <p class="muted">Wordmark: 72 px de ancho en pantalla y 18 mm impreso. Por debajo de eso usa el ícono.</p>
+      </div>
+      <div class="rule">
+        <div class="sizes icons">
+          <figure><svg viewBox="0 0 1000 1000" width="96" style="color:#F7F8FA;--dot:#6F8CFF" aria-label="Ícono datarin"><rect width="1000" height="1000" rx="200" fill="#0B0F17"/><use href="#ic"/></svg><figcaption class="label">Avatar</figcaption></figure>
+          <figure><svg viewBox="0 0 1000 1000" width="48" style="color:#FFFFFF;--dot:#FFFFFF" aria-label="Ícono datarin cobalto"><rect width="1000" height="1000" rx="200" fill="#1F4BFF"/><use href="#ic"/></svg><figcaption class="label">App</figcaption></figure>
+          <figure><svg viewBox="0 0 1000 1000" width="16" style="color:#F7F8FA;--dot:#6F8CFF" aria-label="Favicon datarin"><rect width="1000" height="1000" rx="200" fill="#0B0F17"/><use href="#ic"/></svg><figcaption class="label">16 px</figcaption></figure>
+        </div>
+        <h3>Ícono</h3>
+        <p class="muted">La d con el punto de dato como punto final: <span class="mono">d.</span> Para favicon, avatares de LinkedIn e Instagram y la app. Siempre dentro de su recuadro.</p>
+      </div>
+    </div>
+
+    <div class="intro"><h3>Usos incorrectos</h3></div>
+    <div class="donts">
+      <div class="dont"><div class="tile"><span class="x">✕</span><svg viewBox="0 -760 3289 812" style="transform:scaleX(1.35)"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg></div><p class="muted">No deformar ni estirar.</p></div>
+      <div class="dont"><div class="tile"><span class="x">✕</span><svg viewBox="0 -760 3289 812" style="color:var(--accent)"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg></div><p class="muted">No pintar las letras de cobalto. El color vive solo en el punto.</p></div>
+      <div class="dont"><div class="tile"><span class="x">✕</span><span style="font-family:Georgia,serif;font-size:1.9rem;letter-spacing:.02em">Datarin</span></div><p class="muted">No reescribir con otra fuente ni con mayúscula inicial.</p></div>
+      <div class="dont"><div class="tile"><span class="x">✕</span><svg viewBox="0 -760 3289 812" style="filter:drop-shadow(0 20px 20px rgba(31,75,255,.6))"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg></div><p class="muted">No sumar sombras, degradados ni efectos.</p></div>
+      <div class="dont"><div class="tile" style="background:linear-gradient(135deg,#8FA6FF,#E8971C)"><span class="x">✕</span><svg viewBox="0 -760 3289 812"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg></div><p class="muted">No colocar sobre fondos con poco contraste.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="color">
+  <div class="rail"><span class="num">03</span><span class="label">Color</span></div>
+  <div class="body">
+    <div class="intro">
+      <h2>Tinta y papel hacen el trabajo. El cobalto señala.</h2>
+      <p class="muted">La paleta sigue la lógica de un buen gráfico: casi todo es neutro y un solo color marca lo que importa. Los grises tienen un leve sesgo azul para que convivan con el cobalto.</p>
+    </div>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#0B0F17"></div><div class="meta"><b>Tinta</b><span>#0B0F17</span><span>RGB 11 15 23</span><span>Texto, logo, fondos oscuros</span></div></div>
+      <div class="sw"><div class="chip" style="background:#F7F8FA;border-bottom:1px solid var(--line)"></div><div class="meta"><b>Papel</b><span>#F7F8FA</span><span>RGB 247 248 250</span><span>Fondo principal</span></div></div>
+      <div class="sw"><div class="chip" style="background:#1F4BFF"></div><div class="meta"><b>Cobalto</b><span>#1F4BFF</span><span>RGB 31 75 255</span><span>Punto de dato, links, CTA</span></div></div>
+      <div class="sw"><div class="chip" style="background:#6F8CFF"></div><div class="meta"><b>Cobalto claro</b><span>#6F8CFF</span><span>RGB 111 140 255</span><span>Cobalto sobre fondo oscuro</span></div></div>
+      <div class="sw"><div class="chip" style="background:#4B5364"></div><div class="meta"><b>Grafito</b><span>#4B5364</span><span>RGB 75 83 100</span><span>Texto secundario, series base</span></div></div>
+      <div class="sw"><div class="chip" style="background:#E4E7EE"></div><div class="meta"><b>Niebla</b><span>#E4E7EE</span><span>RGB 228 231 238</span><span>Líneas, grillas, bordes</span></div></div>
+      <div class="sw"><div class="chip" style="background:#E8971C"></div><div class="meta"><b>Ámbar</b><span>#E8971C</span><span>RGB 232 151 28</span><span>Solo alertas en gráficos</span></div></div>
+    </div>
+    <div class="intro"><h3>Proporción de uso</h3></div>
+    <div class="ratio" role="img" aria-label="Papel 60%, Tinta 30%, Cobalto 8%, Ámbar 2%">
+      <div style="flex:60;background:#F7F8FA;color:#0B0F17">60</div>
+      <div style="flex:30;background:#0B0F17;color:#F7F8FA">30</div>
+      <div style="flex:8;background:#1F4BFF;color:#FFFFFF">8</div>
+      <div style="flex:2;background:#E8971C"></div>
+    </div>
+    <div class="ratio-legend label"><span>Papel 60%</span><span>Tinta 30%</span><span>Cobalto 8%</span><span>Ámbar 2%</span></div>
+  </div>
+</section>
+
+<section class="ch" id="tipografia">
+  <div class="rail"><span class="num">04</span><span class="label">Tipografía</span></div>
+  <div class="body">
+    <div class="intro">
+      <h2>Una familia, dos voces: Geist para hablar, Geist Mono para los números.</h2>
+      <p class="muted">Geist es la misma fuente del logo, así que titulares y marca se leen como una sola cosa. Geist Mono tiene cifras de ancho fijo: las columnas de números se alinean solas en tablas, KPIs y dashboards. Ambas son gratuitas en Google Fonts.</p>
+    </div>
+    <div class="specimen">
+      <div class="spec"><span class="label">Geist · 400 500 600</span><div class="big">Aa Rr</div><p class="muted">Titulares, cuerpo de texto, interfaz. SemiBold para títulos con espaciado −2,5%, Regular para lectura.</p></div>
+      <div class="spec"><span class="label">Geist Mono · 400 500</span><div class="big m">−20 h</div><p class="muted">Cifras, etiquetas en mayúscula, ejes de gráficos, código. Nunca para párrafos largos.</p></div>
+    </div>
+    <div class="scale">
+      <div class="row"><span class="label">Display · 56</span><span style="font-size:clamp(2rem,5vw,3.5rem);font-weight:600;letter-spacing:-.035em;line-height:1.05">Tus datos existen.</span></div>
+      <div class="row"><span class="label">Título · 36</span><span style="font-size:var(--s3);font-weight:600;letter-spacing:-.025em;line-height:1.1">De la fuente a la decisión</span></div>
+      <div class="row"><span class="label">Subtítulo · 18</span><span style="font-size:var(--s1);font-weight:500">Dashboards ejecutivos en Power BI, Looker y Tableau</span></div>
+      <div class="row"><span class="label">Cuerpo · 15</span><span>Convertimos los datos que tu empresa ya genera en dashboards, automatizaciones y agentes de IA.</span></div>
+      <div class="row"><span class="label">Etiqueta · 12</span><span class="label" style="color:var(--text)">Ingeniería de datos · BigQuery · Snowflake</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="ch" id="sistema">
+  <div class="rail"><span class="num">05</span><span class="label">Sistema gráfico</span></div>
+  <div class="body">
+    <div class="intro">
+      <h2>El punto de dato sale del logo y trabaja en todas partes.</h2>
+      <p class="muted">El cuadrado cobalto es el único elemento gráfico de la marca. Marca el valor que importa en un gráfico, reemplaza las viñetas en listas y cierra titulares cortos. Sin íconos decorativos, sin ilustraciones de stock, sin degradados.</p>
+    </div>
+    <div class="chart">
+      <div style="display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap"><h3>Horas de reportería manual por semana</h3><span class="label">Ejemplo ilustrativo de estilo</span></div>
+      <svg viewBox="0 0 640 240" role="img" aria-label="Gráfico de ejemplo: la línea baja de 24 a 4 horas en 8 semanas; el último punto está resaltado">
+        <g class="grid"><line x1="44" x2="620" y1="20" y2="20"/><line x1="44" x2="620" y1="80" y2="80"/><line x1="44" x2="620" y1="140" y2="140"/><line x1="44" x2="620" y1="200" y2="200"/></g>
+        <g class="ax"><text x="36" y="24" text-anchor="end">30</text><text x="36" y="84" text-anchor="end">20</text><text x="36" y="144" text-anchor="end">10</text><text x="36" y="204" text-anchor="end">0</text>
+        <text x="60" y="224" text-anchor="middle">S1</text><text x="140" y="224" text-anchor="middle">S2</text><text x="220" y="224" text-anchor="middle">S3</text><text x="300" y="224" text-anchor="middle">S4</text><text x="380" y="224" text-anchor="middle">S5</text><text x="460" y="224" text-anchor="middle">S6</text><text x="540" y="224" text-anchor="middle">S7</text><text x="604" y="224" text-anchor="middle">S8</text></g>
+        <path d="M60 56 L140 62 L220 80 L300 104 L380 140 L460 158 L540 170 L604 176 L604 200 L60 200 Z" fill="var(--accent)" opacity=".08"/>
+        <polyline points="60,56 140,62 220,80 300,104 380,140 460,158 540,170 604,176" fill="none" stroke="var(--muted)" stroke-width="2"/>
+        <rect x="598" y="170" width="12" height="12" fill="var(--dot)"/>
+        <text x="598" y="160" text-anchor="end" style="font-family:var(--f-mono);font-size:13px;fill:var(--text)">4 h</text>
+      </svg>
+      <p class="muted" style="font-size:.875rem">Serie en grafito, relleno al 8% y un solo punto de dato en cobalto sobre el valor que cuenta la historia.</p>
+    </div>
+    <ul class="bullets">
+      <li>Viñetas cuadradas del tamaño de la altura de x.</li>
+      <li>Nunca más de un punto de dato por composición de gráfico.</li>
+      <li>Esquinas rectas en todo. El único radio permitido es el del recuadro del ícono.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="ch" id="voz">
+  <div class="rail"><span class="num">06</span><span class="label">Tono de voz</span></div>
+  <div class="body">
+    <div class="intro">
+      <h2>Hablamos como el analista en quien confías: directo, concreto y sin jerga.</h2>
+      <p class="muted">Tuteamos. Escribimos en español neutro, entendible desde Ciudad de México hasta Miami. Cada frase debería poder defenderse con un dato o con un ejemplo.</p>
+    </div>
+    <div class="principles">
+      <div class="pr"><div><h3>1. Números antes que adjetivos</h3><p class="muted">Un resultado medible convence más que cualquier calificativo.</p></div>
+        <div class="ex"><div class="say yes"><span class="tag">Sí</span><q>Eliminamos 20 horas semanales de reportería manual.</q></div><div class="say no"><span class="tag">No</span><q>Soluciones increíbles que transforman tu negocio.</q></div></div></div>
+      <div class="pr"><div><h3>2. La decisión es el protagonista</h3><p class="muted">Power BI, Snowflake o un modelo de churn son medios. Hablamos de lo que el cliente va a poder decidir.</p></div>
+        <div class="ex"><div class="say yes"><span class="tag">Sí</span><q>Sabrás cada lunes qué clientes están por irse.</q></div><div class="say no"><span class="tag">No</span><q>Implementamos modelos de ML con pipelines MLOps en producción.</q></div></div></div>
+      <div class="pr"><div><h3>3. Frases cortas</h3><p class="muted">Una idea por frase. Si una frase necesita coma y punto y coma, son dos frases.</p></div>
+        <div class="ex"><div class="say yes"><span class="tag">Sí</span><q>Tus datos existen. Tus respuestas no.</q></div><div class="say no"><span class="tag">No</span><q>Aunque tu empresa genera enormes volúmenes de datos, muchas veces no logra obtener respuestas accionables a partir de ellos.</q></div></div></div>
+      <div class="pr"><div><h3>4. Técnicos cuando suma, simples siempre</h3><p class="muted">Si usamos un término técnico, lo explicamos en la misma frase.</p></div>
+        <div class="ex"><div class="say yes"><span class="tag">Sí</span><q>Unimos tus fuentes en BigQuery para que todos vean el mismo número.</q></div><div class="say no"><span class="tag">No</span><q>Orquestamos ETL/ELT sobre un data warehouse cloud-native.</q></div></div></div>
+      <div class="pr"><div><h3>5. Seguridad sin exagerar</h3><p class="muted">No prometemos magia con IA. Decimos qué hace, cuánto tarda y qué necesita.</p></div>
+        <div class="ex"><div class="say yes"><span class="tag">Sí</span><q>El agente responde preguntas sobre ventas con los datos de tu dashboard.</q></div><div class="say no"><span class="tag">No</span><q>Una IA revolucionaria que lo hace todo por ti.</q></div></div></div>
+    </div>
+
+    <div class="vocab">
+      <div><span class="label">Decimos</span><div class="pills"><span>datos</span><span>decisión</span><span>dashboard</span><span>fuente única</span><span>automatizar</span><span>horas ahorradas</span><span>pronóstico</span><span>tu equipo</span></div></div>
+      <div><span class="label">Evitamos</span><div class="pills off"><span>disruptivo</span><span>revolucionario</span><span>sinergia</span><span>soluciones 360</span><span>big data</span><span>data-driven</span><span>de clase mundial</span><span>¡¡!!</span></div></div>
+    </div>
+
+    <div class="intro"><h3>Por canal</h3></div>
+    <div class="channels">
+      <table>
+        <thead><tr><th>Canal</th><th>Registro</th><th>Ejemplo</th></tr></thead>
+        <tbody>
+          <tr><td>Web · titular</td><td>Contundente, máximo 8 palabras</td><td><q>Decisiones con datos, no con corazonadas.</q></td></tr>
+          <tr><td>LinkedIn</td><td>Abre con un problema concreto del cliente, cierra con un dato</td><td><q>Tu equipo de finanzas arma el mismo reporte cada lunes. Lo automatizamos una vez y deja de existir.</q></td></tr>
+          <tr><td>Correo · asunto</td><td>Qué gana el lector, sin mayúsculas sostenidas ni emojis</td><td><q>Tu dashboard de ventas, listo para revisar</q></td></tr>
+          <tr><td>Propuesta</td><td>Alcance, plazo y resultado esperado en la primera página</td><td><q>En 6 semanas: una fuente única de ventas y un dashboard ejecutivo que se actualiza solo.</q></td></tr>
+          <tr><td>Dashboard · estado vacío</td><td>Qué pasa y qué hacer, sin disculpas</td><td><q>Todavía no hay ventas esta semana. El tablero se actualiza cada mañana.</q></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted" style="font-size:.875rem">Los ejemplos de propuesta y LinkedIn son de estilo. Los plazos y resultados reales salen de cada proyecto.</p>
+  </div>
+</section>
+
+<section class="ch" id="aplicaciones">
+  <div class="rail"><span class="num">07</span><span class="label">Aplicaciones</span></div>
+  <div class="body">
+    <div class="intro"><h2>La marca en uso.</h2><p class="muted">Tinta, papel y un punto cobalto. Si una pieza necesita más que eso, probablemente tiene demasiado.</p></div>
+    <div class="apps">
+      <div class="card front"><svg viewBox="0 -760 3289 812" aria-label="datarin"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg><span class="tl">Decisiones con datos, no con corazonadas.</span></div>
+      <div class="card back"><svg viewBox="0 -760 3289 812" aria-label="datarin" style="width:30%"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg><div class="who"><b>Nombre Apellido</b><span>Cargo</span><span class="mono">nombre@datarin.com · datarin.com</span></div></div>
+      <div class="banner"><svg viewBox="0 -760 3289 812" aria-label="datarin"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg><div class="h">De la fuente de datos a la decisión.</div></div>
+      <div class="sig"><span class="label" style="color:#5A6272">Firma de correo</span><div><b>Nombre Apellido</b><br>Cargo</div><svg viewBox="0 -760 3289 812" aria-label="datarin"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg><span class="mono">datarin.com</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="files">
+    <span class="label">Archivos en el repositorio · brands/datarin/logo/</span>
+    <span>datarin-wordmark.svg · datarin-wordmark-negativo.svg</span>
+    <span>datarin-wordmark-tinta.svg · datarin-wordmark-blanco.svg</span>
+    <span>datarin-icono.svg · datarin-icono-cobalto.svg</span>
+  </div>
+  <svg viewBox="0 -760 3289 812" width="96" style="color:var(--text)" aria-label="datarin"><use href="#wm" x="0" y="-760" width="3289" height="812"/></svg>
+</footer>
+</div>
