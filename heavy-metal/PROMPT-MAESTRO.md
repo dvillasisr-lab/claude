@@ -36,8 +36,8 @@ HECHOS REALES (usar tal cual)
   Facebook: https://www.facebook.com/heavymetalprostock/
 - Merch diseñado por el equipo, impreso bajo demanda con Printify (tracking automático).
   Envío "Printed to order, ships in 5 days" {{confirmar con Printify}}.
-- Frase de marca: "This is f#cking evil" (escrita así). Cinta amarilla de la home, con
-  puntitos: "FULL PULL OR NOTHING" · "THIS IS F#CKING EVIL".
+- Frase de marca: "This thing is f#ck!ng evil" (escrita así). Cinta amarilla de la home, con
+  puntitos: "FULL PULL OR NOTHING" · "THIS THING IS F#CK!NG EVIL".
 
 DECISIONES YA TOMADAS (no reabrir)
 - Sin "Ride With The Evil One" (los fans no ponen su nombre en el tractor). Sin SMS.

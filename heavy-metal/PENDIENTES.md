@@ -37,7 +37,7 @@ Lo que me vayas dando "para después" va aquí. No se trabaja hasta que digas.
 - Video del rayo (cómo se escuchó) y video del motor.
 - Monroe: confirmar que el video de Green County Fall Nationals es de "The Evil One", fecha y resultado.
 - Con Printify: envío gratis, devoluciones, tabla de tallas, "printed in USA".
-- Instagram, TikTok y YouTube propios (si existen).
+- Link de Instagram (TikTok y YouTube todavía no existen; no se muestran).
 - Revisión legal de las políticas.
 - Confirmar con Chris: "la mayoría de los Pro Stock usan 6 en línea".
 
@@ -50,7 +50,7 @@ Lo que me vayas dando "para después" va aquí. No se trabaja hasta que digas.
 ## Decisiones ya tomadas
 - Sin "Ride With" ni SMS. Horsepower: "Unknown".
 - "The Evil One" siempre entre comillas.
-- La frase es "This is f#cking evil" y va en la cinta amarilla (máximo 3 frases).
+- La frase es "This thing is f#ck!ng evil" y va en la cinta amarilla con "Full pull or nothing".
 - Nombre de marca: "Heavy Metal Pro Stock: “The Evil One”" (trademark en trámite); nunca "Heavy Metal" solo en merch.
 - La lista de correo se llama "The Evil List" (antes Hook Alerts).
 - No se menciona a Printify al cliente.
