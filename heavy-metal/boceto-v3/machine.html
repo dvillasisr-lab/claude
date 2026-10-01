@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 -->
+<title>The Machine · Heavy Metal, The Evil One</title>
+<meta name="description" content="Heavy Metal spec sheet: a Cat 3208 V8 reverse flow built out to 680 cubic inches, single large turbo, 10,000 LB, 24.5-32 tires. Pro Stock from Waterloo, Wisconsin.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Machine v3: foto real + ficha, anatomía sobre el recorte real, tabla compacta, comparación, FAQ, una fila de producto. */
+html,body{overflow-x:clip}
+.mx-photo{position:relative;overflow:hidden;background:var(--tile);margin:0}
+.mx-photo img{position:absolute;inset:0}
+
+/* 1 · hero */
+.mx-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);gap:clamp(24px,5vw,72px);align-items:center}
+.mx-hero__txt{display:grid;gap:14px;max-width:560px}
+.mx-hero .mx-photo{aspect-ratio:4/5;max-height:calc(100svh - var(--header) - var(--announce) - 2 * var(--sect) - 24px);min-height:320px}
+.mx-keys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 20px;margin:6px 0 0}
+.mx-keys .spec dd{font-size:var(--t-h1)}
+
+/* 2 · anatomía */
+.mx-anat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,360px);gap:clamp(20px,3vw,40px);align-items:center}
+.mx-stage{position:relative;aspect-ratio:1120/576;width:100%;margin:0}
+.mx-stage>img{width:100%;height:100%;object-fit:contain}
+.hs{position:absolute;transform:translate(-50%,-50%);width:44px;height:44px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
+.hs span{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--ink);font-size:12px;font-weight:800;box-shadow:0 0 0 2px var(--ink),0 0 0 6px rgba(245,196,0,.35);transition:transform .15s}
+.hs:hover span{transform:scale(1.12)}
+.hs[aria-pressed="true"] span{background:var(--ink);color:var(--accent);box-shadow:0 0 0 2px var(--accent),0 0 0 7px rgba(28,27,25,.25)}
+.hs:focus-visible{outline:none}
+.hs:focus-visible span{outline:2px solid var(--ink);outline-offset:4px}
+.mx-legend{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.mx-legend button{min-height:36px;padding:0 12px;border:1px solid var(--line);background:var(--surface);font-size:var(--t-xs);font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.mx-legend button b{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--accent);font-size:10px}
+.mx-legend button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--surface)}
+.mx-legend button[aria-pressed="true"] b{color:var(--ink)}
+.mx-panel{display:grid;grid-template-columns:140px minmax(0,1fr);gap:16px;background:var(--bg);border:1px solid var(--line);padding:16px;align-items:start}
+.mx-panel .mx-photo{aspect-ratio:3/4}
+.mx-panel__txt{display:grid;gap:6px;align-content:start}
+.mx-panel__txt p{margin:0}
+.mx-panel__val{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h1);line-height:1.1;text-transform:uppercase;color:var(--ink)}
+.mx-panel__body{font-size:var(--t-sm);color:var(--soft)}
+
+/* 3 · ficha */
+.mx-sheet{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:clamp(20px,3vw,40px);margin:0}
+.mx-sheet div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-top:1px solid var(--line);padding-block:11px}
+.mx-sheet dt{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.mx-sheet dd{margin:0;font-weight:700;color:var(--ink);text-align:right;font-size:var(--t-sm)}
+
+/* 4 · V8 vs el campo */
+.mx-vs{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(20px,4vw,56px);align-items:start}
+.mx-vs__txt{display:grid;gap:10px}
+.mx-vs__txt p{margin:0}
+.tbl-wrap{overflow-x:auto}
+.mx-tbl{width:100%;border-collapse:collapse;font-size:var(--t-sm)}
+.mx-tbl th,.mx-tbl td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.mx-tbl thead th{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.02em;color:var(--ink);border-bottom:2px solid var(--ink)}
+.mx-tbl tbody th{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);width:28%}
+.mx-tbl .us{font-weight:700;color:var(--ink);background:rgba(245,196,0,.14)}
+
+/* 5 · FAQ */
+.mx-faq{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(20px,4vw,56px)}
+.faq details{border-top:1px solid var(--line)}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;align-items:center;min-height:52px;padding-block:10px;font-weight:600;font-size:var(--t-md);color:var(--ink)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:20px;font-weight:400;line-height:1;flex:none}
+.faq details[open] summary::after{content:"\2212"}
+.faq details p{margin:0 0 16px;max-width:62ch;color:var(--soft);font-size:var(--t-sm)}
+
+/* 6 · CTA */
+.mx-wear{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,9fr);gap:clamp(20px,3vw,40px);align-items:start}
+.mx-wear__txt{display:grid;gap:12px;align-content:start}
+.mx-wear__txt p{margin:0}
+.mx-wear .pgrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+
+@media (max-width:1100px){.mx-sheet{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:960px){
+  .mx-anat{grid-template-columns:1fr}
+  .mx-vs,.mx-faq,.mx-wear{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  .mx-hero{grid-template-columns:1fr}
+  .mx-hero .mx-photo{max-height:none;min-height:0;aspect-ratio:4/3}
+  .mx-sheet{grid-template-columns:1fr}
+  .mx-panel{grid-template-columns:110px minmax(0,1fr);gap:12px;padding:12px}
+  .mx-wear .pgrid{display:flex;overflow-x:auto;scroll-snap-type:x proximity;gap:2px;margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter);scroll-padding-inline:var(--gutter)}
+  .mx-wear .pgrid>*{flex:0 0 46%;scroll-snap-align:start}
+  .hs{width:40px;height:40px}
+  .hs span{width:22px;height:22px;font-size:11px}
+}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="machine"></div>
+<main id="main">
+
+<!-- 1 · hero -->
+<section class="sect" aria-labelledby="mx-h1">
+  <div class="wrap mx-hero">
+    <div class="mx-hero__txt">
+      <p class="label muted">Pro Stock · Waterloo, WI</p>
+      <h1 class="h-hero" id="mx-h1">The Machine</h1>
+      <p class="lede">A Caterpillar 3208 V8, reverse flow: a setup you won't find on any other tractor on the track. Nearly everything on it is custom-built. Nothing about it is off the shelf, and nothing about it was quick.</p>
+      <dl class="mx-keys">
+        <div class="spec"><dt>Engine</dt><dd>Cat 3208 V8</dd></div>
+        <div class="spec"><dt>Displacement</dt><dd class="num">680 CI</dd></div>
+        <div class="spec"><dt>Weight</dt><dd class="num">10,000 LB</dd></div>
+        <div class="spec"><dt>Horsepower</dt><dd><span class="classified">Classified</span></dd></div>
+      </dl>
+    </div>
+    <figure class="mx-photo">
+      <img class="photo" style="object-position:50% 78%" src="img/hm-side.webp" alt="Heavy Metal in profile on the grass under a blue sky: matte black body, roll cage and chrome stack" width="1050" height="1400" fetchpriority="high">
+    </figure>
+  </div>
+</section>
+
+<!-- 2 · anatomía interactiva -->
+<section class="sect sect--white" aria-labelledby="anat-h">
+  <div class="wrap">
+    <div class="sect-head">
+      <h2 class="h1" id="anat-h">Anatomy</h2>
+      <p class="small muted" style="margin:0">Tap a point to see the part.</p>
+    </div>
+    <div class="mx-anat">
+      <div>
+        <figure class="mx-stage" id="stage">
+          <img src="img/hm-tractor-cutout.webp" alt="Heavy Metal cut out in profile, facing right" width="1120" height="576" loading="lazy">
+        </figure>
+        <ul class="mx-legend" id="legend" aria-label="Parts"></ul>
+      </div>
+      <div class="mx-panel" id="panel" aria-labelledby="panel-label">
+        <figure class="mx-photo"><img class="photo" id="panel-img" src="img/hm-engine.webp" alt="" width="787" height="1400" loading="lazy"></figure>
+        <div class="mx-panel__txt">
+          <p class="label muted" id="panel-label" aria-live="polite">Engine</p>
+          <p class="mx-panel__val" id="panel-val">Cat 3208 V8</p>
+          <p class="mx-panel__body" id="panel-body"></p>
+          <p style="margin-top:6px"><a class="link" id="panel-link" href="sponsors.html">Sponsor this part</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · ficha técnica -->
+<section class="sect" aria-labelledby="sheet-h">
+  <div class="wrap">
+    <div class="sect-head">
+      <h2 class="h1" id="sheet-h">Spec sheet</h2>
+      <p class="small muted" style="margin:0">Everything on it is custom-built.</p>
+    </div>
+    <dl class="mx-sheet">
+      <div><dt>Engine</dt><dd>Cat 3208 V8, reverse flow</dd></div>
+      <div><dt>Displacement</dt><dd class="num">680 CI (636 stock)</dd></div>
+      <div><dt>Turbo</dt><dd>Single, large</dd></div>
+      <div><dt>Horsepower</dt><dd><span class="classified">Classified</span></dd></div>
+      <div><dt>Weight</dt><dd class="num">10,000 LB</dd></div>
+      <div><dt>Tires</dt><dd class="num">24.5-32</dd></div>
+      <div><dt>Chassis</dt><dd>Custom-built</dd></div>
+      <div><dt>Body</dt><dd>Challenger 1015</dd></div>
+      <div><dt>Class</dt><dd>Pro Stock</dd></div>
+      <div><dt>Home</dt><dd>Waterloo, WI</dd></div>
+      <div><dt>Leagues</dt><dd>NTPA &amp; PPL Badger State</dd></div>
+      <div><dt>Nickname</dt><dd>The Evil One</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- 4 · Cat V8 vs el campo -->
+<section class="sect sect--white" aria-labelledby="vs-h">
+  <div class="wrap mx-vs">
+    <div class="mx-vs__txt">
+      <h2 class="h1" id="vs-h">Cat V8 vs the field</h2>
+      <p class="muted">Most Pro Stock tractors run an inline six. Heavy Metal runs a Caterpillar V8, built out from 636 to 680 cubic inches.</p>
+      <p class="note">Confirmar con Chris la frase sobre la clase. Del lado del campo no ponemos cifras: solo lo que vale para cualquier inline 6.</p>
+    </div>
+    <div class="tbl-wrap">
+      <table class="mx-tbl">
+        <caption class="vh">Heavy Metal's engine compared with the usual Pro Stock setup</caption>
+        <thead><tr><th scope="col"><span class="vh">Spec</span></th><th scope="col">Heavy Metal</th><th scope="col">The usual setup</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Engine</th><td class="us">Caterpillar 3208</td><td>John Deere inline 6</td></tr>
+          <tr><th scope="row">Layout</th><td class="us">V8, two banks</td><td>Inline, one bank</td></tr>
+          <tr><th scope="row">Cylinders</th><td class="us num">8</td><td class="num">6</td></tr>
+          <tr><th scope="row">Flow</th><td class="us">Reverse flow</td><td>Varies by build</td></tr>
+          <tr><th scope="row">Displacement</th><td class="us num">680 CI (636 stock)</td><td>Varies by build</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · FAQ -->
+<section class="sect" aria-labelledby="faq-h">
+  <div class="wrap mx-faq">
+    <div>
+      <h2 class="h1" id="faq-h">Questions from the fence line</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>What is Pro Stock?</summary>
+        <p>A tractor pulling class for modified diesel farm tractors. Each tractor drags a weight transfer sled down a dirt track; going the full length is a full pull.</p>
+      </details>
+      <details>
+        <summary>What engine does Heavy Metal run?</summary>
+        <p>A Caterpillar 3208 V8 in reverse flow configuration, built out from 636 cubic inches stock to 680, with a single large turbo. A setup you won't find on any other tractor on the track.</p>
+      </details>
+      <details>
+        <summary>How much horsepower does it make?</summary>
+        <p>Classified.</p>
+      </details>
+      <details>
+        <summary>Who built it?</summary>
+        <p>Chris F. and his family, in their shop in Waterloo, Wisconsin. The idea was born in 2014, the first bolt went in in February 2020, and nearly everything on it is custom-built.</p>
+      </details>
+      <details>
+        <summary>Where can I see it pull?</summary>
+        <p>This season Heavy Metal is chasing its first full pull at about 20 competitions on the NTPA and PPL Badger State circuits. Dates are still being confirmed; check the <a href="schedule.html">Schedule</a>.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · CTA único: Wear the machine -->
+<section class="sect sect--white" aria-labelledby="wear-h">
+  <div class="wrap mx-wear">
+    <div class="mx-wear__txt">
+      <h2 class="h1" id="wear-h">Wear the machine</h2>
+      <p class="muted">The spec sheet, printed to order.</p>
+      <p><a class="btn" href="shop.html?cat=all">Shop the machine</a></p>
+    </div>
+    <div class="pgrid" id="wear-grid"></div>
+  </div>
+</section>
+
+</main>
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  /* tarjetas: mismas que en Shop */
+  var ids = ['680-ci-hoodie', 'cat-v8-spec-tee', 'evil-one-tee'];
+  var g = document.getElementById('wear-grid');
+  if (g && window.HM_CATALOG && window.hmCard) {
+    g.innerHTML = ids.map(function (id) { return window.HM_CATALOG.filter(function (p) { return p.id === id; })[0]; })
+      .filter(Boolean).map(window.hmCard).join('');
+  }
+
+  /* anatomía: puntos sobre el recorte real (x, y en %) */
+  var P = [
+    { k: 'engine', n: 'Engine', v: 'Cat 3208 V8', x: 68, y: 36, img: 'img/hm-engine.webp', pos: '50% 60%', alt: 'The Cat 3208 V8 on the stand in the shop, turbo on top and the Heavy Metal plate on the intake',
+      b: 'A Caterpillar 3208 V8 in reverse flow configuration: a setup you won\'t find on any other tractor on the track.' },
+    { k: 'disp', n: 'Displacement', v: '680 CI', x: 52, y: 56, img: 'img/hm-engine.webp', pos: '50% 75%', alt: 'Close view of the engine block of the Cat 3208',
+      b: 'Stock, the 3208 measures 636 cubic inches. Ours doesn\'t: we built it out to 680.' },
+    { k: 'turbo', n: 'Turbo', v: 'Single, large', x: 47, y: 8, img: 'img/hm-engine.webp', pos: '60% 12%', alt: 'The single large turbo mounted on top of the engine',
+      b: 'One turbo, and a big one. You see the stack up top; the rest lives under the hood.' },
+    { k: 'weight', n: 'Weight', v: '10,000 LB', x: 93, y: 74, img: 'img/hm-side.webp', pos: '90% 70%', alt: 'Heavy Metal in profile showing the weight box on the front',
+      b: '10,000 pounds of matte black, front weight box included.' },
+    { k: 'tires', n: 'Tires', v: '24.5-32', x: 18, y: 64, img: 'img/hm-rear.webp', pos: '50% 60%', alt: 'Heavy Metal from the rear on the track, big rear tires in view',
+      b: 'Rear tires sized 24.5-32. This is where 680 cubic inches meets the dirt.' }
+  ];
+  var stage = document.getElementById('stage'), legend = document.getElementById('legend');
+  var img = document.getElementById('panel-img');
+  P.forEach(function (p, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'hs'; b.dataset.k = p.k;
+    b.style.left = p.x + '%'; b.style.top = p.y + '%';
+    b.setAttribute('aria-label', p.n + ': ' + p.v);
+    b.innerHTML = '<span aria-hidden="true">' + (i + 1) + '</span>';
+    stage.appendChild(b);
+    var li = document.createElement('li');
+    li.innerHTML = '<button type="button" data-k="' + p.k + '"><b aria-hidden="true">' + (i + 1) + '</b>' + p.n + '</button>';
+    legend.appendChild(li);
+  });
+  function set(k) {
+    var p = P.filter(function (x) { return x.k === k; })[0]; if (!p) return;
+    document.querySelectorAll('[data-k]').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.k === k ? 'true' : 'false'); });
+    document.getElementById('panel-label').textContent = p.n;
+    document.getElementById('panel-val').textContent = p.v;
+    document.getElementById('panel-body').textContent = p.b;
+    document.getElementById('panel-link').href = 'sponsors.html?part=' + p.k;
+    document.getElementById('panel-link').innerHTML = 'Sponsor this part<span class="vh">: ' + p.n + '</span>';
+    img.src = p.img; img.alt = p.alt; img.style.objectPosition = p.pos;
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.hs[data-k], .mx-legend [data-k]'); if (b) set(b.dataset.k);
+  });
+  set('engine');
+})();
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "What is Pro Stock?", "acceptedAnswer": {"@type": "Answer", "text": "A tractor pulling class for modified diesel farm tractors. Each tractor drags a weight transfer sled down a dirt track; going the full length is a full pull."}},
+    {"@type": "Question", "name": "What engine does Heavy Metal run?", "acceptedAnswer": {"@type": "Answer", "text": "A Caterpillar 3208 V8 in reverse flow configuration, built out from 636 cubic inches stock to 680, with a single large turbo. A setup you won't find on any other tractor on the track."}},
+    {"@type": "Question", "name": "How much horsepower does it make?", "acceptedAnswer": {"@type": "Answer", "text": "Classified."}},
+    {"@type": "Question", "name": "Who built it?", "acceptedAnswer": {"@type": "Answer", "text": "Chris F. and his family, in their shop in Waterloo, Wisconsin. The idea was born in 2014, the first bolt went in in February 2020, and nearly everything on it is custom-built."}},
+    {"@type": "Question", "name": "Where can I see it pull?", "acceptedAnswer": {"@type": "Answer", "text": "This season Heavy Metal is chasing its first full pull at about 20 competitions on the NTPA and PPL Badger State circuits. Dates are still being confirmed; check the Schedule page."}}
+  ]
+}
+</script>
+</body>
+</html>

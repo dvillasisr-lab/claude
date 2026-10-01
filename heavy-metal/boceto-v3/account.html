@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Account · Heavy Metal The Evil One</title>
+<meta name="description" content="Sign in with a one time code to track your Heavy Metal orders, manage addresses and Hook Alerts, and check your Ride With The Evil One name.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Cuenta: maqueta de las cuentas de cliente nativas de Shopify (código de 6 dígitos, sin contraseña) */
+html,body{overflow-x:clip}
+.acc-banner{background:var(--surface);border-bottom:1px solid var(--line)}
+.acc-banner .wrap{padding-block:24px 18px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px 24px}
+.acc-banner__t{display:grid;gap:8px}
+.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px;font-size:var(--t-xs);color:var(--mute)}
+.crumbs li+li::before{content:"/";margin-right:4px}
+.crumbs a{color:var(--soft);text-underline-offset:3px}
+.crumbs [aria-current]{color:var(--ink);font-weight:600}
+.seg{display:inline-flex;border:1px solid var(--ink);margin:0;padding:0}
+.seg legend{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.seg label{position:relative;display:flex;align-items:center;min-height:36px;padding:0 12px;font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;white-space:nowrap}
+.seg input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.seg label:has(input:checked){background:var(--ink);color:var(--surface)}
+.seg label:has(input:focus-visible){outline:2px solid var(--ink);outline-offset:2px}
+.seg-wrap{display:grid;gap:4px;justify-items:start}
+.seg-wrap .small{color:var(--mute)}
+
+.acc{padding-block:32px var(--sect)}
+/* sesión cerrada */
+.out{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:clamp(24px,6vw,96px);align-items:start}
+.signin{background:var(--surface);border:1px solid var(--line);padding:24px;display:grid;gap:14px}
+.signin p{margin:0}
+.shop-btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border:1px solid var(--ink);background:var(--surface);color:var(--ink);font-size:var(--t-sm);font-weight:700;cursor:pointer;width:100%}
+.shop-btn:hover{background:var(--bg)}
+.shop-btn b{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-md);letter-spacing:.02em}
+.or{display:flex;align-items:center;gap:10px;font-size:var(--t-xs);color:var(--mute);text-transform:uppercase;letter-spacing:.08em}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.code{letter-spacing:.5em;font-size:var(--t-lg);font-variant-numeric:tabular-nums;text-align:center}
+.err{color:var(--alert);font-size:var(--t-xs);margin:0;min-height:0}
+.textbtn{background:none;border:0;padding:0;font-size:var(--t-xs);font-weight:700;text-decoration:underline;text-underline-offset:3px;cursor:pointer;color:var(--ink);justify-self:start}
+.inside{display:grid;gap:12px}
+.inside ul{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.inside li{display:grid;grid-template-columns:140px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:var(--t-sm)}
+.inside li b{font-family:var(--f-head);font-stretch:78%;text-transform:uppercase;letter-spacing:.03em;color:var(--ink)}
+.inside li span{color:var(--soft)}
+@media (max-width:860px){.out{grid-template-columns:minmax(0,1fr)}.inside li{grid-template-columns:110px minmax(0,1fr)}}
+
+/* sesión iniciada */
+.in-head{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-bottom:18px}
+.in{display:grid;grid-template-columns:200px minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:start}
+.in-nav{display:grid;border-top:1px solid var(--line)}
+.in-nav button{display:flex;align-items:center;min-height:44px;padding:0;border:0;border-bottom:1px solid var(--line);background:none;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.03em;color:var(--soft);cursor:pointer;text-align:left;white-space:nowrap}
+.in-nav button[aria-selected="true"]{color:var(--ink);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.in-nav button:hover{color:var(--ink)}
+.in-nav .logout{color:var(--mute);font-family:var(--f-sans);font-stretch:100%;font-size:var(--t-xs);letter-spacing:.08em}
+.panel{min-width:0;max-width:880px}
+.panel h2{margin-bottom:12px}
+.orders{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.order{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.order .ph{--ar:4/5}
+.order .ph__tag{display:none}
+.order p{margin:0;font-size:var(--t-xs);color:var(--mute)}
+.order__t{font-weight:700;color:var(--ink)!important;font-size:var(--t-sm)!important}
+.order__act{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:end;align-items:center}
+.order__act .textbtn{justify-self:auto}
+.st{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.st::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:inset 0 0 0 1px rgba(28,27,25,.35)}
+.st--ship::before{background:var(--ink)}
+.st--wait::before{background:transparent;box-shadow:inset 0 0 0 1.5px var(--ink)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.box{background:var(--surface);border:1px solid var(--line);padding:16px;display:grid;gap:6px;align-content:start;font-size:var(--t-sm)}
+.box p{margin:0}
+.box .label{color:var(--mute)}
+.prefs{border-top:1px solid var(--line);margin:0 0 14px}
+.pref{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.pref label{font-weight:700;color:var(--ink)}
+.pref p{margin:0;font-size:var(--t-xs);color:var(--mute);grid-column:1}
+.switch{grid-column:2;grid-row:1 / span 2;position:relative;width:44px;height:26px}
+.switch input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;z-index:1}
+.switch span{position:absolute;inset:0;background:#B9B6AF;border-radius:13px;transition:background .15s}
+.switch span::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:var(--surface);transition:transform .15s}
+.switch input:checked+span{background:var(--ink)}
+.switch input:checked+span::after{transform:translateX(18px)}
+.switch input:focus-visible+span{outline:2px solid var(--ink);outline-offset:2px}
+.sms-extra{grid-column:1 / -1;display:grid;gap:8px;max-width:420px;padding-top:6px}
+.status{font-size:var(--t-xs);color:var(--soft);margin:0}
+.ride{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,240px);gap:20px;align-items:start}
+.ride__name{font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:clamp(24px,3vw,30px);text-transform:uppercase;letter-spacing:.04em;color:var(--accent);background:var(--night);padding:10px 14px;display:inline-block;margin:6px 0 4px}
+.ride__photo{aspect-ratio:3/4;overflow:hidden;background:var(--tile)}
+.ride__photo figcaption{font-size:11px;color:var(--mute);margin-top:6px}
+.ride figure{margin:0}
+.mini-seg{display:inline-flex;border:1px solid var(--line);margin-top:8px}
+.mini-seg button{min-height:32px;padding:0 10px;border:0;background:var(--surface);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.mini-seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+@media (max-width:860px){
+  .in{grid-template-columns:minmax(0,1fr);gap:16px}
+  .in-nav{display:flex;gap:8px;overflow-x:auto;border:0;scrollbar-width:none;margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter)}
+  .in-nav::-webkit-scrollbar{display:none}
+  .in-nav button{flex:none;min-height:36px;padding:0 12px;border:1px solid var(--line);background:var(--surface);font-size:var(--t-xs)}
+  .in-nav button[aria-selected="true"]{border-color:var(--ink)}
+  .ride{grid-template-columns:minmax(0,1fr)}
+  .ride__photo{max-width:240px}
+  .order{grid-template-columns:56px minmax(0,1fr)}
+  .order__act{grid-column:2;justify-content:start}
+}
+
+/* detalle de pedido: panel lateral */
+.odlg{margin:0 0 0 auto;padding:0;border:0;width:min(440px,100vw);height:100%;max-height:none;max-width:100vw;background:var(--surface);color:var(--text)}
+.odlg::backdrop{background:rgba(28,27,25,.4)}
+.odlg__head{display:flex;justify-content:space-between;align-items:center;height:56px;padding:0 12px 0 20px;border-bottom:1px solid var(--line)}
+.odlg__body{padding:16px 20px calc(24px + env(safe-area-inset-bottom,0px));display:grid;gap:16px;font-size:var(--t-sm)}
+.odlg__body p{margin:0}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.steps li{border-top:3px solid var(--line);padding-top:6px;color:var(--mute)}
+.steps li.done{border-color:var(--ink);color:var(--ink)}
+.steps li.now{border-color:var(--accent);color:var(--ink)}
+.oline{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:12px;align-items:start;font-size:var(--t-xs)}
+.oline .ph{--ar:4/5}.oline .ph__tag{display:none}
+.oline b{color:var(--ink)}
+.sum{display:grid;grid-template-columns:1fr auto;gap:4px;border-top:1px solid var(--line);padding-top:10px;font-size:var(--t-xs)}
+.sum .tot{font-weight:700;color:var(--ink);font-size:var(--t-sm)}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="account"></div>
+<main id="main">
+  <section class="acc-banner">
+    <div class="wrap">
+      <div class="acc-banner__t">
+        <h1 class="h1">Account</h1>
+        <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">Account</li></ol></nav>
+      </div>
+      <div class="seg-wrap">
+        <fieldset class="seg">
+          <legend>Preview state</legend>
+          <label><input type="radio" name="view" value="out" checked>Signed out</label>
+          <label><input type="radio" name="view" value="in">Signed in (example)</label>
+        </fieldset>
+        <span class="small">Boceto: preview only</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap acc">
+    <!-- SESIÓN CERRADA -->
+    <section class="out" id="v-out" aria-labelledby="si-t">
+      <div class="signin">
+        <h2 class="h2" id="si-t">Sign in</h2>
+        <form id="f-email" class="inside" novalidate>
+          <p class="muted">No password. We email you a 6 digit code.</p>
+          <div class="field"><label for="si-email">Email</label><input class="input" id="si-email" type="email" autocomplete="email" required spellcheck="false" placeholder="you@email.com"></div>
+          <p class="err" id="si-err" role="alert"></p>
+          <button class="btn btn--block" type="submit">Continue</button>
+        </form>
+        <form id="f-code" class="inside" novalidate hidden>
+          <p>Enter the code we sent to <b id="si-sent"></b>.</p>
+          <div class="field"><label for="si-code">6 digit code</label><input class="input code" id="si-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required></div>
+          <p class="err" id="code-err" role="alert"></p>
+          <button class="btn btn--block" type="submit">Sign in</button>
+          <button class="textbtn" type="button" id="si-back">Use a different email</button>
+        </form>
+        <div class="or">or</div>
+        <button class="shop-btn" type="button" id="shop-btn">Continue with <b>Shop</b></button>
+        <p class="consent">By signing in you agree to our <a href="policies.html?p=terms">Terms of Service</a> and <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
+      </div>
+
+      <div class="inside">
+        <h2 class="h3">In your account</h2>
+        <ul>
+          <li><b>Orders</b><span>Status from printing to delivered, with tracking.</span></li>
+          <li><b>Addresses</b><span>Save where your merch ships.</span></li>
+          <li><b>Profile</b><span>Name, email and phone.</span></li>
+          <li><b>Hook Alerts</b><span>Turn email or text alerts on or off.</span></li>
+          <li><b>Ride With</b><span>See if your name on the tractor is approved, with the photo.</span></li>
+        </ul>
+        <p class="small muted">Checked out as a guest? Sign in with the same email and your past orders show up.</p>
+        <p class="note">Es la cuenta nativa de clientes de Shopify (Settings &gt; Customer accounts, sin app): código de 6 dígitos, Shop, pedidos, direcciones y perfil. "Ride With status" necesita un metafield (o una app / extensión de cuenta) y las preferencias de Hook Alerts dependen del proveedor de email y SMS.</p>
+      </div>
+    </section>
+
+    <!-- SESIÓN INICIADA (datos de ejemplo) -->
+    <section id="v-in" hidden aria-labelledby="hi-t">
+      <div class="in-head"><h2 class="h2" id="hi-t">Hi, Jane</h2><span class="badge badge--line">Example data</span></div>
+      <div class="in">
+        <div class="in-nav" role="tablist" aria-label="Account sections">
+          <button type="button" role="tab" id="tab-orders" aria-controls="p-orders" aria-selected="true">Orders</button>
+          <button type="button" role="tab" id="tab-addr" aria-controls="p-addr" aria-selected="false" tabindex="-1">Addresses</button>
+          <button type="button" role="tab" id="tab-prof" aria-controls="p-prof" aria-selected="false" tabindex="-1">Profile</button>
+          <button type="button" role="tab" id="tab-hook" aria-controls="p-hook" aria-selected="false" tabindex="-1">Hook Alerts</button>
+          <button type="button" role="tab" id="tab-ride" aria-controls="p-ride" aria-selected="false" tabindex="-1">Ride With</button>
+          <button type="button" class="logout" id="logout">Log out</button>
+        </div>
+
+        <div class="panel">
+          <div role="tabpanel" id="p-orders" aria-labelledby="tab-orders">
+            <ul class="orders">
+              <li class="order">
+                <span class="ph"><span class="ph__tag">Evil One Tee</span></span>
+                <div><p class="order__t">Order #HM1002</p><p>Sep 29, 2026 · 2 items · $XX</p><p><span class="st">Printing</span> · ships by Oct 6</p></div>
+                <div class="order__act"><button class="textbtn" type="button" data-order="1002">View order</button></div>
+              </li>
+              <li class="order">
+                <span class="ph ph--dark"><span class="ph__tag">680 CI Hoodie</span></span>
+                <div><p class="order__t">Order #HM1001</p><p>Sep 15, 2026 · 2 items · $XX</p><p><span class="st st--ship">Shipped</span> · Sep 21</p></div>
+                <div class="order__act"><a class="textbtn" href="https://tools.usps.com/go/TrackConfirmAction" target="_blank" rel="noopener">Track package</a><button class="textbtn" type="button" data-order="1001">View order</button></div>
+              </li>
+            </ul>
+          </div>
+
+          <div role="tabpanel" id="p-addr" aria-labelledby="tab-addr" hidden>
+            <div class="cards">
+              <div class="box"><p class="label">Default · example</p><p><b>Jane Doe</b><br>123 Example St<br>Madison, WI 53703<br>United States</p><button class="textbtn" type="button">Edit</button></div>
+              <div class="box"><p class="label">Add</p><p class="muted">We ship to US addresses only, to start.</p><button class="textbtn" type="button">Add address</button></div>
+            </div>
+          </div>
+
+          <div role="tabpanel" id="p-prof" aria-labelledby="tab-prof" hidden>
+            <div class="cards">
+              <div class="box"><p class="label">Name</p><p>Jane Doe</p></div>
+              <div class="box"><p class="label">Email</p><p>jane@example.com</p></div>
+              <div class="box"><p class="label">Phone</p><p class="muted">Not added</p></div>
+            </div>
+            <p style="margin-top:12px"><button class="textbtn" type="button">Edit profile</button></p>
+          </div>
+
+          <div role="tabpanel" id="p-hook" aria-labelledby="tab-hook" hidden>
+            <div class="prefs">
+              <div class="pref">
+                <label for="hk-email">Email</label>
+                <span class="switch"><input type="checkbox" id="hk-email" role="switch" checked aria-describedby="hk-email-d"><span aria-hidden="true"></span></span>
+                <p id="hk-email-d">New drops and a heads up before every pull. jane@example.com</p>
+              </div>
+              <div class="pref">
+                <label for="hk-sms">Text messages (SMS)</label>
+                <span class="switch"><input type="checkbox" id="hk-sms" role="switch" aria-describedby="hk-sms-d" aria-controls="hk-sms-x"><span aria-hidden="true"></span></span>
+                <p id="hk-sms-d">About 1 message per pull. Off.</p>
+                <div class="sms-extra" id="hk-sms-x" hidden>
+                  <div class="field"><label for="hk-phone">Mobile number</label><input class="input" id="hk-phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(555) 555 0100"></div>
+                  <p class="consent">By turning on texts you agree to receive recurring automated marketing texts (Hook Alerts) from Heavy Metal at this number. About 1 msg per pull. Consent is not a condition of purchase. Msg &amp; data rates may apply. Reply STOP to cancel, HELP for help. <a href="policies.html?p=sms">SMS Terms</a> · <a href="policies.html?p=privacy">Privacy Policy</a></p>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center"><button class="btn btn--ghost" type="button" id="hk-save">Save</button><p class="status" id="hk-status" role="status" aria-live="polite"></p></div>
+          </div>
+
+          <div role="tabpanel" id="p-ride" aria-labelledby="tab-ride" hidden>
+            <div class="ride">
+              <div>
+                <p class="label muted">Your name on the tractor · Season 2026</p>
+                <p class="ride__name">Jane D.</p>
+                <p style="margin:6px 0 0"><span class="st st--wait" id="rd-st">Pending review</span></p>
+                <p class="small muted" id="rd-txt" style="margin:6px 0 0;max-width:46ch">We review every name before printing. You will get an email with a photo when it is on the tractor. If it is rejected, you get a full refund.</p>
+                <div class="mini-seg" role="group" aria-label="Example state">
+                  <button type="button" aria-pressed="true" data-rd="pending">Pending review</button>
+                  <button type="button" aria-pressed="false" data-rd="approved">Approved</button>
+                </div>
+                <p class="small" style="margin:10px 0 0"><a href="policies.html?p=ride">Ride With Rules</a></p>
+              </div>
+              <figure class="ride__fig" id="rd-photo" hidden>
+                <div class="ride__photo"><img class="photo" src="img/hm-side.webp" alt="The Evil One tractor in profile on the grass, example of the proof photo" loading="lazy" width="1050" height="1400"></div>
+                <figcaption>Example proof photo. The real one shows your name on the panel.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<dialog class="odlg" id="odlg" aria-labelledby="od-t">
+  <div class="odlg__head"><h2 class="h3" id="od-t">Order</h2><button class="icon-btn" type="button" id="od-close" aria-label="Close order details"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg></button></div>
+  <div class="odlg__body" id="od-body"></div>
+</dialog>
+
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* vista previa: sesión cerrada o iniciada */
+  function view(v) {
+    $('v-out').hidden = v !== 'in' ? false : true;
+    $('v-in').hidden = v !== 'in';
+    document.querySelector('input[name="view"][value="' + v + '"]').checked = true;
+  }
+  document.querySelectorAll('input[name="view"]').forEach(function (r) { r.addEventListener('change', function () { view(this.value); }); });
+
+  /* flujo: email, luego código de 6 dígitos */
+  $('f-email').addEventListener('submit', function (e) {
+    e.preventDefault(); var em = $('si-email');
+    if (!em.value || !em.checkValidity()) { $('si-err').textContent = 'Enter a valid email.'; em.setAttribute('aria-invalid', 'true'); em.focus(); return; }
+    em.removeAttribute('aria-invalid'); $('si-err').textContent = '';
+    $('si-sent').textContent = em.value; this.hidden = true; $('f-code').hidden = false; $('si-code').focus();
+  });
+  $('si-code').addEventListener('input', function () { this.value = this.value.replace(/\D/g, '').slice(0, 6); });
+  $('f-code').addEventListener('submit', function (e) {
+    e.preventDefault(); var c = $('si-code');
+    if (!/^\d{6}$/.test(c.value)) { $('code-err').textContent = 'Enter the 6 digit code from your email.'; c.setAttribute('aria-invalid', 'true'); c.focus(); return; }
+    view('in'); $('hi-t').focus && $('hi-t').setAttribute('tabindex', '-1'); $('hi-t').focus();
+  });
+  $('si-back').addEventListener('click', function () { $('f-code').hidden = true; $('f-email').hidden = false; $('si-email').focus(); });
+  $('shop-btn').addEventListener('click', function () { this.innerHTML = 'Boceto: aquí abre el inicio de sesión de <b>Shop</b>'; });
+
+  /* pestañas */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  function sel(t) {
+    tabs.forEach(function (x) { var on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1; $(x.getAttribute('aria-controls')).hidden = !on; });
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { sel(t); });
+    t.addEventListener('keydown', function (e) {
+      var k = e.key, n = null;
+      if (k === 'ArrowRight' || k === 'ArrowDown') n = tabs[(i + 1) % tabs.length];
+      if (k === 'ArrowLeft' || k === 'ArrowUp') n = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (n) { e.preventDefault(); sel(n); n.focus(); }
+    });
+  });
+  $('logout').addEventListener('click', function () { sel(tabs[0]); $('f-code').hidden = true; $('f-email').hidden = false; $('si-code').value = ''; view('out'); $('si-email').focus(); });
+
+  /* Hook Alerts */
+  $('hk-sms').addEventListener('change', function () { $('hk-sms-x').hidden = !this.checked; $('hk-sms-d').textContent = 'About 1 message per pull. ' + (this.checked ? 'On after you confirm by text.' : 'Off.'); if (this.checked) $('hk-phone').focus(); });
+  $('hk-save').addEventListener('click', function () {
+    var ph = $('hk-phone');
+    if ($('hk-sms').checked && ph.value.replace(/\D/g, '').length < 10) { $('hk-status').textContent = 'Add a 10 digit US mobile number to turn on texts.'; ph.setAttribute('aria-invalid', 'true'); ph.focus(); return; }
+    ph.removeAttribute('aria-invalid');
+    $('hk-status').textContent = 'Saved. Email ' + ($('hk-email').checked ? 'on' : 'off') + ', texts ' + ($('hk-sms').checked ? 'pending your reply YES' : 'off') + '.';
+  });
+
+  /* Ride With: estado de ejemplo */
+  document.querySelectorAll('[data-rd]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var ok = b.getAttribute('data-rd') === 'approved';
+      document.querySelectorAll('[data-rd]').forEach(function (x) { x.setAttribute('aria-pressed', x === b); });
+      $('rd-st').textContent = ok ? 'Approved' : 'Pending review';
+      $('rd-st').className = 'st ' + (ok ? 'st--ship' : 'st--wait');
+      $('rd-txt').textContent = ok ? 'Your name is on the tractor for the 2026 season. Here is your photo.' : 'We review every name before printing. You will get an email with a photo when it is on the tractor. If it is rejected, you get a full refund.';
+      $('rd-photo').hidden = !ok;
+    });
+  });
+
+  /* detalle del pedido */
+  var ORD = {
+    1002: { date: 'Sep 29, 2026', step: 1, note: 'Printing. Ships by Oct 6. Every item is printed to order.', lines: [['Evil One Tee', 'Matte Black / L', '$XX', ''], ['Hook Alert Koozie', 'One size', '$XX', '']], track: '' },
+    1001: { date: 'Sep 15, 2026', step: 2, note: 'Shipped Sep 21.', lines: [['680 CI Hoodie', 'Matte Black / XL', '$XX', ' ph--dark'], ['Ride With The Evil One', 'Name: JANE D. · nothing ships', '$XX', ' ph--dark']], track: '9400 0000 0000 0000 0000 00' }
+  };
+  var dlg = $('odlg');
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-order]'); if (!b) return;
+    var id = b.getAttribute('data-order'), o = ORD[id];
+    $('od-t').textContent = 'Order #HM' + id;
+    var steps = ['Ordered', 'Printing', 'Shipped', 'Delivered'].map(function (s, i) { return '<li class="' + (i < o.step ? 'done' : i === o.step ? 'now' : '') + '"' + (i === o.step ? ' aria-current="step"' : '') + '>' + s + '</li>'; }).join('');
+    $('od-body').innerHTML =
+      '<p class="small muted">Placed ' + o.date + ' · <span class="badge badge--line">Example</span></p>' +
+      '<ol class="steps" aria-label="Order status">' + steps + '</ol><p>' + o.note + '</p>' +
+      (o.track ? '<div class="box"><p class="label">Tracking · example</p><p class="num">USPS ' + o.track + '</p><a class="textbtn" href="https://tools.usps.com/go/TrackConfirmAction" target="_blank" rel="noopener">Track package</a></div>' : '') +
+      '<div style="display:grid;gap:12px">' + o.lines.map(function (l) { return '<div class="oline"><span class="ph' + l[3] + '"><span class="ph__tag">' + l[0] + '</span></span><div><b>' + l[0] + '</b><br><span class="muted">' + l[1] + '</span></div><span class="num">' + l[2] + '</span></div>'; }).join('') + '</div>' +
+      '<div class="sum"><span>Subtotal</span><span>$XX</span><span>Shipping</span><span>$XX</span><span>Tax</span><span>$XX</span><span class="tot">Total</span><span class="tot">$XX</span></div>' +
+      '<div class="cards" style="grid-template-columns:1fr"><div class="box"><p class="label">Ships to</p><p>Jane Doe, 123 Example St, Madison, WI 53703</p></div></div>' +
+      '<p class="small muted">Something wrong with your print? <a href="policies.html?p=refund">Misprints are replaced free within 30 days.</a></p>';
+    dlg.showModal();
+  });
+  $('od-close').addEventListener('click', function () { dlg.close(); });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+
+  if (new URLSearchParams(location.search).get('view') === 'in') view('in');
+})();
+</script>
+</body>
+</html>
