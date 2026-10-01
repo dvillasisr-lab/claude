@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lightning Night Tee · Special Edition · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Special edition from Heavy Metal Pro Stock: “The Evil One”. The Lightning Night Tee, a limited run for the night the engine fired and lightning struck. Limited time and quantity.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4 */
+/* Orden: 1 drop (panel nocturno con la prenda + caja de compra) · 2 la historia en una línea · 3 Past editions con filtro por año */
+html,body{overflow-x:clip}
+.crumbs{padding-block:14px 12px}
+.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:2px 8px;font-size:var(--t-xs);color:var(--mute)}
+.crumbs li+li::before{content:"/";margin-right:8px;color:#B6B1AD}
+.crumbs a{text-decoration:none}
+.crumbs a:hover{text-decoration:underline;text-underline-offset:3px}
+.crumbs [aria-current]{color:var(--ink)}
+
+/* 1 · drop */
+.drop{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(20px,3.4vw,56px);align-items:start;padding-bottom:var(--sect)}
+@media (max-width:899px){.drop{grid-template-columns:minmax(0,1fr)}}
+.stage{--ink:#2C2B28;--tile:#46443F;position:relative;aspect-ratio:4/5;max-height:calc(100svh - var(--header) - 60px);width:100%;background:radial-gradient(120% 80% at 70% 0%,#2A2A27 0%,var(--night) 60%);overflow:hidden;display:grid;place-items:center}
+@media (min-width:900px){.stage{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header) + 16px)}}
+@media (max-width:899px){.stage{margin-inline:calc(-1 * var(--gutter));width:auto;aspect-ratio:1/1}}
+.stage .mock{width:62%;position:relative;z-index:2;filter:drop-shadow(0 24px 30px rgba(0,0,0,.5))}
+.stage__bolt{position:absolute;z-index:1;right:8%;top:6%;height:40%;width:auto;fill:var(--accent);opacity:.9}
+.stage__glow{position:absolute;inset:0;background:radial-gradient(40% 35% at 78% 22%,rgba(245,196,0,.18),transparent 70%)}
+.stage.is-flash .stage__glow{animation:flash 4s 1}
+@keyframes flash{0%,8%,14%,100%{opacity:1}4%,11%{opacity:3}}
+.stage__plate{position:absolute;z-index:3;left:16px;bottom:16px;background:rgba(18,18,17,.85);color:var(--night-ink);border:1px solid #3A3936;padding:8px 12px;display:grid;gap:0}
+.stage__plate b{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h2);line-height:1.1;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.stage__plate span{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#B5B2AA}
+.stage__st{position:absolute;z-index:3;left:16px;top:16px}
+
+.buy{display:grid;gap:18px;align-content:start;min-width:0}
+.buy__head{display:grid;gap:8px;justify-items:start}
+.buy__eyebrow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.buy__name{overflow-wrap:anywhere;min-width:0}
+.buy__price{margin:0;font-size:var(--t-md);font-weight:600;color:var(--ink)}
+.buy__story{margin:0;font-size:var(--t-sm);color:var(--soft);max-width:48ch}
+.buy__story q{quotes:"“" "”";color:var(--ink);font-weight:600}
+.st-badge{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;line-height:1.4}
+.st-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.st-badge[data-s="soon"]{background:var(--surface);color:var(--ink);border:1px solid var(--ink)}
+.st-badge[data-s="live"]{background:var(--accent);color:var(--ink)}
+.st-badge[data-s="live"]::before{animation:pulse 1.6s infinite}
+.st-badge[data-s="sold"]{background:var(--ink);color:var(--surface)}
+@keyframes pulse{50%{opacity:.25}}
+
+/* reloj + unidades */
+.panel{border:1px solid var(--line);background:var(--surface);display:grid}
+.clock{padding:14px 16px;display:grid;gap:8px}
+.clock__l{margin:0;font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.clock__row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:0}
+.clock__row div{display:grid;gap:0;justify-items:start}
+.clock__row dd{margin:0;font-family:var(--f-head);font-stretch:78%;font-size:clamp(28px,3vw,40px);line-height:1;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.clock__row dt{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);order:2}
+.clock__when{margin:0;font-size:var(--t-xs);color:var(--soft)}
+.clock__done{margin:0;font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h2);text-transform:uppercase;color:var(--ink);line-height:1.15}
+.units{padding:12px 16px 14px;border-top:1px solid var(--line);display:grid;gap:8px}
+.units__row{display:flex;justify-content:space-between;gap:8px;font-size:var(--t-xs)}
+.units__row b{color:var(--ink);font-variant-numeric:tabular-nums}
+.bar{height:6px;background:var(--line);position:relative;overflow:hidden}
+.bar span{position:absolute;left:0;top:0;bottom:0;width:var(--fill,0%);background:var(--ink);transition:width .4s}
+.bar.is-low span{background:var(--alert)}
+
+/* talla */
+.opt{border:0;margin:0;padding:0;min-width:0}
+.opt__legend{padding:0;margin-bottom:8px;font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.opt__legend b{color:var(--ink);font-weight:600;letter-spacing:.04em}
+.opt__legend a{color:var(--ink);text-transform:none;letter-spacing:.02em;text-underline-offset:3px}
+.opt input{position:absolute;opacity:0;width:1px;height:1px;border:0;clip-path:inset(50%);pointer-events:none}
+.sizes{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.size{display:grid;place-items:center;min-height:44px;background:var(--surface);border:1px solid var(--line);cursor:pointer;font-size:var(--t-xs);font-weight:700;letter-spacing:.04em}
+.size:hover{border-color:var(--ink)}
+.opt input:checked+.size{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.opt input:focus-visible+.size{outline:2px solid var(--ink);outline-offset:2px}
+.opt input:disabled+.size{background:transparent;color:var(--mute);cursor:not-allowed;text-decoration:line-through}
+.opt.is-off input:disabled+.size{text-decoration:none}
+.opt.is-error .size{border-color:var(--alert)}
+.msg{margin:6px 0 0;font-size:var(--t-xs);font-weight:600;color:var(--alert)}
+.msg:empty{display:none}
+.btn--big{min-height:48px}
+
+/* notify me */
+.notify{display:grid;gap:8px;padding:14px 16px;background:var(--surface);border:1px solid var(--ink)}
+.notify h2{font-size:var(--t-md)}
+.notify p{margin:0;font-size:var(--t-xs);color:var(--soft)}
+.notify__row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}
+.notify__msg{font-weight:600;color:var(--ink)!important;min-height:1.4em}
+.notify__msg.is-err{color:var(--alert)!important}
+.input[aria-invalid="true"]{border-color:var(--alert);outline:1px solid var(--alert)}
+@media (max-width:420px){.notify__row{grid-template-columns:1fr}}
+
+.facts{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid var(--line);display:grid;gap:8px;font-size:var(--t-xs);color:var(--soft)}
+.facts li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;align-items:start}
+.facts svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.facts b{color:var(--ink)}
+
+/* control de boceto (dentro de .note: se oculta con "Ocultar notas") */
+.dctl{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:6px;border:0;padding:0}
+.dctl legend{float:left;margin-right:6px;padding:0;font-weight:700}
+.dctl label{display:inline-flex;gap:6px;align-items:center;cursor:pointer}
+
+/* 3 · past editions */
+.past{padding-block:clamp(32px,4vw,48px)}
+.past .sect-head p{margin:0;font-size:var(--t-xs);color:var(--mute)}
+.yrs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.chip{min-height:36px;padding:0 12px;background:var(--surface);border:1px solid var(--line);font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.chip .n{font-weight:600;opacity:.7}
+.arch{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:4px;row-gap:24px}
+@media (max-width:1024px){.arch{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){.arch{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:2px}}
+.ed{display:grid;gap:8px;align-content:start}
+.ed__media{position:relative;background:var(--tile)}
+.ed__media .ph{--ar:4/5}
+.ed__media .mock{opacity:.55}
+.ed__media .badge{position:absolute;left:8px;top:8px}
+.ed__txt{display:grid;gap:2px;padding-inline:8px}
+.ed__txt p{margin:0;font-size:var(--t-xs);color:var(--mute)}
+.t-demo{background:#FFF6CC;color:var(--ink);border:1px dashed #C9A400}
+.no-notes .t-demo{display:none}
+.arch__empty{grid-column:1/-1;padding:20px 0;display:grid;gap:6px;max-width:52ch}
+.arch__empty p{margin:0;color:var(--soft)}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="shop"></div>
+
+<main id="main">
+<div class="wrap">
+  <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="shop.html?cat=all">Shop</a></li><li><span aria-current="page">Special edition</span></li></ol></nav>
+
+  <!-- 1 · el drop -->
+  <section class="drop" aria-labelledby="ed-name">
+    <figure class="stage" id="stage" style="margin:0" aria-label="Lightning Night Tee, mockup">
+      <span class="stage__glow" aria-hidden="true"></span>
+      <svg class="stage__bolt" viewBox="0 0 12 16" aria-hidden="true"><polygon points="8,0 1,9 5,9 3,16 11,6 7,6"/></svg>
+      <span id="stage-mock"></span>
+      <span class="stage__st"><span class="st-badge" id="st-badge-img" data-s="soon">Coming soon</span></span>
+      <span class="stage__plate"><span>Limited time · limited quantity</span><b>Limited run</b></span>
+    </figure>
+
+    <div class="buy">
+      <div class="buy__head">
+        <div class="buy__eyebrow"><span class="badge badge--ink">Special edition</span><span class="label muted" id="ed-drop">2026 season</span></div>
+        <h1 class="h1 buy__name" id="ed-name">Lightning Night Tee</h1>
+        <p class="buy__price"><span class="num">$XX</span> · <span id="ed-color">Matte Black</span></p>
+        <p class="buy__story" id="ed-story"></p>
+        <p class="label" style="color:var(--ink)">Limited run of <span id="run-size" class="num">XX</span> · for a limited time</p>
+      </div>
+
+      <div class="panel">
+        <div class="clock" id="clock" aria-live="off">
+          <p class="clock__l" id="clock-l">Drop opens in</p>
+          <dl class="clock__row" id="clock-row" aria-describedby="clock-l">
+            <div><dt>Days</dt><dd id="c-d">00</dd></div>
+            <div><dt>Hours</dt><dd id="c-h">00</dd></div>
+            <div><dt>Min</dt><dd id="c-m">00</dd></div>
+            <div><dt>Sec</dt><dd id="c-s">00</dd></div>
+          </dl>
+          <p class="clock__done" id="clock-done" hidden>Sold out. Thank you.</p>
+          <p class="clock__when" id="clock-when"></p>
+        </div>
+        <div class="units">
+          <div class="units__row"><span id="units-l">Units left</span><b id="units-n">XX of XX left</b></div>
+          <div class="bar" id="bar" aria-hidden="true"><span></span></div>
+          <!-- last-updated: special-edition (Productos > el producto > Metacampos, campo Updated) -->
+          <p class="clock__when" id="ed-upd" style="margin:0"></p>
+        </div>
+      </div>
+
+      <form id="buy" novalidate>
+        <fieldset class="opt" id="opt-size" aria-describedby="size-msg">
+          <legend class="opt__legend"><span>Size: <b id="size-v">Select</b></span><a href="sizes.html">Size guide</a></legend>
+          <div class="sizes" id="sizes"></div>
+          <p class="msg" id="size-msg" role="alert"></p>
+        </fieldset>
+        <button class="btn btn--block btn--big" type="submit" id="add" style="margin-top:12px">Add to cart · $XX</button>
+      </form>
+
+      <form class="notify" id="notify" novalidate aria-labelledby="nt-h" hidden>
+        <h2 class="h3" id="nt-h">Notify me</h2>
+        <p id="nt-p">One email the moment this drop goes live. Nothing else.</p>
+        <div class="notify__row">
+          <label class="vh" for="nt-email">Email</label>
+          <input class="input" id="nt-email" type="email" required autocomplete="email" spellcheck="false" placeholder="you@example.com" aria-describedby="nt-msg">
+          <button class="btn" type="submit">Notify me</button>
+        </div>
+        <p class="consent">Email only. Unsubscribe anytime. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
+        <p class="notify__msg small" id="nt-msg" role="status" aria-live="polite"></p>
+      </form>
+
+      <ul class="facts">
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7Z"/></svg><span><b>One run only.</b> When the window closes or the run sells out, it is gone.</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h13v10H3zM16 10h4l1 3v4h-5"/><circle cx="7" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/></svg><span><b>Printed to order.</b> Ships in 5 days, with tracking by email.</span></li>
+        <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V9l8-6 8 6v12"/><path d="M9 21v-6h6v6"/></svg><span><b>Fuels the team.</b> Every tee helps keep “The Evil One” on the track.</span></li>
+      </ul>
+
+      <div class="note">Control solo del boceto: cambia el estado para ver cómo se ve la página. En Shopify nadie lo toca: sale solo de las fechas y del inventario.
+        <fieldset class="dctl" id="dctl"><legend>Estado:</legend>
+          <label><input type="radio" name="dst" value="soon" checked>Coming soon</label>
+          <label><input type="radio" name="dst" value="live">Live</label>
+          <label><input type="radio" name="dst" value="sold">Sold out</label>
+        </fieldset>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- 3 · ediciones anteriores, con filtro por año -->
+<section class="sect--white past" aria-labelledby="past-t">
+  <div class="wrap">
+    <div class="sect-head"><h2 class="h2" id="past-t">Past editions</h2><p id="past-count" role="status" aria-live="polite"></p></div>
+    <div class="yrs" role="group" aria-label="Filter by year" id="yrs"></div>
+    <ul class="arch" id="arch"></ul>
+    <p class="note">En Shopify es la colección "Special edition". Cada producto tiene metacampos que llenas en el admin (Productos &gt; el producto &gt; Metacampos): Start date, End date, Run size y Story. La página cuenta sola, cambia Coming soon / Live sola y marca Sold out solo cuando el inventario llega a 0; al pasar la fecha de cierre pasa a "Past editions". Run size, fechas y precio son placeholder. La edición de ejemplo del archivo se borra.</p>
+  </div>
+</section>
+</main>
+
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var SEASON = window.HM_SEASON || new Date().getFullYear();
+  var CAT = window.HM_CATALOG || [];
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function prod(id) { return CAT.filter(function (p) { return p.id === id; })[0]; }
+
+  /* Colección "Special edition": un producto por edición, con sus metacampos (en Shopify los pinta Liquid).
+     start / end: fechas del drop (hora de Wisconsin). runSize: tamaño del tiraje; left: inventario que queda (Shopify lo da solo).
+     null = aún sin dato (se muestra XX). demo: true = ejemplo del boceto. */
+  var EDITIONS = [
+    /* la edición especial NO se numera: se identifica por su nombre y su temporada */
+    { id: 'lightning-night-tee', year: SEASON, updated: '2026-10-01',
+      start: SEASON + '-10-17T19:00:00-05:00', end: SEASON + '-10-31T23:59:00-05:00',
+      runSize: null, left: null,
+      story: 'For the night Chris fired the engine for the first time. <q>At that exact moment, lightning struck, and the power went out.</q> We call it a sign. This tee is for that night.' },
+    { id: 'example-edition', year: SEASON, demo: true, name: 'Edition name', sub: 'Example archive entry',
+      start: SEASON + '-06-01T19:00:00-05:00', end: SEASON + '-06-15T23:59:00-05:00', runSize: null, left: 0 }
+  ];
+  var ED = EDITIONS[0], P = prod(ED.id) || { name: 'Lightning Night Tee', colors: ['Matte Black'], sizes: ['S', 'M', 'L', 'XL', '2XL', '3XL'], cat: 'limited' };
+
+  /* estado real: antes de start = soon; entre start y end con inventario = live; inventario 0 o después de end = sold */
+  function realState(e, now) {
+    if (e.left === 0) return 'sold';
+    if (now < new Date(e.start)) return 'soon';
+    if (now > new Date(e.end)) return 'sold';
+    return 'live';
+  }
+  var override = null; /* solo boceto */
+  var LABEL = { soon: 'Coming soon', live: 'Live now', sold: 'Sold out' };
+
+  /* pintar la ficha */
+  $('stage-mock').outerHTML = window.hmMock ? window.hmMock(P) : '';
+  $('ed-story').innerHTML = ED.story;
+  $('ed-drop').textContent = ED.year + ' season';
+  if (ED.updated) { var up = ED.updated.split('-'); $('ed-upd').textContent = 'Last updated: ' + new Date(+up[0], +up[1] - 1, +up[2]).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); }
+  $('ed-color').textContent = P.colors[0] || 'One color';
+  $('run-size').textContent = ED.runSize == null ? 'XX' : ED.runSize;
+  $('sizes').innerHTML = P.sizes.map(function (s, i) {
+    return '<input type="radio" name="size" id="sz-' + i + '" value="' + s + '"><label class="size" for="sz-' + i + '">' + s + '</label>';
+  }).join('');
+
+  var TZ = { timeZone: 'America/Chicago' };
+  function fmt(d) { return d.toLocaleDateString('en-US', Object.assign({ weekday: 'short', month: 'short', day: 'numeric' }, TZ)) + ', ' + d.toLocaleTimeString('en-US', Object.assign({ hour: 'numeric', minute: '2-digit' }, TZ)) + ' CT'; }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+  /* en el boceto, si una fecha ya pasó, el reloj usa una de ejemplo para que se vea contando */
+  function target(s) {
+    var now = Date.now(), t = new Date(s === 'soon' ? ED.start : ED.end).getTime();
+    if (t <= now) t = now + (s === 'soon' ? 3 : 9) * 864e5 + 4 * 36e5 + 17 * 6e4;
+    return t;
+  }
+  var tick = null, flashDone = false;
+  function apply() {
+    var s = override || realState(ED, new Date());
+    ['st-badge-img'].forEach(function (id) { $(id).setAttribute('data-s', s); $(id).textContent = LABEL[s]; });
+    /* reloj */
+    clearInterval(tick);
+    $('clock-row').hidden = s === 'sold'; $('clock-done').hidden = s !== 'sold';
+    $('clock-l').textContent = s === 'soon' ? 'Drop opens in' : s === 'live' ? 'Drop closes in' : 'This drop is closed';
+    if (s === 'sold') { $('clock-when').textContent = 'Closed ' + fmt(new Date(ED.end)) + '. Get notified for the next edition.'; }
+    else {
+      var t = target(s);
+      $('clock-when').textContent = (s === 'soon' ? 'Opens ' : 'Closes ') + fmt(new Date(t)) + '.';
+      var run = function () {
+        var d = Math.max(0, t - Date.now()), sec = Math.floor(d / 1000);
+        $('c-d').textContent = pad(Math.floor(sec / 86400)); $('c-h').textContent = pad(Math.floor(sec % 86400 / 3600));
+        $('c-m').textContent = pad(Math.floor(sec % 3600 / 60)); $('c-s').textContent = pad(sec % 60);
+      };
+      run(); tick = setInterval(run, 1000);
+    }
+    /* unidades: XX mientras no haya tiraje; la barra usa un relleno de ejemplo */
+    var size = ED.runSize, left = s === 'sold' ? 0 : s === 'soon' ? size : ED.left;
+    var fill = s === 'sold' ? 0 : s === 'soon' ? 100 : (size && left != null ? Math.round(left / size * 100) : 38);
+    $('units-n').textContent = s === 'sold' ? '0 of ' + (size == null ? 'XX' : size) + ' left' : (left == null ? 'XX' : left) + ' of ' + (size == null ? 'XX' : size) + ' left';
+    $('units-l').textContent = s === 'soon' ? 'Full run at launch' : 'Units left';
+    $('bar').style.setProperty('--fill', fill + '%');
+    $('bar').classList.toggle('is-low', s === 'live' && fill <= 20);
+    /* talla, botón y notify */
+    var on = s === 'live';
+    [].forEach.call(document.querySelectorAll('#sizes input'), function (i) { i.disabled = !on; if (!on) i.checked = false; });
+    $('opt-size').classList.toggle('is-off', !on);
+    $('size-v').textContent = on ? 'Select' : s === 'soon' ? 'Available at launch' : 'Sold out';
+    $('add').hidden = !on; $('size-msg').textContent = '';
+    $('notify').hidden = on;
+    $('nt-p').textContent = s === 'soon' ? 'One email the moment this drop goes live. Nothing else.' : 'This one is gone. Get one email when the next special edition drops.';
+    $('nt-msg').textContent = '';
+    if (on && !flashDone && !matchMedia('(prefers-reduced-motion: reduce)').matches) { $('stage').classList.add('is-flash'); flashDone = true; }
+    /* el control de boceto refleja el estado actual */
+    var r = document.querySelector('#dctl input[value="' + s + '"]'); if (r) r.checked = true;
+  }
+  apply();
+
+  $('dctl').addEventListener('change', function (e) { if (e.target.name === 'dst') { override = e.target.value; apply(); } });
+
+  /* talla elegida */
+  /* datos estructurados: Product con la marca registrada */
+  var ld = document.createElement('script'); ld.type = 'application/ld+json';
+  ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'Product', name: P.name, description: 'Special edition tee, limited run. Designed by the Heavy Metal Pro Stock: “The Evil One” crew in Waterloo, WI, printed to order.', sku: ED.id, category: 'Special edition', brand: { '@type': 'Brand', name: 'Heavy Metal Pro Stock: “The Evil One”' }, url: location.href.split('#')[0].split('?')[0], offers: { '@type': 'Offer', priceCurrency: 'USD', price: 'XX.XX', availability: 'https://schema.org/' + (realState(ED, new Date()) === 'live' ? 'InStock' : 'OutOfStock'), itemCondition: 'https://schema.org/NewCondition' } });
+  document.head.appendChild(ld);
+
+  $('sizes').addEventListener('change', function (e) {
+    $('size-v').textContent = e.target.value; $('opt-size').classList.remove('is-error'); $('size-msg').textContent = '';
+  });
+  $('buy').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var sel = document.querySelector('#sizes input:checked');
+    if (!sel) { $('opt-size').classList.add('is-error'); $('size-msg').textContent = 'Select a size to add it to your cart.'; var f = document.querySelector('#sizes input:not(:disabled)'); if (f) f.focus(); return; }
+    window.hmAdd(P.name, (P.colors[0] ? P.colors[0] + ' / ' : '') + sel.value + ' · Special edition', '$XX');
+  });
+
+  /* notify me (email) */
+  $('notify').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var em = $('nt-email'), ok = em.value.trim() !== '' && em.checkValidity(), m = $('nt-msg');
+    em.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    if (!ok) { m.className = 'notify__msg small is-err'; m.textContent = 'Enter a valid email so we can let you know.'; em.focus(); return; }
+    m.className = 'notify__msg small'; m.textContent = (override || realState(ED, new Date())) === 'sold' ? "You're on the list. We'll email you once, when the next special edition drops." : "You're on the list. We'll email you once, when it drops.";
+  });
+
+  /* archivo: ediciones cerradas, filtro por año */
+  var now = new Date();
+  var past = EDITIONS.filter(function (e) { return e !== ED && realState(e, now) === 'sold'; });
+  var years = [SEASON]; past.forEach(function (e) { if (years.indexOf(e.year) < 0) years.push(e.year); }); years.sort(function (a, b) { return b - a; });
+  var yr = SEASON;
+  function card(e) {
+    var p = prod(e.id) || { name: e.name, sub: e.sub, colors: ['Smoke Gray'], cat: 'tees', sizes: [] };
+    return '<li class="ed"><div class="ed__media"><span class="ph ph--mock">' + (window.hmMock ? window.hmMock(p) : '') + '</span><span class="badge badge--ink">Sold out</span></div>' +
+      '<div class="ed__txt"><h3 class="card__name">' + esc(p.name) + (e.demo ? ' <span class="badge t-demo">Example</span>' : '') + '</h3><p>' + e.year + ' season · Run of ' + (e.runSize == null ? 'XX' : e.runSize) + '</p><p>' + esc(p.sub || '') + '</p></div></li>';
+  }
+  function renderPast() {
+    var list = past.filter(function (e) { return yr === 'all' || e.year === yr; });
+    $('yrs').innerHTML = years.map(function (y) { return [y, String(y)]; }).concat([['all', 'All']]).map(function (y) {
+      var n = y[0] === 'all' ? past.length : past.filter(function (e) { return e.year === y[0]; }).length;
+      return '<button type="button" class="chip" data-y="' + y[0] + '" aria-pressed="' + (yr === y[0]) + '">' + y[1] + '<span class="n">' + n + '</span></button>';
+    }).join('');
+    $('past-count').textContent = list.length + (list.length === 1 ? ' edition' : ' editions') + ' · ' + (yr === 'all' ? 'all years' : yr);
+    $('arch').innerHTML = list.length ? list.map(card).join('') :
+      '<li class="arch__empty"><p class="h3">Nothing in the archive yet</p><p>When a special edition closes or sells out, it moves here so you can see every run “The Evil One” has done.</p></li>';
+  }
+  renderPast();
+  $('yrs').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-y]'); if (!b) return;
+    var v = b.getAttribute('data-y'); yr = v === 'all' ? 'all' : +v; renderPast();
+    var f = $('yrs').querySelector('[data-y="' + v + '"]'); if (f) f.focus();
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Correos y voz del tractor · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Vista previa para la dueña: carrito abandonado, nota impresa del paquete y confirmación de envío, narrados en primera persona por “The Evil One”.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Vista para la dueña (como editar.html): 3 piezas con la voz del tractor, cada una en su marco de correo. */
+html,body{overflow-x:clip}
+.ed-banner{background:var(--surface);border-bottom:1px solid var(--line)}
+.ed-banner .wrap{padding-block:28px 24px;display:grid;gap:10px}
+@media (min-width:900px){
+  /* título a la izquierda, texto a la derecha: el encabezado usa todo el ancho */
+  .ed-banner .wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:clamp(32px,5vw,80px)}
+  .ed-banner .wrap>*{grid-column:1 / -1}
+  .ed-banner .wrap>.crumbs{grid-column:1;grid-row:1}
+  .ed-banner .wrap>.ed-only{grid-column:1;grid-row:2}
+  .ed-banner .wrap>h1{grid-column:1;grid-row:3}
+  .ed-banner .wrap>.lede{grid-column:2;grid-row:1 / span 3;align-self:end;max-width:62ch}
+}
+.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px;font-size:var(--t-xs);color:var(--mute)}
+.crumbs li+li::before{content:"/";margin-right:4px}
+.crumbs a{color:var(--soft);text-underline-offset:3px}
+.crumbs [aria-current]{color:var(--ink);font-weight:600}
+.ed-only{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--accent);padding:3px 8px;justify-self:start}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border:1px solid var(--line);background:var(--surface);font-size:var(--t-xs);font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;color:var(--ink)}
+.toc a:hover{border-color:var(--ink)}
+.toc a span{color:var(--mute);margin-right:6px;font-variant-numeric:tabular-nums}
+
+/* reglas de voz */
+.rules{list-style:none;margin:8px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.rules li{border:1px solid var(--line);background:var(--bg);padding:12px 14px;font-size:var(--t-sm);color:var(--soft);display:grid;gap:4px;align-content:start}
+.rules b{font-family:var(--f-head);font-stretch:78%;font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:var(--t-md);color:var(--ink)}
+@media (max-width:1000px){.rules{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.rules{grid-template-columns:minmax(0,1fr)}}
+
+section[id]{scroll-margin-top:calc(var(--header) + 12px)}
+.kick{display:flex;align-items:baseline;gap:10px}
+.kick i{font-style:normal;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h2);color:var(--mute)}
+
+/* fila: explicación + vista previa */
+.pv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,600px);gap:clamp(24px,4vw,64px);align-items:start}
+@media (max-width:1000px){.pv{grid-template-columns:minmax(0,1fr)}}
+.pv__txt{display:grid;gap:12px;align-content:start}
+.pv__txt p{margin:0;font-size:var(--t-sm);color:var(--soft);max-width:56ch}
+.pv__txt .note{margin:0}
+.facts{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 14px;font-size:var(--t-sm);border-top:1px solid var(--line);padding-top:12px;max-width:56ch}
+.facts dt{font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding-top:2px}
+.facts dd{margin:0;color:var(--ink)}
+@media (max-width:480px){.facts{grid-template-columns:minmax(0,1fr)}.facts dd{margin-bottom:6px}}
+
+/* marco de correo */
+.mail{margin:0;width:100%;max-width:600px;background:var(--surface);color:var(--text);border:1px solid var(--line);box-shadow:0 24px 50px -30px rgba(0,0,0,.45)}
+.mail__chrome{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#1A1A1A}
+.mail__chrome i{width:9px;height:9px;border-radius:50%;background:#4A4741}
+.mail__chrome span{margin-left:auto;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.mail__meta{margin:0;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--bg);display:grid;grid-template-columns:auto minmax(0,1fr);gap:3px 12px;font-size:var(--t-xs);line-height:1.45}
+.mail__meta dt{color:var(--mute)}
+.mail__meta dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
+.mail__meta .pre{color:var(--soft);font-style:italic}
+.mail__doc{padding:clamp(18px,3vw,32px) clamp(16px,3.4vw,36px);display:grid;gap:14px;font-size:15px;line-height:1.55}
+.mail__doc p{margin:0}
+.mail__logo{display:flex;justify-content:space-between;align-items:center;gap:10px;padding-bottom:14px;border-bottom:3px solid var(--ink)}
+.mail__logo img{height:16px;width:auto}
+.mail__h{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:800;text-transform:uppercase;font-size:clamp(28px,4.4vw,40px);line-height:.95;letter-spacing:.01em;color:var(--ink)}
+.mail__btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 24px;background:var(--ink);color:var(--surface);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;justify-self:start}
+.mail__sig{display:grid;gap:2px;padding-top:4px}
+.mail__sig .s1{font-style:italic;color:var(--soft)}
+.mail__sig .s2{font-weight:700;color:var(--ink)}
+.mail__foot{padding:12px clamp(16px,3.4vw,36px) 16px;border-top:1px solid var(--line);background:var(--bg);font-size:11px;line-height:1.5;color:var(--mute);display:grid;gap:4px}
+.mail__foot p{margin:0}
+.mail__foot u{color:var(--soft)}
+.mail__foot .egg{color:var(--soft)}
+
+/* línea de carrito */
+.line{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px;border:1px solid var(--line);background:var(--bg)}
+.line .ph{--ar:1/1;width:96px}
+.line .ph .mock{width:78%}
+.line b{display:block;font-family:var(--f-head);font-stretch:78%;font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:16px;line-height:1.2;color:var(--ink)}
+.line span{font-size:var(--t-xs);color:var(--mute)}
+.line .num{font-weight:700;color:var(--ink);font-size:var(--t-sm);align-self:start}
+@media (max-width:420px){.line{grid-template-columns:72px minmax(0,1fr)}.line .ph{width:72px}.line .num{grid-column:2}}
+
+/* envío: tracker */
+.ship{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:2px 0 0;padding:0;list-style:none}
+.ship li{display:grid;gap:6px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.ship li::before{content:"";height:6px;background:var(--line)}
+.ship li.on{color:var(--ink)}
+.ship li.on::before{background:var(--accent)}
+.trk{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;font-size:var(--t-sm);padding:12px 14px;border-left:3px solid var(--accent);background:var(--bg)}
+.trk dt{font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding-top:2px}
+.trk dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
+
+/* packing slip: hoja impresa */
+.slip{margin:0;width:100%;max-width:600px;background:#FCFBF7;color:#1C1B19;border:1px solid var(--line);box-shadow:0 24px 50px -30px rgba(0,0,0,.45);position:relative}
+.slip__tag{display:block;padding:6px 14px;background:var(--accent);color:var(--ink);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.slip__in{padding:clamp(18px,3vw,32px) clamp(16px,3.4vw,36px);display:grid;gap:14px}
+.slip__head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;padding-bottom:12px;border-bottom:1px solid #1C1B19;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.slip__head img{height:15px;width:auto}
+.slip__items{margin:0;padding:0;list-style:none;font-size:var(--t-sm);border-bottom:1px dashed #9E9B94}
+.slip__items li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-top:1px dashed #9E9B94}
+.slip__items li:first-child{border-top:0}
+.slip__note{border:2px solid #1C1B19;padding:16px 18px;display:grid;gap:10px;font-size:15px;line-height:1.55;position:relative}
+.slip__note::after{content:"";position:absolute;right:14px;top:-14px;width:22px;height:30px;background:var(--accent);clip-path:polygon(55% 0,20% 52%,46% 52%,30% 100%,80% 40%,54% 40%,72% 0)}
+.slip__note p{margin:0}
+.slip__note .t{font-family:var(--f-head);font-stretch:78%;font-weight:800;text-transform:uppercase;font-size:24px;line-height:1}
+.slip__psst{font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);border-top:1px dashed #9E9B94;padding-top:10px}
+.slip__foot{margin:0;font-size:11px;color:var(--mute)}
+</style>
+</head>
+<body>
+<div data-hm-header data-current=""></div>
+<main id="main">
+  <section class="ed-banner" aria-labelledby="co-title">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Migas"><ol><li><a href="index.html">Home</a></li><li><a href="editar.html">Cómo editas todo</a></li><li aria-current="page">Correos y voz del tractor</li></ol></nav>
+      <span class="ed-only">Solo para la dueña · no sale en la tienda</span>
+      <h1 class="h1" id="co-title">Correos y voz del tractor</h1>
+      <p class="lede">Así se verían tres piezas narradas por “The Evil One” en primera persona. Los correos van en inglés (son para clientes); lo de alrededor es solo para ti. Todo es borrador: los textos finales salen de la estrategia de correos.</p>
+      <ul class="rules" aria-label="Reglas de la voz">
+        <li><b>Primera persona</b>Habla el tractor, no el equipo. “I”, nunca “we”.</li>
+        <li><b>Pícaro, no insistente</b>Nada de culpa, prisa falsa ni “last chance”. Un chiste corto y ya.</li>
+        <li><b>Corto</b>Tres o cuatro frases. Un solo botón por correo.</li>
+        <li><b>Firma fija</b>“The Evil One” · Cat 3208 · Waterloo, WI</li>
+      </ul>
+      <nav class="toc" aria-label="En esta página">
+        <a href="#carrito"><span>01</span>Carrito abandonado</a>
+        <a href="#paquete"><span>02</span>Nota del paquete</a>
+        <a href="#envio"><span>03</span>Confirmación de envío</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- 01 · carrito abandonado -->
+  <section class="sect" id="carrito" aria-labelledby="t-cart">
+    <div class="wrap pv">
+      <div class="pv__txt">
+        <div class="kick"><i>01</i><h2 class="h2" id="t-cart">Carrito abandonado</h2></div>
+        <p>Sale sola cuando alguien deja prendas en el checkout sin pagar. El tractor le avisa con humor que su ropa sigue “en los pits”, le muestra lo que dejó y le da un solo botón para volver. Sin descuento de entrada, para no enseñar a esperar el cupón.</p>
+        <dl class="facts">
+          <dt>Cuándo</dt><dd>Unas horas después de dejar el checkout (se ajusta en la automatización).</dd>
+          <dt>Quién</dt><dd>Solo clientes que aceptaron marketing por correo.</dd>
+          <dt>Botón</dt><dd>Back to my cart: abre su checkout tal como lo dejó.</dd>
+        </dl>
+        <p class="note">En Shopify: Marketing &gt; Automatizaciones &gt; plantilla de Shopify Email “Abandoned checkout” (carrito abandonado). La línea del producto, la foto y el enlace al checkout los pone Shopify solo. Tiempos, descuento sí o no y si va una segunda vuelta quedan pendientes de la estrategia de correos (pendientes #1 y #29).</p>
+      </div>
+
+      <figure class="mail" aria-label="Email preview: abandoned checkout">
+        <div class="mail__chrome" aria-hidden="true"><i></i><i></i><i></i><span>Preview</span></div>
+        <dl class="mail__meta">
+          <dt>From</dt><dd><b>Heavy Metal Pro Stock: “The Evil One”</b></dd>
+          <dt>Subject</dt><dd><b>You left gear in the pits</b></dd>
+          <dt>Preview</dt><dd class="pre">I kept an eye on it for you. No rush.</dd>
+        </dl>
+        <div class="mail__doc">
+          <div class="mail__logo"><img src="img/logo-ink.svg" alt="Heavy Metal Pro Stock: “The Evil One”" width="111" height="16"><span class="badge">Your cart</span></div>
+          <p class="mail__h">You left gear in the pits</p>
+          <p>Hey [First name], it's me, “The Evil One”.</p>
+          <p>Found this sitting in the pits with your name on it. Happens. I once sat in a trailer for a whole week and nobody came to check on me either.</p>
+          <div class="line" id="cart-line">
+            <span class="ph ph--mock" data-mock="evil-one-tee"></span>
+            <div><b>Evil One Tee</b><span>Matte Black · L · Qty 1</span></div>
+            <span class="num">$XX</span>
+          </div>
+          <p>It's right where you left it. Come grab it whenever you're ready. Got a question about sizes or shipping? Just hit reply and the crew will sort it out.</p>
+          <a class="mail__btn" href="#carrito" onclick="return false">Back to my cart</a>
+          <div class="mail__sig"><span class="s1">Idling patiently,</span><span class="s2">“The Evil One” · Cat 3208 · Waterloo, WI</span></div>
+        </div>
+        <div class="mail__foot"><p>Heavy Metal Pro Stock: “The Evil One” · Waterloo, WI</p><p>You got this because you started a checkout and said yes to emails. <u>Unsubscribe</u></p></div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 02 · nota impresa del paquete -->
+  <section class="sect sect--white" id="paquete" aria-labelledby="t-slip">
+    <div class="wrap pv">
+      <div class="pv__txt">
+        <div class="kick"><i>02</i><h2 class="h2" id="t-slip">Nota del paquete</h2></div>
+        <p>Una nota corta impresa que va dentro de la caja, junto a la lista de lo que trae el pedido. Es lo primero que se lee al abrir: el tractor da las gracias y deja una pista chiquita de la página escondida.</p>
+        <dl class="facts">
+          <dt>Dónde</dt><dd>Hoja impresa dentro de cada paquete.</dd>
+          <dt>Pista</dt><dd>“Psst. Look for page 3208.” lleva a la <a href="3208.html">página escondida</a> con el código.</dd>
+        </dl>
+        <p class="note">En Shopify: Configuración &gt; Envío y entrega &gt; Hojas de embalaje (Packing slips) &gt; Editar plantilla. La nota del tractor se agrega al final de la plantilla y sale en cada hoja que se imprime. Si los pedidos los empaca un proveedor externo, hay que confirmar si incluye la hoja. Pendiente de la estrategia de correos y empaque (pendiente #30).</p>
+      </div>
+
+      <figure class="slip" aria-label="Packing slip preview with a note from the tractor">
+        <span class="slip__tag">Printed insert · inside the box</span>
+        <div class="slip__in">
+          <div class="slip__head"><img src="img/logo-ink.svg" alt="Heavy Metal Pro Stock: “The Evil One”" width="104" height="15"><span>Order #HM1042</span></div>
+          <ul class="slip__items">
+            <li><span>Evil One Tee · Matte Black · L</span><span>1</span></li>
+            <li><span>Crew Cap · Black</span><span>1</span></li>
+          </ul>
+          <div class="slip__note">
+            <p class="t">Thanks for backing the beast.</p>
+            <p>Your gear came in a box, not on my trailer, so it shouldn't smell like diesel. Wear it loud. Then come find me at a pull. I'm the one making all the smoke.</p>
+            <p><b>“The Evil One” · Cat 3208 · Waterloo, WI</b></p>
+            <p class="slip__psst">Psst. Look for page 3208.</p>
+          </div>
+          <p class="slip__foot">Questions about your order? heavymetalprostock.com/contact</p>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 03 · confirmación de envío -->
+  <section class="sect" id="envio" aria-labelledby="t-ship">
+    <div class="wrap pv">
+      <div class="pv__txt">
+        <div class="kick"><i>03</i><h2 class="h2" id="t-ship">Confirmación de envío</h2></div>
+        <p>Sale cuando el pedido se marca como enviado. Es un correo de servicio, así que lo importante va arriba (número de guía y botón para rastrear) y la voz del tractor solo pone el chiste y la firma.</p>
+        <dl class="facts">
+          <dt>Cuándo</dt><dd>Al marcar el pedido como enviado (con número de guía).</dd>
+          <dt>Quién</dt><dd>Todos los clientes: es transaccional, no necesita permiso de marketing.</dd>
+          <dt>Pista</dt><dd>El P.S. del pie apunta a la página 3208.</dd>
+        </dl>
+        <p class="note">En Shopify: Configuración &gt; Notificaciones &gt; Notificaciones al cliente &gt; Shipping confirmation (confirmación de envío). Se cambian el asunto y el texto de arriba; la guía, el botón de rastreo y la lista de productos los pone Shopify. Pendiente de la estrategia de correos (pendientes #1 y #29).</p>
+      </div>
+
+      <figure class="mail" aria-label="Email preview: shipping confirmation">
+        <div class="mail__chrome" aria-hidden="true"><i></i><i></i><i></i><span>Preview</span></div>
+        <dl class="mail__meta">
+          <dt>From</dt><dd><b>Heavy Metal Pro Stock: “The Evil One”</b></dd>
+          <dt>Subject</dt><dd><b>Your gear just left the shop</b></dd>
+          <dt>Preview</dt><dd class="pre">Loaded, strapped down and rolling. Order #HM1042.</dd>
+        </dl>
+        <div class="mail__doc">
+          <div class="mail__logo"><img src="img/logo-ink.svg" alt="Heavy Metal Pro Stock: “The Evil One”" width="111" height="16"><span class="badge">Shipped</span></div>
+          <p class="mail__h">It's on the road</p>
+          <ol class="ship" aria-label="Order progress"><li class="on">Ordered</li><li class="on">Packed</li><li class="on">Shipped</li><li>Delivered</li></ol>
+          <p>Hey [First name], your order is loaded and rolling. I'd haul it to you myself, but I only go about 300 feet at a time and it takes a sled to stop me.</p>
+          <dl class="trk"><dt>Order</dt><dd>#HM1042</dd><dt>Carrier</dt><dd>[Carrier]</dd><dt>Tracking</dt><dd>[Tracking number]</dd></dl>
+          <a class="mail__btn" href="#envio" onclick="return false">Track my package</a>
+          <div class="mail__sig"><span class="s1">Keep it loud,</span><span class="s2">“The Evil One” · Cat 3208 · Waterloo, WI</span></div>
+        </div>
+        <div class="mail__foot"><p>Heavy Metal Pro Stock: “The Evil One” · Waterloo, WI</p><p class="egg">P.S. People who dig find page 3208.</p></div>
+      </figure>
+    </div>
+  </section>
+</main>
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var CAT = window.HM_CATALOG || [];
+  document.querySelectorAll('[data-mock]').forEach(function (el) {
+    var p = CAT.filter(function (x) { return x.id === el.getAttribute('data-mock'); })[0];
+    if (p && window.hmMock) el.innerHTML = window.hmMock(p);
+    else { el.classList.remove('ph--mock'); }
+  });
+})();
+</script>
+</body>
+</html>
