@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Book the team · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Book Heavy Metal Pro Stock: “The Evil One” for your fair, pull, dealership or event: a static display of the tractor, an exhibition pull where the track allows it, a meet and greet with driver Chris F. and a shout-out on our socials. Ask for a quote.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Hallmark · pre-emit critique: P4 H5 E4 S4 R5 V4 */
+/* Orden: 1 título, prueba y foto · 2 qué ofrecemos (4 opciones) · 3 cómo funciona + qué necesitamos · 4 formulario (única acción) */
+html,body{overflow-x:clip}
+.ext{font-size:.85em;margin-left:2px;text-decoration:none;display:inline-block}
+
+/* 1 · título */
+.bk-top{padding-block:28px 32px}
+.bk-top__in{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(20px,3vw,48px);align-items:center}
+.bk-top .label{color:var(--mute);margin-bottom:8px}
+.bk-top .lede{margin-top:12px}
+.bk-proof{list-style:none;margin:20px 0 22px;padding:0;display:flex;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.bk-proof li{padding:10px 20px 10px 0;display:grid;gap:1px}
+.bk-proof li+li{padding-left:20px;border-left:1px solid var(--line)}
+.bk-proof b{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h2);line-height:1.1;text-transform:uppercase;color:var(--ink);font-variant-numeric:tabular-nums}
+.bk-proof span{font-size:var(--t-xs);color:var(--mute)}
+.bk-proof a{color:var(--ink);font-weight:600;text-underline-offset:3px}
+.bk-top .btn-row{align-items:center;gap:8px 20px}
+.bk-photo{margin:0;aspect-ratio:4/5;max-height:calc(100svh - var(--header) - 140px);overflow:hidden;background:var(--tile);justify-self:end;width:100%}
+.bk-photo .photo{object-position:50% 40%}
+@media (max-width:860px){
+  .bk-top__in{grid-template-columns:minmax(0,1fr)}
+  .bk-photo{order:-1;aspect-ratio:16/10;max-height:none}
+}
+@media (max-width:480px){.bk-proof{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.bk-proof li{padding-right:12px}.bk-proof li+li{padding-left:12px}.bk-proof li:nth-child(odd):not(:first-child){padding-left:0;border-left:0;border-top:1px solid var(--line)}.bk-proof li:last-child:nth-child(odd){grid-column:1/-1}}
+
+/* 2 · qué ofrecemos */
+.bk-offer{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+@media (max-width:1024px){.bk-offer{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.bk-offer{grid-template-columns:minmax(0,1fr)}}
+/* tarjetas seleccionables: el checkbox cubre toda la tarjeta (clic y teclado nativos) */
+.bk-opt{position:relative;background:var(--surface);border:1px solid var(--line);padding:20px;display:grid;grid-template-rows:auto auto 1fr;gap:8px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.bk-opt:hover{border-color:var(--soft)}
+.bk-opt input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:1}
+.bk-opt:has(input:focus-visible){outline:2px solid var(--ink);outline-offset:2px}
+.bk-opt.is-on{border-color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.bk-tick{position:absolute;top:16px;right:16px;width:24px;height:24px;border:2px solid var(--ink);background:var(--surface);display:grid;place-items:center}
+.bk-tick svg{width:16px;height:16px;fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.bk-opt.is-on .bk-tick{background:var(--accent)}
+.bk-opt.is-on .bk-tick svg{opacity:1}
+.bk-pickbar{margin-top:16px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px}
+.bk-pickbar p{margin:0;font-size:var(--t-sm);color:var(--soft)}
+.bk-pickbar b{color:var(--ink)}
+.bk-ico{width:44px;height:44px;display:grid;place-items:center;background:var(--accent);color:var(--ink);margin-bottom:6px}
+.bk-ico svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.bk-opt p{margin:0;font-size:var(--t-sm);color:var(--soft)}
+.bk-opt .bk-if{font-size:var(--t-xs);color:var(--mute)}
+.bk-upd{margin:12px 0 0;font-size:var(--t-xs);color:var(--mute)}
+.bk-upd b{color:var(--ink);font-weight:600}
+
+/* 3 · cómo funciona + qué necesitamos */
+.bk-how{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(24px,3vw,56px);align-items:start}
+@media (max-width:900px){.bk-how{grid-template-columns:minmax(0,1fr)}}
+.bk-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;counter-reset:s}
+@media (max-width:640px){.bk-steps{grid-template-columns:minmax(0,1fr);gap:14px}}
+.bk-steps li{counter-increment:s;border-top:2px solid var(--ink);padding-top:12px;display:grid;gap:4px;align-content:start}
+.bk-steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h2);color:var(--ink);line-height:1}
+.bk-steps p{margin:0;font-size:var(--t-sm);color:var(--soft)}
+.bk-req{margin:0;display:grid;border-top:1px solid var(--line)}
+.bk-req div{display:grid;grid-template-columns:minmax(0,130px) minmax(0,1fr);gap:4px 16px;padding:10px 0;border-bottom:1px solid var(--line)}
+.bk-req dt{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.bk-req dd{margin:0;font-size:var(--t-sm);color:var(--ink)}
+.bk-req .pend{display:inline-block;font-size:var(--t-xs);font-weight:700;color:var(--soft);background:var(--bg);border:1px dashed #9E9B94;padding:0 6px}
+@media (max-width:420px){.bk-req div{grid-template-columns:minmax(0,1fr)}}
+.bk-alt{margin:20px 0 0;padding:12px 14px;border-left:3px solid var(--accent);background:var(--bg);font-size:var(--t-sm);color:var(--soft)}
+.bk-alt a{color:var(--ink);font-weight:700;text-underline-offset:3px}
+
+/* 4 · formulario */
+.bk-formwrap{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(20px,3vw,48px);align-items:start}
+@media (max-width:900px){.bk-formwrap{grid-template-columns:minmax(0,1fr)}}
+.bk-formwrap > div > p{margin:8px 0 0;font-size:var(--t-sm);color:var(--soft);max-width:40ch}
+.bk-mail{margin-top:16px;font-size:var(--t-xs);color:var(--mute)}
+.bk-mail a{color:var(--ink)}
+.bk-form{background:var(--surface);border:1px solid var(--line);padding:clamp(16px,2vw,24px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.bk-form .full{grid-column:1/-1}
+.bk-form textarea.input{min-height:96px;padding-block:10px;resize:vertical}
+.bk-form select.input{cursor:pointer}
+@media (max-width:560px){.bk-form{grid-template-columns:minmax(0,1fr)}}
+.field .opt{font-weight:400;text-transform:none;letter-spacing:0;color:var(--mute)}
+.input[aria-invalid="true"]{border-color:var(--alert);outline:1px solid var(--alert)}
+.err{margin:0;font-size:var(--t-xs);color:var(--alert);font-weight:600}
+.err:empty{display:none}
+.bk-wants{border:0;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 18px}
+.bk-wants legend{font-size:var(--t-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);padding:0;margin-bottom:8px;width:100%}
+.bk-wants label{display:inline-flex;align-items:center;gap:8px;font-size:var(--t-sm);cursor:pointer;min-height:32px}
+.bk-status{margin:0;font-size:var(--t-sm);font-weight:600;color:var(--alert)}
+.bk-ok{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--accent);padding:clamp(20px,2.4vw,32px);display:grid;gap:10px;justify-items:start}
+.bk-ok:focus{outline:none}
+.bk-ok:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.bk-ok p{margin:0;color:var(--soft);max-width:56ch}
+.bk-ok dl{margin:4px 0 6px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;font-size:var(--t-sm)}
+.bk-ok dt{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.bk-ok dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="book"></div>
+
+<main id="main">
+
+<!-- 1 · título, prueba (sale de datos) y foto -->
+<section class="sect--white bk-top" aria-labelledby="bk-title">
+  <div class="wrap bk-top__in">
+    <div>
+      <p class="label">For fairs, pulls, dealers and events</p>
+      <h1 class="h-hero" id="bk-title">Book “The Evil One”</h1>
+      <p class="lede">Bring a Pro Stock pulling tractor built from scratch in Waterloo, WI, to your event. Put it on display, run it for the crowd where the track allows it, and meet the driver.</p>
+      <ul class="bk-proof" id="bk-proof"></ul>
+      <div class="btn-row"><a class="btn" href="#offer-t">See what we bring</a><a class="link" href="sponsors.html" style="text-decoration:underline">Sponsor instead</a></div>
+    </div>
+    <figure class="bk-photo"><img class="photo" src="img/hm-driver-crew.webp" alt="Chris F. and the crew next to the rear tire of “The Evil One”" width="1050" height="1400" fetchpriority="high"></figure>
+  </div>
+</section>
+
+<!-- 2 · qué ofrecemos: metaobjeto "Booking option" (sin precios: cada evento es distinto) -->
+<section class="sect" aria-labelledby="offer-t">
+  <div class="wrap">
+    <div class="sect-head"><h2 class="h2" id="offer-t">What we bring</h2><p class="small muted" style="margin:0">Pick one or mix them. Every event is different, so we quote each one.</p></div>
+    <ul class="bk-offer" id="bk-offer" aria-label="Booking options, pick one or more"></ul>
+    <div class="bk-pickbar"><p id="bk-picked" aria-live="polite">Tap the options you want, then ask for a quote.</p><a class="btn" href="#quote" data-goform>Ask for a quote</a></div>
+    <!-- last-updated: book (Metaobjetos > Booking option, y requisitos en Personalizar > Book the team) -->
+    <p class="bk-upd">Last updated: <b id="bk-updated"></b></p>
+    <p class="note">Las opciones salen de Contenido &gt; Metaobjetos &gt; Booking option (nombre, ícono, texto, "Needs" y orden); "What we need from you" y la fecha se editan en Personalizar &gt; Book the team. Sin precios a propósito. Las tarjetas se marcan (una o varias) y quedan marcadas en el formulario, en "What are you interested in?"; un solo botón "Ask for a quote". Faltan los datos marcados [pending]: espacio, transporte, anticipación y si cobran viaje.</p>
+  </div>
+</section>
+
+<!-- 3 · cómo funciona y requisitos -->
+<section class="sect sect--white" aria-labelledby="how-t">
+  <div class="wrap bk-how">
+    <div>
+      <h2 class="h2" id="how-t" style="margin-bottom:20px">How it works</h2>
+      <ol class="bk-steps">
+        <li><h3 class="h3">Tell us about it</h3><p>Send the form below with the date, the place and the kind of event.</p></li>
+        <li><h3 class="h3">Get a quote</h3><p>We check the date and reply with availability and a quote within 2 business days.</p></li>
+        <li><h3 class="h3">Lock the date</h3><p>We confirm the details with you in writing, then haul “The Evil One” in.</p></li>
+      </ol>
+    </div>
+    <div>
+      <h2 class="h2" id="req-t" style="margin-bottom:20px">What we need from you</h2>
+      <dl class="bk-req" id="bk-req" aria-labelledby="req-t"></dl>
+      <p class="bk-alt">Want your logo on the tractor all season instead of a one day visit? That is sponsorship. <a href="sponsors.html">See sponsor packages</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · formulario: única acción de la página -->
+<section class="sect" id="quote" aria-labelledby="form-t" style="scroll-margin-top:calc(var(--header) + 12px)">
+  <div class="wrap bk-formwrap">
+    <div>
+      <h2 class="h2" id="form-t">Ask for a quote</h2>
+      <p>The more we know about your event, the faster we can say yes.</p>
+    </div>
+    <div id="bk-formbox">
+      <form class="bk-form" id="bk-form" novalidate aria-labelledby="form-t">
+        <div class="field"><label for="f-name">Your name</label><input class="input" id="f-name" name="name" type="text" required autocomplete="name" aria-describedby="e-name"><p class="err" id="e-name"></p></div>
+        <div class="field"><label for="f-company">Company or event <span class="opt">(optional)</span></label><input class="input" id="f-company" name="company" type="text" autocomplete="organization"></div>
+        <div class="field"><label for="f-email">Email</label><input class="input" id="f-email" name="email" type="email" required autocomplete="email" spellcheck="false" aria-describedby="e-email"><p class="err" id="e-email"></p></div>
+        <div class="field"><label for="f-phone">Phone <span class="opt">(optional)</span></label><input class="input" id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" aria-describedby="e-phone"><p class="err" id="e-phone"></p></div>
+        <div class="field"><label for="f-date">Event date</label><input class="input" id="f-date" name="date" type="date" required aria-describedby="e-date"><p class="err" id="e-date"></p></div>
+        <div class="field"><label for="f-place">City and state</label><input class="input" id="f-place" name="place" type="text" required autocomplete="address-level2" placeholder="e.g. Jefferson, WI" aria-describedby="e-place"><p class="err" id="e-place"></p></div>
+        <div class="field"><label for="f-type">Type of event</label>
+          <select class="input" id="f-type" name="event_type" required aria-describedby="e-type">
+            <option value="">Choose one</option>
+            <option>County or state fair</option>
+            <option>Tractor pull</option>
+            <option>Dealership or business event</option>
+            <option>Farm show or expo</option>
+            <option>Festival or community event</option>
+            <option>Other</option>
+          </select><p class="err" id="e-type"></p></div>
+        <div class="field"><label for="f-crowd">Expected attendance</label>
+          <select class="input" id="f-crowd" name="attendance" required aria-describedby="e-crowd">
+            <option value="">Choose one</option>
+            <option>Under 500</option>
+            <option>500 to 2,000</option>
+            <option>2,000 to 5,000</option>
+            <option>5,000 or more</option>
+            <option>Not sure yet</option>
+          </select><p class="err" id="e-crowd"></p></div>
+        <fieldset class="bk-wants full" id="bk-wants"><legend>What are you interested in? <span class="opt">(optional)</span></legend></fieldset>
+        <div class="field full"><label for="f-msg">Message <span class="opt">(optional)</span></label><textarea class="input" id="f-msg" name="message" maxlength="1500" placeholder="Hours, track and sled on site, where the tractor would go, anything else we should know."></textarea></div>
+        <p class="consent full">We use your details only to reply about your event. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
+        <div class="full"><button class="btn" type="submit">Send request</button></div>
+        <p class="bk-status full" id="bk-status" role="alert"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Datos de la página. En Shopify: BOOK y REQS son ajustes de Personalizar > Book the team; OPTIONS es el metaobjeto "Booking option".
+     exhibitions: cuántas exhibiciones llevan (0 = no se muestra). Un requisito con value null sale "[pending]". */
+  var BOOK = { updated: '2026-10-01', exhibitions: 3, years: 20 };
+  var ICONS = {
+    display: '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 24h26M6 24v-3h20v3"/><circle cx="11" cy="17" r="3.5"/><circle cx="23" cy="16" r="4.5"/><path d="M8 13h8l2-5h4v8"/></svg>',
+    pull: '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M3 26h26"/><path d="M6 26V6"/><path d="M6 7h11l-2 4 2 4H6"/><path d="M21 26c0-3 2-5 5-5"/><path d="M21 15c2-3 1-5-1-7M25 15c2-3 1-5-1-7"/></svg>',
+    meet: '<svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="11" cy="10" r="4"/><circle cx="22" cy="11" r="3.5"/><path d="M3 26c1-5 4-8 8-8s7 3 8 8"/><path d="M19 19c1-1 2-1.5 3-1.5 3.5 0 6 2.5 7 7"/></svg>',
+    social: '<svg viewBox="0 0 32 32" aria-hidden="true"><rect x="9" y="3" width="14" height="26" rx="2"/><path d="M14 25h4"/><path d="M13 12l2 2 4-5"/><path d="M13 18h6"/></svg>'
+  };
+  var OPTIONS = [
+    { key: 'display', name: 'Static display', text: '“The Evil One” parked at your event for photos and questions, for the hours you set.', needs: 'Needs: a flat, safe spot for the tractor and trailer.' },
+    { key: 'pull', name: 'Exhibition pull', text: 'A run down your track for the crowd. No points on the line, all the smoke.', needs: 'Only where there is a pulling track and sled on site.' },
+    { key: 'meet', name: 'Meet Chris F.', text: 'Owner, driver and crew chief with ' + BOOK.years + '+ years in the sport. Photos and stories next to the tractor.', needs: 'Pairs well with a static display.' },
+    { key: 'social', name: 'Social shout-out', text: 'We tell our fans on Facebook where to find us before the day, and post from your event after.', needs: 'Comes with any booking.' }
+  ];
+  var REQS = [
+    ['Space', null],
+    ['Trailer access', null],
+    ['Notice', null],
+    ['For a pull', 'A pulling track and sled on site, cleared for an exhibition run'],
+    ['Travel', null]
+  ];
+
+  $('bk-proof').innerHTML = (BOOK.exhibitions ? '<li><b>' + BOOK.exhibitions + '</b><span>exhibitions so far · <a href="log.html?type=Exhibition">Pit Log</a></span></li>' : '') +
+    '<li><b>' + BOOK.years + '+ years</b><span>driver Chris F. in the sport</span></li>' +
+    '<li><b>Waterloo, WI</b><span>home shop</span></li>';
+  $('bk-offer').innerHTML = OPTIONS.map(function (o) {
+    return '<li class="bk-opt" data-card="' + o.key + '"><input type="checkbox" id="o-' + o.key + '" value="' + o.key + '" aria-labelledby="o-' + o.key + '-t" aria-describedby="o-' + o.key + '-d">' +
+      '<span class="bk-tick" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg></span>' +
+      '<span class="bk-ico">' + ICONS[o.key] + '</span><h3 class="h3" id="o-' + o.key + '-t">' + esc(o.name) + '</h3><div style="display:grid;gap:6px;align-content:start" id="o-' + o.key + '-d"><p>' + esc(o.text) + '</p><p class="bk-if">' + esc(o.needs) + '</p></div></li>';
+  }).join('');
+  /* solo se muestran los requisitos con dato; los vacíos no salen en el sitio (se llenan en Personalizar) */
+  var missing = REQS.filter(function (r) { return !r[1]; }).map(function (r) { return r[0].toLowerCase(); });
+  $('bk-req').innerHTML = REQS.filter(function (r) { return r[1]; }).map(function (r) {
+    return '<div><dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd></div>';
+  }).join('') + (missing.length ? '<div><dt>The rest</dt><dd>We go over ' + missing.join(', ').replace(/, ([^,]*)$/, ' and $1') + ' with you when we reply.</dd></div>' : '');
+  $('bk-wants').insertAdjacentHTML('beforeend', OPTIONS.map(function (o) {
+    return '<label><input type="checkbox" name="wants" value="' + esc(o.name) + '" data-opt="' + o.key + '">' + esc(o.name) + '</label>';
+  }).join(''));
+  var d = BOOK.updated.split('-');
+  $('bk-updated').textContent = new Date(+d[0], +d[1] - 1, +d[2]).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+  /* fecha mínima: mañana */
+  function iso(dt) { return dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0'); }
+  var tmw = new Date(); tmw.setDate(tmw.getDate() + 1); var MIN = iso(tmw);
+  $('f-date').min = MIN;
+
+  /* tarjetas <-> casillas "What are you interested in?" del formulario (van sincronizadas) */
+  function picked() { return OPTIONS.filter(function (o) { var c = $('o-' + o.key); return c && c.checked; }); }
+  function paint() {
+    OPTIONS.forEach(function (o) { var c = $('o-' + o.key), li = c && c.closest('.bk-opt'); if (li) li.classList.toggle('is-on', c.checked); });
+    var p = picked().map(function (o) { return o.name; }), out = $('bk-picked');
+    if (out) out.innerHTML = p.length ? 'Picked: <b>' + esc(p.join(', ').replace(/, ([^,]*)$/, ' and $1')) + '</b> · added to the form below' : 'Tap the options you want, then ask for a quote.';
+  }
+  function syncForm() {
+    OPTIONS.forEach(function (o) { var c = $('o-' + o.key), f = document.querySelector('#bk-form [data-opt="' + o.key + '"]'); if (c && f) f.checked = c.checked; });
+  }
+  document.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.closest && t.closest('.bk-opt')) { syncForm(); paint(); return; }
+    if (t.getAttribute && t.getAttribute('data-opt')) { var c = $('o-' + t.getAttribute('data-opt')); if (c) { c.checked = t.checked; paint(); } }
+  });
+  paint();
+
+  /* "Ask for a quote": baja al formulario */
+  function goForm(focusId) {
+    $('quote').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    var f = $(focusId || 'f-name') || $('bk-ok');
+    if (f) setTimeout(function () { f.focus({ preventScroll: true }); }, reduce ? 0 : 450);
+  }
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-goform]')) { e.preventDefault(); goForm(); }
+  });
+
+  /* validación: mensaje junto a cada campo, resumen arriba del botón y foco al primero con error */
+  var RULES = {
+    'f-name': function (v) { return v ? '' : 'Add your name.'; },
+    'f-email': function (v, el) { return !v ? 'Add your email so we can reply.' : !el.checkValidity() || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? 'Check the email: it should look like name@example.com.' : ''; },
+    'f-phone': function (v) { return v && v.replace(/\D/g, '').length < 10 ? 'Check the phone: 10 digits, area code first.' : ''; },
+    'f-date': function (v) { return !v ? 'Pick the event date.' : v < MIN ? 'Pick a date from tomorrow on.' : ''; },
+    'f-place': function (v) { return v ? '' : 'Add the city and state.'; },
+    'f-type': function (v) { return v ? '' : 'Choose the type of event.'; },
+    'f-crowd': function (v) { return v ? '' : 'Choose about how many people. "Not sure yet" is fine.'; }
+  };
+  function check(id) {
+    var el = $(id), msg = RULES[id](el.value.trim(), el);
+    el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    $('e-' + id.slice(2)).textContent = msg;
+    return !msg;
+  }
+  function bindForm() {
+    var form = $('bk-form');
+    Object.keys(RULES).forEach(function (id) {
+      var el = $(id);
+      el.addEventListener('blur', function () { if (el.value.trim() || el.getAttribute('aria-invalid') === 'true') check(id); });
+      el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', function () { if (el.getAttribute('aria-invalid') === 'true') check(id); });
+    });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var bad = Object.keys(RULES).filter(function (id) { return !check(id); });
+      if (bad.length) {
+        $('bk-status').textContent = bad.length === 1 ? 'One thing to fix before we can send it.' : bad.length + ' things to fix before we can send it.';
+        $(bad[0]).focus(); return;
+      }
+      $('bk-status').textContent = '';
+      /* En Shopify: {% form 'contact' %} con contact[tags] = "booking". Llega a heavymetalevil72@gmail.com (correo de la tienda). */
+      var v = function (id) { return $(id).value.trim(); };
+      var wants = [].map.call(form.querySelectorAll('[name="wants"]:checked'), function (c) { return c.value; });
+      var dp = v('f-date').split('-'), dLong = new Date(+dp[0], +dp[1] - 1, +dp[2]).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+      var rows = [['Date', dLong], ['Where', v('f-place')], ['Event', v('f-type') + (v('f-company') ? ' · ' + v('f-company') : '')], ['Crowd', v('f-crowd')], ['Interested in', wants.length ? wants.join(', ') : 'Not picked yet']];
+      $('bk-formbox').innerHTML = '<div class="bk-ok" id="bk-ok" tabindex="-1" role="status"><p class="label">Request sent</p><p class="h2">Thanks, ' + esc(v('f-name').split(' ')[0]) + '.</p>' +
+        '<p>We got your request and will reply to <b>' + esc(v('f-email')) + '</b> within 2 business days with availability and a quote.</p>' +
+        '<dl>' + rows.map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + esc(r[1]) + '</dd>'; }).join('') + '</dl>' +
+        '<button type="button" class="btn btn--ghost btn--sm" id="bk-again">Send another request</button></div>';
+      $('bk-ok').focus();
+    });
+  }
+  var FORM_HTML = $('bk-formbox').innerHTML;
+  bindForm();
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('#bk-again')) return;
+    $('bk-formbox').innerHTML = FORM_HTML; $('f-date').min = MIN; bindForm(); syncForm(); $('f-name').focus();
+  });
+})();
+</script>
+</body>
+</html>
