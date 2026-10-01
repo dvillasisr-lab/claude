@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Account · Heavy Metal The Evil One</title>
-<meta name="description" content="Sign in with a one time code to track your Heavy Metal orders, manage addresses and your Hook Alerts emails.">
+<title>Account · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Track your Heavy Metal Pro Stock: “The Evil One” order, with or without an account. Sign in with a one time code to see orders, addresses and Hook Alerts.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -89,6 +89,10 @@ html,body{overflow-x:clip}
 .switch input:checked+span::after{transform:translateX(18px)}
 .switch input:focus-visible+span{outline:2px solid var(--ink);outline-offset:2px}
 .status{font-size:var(--t-xs);color:var(--soft);margin:0}
+.trk{background:var(--surface);border:1px solid var(--line);padding:16px;display:grid;gap:8px}
+.trk ol{margin:0;padding-left:20px;display:grid;gap:4px;font-size:var(--t-sm);color:var(--soft)}
+.trk p{margin:0}
+.trk a{color:var(--ink);text-underline-offset:3px}
 @media (max-width:860px){
   .in{grid-template-columns:minmax(0,1fr);gap:16px}
   .in-nav{display:flex;gap:8px;overflow-x:auto;border:0;scrollbar-width:none;margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter)}
@@ -171,8 +175,17 @@ html,body{overflow-x:clip}
           <li><b>Hook Alerts</b><span>Turn drop and pull day emails on or off.</span></li>
         </ul>
         <p class="small muted">Checked out as a guest? Sign in with the same email and your past orders show up.</p>
-        <p class="note">Entrar sin contraseña: el cliente escribe su correo y Shopify le manda solo un código de 6 dígitos desde el correo de la tienda (vence en minutos y sirve una sola vez). Con las cuentas nuevas el botón "Sign in with Shop" sale solo: si el cliente ya usa Shop o Shop Pay, entra con un toque.</p>
-        <p class="note">Es seguro porque todo lo hospeda Shopify (Settings &gt; Customer accounts, sin app): nosotros nunca guardamos contraseñas. Pedidos, direcciones y perfil vienen incluidos; el switch de Hook Alerts depende de Shopify Email.</p>
+        <div class="trk" aria-labelledby="trk-t">
+          <h2 class="h3" id="trk-t">Track a package without an account</h2>
+          <ol>
+            <li>Your order ships and the tracking number is added to it automatically.</li>
+            <li>You get a shipping email with the carrier and a <b>Track package</b> link.</li>
+            <li>The <b>View your order</b> button in that email opens your order status page, with live tracking. No password needed.</li>
+          </ol>
+          <p class="small muted">No email? Check spam, then <a href="contact.html?topic=order">message us</a> or call <a href="tel:+19206504374">(920) 650-4374</a>.</p>
+        </div>
+        <p class="note">Rastreo: no envías nada tú. Printify sube el número de guía a Shopify solo al enviar; Shopify manda el correo de envío con el link, y el cliente lo ve en su página de estado del pedido o en Account &gt; Orders, sin crear cuenta.</p>
+        <p class="note">Cuentas nativas de Shopify (Configuración &gt; Cuentas de clientes, sin app): entran con un código de 6 dígitos o con Shop, sin contraseñas. El switch de Hook Alerts depende de Shopify Email.</p>
       </div>
     </section>
 
@@ -198,7 +211,7 @@ html,body{overflow-x:clip}
               </li>
               <li class="order">
                 <span class="ph ph--mock" data-mock="680-ci-hoodie"></span>
-                <div><p class="order__t">Order #HM1001</p><p>Sep 15, 2026 · 2 items · $XX</p><p><span class="st st--ship">Shipped</span> · Sep 21</p></div>
+                <div><p class="order__t">Order #HM1001</p><p>Sep 15, 2026 · 2 items · $XX</p><p><span class="st st--ship">Shipped</span> · Sep 21 · USPS</p></div>
                 <div class="order__act"><a class="textbtn" href="https://tools.usps.com/go/TrackConfirmAction" target="_blank" rel="noopener">Track package<span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span></a><button class="textbtn" type="button" data-order="1001">View order</button></div>
               </li>
             </ul>
@@ -296,8 +309,8 @@ html,body{overflow-x:clip}
 
   /* detalle del pedido */
   var ORD = {
-    1002: { date: 'Sep 29, 2026', step: 1, note: 'Printing. Ships by Oct 6. Every item is printed to order.', lines: [['evil-one-tee', 'Matte Black / L', '$XX'], ['hook-alert-koozie', 'One size', '$XX']], track: '' },
-    1001: { date: 'Sep 15, 2026', step: 2, note: 'Shipped Sep 21.', lines: [['680-ci-hoodie', 'Matte Black / XL', '$XX'], ['crew-cap', 'Black / One size', '$XX']], track: '9400 0000 0000 0000 0000 00' }
+    1002: { date: 'Sep 29, 2026', step: 1, note: 'Printing. Ships by Oct 6. Every item is printed to order. The tracking number shows up here, and in your email, the moment it ships.', lines: [['evil-one-tee', 'Matte Black / L', '$XX'], ['hook-alert-koozie', 'One size', '$XX']], track: '' },
+    1001: { date: 'Sep 15, 2026', step: 2, note: 'Shipped Sep 21. Tracking was added automatically and emailed to you.', lines: [['680-ci-hoodie', 'Matte Black / XL', '$XX'], ['crew-cap', 'Black / One size', '$XX']], track: '9400 0000 0000 0000 0000 00' }
   };
   function prod(id) { return window.HM_CATALOG.filter(function (p) { return p.id === id; })[0]; }
   document.querySelectorAll('[data-mock]').forEach(function (el) { el.innerHTML = window.hmMock(prod(el.getAttribute('data-mock'))); });

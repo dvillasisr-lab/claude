@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4 -->
-<title>The Machine · Heavy Metal, The Evil One</title>
-<meta name="description" content="Heavy Metal spec sheet: a Cat 3208 V8 reverse flow built out to 680 cubic inches, single large turbo, 10,000 LB, 24.5-32 tires. Horsepower unknown. Pro Stock from Waterloo, Wisconsin.">
+<title>The Machine · Heavy Metal, “The Evil One”</title>
+<meta name="description" content="Heavy Metal spec sheet: a Cat 3208 V8 reverse flow built up from the factory 636 to 680 cubic inches, single large turbo, 10,000 LB, 24.5-32 tires. Horsepower unknown. “The Evil One”, a Pro Stock from Waterloo, Wisconsin.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
 <style>
-/* Machine v4: galería SKIMS arriba, anatomía con líneas guía estilo plano técnico, ficha de carreras en la única banda
-   oscura (con "Hear it"), comparativa cualitativa con pips, FAQ y un solo CTA: Cat V8 Spec Tee. */
+/* Machine v5: galería SKIMS arriba, anatomía con líneas guía estilo plano técnico, ficha de carreras en la única banda
+   oscura (con "Hear it"), comparativa con pictogramas de motor del mismo tamaño, FAQ y un solo CTA: Cat V8 Spec Tee. */
 html,body{overflow-x:clip}
 :root{--line-night:rgba(242,240,233,.16);--mute-night:#A9A69E}
 .mx-photo{position:relative;overflow:hidden;background:var(--tile);margin:0}
@@ -32,25 +32,49 @@ html,body{overflow-x:clip}
 .mx-gal figcaption{font-size:var(--t-xs);color:var(--mute);display:flex;gap:8px;padding-inline:8px}
 .mx-gal figcaption b{color:var(--ink)}
 
-/* 2 · anatomía: plano técnico */
+/* 2 · ANATOMÍA: plano técnico con números y líneas guía.
+   Patrón reutilizable (Sponsors lo copia para el mapa de calcomanías). Tres capas dentro de .mx-stage:
+     a) .mx-lines  SVG a todo el escenario con las líneas guía punteadas (viewBox 0 0 1120 676).
+     b) .mx-img    el recorte del tractor (1120x576) centrado en el escenario; deja una banda
+                   de 50px arriba y 50px abajo (en unidades del viewBox) donde viven las etiquetas.
+     c) .mx-tag    etiquetas "01 ENGINE" en la banda de arriba (--t) o de abajo (--b).
+   Los números (.hs) van DENTRO de .mx-img, en % del recorte, así siguen en su lugar en móvil,
+   donde se ocultan bandas, líneas y etiquetas y solo quedan los números.
+   Coordenadas: todo se escribe en px del recorte (x 0..1120, y 0..576) en el array P del JS. */
 .mx-anat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,320px);gap:clamp(20px,3vw,48px);align-items:center}
-.mx-stage{position:relative;aspect-ratio:1120/676;width:100%;max-width:calc((100svh - var(--header) - var(--announce) - 2 * var(--sect) - 90px) * 1120 / 676);margin:0 auto}
-.mx-img{position:absolute;left:0;right:0;top:7.396%;height:85.207%}
+.mx-stage{
+  --band:50; --img-h:576; --stage-h:676;        /* mismas cifras que BAND, IMG_H, STAGE_H en el JS */
+  position:relative;margin:0 auto;width:100%;aspect-ratio:1120/676;
+  /* que el escenario completo quepa en una pantalla de laptop (alto disponible convertido a ancho) */
+  max-width:calc((100svh - var(--header) - var(--announce) - 2 * var(--sect) - 90px) * 1120 / 676)}
+.mx-img{position:absolute;left:0;right:0;top:calc(var(--band) / var(--stage-h) * 100%);height:calc(var(--img-h) / var(--stage-h) * 100%)}
 .mx-img>img{width:100%;height:100%;object-fit:contain}
+
+/* a) líneas guía: punteadas en reposo, sólidas y negras en la parte activa */
 .mx-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .mx-lines line{stroke:var(--mute);stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke;transition:stroke .15s}
 .mx-lines line.on{stroke:var(--ink);stroke-dasharray:none;stroke-width:1.5}
-.mx-tag{position:absolute;transform:translateX(-50%);display:inline-flex;gap:6px;align-items:center;white-space:nowrap;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);background:var(--surface);border:1px solid var(--line);padding:3px 8px;cursor:pointer;user-select:none}
-.mx-tag--t{top:0}.mx-tag--b{bottom:0}
+
+/* c) etiquetas: centradas sobre su x (lx), pegadas al borde de su banda; tapan la punta de la línea */
+.mx-tag{position:absolute;z-index:1;transform:translateX(-50%);display:inline-flex;gap:6px;align-items:center;white-space:nowrap;
+  font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);
+  background:var(--surface);border:1px solid var(--line);padding:3px 8px;cursor:pointer;user-select:none}
+.mx-tag--t{top:0}
+.mx-tag--b{bottom:0}
 .mx-tag i{font-style:normal;color:var(--mute)}
+.mx-tag:hover{border-color:var(--ink);color:var(--ink)}
 .mx-tag.on{background:var(--ink);border-color:var(--ink);color:var(--surface)}
 .mx-tag.on i{color:var(--accent)}
-.hs{position:absolute;transform:translate(-50%,-50%);width:44px;height:44px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
+
+/* b) números: área táctil de 44px, círculo amarillo de 26px; activo = negro con anillo */
+.hs{position:absolute;z-index:2;transform:translate(-50%,-50%);width:44px;height:44px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
 .hs span{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--ink);font-size:11px;font-weight:800;box-shadow:0 0 0 2px var(--ink);transition:transform .15s}
 .hs:hover span{transform:scale(1.12)}
 .hs[aria-pressed="true"] span{background:var(--ink);color:var(--accent);box-shadow:0 0 0 2px var(--accent),0 0 0 6px rgba(28,27,25,.3)}
 .hs:focus-visible{outline:none}
 .hs:focus-visible span{outline:2px solid var(--ink);outline-offset:4px}
+
+/* panel lateral: foto real + dato de la parte activa + flechas */
 .mx-panel{display:grid;gap:14px;align-content:start}
 .mx-panel .mx-photo{aspect-ratio:4/3}
 .mx-panel__txt{display:grid;gap:4px}
@@ -95,27 +119,47 @@ html,body{overflow-x:clip}
 .mx-hear__cap b{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.02em}
 .mx-hear__poster:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
-/* 4 · V8 vs el campo (cualitativo) */
+/* 4 · V8 vs el campo: misma lógica para los dos lados (número grande + pictograma del mismo tamaño) */
 .mx-vs{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(20px,4vw,56px);align-items:start}
 .mx-vs__txt{display:grid;gap:10px}
 .mx-vs__txt p{margin:0}
 .mx-cmp{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr) minmax(0,1fr);margin:0}
-.mx-cmp [role=row]>*{padding:12px 12px 12px 0;border-bottom:1px solid var(--line);font-size:var(--t-sm);min-width:0}
+.mx-cmp [role=row]>*{padding:12px 16px 12px 0;border-bottom:1px solid var(--line);font-size:var(--t-sm);min-width:0}
 .mx-cmp .hd{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-md);text-transform:uppercase;color:var(--ink);border-bottom:2px solid var(--ink);padding-block:6px}
-.mx-cmp .rh{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.mx-cmp .rh{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);hyphens:manual}
 .mx-cmp .us{font-weight:700;color:var(--ink)}
 .mx-cmp .us,.mx-cmp .them{display:grid;gap:6px;align-content:start}
-.pips{display:grid;grid-template-columns:repeat(var(--c),14px);gap:4px}
-.pips i{width:14px;height:14px;border-radius:50%;background:var(--ink)}
-.them .pips i{background:none;border:1.5px solid var(--mute)}
-.bar{position:relative;height:10px;background:var(--line);max-width:260px}
-.bar span{position:absolute;left:0;top:0;bottom:0}
-.bar .stock{width:93.53%;background:var(--ink)}
-.bar .add{left:93.53%;width:6.47%;background:var(--accent)}
-.bar-k{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:var(--mute);font-weight:400}
-.bar-k b{display:inline-block;width:8px;height:8px;margin-right:4px;background:var(--ink)}
-.bar-k b.y{background:var(--accent)}
 .them{color:var(--soft)}
+/* cilindros: cada celda = cifra grande + vista de punta (V o I) + bloque visto desde arriba, todo del mismo alto */
+.cyl{display:grid;gap:8px}
+.cyl__top{display:flex;align-items:center;gap:10px;height:52px}
+.cyl__big{font-family:var(--f-head);font-stretch:62%;font-weight:800;font-size:52px;line-height:1;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.cyl__kind{font-family:var(--f-head);font-stretch:70%;font-weight:800;font-size:var(--t-h2);text-transform:uppercase;line-height:1}
+.cyl__end{width:40px;height:40px;flex:none;margin-left:6px}
+.cyl__plan{display:block;width:100%;max-width:240px;height:auto;aspect-ratio:240/96}
+.cyl__cap{font-size:var(--t-xs);font-weight:400;color:var(--mute)}
+/* colores de los pictogramas: Heavy Metal relleno, "the usual" en contorno */
+.cyl svg .blk{fill:var(--tile);stroke:var(--line);stroke-width:1.5}
+.cyl svg .crank{stroke:var(--mute);stroke-width:1;stroke-dasharray:4 3}
+.cyl svg .bore{stroke-width:2}
+.cyl svg .rod{fill:none;stroke-width:8;stroke-linecap:round}
+.us .cyl svg .rod{stroke:var(--ink)}
+.them .cyl svg .rod{stroke:var(--soft)}
+.us .cyl svg .bore{fill:var(--ink);stroke:var(--ink)}
+.them .cyl svg .bore{fill:var(--surface);stroke:var(--soft)}
+.us .cyl__big,.us .cyl__kind{color:var(--ink)}
+.them .cyl__big,.them .cyl__kind{color:var(--soft)}
+/* desplazamiento: dos barras etiquetadas, Factory y Ours, sobre la misma escala (0 a 680) */
+.disp{display:grid;gap:8px;max-width:260px}
+.disp__row{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;font-size:var(--t-xs)}
+.disp__k{font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.disp__v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
+.disp__bar{grid-column:1/-1;height:10px;background:var(--line);position:relative}
+.disp__bar i{position:absolute;left:0;top:0;bottom:0;background:var(--soft)}
+.disp__row--ours .disp__k{color:var(--ink)}
+.disp__row--ours .disp__bar i{background:var(--ink)}
+.disp__bar i.add{left:93.53%;width:6.47%;background:var(--accent)}  /* 636/680 = 93.53%: lo que el crew le sumó */
+.disp__why{margin:0;font-size:var(--t-xs);font-weight:400;color:var(--soft)}
 
 /* 5 · FAQ */
 .mx-faq{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(20px,4vw,56px)}
@@ -147,6 +191,7 @@ html,body{overflow-x:clip}
   .mx-gal::-webkit-scrollbar{display:none}
   .mx-gal li{flex:0 0 74%;scroll-snap-align:start}
   .mx-gal .mx-photo{max-height:none;min-height:0}
+  /* anatomía en móvil: sin bandas ni etiquetas; el escenario mide lo mismo que el recorte */
   .mx-stage{aspect-ratio:1120/576}
   .mx-img{top:0;height:100%}
   .mx-lines,.mx-tag{display:none}
@@ -165,8 +210,10 @@ html,body{overflow-x:clip}
   .mx-cmp{grid-template-columns:minmax(0,96px) minmax(0,1fr) minmax(0,1fr)}
   .mx-cmp .rh{font-size:10px;letter-spacing:0}
   .mx-cmp [role=row]>*{padding-right:8px;font-size:var(--t-xs)}
-  .pips{grid-template-columns:repeat(var(--c),10px);gap:3px}
-  .pips i{width:10px;height:10px}
+  .cyl__top{height:40px;gap:6px}
+  .cyl__big{font-size:38px}
+  .cyl__kind{font-size:15px}
+  .cyl__end{width:28px;height:28px}
   .mx-tee{grid-template-columns:1fr}
   .mx-tee .card{max-width:260px}
 }
@@ -184,10 +231,11 @@ html,body{overflow-x:clip}
         <p class="label muted">Pro Stock · Waterloo, WI</p>
         <h1 class="h-hero" id="mx-h1">The Machine</h1>
         <p class="lede">A Caterpillar 3208 V8, reverse flow: a setup you won't find on any other tractor on the track. Nothing about it is off the shelf, and nothing about it was quick.</p>
+        <p class="note">"The Machine" es solo el nombre de esta página (la del tractor). En el menú se puede cambiar, por ejemplo a "The Tractor", en Shopify: Tienda online &gt; Navegación.</p>
       </div>
       <dl class="mx-keys" aria-label="Key specs">
         <div><dt>Engine</dt><dd>Cat 3208 V8</dd></div>
-        <div><dt>Built to</dt><dd class="num">680 CI</dd></div>
+        <div><dt>Built to</dt><dd class="num">680 CU IN</dd></div>
         <div><dt>Weight</dt><dd class="num">10,000 LB</dd></div>
         <div><dt>Horsepower</dt><dd>Unknown</dd></div>
       </dl>
@@ -210,7 +258,7 @@ html,body{overflow-x:clip}
     </div>
     <div class="mx-anat">
       <figure class="mx-stage" id="stage">
-        <svg class="mx-lines" id="mx-lines" viewBox="0 0 1120 676" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <svg class="mx-lines" id="mx-lines" viewBox="0 0 1120 676" preserveAspectRatio="none" aria-hidden="true"></svg><!-- líneas: las pinta el JS -->
         <div class="mx-img" id="pts" role="group" aria-label="Parts of the tractor">
           <img src="img/hm-tractor-cutout.webp" alt="Heavy Metal cut out in profile, facing right" width="1120" height="576" loading="lazy">
         </div>
@@ -244,7 +292,7 @@ html,body{overflow-x:clip}
       </div>
       <dl class="mx-big">
         <div><dt><i>01</i>Engine</dt><dd><span class="mx-v">V8</span><span class="mx-s">Cat 3208, reverse flow</span></dd></div>
-        <div><dt><i>02</i>Displacement</dt><dd><span class="mx-v">680<small>CI</small></span><span class="mx-s">636 stock</span></dd></div>
+        <div><dt><i>02</i>Displacement</dt><dd><span class="mx-v">680<small>CU IN</small></span><span class="mx-s">Factory: 636 cu in</span></dd></div>
         <div><dt><i>03</i>Turbo</dt><dd><span class="mx-v">1<small>Turbo</small></span><span class="mx-s">Single, large</span></dd></div>
         <div><dt><i>04</i>Weight</dt><dd><span class="mx-v">10,000<small>LB</small></span><span class="mx-s">Front weight box included</span></dd></div>
         <div><dt><i>05</i>Tires</dt><dd><span class="mx-v">24.5-32</span><span class="mx-s">Rear</span></dd></div>
@@ -256,7 +304,7 @@ html,body{overflow-x:clip}
         <div><dt>Class</dt><dd>Pro Stock</dd></div>
         <div><dt>Home</dt><dd>Waterloo, WI</dd></div>
         <div><dt>Leagues</dt><dd>NTPA &amp; PPL Badger State</dd></div>
-        <div><dt>Nickname</dt><dd>The Evil One</dd></div>
+        <div><dt>Nickname</dt><dd>“The Evil One”</dd></div>
       </dl>
     </div>
     <div class="mx-hear">
@@ -266,7 +314,6 @@ html,body{overflow-x:clip}
         <span class="mx-play" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z"/></svg></span>
         <span class="mx-hear__cap"><b>Play: Monroe, WI ↗</b><span>Green County Fall Nationals, 2026 · opens YouTube in a new tab</span></span>
       </a>
-      <p class="note" style="margin:0">Aquí va el video de la dueña (arranque del motor). Mientras, abre el video real de Monroe.</p>
     </div>
   </div>
 </section>
@@ -276,8 +323,8 @@ html,body{overflow-x:clip}
   <div class="wrap mx-vs">
     <div class="mx-vs__txt">
       <h2 class="h1" id="vs-h">Cat V8 vs the field</h2>
-      <p class="muted">Most Pro Stock tractors run an inline six. Heavy Metal runs a Caterpillar V8, built out from 636 to 680 cubic inches. No numbers for the field here: only what holds for any inline six.</p>
-      <p class="note">Confirmar con Chris la frase "most Pro Stock tractors run an inline six" antes de publicar.</p>
+      <p class="muted">Most Pro Stock tractors run an inline six. Heavy Metal runs a Caterpillar V8. Both engines are drawn the same way: the block seen from above, crankshaft through the middle, plus a small end view.</p>
+      <p class="note">Confirmar con Chris "most Pro Stock tractors run an inline six" (aquí y en el FAQ). En "Hear it" va el video del arranque cuando exista; mientras, el de Monroe.</p>
     </div>
     <div class="mx-cmp" role="table" aria-label="Heavy Metal's engine compared with the usual Pro Stock setup">
       <div role="row" style="display:contents">
@@ -287,8 +334,8 @@ html,body{overflow-x:clip}
       </div>
       <div role="row" style="display:contents">
         <span class="rh" role="rowheader">Cylinders</span>
-        <span class="us" role="cell"><span class="pips" style="--c:4" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>8, in two banks (V)</span>
-        <span class="them" role="cell"><span class="pips" style="--c:6" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>6, in one bank (inline)</span>
+        <span class="us" role="cell"><span class="cyl"><span class="cyl__top"><span class="cyl__big">8</span><span class="cyl__kind">V</span><svg class="cyl__end" viewBox="0 0 40 40" aria-hidden="true"><path class="rod" d="M20 32 9 9M20 32 31 9"/></svg></span><svg class="cyl__plan" viewBox="0 0 240 96" aria-hidden="true"><rect class="blk" x="8" y="8" width="224" height="80" rx="10"/><line class="crank" x1="2" y1="48" x2="238" y2="48"/><circle class="bore" cx="42" cy="28" r="12"/><circle class="bore" cx="90" cy="28" r="12"/><circle class="bore" cx="138" cy="28" r="12"/><circle class="bore" cx="186" cy="28" r="12"/><circle class="bore" cx="54" cy="68" r="12"/><circle class="bore" cx="102" cy="68" r="12"/><circle class="bore" cx="150" cy="68" r="12"/><circle class="bore" cx="198" cy="68" r="12"/></svg><span class="cyl__cap">8 cylinders: two banks of 4, set in a V</span></span></span>
+        <span class="them" role="cell"><span class="cyl"><span class="cyl__top"><span class="cyl__big">6</span><span class="cyl__kind">Inline</span><svg class="cyl__end" viewBox="0 0 40 40" aria-hidden="true"><path class="rod" d="M20 32V6"/></svg></span><svg class="cyl__plan" viewBox="0 0 240 96" aria-hidden="true"><rect class="blk" x="8" y="8" width="224" height="80" rx="10"/><line class="crank" x1="2" y1="48" x2="238" y2="48"/><circle class="bore" cx="30" cy="48" r="12"/><circle class="bore" cx="66" cy="48" r="12"/><circle class="bore" cx="102" cy="48" r="12"/><circle class="bore" cx="138" cy="48" r="12"/><circle class="bore" cx="174" cy="48" r="12"/><circle class="bore" cx="210" cy="48" r="12"/></svg><span class="cyl__cap">6 cylinders: one bank of 6, in a straight line</span></span></span>
       </div>
       <div role="row" style="display:contents">
         <span class="rh" role="rowheader">Engine</span>
@@ -301,8 +348,12 @@ html,body{overflow-x:clip}
         <span class="them" role="cell">Varies by build</span>
       </div>
       <div role="row" style="display:contents">
-        <span class="rh" role="rowheader">Displacement</span>
-        <span class="us" role="cell"><span class="num">680 CI</span><span class="bar" aria-hidden="true"><span class="stock"></span><span class="add"></span></span><span class="bar-k"><span><b></b>636 stock</span><span><b class="y"></b>+44 built</span></span></span>
+        <span class="rh" role="rowheader">Displace&shy;ment</span>
+        <span class="us" role="cell"><span class="disp">
+          <span class="disp__row"><span class="disp__k">Factory</span><span class="disp__v">636 cu in</span><span class="disp__bar" aria-hidden="true"><i style="width:93.53%"></i></span></span>
+          <span class="disp__row disp__row--ours"><span class="disp__k">Ours</span><span class="disp__v">680 cu in</span><span class="disp__bar" aria-hidden="true"><i style="width:93.53%"></i><i class="add"></i></span></span>
+          <span class="disp__why">Built up from the factory 636 to 680 cu in: 44 more, in yellow.</span>
+        </span></span>
         <span class="them" role="cell">Varies by build</span>
       </div>
       <div role="row" style="display:contents">
@@ -319,27 +370,40 @@ html,body{overflow-x:clip}
   <div class="wrap mx-faq">
     <div>
       <h2 class="h1" id="faq-h">Questions from the fence line</h2>
+      <p class="muted" style="margin:10px 0 0;max-width:36ch">What's worth knowing before you watch it pull.</p>
     </div>
     <div class="faq">
       <details open>
-        <summary>How much horsepower does it make?</summary>
-        <p>Unknown. We'll let the track answer.</p>
+        <summary>Why a Cat V8, when almost nobody runs one?</summary>
+        <p>Most Pro Stock tractors run an inline six. Chris went the other way: a Caterpillar 3208 V8 in reverse flow, a setup you won't find on any other tractor on the track. That's the point. Nothing about it is off the shelf, and nothing about it was quick.</p>
       </details>
       <details>
-        <summary>What is Pro Stock?</summary>
-        <p>A tractor pulling class for modified diesel farm tractors. Each tractor drags a weight transfer sled down a dirt track; going the full length is a full pull.</p>
+        <summary>What is Pro Stock, exactly?</summary>
+        <p>One of the diesel classes in tractor pulling. The tractors still look like farm tractors, run a single diesel engine and hook up at a set maximum weight. The exact limits on engine size, turbo and weight are set by each league's rulebook (NTPA, PPL).</p>
       </details>
       <details>
-        <summary>What engine does Heavy Metal run?</summary>
-        <p>A Caterpillar 3208 V8 in reverse flow configuration, built out from 636 cubic inches stock to 680, with a single large turbo. A setup you won't find on any other tractor on the track.</p>
+        <summary>How much does it weigh, and why does that matter?</summary>
+        <p>10,000 LB, front weight box included. Every tractor in a class hooks up at the same maximum weight, so being heavier is not an advantage. Where the weight sits is the game: weight up front keeps the nose down and the rear tires biting as the sled gets harder to drag.</p>
       </details>
       <details>
-        <summary>Who built it?</summary>
-        <p>Chris F. and his family, in their shop in Waterloo, Wisconsin. The idea was born in 2014, the first bolt went in in February 2020, and nearly everything on it is custom-built.</p>
+        <summary>What is a full pull?</summary>
+        <p>Dragging the sled all the way to the end of the track. When more than one tractor goes the distance, those tractors come back for a pull-off. Heavy Metal is still chasing its first one.</p>
       </details>
       <details>
-        <summary>Where can I see it pull?</summary>
-        <p>This season Heavy Metal is chasing its first full pull at about 20 competitions on the NTPA and PPL Badger State circuits. Dates are still being confirmed; check the <a href="schedule.html">Schedule</a>.</p>
+        <summary>What does the sled actually do?</summary>
+        <p>It's a weight transfer sled. Once the tractor starts pulling, a box of weights on the sled moves forward, from over the sled's wheels toward the pan up front. That pushes the pan into the dirt, so every foot is harder than the one before.</p>
+      </details>
+      <details>
+        <summary>How fast does it go down the track?</summary>
+        <p>We'll post it once we've measured it.</p>
+      </details>
+      <details>
+        <summary>Who drives it?</summary>
+        <p>Chris F.: owner, driver and crew chief, with more than 20 years in the sport. He built it with his family in their shop in Waterloo, WI.</p>
+      </details>
+      <details>
+        <summary>Where can I see it, and can I get close in the pits?</summary>
+        <p>Upcoming pulls are on the <a href="schedule.html">Schedule</a>. Pit access depends on each event: some pulls open the pits to fans, others need a pit pass. Check with the organizer, and if you find us, come say hi.</p>
       </details>
     </div>
   </div>
@@ -371,45 +435,82 @@ html,body{overflow-x:clip}
   var tc = document.getElementById('tee-card');
   if (tee && tc && window.hmCard) tc.innerHTML = window.hmCard(tee);
 
-  /* anatomía: x, y en px del recorte (1120x576); lx = x de la etiqueta; row t/b = arriba o abajo del plano */
+  /* ============================================================
+     ANATOMÍA (patrón reutilizable: Sponsors lo copia para el mapa de calcomanías)
+     ------------------------------------------------------------
+     Datos: cada parte es un objeto en P. En Shopify sería un metaobjeto "Tractor part"
+     (o bloques de sección) con estos mismos campos.
+       n    nombre corto (etiqueta y panel)        v    valor grande del panel
+       b    texto del panel (una o dos frases)     img  foto real del panel; pos = object-position; alt
+       x,y  punto en px del RECORTE (1120x576): ahí va el número
+       lx   x de la etiqueta en la misma escala (y de ahí sale la línea guía)
+       row  't' = etiqueta en la banda de arriba, 'b' = banda de abajo
+     ============================================================ */
+  var IMG_W = 1120, IMG_H = 576;      /* tamaño del recorte img/hm-tractor-cutout.webp */
+  var BAND = 50;                       /* banda de etiquetas arriba y abajo (igual que --band en CSS) */
+  var STAGE_H = IMG_H + 2 * BAND;      /* 676: alto del viewBox del SVG de líneas */
   var P = [
-    { k: 'engine', n: 'Engine', v: 'Cat 3208 V8', x: 650, y: 215, lx: 650, row: 't', img: 'img/hm-engine.webp', pos: '50% 55%', alt: 'The Cat 3208 V8 on the stand in the shop, turbo on top',
+    { n: 'Engine', v: 'Cat 3208 V8', x: 650, y: 215, lx: 650, row: 't',
+      img: 'img/hm-engine.webp', pos: '50% 55%', alt: 'The Cat 3208 V8 on the stand in the shop, turbo on top',
       b: 'A Caterpillar 3208 V8 in reverse flow configuration: a setup you won\'t find on any other tractor on the track.' },
-    { k: 'disp', n: 'Displacement', v: '680 CI', x: 480, y: 300, lx: 480, row: 'b', img: 'img/hm-engine.webp', pos: '50% 78%', alt: 'Close view of the engine block of the Cat 3208',
-      b: 'Stock, the 3208 measures 636 cubic inches. Ours doesn\'t: we built it out to 680.' },
-    { k: 'turbo', n: 'Turbo', v: 'Single, large', x: 535, y: 62, lx: 400, row: 't', img: 'img/hm-engine.webp', pos: '60% 12%', alt: 'The single large turbo mounted on top of the engine',
+    { n: 'Displacement', v: '680 CU IN', x: 480, y: 300, lx: 480, row: 'b',
+      img: 'img/hm-engine.webp', pos: '50% 78%', alt: 'Close view of the engine block of the Cat 3208',
+      b: 'Factory: 636 cu in. Ours: 680 cu in. Built up from the factory 636 to 680.' },
+    { n: 'Turbo', v: 'Single, large', x: 535, y: 62, lx: 400, row: 't',
+      img: 'img/hm-engine.webp', pos: '60% 12%', alt: 'The single large turbo mounted on top of the engine',
       b: 'One turbo, and a big one. You see the stack up top; the rest lives under the hood.' },
-    { k: 'body', n: 'Body', v: 'Challenger 1015', x: 870, y: 190, lx: 900, row: 't', img: 'img/hm-front-white.webp', pos: '50% 60%', alt: 'Heavy Metal head on, white smoke rolling over the track',
+    { n: 'Body', v: 'Challenger 1015', x: 870, y: 190, lx: 900, row: 't',
+      img: 'img/hm-front-white.webp', pos: '50% 60%', alt: 'Heavy Metal head on, white smoke rolling over the track',
       b: 'A Challenger 1015 body in matte black, over a custom-built chassis.' },
-    { k: 'weight', n: 'Weight', v: '10,000 LB', x: 1040, y: 420, lx: 980, row: 'b', img: 'img/hm-side.webp', pos: '90% 72%', alt: 'Heavy Metal in profile showing the weight box on the front',
+    { n: 'Weight', v: '10,000 LB', x: 1040, y: 420, lx: 980, row: 'b',
+      img: 'img/hm-side.webp', pos: '90% 72%', alt: 'Heavy Metal in profile showing the weight box on the front',
       b: '10,000 pounds of matte black, front weight box included.' },
-    { k: 'tires', n: 'Tires', v: '24.5-32', x: 200, y: 340, lx: 170, row: 'b', img: 'img/hm-rear.webp', pos: '50% 62%', alt: 'Heavy Metal from the rear on the track, big rear tires in view',
+    { n: 'Tires', v: '24.5-32', x: 200, y: 340, lx: 170, row: 'b',
+      img: 'img/hm-rear.webp', pos: '50% 62%', alt: 'Heavy Metal from the rear on the track, big rear tires in view',
       b: 'Rear tires sized 24.5-32. This is where 680 cubic inches meets the dirt.' }
   ];
-  var pts = document.getElementById('pts'), stage = document.getElementById('stage'), lines = document.getElementById('mx-lines');
-  var img = document.getElementById('panel-img'), cur = 0, NS = 'http://www.w3.org/2000/svg';
-  function nn(i) { return (i < 9 ? '0' : '') + (i + 1); }
+
+  var stage = document.getElementById('stage');     /* escenario: etiquetas y líneas */
+  var pts = document.getElementById('pts');         /* capa del recorte: números */
+  var lines = document.getElementById('mx-lines');  /* SVG de líneas guía */
+  var img = document.getElementById('panel-img');
+  var NS = 'http://www.w3.org/2000/svg', cur = 0;
+  function pct(v, of) { return (v / of * 100).toFixed(3) + '%'; }
+  function nn(i) { return (i < 9 ? '0' : '') + (i + 1); }   /* 0 -> "01" */
+
+  /* 1) pintar: número + etiqueta + línea por cada parte */
   P.forEach(function (p, i) {
+    /* número: botón real (teclado y lector de pantalla), en % del recorte */
     var b = document.createElement('button');
     b.type = 'button'; b.className = 'hs'; b.dataset.i = i;
-    b.style.left = (p.x / 11.2) + '%'; b.style.top = (p.y / 5.76) + '%';
+    b.style.left = pct(p.x, IMG_W); b.style.top = pct(p.y, IMG_H);
     b.setAttribute('aria-label', nn(i) + ', ' + p.n + ': ' + p.v);
     b.innerHTML = '<span aria-hidden="true">' + (i + 1) + '</span>';
     pts.appendChild(b);
+
+    /* etiqueta: solo visual (el botón ya lleva el nombre); clic = mismo efecto que el número */
     var t = document.createElement('span');
     t.className = 'mx-tag mx-tag--' + p.row; t.dataset.i = i; t.setAttribute('aria-hidden', 'true');
-    t.style.left = (p.lx / 11.2) + '%';
+    t.style.left = pct(p.lx, IMG_W);
     t.innerHTML = '<i>' + nn(i) + '</i>' + p.n;
     stage.appendChild(t);
+
+    /* línea: del centro de la banda de la etiqueta al número (el recorte empieza en y = BAND) */
     var l = document.createElementNS(NS, 'line');
-    l.setAttribute('x1', p.lx); l.setAttribute('y1', p.row === 't' ? 24 : 652);
-    l.setAttribute('x2', p.x); l.setAttribute('y2', p.y + 50);
+    l.setAttribute('x1', p.lx); l.setAttribute('y1', p.row === 't' ? BAND / 2 : STAGE_H - BAND / 2);
+    l.setAttribute('x2', p.x);  l.setAttribute('y2', p.y + BAND);
     l.dataset.i = i; lines.appendChild(l);
   });
+  lines.setAttribute('viewBox', '0 0 ' + IMG_W + ' ' + STAGE_H);
+
+  /* 2) activar una parte: número, etiqueta y línea en negro; panel con su foto y texto */
   var hs = pts.querySelectorAll('.hs');
   function set(i, focus) {
     cur = (i + P.length) % P.length; var p = P[cur];
-    hs.forEach(function (b, j) { b.setAttribute('aria-pressed', j === cur ? 'true' : 'false'); b.tabIndex = j === cur ? 0 : -1; });
+    hs.forEach(function (b, j) {
+      b.setAttribute('aria-pressed', j === cur ? 'true' : 'false');
+      b.tabIndex = j === cur ? 0 : -1;               /* roving tabindex: un solo Tab entra al grupo */
+    });
     stage.querySelectorAll('.mx-tag, line').forEach(function (e) { e.classList.toggle('on', +e.dataset.i === cur); });
     document.getElementById('panel-label').textContent = nn(cur) + ' · ' + p.n;
     document.getElementById('panel-val').textContent = p.v;
@@ -419,6 +520,8 @@ html,body{overflow-x:clip}
     img.alt = p.alt; img.style.objectPosition = p.pos;
     if (focus) hs[cur].focus();
   }
+
+  /* 3) controles: clic en número o etiqueta, flechas del teclado, Home/End, botones del panel */
   stage.addEventListener('click', function (e) {
     var b = e.target.closest('[data-i]'); if (b) set(+b.dataset.i, b.classList.contains('hs'));
   });
@@ -438,11 +541,70 @@ html,body{overflow-x:clip}
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {"@type": "Question", "name": "How much horsepower does it make?", "acceptedAnswer": {"@type": "Answer", "text": "Unknown. We'll let the track answer."}},
-    {"@type": "Question", "name": "What is Pro Stock?", "acceptedAnswer": {"@type": "Answer", "text": "A tractor pulling class for modified diesel farm tractors. Each tractor drags a weight transfer sled down a dirt track; going the full length is a full pull."}},
-    {"@type": "Question", "name": "What engine does Heavy Metal run?", "acceptedAnswer": {"@type": "Answer", "text": "A Caterpillar 3208 V8 in reverse flow configuration, built out from 636 cubic inches stock to 680, with a single large turbo. A setup you won't find on any other tractor on the track."}},
-    {"@type": "Question", "name": "Who built it?", "acceptedAnswer": {"@type": "Answer", "text": "Chris F. and his family, in their shop in Waterloo, Wisconsin. The idea was born in 2014, the first bolt went in in February 2020, and nearly everything on it is custom-built."}},
-    {"@type": "Question", "name": "Where can I see it pull?", "acceptedAnswer": {"@type": "Answer", "text": "This season Heavy Metal is chasing its first full pull at about 20 competitions on the NTPA and PPL Badger State circuits. Dates are still being confirmed; check the Schedule page."}}
+    {
+      "@type": "Question",
+      "name": "Why a Cat V8, when almost nobody runs one?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most Pro Stock tractors run an inline six. Chris went the other way: a Caterpillar 3208 V8 in reverse flow, a setup you won't find on any other tractor on the track. That's the point. Nothing about it is off the shelf, and nothing about it was quick."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is Pro Stock, exactly?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One of the diesel classes in tractor pulling. The tractors still look like farm tractors, run a single diesel engine and hook up at a set maximum weight. The exact limits on engine size, turbo and weight are set by each league's rulebook (NTPA, PPL)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does it weigh, and why does that matter?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "10,000 LB, front weight box included. Every tractor in a class hooks up at the same maximum weight, so being heavier is not an advantage. Where the weight sits is the game: weight up front keeps the nose down and the rear tires biting as the sled gets harder to drag."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a full pull?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Dragging the sled all the way to the end of the track. When more than one tractor goes the distance, those tractors come back for a pull-off. Heavy Metal is still chasing its first one."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the sled actually do?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It's a weight transfer sled. Once the tractor starts pulling, a box of weights on the sled moves forward, from over the sled's wheels toward the pan up front. That pushes the pan into the dirt, so every foot is harder than the one before."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How fast does it go down the track?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We'll post it once we've measured it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who drives it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Chris F.: owner, driver and crew chief, with more than 20 years in the sport. He built it with his family in their shop in Waterloo, WI."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where can I see it, and can I get close in the pits?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Upcoming pulls are on the Schedule page page. Pit access depends on each event: some pulls open the pits to fans, others need a pit pass. Check with the organizer, and if you find us, come say hi."
+      }
+    }
   ]
 }
 </script>

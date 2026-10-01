@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Evil One Tee · Heavy Metal The Evil One</title>
-<meta name="description" content="Evil One Tee from Heavy Metal, the Pro Stock pulling tractor from Waterloo, WI. Designed by the crew, printed to order, ships in 5 days.">
+<title>Evil One Tee · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Evil One Tee from Heavy Metal Pro Stock: “The Evil One”, the pulling tractor from Waterloo, WI. Designed by the crew, printed to order, ships in 5 days.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -215,7 +215,7 @@ html,body{overflow-x:clip}
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg><span><b>Printed to order · ships in 5 days.</b> Free US shipping over $XX.</span></li>
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/></svg><span>Misprints and defects replaced free. Check the size guide: printed-to-order items can't be returned for size. <a href="policies.html?p=refund">Refund policy</a></span></li>
         </ul>
-        <p class="note">Confirmar con Printly la regla de devoluciones, los 5 días y si se puede decir "printed in the USA". Galería: la 1ª imagen es el mockup del color elegido; las otras se llenan con las fotos o mockups que genera Printly (una por color en la variante).</p>
+        <p class="note">Confirmar con Printify la regla de devoluciones, los 5 días y si se puede decir "printed in the USA". Galería: la 1ª imagen es el mockup del color elegido; las otras se llenan con las fotos o mockups que genera Printify (una por color en la variante).</p>
 
         <div class="acc">
           <details>
@@ -298,48 +298,48 @@ html,body{overflow-x:clip}
   var $ = function (id) { return document.getElementById(id); };
   var CAT = window.HM_CATALOG || [];
   var SW = window.HM_SW || {};
-  var CATNAME = { tees: 'Tees', sweats: 'Sweatshirts', hats: 'Hats', kids: 'Kids', gear: 'Stickers & gear', bundles: 'Bundles' };
+  var CATNAME = { tees: 'Tees', sweats: 'Sweatshirts', hats: 'Hats', kids: 'Kids', gear: 'Stickers & gear', bundles: 'Bundles', limited: 'Special edition' };
   var id = new URLSearchParams(location.search).get('p') || 'evil-one-tee';
   var p = CAT.filter(function (x) { return x.id === id; })[0] || CAT.filter(function (x) { return x.id === 'evil-one-tee'; })[0];
 
   /* textos por producto: hechos reales de la historia, sin inventar materiales */
   var STORY = {
-    'evil-one-tee': ['Chris came up with the idea in 2014 in Tomah, WI. He was a heavy metal fan, so the name was never up for discussion. The nickname stuck: The Evil One.'],
+    'evil-one-tee': ['Chris came up with the idea in 2014 in Tomah, WI. He was a heavy metal fan, so the name was never up for discussion. The nickname stuck: “The Evil One”.'],
     'lightning-strike-tee': ['In 2026 Chris fired the engine for the first time. At that exact moment, lightning struck, and the power went out.', 'Some would call it a coincidence. We call it a sign. This graphic is that night.'],
-    'full-pull-ls': ['This season the goal is simple: the first full pull, across about 20 competitions on the NTPA and PPL Badger State circuits.', 'No exhibitions. Every time it hits the track, it is there to pull.'],
+    'full-pull-ls': ['This season the goal is simple: the first full pull, across about 20 competitions on the NTPA and PPL Badger State circuits.', 'We\'ve run a few exhibitions while testing; in competition, every pass is to pull.'],
     'cat-v8-spec-tee': ['The real spec sheet: CAT 3208 V8, reverse flow, 680 CU IN, single large turbo, 10,000 LB, Challenger 1015 body. Horsepower: Unknown.'],
     '680-ci-hoodie': ['The Cat 3208 V8 started at 636 cubic inches. The crew took it to 680, a setup you won\'t find on any other tractor on the track.', 'Nothing about it is off the shelf, and nothing about it was quick.'],
     'evil-one-crewneck': ['The first bolt went in in February 2020, in the family shop in Waterloo, WI. Nights and weekends stolen from work and family built the rest.'],
     'crew-cap': ['The cap the pit crew wears on pull day: Daniel, Jared, Jim, Tony, Jeff, John and Brad, with Chris F. in the seat.'],
     'little-evil-one-tee': ['The whole family made the shop a second home while the tractor came together. This one is for the next generation of pullers.']
   };
-  var STORY_BASE = 'Designed by the crew that built The Evil One by hand in Waterloo, WI. Everything on the tractor is custom-built, and so is every graphic.';
+  var STORY_BASE = 'Designed by the crew that built “The Evil One” by hand in Waterloo, WI. Everything on the tractor is custom-built, and so is every graphic.';
   var cname = CATNAME[p.cat] || 'Shop';
   var hasSizes = p.sizes.length > 0, hasColors = p.colors.length > 0;
   var sold = p.sold || [];
 
   /* cabecera, SEO y breadcrumb */
-  document.title = p.name + ' · Heavy Metal The Evil One';
+  document.title = p.name + ' · Heavy Metal Pro Stock: “The Evil One”';
   var md = document.querySelector('meta[name="description"]');
-  md.setAttribute('content', p.name + ' (' + p.sub.toLowerCase() + ') from Heavy Metal, the Pro Stock pulling tractor from Waterloo, WI. Designed by the crew, printed to order, ships in 5 days.');
-  $('bc-cat').textContent = cname; $('bc-cat').href = 'shop.html?cat=' + p.cat;
+  md.setAttribute('content', p.name + ' (' + p.sub.toLowerCase() + ') from Heavy Metal Pro Stock: “The Evil One”, the pulling tractor from Waterloo, WI. Designed by the crew, printed to order, ships in 5 days.');
+  $('bc-cat').textContent = cname; $('bc-cat').href = p.cat === 'limited' ? 'limited.html' : 'shop.html?cat=' + p.cat;
   $('bc-name').textContent = p.name;
   $('p-name').textContent = p.name; $('satc-name').textContent = p.name;
   $('p-desc').textContent = p.sub + '. Designed by the crew in Waterloo, WI, and printed to order.';
-  var badge = { best: ['', 'Best seller'], 'new': [' badge--ink', 'New'], bundle: [' badge--line', 'Save $X'], limited: [' badge--ink', 'Limited'] }[p.tag];
+  var badge = { best: ['', 'Best seller'], 'new': [' badge--ink', 'New'], bundle: [' badge--line', 'Save $X'], limited: [' badge--ink', 'Special edition'] }[p.tag];
   if (badge) $('p-badge').outerHTML = '<span class="badge' + badge[0] + '">' + badge[1] + '</span>'; else $('p-badge').remove();
   $('like-all').href = 'shop.html?cat=' + p.cat;
   if (p.id === 'crew-pack') $('look').remove();
   else document.querySelectorAll('[data-mock]').forEach(function (el) { var m = CAT.filter(function (x) { return x.id === el.getAttribute('data-mock'); })[0]; if (m) el.innerHTML = window.hmMock(m); });
 
-  /* galería: 1) mockup plano del color elegido (hmMock); 2 a 4) lugar para las fotos de Printly */
+  /* galería: 1) mockup plano del color elegido (hmMock); 2 a 4) lugar para las fotos de Printify */
   var SHOTS = [['Frente', ''], ['Espalda', 'estampado de espalda'], ['Puesto', 'modelo o puesto en los pits'], ['Detalle', 'macro del estampado']];
   function renderGal(color) {
     var pc = {}; for (var k in p) pc[k] = p[k]; if (color) pc.colors = [color];
     $('gal').innerHTML = SHOTS.map(function (s, i) {
       var lab = p.name + (color ? ', ' + color : '');
       if (i === 0) return '<li><span class="ph ph--mock" role="img" aria-label="' + lab + ', front">' + window.hmMock(pc) + '</span></li>';
-      return '<li><span class="ph" role="img" aria-label="' + lab + ', ' + s[0].toLowerCase() + ' (photo coming soon)"><span class="ph__tag"><b>Foto de Printly · ' + s[0] + '</b>' + s[1] + '</span></span></li>';
+      return '<li><span class="ph" role="img" aria-label="' + lab + ', ' + s[0].toLowerCase() + ' (photo coming soon)"><span class="ph__tag"><b>Foto de Printify · ' + s[0] + '</b>' + s[1] + '</span></span></li>';
     }).join('');
   }
 

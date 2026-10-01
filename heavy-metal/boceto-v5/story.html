@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<!-- Hallmark · v4: storytelling del tema en vivo, el rayo como clímax -->
-<title>Our Story · Heavy Metal, The Evil One</title>
-<meta name="description" content="From one idea in Tomah, Wisconsin to a Pro Stock pulling tractor built by a family in Waterloo. The first bolt, the night lightning struck, the first pull and the crew behind The Evil One.">
+<!-- Hallmark · v5: storytelling del tema en vivo, el rayo como clímax, temporada editable -->
+<title>Our Story · Heavy Metal, “The Evil One”</title>
+<meta name="description" content="From one idea in Tomah, Wisconsin to a Pro Stock pulling tractor built by a family in Waterloo. The first bolt, the night lightning struck, the first pull and the crew behind “The Evil One”, led by a driver with 20+ years in the sport.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -20,7 +20,7 @@ html,body{overflow-x:clip}
 .bolt{fill:var(--accent)}
 
 /* 1 · hero compacto: texto + díptico que se mide por la altura, nunca deja hueco a lo ancho */
-.st-hero{--hh:clamp(300px,calc(70svh - 2 * 28px),540px);padding-block:28px}
+.st-hero{--hh:clamp(300px,calc(70svh - 2 * 28px),500px);padding-block:28px}
 .st-hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,3.4vw,56px);align-items:center}
 .st-hero__txt{display:grid;gap:14px;max-width:540px}
 .st-hero__txt .lede{max-width:46ch}
@@ -31,6 +31,7 @@ html,body{overflow-x:clip}
 .st-facts li{display:grid;gap:2px;padding:10px 18px 0 0;margin-right:18px;font-size:var(--t-xs);color:var(--mute)}
 .st-facts li+li{padding-left:18px;border-left:1px solid var(--line)}
 .st-facts b{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h2);line-height:1;color:var(--ink);text-transform:uppercase}
+.st-facts__big b{background:linear-gradient(transparent 60%,var(--accent) 60%);padding-inline:2px;margin-inline:-2px;justify-self:start}
 
 /* 2 · hitos del tema: índice de capítulos */
 .st-tl{background:var(--surface);border-block:1px solid var(--line)}
@@ -97,7 +98,6 @@ html,body{overflow-x:clip}
 .st-vid__sound svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
 .st-vid figcaption{font-size:var(--t-xs);color:#A8A59A}
 .st-vid__msg{color:var(--accent);font-weight:700}
-.st-bolt .note{margin-top:4px}
 
 /* 5 · primer pull + esta temporada */
 .st-pull{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:center;max-width:1120px;margin-inline:auto}
@@ -106,55 +106,79 @@ html,body{overflow-x:clip}
 .st-pull__txt p{margin:0;color:var(--soft)}
 .st-quote{margin:2px 0;padding:2px 0 2px 16px;border-left:4px solid var(--accent)}
 .st-quote p{font-family:var(--f-head);font-stretch:78%;font-weight:700;text-transform:uppercase;font-size:var(--t-h1);line-height:1.12;color:var(--ink)!important;margin:0}
-.st-season{margin-top:clamp(24px,3vw,36px);max-width:1120px;margin-inline:auto;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,2fr);gap:16px 32px;align-items:center;padding:20px 24px;background:var(--accent);color:var(--ink)}
+.st-season{margin-top:clamp(24px,3vw,36px);max-width:1120px;margin-inline:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.4fr);gap:14px 32px;align-items:center;padding:18px 24px;background:var(--accent);color:var(--ink)}
 .st-season p{margin:0}
 .st-season__h{display:grid;gap:6px}
-.st-season__h .label{opacity:.75}
+.st-season__yr{display:flex;align-items:center;gap:6px;opacity:.85}
+.st-season__yr select{font:inherit;letter-spacing:inherit;color:var(--ink);background:transparent;border:1px solid rgba(28,27,25,.55);padding:1px 4px;min-height:24px;cursor:pointer;border-radius:0}
 .st-season__h .h2{color:var(--ink)}
-.st-season dl{margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
-.st-season dl div{padding:2px 16px;border-left:1px solid rgba(28,27,25,.35)}
+.st-season dl{margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0}
+.st-season dl div{padding:2px 16px;border-left:1px solid rgba(28,27,25,.35);display:grid;align-content:start}
 .st-season dt{font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.75}
-.st-season dd{margin:2px 0 0;font-family:var(--f-head);font-stretch:78%;font-weight:700;text-transform:uppercase;font-size:var(--t-h2);line-height:1.1}
-.st-season__foot{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;border-top:1px solid rgba(28,27,25,.35);padding-top:12px;font-size:var(--t-sm)}
+.st-season dd{margin:2px 0 0;font-family:var(--f-head);font-stretch:78%;font-weight:800;text-transform:uppercase;font-size:var(--t-h1);line-height:1.05}
+.st-season dd small{display:block;font-family:var(--f-sans);font-stretch:100%;font-weight:500;text-transform:none;font-size:var(--t-xs);line-height:1.3;opacity:.8;margin-top:2px}
+.st-season__foot{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 24px;border-top:1px solid rgba(28,27,25,.35);padding-top:10px;font-size:var(--t-sm)}
 .st-season__foot .link{color:var(--ink)}
+.st-ctl{max-width:1120px;margin:10px auto 0}
+.st-ctl__row{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:6px}
+.st-ctl__row span{display:inline-flex;align-items:center;gap:4px;font-weight:600}
+.st-ctl__row button{width:26px;height:26px;border:1px solid var(--ink);background:var(--surface);color:var(--ink);font-weight:700;line-height:1;cursor:pointer;padding:0}
+.st-ctl__row button:hover{background:var(--ink);color:var(--surface)}
 
 /* 6 · hermanos + canción, lado a lado con el mismo peso */
 .st-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:stretch}
-.st-card{display:grid;gap:14px;align-content:start;padding:clamp(18px,2vw,24px);border:1px solid var(--line);background:var(--surface)}
+.st-card{display:flex;flex-direction:column;gap:14px;min-width:0;padding:clamp(18px,2vw,24px);border:1px solid var(--line);background:var(--surface)}
 .st-card p{margin:0}
-.st-bros{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:center}
-.st-bros .st-photo,.st-bros .ph{aspect-ratio:4/3;height:auto}
+.st-bros{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:stretch;flex:1 0 auto;min-height:clamp(170px,13vw,220px)}
+.st-bros .st-photo,.st-bros .ph{aspect-ratio:auto;height:auto;min-height:100%}
+.st-bros__amp{align-self:center}
 .st-bros__amp{font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:var(--t-h1);color:var(--ink)}
 .st-bros .ph{--ar:4/3}
 .st-route{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0;padding:0;list-style:none;font-size:var(--t-xs);color:var(--mute)}
 .st-route b{color:var(--ink)}
-/* reproductor */
-.st-song{background:var(--night);color:var(--night-ink);border-color:var(--night)}
+/* reproductor + playlist en una sola tarjeta oscura */
+.st-song{background:var(--night);color:var(--night-ink);border-color:var(--night);gap:12px}
 .st-song .st-eyebrow{color:#A8A59A}
 .st-song .st-eyebrow b{background:var(--accent);color:var(--ink)}
-.st-song__main{display:grid;grid-template-columns:clamp(112px,11vw,148px) minmax(0,1fr);gap:18px;align-items:center}
+.st-song__main{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:16px;align-items:center}
 .st-song__art{aspect-ratio:1/1;background:#1E1E1C;border:1px solid #2E2E2B;display:grid;place-items:center;position:relative;overflow:hidden}
 .st-song__art::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(245,196,0,.22),transparent 62%)}
 .st-song__art svg{position:relative;width:34%;height:auto;filter:drop-shadow(0 0 10px rgba(245,196,0,.6))}
-.st-song__t{font-family:var(--f-head);font-stretch:72%;font-weight:800;text-transform:uppercase;font-size:var(--t-hero);line-height:1;margin:0;color:var(--night-ink)}
-.st-song__a{font-size:var(--t-md);font-weight:600;color:#CFCCC3;margin-top:6px!important}
-.st-wave{display:flex;align-items:center;gap:3px;height:34px}
+.st-song__t{font-family:var(--f-head);font-stretch:72%;font-weight:800;text-transform:uppercase;font-size:var(--t-h1);line-height:1;margin:0;color:var(--night-ink)}
+.st-song__a{font-size:var(--t-sm);font-weight:600;color:#CFCCC3;margin-top:4px!important}
+.st-wave{display:flex;align-items:center;gap:3px;height:22px}
 .st-wave i{flex:1;background:#3A3A34;border-radius:1px;height:var(--h)}
-.st-wave i:nth-child(-n+14){background:var(--accent)}
-.st-song__ctrl{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px}
+.st-wave i:nth-child(-n+16){background:var(--accent)}
+.st-song__cap{color:#CFCCC3;font-size:var(--t-sm)}
 .st-song__go{display:inline-flex;align-items:center;gap:10px;color:var(--night-ink);font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;min-height:44px}
-.st-song__go span.pb{width:44px;height:44px;border-radius:50%;background:var(--night-ink);color:var(--ink);display:grid;place-items:center;flex:none;transition:background .15s}
+.st-song__go span.pb{width:44px;height:44px;border-radius:50%;background:var(--accent);color:var(--ink);display:grid;place-items:center;flex:none;transition:background .15s}
 .st-song__go span.pb svg{width:16px;height:16px;margin-left:3px;fill:currentColor}
-.st-song__go:hover span.pb{background:var(--accent)}
+.st-song__go:hover span.pb{background:var(--night-ink)}
 .st-song__go:hover .st-song__lbl{text-decoration:underline;text-underline-offset:4px}
-.st-song__go:focus-visible{outline:2px solid var(--night-ink);outline-offset:3px}
+.st-song__go:focus-visible,.st-pl a:focus-visible{outline:2px solid var(--night-ink);outline-offset:3px}
 .st-song small{font-size:var(--t-xs);color:#A8A59A}
+.st-pl{display:grid;gap:8px;border-top:1px solid #2E2E2B;padding-top:12px}
+.st-pl__head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px}
+.st-pl__head .h3{color:var(--night-ink);font-size:var(--t-md)}
+.st-pl__list{list-style:none;margin:0;padding:0;display:grid;counter-reset:pl}
+.st-pl__list li{counter-increment:pl;display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid #26261F;font-size:var(--t-sm);color:#CFCCC3;min-width:0}
+.st-pl__list li::before{content:counter(pl,decimal-leading-zero);font-size:11px;font-weight:700;color:#7C7A72;font-variant-numeric:tabular-nums}
+.st-pl__list li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.st-pl__list li b{color:var(--night-ink);font-weight:600}
+.st-pl__list li.is-real::before{color:var(--accent)}
+.st-pl__ex{font-size:9px!important;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#A8A59A;border:1px solid #3A3A34;padding:1px 4px}
+.st-pl__foot{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin-top:4px}
+.st-pl__msg{font-size:var(--t-xs);color:var(--accent);font-weight:700}
+.st-song .note{margin-top:0}
 
 /* 7 · crew compacto */
 .st-crew{display:grid;grid-template-columns:minmax(0,280px) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
 .st-chief{display:grid;gap:8px;justify-items:start;padding:18px;background:var(--bg);border:1px solid var(--line)}
 .st-chief .av{width:84px;height:84px;font-size:26px}
 .st-chief p{margin:0}
+.st-chief__yrs{display:flex;align-items:baseline;gap:8px;padding:8px 0;border-block:1px solid var(--line);width:100%}
+.st-chief__yrs b{font-family:var(--f-head);font-stretch:72%;font-weight:800;font-size:clamp(36px,3.4vw,48px);line-height:.9;color:var(--ink);background:linear-gradient(transparent 62%,var(--accent) 62%);padding-inline:2px}
+.st-chief__yrs span{font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);max-width:12ch;line-height:1.25}
 .st-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 16px}
 .st-m{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:center}
 .av{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--ink);color:var(--surface);font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:15px;letter-spacing:.04em;flex:none}
@@ -181,7 +205,7 @@ html,body{overflow-x:clip}
   .st-pair{grid-template-columns:1fr}
   .st-season{grid-template-columns:1fr}
 }
-@media (max-width:860px){.st-crew{grid-template-columns:1fr}.st-chief{grid-template-columns:64px minmax(0,1fr);align-items:center;column-gap:14px}.st-chief .av{width:64px;height:64px;font-size:20px;grid-row:span 3}}
+@media (max-width:860px){.st-crew{grid-template-columns:1fr}.st-chief{grid-template-columns:64px minmax(0,1fr);align-items:center;column-gap:14px}.st-chief .av{width:64px;height:64px;font-size:20px;grid-row:span 4;align-self:start}}
 @media (max-width:760px){
   .st-hero{--hh:auto;padding-block:20px 24px}
   .st-hero .wrap{grid-template-columns:1fr;gap:18px}
@@ -190,14 +214,20 @@ html,body{overflow-x:clip}
   .st-ch,.st-ch:nth-child(even),.st-pull{grid-template-columns:1fr;gap:16px}
   .st-ch:nth-child(even) .st-photo{order:0}
   .st-ch .st-photo,.st-pull .st-photo{aspect-ratio:16/10}
-  .st-season dl{grid-template-columns:1fr}
-  .st-season dl div{border-left:0;border-top:1px solid rgba(28,27,25,.35);padding:8px 0}
+  .st-season{padding:16px}
+  .st-season dl{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .st-season dl div{padding:8px 12px 8px 0;border-left:0;border-top:1px solid rgba(28,27,25,.35)}
+  .st-season dl div:nth-child(even){padding-left:12px;border-left:1px solid rgba(28,27,25,.35)}
 }
 @media (max-width:560px){
   .st-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}
   .st-m{grid-template-columns:38px minmax(0,1fr);gap:8px}
   .st-grid .av{width:38px;height:38px;font-size:13px}
-  .st-song__main{grid-template-columns:92px minmax(0,1fr);gap:14px}
+  .st-song__main{grid-template-columns:56px minmax(0,1fr);gap:12px}
+  .st-song__go{grid-column:1/-1}
+  .st-pl__list{grid-template-columns:1fr}
+  .st-bros{min-height:0}
+  .st-bros .st-photo,.st-bros .ph{aspect-ratio:4/3;min-height:0}
   .st-vid__play{width:60px;height:60px}
   .st-facts li{padding-right:12px;margin-right:12px}
   .st-facts li+li{padding-left:12px}
@@ -214,10 +244,10 @@ html,body{overflow-x:clip}
     <div class="st-hero__txt">
       <p class="label muted">Our Story · Tomah to Waterloo, WI</p>
       <h1 class="h-hero" id="st-h1">Built in Wisconsin. Built to pull.</h1>
-      <p class="lede">It started in 2014 with one idea. That idea became a Pro Stock tractor, built by a family in its own shop. And that tractor was nicknamed The Evil One.</p>
+      <p class="lede">It started in 2014 with one idea. That idea became a Pro Stock tractor, built by a family in its own shop. And that tractor was nicknamed “The Evil One”.</p>
       <ul class="st-facts">
+        <li class="st-facts__big"><b>20+ years</b>Chris F. in tractor pulling</li>
         <li><b>12 years</b>idea to engine fire</li>
-        <li><b>Chris F.</b>owner &amp; driver</li>
         <li><b>11 + 2</b>crew and mascots</li>
       </ul>
     </div>
@@ -241,7 +271,7 @@ html,body{overflow-x:clip}
       <li><a href="#ch-2020"><span class="yr">Feb 2020</span><span class="ev">First bolt</span><span class="pl">Family shop, Waterloo</span></a></li>
       <li class="bolt-li"><a href="#bolt"><span class="yr"><svg viewBox="0 0 12 16" aria-hidden="true"><polygon class="bolt" points="8,0 1,9 5,9 3,16 11,6 7,6"/></svg>2026</span><span class="ev">Engine fires, lightning strikes</span><span class="pl">Watch the video</span></a></li>
       <li><a href="#first-pull"><span class="yr">2026</span><span class="ev">First pull attempt</span><span class="pl">A real track, a short run</span></a></li>
-      <li class="now"><a href="#season"><span class="yr">Today</span><span class="ev">2026 · in testing</span><span class="pl">Chasing the first full pull</span></a></li>
+      <li class="now"><a href="#season"><span class="yr">Today</span><span class="ev"><span data-season>2026</span> season</span><span class="pl">Chasing the first full pull</span></a></li>
     </ol>
   </div>
 </nav>
@@ -255,7 +285,7 @@ html,body{overflow-x:clip}
         <p class="st-eyebrow"><b>01</b>2014 · Tomah, WI</p>
         <h2 class="h1" id="ch1-h">The name was never up for debate</h2>
         <p class="st-lead">It started in 2014 in Tomah, Wisconsin, with one idea.</p>
-        <p>Chris had always been a heavy metal fan, so when he decided to build a pulling tractor, the name was never up for debate. That idea became a Pro Stock tractor. And that tractor was nicknamed The Evil One.</p>
+        <p>Chris had always been a heavy metal fan, so when he decided to build a pulling tractor, the name was never up for debate. That idea became a Pro Stock tractor. And that tractor was nicknamed “The Evil One”.</p>
       </div>
     </article>
 
@@ -311,7 +341,6 @@ html,body{overflow-x:clip}
         </div>
       </div>
       <figcaption id="vid-cap">Sound on. This is how it sounded in the shop when the engine fired and the lightning hit. <span class="st-vid__msg" id="vid-msg" role="status"></span></figcaption>
-      <p class="note">Video: súbelo en Shopify en Contenido &gt; Archivos (MP4) o pega el link de YouTube. El póster es esta foto (o un cuadro del video) y cambia "0:XX" por la duración real.</p>
     </figure>
   </div>
 </section>
@@ -330,20 +359,20 @@ html,body{overflow-x:clip}
       </div>
     </article>
 
-    <div class="st-season" id="season">
+    <div class="st-season" id="season" aria-labelledby="season-h">
       <div class="st-season__h">
-        <p class="label">Today · 2026 season</p>
+        <p class="label st-season__yr"><span>Today ·</span> <label class="vh" for="season-yr">Season</label><select id="season-yr"></select> <span>season</span></p>
         <h3 class="h2" id="season-h">Chasing our first full pull</h3>
       </div>
-      <dl>
-        <div><dt>Competitions</dt><dd>About 20</dd></div>
-        <div><dt>Circuits</dt><dd>NTPA &amp; PPL Badger State</dd></div>
-        <div><dt>Exhibitions</dt><dd>None</dd></div>
-      </dl>
+      <dl id="season-stats" aria-live="polite"></dl>
       <div class="st-season__foot">
-        <p>Every time it hits the track, it's there to pull.</p>
-        <a class="link" href="schedule.html">See the schedule</a>
+        <p>On the NTPA &amp; PPL Badger State circuits. Every run goes in the Pit Log.</p>
+        <a class="link" href="log.html">See the Pit Log</a>
       </div>
+    </div>
+    <div class="note st-ctl" id="season-ctl">
+      <span>En Shopify se edita en Contenido &gt; Metaobjetos &gt; Season stats (una entrada por año; el selector de año sale solo), o se calcula solo desde el Pit Log. Exhibiciones: puse 4, confirma si fueron 3 o 4. Prueba los contadores:</span>
+      <span class="st-ctl__row" id="season-btns"></span>
     </div>
   </div>
 </section>
@@ -373,22 +402,31 @@ html,body{overflow-x:clip}
       <h2 class="vh" id="song-h">Walk-up song: Fear of the Dark by Iron Maiden</h2>
       <div class="st-song__main">
         <div class="st-song__art" aria-hidden="true"><svg viewBox="0 0 140 280"><polygon class="bolt" points="88,0 20,150 58,150 30,280 122,105 78,105"/></svg></div>
-        <div>
+        <div class="st-song__id">
           <p class="st-song__t">Fear of the Dark</p>
-          <p class="st-song__a">Iron Maiden</p>
+          <p class="st-song__a">Iron Maiden · 2015 Remaster</p>
+        </div>
+        <a class="st-song__go" href="https://open.spotify.com/track/6p8eFfPw3nQkf37aT3AkmK" target="_blank" rel="noopener">
+          <span class="pb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5v17l14-8.5z"/></svg></span>
+          <span class="st-song__lbl">Listen on Spotify <span aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></span>
+        </a>
+      </div>
+      <div class="st-wave" aria-hidden="true"><i style="--h:30%"></i><i style="--h:55%"></i><i style="--h:40%"></i><i style="--h:70%"></i><i style="--h:50%"></i><i style="--h:85%"></i><i style="--h:60%"></i><i style="--h:35%"></i><i style="--h:75%"></i><i style="--h:95%"></i><i style="--h:65%"></i><i style="--h:45%"></i><i style="--h:80%"></i><i style="--h:55%"></i><i style="--h:30%"></i><i style="--h:60%"></i><i style="--h:90%"></i><i style="--h:70%"></i><i style="--h:40%"></i><i style="--h:65%"></i><i style="--h:85%"></i><i style="--h:50%"></i><i style="--h:35%"></i><i style="--h:75%"></i><i style="--h:55%"></i><i style="--h:45%"></i><i style="--h:30%"></i><i style="--h:60%"></i><i style="--h:40%"></i><i style="--h:25%"></i><i style="--h:50%"></i><i style="--h:70%"></i><i style="--h:45%"></i><i style="--h:80%"></i><i style="--h:35%"></i><i style="--h:60%"></i></div>
+      <p class="st-song__cap">The song “The Evil One” rolls up to the line with. Turn it up before the next pull.</p>
+
+      <div class="st-pl" aria-labelledby="pl-h">
+        <div class="st-pl__head">
+          <h3 class="h3" id="pl-h">The pit playlist</h3>
+          <small>What plays in the trailer and the pit</small>
+        </div>
+        <ol class="st-pl__list" id="pl-list"></ol>
+        <div class="st-pl__foot">
+          <a class="btn btn--light btn--sm" href="#" id="pl-follow">Follow the playlist on Spotify <span aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a>
+          <small>#HEAVYMETALPULLING</small>
+          <span class="st-pl__msg" id="pl-msg" role="status"></span>
         </div>
       </div>
-      <div class="st-wave" aria-hidden="true">
-        <i style="--h:30%"></i><i style="--h:55%"></i><i style="--h:40%"></i><i style="--h:70%"></i><i style="--h:50%"></i><i style="--h:85%"></i><i style="--h:60%"></i><i style="--h:35%"></i><i style="--h:75%"></i><i style="--h:95%"></i><i style="--h:65%"></i><i style="--h:45%"></i><i style="--h:80%"></i><i style="--h:55%"></i><i style="--h:30%"></i><i style="--h:60%"></i><i style="--h:90%"></i><i style="--h:70%"></i><i style="--h:40%"></i><i style="--h:65%"></i><i style="--h:85%"></i><i style="--h:50%"></i><i style="--h:35%"></i><i style="--h:75%"></i><i style="--h:55%"></i><i style="--h:45%"></i><i style="--h:30%"></i><i style="--h:60%"></i><i style="--h:40%"></i><i style="--h:25%"></i>
-      </div>
-      <p style="color:#CFCCC3">The song The Evil One rolls up to the line with. Turn it up before the next pull.</p>
-      <div class="st-song__ctrl">
-        <a class="st-song__go" href="https://open.spotify.com/search/Fear%20of%20the%20Dark%20Iron%20Maiden" target="_blank" rel="noopener">
-          <span class="pb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5v17l14-8.5z"/></svg></span>
-          <span class="st-song__lbl">Find it on Spotify <span aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></span>
-        </a>
-        <small>#HEAVYMETALPULLING</small>
-      </div>
+      <p class="note">Playlist: créala en Spotify y pega su link en la sección (campo "Playlist link"); las filas "Example" las cambias por las canciones. Opcional: el reproductor real de Spotify (embed/track/6p8eFfPw3nQkf37aT3AkmK) sí funciona en el sitio, aquí el visor lo bloquea. Video del rayo: Contenido &gt; Archivos o link de YouTube, y pon la duración real en "0:XX".</p>
     </article>
   </div>
 </section>
@@ -405,6 +443,7 @@ html,body{overflow-x:clip}
         <span class="av" aria-hidden="true">CF</span>
         <p class="h2">Chris F.</p>
         <p class="small muted">Owner, Driver &amp; Crew Chief</p>
+        <p class="st-chief__yrs"><b>20+</b><span>years in tractor pulling</span></p>
         <p class="small" style="color:var(--soft)">Had the idea in 2014, turned the first bolt in 2020 and was in the shop the night the lightning hit.</p>
       </div>
       <ul class="st-grid" aria-label="Crew members">
@@ -446,6 +485,64 @@ html,body{overflow-x:clip}
 <script src="hm.js"></script>
 <script>
 (function () {
+  var SEASON = window.HM_SEASON || new Date().getFullYear();
+  [].forEach.call(document.querySelectorAll('[data-season]'), function (el) { el.textContent = SEASON; });
+
+  /* Metaobjeto "Season stats" (Contenido > Metaobjetos): una entrada por temporada.
+     En el tema se lee la entrada de la temporada elegida; si no existe, se calcula desde el Pit Log. */
+  var SEASON_STATS = [
+    { season: SEASON, competitions: 20, competitions_note: 'about, planned', exhibitions: 4, wins: 0, full_pulls: 0 }
+  ];
+  var FIELDS = [
+    ['competitions', 'Competitions', function (r) { return r.competitions_note || 'this season'; }],
+    ['exhibitions', 'Exhibitions', function () { return 'so far'; }],
+    ['full_pulls', 'Full pulls', function (r) { return r.full_pulls ? 'and counting' : 'the one we chase'; }],
+    ['wins', 'Wins', function (r) { return r.wins ? 'this season' : 'first one is next'; }]
+  ];
+  var yrSel = document.getElementById('season-yr'), dl = document.getElementById('season-stats'), sh = document.getElementById('season-h');
+  var cur = SEASON_STATS[0];
+  SEASON_STATS.slice().sort(function (a, b) { return b.season - a.season; }).forEach(function (r) {
+    var o = document.createElement('option'); o.value = r.season; o.textContent = r.season; yrSel.appendChild(o);
+  });
+    function renderSeason() {
+    dl.innerHTML = FIELDS.map(function (f) {
+      return '<div><dt>' + f[1] + '</dt><dd class="num">' + cur[f[0]] + '<small>' + f[2](cur) + '</small></dd></div>';
+    }).join('');
+    sh.textContent = cur.full_pulls ? cur.full_pulls + (cur.full_pulls === 1 ? ' full pull' : ' full pulls') + ' and counting' : 'Chasing our first full pull';
+  }
+  yrSel.addEventListener('change', function () {
+    cur = SEASON_STATS.filter(function (r) { return String(r.season) === yrSel.value; })[0] || cur; renderSeason();
+  });
+  renderSeason();
+
+  /* control SOLO de boceto (vive dentro de la .note, se oculta con "Ocultar notas") */
+  var btns = document.getElementById('season-btns');
+  btns.innerHTML = FIELDS.map(function (f) {
+    return '<span>' + f[1] + ' <button type="button" data-k="' + f[0] + '" data-d="-1" aria-label="' + f[1] + ' minus one">−</button><button type="button" data-k="' + f[0] + '" data-d="1" aria-label="' + f[1] + ' plus one">+</button></span>';
+  }).join('');
+  btns.addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    var k = b.getAttribute('data-k'); cur[k] = Math.max(0, cur[k] + Number(b.getAttribute('data-d'))); renderSeason();
+  });
+
+  /* Playlist del pit: en Shopify son bloques de la sección (título, artista) + un campo "Playlist link".
+     Solo la primera canción es real; las demás son ejemplo hasta que la dueña arme la playlist. */
+  var PLAYLIST = [
+    { title: 'Fear of the Dark', artist: 'Iron Maiden', real: true },
+    { title: 'Song title', artist: 'Artist' },
+    { title: 'Song title', artist: 'Artist' },
+    { title: 'Song title', artist: 'Artist' },
+    { title: 'Song title', artist: 'Artist' },
+    { title: 'Song title', artist: 'Artist' }
+  ];
+  var PLAYLIST_URL = '';
+  document.getElementById('pl-list').innerHTML = PLAYLIST.map(function (t) {
+    return '<li' + (t.real ? ' class="is-real"' : '') + '><span><b>' + t.title + '</b> · ' + t.artist + '</span>' + (t.real ? '' : '<small class="st-pl__ex">Example</small>') + '</li>';
+  }).join('');
+  var pf = document.getElementById('pl-follow');
+  if (PLAYLIST_URL) { pf.href = PLAYLIST_URL; pf.target = '_blank'; pf.rel = 'noopener'; }
+  else pf.addEventListener('click', function (e) { e.preventDefault(); document.getElementById('pl-msg').textContent = 'Playlist coming soon.'; });
+
   /* el video lo sube la dueña: mientras tanto el botón avisa */
   var b = document.getElementById('vid-play'), m = document.getElementById('vid-msg');
   if (b) b.addEventListener('click', function () { m.textContent = 'Video coming soon.'; });

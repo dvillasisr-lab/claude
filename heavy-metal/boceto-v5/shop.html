@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Tractor Pulling Shirts, Hoodies &amp; Hats · Heavy Metal Pro Stock</title>
-<meta name="description" content="Shop Heavy Metal Pro Stock merch: tractor pull tees, hoodies, hats, kids sizes and stickers from The Evil One crew in Waterloo, WI. Printed to order.">
+<meta name="description" content="Shop Heavy Metal Pro Stock merch: tractor pull tees, hoodies, hats, kids sizes, stickers and numbered Special editions from the crew behind “The Evil One” in Waterloo, WI. Printed to order.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -85,6 +85,12 @@ html,body{overflow-x:clip}
 .plp-drawer__foot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:8px;padding:12px 20px;border-top:1px solid var(--line)}
 .plp-drawer__foot .btn{min-height:52px}
 @media (prefers-reduced-motion:reduce){.plp-acc__btn svg{transition:none}}
+.plp-ltd{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:6px 16px;align-items:center;padding:14px 16px;margin-bottom:16px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);text-decoration:none;color:var(--ink);font-size:var(--t-sm)}
+.plp-ltd b{display:block;text-transform:uppercase;letter-spacing:.04em;font-size:var(--t-xs)}
+.plp-ltd .muted{font-size:var(--t-xs)}
+.plp-ltd .link{text-decoration:underline}
+.plp-ltd:hover{border-color:var(--ink)}
+@media (max-width:600px){.plp-ltd{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -95,7 +101,7 @@ html,body{overflow-x:clip}
     <div class="plp-head__row">
       <div style="min-width:0;max-width:100%">
         <h1 class="h1" id="plp-title">Shop all</h1>
-        <p class="plp-desc" id="plp-desc">Every tee, hoodie, hat and sticker from The Evil One crew. Printed to order.</p>
+        <p class="plp-desc" id="plp-desc">Every tee, hoodie, hat and sticker from the crew behind “The Evil One”. Printed to order.</p>
       </div>
       <p class="plp-count num" id="plp-count" role="status">14 products</p>
     </div>
@@ -116,6 +122,7 @@ html,body{overflow-x:clip}
   <div class="wrap">
     <div class="plp-chips" id="plp-chips" aria-label="Active filters" role="group" hidden></div>
     <div class="plp-results">
+      <a class="plp-ltd" id="plp-ltd" href="limited.html" hidden><span class="badge badge--ink">Special edition</span><span><b>Numbered run · one moment of the season</b><span class="muted">Each piece is numbered. When the run sells out, it is gone. See the story behind it.</span></span><span class="link" aria-hidden="true">View the edition</span></a>
       <div class="pgrid" id="plp-grid"></div>
       <div class="plp-empty" id="plp-empty" hidden>
         <h2 class="h2">Nothing matches these filters</h2>
@@ -151,14 +158,15 @@ html,body{overflow-x:clip}
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
 
   var CATS = {
-    all: ['Shop all', 'Every tee, hoodie, hat and sticker from The Evil One crew. Printed to order.'],
+    all: ['Shop all', 'Every tee, hoodie, hat and sticker from the crew behind “The Evil One”. Printed to order.'],
     'new': ['New drop', 'The latest designs from the crew in Waterloo, WI.'],
-    tees: ['Tees', 'Tractor pull tees and long sleeves with The Evil One front and back.'],
+    tees: ['Tees', 'Tractor pull tees and long sleeves with “The Evil One” front and back.'],
     sweats: ['Sweatshirts', 'Hoodies and crewnecks for cold nights at the track.'],
     hats: ['Hats', 'Caps and beanies for the pits and the grandstand.'],
     kids: ['Kids', 'Youth sizes for the next generation of pullers.'],
     gear: ['Stickers & gear', 'Stickers, koozies and the small stuff for the truck and the cooler.'],
-    bundles: ['Bundles', 'Sets that pair a tee with a cap. Every piece keeps its own size.']
+    bundles: ['Bundles', 'Sets that pair a tee with a cap. Every piece keeps its own size.'],
+    limited: ['Special edition', 'Numbered, limited runs made for one moment of the season. When a run sells out, it is gone.']
   };
   var SORTS = [['featured', 'Featured'], ['best', 'Best selling'], ['new', 'Newest'], ['price-asc', 'Price low to high'], ['price-desc', 'Price high to low'], ['az', 'A to Z']];
   var SIZE_ORDER = ['S', 'M', 'L', 'XL', '2XL', '3XL', 'YS', 'YM', 'YL', 'YXL', 'One size'];
@@ -263,6 +271,8 @@ html,body{overflow-x:clip}
     document.title = (st.cat === 'all' ? 'Tractor Pulling Shirts, Hoodies & Hats' : c[0] + ' · Tractor Pulling Merch') + ' · Heavy Metal Pro Stock';
     $('plp-count').textContent = n + (n === 1 ? ' product' : ' products') + (nFilters() ? ' of ' + total : '');
     $('plp-grid').innerHTML = list.map(window.hmCard).join('');
+    /* Special edition: sus tarjetas ya llevan a limited.html (p.page en hm.js); arriba, un acceso directo a la página de la edición */
+    $('plp-ltd').hidden = st.cat !== 'limited';
     $('plp-grid').hidden = !n;
     $('plp-empty').hidden = !!n;
     $('plp-seen').textContent = "You've seen " + n + ' of ' + n + (n === 1 ? ' product' : ' products');
