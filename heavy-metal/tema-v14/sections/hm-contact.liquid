@@ -1,0 +1,373 @@
+{%- comment -%}
+  Contact (boceto contact.html). Native contact form: topic goes in contact[topic].
+  No email, phone or mailing address here (they live only in Policies > Contact Information).
+  Client-side checks, ?topic= preselect and the order-number toggle run in assets/hm-contact.js.
+{%- endcomment -%}
+{%- liquid
+  assign sid = section.id
+  assign form_id = 'ct-form-' | append: sid
+  assign fb = settings.hm_facebook_url
+  assign ig = settings.hm_instagram_url
+  assign brand = settings.hm_brand_name | default: shop.name
+-%}
+
+<section class="hm-contact ct" aria-labelledby="ct-title-{{ sid }}" data-hm-contact>
+  <div class="wrap">
+    <header class="ct__head">
+      <h1 class="h1" id="ct-title-{{ sid }}">{{ section.settings.heading | escape }}</h1>
+      {%- if section.settings.intro != blank -%}
+        <p>{{ section.settings.intro }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="ct__in">
+      {%- form 'contact', id: form_id, class: 'ct-form', novalidate: 'novalidate', data-ct-form: '' -%}
+        {%- liquid
+          assign err_name = false
+          assign err_email = false
+          assign err_body = false
+          if form.errors
+            if form.errors contains 'name'
+              assign err_name = true
+            endif
+            if form.errors contains 'email'
+              assign err_email = true
+            endif
+            if form.errors contains 'body'
+              assign err_body = true
+            endif
+          endif
+        -%}
+        <div class="field full">
+          <label for="c-topic-{{ sid }}">{{ section.settings.topic_label | escape }}</label>
+          <select class="input" id="c-topic-{{ sid }}" name="contact[topic]" data-ct-topic>
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'topic' -%}
+                <option
+                  value="{{ block.settings.label | escape }}"
+                  data-key="{{ block.settings.key | escape }}"
+                  {% if block.settings.order_field %}
+                    data-order="true"
+                  {% endif %}
+                  {% if form.topic == block.settings.label %}
+                    selected
+                  {% endif %}
+                  {{ block.shopify_attributes }}
+                >
+                  {{- block.settings.label | escape -}}
+                </option>
+              {%- endif -%}
+            {%- endfor -%}
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="c-name-{{ sid }}">{{ section.settings.name_label | escape }}</label>
+          <input
+            class="input"
+            id="c-name-{{ sid }}"
+            name="contact[name]"
+            type="text"
+            required
+            autocomplete="name"
+            placeholder="{{ section.settings.name_placeholder | escape }}"
+            value="{{ form.name | escape }}"
+            aria-describedby="e-c-name-{{ sid }}"
+            aria-invalid="{{ err_name }}"
+            data-ct-req="name"
+          >
+          <p class="ct-err" id="e-c-name-{{ sid }}" data-msg="{{ section.settings.error_name | escape }}">
+            {%- if err_name %}{{ section.settings.error_name | escape }}{% endif -%}
+          </p>
+        </div>
+
+        <div class="field">
+          <label for="c-email-{{ sid }}">{{ section.settings.email_label | escape }}</label>
+          <input
+            class="input"
+            id="c-email-{{ sid }}"
+            name="contact[email]"
+            type="email"
+            required
+            autocomplete="email"
+            autocapitalize="off"
+            spellcheck="false"
+            placeholder="{{ section.settings.email_placeholder | escape }}"
+            value="{% if form.email %}{{ form.email | escape }}{% elsif customer %}{{ customer.email | escape }}{% endif %}"
+            aria-describedby="e-c-email-{{ sid }}"
+            aria-invalid="{{ err_email }}"
+            data-ct-req="email"
+          >
+          <p class="ct-err" id="e-c-email-{{ sid }}" data-msg="{{ section.settings.error_email | escape }}">
+            {%- if err_email %}{{ section.settings.error_email | escape }}{% endif -%}
+          </p>
+        </div>
+
+        <div class="field full" data-ct-order-field>
+          <label for="c-order-{{ sid }}">
+            {{- section.settings.order_label | escape }} <span class="opt">(optional)</span>
+          </label>
+          <input
+            class="input"
+            id="c-order-{{ sid }}"
+            name="contact[Order number]"
+            type="text"
+            autocomplete="off"
+            placeholder="{{ section.settings.order_placeholder | escape }}"
+          >
+        </div>
+
+        <div class="field full">
+          <label for="c-msg-{{ sid }}">{{ section.settings.message_label | escape }}</label>
+          <textarea
+            class="input"
+            id="c-msg-{{ sid }}"
+            name="contact[body]"
+            required
+            placeholder="{{ section.settings.message_placeholder | escape }}"
+            aria-describedby="e-c-msg-{{ sid }}"
+            aria-invalid="{{ err_body }}"
+            data-ct-req="body"
+          >{{ form.body | escape }}</textarea>
+          <p class="ct-err" id="e-c-msg-{{ sid }}" data-msg="{{ section.settings.error_message | escape }}">
+            {%- if err_body %}{{ section.settings.error_message | escape }}{% endif -%}
+          </p>
+        </div>
+
+        {%- if section.settings.consent != blank -%}
+          <p class="consent full">{{ section.settings.consent }}</p>
+        {%- endif -%}
+
+        <div class="full ct-send">
+          <button class="btn" type="submit">{{ section.settings.button_label | escape }}</button>
+          {%- if section.settings.button_note != blank -%}
+            <p class="small">{{ section.settings.button_note | escape }}</p>
+          {%- endif -%}
+        </div>
+
+        {%- if form.posted_successfully? -%}
+          <p class="ct-status full is-ok" role="status" aria-live="polite" tabindex="-1" data-ct-status data-ct-success>
+            {{- section.settings.success | escape -}}
+          </p>
+        {%- elsif form.errors -%}
+          <div class="ct-status full is-err" role="alert" tabindex="-1" data-ct-status data-ct-server-error>
+            <p>{{ section.settings.error_summary | escape }}</p>
+            {%- assign known = 'name,email,body' | split: ',' -%}
+            {%- for field in form.errors -%}
+              {%- unless known contains field -%}
+                <p>
+                  {%- if field == 'form' -%}
+                    {{ form.errors.messages[field] }}
+                  {%- else -%}
+                    {{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}
+                  {%- endif -%}
+                </p>
+              {%- endunless -%}
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          <p class="ct-status full" role="status" aria-live="polite" data-ct-status data-msg="{{ section.settings.error_summary | escape }}"></p>
+        {%- endif -%}
+      {%- endform -%}
+
+      <aside class="ct-side" aria-label="{{ section.settings.aside_label | escape }}">
+        {%- assign has_links = false -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'help_link' -%}{%- assign has_links = true -%}{%- break -%}{%- endif -%}
+        {%- endfor -%}
+        {%- if has_links -%}
+          <nav aria-labelledby="qh-t-{{ sid }}">
+            <h2 id="qh-t-{{ sid }}">{{ section.settings.help_heading | escape }}</h2>
+            <ul class="help">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'help_link' -%}
+                  {%- liquid
+                    if block.settings.account
+                      assign href = routes.account_url
+                    else
+                      assign href = block.settings.link | default: '#'
+                    endif
+                  -%}
+                  <li {{ block.shopify_attributes }}><a href="{{ href }}">{{ block.settings.label | escape }}</a></li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </nav>
+        {%- endif -%}
+
+        {%- if section.settings.reply_text != blank -%}
+          <p class="reply"><b>{{ section.settings.reply_heading | escape }}</b>{{ section.settings.reply_text }}</p>
+        {%- endif -%}
+
+        {%- if fb != blank or ig != blank -%}
+          <div>
+            <h2 id="det-t-{{ sid }}">{{ section.settings.follow_heading | escape }}</h2>
+            <dl class="info" aria-labelledby="det-t-{{ sid }}">
+              {%- if fb != blank -%}
+                <div>
+                  <dt>Facebook</dt>
+                  <dd>
+                    <a href="{{ fb }}" target="_blank" rel="noopener">
+                      {{- section.settings.facebook_name | default: brand | escape -}}
+                      <span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span>
+                    </a>
+                  </dd>
+                </div>
+              {%- endif -%}
+              {%- if ig != blank -%}
+                <div>
+                  <dt>Instagram</dt>
+                  <dd>
+                    <a href="{{ ig }}" target="_blank" rel="noopener">
+                      {{- section.settings.instagram_name | default: brand | escape -}}
+                      <span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span>
+                    </a>
+                  </dd>
+                </div>
+              {%- endif -%}
+            </dl>
+          </div>
+        {%- endif -%}
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": {{ section.settings.heading | append: ' · ' | append: brand | json }},
+    "url": {{ request.origin | append: request.path | json }},
+    "about": {
+      "@type": "SportsTeam",
+      "name": {{ brand | json }},
+      "sport": "Tractor pulling"
+      {%- if fb != blank or ig != blank -%}
+        ,"sameAs": [
+          {%- if fb != blank -%}{{ fb | json }}{%- endif -%}
+          {%- if fb != blank and ig != blank -%},{%- endif -%}
+          {%- if ig != blank -%}{{ ig | json }}{%- endif -%}
+        ]
+      {%- endif %}
+    }
+  }
+</script>
+
+<script src="{{ 'hm-contact.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .hm-contact.ct{padding-block:32px var(--sect)}
+  .hm-contact .ct__head{display:grid;grid-template-columns:minmax(0,1fr);gap:6px 48px;align-items:end;padding-bottom:16px;margin-bottom:24px;border-bottom:1px solid var(--line)}
+  .hm-contact .ct__head .h1{margin:0}
+  .hm-contact .ct__head p{margin:0;color:var(--soft);font-size:var(--t-sm);max-width:60ch}
+  .hm-contact .ct__in{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,400px);gap:32px clamp(32px,5vw,96px);align-items:start}
+  .hm-contact .reply{margin:0;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);font-size:var(--t-sm);color:var(--soft)}
+  .hm-contact .reply b{display:block;color:var(--ink);font-size:var(--t-xs);letter-spacing:.08em;text-transform:uppercase}
+
+  .hm-contact .ct-form{background:var(--surface);border:1px solid var(--line);padding:clamp(16px,2vw,24px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px;margin:0}
+  .hm-contact .ct-form .full{grid-column:1/-1}
+  .hm-contact .ct-form textarea.input{min-height:180px;padding-block:10px;resize:vertical}
+  .hm-contact .field .opt{font-weight:400;text-transform:none;letter-spacing:0;color:var(--mute)}
+  .hm-contact .input[aria-invalid="true"]{border-color:var(--alert);outline:1px solid var(--alert)}
+  .hm-contact .ct-send{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
+  .hm-contact .ct-send .small{margin:0;color:var(--mute)}
+  .hm-contact .ct-status{margin:0;font-size:var(--t-sm);font-weight:600}
+  .hm-contact .ct-status p{margin:0}
+  .hm-contact .ct-status:empty{display:none}
+  .hm-contact .ct-status.is-err{color:var(--alert)}
+  .hm-contact .ct-status.is-ok{color:var(--ink);background:var(--bg);border-left:3px solid var(--accent);padding:8px 10px}
+  .hm-contact .ct-err{margin:4px 0 0;font-size:var(--t-xs);font-weight:600;color:var(--alert)}
+  .hm-contact .ct-err:empty{display:none}
+
+  .hm-contact .ct-side{display:grid;gap:24px}
+  .hm-contact .ct-side h2{font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:0 0 6px;font-family:var(--f-sans)}
+  .hm-contact .help{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+  .hm-contact .help a{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:44px;border-bottom:1px solid var(--line);font-size:var(--t-sm);font-weight:600;color:var(--ink);text-decoration:none}
+  .hm-contact .help a::after{content:"\203A";font-size:18px;font-weight:400;color:var(--mute)}
+  .hm-contact .help a:hover{text-decoration:underline;text-underline-offset:3px}
+  .hm-contact .info{margin:0;border-top:1px solid var(--line)}
+  .hm-contact .info div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:8px;padding:10px 0;border-bottom:1px solid var(--line);font-size:var(--t-sm)}
+  .hm-contact .info dt{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding-top:2px}
+  .hm-contact .info dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
+  .hm-contact .info a{text-underline-offset:3px}
+
+  @media (max-width:900px){.hm-contact .ct__in{grid-template-columns:minmax(0,1fr)}.hm-contact .ct-side{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:600px){.hm-contact .ct-side{grid-template-columns:minmax(0,1fr)}}
+  @media (max-width:480px){.hm-contact .ct-form{grid-template-columns:minmax(0,1fr)}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM Contact",
+  "tag": "div",
+  "class": "hm-section hm-section--contact",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Contact us" },
+    { "type": "inline_richtext", "id": "intro", "label": "Intro", "default": "Questions about an order, merch or sponsorship? Send us a message and we’ll get back to you within 2 business days." },
+    { "type": "header", "content": "Form" },
+    { "type": "text", "id": "topic_label", "label": "Topic label", "default": "Topic" },
+    { "type": "text", "id": "name_label", "label": "Name label", "default": "Name" },
+    { "type": "text", "id": "name_placeholder", "label": "Name placeholder", "default": "e.g. Jake Miller" },
+    { "type": "text", "id": "email_label", "label": "Email label", "default": "Email" },
+    { "type": "text", "id": "email_placeholder", "label": "Email placeholder", "default": "you@example.com" },
+    { "type": "text", "id": "order_label", "label": "Order number label", "default": "Order number" },
+    { "type": "text", "id": "order_placeholder", "label": "Order number placeholder", "default": "e.g. #1001" },
+    { "type": "text", "id": "message_label", "label": "Message label", "default": "Message" },
+    { "type": "text", "id": "message_placeholder", "label": "Message placeholder", "default": "How can we help?" },
+    { "type": "inline_richtext", "id": "consent", "label": "Privacy line", "default": "We use your details only to answer your message. See our <a href=\"/pages/policies?p=privacy\">Privacy Policy</a>." },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Send message" },
+    { "type": "text", "id": "button_note", "label": "Text next to the button", "default": "We reply within 2 business days" },
+    { "type": "header", "content": "Messages" },
+    { "type": "text", "id": "success", "label": "Success message", "default": "Thanks. Your message is in. We’ll reply within 2 business days." },
+    { "type": "text", "id": "error_summary", "label": "Error summary", "default": "Please add your name, a valid email and a message." },
+    { "type": "text", "id": "error_name", "label": "Name error", "default": "Add your name." },
+    { "type": "text", "id": "error_email", "label": "Email error", "default": "Enter a valid email, like name@example.com." },
+    { "type": "text", "id": "error_message", "label": "Message error", "default": "Write your message." },
+    { "type": "header", "content": "Right column" },
+    { "type": "text", "id": "aside_label", "label": "Column label (screen readers)", "default": "Help and ways to follow the team" },
+    { "type": "text", "id": "help_heading", "label": "Quick help heading", "default": "Quick help" },
+    { "type": "text", "id": "reply_heading", "label": "Reply time heading", "default": "Reply time" },
+    { "type": "inline_richtext", "id": "reply_text", "label": "Reply time text", "default": "We reply within 2 business days. For order help, add your order number so we can find it fast." },
+    {
+      "type": "text",
+      "id": "follow_heading",
+      "label": "Follow heading",
+      "default": "Follow the team",
+      "info": "Links come from Theme settings (Facebook URL, Instagram URL). Empty = hidden."
+    },
+    { "type": "text", "id": "facebook_name", "label": "Facebook link text", "info": "Empty = brand name" },
+    { "type": "text", "id": "instagram_name", "label": "Instagram link text", "info": "Empty = brand name" }
+  ],
+  "blocks": [
+    {
+      "type": "topic",
+      "name": "Topic",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Topic", "default": "Order help" },
+        { "type": "text", "id": "key", "label": "Key (for links like /pages/contact?topic=order)", "default": "order" },
+        { "type": "checkbox", "id": "order_field", "label": "Show order number field", "default": false }
+      ]
+    },
+    {
+      "type": "help_link",
+      "name": "Quick help link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "FAQ" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "checkbox", "id": "account", "label": "Link to the customer account (orders and tracking)", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Contact",
+      "blocks": [
+        { "type": "topic", "settings": { "label": "Order help", "key": "order", "order_field": true } },
+        { "type": "topic", "settings": { "label": "Something else", "key": "other" } },
+        { "type": "help_link", "settings": { "label": "FAQ" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
