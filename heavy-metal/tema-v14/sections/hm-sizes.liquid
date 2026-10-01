@@ -1,0 +1,402 @@
+{%- comment -%}
+  Size guide (boceto sizes.html). One tab per "Chart" block; each tab reads the size_chart
+  metaobject entries of its style. Measurements are stored in the entry's unit (in by default);
+  the in/cm toggle converts in the browser (assets/hm-sizes.js).
+{%- endcomment -%}
+{%- liquid
+  assign sid = section.id
+  assign charts = shop.metaobjects.size_chart.values
+  assign first_key = ''
+  for block in section.blocks
+    if block.type == 'chart'
+      assign first_key = block.settings.key | default: block.settings.style | handleize
+      break
+    endif
+  endfor
+  assign measure_key = 'measure'
+  assign policy_url = section.settings.policy_link | default: '/pages/policies?p=refund'
+-%}
+
+{%- capture fig_svg -%}
+  <path class="m-line" d="M74 22 44 34 14 74l26 12 12-22v108h96V64l12 22 26-12-30-40-30-12c-4 10-14 16-26 16s-22-6-26-16Z"/>
+  <path class="m-line" d="M74 22c4 8 14 13 26 13s22-5 26-13"/>
+  <path class="m-arrow" d="M54 80h92"/><circle class="m-dot" cx="54" cy="80" r="2.5"/><circle class="m-dot" cx="146" cy="80" r="2.5"/><text class="m-txt" x="96" y="75">A</text>
+  <path class="m-arrow" d="M80 28v142"/><circle class="m-dot" cx="80" cy="28" r="2.5"/><circle class="m-dot" cx="80" cy="170" r="2.5"/><text class="m-txt" x="84" y="130">B</text>
+  <path class="m-arrow" d="M150 36l32 42"/><circle class="m-dot" cx="150" cy="36" r="2.5"/><circle class="m-dot" cx="182" cy="78" r="2.5"/><text class="m-txt" x="170" y="50">C</text>
+{%- endcapture -%}
+
+<div class="hm-sizes" data-hm-sizes data-default="{{ first_key }}">
+  <section class="sz-banner">
+    <div class="wrap">
+      <h1 class="h1">{{ section.settings.heading | escape }}</h1>
+      <nav class="sz-crumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="{{ routes.root_url }}">Home</a></li>
+          <li><a href="{{ request.path }}">{{ section.settings.heading | escape }}</a></li>
+          <li aria-current="page" data-sz-crumb></li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <div class="wrap sz">
+    <nav class="sz-nav" aria-label="{{ section.settings.nav_label | escape }}">
+      <ul data-sz-list>
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'chart' -%}
+            {%- assign key = block.settings.key | default: block.settings.style | handleize -%}
+            <li><a href="?s={{ key }}" data-s="{{ key }}">{{ block.settings.label | escape }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if section.settings.show_measure -%}
+          <li><a href="?s={{ measure_key }}" data-s="{{ measure_key }}">{{ section.settings.measure_heading | escape }}</a></li>
+        {%- endif -%}
+      </ul>
+    </nav>
+
+    <div class="sz-body" tabindex="-1" data-sz-main>
+      {%- for block in section.blocks -%}
+        {%- if block.type != 'chart' -%}{%- continue -%}{%- endif -%}
+        {%- liquid
+          assign key = block.settings.key | default: block.settings.style | handleize
+          case block.settings.style
+            when 'sweats'
+              assign styles = 'hoodie,crewneck' | split: ','
+            when 'hats'
+              assign styles = 'cap,beanie' | split: ','
+            else
+              assign styles = block.settings.style | split: ','
+          endcase
+          assign found = 0
+          for entry in charts
+            assign st = entry.style.value | downcase
+            if styles contains st
+              assign found = found | plus: 1
+            endif
+          endfor
+        -%}
+        <article
+          class="sz-doc"
+          data-s="{{ key }}"
+          data-name="{{ block.settings.label | escape }}"
+          aria-labelledby="t-{{ key }}-{{ sid }}"
+          {% unless key == first_key %}
+            hidden
+          {% endunless %}
+          {{ block.shopify_attributes }}
+        >
+          <header>
+            {%- if block.settings.image != blank -%}
+              <span class="ico" aria-hidden="true">
+                {{- block.settings.image | image_url: width: 160 | image_tag: widths: '80, 160', sizes: '56px', loading: 'lazy', alt: '' -}}
+              </span>
+            {%- endif -%}
+            <div>
+              <h2 class="h2" id="t-{{ key }}-{{ sid }}">{{ block.settings.label | escape }}</h2>
+              {%- if block.settings.subtitle != blank -%}<p>{{ block.settings.subtitle | escape }}</p>{%- endif -%}
+            </div>
+          </header>
+
+          {%- if block.settings.fit != blank -%}
+            <p class="fit"><b>Fit</b><span>{{ block.settings.fit }}</span></p>
+          {%- endif -%}
+
+          {%- if found == 0 -%}
+            <p class="sz-empty">{{ section.settings.empty_text | escape }}</p>
+            {%- if request.design_mode -%}
+              <p class="sz-empty">Add a Size chart entry with style “{{ styles | join: '” or “' }}” in Content &gt; Metaobjects.</p>
+            {%- endif -%}
+          {%- else -%}
+            <div class="tools">
+              <p class="label">{{ block.settings.table_label | escape }}</p>
+              <fieldset class="units" data-sz-units>
+                <legend>Units</legend>
+                <input type="radio" name="u-{{ key }}-{{ sid }}" id="u-{{ key }}-{{ sid }}-in" value="in" checked>
+                <label for="u-{{ key }}-{{ sid }}-in">in</label>
+                <input type="radio" name="u-{{ key }}-{{ sid }}" id="u-{{ key }}-{{ sid }}-cm" value="cm">
+                <label for="u-{{ key }}-{{ sid }}-cm">cm</label>
+              </fieldset>
+            </div>
+            <div class="chart{% unless block.settings.show_figure %} chart--solo{% endunless %}">
+              <div class="sz-tables">
+                {%- for s in styles -%}
+                  {%- for entry in charts -%}
+                    {%- assign st = entry.style.value | downcase -%}
+                    {%- if st != s -%}{%- continue -%}{%- endif -%}
+                    {%- liquid
+                      assign cols = entry.columns.value
+                      assign unit = entry.unit.value | default: 'in' | downcase | strip
+                      assign first_row = entry.rows.value | first | split: '|'
+                      assign style_name = st | replace: '_', ' ' | capitalize
+                    -%}
+                    {%- if found > 1 -%}<h3 class="sz-sub">{{ style_name }}</h3>{%- endif -%}
+                    <div class="tbl-wrap">
+                      <table class="tbl" data-sz-table data-unit="{{ unit }}">
+                        <caption class="vh">{{ block.settings.label | escape }}{% if found > 1 %} {{ style_name }}{% endif %} measurements</caption>
+                        <thead>
+                          <tr>
+                            {%- if cols.size < first_row.size -%}<th scope="col">Size</th>{%- endif -%}
+                            {%- for c in cols -%}
+                              <th scope="col">{{ c | escape }}</th>
+                            {%- endfor -%}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {%- for row in entry.rows.value -%}
+                            {%- assign cells = row | split: '|' -%}
+                            <tr>
+                              {%- for cell in cells -%}
+                                {%- if forloop.first -%}
+                                  <th scope="row">{{ cell | strip | escape }}</th>
+                                {%- else -%}
+                                  <td data-v="{{ cell | strip | escape }}">{{ cell | strip | escape }}</td>
+                                {%- endif -%}
+                              {%- endfor -%}
+                            </tr>
+                          {%- endfor -%}
+                        </tbody>
+                      </table>
+                    </div>
+                    {%- if entry.note != blank -%}
+                      <div class="sz-note">{{ entry.note.value | escape | newline_to_br }}</div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                {%- endfor -%}
+              </div>
+              {%- if block.settings.show_figure -%}
+                <figure class="fig">
+                  <svg viewBox="0 0 200 190" role="img" aria-labelledby="fig-{{ key }}-{{ sid }}">
+                    <title id="fig-{{ key }}-{{ sid }}">Flat shirt with three measurements: A chest width armpit to armpit, B body length shoulder to hem, C sleeve shoulder seam to cuff</title>
+                    {{ fig_svg }}
+                  </svg>
+                  <figcaption>A: chest width · B: body length · C: sleeve</figcaption>
+                </figure>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if block.settings.text != blank -%}
+            <p>{{ block.settings.text }}</p>
+          {%- endif -%}
+          <p class="small-links">
+            {%- if block.settings.shop_link != blank -%}
+              <a href="{{ block.settings.shop_link }}">{{ block.settings.shop_label | escape }}</a>
+            {%- endif -%}
+            {%- if section.settings.show_measure -%}
+              <a href="?s={{ measure_key }}" data-s="{{ measure_key }}">{{ section.settings.measure_heading | escape }}</a>
+            {%- endif -%}
+            <a href="{{ policy_url }}">{{ section.settings.policy_label | escape }}</a>
+          </p>
+        </article>
+      {%- endfor -%}
+
+      {%- if section.settings.show_measure -%}
+        <article
+          class="sz-doc"
+          data-s="{{ measure_key }}"
+          data-name="{{ section.settings.measure_heading | escape }}"
+          aria-labelledby="t-measure-{{ sid }}"
+          {% if first_key != blank %}
+            hidden
+          {% endif %}
+        >
+          <header>
+            <span class="ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" focusable="false"><rect x="2" y="8" width="20" height="8"/><path d="M6 8v3M10 8v4M14 8v3M18 8v4"/></svg>
+            </span>
+            <div>
+              <h2 class="h2" id="t-measure-{{ sid }}">{{ section.settings.measure_heading | escape }}</h2>
+              {%- if section.settings.measure_sub != blank -%}<p>{{ section.settings.measure_sub | escape }}</p>{%- endif -%}
+            </div>
+          </header>
+          <div class="how-wrap">
+            <div>
+              <ol class="how">
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'step' -%}
+                    <li {{ block.shopify_attributes }}>
+                      <span class="k" aria-hidden="true">{{ block.settings.key | escape }}</span>
+                      <span><b>{{ block.settings.title | escape }}</b> {{ block.settings.text }}</span>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ol>
+              {%- if section.settings.measure_note != blank -%}
+                <div class="sz-rte">{{ section.settings.measure_note }}</div>
+              {%- endif -%}
+            </div>
+            <figure class="fig">
+              <svg viewBox="0 0 200 190" role="img" aria-labelledby="fig-measure-{{ sid }}">
+                <title id="fig-measure-{{ sid }}">Flat shirt with three measurements: A chest width armpit to armpit, B body length shoulder to hem, C sleeve shoulder seam to cuff</title>
+                {{ fig_svg }}
+              </svg>
+              <figcaption>A: chest width · B: body length · C: sleeve</figcaption>
+            </figure>
+          </div>
+        </article>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'hm-sizes.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .hm-sizes .sz-banner{background:var(--surface);border-bottom:1px solid var(--line)}
+  .hm-sizes .sz-banner .wrap{padding-block:28px 20px;display:grid;gap:8px}
+  .hm-sizes .sz-banner .h1{margin:0}
+  .hm-sizes .sz-crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px;font-size:var(--t-xs);color:var(--mute)}
+  .hm-sizes .sz-crumbs li+li::before{content:"/";margin-right:4px}
+  .hm-sizes .sz-crumbs a{color:var(--soft);text-underline-offset:3px}
+  .hm-sizes .sz-crumbs [aria-current]{color:var(--ink);font-weight:600}
+
+  .hm-sizes .sz{display:grid;grid-template-columns:260px minmax(0,880px);gap:clamp(32px,6vw,120px);padding-block:32px var(--sect);align-items:start}
+  .hm-sizes .sz-nav ul{list-style:none;margin:0;padding:0;display:grid}
+  .hm-sizes .sz-nav a{display:inline-block;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.03em;line-height:36px;text-decoration:none;color:var(--soft);white-space:nowrap}
+  .hm-sizes .sz-nav a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:6px}
+  .hm-sizes .sz-nav a[aria-current="page"]{color:var(--ink);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+  @media (min-width:861px){.hm-sizes .sz-nav{position:sticky;top:calc(var(--header) + 24px)}}
+
+  .hm-sizes .sz-body{min-width:0;font-size:14px;line-height:1.6;color:var(--text)}
+  .hm-sizes .sz-body:focus{outline:none}
+  .hm-sizes .sz-doc>header{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:16px}
+  .hm-sizes .sz-doc>header .h2{margin:0}
+  .hm-sizes .sz-doc>header p{margin:2px 0 0;font-size:var(--t-xs);color:var(--mute)}
+  .hm-sizes .ico{flex:none;width:56px;height:56px;background:var(--tile);display:grid;place-items:center;overflow:hidden}
+  .hm-sizes .ico img{width:100%;height:100%;object-fit:contain}
+  .hm-sizes .sz-doc p{margin:0 0 10px;max-width:80ch}
+  .hm-sizes .sz-doc a{color:var(--ink);text-underline-offset:3px}
+  .hm-sizes .sz-empty{padding:12px;background:var(--surface);border:1px solid var(--line)}
+  .hm-sizes .sz-sub{font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:16px 0 6px}
+  .hm-sizes .sz-sub:first-child{margin-top:0}
+  .hm-sizes .sz-note{font-size:var(--t-xs);color:var(--mute);margin:6px 0 12px}
+
+  .hm-sizes .fit{display:flex;gap:10px;align-items:baseline;background:var(--surface);border:1px solid var(--line);padding:10px 12px;margin:0 0 16px;font-size:var(--t-sm);max-width:80ch}
+  .hm-sizes .fit b{font-size:var(--t-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);flex:none}
+
+  .hm-sizes .tools{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;margin-bottom:8px}
+  .hm-sizes .tools .label{color:var(--mute)}
+  .hm-sizes .units{display:inline-flex;border:1px solid var(--ink);margin:0;padding:0;position:relative}
+  .hm-sizes .units legend{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .hm-sizes .units input{position:absolute;opacity:0;width:1px;height:1px}
+  .hm-sizes .units label{min-width:52px;min-height:36px;display:grid;place-items:center;padding:0 12px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--ink);background:var(--surface)}
+  .hm-sizes .units input:checked+label{background:var(--ink);color:var(--surface)}
+  .hm-sizes .units input:focus-visible+label{outline:2px solid var(--ink);outline-offset:2px}
+
+  .hm-sizes .chart{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:24px;align-items:start;margin-bottom:16px}
+  .hm-sizes .chart--solo{grid-template-columns:minmax(0,1fr)}
+  .hm-sizes .tbl-wrap{overflow-x:auto;border-top:1px solid var(--ink)}
+  .hm-sizes .tbl{width:100%;border-collapse:collapse;font-size:var(--t-sm);font-variant-numeric:tabular-nums}
+  .hm-sizes .tbl th,.hm-sizes .tbl td{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+  .hm-sizes .tbl thead th{font-size:var(--t-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+  .hm-sizes .tbl tbody th{font-weight:700;color:var(--ink)}
+  .hm-sizes .tbl td{color:var(--soft)}
+  .hm-sizes .tbl .u{font-weight:400;text-transform:none;letter-spacing:0}
+  @media (max-width:560px){.hm-sizes .tbl thead th{white-space:normal;vertical-align:bottom;letter-spacing:.04em}.hm-sizes .tbl th,.hm-sizes .tbl td{padding-right:8px}}
+  .hm-sizes .fig{margin:0;background:var(--surface);border:1px solid var(--line);padding:12px}
+  .hm-sizes .fig svg{width:100%;height:auto;display:block}
+  .hm-sizes .fig figcaption{font-size:11px;color:var(--mute);margin-top:6px}
+  .hm-sizes .how{list-style:none;margin:0 0 16px;padding:0;border-top:1px solid var(--line);max-width:80ch}
+  .hm-sizes .how li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .hm-sizes .how .k{width:24px;height:24px;display:grid;place-items:center;background:var(--accent);color:var(--ink);font-size:11px;font-weight:800}
+  .hm-sizes .how b{color:var(--ink)}
+  .hm-sizes .sz-rte p{margin:0 0 10px;max-width:80ch}
+  .hm-sizes .small-links{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:var(--t-xs);margin-top:4px}
+  .hm-sizes .how-wrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
+
+  .hm-sizes .m-line{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linejoin:round}
+  .hm-sizes .m-arrow{stroke:var(--alert);stroke-width:1.5;fill:none}
+  .hm-sizes .m-dot{fill:var(--alert)}
+  .hm-sizes .m-txt{font:700 9px var(--f-sans);fill:var(--alert);letter-spacing:.04em}
+
+  @media (max-width:1100px){.hm-sizes .chart,.hm-sizes .how-wrap{grid-template-columns:minmax(0,1fr)}.hm-sizes .fig{max-width:300px}}
+  @media (min-width:1101px){.hm-sizes .sz-doc .tools:has(+ .chart:not(.chart--solo)){margin-right:244px}}
+  @media (max-width:860px){
+    .hm-sizes .sz{grid-template-columns:minmax(0,1fr);gap:20px;padding-top:0}
+    .hm-sizes .sz-nav{position:sticky;top:var(--header);z-index:5;background:var(--bg);margin-inline:calc(var(--gutter) * -1);border-bottom:1px solid var(--line)}
+    .hm-sizes .sz-nav ul{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:10px var(--gutter)}
+    .hm-sizes .sz-nav ul::-webkit-scrollbar{display:none}
+    .hm-sizes .sz-nav li{flex:none}
+    .hm-sizes .sz-nav a{font-size:var(--t-xs);line-height:1;padding:15px 12px;border:1px solid var(--line);background:var(--surface)}
+    .hm-sizes .sz-nav a[aria-current="page"]{border-color:var(--ink)}
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM Size guide",
+  "tag": "section",
+  "class": "hm-section hm-section--sizes",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Size guide" },
+    { "type": "text", "id": "nav_label", "label": "Tab list label (screen readers)", "default": "Size charts" },
+    { "type": "text", "id": "empty_text", "label": "Text when a style has no chart yet", "default": "Measurements for this style are coming soon." },
+    { "type": "text", "id": "policy_label", "label": "Refund Policy link label", "default": "Refund Policy" },
+    { "type": "url", "id": "policy_link", "label": "Refund Policy link", "info": "Empty = /pages/policies?p=refund" },
+    { "type": "header", "content": "How to measure" },
+    { "type": "checkbox", "id": "show_measure", "label": "Show “How to measure” tab", "default": true },
+    { "type": "text", "id": "measure_heading", "label": "Title", "default": "How to measure" },
+    { "type": "text", "id": "measure_sub", "label": "Subtitle", "default": "Measure a shirt you already like, laid flat" },
+    {
+      "type": "richtext",
+      "id": "measure_note",
+      "label": "Text below the steps",
+      "default": "<p>Hats: measure around your head, just above the ears and eyebrows. Printed-to-order items can’t be returned for size, so it’s worth the two minutes. See the <a href=\"/pages/policies?p=refund\">Refund Policy</a>.</p>"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "chart",
+      "name": "Chart tab",
+      "settings": [
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Size chart style",
+          "info": "Reads the Size chart metaobject entries of this style.",
+          "options": [
+            { "value": "tee", "label": "Tee" },
+            { "value": "long_sleeve", "label": "Long sleeve" },
+            { "value": "hoodie", "label": "Hoodie" },
+            { "value": "crewneck", "label": "Crewneck" },
+            { "value": "sweats", "label": "Hoodie + crewneck" },
+            { "value": "kids", "label": "Kids" },
+            { "value": "cap", "label": "Cap" },
+            { "value": "beanie", "label": "Beanie" },
+            { "value": "hats", "label": "Cap + beanie" }
+          ],
+          "default": "tee"
+        },
+        { "type": "text", "id": "key", "label": "Tab key (for links like ?s=tees)", "default": "tees" },
+        { "type": "text", "id": "label", "label": "Tab title", "default": "Tees" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Short sleeve tees · S to 3XL" },
+        { "type": "image_picker", "id": "image", "label": "Small product image" },
+        { "type": "inline_richtext", "id": "fit", "label": "Fit note", "default": "Unisex fit. Between sizes? Size up for a relaxed fit." },
+        { "type": "text", "id": "table_label", "label": "Label above the table", "default": "Measured flat, garment size" },
+        { "type": "checkbox", "id": "show_figure", "label": "Show shirt measuring drawing", "default": true },
+        { "type": "inline_richtext", "id": "text", "label": "Text below the table", "default": "Chest: armpit to armpit. Length: top of shoulder to hem. Printed-to-order items can’t be returned for size, so compare with a shirt you own." },
+        { "type": "text", "id": "shop_label", "label": "Shop link label", "default": "Shop tees" },
+        { "type": "url", "id": "shop_link", "label": "Shop link" }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "How to measure step",
+      "settings": [
+        { "type": "text", "id": "key", "label": "Marker (1, A, B…)", "default": "1" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Lay it flat." },
+        { "type": "inline_richtext", "id": "text", "label": "Text", "default": "Use a shirt or hoodie that fits the way you like. Smooth out wrinkles, sleeves to the side." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Size guide",
+      "blocks": [
+        { "type": "chart" },
+        { "type": "step" }
+      ]
+    }
+  ]
+}
+{% endschema %}

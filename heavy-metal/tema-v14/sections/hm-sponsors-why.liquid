@@ -1,0 +1,91 @@
+<div class="sect--white sp-why-wrap">
+  <div class="wrap">
+    <nav class="why" aria-labelledby="WhyQ-{{ section.id }}">
+      <h2 class="why__q" id="WhyQ-{{ section.id }}">{{ section.settings.title }}</h2>
+      <ul>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign href = block.settings.link | default: '#packages'
+            assign down = false
+            if href contains '#'
+              assign first_char = href | slice: 0
+              if first_char == '#'
+                assign down = true
+              endif
+            endif
+          -%}
+          <li {{ block.shopify_attributes }}>
+            <a
+              href="{{ href }}"
+              {% if block.settings.main %}
+                class="is-main"
+              {% endif %}
+              {% if down %}
+                data-sp-jump
+              {% endif %}
+            >
+              <b>{{ block.settings.title }}</b>
+              {%- if block.settings.text != blank -%}<small>{{ block.settings.text }}</small>{%- endif -%}
+              {%- if down -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+              {%- else -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              {%- endif -%}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+{% stylesheet %}
+  .sp-why-wrap{padding-top:clamp(20px,2.4vw,32px)}
+  .why{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px 20px;margin:0;padding-block:12px;border-block:1px solid var(--line)}
+  .why__q{font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:0;color:var(--mute)}
+  .why ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+  .why a{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:0 8px;min-height:44px;height:100%;padding:6px 10px;background:transparent;border:1px solid transparent;text-decoration:none;color:var(--ink);transition:border-color .15s,background-color .15s}
+  .why a:hover{border-color:var(--line);background:var(--bg)}
+  .why a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .why b{font-size:var(--t-sm);line-height:1.25;font-weight:700}
+  .why small{grid-column:1;font-size:var(--t-xs);line-height:1.3;color:var(--mute)}
+  .why svg{grid-column:2;grid-row:1/span 2;width:16px;height:16px;color:var(--mute);transition:transform .15s}
+  .why a.is-main svg{color:var(--ink)}
+  .why a:hover svg{transform:translateX(3px)}
+  @media (prefers-reduced-motion:reduce){.why a:hover svg{transform:none}}
+  @media (max-width:1240px){.why{grid-template-columns:1fr}}
+  @media (max-width:760px){.why ul{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}.why a{padding:6px 4px}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Sponsors: why",
+  "tag": "section",
+  "class": "hm-sponsors-why",
+  "settings": [{ "type": "text", "id": "title", "label": "Question", "default": "Why are you here?" }],
+  "max_blocks": 6,
+  "blocks": [
+    {
+      "type": "option",
+      "name": "Option",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "I want my logo on “The Evil One”" },
+        { "type": "text", "id": "text", "label": "Text", "default": "Good call. Packages right below." },
+        { "type": "url", "id": "link", "label": "Link", "info": "Empty = jumps to the packages on this page." },
+        { "type": "checkbox", "id": "main", "label": "Highlight", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sponsors: why",
+      "blocks": [
+        { "type": "option", "settings": { "title": "I want my logo on “The Evil One”", "text": "Good call. Packages right below.", "main": true } },
+        { "type": "option", "settings": { "title": "I just want a shirt", "text": "Fair. No contract needed.", "link": "/collections/all" } },
+        { "type": "option", "settings": { "title": "I’m a pulling fan", "text": "Same. Here’s where we pull next.", "link": "/pages/schedule" } },
+        { "type": "option", "settings": { "title": "I have no clue", "text": "Honest. Start with the story.", "link": "/pages/our-story" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

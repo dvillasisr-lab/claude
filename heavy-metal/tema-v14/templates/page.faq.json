@@ -1,0 +1,136 @@
+{
+  "sections": {
+    "main": {
+      "type": "hm-faq",
+      "blocks": {
+        "cat_orders": {
+          "type": "category",
+          "settings": {
+            "category": "orders",
+            "label": "Orders",
+            "anchor": "orders"
+          }
+        },
+        "cat_shipping": {
+          "type": "category",
+          "settings": {
+            "category": "shipping",
+            "label": "Shipping",
+            "anchor": "shipping"
+          }
+        },
+        "cat_returns": {
+          "type": "category",
+          "settings": {
+            "category": "returns",
+            "label": "Returns & exchanges",
+            "anchor": "returns"
+          }
+        },
+        "cat_sizing": {
+          "type": "category",
+          "settings": {
+            "category": "sizing",
+            "label": "Sizing & fit",
+            "anchor": "sizing"
+          }
+        },
+        "cat_care": {
+          "type": "category",
+          "settings": {
+            "category": "products",
+            "label": "Products & care",
+            "anchor": "care"
+          }
+        },
+        "cat_drops": {
+          "type": "category",
+          "settings": {
+            "category": "drops",
+            "label": "Drops & availability",
+            "anchor": "drops"
+          }
+        },
+        "cat_payments": {
+          "type": "category",
+          "settings": {
+            "category": "payments",
+            "label": "Payments",
+            "anchor": "payments"
+          }
+        },
+        "cat_account": {
+          "type": "category",
+          "settings": {
+            "category": "account",
+            "label": "Account",
+            "anchor": "account"
+          }
+        },
+        "cat_alerts": {
+          "type": "category",
+          "settings": {
+            "category": "evil_list",
+            "label": "The Evil List",
+            "anchor": "alerts"
+          }
+        },
+        "cat_sponsors": {
+          "type": "category",
+          "settings": {
+            "category": "sponsors",
+            "label": "Sponsors",
+            "anchor": "sponsors"
+          }
+        },
+        "cat_special": {
+          "type": "category",
+          "settings": {
+            "category": "special_edition",
+            "label": "Special edition",
+            "anchor": "special"
+          }
+        },
+        "cat_tractor": {
+          "type": "category",
+          "settings": {
+            "category": "tractor",
+            "label": "The tractor & events",
+            "anchor": "tractor"
+          }
+        }
+      },
+      "block_order": [
+        "cat_orders",
+        "cat_shipping",
+        "cat_returns",
+        "cat_sizing",
+        "cat_care",
+        "cat_drops",
+        "cat_payments",
+        "cat_account",
+        "cat_alerts",
+        "cat_sponsors",
+        "cat_special",
+        "cat_tractor"
+      ],
+      "settings": {
+        "heading": "FAQ",
+        "lede": "Orders, shipping, sizing and the tractor. Search or pick a topic.",
+        "search_label": "Search the FAQ",
+        "search_placeholder": "Search questions, e.g. tracking",
+        "nav_label": "Help topics",
+        "no_match": "Try a shorter word, or <a href=\"/pages/contact\">send us a message</a>.",
+        "no_items": "Answers are on the way.",
+        "updated": "2026-10-01",
+        "help_heading": "Still need help?",
+        "help_text": "Send us a message and we’ll get back to you within 2 business days.",
+        "help_button": "Contact us",
+        "help_link": "/pages/contact"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

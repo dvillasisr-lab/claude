@@ -1,0 +1,163 @@
+{%- comment -%}
+  HM Marquee: cinta amarilla bajo el hero. Una frase por bloque (maximo 3), separadas por "·".
+  Boton de pausa visible (WCAG 2.2.2); con movimiento reducido no se mueve.
+{%- endcomment -%}
+{%- capture mq_run -%}
+  {%- for block in section.blocks -%}
+    {%- if block.settings.text != blank -%}{{ block.settings.text | escape }}<i>·</i>{%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if mq_run != blank -%}
+  <div class="fp-marquee" data-fp-marquee>
+    <button type="button" class="fp-marquee__pause" aria-pressed="false" aria-label="Pause the moving banner" data-mq-pause>
+      <svg class="i-pause" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M7 5h3v14H7zM14 5h3v14h-3z" fill="currentColor"/></svg>
+      <svg class="i-play" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path d="M8 5l11 7-11 7z" fill="currentColor"/></svg>
+    </button>
+    <div class="fp-marquee__in" aria-hidden="true">
+      <div class="fp-marquee__track" data-mq-track data-run="{{ mq_run | escape }}">
+        <span>{{ mq_run }}{{ mq_run }}{{ mq_run }}</span><span>{{ mq_run }}{{ mq_run }}{{ mq_run }}</span>
+      </div>
+    </div>
+    <div class="vh">
+      {%- for block in section.blocks -%}
+        {%- if block.settings.text != blank -%}<span {{ block.shopify_attributes }}>{{ block.settings.text | escape }}. </span>{%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .fp-marquee {
+    position: relative;
+    height: 42px;
+    overflow: hidden;
+    background: var(--accent);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--ink);
+  }
+  .fp-marquee__in { display: flex; overflow: hidden; flex: 1; min-width: 0; }
+  .fp-marquee__track {
+    display: flex;
+    flex: none;
+    white-space: nowrap;
+    font-family: var(--f-head);
+    font-stretch: 78%;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    animation: fpMarquee var(--mq-dur, 40s) linear infinite;
+  }
+  .fp-marquee__track span { display: inline-block; }
+  .fp-marquee__track i { font-style: normal; margin: 0 .8em; }
+  .fp-marquee:hover .fp-marquee__track,
+  .fp-marquee.is-paused .fp-marquee__track { animation-play-state: paused; }
+  @keyframes fpMarquee { to { transform: translateX(-50%); } }
+  .fp-marquee__pause {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--ink);
+    background: var(--accent);
+    color: var(--ink);
+    cursor: pointer;
+    padding: 0;
+  }
+  .fp-marquee__pause .i-play { display: none; }
+  .fp-marquee.is-paused .fp-marquee__pause .i-play { display: block; }
+  .fp-marquee.is-paused .fp-marquee__pause .i-pause { display: none; }
+  @media (max-width: 600px) {
+    .fp-marquee { height: 36px; }
+    .fp-marquee__track { font-size: 15px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fp-marquee__track { animation: none; }
+    .fp-marquee__pause { display: none; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    if (window.HMMarquee) return;
+    function build(root) {
+      var mq = root.querySelector('[data-mq-track]');
+      if (!mq) return;
+      var run = mq.getAttribute('data-run') || '';
+      if (!run) return;
+      mq.innerHTML = '<span>' + run + '</span>';
+      var w = mq.firstChild.getBoundingClientRect().width || 600;
+      var half = new Array(Math.max(2, Math.ceil(window.innerWidth * 1.15 / w)) + 1).join(run);
+      mq.innerHTML = '<span>' + half + '</span><span>' + half + '</span>';
+      mq.style.setProperty('--mq-dur', Math.max(18, mq.scrollWidth / 2 / 60) + 's');
+    }
+    function init(root) {
+      if (root.__hmMq) return;
+      root.__hmMq = true;
+      build(root);
+      var b = root.querySelector('[data-mq-pause]');
+      if (b) b.addEventListener('click', function () {
+        var on = b.getAttribute('aria-pressed') !== 'true';
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        b.setAttribute('aria-label', on ? 'Play the moving banner' : 'Pause the moving banner');
+        root.classList.toggle('is-paused', on);
+      });
+    }
+    function initAll(scope) { [].slice.call((scope || document).querySelectorAll('[data-fp-marquee]')).forEach(init); }
+    var lastW = window.innerWidth, t = 0;
+    window.addEventListener('resize', function () {
+      clearTimeout(t);
+      t = setTimeout(function () {
+        if (Math.abs(window.innerWidth - lastW) <= 40) return;
+        lastW = window.innerWidth;
+        [].slice.call(document.querySelectorAll('[data-fp-marquee]')).forEach(build);
+      }, 150);
+    });
+    window.HMMarquee = { init: init };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { initAll(); });
+    else initAll();
+    document.addEventListener('shopify:section:load', function (e) { initAll(e.target); });
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "HM Marquee",
+  "tag": "div",
+  "class": "hm-marquee-section",
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Cinta amarilla. Una frase por bloque (máximo 3). Se separan solas con “·”."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "phrase",
+      "name": "Phrase",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Frase", "default": "Full pull or nothing" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Marquee",
+      "blocks": [
+        { "type": "phrase", "settings": { "text": "Full pull or nothing" } },
+        { "type": "phrase", "settings": { "text": "This thing is f#ck!ng evil" } },
+        { "type": "phrase", "settings": { "text": "Born in a lightning storm" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,244 @@
+{%- comment -%}
+  HM Hero "Full Pull" (port 1:1 de boceto-v28/index.html + hero.css + hero.js).
+  LCP = el logo (img con fetchpriority high + preload), pintado sin JS. La animacion vive en assets/hm-hero.js.
+{%- endcomment -%}
+{{ 'hm-hero.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'hm-hero.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign sid = section.id | replace: '-', '_'
+  assign brand_name = settings.hm_brand_name | default: 'Heavy Metal Pro Stock: “The Evil One”'
+  assign logo_alt = section.settings.logo.alt | default: brand_name
+  if section.settings.tractor != blank
+    assign tractor_src = section.settings.tractor | image_url: width: 2240
+    assign tractor_clip = section.settings.tractor_clip
+  else
+    assign tractor_src = 'hm-tractor-cutout.webp' | asset_url
+    assign tractor_clip = true
+  endif
+-%}
+
+<section
+  class="fp"
+  data-fp
+  data-target="{{ section.settings.target_ft }}"
+  data-fp-puff="fpPuff{{ sid }}_"
+  aria-labelledby="fp-title-{{ section.id }}"
+>
+  <div class="fp__sky" aria-hidden="true">
+    <i class="fp__storm"></i><i class="fp__clouds"></i>
+    <svg class="fp__bolt" viewBox="0 0 120 420" focusable="false"><path d="M70 0 L38 150 L66 150 L22 300 L52 300 L8 420 L96 250 L64 250 L104 120 L74 120 L98 0 Z" fill="#F7F9FF"/></svg>
+    <i class="fp__flash"></i>
+  </div>
+  <svg class="fp__smokes" aria-hidden="true" focusable="false">
+    <defs>
+      <radialGradient id="fpPuff{{ sid }}_0"><stop offset="0" stop-color="#0E0E0D"/><stop offset=".5" stop-color="#141413" stop-opacity=".96"/><stop offset=".78" stop-color="#1E1D1B" stop-opacity=".55"/><stop offset="1" stop-color="#2A2926" stop-opacity="0"/></radialGradient>
+      <radialGradient id="fpPuff{{ sid }}_1"><stop offset="0" stop-color="#151514"/><stop offset=".5" stop-color="#1E1D1B" stop-opacity=".95"/><stop offset=".78" stop-color="#2A2926" stop-opacity=".5"/><stop offset="1" stop-color="#34332F" stop-opacity="0"/></radialGradient>
+      <radialGradient id="fpPuff{{ sid }}_2"><stop offset="0" stop-color="#1E1D1B"/><stop offset=".5" stop-color="#2A2926" stop-opacity=".92"/><stop offset=".8" stop-color="#3A3936" stop-opacity=".45"/><stop offset="1" stop-color="#46454F" stop-opacity="0"/></radialGradient>
+    </defs>
+    <g class="fp__smoke"></g>
+  </svg>
+
+  <div class="wrap fp__top">
+    <div class="fp__brand">
+      <h1 id="fp-title-{{ section.id }}" class="fp__h1">
+        {%- if section.settings.logo != blank -%}
+          {%- liquid
+            assign logo_class = 'fp__logo'
+            unless section.settings.logo_invert
+              assign logo_class = 'fp__logo fp__logo--raw'
+            endunless
+          -%}
+          {{
+            section.settings.logo
+            | image_url: width: 1120
+            | image_tag:
+              class: logo_class,
+              alt: logo_alt,
+              widths: '330, 420, 560, 840, 1120',
+              sizes: '(max-width: 600px) 64vw, (max-width: 860px) 60vw, 29vw',
+              loading: 'eager',
+              fetchpriority: 'high',
+              preload: true
+          }}
+        {%- else -%}
+          {%- assign logo_src = 'logo-stack-ink.svg' | asset_url -%}
+          {{ logo_src | preload_tag: as: 'image', fetchpriority: 'high' }}
+          <img class="fp__logo" src="{{ logo_src }}" alt="{{ brand_name | escape }}" width="1106" height="612" fetchpriority="high" loading="eager">
+        {%- endif -%}
+      </h1>
+      {%- if section.settings.tagline != blank -%}
+        <p class="fp__tag" aria-hidden="true">{{ section.settings.tagline | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.intro != blank -%}
+        <p class="vh">{{ section.settings.intro | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.cta1_label != blank or section.settings.cta2_label != blank -%}
+        <div class="btn-row">
+          {%- if section.settings.cta1_label != blank -%}
+            <a class="btn" href="{{ section.settings.cta1_link | default: routes.all_products_collection_url }}">{{ section.settings.cta1_label | escape }}</a>
+          {%- endif -%}
+          {%- if section.settings.cta2_label != blank -%}
+            <a class="btn btn--ghost" href="{{ section.settings.cta2_link | default: routes.root_url }}">{{ section.settings.cta2_label | escape }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+    <div class="fp__side">
+      <div class="fp__tele" role="group" aria-label="{{ section.settings.sim_label | default: 'Pull sim' | escape }}">
+        <div class="fp__tele-head"><span>{{ section.settings.sim_label | escape }}</span><span>{{ section.settings.sim_class | escape }}</span></div>
+        <svg class="fp__tach" viewBox="0 0 120 100" aria-hidden="true" focusable="false">
+          <path class="t-arc" d="M14 86 A52 52 0 1 1 106 86" fill="none" stroke-width="6" stroke-linecap="round"/>
+          <path d="M112 50 A52 52 0 0 1 106 86" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round"/>
+          <g class="fp__needle" style="transform:rotate(-120deg)"><polygon class="t-ink" points="58,64 62,64 60.8,14 59.2,14"/></g>
+          <circle class="t-ink" cx="60" cy="60" r="6"/>
+          <text x="60" y="94" text-anchor="middle" font-size="11" font-weight="700" font-family="Archivo, Arial, sans-serif"><tspan data-fp-rpm>900</tspan> RPM</text>
+        </svg>
+        <div class="fp__read">
+          <span class="label">{{ section.settings.distance_label | escape }}</span>
+          <span class="fp__dist"><span data-fp-dist>000</span><small>FT</small></span>
+          <span class="fp__chip" data-fp-chip data-l-hooked="Hooked" data-l-pulling="Pulling" data-l-full="Full pull!">Hooked</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fp__track" aria-hidden="true">
+    <div class="fp__dirt"></div>
+    <div class="fp__rail" data-fp-rail><div class="fp__rail-fill"></div></div>
+    <div class="fp__flag" data-fp-flag></div>
+    <svg class="fp__rig" viewBox="0 0 2700 576" overflow="visible" focusable="false">
+      <clipPath id="fpCut{{ sid }}"><polygon points="1580,576 1580,195 1668,188 1688,170 1713,154 1738,143 1763,137 1788,134 1826,133 1826,0 2700,0 2700,576"/></clipPath>
+      <ellipse cx="1500" cy="551" rx="1190" ry="12" fill="rgba(0,0,0,.35)"/>
+      <g class="fp__sled" transform="translate(1492 548) scale(.8) translate(-1492 -548)">
+        <circle cx="200" cy="443" r="105" fill="#121211"/><circle cx="440" cy="443" r="105" fill="#121211"/>
+        <path d="M560 362 L640 404 L740 362 L840 404 L940 362 L1040 404 L1110 372" fill="none" stroke="#2C2C2A" stroke-width="12" stroke-linejoin="round"/>
+        <rect x="24" y="318" width="1420" height="44" fill="#232321" stroke="#3A3936" stroke-width="4"/>
+        <rect x="24" y="338" width="1420" height="6" fill="#F5C400"/>
+        <rect x="290" y="304" width="1120" height="14" fill="#34332F"/>
+        <line x1="290" y1="307" x2="1410" y2="307" stroke="#A9A59B" stroke-width="3"/>
+        <rect x="1398" y="276" width="16" height="42" fill="#3A3936"/>
+        <path d="M1100 362 H1440 L1470 420 L1452 540 H1150 L1112 468 Z" fill="#1B1B1A" stroke="#3A3936" stroke-width="4" stroke-linejoin="round"/>
+        <line x1="1150" y1="537" x2="1452" y2="537" stroke="#6B6862" stroke-width="6"/>
+        <line x1="1124" y1="468" x2="1460" y2="468" stroke="#2C2C2A" stroke-width="4"/>
+        <path class="fp__pile" d="M1452 550 Q1494 506 1546 550 Z" fill="#6A5A42"/>
+        <path d="M1430 396 L1484 430" stroke="#2A2A28" stroke-width="20" stroke-linecap="round"/>
+        <circle cx="1492" cy="434" r="12" fill="none" stroke="#9C9A92" stroke-width="6"/>
+        <g class="fp__sw" data-c="184 443"><circle cx="184" cy="443" r="105" fill="#1C1C1A"/><circle cx="184" cy="443" r="93" fill="none" stroke="#33322E" stroke-width="14" stroke-dasharray="12 9"/><circle cx="184" cy="443" r="50" fill="#8C8F92"/><circle cx="184" cy="443" r="18" fill="#3A3936"/><rect x="179" y="397" width="10" height="92" fill="#5E605F"/><rect x="138" y="438" width="92" height="10" fill="#5E605F"/></g>
+        <g class="fp__sw" data-c="424 443"><circle cx="424" cy="443" r="105" fill="#1C1C1A"/><circle cx="424" cy="443" r="93" fill="none" stroke="#33322E" stroke-width="14" stroke-dasharray="12 9"/><circle cx="424" cy="443" r="50" fill="#8C8F92"/><circle cx="424" cy="443" r="18" fill="#3A3936"/><rect x="419" y="397" width="10" height="92" fill="#5E605F"/><rect x="378" y="438" width="92" height="10" fill="#5E605F"/></g>
+        <path d="M30 318 V120 M50 318 V120 M30 300 H50 M30 270 H50 M30 240 H50 M30 210 H50 M30 180 H50 M30 150 H50" stroke="#46454F" stroke-width="5" fill="none"/>
+        <rect x="56" y="98" width="232" height="220" fill="#1E1E1C" stroke="#3A3936" stroke-width="4"/>
+        <rect x="88" y="120" width="184" height="118" fill="#5B6873"/>
+        <polygon points="196,120 236,120 170,238 130,238" fill="#fff" opacity=".1"/>
+        <g class="fp__op">
+          <rect x="112" y="150" width="16" height="88" fill="#2A2C30"/>
+          <path d="M150 238 H206" stroke="#2B2E33" stroke-width="18" stroke-linecap="round"/>
+          <path d="M132 236 L138 178 Q140 168 152 168 H164 Q176 168 178 180 L182 236 Z" fill="#F5C400"/>
+          <rect x="135" y="204" width="46" height="6" fill="#E9E6DC"/>
+          <path d="M168 182 L196 206 L214 196" fill="none" stroke="#F5C400" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="158" cy="150" r="16" fill="#B48C6C"/>
+          <path d="M141 148 Q143 130 160 130 Q176 131 176 146 L190 148 Q190 152 186 152 H141 Z" fill="#141413"/>
+          <line x1="222" y1="238" x2="218" y2="196" stroke="#9C9A92" stroke-width="5"/>
+          <circle cx="217" cy="194" r="7" fill="#A3261C"/>
+          <circle cx="214" cy="197" r="6" fill="#B48C6C"/>
+        </g>
+        <path d="M88 120 H272 V238 H88 Z M180 120 V238" fill="none" stroke="#3A3936" stroke-width="6"/>
+        <rect x="40" y="82" width="264" height="22" fill="#141413"/>
+        <rect x="40" y="100" width="264" height="6" fill="#F5C400"/>
+        <rect x="150" y="62" width="30" height="20" rx="5" fill="#F5C400"/>
+        <rect x="56" y="270" width="232" height="8" fill="#F5C400"/>
+        <g class="fp__box">
+          <rect x="336" y="80" width="40" height="18" fill="#2A2A28"/><rect x="600" y="80" width="40" height="18" fill="#2A2A28"/>
+          <rect x="300" y="96" width="380" height="200" fill="#1F1F1D" stroke="#3A3936" stroke-width="4"/>
+          <rect x="300" y="96" width="380" height="18" fill="#F5C400"/>
+          <line x1="300" y1="152" x2="680" y2="152" stroke="#3A3936" stroke-width="4"/><line x1="300" y1="198" x2="680" y2="198" stroke="#3A3936" stroke-width="4"/><line x1="300" y1="244" x2="680" y2="244" stroke="#3A3936" stroke-width="4"/>
+          <rect x="470" y="124" width="40" height="160" fill="#2A2A28"/>
+          <circle cx="332" cy="300" r="11" fill="#9C9A92"/><circle cx="490" cy="300" r="11" fill="#9C9A92"/><circle cx="648" cy="300" r="11" fill="#9C9A92"/>
+        </g>
+      </g>
+      <rect x="1532" y="430" width="160" height="20" fill="#141413"/>
+      <circle cx="1540" cy="440" r="11" fill="none" stroke="#9C9A92" stroke-width="6"/>
+      <line x1="1500" y1="456" x2="1530" y2="441" stroke="#9C9A92" stroke-width="10" stroke-dasharray="12 4"/>
+      <line x1="1500" y1="456" x2="1530" y2="441" stroke="#2A2A28" stroke-width="3" stroke-dasharray="12 4"/>
+      <g class="fp__wheelie"><g class="fp__shake"><image{% if tractor_clip %} clip-path="url(#fpCut{{ sid }})"{% endif %} href="{{ tractor_src }}" x="1580" y="0" width="1120" height="576"/></g></g>
+      <g class="fp__fly fp__fly--tire" fill="#6A5A42"><circle cx="1610" cy="528" r="9"/><circle cx="1618" cy="534" r="12"/><circle cx="1606" cy="522" r="7"/><circle cx="1620" cy="530" r="10"/><circle cx="1612" cy="536" r="8"/></g>
+      <g class="fp__fly fp__fly--pan" fill="#7A6649"><circle cx="1462" cy="540" r="7"/><circle cx="1466" cy="536" r="9"/><circle cx="1460" cy="542" r="6"/><circle cx="1468" cy="538" r="8"/></g>
+    </svg>
+  </div>
+
+  <button class="fp__ctrl" type="button" data-fp-ctrl data-mode="pause" data-l-pause="Pause" data-l-play="Resume" data-l-again="Pull again" aria-label="Pause" hidden>
+    <svg class="fp__ctrl-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g class="i-pause"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></g><path class="i-play" d="M7 4.5v15l12-7.5z"/><path class="i-again" d="M12 4a8 8 0 1 1-7.4 5h2.3A6 6 0 1 0 12 6v3L7.5 5 12 1z"/></svg>
+    <span data-fp-ctrl-txt>Pause</span>
+  </button>
+</section>
+
+{% schema %}
+{
+  "name": "HM Hero",
+  "tag": "div",
+  "class": "hm-hero-section",
+  "settings": [
+    { "type": "header", "content": "Logo and title" },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo (opcional)",
+      "info": "Vacío = logo HEAVY METAL del tema (logo-stack-ink.svg). Es la imagen principal (LCP): se carga primero."
+    },
+    {
+      "type": "checkbox",
+      "id": "logo_invert",
+      "label": "Aclarar el logo subido (si es oscuro)",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Línea bajo el logo",
+      "default": "“The Evil One”"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Texto para lectores de pantalla y Google (no se ve)",
+      "default": "“The Evil One” is a Pro Stock pulling tractor out of Waterloo, Wisconsin. Merch designed by the crew."
+    },
+    { "type": "header", "content": "Links" },
+    { "type": "text", "id": "cta1_label", "label": "Link 1: texto", "default": "Shop the drop" },
+    { "type": "url", "id": "cta1_link", "label": "Link 1: destino" },
+    { "type": "text", "id": "cta2_label", "label": "Link 2: texto", "default": "Meet the machine" },
+    { "type": "url", "id": "cta2_link", "label": "Link 2: destino" },
+    { "type": "header", "content": "Pull sim" },
+    {
+      "type": "range",
+      "id": "target_ft",
+      "label": "Distancia de full pull",
+      "min": 100,
+      "max": 400,
+      "step": 10,
+      "unit": "ft",
+      "default": 300
+    },
+    { "type": "text", "id": "sim_label", "label": "Título del panel", "default": "Pull sim" },
+    { "type": "text", "id": "sim_class", "label": "Clase del panel", "default": "Pro Stock · WI" },
+    { "type": "text", "id": "distance_label", "label": "Etiqueta de distancia", "default": "Distance" },
+    { "type": "header", "content": "Tractor" },
+    {
+      "type": "image_picker",
+      "id": "tractor",
+      "label": "Recorte del tractor (opcional)",
+      "info": "PNG o WebP con fondo transparente, 1120 x 576 px aprox., trompa a la derecha. Vacío = hm-tractor-cutout.webp del tema."
+    },
+    {
+      "type": "checkbox",
+      "id": "tractor_clip",
+      "label": "Recortar árbol y gente del fondo",
+      "info": "Solo para un recorte subido que todavía trae fondo. Con un PNG limpio, apágalo.",
+      "default": false
+    }
+  ],
+  "presets": [
+    { "name": "HM Hero" }
+  ]
+}
+{% endschema %}

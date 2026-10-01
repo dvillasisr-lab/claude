@@ -1,0 +1,284 @@
+{%- comment -%}
+  FAQ (boceto faq.html). Questions come from the faq_item metaobject (pages contains "faq"),
+  grouped by the category blocks below and sorted by the "order" field.
+  Search, counts, current topic and "Last updated" formatting run in assets/hm-faq.js.
+{%- endcomment -%}
+{%- liquid
+  assign sid = section.id
+  assign contact_url = section.settings.help_link | default: '/pages/contact'
+  assign total = 0
+  assign ld_items = ''
+-%}
+
+<div class="hm-faq" data-hm-faq data-updated="{{ section.settings.updated | escape }}">
+  <section class="hc-banner">
+    <div class="wrap">
+      <nav class="hc-crumbs vh" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="{{ routes.root_url }}">Home</a></li>
+          <li aria-current="page">{{ section.settings.heading | escape }}</li>
+        </ol>
+      </nav>
+      <h1 class="h1">{{ section.settings.heading | escape }}</h1>
+      {%- if section.settings.lede != blank -%}
+        <p class="hc-lede">{{ section.settings.lede }}</p>
+      {%- endif -%}
+      <form class="hc-search" role="search" data-hc-form>
+        <label class="vh" for="hc-q-{{ sid }}">{{ section.settings.search_label | escape }}</label>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input
+          class="input"
+          id="hc-q-{{ sid }}"
+          type="search"
+          placeholder="{{ section.settings.search_placeholder | escape }}"
+          autocomplete="off"
+          spellcheck="false"
+          aria-describedby="hc-count-{{ sid }}"
+          data-hc-q
+        >
+        <button class="hc-clear" type="button" aria-label="Clear search" data-hc-clear hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
+      </form>
+      <p class="hc-count" id="hc-count-{{ sid }}" role="status" aria-live="polite" data-hc-count></p>
+    </div>
+  </section>
+
+  <div class="wrap hc">
+    <nav class="hc-nav" aria-label="{{ section.settings.nav_label | escape }}">
+      <ul data-hc-list>
+        {%- for block in section.blocks -%}
+          {%- assign anchor = block.settings.anchor | default: block.settings.category | handleize -%}
+          <li data-hc-li="{{ anchor }}"><a href="#{{ anchor }}" data-hc-link>{{ block.settings.label | escape }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="hc-body">
+      {%- paginate shop.metaobjects.faq_item.values by 250 -%}
+        {%- assign all_items = shop.metaobjects.faq_item.values -%}
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign cat = block.settings.category
+            assign anchor = block.settings.anchor | default: cat | handleize
+            assign keys = ''
+            for item in all_items
+              assign item_cat = item.category.value | downcase
+              if item_cat == cat and item.pages.value contains 'faq'
+                assign k = item.order.value | default: 0 | plus: 100000
+                assign keys = keys | append: k | append: ','
+              endif
+            endfor
+            assign keys = keys | split: ',' | sort | uniq
+          -%}
+          <section class="hc-cat" id="{{ anchor }}" aria-labelledby="h-{{ anchor }}-{{ sid }}" data-hc-cat {{ block.shopify_attributes }}>
+            <h2 id="h-{{ anchor }}-{{ sid }}">{{ block.settings.label | escape }}</h2>
+            {%- for k in keys -%}
+              {%- for item in all_items -%}
+                {%- liquid
+                  assign item_cat = item.category.value | downcase
+                  unless item_cat == cat and item.pages.value contains 'faq'
+                    continue
+                  endunless
+                  assign ik = item.order.value | default: 0 | plus: 100000 | append: ''
+                  unless ik == k
+                    continue
+                  endunless
+                  assign total = total | plus: 1
+                  assign q_text = item.question.value | strip
+                  assign a_text = item.answer | metafield_text | strip_newlines | strip
+                -%}
+                <details class="qa" data-hc-qa>
+                  <summary>{{ q_text | escape }}</summary>
+                  <div class="a">{{ item.answer | metafield_tag }}</div>
+                </details>
+                {%- capture ld_one -%}{"@type":"Question","name":{{ q_text | json }},"acceptedAnswer":{"@type":"Answer","text":{{ a_text | json }}}}{%- endcapture -%}
+                {%- if ld_items != '' -%}{%- assign ld_items = ld_items | append: ',' -%}{%- endif -%}
+                {%- assign ld_items = ld_items | append: ld_one -%}
+              {%- endfor -%}
+            {%- endfor -%}
+          </section>
+        {%- endfor -%}
+      {%- endpaginate -%}
+
+      {%- if total == 0 -%}
+        <div class="hc-empty">
+          <p><b>{{ section.settings.no_items | escape }}</b></p>
+          {%- if request.design_mode -%}
+            <p>Add entries in Content &gt; Metaobjects &gt; FAQ item, with “faq” in Pages.</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="hc-empty" data-hc-empty hidden>
+        <p><b>No answers match “<span data-hc-term></span>”.</b></p>
+        <p>{{ section.settings.no_match }}</p>
+      </div>
+
+      {%- if section.settings.updated != blank -%}
+        <p class="hc-lu">
+          Last updated: <time datetime="{{ section.settings.updated | escape }}" data-hc-lu>{{ section.settings.updated | escape }}</time>
+        </p>
+      {%- endif -%}
+
+      <aside class="hc-still" aria-labelledby="still-{{ sid }}">
+        <div>
+          <h2 class="h2" id="still-{{ sid }}">{{ section.settings.help_heading | escape }}</h2>
+          {%- if section.settings.help_text != blank -%}
+            <p>{{ section.settings.help_text }}</p>
+          {%- endif -%}
+        </div>
+        <a class="btn" href="{{ contact_url }}">{{ section.settings.help_button | escape }}</a>
+      </aside>
+    </div>
+  </div>
+</div>
+
+{%- if total > 0 -%}
+  <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{ ld_items }}]}
+  </script>
+{%- endif -%}
+
+<script src="{{ 'hm-faq.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .hm-faq .hc-banner{background:var(--surface);border-bottom:1px solid var(--line)}
+  .hm-faq .hc-banner .wrap{padding-block:clamp(24px,3vw,36px) 10px;display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,400px);grid-template-areas:"h q" "l q" ". c";column-gap:56px;row-gap:6px;align-items:end}
+  .hm-faq .hc-banner .h1{margin:0;grid-area:h}
+  .hm-faq .hc-lede{grid-area:l;align-self:start;margin:0;font-size:var(--t-sm);color:var(--mute)}
+  .hm-faq .hc-lede a,.hm-faq .hc-still p a{color:var(--ink);text-underline-offset:3px;overflow-wrap:anywhere}
+  .hm-faq .hc-search{grid-area:q;align-self:center;position:relative;width:100%;margin:0}
+  .hm-faq .hc-count{grid-area:c;margin:0;font-size:var(--t-xs);color:var(--mute);min-height:1.5em}
+  .hm-faq .hc-count:empty{min-height:12px}
+  .hm-faq .hc-search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;fill:none;stroke:var(--mute);stroke-width:2;pointer-events:none}
+  .hm-faq .hc-search .input{padding-left:40px;padding-right:44px;min-height:44px;font-size:var(--t-sm)}
+  .hm-faq .hc-search .input::-webkit-search-cancel-button{display:none}
+  .hm-faq .hc-clear{position:absolute;right:2px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;background:none;cursor:pointer;display:grid;place-items:center}
+  .hm-faq .hc-clear svg{position:static;transform:none;stroke:var(--ink)}
+  .hm-faq .hc-crumbs ol{list-style:none;margin:0;padding:0}
+  @media (max-width:760px){
+    .hm-faq .hc-banner .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"h" "l" "q" "c"}
+    .hm-faq .hc-search{margin-top:10px}
+  }
+
+  .hm-faq .hc{display:grid;grid-template-columns:240px minmax(0,880px);gap:clamp(32px,6vw,120px);padding-block:32px var(--sect);align-items:start}
+  .hm-faq .hc-nav ul{list-style:none;margin:0;padding:0;display:grid}
+  .hm-faq .hc-nav a{display:inline-block;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.03em;line-height:34px;text-decoration:none;color:var(--soft);white-space:nowrap}
+  .hm-faq .hc-nav a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:6px}
+  .hm-faq .hc-nav a[aria-current="true"]{color:var(--ink);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+  .hm-faq .hc-nav a .n{font-family:var(--f-sans);font-stretch:100%;font-size:11px;font-weight:600;color:var(--mute);margin-left:6px;letter-spacing:0}
+  @media (min-width:861px){.hm-faq .hc-nav{position:sticky;top:calc(var(--header) + 24px)}}
+
+  .hm-faq .hc-body{min-width:0}
+  .hm-faq .hc-cat{scroll-margin-top:calc(var(--header) + 16px);margin-bottom:28px}
+  .hm-faq .hc-cat:not(:has(.qa)){display:none}
+  .hm-faq .hc-cat>h2{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h3);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin:0 0 4px}
+  .hm-faq .qa{border-top:1px solid var(--line)}
+  .hm-faq .hc-cat .qa:last-of-type{border-bottom:1px solid var(--line)}
+  .hm-faq .qa summary{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:48px;padding-block:10px;cursor:pointer;font-weight:600;font-size:var(--t-sm);list-style:none;color:var(--ink)}
+  .hm-faq .qa summary::-webkit-details-marker{display:none}
+  .hm-faq .qa summary::after{content:"+";font-size:20px;font-weight:400;flex:none;width:20px;text-align:center}
+  .hm-faq .qa[open] summary::after{content:"\2212"}
+  .hm-faq .qa summary:hover{text-decoration:underline;text-underline-offset:3px}
+  .hm-faq .qa .a{padding:0 36px 14px 0;font-size:var(--t-sm);line-height:1.6;color:var(--soft);max-width:70ch}
+  .hm-faq .qa .a p{margin:0 0 8px}
+  .hm-faq .qa .a p:last-child{margin:0}
+  .hm-faq .qa .a ul,.hm-faq .qa .a ol{margin:0 0 8px;padding-left:18px}
+  .hm-faq .qa .a a{color:var(--ink);text-underline-offset:3px}
+  .hm-faq .qa .a b,.hm-faq .qa .a strong{color:var(--ink)}
+  .hm-faq mark{background:#FFF0A8;color:inherit;padding:0}
+  .hm-faq .hc-empty{padding:20px;background:var(--surface);border:1px solid var(--line);font-size:var(--t-sm);margin-bottom:16px}
+  .hm-faq .hc-empty p{margin:0 0 8px}
+  .hm-faq .hc-empty p:last-child{margin:0}
+  .hm-faq .hc-empty a{color:var(--ink);text-underline-offset:3px}
+  .hm-faq .hc-lu{margin:0 0 12px;font-size:var(--t-xs);color:var(--mute)}
+  .hm-faq .hc-lu time{color:var(--ink);font-weight:600}
+
+  .hm-faq .hc-still{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;background:var(--surface);border:1px solid var(--line);padding:20px clamp(16px,2vw,24px);margin-top:8px}
+  .hm-faq .hc-still .h2{margin:0}
+  .hm-faq .hc-still p{margin:4px 0 0;font-size:var(--t-sm);color:var(--soft)}
+
+  @media (max-width:860px){
+    .hm-faq .hc{grid-template-columns:minmax(0,1fr);gap:20px;padding-top:0}
+    .hm-faq .hc-nav{position:sticky;top:var(--header);z-index:5;background:var(--bg);margin-inline:calc(var(--gutter) * -1);border-bottom:1px solid var(--line)}
+    .hm-faq .hc-nav ul{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:10px var(--gutter)}
+    .hm-faq .hc-nav ul::-webkit-scrollbar{display:none}
+    .hm-faq .hc-nav li{flex:none}
+    .hm-faq .hc-nav a{font-size:var(--t-xs);line-height:1;padding:15px 12px;border:1px solid var(--line);background:var(--surface)}
+    .hm-faq .hc-nav a[aria-current="true"]{border-color:var(--ink)}
+    .hm-faq .hc-cat{scroll-margin-top:calc(var(--header) + 72px)}
+    .hm-faq .qa .a{padding-right:0}
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM FAQ",
+  "tag": "section",
+  "class": "hm-section hm-section--faq",
+  "settings": [
+    { "type": "header", "content": "Header" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "FAQ" },
+    { "type": "inline_richtext", "id": "lede", "label": "Intro line", "default": "Orders, shipping, sizing and the tractor. Search or pick a topic." },
+    { "type": "text", "id": "search_label", "label": "Search label (screen readers)", "default": "Search the FAQ" },
+    { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Search questions, e.g. tracking" },
+    { "type": "text", "id": "nav_label", "label": "Topic list label (screen readers)", "default": "Help topics" },
+    { "type": "header", "content": "Messages" },
+    { "type": "inline_richtext", "id": "no_match", "label": "No results text", "default": "Try a shorter word, or <a href=\"/pages/contact\">send us a message</a>." },
+    { "type": "text", "id": "no_items", "label": "Text when there are no questions yet", "default": "Answers are on the way." },
+    {
+      "type": "text",
+      "id": "updated",
+      "label": "Last updated (YYYY-MM-DD)",
+      "info": "Change it when you edit the questions. Leave empty to hide.",
+      "default": "2026-10-01"
+    },
+    { "type": "header", "content": "Still need help?" },
+    { "type": "text", "id": "help_heading", "label": "Heading", "default": "Still need help?" },
+    { "type": "inline_richtext", "id": "help_text", "label": "Text", "default": "Send us a message and we’ll get back to you within 2 business days." },
+    { "type": "text", "id": "help_button", "label": "Button label", "default": "Contact us" },
+    { "type": "url", "id": "help_link", "label": "Button link", "info": "Empty = /pages/contact" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "select",
+          "id": "category",
+          "label": "FAQ item category",
+          "options": [
+            { "value": "orders", "label": "Orders" },
+            { "value": "shipping", "label": "Shipping" },
+            { "value": "returns", "label": "Returns" },
+            { "value": "sizing", "label": "Sizing" },
+            { "value": "products", "label": "Products" },
+            { "value": "drops", "label": "Drops" },
+            { "value": "payments", "label": "Payments" },
+            { "value": "account", "label": "Account" },
+            { "value": "evil_list", "label": "The Evil List" },
+            { "value": "sponsors", "label": "Sponsors" },
+            { "value": "special_edition", "label": "Special edition" },
+            { "value": "tractor", "label": "Tractor" }
+          ],
+          "default": "orders"
+        },
+        { "type": "text", "id": "label", "label": "Title", "default": "Orders" },
+        { "type": "text", "id": "anchor", "label": "Anchor (for links like /pages/faq#orders)", "default": "orders" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM FAQ",
+      "blocks": [
+        { "type": "category", "settings": { "category": "orders", "label": "Orders", "anchor": "orders" } },
+        { "type": "category", "settings": { "category": "shipping", "label": "Shipping", "anchor": "shipping" } },
+        { "type": "category", "settings": { "category": "returns", "label": "Returns & exchanges", "anchor": "returns" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

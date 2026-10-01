@@ -1,0 +1,150 @@
+{
+  "sections": {
+    "main": {
+      "type": "hm-sizes",
+      "blocks": {
+        "chart_tees": {
+          "type": "chart",
+          "settings": {
+            "style": "tee",
+            "key": "tees",
+            "label": "Tees",
+            "subtitle": "Short sleeve tees · S to 3XL",
+            "fit": "Unisex fit. Between sizes? Size up for a relaxed fit.",
+            "table_label": "Measured flat, garment size",
+            "show_figure": true,
+            "text": "Chest: armpit to armpit. Length: top of shoulder to hem. Printed-to-order items can’t be returned for size, so compare with a shirt you own.",
+            "shop_label": "Shop tees",
+            "shop_link": "/collections/all"
+          }
+        },
+        "chart_longsleeve": {
+          "type": "chart",
+          "settings": {
+            "style": "long_sleeve",
+            "key": "longsleeve",
+            "label": "Long sleeves",
+            "subtitle": "Long sleeve tees · S to 3XL",
+            "fit": "Unisex fit. Between sizes? Size up for a relaxed fit.",
+            "table_label": "Measured flat, garment size",
+            "show_figure": true,
+            "text": "Chest: armpit to armpit. Length: top of shoulder to hem. Printed-to-order items can’t be returned for size, so compare with a shirt you own.",
+            "shop_label": "Shop long sleeves",
+            "shop_link": "/collections/all"
+          }
+        },
+        "chart_sweats": {
+          "type": "chart",
+          "settings": {
+            "style": "sweats",
+            "key": "sweats",
+            "label": "Hoodies & crewnecks",
+            "subtitle": "Pullover hoodies and crewnecks · S to 3XL",
+            "fit": "Unisex fit. Between sizes? Size up for a relaxed fit.",
+            "table_label": "Measured flat, garment size",
+            "show_figure": true,
+            "text": "Chest: armpit to armpit. Length: top of shoulder to hem. Printed-to-order items can’t be returned for size, so compare with a shirt you own.",
+            "shop_label": "Shop hoodies & crewnecks",
+            "shop_link": "/collections/all"
+          }
+        },
+        "chart_kids": {
+          "type": "chart",
+          "settings": {
+            "style": "kids",
+            "key": "kids",
+            "label": "Kids",
+            "subtitle": "Youth tees and hoodies · YS to YXL",
+            "fit": "Unisex fit. Between sizes? Size up for a relaxed fit.",
+            "table_label": "Measured flat, garment size",
+            "show_figure": true,
+            "text": "Chest: armpit to armpit. Length: top of shoulder to hem. Printed-to-order items can’t be returned for size, so compare with a shirt you own.",
+            "shop_label": "Shop kids",
+            "shop_link": "/collections/all"
+          }
+        },
+        "chart_hats": {
+          "type": "chart",
+          "settings": {
+            "style": "hats",
+            "key": "hats",
+            "label": "Hats",
+            "subtitle": "Crew Cap and “The Evil One” Beanie · One size",
+            "fit": "One size.",
+            "table_label": "Measured flat, garment size",
+            "show_figure": false,
+            "text": "Measure around your head, just above the ears and eyebrows.",
+            "shop_label": "Shop hats",
+            "shop_link": "/collections/all"
+          }
+        },
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "key": "1",
+            "title": "Lay it flat.",
+            "text": "Use a shirt or hoodie that fits the way you like. Smooth out wrinkles, sleeves to the side."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "key": "A",
+            "title": "Chest width.",
+            "text": "Straight across, armpit to armpit."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "key": "B",
+            "title": "Body length.",
+            "text": "From the highest point of the shoulder, next to the collar, down to the hem."
+          }
+        },
+        "step_4": {
+          "type": "step",
+          "settings": {
+            "key": "C",
+            "title": "Sleeve.",
+            "text": "From the shoulder seam to the end of the cuff."
+          }
+        },
+        "step_5": {
+          "type": "step",
+          "settings": {
+            "key": "2",
+            "title": "Compare.",
+            "text": "Find the size in the chart closest to your numbers. Between sizes? Size up for a relaxed fit."
+          }
+        }
+      },
+      "block_order": [
+        "chart_tees",
+        "chart_longsleeve",
+        "chart_sweats",
+        "chart_kids",
+        "chart_hats",
+        "step_1",
+        "step_2",
+        "step_3",
+        "step_4",
+        "step_5"
+      ],
+      "settings": {
+        "heading": "Size guide",
+        "nav_label": "Size charts",
+        "empty_text": "Measurements for this style are coming soon.",
+        "policy_label": "Refund Policy",
+        "policy_link": "/pages/policies?p=refund",
+        "show_measure": true,
+        "measure_heading": "How to measure",
+        "measure_sub": "Measure a shirt you already like, laid flat",
+        "measure_note": "<p>Hats: measure around your head, just above the ears and eyebrows. Printed-to-order items can’t be returned for size, so it’s worth the two minutes. See the <a href=\"/pages/policies?p=refund\">Refund Policy</a>.</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
