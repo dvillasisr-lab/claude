@@ -1,4 +1,6 @@
-/* HERO "Full Pull" v10 (sobre v9):
+/* HERO "Full Pull" v14 (sobre v13): la bandera regresa a su lugar de v12 (meta = orilla derecha del contenido menos la
+   bandera). Pause / Resume / Pull again es texto chico con ícono debajo de la bandera; su orilla derecha = --edge (CSS).
+   v10 (sobre v9):
    - Humo de regreso al de v8: columna densa casi vertical detrás del texto (hereda el avance del tractor).
    - 0 FT = borde izquierdo del logo (el gutter del contenido). En el frame 0 la llanta trasera del tractor está en 0 FT;
      la escala 0 → 300 FT va de ahí a la bandera y la trompa llega a la bandera en el full pull. El sled queda a la izquierda.
@@ -43,7 +45,7 @@
   var brand = $('.fp__brand'), rig = $('.fp__rig'), track = $('.fp__track'), top = $('.fp__top'), rail = $('[data-fp-rail]'), flag = $('[data-fp-flag]');
   var fill = $('.fp__rail-fill'), dist = $('[data-fp-dist]'), chip = $('[data-fp-chip]'), needle = $('.fp__needle'), rpm = $('[data-fp-rpm]');
   var ctrl = $('[data-fp-ctrl]'), ctrlTxt = $('[data-fp-ctrl-txt]');
-  /* v13: el control vive abajo a la derecha junto a la bandera; ícono + texto (pause / play / again) */
+  /* el control vive abajo a la derecha, debajo de la bandera; ícono + texto (pause / play / again) */
   function setCtrl(mode) { ctrl.setAttribute('data-mode', mode); ctrlTxt.textContent = mode === 'pause' ? 'Pause' : mode === 'play' ? 'Resume' : 'Pull again'; }
   var box = $('.fp__box'), pile = $('.fp__pile'), wheelie = $('.fp__wheelie'), smokeG = $('.fp__smoke');
   var wheels = [].slice.call(root.querySelectorAll('.fp__sw'));
@@ -77,13 +79,7 @@
     left = $('.fp__logo').getBoundingClientRect().left - tr.left;
     right = narrow ? tr.width - (brand.getBoundingClientRect().left - tr.left) : tp.right - tr.left - parseFloat(cs.paddingRight);
     var flagW = flag.getBoundingClientRect().width + Math.max(22, rigW * .04);
-    /* v13 escritorio: el botón Pause / Pull again va a la derecha del poste, sobre la tierra; la meta se recorre para dejarle lugar.
-       En celular va en la fila de tierra debajo de los pies (CSS), alineado a la derecha bajo la bandera. */
-    var poleW = flag.getBoundingClientRect().width, CG = 12;
-    var ctrlW = narrow ? 0 : Math.max(150, ctrl.getBoundingClientRect().width);
-    var noseOff = U.nose * scale, finish = right - (narrow ? flagW : Math.max(flagW, poleW + CG + ctrlW));
-    if (narrow) ctrl.style.left = ''; else { ctrl.style.left = (tr.left - rr.left) + finish + 4 + poleW + CG + 'px'; ctrl.style.right = 'auto'; }
-    if (narrow) ctrl.style.right = '';
+    var noseOff = U.nose * scale, finish = right - flagW;   /* v14: igual que v12 (sin corrimiento) */
     /* v10: 0 FT = borde izquierdo del logo (left). En el frame 0 la llanta trasera del tractor está en 0 FT (tractor completo
        a la vista, sled a la izquierda en el margen); en el full pull la trompa llega a la bandera. */
     var zero = left, startNose = zero + (U.nose - U.rear) * scale;

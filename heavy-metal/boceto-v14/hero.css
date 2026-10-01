@@ -1,4 +1,7 @@
-/* HERO "Full Pull" v10: humo de v8; 0 FT alineado al borde izquierdo del logo; la bandera no toca el pull sim. (sobre v8/v9)
+/* HERO "Full Pull" v14 (sobre v13): sin párrafo visible (queda en .vh para lectores de pantalla); botones en fila justo
+   debajo de “THE EVIL ONE”, alineados con el logo; bandera de regreso a su lugar de v12; Pause / Resume / Pull again
+   es texto chico subrayado con ícono, debajo de la bandera sobre la tierra (alineado a la derecha).
+   v10: humo de v8; 0 FT alineado al borde izquierdo del logo; la bandera no toca el pull sim. (sobre v8/v9)
    - Un solo fondo: tormenta (colores de marca) con rayo al llegar al full pull. Sin selector.
    - Rig = un solo SVG (viewBox 2700x576) con proporción real: sled ~1.3 veces el tractor. Todo escala con el ancho (--rigw).
    - v8: rig ~1.4 veces más grande. La pista se mete DETRÁS del bloque de texto (margen negativo); logo, texto,
@@ -10,7 +13,7 @@
   --rigw:min(92vw,1800px);                      /* ancho del rig: escala con la ventana (v7: 66vw) */
   --righ:calc(var(--rigw) * .21333);            /* 576 / 2700 */
   --dirt-row:clamp(34px,3vw,56px);             /* franja de tierra con los pies */
-  --dirt:var(--dirt-row);
+  --dirt:max(var(--dirt-row),calc(var(--dirt-row) * .32 + 40px));   /* v14: abajo de los pies cabe una línea de texto para Pause / Pull again */
   --logo:clamp(260px,29vw,560px);
   --fp-ink:#F2F0E9; --fp-soft:#D6D3CA; --fp-mute:#ABA79D;
   --fp-panel:rgba(14,15,17,.74); --fp-panel-line:rgba(242,240,233,.18);
@@ -51,8 +54,7 @@
 .fp__h1{margin:0;line-height:0}
 .fp__logo{width:var(--logo);height:auto;display:block;filter:invert(.95) sepia(.08) drop-shadow(0 2px 10px rgba(0,0,0,.45))}
 .fp__tag{margin:4px 0 0;font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:var(--t-hero);line-height:1;letter-spacing:.03em;text-transform:uppercase;color:var(--fp-ink);text-shadow:0 1px 3px rgba(0,0,0,.7),0 1px 14px rgba(0,0,0,.6)}
-.fp__sub{margin:0;color:var(--fp-ink);font-size:var(--t-sm);max-width:46ch;text-shadow:0 1px 2px rgba(0,0,0,.95),0 0 10px rgba(0,0,0,.85),0 0 22px rgba(0,0,0,.6)}  /* el rig pasa detrás: sombra fuerte para que se lea */
-.fp__brand .btn-row{margin-top:4px}
+.fp__brand .btn-row{margin-top:6px;flex-wrap:nowrap}  /* v14: en fila justo debajo de “THE EVIL ONE”, alineados con el logo */
 .fp__brand .btn{background:var(--accent);border-color:var(--accent);color:var(--ink);box-shadow:0 4px 18px rgba(0,0,0,.45)}
 .fp__brand .btn:hover{background:#FFD83D;border-color:#FFD83D}
 .fp__brand .btn--ghost{background:#0E0F11;border-color:#0E0F11;color:var(--fp-ink)}  /* v13: sin contorno blanco; sólido oscuro (contraste ~17:1) */
@@ -73,12 +75,15 @@
 .fp__dist small{font-size:16px;font-weight:600;margin-left:4px;color:var(--fp-mute)}
 .fp__chip{justify-self:start;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border:1px solid currentColor}
 .fp__chip.is-full{background:var(--accent);border-color:var(--accent);color:var(--ink)}
-/* v13: Pause / Resume / Pull again fuera del panel: abajo a la derecha, sobre la tierra junto a la bandera (hero.js pone left en escritorio) */
-.fp__ctrl{position:absolute;z-index:4;right:var(--gutter);bottom:max(6px,calc((var(--dirt-row) - 44px) / 2));display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 12px;
-  background:var(--accent);color:var(--ink);border:1px solid var(--ink);box-shadow:0 3px 12px rgba(0,0,0,.45);font:inherit;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;cursor:pointer}
-.fp__ctrl:hover{background:#FFD83D}
-.fp__ctrl:focus-visible{outline:2px solid var(--fp-ink);outline-offset:3px}
-.fp__ctrl-ico{width:18px;height:18px;flex:none;fill:currentColor}
+/* v14: Pause / Resume / Pull again = texto chico subrayado con ícono, debajo de la bandera sobre la tierra, alineado a la
+   derecha con la orilla de la bandera (--edge lo pone hero.js). Se ve chico pero el área táctil mide 44px de alto. */
+.fp__ctrl{position:absolute;z-index:4;right:var(--edge,var(--gutter));bottom:0;display:inline-flex;align-items:flex-end;gap:6px;min-height:44px;min-width:44px;padding:0 0 6px 8px;
+  background:none;border:0;color:var(--fp-ink);font:inherit;font-size:11px;font-weight:800;letter-spacing:.1em;line-height:1;text-transform:uppercase;white-space:nowrap;cursor:pointer;text-shadow:0 1px 2px rgba(0,0,0,.6)}
+.fp__ctrl span{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.fp__ctrl:hover{color:var(--accent)}
+.fp__ctrl:hover span{text-decoration-thickness:2px}
+.fp__ctrl:focus-visible{outline:2px solid var(--accent);outline-offset:0}
+.fp__ctrl-ico{width:14px;height:14px;flex:none;fill:currentColor;filter:drop-shadow(0 1px 1px rgba(0,0,0,.5))}
 .fp__ctrl-ico>*{display:none}
 .fp__ctrl[data-mode="pause"] .i-pause,.fp__ctrl[data-mode="play"] .i-play,.fp__ctrl[data-mode="again"] .i-again{display:inline}
 
@@ -127,13 +132,6 @@
 @keyframes fpMarquee{to{transform:translateX(-50%)}}
 
 /* ---------- responsive ---------- */
-/* v9, escritorio ancho: texto y botones en una fila bajo el logo. El bloque queda más bajo (la pista sube) y los botones
-   se van hacia el centro: menos aire entre el texto y el pull sim, y el tractor arranca detrás del texto, no de los botones */
-@media (min-width:1180px){
-  .fp__brand{grid-template-columns:auto 1fr;column-gap:clamp(20px,2vw,36px);align-items:center}
-  .fp__h1,.fp__tag{grid-column:1/-1}
-  .fp__brand .btn-row{margin-top:0;flex-wrap:nowrap}
-}
 @media (max-width:860px){
   /* móvil y tablet: logo, panel compacto, pista */
   .fp{--rigw:122vw;--logo:min(60vw,420px);--tuck:calc(var(--righ) * .2)}
@@ -145,9 +143,6 @@
   .fp__tele-head{display:none}
   .fp__tach{width:76px}
   .fp__dist{font-size:34px}
-  /* v13: debajo de los pies queda una fila de tierra para el botón (abajo a la derecha, bajo la bandera) */
-  .fp{--dirt:calc(var(--dirt-row) + 56px)}
-  .fp__ctrl{bottom:6px}
   .fp__read{grid-template-columns:auto auto;justify-content:start;align-items:center;column-gap:10px}
   .fp__read .label{grid-column:1/-1}
   .fp__flag{height:calc(var(--righ) * .78)}  /* la pista se mete un poco bajo el pull sim: la bandera queda debajo */
