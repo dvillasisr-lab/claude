@@ -1,0 +1,449 @@
+<title>Heavy Metal Pro Stock · “The Evil One” | Tractor Pulling Merch</title>
+<meta name="description" content="Merch from Heavy Metal Pro Stock, “The Evil One”: the only Cat V8 Pro Stock pulling tractor in the class, built in Waterloo, WI. Tees, hoodies and hats.">
+<meta property="og:title" content="Heavy Metal Pro Stock · “The Evil One” | Tractor Pulling Merch">
+<meta property="og:description" content="Heavy Metal Pro Stock, “The Evil One”: the only Cat V8 Pro Stock pulling tractor in the class, built in Waterloo, WI. Merch designed by the crew.">
+<meta property="og:image" content="img/hm-hero.webp">
+<meta name="theme-color" content="#1A1D22">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<link rel="stylesheet" href="hero.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["SportsTeam", "Organization"],
+      "@id": "#team",
+      "name": "Heavy Metal Pro Stock",
+      "alternateName": "“The Evil One”",
+      "legalName": "Heavy Metal Pro Stock",
+      "sport": "Tractor pulling",
+      "logo": "img/logo-ink.svg",
+      "image": "img/hm-hero.webp",
+      "email": "heavymetalevil72@gmail.com",
+      "telephone": "+1-920-650-4374",
+      "location": {
+        "@type": "Place",
+        "address": { "@type": "PostalAddress", "addressLocality": "Waterloo", "addressRegion": "WI", "postalCode": "53594", "addressCountry": "US" }
+      },
+      "sameAs": ["https://www.facebook.com/heavymetalprostock/"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "#website",
+      "name": "Heavy Metal Pro Stock · “The Evil One”",
+      "publisher": { "@id": "#team" },
+      "inLanguage": "en-US"
+    }
+  ]
+}
+</script>
+<style>
+/* Home v4: hero Full Pull → Shop (categorías + 1 fila) → The Machine (única banda oscura) → First fire (video) → Next up → Partner.
+   Cada sección cabe en una pantalla de laptop; una acción por bloque. Solo variables de hm.css. */
+html,body{overflow-x:clip}
+.home-sect{padding-block:var(--sect)}
+.home-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px;margin-bottom:16px}
+.home-head .link{white-space:nowrap}
+.ext::after{content:" \2197"}
+
+/* 1 · SHOP: cabe en 100svh menos el header */
+.shop-home{background:var(--bg);padding-block:clamp(32px,4vw,48px)}
+.shop-home .cats{margin-bottom:20px}
+.shop-home .pgrid{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (min-width:761px){.shop-home .card__media .ph{--ar:5/6}}
+@media (max-height:940px) and (min-width:761px){.shop-home .card__media .ph{--ar:1/1}}
+.shop-home .note{margin-top:10px}
+@media (max-width:760px){
+  .shop-home .pgrid{display:flex;gap:4px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);
+    margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter);padding-bottom:6px;scrollbar-width:none;overscroll-behavior-x:contain}
+  .shop-home .pgrid::-webkit-scrollbar{display:none}
+  .shop-home .pgrid>.card{flex:0 0 68%;scroll-snap-align:start}
+}
+
+/* 2 · THE MACHINE: copia + díptico vertical (fotos reales 3:4) */
+.mach{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);align-items:center}
+.mach__copy{display:grid;gap:16px;justify-items:start;max-width:440px}
+.mach__copy .label{color:var(--accent)}
+.mach__copy p{margin:0;color:#CFCCC3}
+.mach__specs{display:grid;grid-template-columns:repeat(3,auto);gap:12px 28px;margin:4px 0 0}
+.mach__specs div{display:grid;gap:2px}
+.mach__specs dt{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#A9A59B}
+.mach__specs dd{margin:0;font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h2);font-weight:700;text-transform:uppercase;line-height:1.15;color:var(--night-ink);white-space:nowrap}
+.mach__specs .unk{color:var(--accent)}
+.mach__copy .link{color:var(--night-ink)}
+.dip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;margin:0;justify-self:end;width:min(100%,calc((100svh - var(--header) - 2 * var(--sect) - 28px) * 1.5 + 4px))}
+.dip figure{margin:0;display:grid;gap:8px}
+.dip .frame{aspect-ratio:3/4;overflow:hidden;background:#1E1E1C}
+.dip figcaption{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#A9A59B}
+@media (max-width:860px){
+  .mach{grid-template-columns:1fr}
+  .dip{width:100%;justify-self:stretch}
+  .mach__specs{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 16px}
+  .mach__specs dd{font-size:var(--t-md);white-space:normal}
+}
+
+/* 3 · FIRST FIRE: la historia en un momento (el rayo) + póster del video de la dueña */
+.fire{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);align-items:center}
+.fire__copy{display:grid;gap:14px;justify-items:start;max-width:480px}
+.fire__quote{font-size:var(--t-h1);line-height:1.12}
+.fire__sign{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h2);text-transform:uppercase;letter-spacing:.01em;color:var(--ink);display:inline-flex;align-items:center;gap:10px}
+.fire__bolt{width:22px;height:30px;flex:none;fill:var(--accent);stroke:var(--ink);stroke-width:1.5;stroke-linejoin:round;transform:rotate(8deg)}
+.fire__copy p.body{margin:0;font-size:var(--t-sm)}
+.vid{margin:0;display:grid;gap:8px;width:min(100%,calc((100svh - var(--header) - 2 * var(--sect) - 28px) * 16 / 9));justify-self:end}
+.vid__frame{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--night);isolation:isolate}
+.vid__frame img{filter:brightness(.42) contrast(1.1) grayscale(.25)}
+.vid__frame::after{content:"";position:absolute;inset:0;background:var(--surface);opacity:0;pointer-events:none;mix-blend-mode:overlay}
+.vid.is-lit .vid__frame::after{animation:fireFlash 1.6s steps(1,end) 1}
+.vid.is-lit .vid__frame img{animation:fireDim 1.6s steps(1,end) 1}
+@keyframes fireFlash{0%{opacity:0}8%{opacity:.9}12%{opacity:0}18%{opacity:.7}22%{opacity:0}100%{opacity:0}}
+@keyframes fireDim{0%{filter:brightness(.42) contrast(1.1) grayscale(.25)}8%{filter:brightness(1.4) contrast(1.2) grayscale(.6)}22%{filter:brightness(1.1) grayscale(.6)}26%{filter:brightness(.08)}70%{filter:brightness(.08)}100%{filter:brightness(.42) contrast(1.1) grayscale(.25)}}
+.vid__play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:72px;height:72px;border-radius:50%;border:0;background:var(--accent);color:var(--ink);cursor:pointer;transition:transform .15s}
+.vid__play:hover{transform:translate(-50%,-50%) scale(1.06)}
+.vid__play svg{width:24px;height:24px;margin-left:4px;fill:currentColor}
+.vid__play:focus-visible{outline:2px solid var(--surface);outline-offset:4px}
+.vid__meta{position:absolute;left:12px;right:12px;bottom:10px;display:flex;justify-content:space-between;gap:12px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--night-ink)}
+.vid__msg{position:absolute;left:50%;top:calc(50% + 48px);transform:translateX(-50%);margin:0;font-size:var(--t-xs);color:var(--night-ink);white-space:nowrap}
+.vid figcaption{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+@media (max-width:860px){
+  .fire{grid-template-columns:1fr}
+  .vid{width:100%;justify-self:stretch;order:-1}
+  .vid__play{width:60px;height:60px}
+}
+
+/* 4 · NEXT UP: franja amarilla con fecha, evento, contador de temporada y dos links */
+.nx{background:var(--accent);color:var(--ink);border-block:1px solid var(--ink)}
+.nx__in{display:grid;grid-template-columns:auto minmax(0,1.3fr) minmax(0,1.2fr) auto;gap:16px clamp(20px,3vw,48px);align-items:center;padding-block:clamp(18px,2.4vw,28px)}
+.nx__date{display:grid;place-items:center;align-content:center;width:84px;height:84px;background:var(--ink);color:var(--accent);text-align:center;line-height:1}
+.nx__date span{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--night-ink)}
+.nx__date b{font-family:var(--f-head);font-stretch:78%;font-size:32px;font-weight:800}
+.nx__ev{display:grid;gap:4px;min-width:0}
+.nx__kick{margin:0;font-size:var(--t-xs);font-weight:800;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.nx__ev .nx__kick::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ink)}
+.nx__meta{margin:0;font-size:var(--t-sm);color:var(--ink)}
+.nx__season{display:grid;gap:6px;padding-left:clamp(16px,2vw,32px);border-left:1px solid rgba(28,27,25,.35)}
+.nx__stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0}
+.nx__stats div{display:grid;gap:0}
+.nx__stats dd{order:-1;margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:clamp(30px,3vw,40px);line-height:1}
+.nx__stats dt{font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.nx__stats dt small{display:block;font-size:11px;font-weight:500;letter-spacing:0;text-transform:none}
+.nx__go{display:grid;gap:10px;justify-items:center}
+.nx__go .link{color:var(--ink)}
+@media (max-width:1024px){
+  .nx__in{grid-template-columns:auto minmax(0,1fr)}
+  .nx__season{grid-column:1/-1;padding-left:0;border-left:0;border-top:1px solid rgba(28,27,25,.35);padding-top:12px}
+  .nx__go{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px}
+}
+@media (max-width:480px){.nx__date{width:68px;height:68px}.nx__date b{font-size:26px}}
+
+/* Next pull: wins en 0 = "Coming soon" (más chico que un número); fecha de actualización */
+.nx__stats dd.is-soon{font-size:clamp(17px,1.6vw,20px);line-height:1.15;padding-bottom:4px;text-transform:uppercase}
+.nx__meta a{color:var(--ink);font-weight:700;text-underline-offset:3px}
+.nx__upd{margin:0;font-size:11px;color:var(--ink);opacity:.8}
+.nx .note{grid-column:1/-1;margin:0}
+
+/* 5 · SPONSORSHIP: una línea y un botón (los paquetes y el form viven en sponsors.html) */
+.sp{background:var(--surface);border-bottom:1px solid var(--line)}
+.sp__in{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:16px 32px;padding-block:clamp(28px,3.4vw,44px)}
+.sp__copy{display:grid;gap:6px;min-width:0;max-width:62ch}
+.sp__line{margin:0;font-size:var(--t-md);color:var(--soft)}
+.sp__line b{color:var(--ink);font-weight:800}
+.sp .note{grid-column:1/-1;margin:0}
+@media (max-width:600px){.sp__in{grid-template-columns:1fr;align-items:start}.sp__in .btn{width:100%}}
+</style>
+<div data-hm-header data-current="home"></div>
+<main id="main">
+<!-- HERO Full Pull v7. Requiere hero.css y hero.js (después de hm.js).
+     En Shopify: sección "HM Hero"; ajustes = distancia de full pull, textos y botones; fondo único de tormenta.
+     Las frases de la cinta amarilla son bloques de texto de la sección (máximo 3). -->
+<section class="fp" data-fp data-target="300" aria-labelledby="fp-title">
+  <div class="fp__sky" aria-hidden="true">
+    <i class="fp__storm"></i><i class="fp__clouds"></i>
+    <svg class="fp__bolt" viewBox="0 0 120 420"><path d="M70 0 L38 150 L66 150 L22 300 L52 300 L8 420 L96 250 L64 250 L104 120 L74 120 L98 0 Z" fill="#F7F9FF"/></svg>
+    <i class="fp__flash"></i>
+  </div>
+  <svg class="fp__smokes" aria-hidden="true" focusable="false">
+    <defs>
+      <radialGradient id="fpPuff0"><stop offset="0" stop-color="#0E0E0D"/><stop offset=".5" stop-color="#141413" stop-opacity=".96"/><stop offset=".78" stop-color="#1E1D1B" stop-opacity=".55"/><stop offset="1" stop-color="#2A2926" stop-opacity="0"/></radialGradient>
+      <radialGradient id="fpPuff1"><stop offset="0" stop-color="#151514"/><stop offset=".5" stop-color="#1E1D1B" stop-opacity=".95"/><stop offset=".78" stop-color="#2A2926" stop-opacity=".5"/><stop offset="1" stop-color="#34332F" stop-opacity="0"/></radialGradient>
+      <radialGradient id="fpPuff2"><stop offset="0" stop-color="#1E1D1B"/><stop offset=".5" stop-color="#2A2926" stop-opacity=".92"/><stop offset=".8" stop-color="#3A3936" stop-opacity=".45"/><stop offset="1" stop-color="#46454F" stop-opacity="0"/></radialGradient>
+    </defs>
+    <g class="fp__smoke"></g>
+  </svg>
+  <div class="wrap fp__top">
+    <div class="fp__brand">
+      <h1 id="fp-title" class="fp__h1"><img class="fp__logo" src="img/logo-stack-ink.svg" alt="Heavy Metal Pro Stock" width="1106" height="612"></h1>
+      <p class="fp__tag">“The Evil One”</p>
+      <p class="fp__sub">Heavy Metal Pro Stock is a Pro Stock pulling tractor out of Waterloo, Wisconsin. Merch designed by the crew.</p>
+      <div class="btn-row"><a class="btn" href="shop.html?cat=new">Shop the drop</a><a class="btn btn--ghost" href="machine.html">Meet the machine</a></div>
+    </div>
+    <div class="fp__side">
+      <div class="fp__tele" role="group" aria-label="Pull simulation">
+        <div class="fp__tele-head"><span>Pull sim</span><span>Pro Stock · WI</span></div>
+        <svg class="fp__tach" viewBox="0 0 120 100" aria-hidden="true">
+          <path class="t-arc" d="M14 86 A52 52 0 1 1 106 86" fill="none" stroke-width="6" stroke-linecap="round"/>
+          <path d="M112 50 A52 52 0 0 1 106 86" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round"/>
+          <g class="fp__needle" style="transform:rotate(-120deg)"><polygon class="t-ink" points="58,64 62,64 60.8,14 59.2,14"/></g>
+          <circle class="t-ink" cx="60" cy="60" r="6"/>
+          <text x="60" y="94" text-anchor="middle" font-size="11" font-weight="700" font-family="Archivo, Arial, sans-serif"><tspan data-fp-rpm>900</tspan> RPM</text>
+        </svg>
+        <div class="fp__read">
+          <span class="label">Distance</span>
+          <span class="fp__dist"><span data-fp-dist>000</span><small>FT</small></span>
+          <span class="fp__chip" data-fp-chip>Hooked</span>
+        </div>
+        <button class="fp__ctrl" type="button" data-fp-ctrl>Pause</button>
+      </div>
+    </div>
+  </div>
+  <div class="fp__track" aria-hidden="true">
+    <div class="fp__dirt"></div>
+    <div class="fp__rail" data-fp-rail><div class="fp__rail-fill"></div></div>
+    <div class="fp__flag" data-fp-flag></div>
+    <svg class="fp__rig" viewBox="0 0 2700 576" overflow="visible" focusable="false">
+      <!-- el recorte del tractor trae un árbol y gente al fondo: se recortan (en Shopify, mejor exportar el PNG limpio) -->
+      <clipPath id="fpCut"><polygon points="1580,576 1580,195 1668,188 1688,170 1713,154 1738,143 1763,137 1788,134 1826,133 1826,0 2700,0 2700,576"/></clipPath>
+      <ellipse cx="1350" cy="551" rx="1330" ry="12" fill="rgba(0,0,0,.35)"/>
+      <!-- SLED de transferencia de peso (~1.3 veces el tractor). Atrás: cabina alta con operador y ruedas dobles;
+           arriba: caja de pesas que avanza sobre los rieles; al frente: la placa (pan) que se clava en la tierra; gancho y cadena. -->
+      <g class="fp__sled">
+        <!-- llanta de atrás de cada par (rueda doble) -->
+        <circle cx="200" cy="443" r="105" fill="#121211"/><circle cx="440" cy="443" r="105" fill="#121211"/>
+        <!-- chasis, rieles y armadura -->
+        <path d="M560 362 L640 404 L740 362 L840 404 L940 362 L1040 404 L1110 372" fill="none" stroke="#2C2C2A" stroke-width="12" stroke-linejoin="round"/>
+        <rect x="24" y="318" width="1420" height="44" fill="#232321" stroke="#3A3936" stroke-width="4"/>
+        <rect x="24" y="338" width="1420" height="6" fill="#F5C400"/>
+        <rect x="290" y="304" width="1120" height="14" fill="#34332F"/>
+        <line x1="290" y1="307" x2="1410" y2="307" stroke="#A9A59B" stroke-width="3"/>
+        <rect x="1398" y="276" width="16" height="42" fill="#3A3936"/>
+        <!-- pan (placa) al frente -->
+        <path d="M1100 362 H1440 L1470 420 L1452 540 H1150 L1112 468 Z" fill="#1B1B1A" stroke="#3A3936" stroke-width="4" stroke-linejoin="round"/>
+        <line x1="1150" y1="537" x2="1452" y2="537" stroke="#6B6862" stroke-width="6"/>
+        <line x1="1124" y1="468" x2="1460" y2="468" stroke="#2C2C2A" stroke-width="4"/>
+        <path class="fp__pile" d="M1452 550 Q1494 506 1546 550 Z" fill="#6A5A42"/>
+        <!-- lengua y gancho del sled -->
+        <path d="M1430 396 L1484 430" stroke="#2A2A28" stroke-width="20" stroke-linecap="round"/>
+        <circle cx="1492" cy="434" r="12" fill="none" stroke="#9C9A92" stroke-width="6"/>
+        <!-- llanta del frente de cada par (gira) -->
+        <g class="fp__sw" data-c="184 443"><circle cx="184" cy="443" r="105" fill="#1C1C1A"/><circle cx="184" cy="443" r="93" fill="none" stroke="#33322E" stroke-width="14" stroke-dasharray="12 9"/><circle cx="184" cy="443" r="50" fill="#8C8F92"/><circle cx="184" cy="443" r="18" fill="#3A3936"/><rect x="179" y="397" width="10" height="92" fill="#5E605F"/><rect x="138" y="438" width="92" height="10" fill="#5E605F"/></g>
+        <g class="fp__sw" data-c="424 443"><circle cx="424" cy="443" r="105" fill="#1C1C1A"/><circle cx="424" cy="443" r="93" fill="none" stroke="#33322E" stroke-width="14" stroke-dasharray="12 9"/><circle cx="424" cy="443" r="50" fill="#8C8F92"/><circle cx="424" cy="443" r="18" fill="#3A3936"/><rect x="419" y="397" width="10" height="92" fill="#5E605F"/><rect x="378" y="438" width="92" height="10" fill="#5E605F"/></g>
+        <!-- cabina alta del operador (atrás), con escalera y torreta -->
+        <path d="M30 318 V120 M50 318 V120 M30 300 H50 M30 270 H50 M30 240 H50 M30 210 H50 M30 180 H50 M30 150 H50" stroke="#46454F" stroke-width="5" fill="none"/>
+        <rect x="56" y="98" width="232" height="220" fill="#1E1E1C" stroke="#3A3936" stroke-width="4"/>
+        <rect x="88" y="120" width="184" height="118" fill="#5B6873"/>
+        <polygon points="196,120 236,120 170,238 130,238" fill="#fff" opacity=".1"/>
+        <!-- operador sentado, de cara al tractor: chaleco de alta visibilidad, gorra, mano en la palanca -->
+        <g class="fp__op">
+          <rect x="112" y="150" width="16" height="88" fill="#2A2C30"/>
+          <path d="M150 238 H206" stroke="#2B2E33" stroke-width="18" stroke-linecap="round"/>
+          <path d="M132 236 L138 178 Q140 168 152 168 H164 Q176 168 178 180 L182 236 Z" fill="#F5C400"/>
+          <rect x="135" y="204" width="46" height="6" fill="#E9E6DC"/>
+          <path d="M168 182 L196 206 L214 196" fill="none" stroke="#F5C400" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="158" cy="150" r="16" fill="#B48C6C"/>
+          <path d="M141 148 Q143 130 160 130 Q176 131 176 146 L190 148 Q190 152 186 152 H141 Z" fill="#141413"/>
+          <line x1="222" y1="238" x2="218" y2="196" stroke="#9C9A92" stroke-width="5"/>
+          <circle cx="217" cy="194" r="7" fill="#A3261C"/>
+          <circle cx="214" cy="197" r="6" fill="#B48C6C"/>
+        </g>
+        <path d="M88 120 H272 V238 H88 Z M180 120 V238" fill="none" stroke="#3A3936" stroke-width="6"/>
+        <rect x="40" y="82" width="264" height="22" fill="#141413"/>
+        <rect x="40" y="100" width="264" height="6" fill="#F5C400"/>
+        <rect x="150" y="62" width="30" height="20" rx="5" fill="#F5C400"/>
+        <rect x="56" y="270" width="232" height="8" fill="#F5C400"/>
+        <!-- caja de pesas grande: avanza sobre los rieles hacia el pan -->
+        <g class="fp__box">
+          <rect x="336" y="80" width="40" height="18" fill="#2A2A28"/><rect x="600" y="80" width="40" height="18" fill="#2A2A28"/>
+          <rect x="300" y="96" width="380" height="200" fill="#1F1F1D" stroke="#3A3936" stroke-width="4"/>
+          <rect x="300" y="96" width="380" height="18" fill="#F5C400"/>
+          <line x1="300" y1="152" x2="680" y2="152" stroke="#3A3936" stroke-width="4"/><line x1="300" y1="198" x2="680" y2="198" stroke="#3A3936" stroke-width="4"/><line x1="300" y1="244" x2="680" y2="244" stroke="#3A3936" stroke-width="4"/>
+          <rect x="470" y="124" width="40" height="160" fill="#2A2A28"/>
+          <circle cx="332" cy="300" r="11" fill="#9C9A92"/><circle cx="490" cy="300" r="11" fill="#9C9A92"/><circle cx="648" cy="300" r="11" fill="#9C9A92"/>
+        </g>
+      </g>
+      <!-- barra de tiro del tractor y cadena al gancho del sled -->
+      <rect x="1532" y="430" width="160" height="20" fill="#141413"/>
+      <circle cx="1540" cy="440" r="11" fill="none" stroke="#9C9A92" stroke-width="6"/>
+      <line x1="1502" y1="436" x2="1530" y2="440" stroke="#9C9A92" stroke-width="10" stroke-dasharray="12 4"/>
+      <line x1="1502" y1="436" x2="1530" y2="440" stroke="#2A2A28" stroke-width="3" stroke-dasharray="12 4"/>
+      <!-- tractor real (recorte) -->
+      <g class="fp__wheelie"><g class="fp__shake"><image clip-path="url(#fpCut)" href="img/hm-tractor-cutout.webp" x="1580" y="0" width="1120" height="576"/></g></g>
+      <g class="fp__fly fp__fly--tire" fill="#6A5A42"><circle cx="1610" cy="528" r="9"/><circle cx="1618" cy="534" r="12"/><circle cx="1606" cy="522" r="7"/><circle cx="1620" cy="530" r="10"/><circle cx="1612" cy="536" r="8"/></g>
+      <g class="fp__fly fp__fly--pan" fill="#7A6649"><circle cx="1462" cy="540" r="7"/><circle cx="1466" cy="536" r="9"/><circle cx="1460" cy="542" r="6"/><circle cx="1468" cy="538" r="8"/></g>
+    </svg>
+  </div>
+</section>
+<div class="fp-marquee" aria-hidden="true" data-fp-marquee><div class="fp-marquee__track"><span>Full pull or nothing<i>·</i>This is f#cking evil<i>·</i></span><span>Full pull or nothing<i>·</i>This is f#cking evil<i>·</i></span></div></div>
+
+  <!-- 1 · SHOP: categorías + una sola fila de producto -->
+  <section class="shop-home" aria-labelledby="drop-title">
+    <div class="wrap">
+      <div class="home-head">
+        <h2 class="h1" id="drop-title">“The Evil One” Drop</h2>
+        <a class="link" href="shop.html?cat=all">Shop all</a>
+      </div>
+      <nav id="home-cats" aria-label="Shop by category"></nav>
+      <div class="pgrid" id="home-row" role="list" aria-label="New drop"></div>
+    </div>
+  </section>
+
+  <!-- 2 · THE MACHINE: la única banda oscura -->
+  <section class="sect--night home-sect" aria-labelledby="mach-title">
+    <div class="wrap mach">
+      <div class="mach__copy">
+        <p class="label">The Machine</p>
+        <h2 class="h1" id="mach-title">The only Cat V8 in the class</h2>
+        <p>A Cat 3208 V8, reverse flow, in a Pro Stock tractor. A setup you won't find on any other tractor on the track. Everything on it is custom-built.</p>
+        <dl class="mach__specs">
+          <div><dt>Engine</dt><dd>Cat 3208 V8</dd></div>
+          <div><dt>Displacement</dt><dd class="num">636 to 680 ci</dd></div>
+          <div><dt>Horsepower</dt><dd class="unk">Unknown</dd></div>
+        </dl>
+        <a class="link" href="machine.html">Meet the machine</a>
+      </div>
+      <div class="dip">
+        <figure>
+          <div class="frame"><img class="photo" src="img/hm-hero.webp" alt="“The Evil One” pulling down the track under a tall column of black smoke" loading="lazy" width="776" height="1400" style="object-position:50% 62%"></div>
+          <figcaption>On the track</figcaption>
+        </figure>
+        <figure>
+          <div class="frame"><img class="photo" src="img/hm-engine.webp" alt="The Cat 3208 V8 with its turbo, in the shop" loading="lazy" width="787" height="1400" style="object-position:50% 40%"></div>
+          <figcaption>Cat 3208 V8 · in the shop</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · FIRST FIRE: la historia contada en un momento, con el video de la dueña -->
+  <section class="home-sect" aria-labelledby="fire-title">
+    <div class="wrap fire">
+      <div class="fire__copy">
+        <p class="label muted">Our Story · 2026</p>
+        <h2 class="h1 fire__quote" id="fire-title">The night it first fired, lightning struck and the power went out.</h2>
+        <p class="fire__sign"><svg class="fire__bolt" viewBox="0 0 24 32" aria-hidden="true"><path d="M15 0 3 18h8l-3 14L21 12h-8l4-12Z"/></svg>We call it a sign.</p>
+        <p class="body">Twelve years from an idea in Tomah, WI to that night in the family shop in Waterloo. This is how it sounded.</p>
+        <a class="link" href="story.html">Read our story</a>
+      </div>
+      <figure class="vid" id="fire-vid">
+        <div class="vid__frame">
+          <img class="photo" src="img/hm-driver.webp" alt="" loading="lazy" width="1050" height="1400" style="object-position:50% 38%">
+          <button class="vid__play" type="button" id="fire-play" aria-describedby="fire-cap"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg><span class="vh">Play video: the first fire</span></button>
+          <p class="vid__msg" id="fire-msg" aria-live="polite" hidden>Video coming soon</p>
+          <div class="vid__meta" aria-hidden="true"><span>First fire</span><span class="num">0:XX</span></div>
+        </div>
+        <figcaption id="fire-cap">Engine fires for the first time · Waterloo, WI</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 4 · NEXT PULL: el próximo pull con fecha; si no hay, "Next pull: date TBA" + Facebook. Contador de la temporada. -->
+  <section class="nx" aria-labelledby="nx-title">
+    <div class="wrap nx__in">
+      <div class="nx__date" id="nx-date" aria-hidden="true"><span>Date</span><b>TBA</b></div>
+      <div class="nx__ev">
+        <p class="nx__kick" id="nx-kick">Next pull</p>
+        <h2 class="h1" id="nx-title">Next pull: date TBA</h2>
+        <p class="nx__meta" id="nx-meta">New dates hit <a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook first<span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span></a></p>
+      </div>
+      <div class="nx__season">
+        <p class="nx__kick"><span id="nx-yr" class="num">2026</span> season so far</p>
+        <dl class="nx__stats" id="nx-stats"></dl>
+        <!-- last-updated: season-stats -->
+        <p class="nx__upd" id="nx-upd"></p>
+      </div>
+      <div class="nx__go">
+        <a class="btn" href="schedule.html">See the schedule</a>
+        <a class="link" href="log.html">Read the Pit Log</a>
+      </div>
+      <p class="note">Próximo pull = Contenido &gt; Metaobjetos &gt; Pull event (sale el primero con fecha futura; sin fecha sale “date TBA”; prueba con <a href="index.html?next=1">?next=1</a>). Contadores = Metaobjetos &gt; Season stats (wins en 0 = “Coming soon”).</p>
+    </div>
+  </section>
+
+  <!-- 5 · SPONSORSHIP: una línea con alcance (desde datos) y un botón. Paquetes y contacto viven en sponsors.html -->
+  <section class="sp" aria-labelledby="sp-title">
+    <div class="wrap sp__in">
+      <div class="sp__copy">
+        <p class="label muted">Sponsorship</p>
+        <h2 class="h1" id="sp-title">Partner with “The Evil One”</h2>
+        <p class="sp__line" id="sp-line">Your brand in front of <b>100,000+ fans</b> across <b>20+ pulls</b> a season (est.)</p>
+      </div>
+      <a class="btn" href="sponsors.html">See sponsor packages</a>
+      <p class="note">Frase de venta = Metaobjetos &gt; Sponsor stat (pulls por temporada × fans por pull, los mismos de Sponsors; vacíos = “XX”). Frases de la cinta amarilla = bloques de texto de la sección HM Hero.</p>
+    </div>
+  </section>
+</main>
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script src="hero.js"></script>
+<script>
+/* Home: miniaturas de categoría y una fila de 4: 3 del New drop + la edición especial (sin alargar la sección). */
+(function () {
+  var cats = document.getElementById('home-cats'), row = document.getElementById('home-row');
+  if (cats && window.hmCats) cats.innerHTML = window.hmCats('new').replace(' aria-label="Shop by category"', '');
+  if (!row || !window.hmCard || !window.HM_CATALOG) return;
+  /* tienda sin productos activos (boceto: ?empty=1): sin fotitos ni fila, sale "Coming soon" como en Shop */
+  if (!window.HM_CATALOG.length) { cats.hidden = true; row.outerHTML = window.hmComingSoon ? window.hmComingSoon() : ''; return; }
+  var all = window.HM_CATALOG, ltd = all.filter(function (p) { return p.tag === 'limited'; })[0];
+  var pick = all.filter(function (p) { return p.tag === 'new'; }).slice(0, ltd ? 3 : 4);
+  all.forEach(function (p) { if (pick.length < (ltd ? 3 : 4) && p.tag === 'best' && pick.indexOf(p) < 0) pick.push(p); });
+  if (ltd) pick.push(ltd);
+  /* "The Evil One" siempre entre comillas, también en nombres de producto */
+  var q = function (h) { return h.replace(/(^|[^“])The Evil One(?!”)/g, '$1“The Evil One”'); };
+  row.innerHTML = pick.map(function (p) { return q(window.hmCard(p)).replace('<article class="card"', '<article class="card" role="listitem"'); }).join('');
+})();
+
+/* Next pull + contadores: simula los metaobjetos "Pull event" (mismo formato que schedule.html) y "Season stats".
+   Sale el primer pull con fecha futura; si no hay, "Next pull: date TBA" y el link a Facebook.
+   Boceto: ?next=1 agrega un pull de ejemplo con fecha para ver ese estado. */
+(function () {
+  var SEASON = window.HM_SEASON || new Date().getFullYear();
+  var EVENTS = [
+    { date: '', event: 'Green County Fall Nationals', city: 'Monroe, WI', league: 'Badger State Tractor Pullers', type: 'Competition', status: 'Done' }
+  ];
+  if (/[?&]next=1/.test(location.search)) {
+    var d0 = new Date(Date.now() + 12 * 864e5);
+    EVENTS.push({ date: d0.toISOString().slice(0, 10), event: '[Example] Badger State Pull', city: '[City], WI', league: 'Badger State Tractor Pullers', type: 'Competition', status: 'Upcoming' });
+  }
+  var SEASON_STATS = [
+    { season: SEASON, competitions: 2, exhibitions: 3, wins: 0, updated: '2026-09-28' }
+  ];
+  /* frase de venta: los mismos valores que Sponsors (Metaobjetos > Sponsor stat). fans = pulls × fans por pull; vacíos = "XX" */
+  var PITCH = { pulls: 20, fansPerPull: 5000 };
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var today = new Date().toISOString().slice(0, 10);
+  var next = EVENTS.filter(function (e) { return e.date && e.date >= today && e.status !== 'Hidden' && e.status !== 'Cancelled'; })
+    .sort(function (a, b) { return a.date < b.date ? -1 : 1; })[0];
+  $('nx-kick').hidden = !next;   /* sin fecha, el título ya dice "Next pull: date TBA" */
+  if (next) {
+    var d = new Date(next.date + 'T12:00:00');
+    $('nx-date').innerHTML = '<span>' + d.toLocaleString('en-US', { month: 'short' }) + '</span><b class="num">' + d.getDate() + '</b>';
+    $('nx-kick').textContent = 'Next pull · ' + d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    $('nx-title').textContent = next.event;
+    $('nx-meta').textContent = [next.city, next.league].filter(Boolean).join(' · ');
+  }
+  var st = SEASON_STATS.filter(function (r) { return r.season === SEASON; })[0];
+  $('nx-yr').textContent = SEASON;
+  if (st) {
+    /* testing: un contador en 0 nunca dice "0"; dice "Coming soon" */
+    $('nx-stats').innerHTML = [['Competitions', st.competitions], ['Exhibitions', st.exhibitions], ['Wins', st.wins]].map(function (f) {
+      var soon = !f[1];
+      return '<div><dt>' + f[0] + '</dt><dd class="' + (soon ? 'is-soon' : 'num') + '">' + (soon ? 'Coming soon' : f[1]) + '</dd></div>';
+    }).join('');
+    if (st.updated) $('nx-upd').textContent = 'Last updated: ' + new Date(st.updated + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  }
+  var fans = PITCH.pulls && PITCH.fansPerPull ? PITCH.pulls * PITCH.fansPerPull : 0;
+  $('sp-line').innerHTML = 'Your brand in front of <b>' + (fans ? esc(fans.toLocaleString('en-US')) : 'XX') + '+ fans</b> across <b>' + (PITCH.pulls ? esc(PITCH.pulls) : 'XX') + '+ pulls</b> a season (est.)';
+})();
+
+/* First fire: el póster "se va la luz" una vez al entrar en pantalla; play avisa que el video está pendiente. */
+(function () {
+  var v = document.getElementById('fire-vid'), b = document.getElementById('fire-play'), m = document.getElementById('fire-msg');
+  if (!v) return;
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var io = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { v.classList.add('is-lit'); io.disconnect(); } }, { threshold: .6 });
+    io.observe(v);
+  }
+  b.addEventListener('click', function () { v.classList.remove('is-lit'); void v.offsetWidth; v.classList.add('is-lit'); m.hidden = false; });
+})();
+</script>

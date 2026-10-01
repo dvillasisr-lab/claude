@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pit Log · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="The Pit Log of Heavy Metal Pro Stock: “The Evil One”. Every test day, exhibition, pull and win, with photos and video. Search the log or filter by season and type.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4 */
+/* Orden: 1 título, last updated y contadores · 2 wins y hitos destacados (única banda oscura, carrusel) · 3 bitácora (buscador, filtros, load more) · 4 Facebook · (dueña) */
+html,body{overflow-x:clip}
+.ext{font-size:.85em;margin-left:2px;text-decoration:none;display:inline-block}
+
+/* 1 · título + contadores */
+.pl-top{padding-block:28px 22px}
+.pl-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 20px}
+.pl-head p{margin:0;font-size:var(--t-sm);color:var(--soft);max-width:60ch}
+.pl-upd{margin:10px 0 0;font-size:var(--t-xs);color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 14px}
+.pl-upd b{color:var(--ink);font-weight:600}
+.pl-stats{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.pl-stat{padding:12px 16px 12px 0;display:grid;gap:2px;align-content:start}
+.pl-stat+.pl-stat{padding-left:16px;border-left:1px solid var(--line)}
+.pl-stat b{font-family:var(--f-head);font-stretch:78%;font-size:clamp(28px,3vw,40px);line-height:1;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+.pl-stat b.pl-soon{font-size:clamp(18px,1.7vw,22px);line-height:1.05;text-transform:uppercase;color:var(--ink);display:inline-flex;align-items:center;gap:6px;min-height:clamp(28px,3vw,40px)}
+.pl-stat b.pl-soon svg{width:10px;height:14px;fill:var(--accent);stroke:var(--ink);stroke-width:.8;flex:none}
+.pl-stat span{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.pl-stat small{font-size:11px;color:var(--mute);line-height:1.3}
+.pl-stat.is-zero b{color:#B6B1AD}
+.pl-stat--win:not(.is-zero) b:not(.pl-soon){box-shadow:inset 0 -.18em 0 var(--accent)}
+.pl-scope{margin:8px 0 0;font-size:var(--t-xs);color:var(--mute)}
+@media (max-width:760px){
+  .pl-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .pl-stat{padding:10px 10px 10px 0}
+  .pl-stat+.pl-stat{padding-left:10px}
+  .pl-stat:nth-child(3){border-left:0;padding-left:0}
+  .pl-stat:nth-child(n+3){border-top:1px solid var(--line)}
+}
+
+/* 2 · wins y hitos destacados */
+.pl-wm{padding-block:clamp(32px,4vw,48px)}
+.pl-wm .sect-head{align-items:center}
+.pl-wm .label{color:#B5B2AA}
+.pl-wm__grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(16px,2.4vw,32px);align-items:stretch}
+.pl-wins{border:1px dashed rgba(245,196,0,.6);padding:18px 20px;display:grid;align-content:start;gap:10px}
+.pl-wins .pl-wins__big{font-family:var(--f-head);font-stretch:78%;font-weight:700;text-transform:uppercase;font-size:clamp(26px,2.6vw,36px);line-height:1.05;color:var(--night-ink);margin:0}
+.pl-wins__big .dots span{display:inline-block;color:var(--accent);animation:pl-blink 1.4s infinite}
+.pl-wins__big .dots span:nth-child(2){animation-delay:.2s}
+.pl-wins__big .dots span:nth-child(3){animation-delay:.4s}
+@keyframes pl-blink{0%,60%,100%{opacity:.25}30%{opacity:1}}
+.pl-wins p{margin:0;font-size:var(--t-sm);color:#CFCCC3;max-width:36ch}
+.pl-wins .btn{justify-self:start}
+.pl-trophy{width:40px;height:40px;fill:none;stroke:var(--accent);stroke-width:1.4}
+.pl-arws{display:flex;gap:4px}
+.pl-arw{width:40px;height:40px;display:grid;place-items:center;background:none;border:1px solid #4A4844;color:var(--night-ink);font-size:22px;line-height:1;cursor:pointer}
+.pl-arw:hover:not(:disabled){border-color:var(--night-ink)}
+.pl-arw:disabled{opacity:.3;cursor:default}
+.pl-arw:focus-visible{outline-color:var(--accent)}
+.pl-track{list-style:none;margin:0;padding:0;display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 8px) / 3);gap:4px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.pl-track::-webkit-scrollbar{display:none}
+.pl-track:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.pl-mile{position:relative;display:grid;grid-template-rows:auto 1fr;background:#1C1C1A;scroll-snap-align:start;min-width:0}
+.pl-mile__pic{aspect-ratio:4/3;overflow:hidden;background:#1E1E1C;position:relative}
+.pl-mile__pic .ph--mock{height:100%}
+.pl-mile__txt{padding:12px 14px 14px;display:grid;gap:4px;align-content:start}
+.pl-mile__yr{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.pl-mile__yr svg{width:10px;height:14px;fill:var(--accent)}
+.pl-mile__yr .badge{font-size:9px}
+.pl-mile h3{color:var(--night-ink)}
+.pl-mile p{margin:0;font-size:var(--t-xs);color:#B5B2AA}
+.pl-mile a{color:var(--night-ink);text-underline-offset:3px}
+.pl-wm__empty{border:1px solid #2E2D2A;padding:18px 20px;margin:0;color:#B5B2AA;font-size:var(--t-sm)}
+@media (max-width:1024px){.pl-wm__grid{grid-template-columns:1fr}}
+@media (max-width:640px){
+  .pl-track{grid-auto-columns:78%;margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter);scroll-padding-inline:var(--gutter)}
+}
+
+/* 3 · bitácora */
+.pl-log{padding-block:clamp(32px,4vw,48px)}
+.pl-bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 16px;align-items:center;padding:12px 0;margin-bottom:8px;border-bottom:1px solid var(--line);background:var(--bg)}
+@media (min-width:761px){.pl-bar{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header));z-index:40}}
+.pl-q{position:relative;max-width:420px}
+.pl-q svg{position:absolute;left:12px;top:50%;width:18px;height:18px;transform:translateY(-50%);fill:none;stroke:var(--mute);stroke-width:1.6;pointer-events:none}
+.pl-q .input{padding-left:38px;min-height:40px}
+.pl-q .input::-webkit-search-cancel-button{cursor:pointer}
+.pl-fgroup{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.pl-fgroup>.label{color:var(--mute);margin-right:4px}
+.pl-types{grid-column:1/-1}
+.pl-sel{min-height:36px;width:auto;padding:0 32px 0 10px;font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.chip{min-height:36px;padding:0 12px;background:var(--surface);border:1px solid var(--line);font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.chip .n{font-weight:600;opacity:.7;font-variant-numeric:tabular-nums}
+@media (max-width:760px){
+  .pl-bar{grid-template-columns:minmax(0,1fr)}
+  .pl-q{max-width:none}
+  .pl-fgroup{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;width:100%;padding-bottom:2px}
+  .pl-fgroup::-webkit-scrollbar{display:none}
+  .chip{flex:none}
+}
+.pl-count{margin:0 0 4px;font-size:var(--t-xs);color:var(--mute)}
+.pl-list{list-style:none;margin:0;padding:0;display:grid;max-width:1080px}
+.pl-entry{display:grid;grid-template-columns:132px minmax(0,1fr);gap:0 24px;scroll-margin-top:180px}
+.pl-when{position:relative;padding:18px 0 0;border-right:1px solid var(--line);padding-right:20px;text-align:right}
+.pl-when::after{content:"";position:absolute;right:-5px;top:24px;width:9px;height:9px;border-radius:50%;background:var(--bg);border:1.5px solid var(--ink)}
+.pl-entry.is-win .pl-when::after,.pl-entry.is-mile .pl-when::after{background:var(--accent);border-color:var(--ink)}
+.pl-when b{display:block;font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h2);line-height:1.1;text-transform:uppercase;color:var(--ink)}
+.pl-when span{display:block;font-size:var(--t-xs);color:var(--mute)}
+.pl-when .pend{font-family:var(--f-sans);font-stretch:100%;font-size:var(--t-xs);font-weight:600;color:var(--soft);letter-spacing:.02em}
+.pl-card{margin:12px 0;background:var(--surface);border:1px solid var(--line);display:grid;grid-template-columns:150px minmax(0,1fr);min-height:150px}
+.pl-card:focus{outline:none}
+.pl-card:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.pl-card__pic{background:var(--tile);overflow:hidden;position:relative}
+.pl-card__pic .photo{position:absolute;inset:0}
+.pl-card__pic .ph--mock{height:100%}
+.pl-fb{position:absolute;left:4px;bottom:4px;z-index:1;background:#FFF6CC;color:var(--ink);border:1px dashed #C9A400;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:1px 4px;line-height:1.4}
+.no-notes .pl-fb{display:none}
+.pl-card__body{padding:14px 18px 16px;display:grid;gap:6px;align-content:start}
+.pl-tags{display:flex;flex-wrap:wrap;gap:4px}
+.t-test{background:var(--surface);border:1px solid var(--line);color:var(--soft)}
+.t-ex{background:#E9E6DC;color:var(--ink)}
+.t-comp{background:var(--ink);color:var(--surface)}
+.t-win,.t-full{background:var(--accent);color:var(--ink)}
+.t-mile{background:var(--surface);border:1px solid var(--ink);color:var(--ink)}
+.t-shop{background:var(--surface);border:1px dashed var(--ink);color:var(--ink)}
+.t-demo{background:#FFF6CC;color:var(--ink);border:1px dashed #C9A400}
+.no-notes .t-demo{display:none}
+.pl-card h3{font-size:var(--t-md)}
+.pl-card p{margin:0;font-size:var(--t-sm);color:var(--soft);max-width:62ch}
+.pl-card mark{background:#FFF0A8;color:inherit;padding:0 1px}
+.pl-links{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:2px}
+.pl-links a{font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-underline-offset:3px;white-space:nowrap}
+.pl-empty{padding:28px 0;display:grid;gap:8px;justify-items:start;max-width:52ch}
+.pl-empty p{margin:0;color:var(--soft)}
+.pl-more{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:16px 0 0;max-width:1080px;padding-left:156px}
+.pl-more p{margin:0;font-size:var(--t-xs);color:var(--mute)}
+.pl-meter{width:120px;height:3px;background:var(--line)}
+.pl-meter span{display:block;height:100%;background:var(--ink);width:0}
+@media (max-width:760px){
+  .pl-entry{grid-template-columns:minmax(0,1fr);gap:0;scroll-margin-top:120px}
+  .pl-when{border-right:0;text-align:left;padding:14px 0 0 16px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .pl-when::after{right:auto;left:-5px;top:20px}
+  .pl-when b{display:inline;font-size:var(--t-md)}
+  .pl-when span{display:inline}
+  .pl-card{margin:8px 0 6px 16px;grid-template-columns:96px minmax(0,1fr);min-height:120px}
+  .pl-card__body{padding:10px 12px 12px}
+  .pl-list{border-left:1px solid var(--line)}
+  .pl-more{padding-left:0}
+}
+.pl-test{margin-left:4px;background:var(--ink);color:var(--accent);border:0;font:inherit;font-weight:700;padding:2px 8px;cursor:pointer}
+
+/* 4 · CTA único */
+.pl-cta{padding-block:28px;border-top:1px solid var(--line)}
+.pl-cta__in{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px 24px}
+.pl-cta p{margin:0;font-size:var(--t-sm);color:var(--soft)}
+.pl-cta .btn svg{width:16px;height:16px;fill:currentColor}
+
+/* Dueña: editor simulado del blog. Se esconde con "Ocultar notas" */
+.no-notes .pl-owner{display:none!important}
+.pl-owner{padding-block:32px 40px;border-top:3px dashed var(--accent)}
+.pl-owner .note{margin:0 0 12px}
+.adm{margin:0;border:1px solid var(--line);background:var(--surface);max-width:880px}
+.adm__bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);font-size:11px;color:var(--mute)}
+.adm__bar b{color:var(--ink)}
+.adm__only{background:var(--accent);color:var(--ink);font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px}
+.adm__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 10px;padding:12px}
+.adm__grid .field{gap:3px}
+.adm__grid .field label,.adm__grid legend{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);padding:0}
+.adm__grid .input{min-height:34px;font-size:var(--t-xs);padding:0 8px}
+.adm__grid textarea.input{padding:8px;min-height:56px;resize:vertical}
+.adm__grid .span2{grid-column:span 2}
+.adm__grid .span4{grid-column:1/-1}
+.adm__grid .hint{font-size:10px;color:var(--mute);line-height:1.3}
+.adm__tags{border:0;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center}
+.adm__tags legend{width:100%;margin-bottom:4px}
+.adm__tags label{display:inline-flex;gap:6px;align-items:center;font-size:var(--t-xs);cursor:pointer}
+.adm__tags .feat{padding:2px 8px 2px 4px;background:#FFF6CC;border:1px dashed #C9A400}
+.adm__tags .hint{width:100%}
+.adm__foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 12px;border-top:1px solid var(--line);background:var(--bg)}
+.adm__foot .grow{flex:1}
+.adm__del{background:none;border:1px solid var(--alert);color:var(--alert);min-height:34px;padding:0 12px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.adm__del:hover{background:var(--alert);color:var(--surface)}
+.adm__del:disabled{opacity:.4;cursor:default;background:none;color:var(--alert)}
+.adm__msg{margin:0;padding:0 12px 10px;font-size:var(--t-xs);color:var(--soft)}
+.adm__msg:empty{display:none}
+/* imagen destacada + fotos por tipo */
+.adm__lbl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--soft)}
+.adm__imgrow{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.adm__thumb{position:relative;width:96px;height:72px;flex:none;background:var(--tile);overflow:hidden;border:1px solid var(--line)}
+.adm__thumb img{width:100%;height:100%;object-fit:cover}
+.adm__thumb .pl-fb{left:2px;bottom:2px}
+.adm__imgctl{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-width:0;flex:1}
+.adm__imgctl .hint{width:100%}
+.adm__rm{background:none;border:0;padding:0 4px;min-height:34px;font:inherit;font-size:11px;color:var(--soft);text-decoration:underline;cursor:pointer}
+.adm__rm:disabled{opacity:.4;cursor:default;text-decoration:none}
+.adm__files{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:6px;margin-top:8px;padding:8px;background:var(--bg);border:1px solid var(--line)}
+.adm__files button{display:grid;gap:3px;padding:0;border:2px solid transparent;background:none;cursor:pointer;font:inherit;font-size:10px;color:var(--soft);text-align:left}
+.adm__files button img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.adm__files button[aria-pressed="true"]{border-color:var(--ink);color:var(--ink);font-weight:700}
+.adm2{margin-top:16px}
+.adm__types{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:12px}
+.adm__type{display:grid;gap:4px;align-content:start}
+.adm__type .adm__thumb{width:100%;height:auto;aspect-ratio:16/9}
+.adm__type .input{min-height:32px;font-size:var(--t-xs);padding:0 6px}
+.adm__type label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.adm__types-hint{margin:0;padding:0 12px 12px;font-size:var(--t-xs);color:var(--soft)}
+@media (max-width:760px){.adm__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.adm__types{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="log"></div>
+
+<main id="main">
+
+<!-- 1 · título, fecha de actualización y contadores de temporada (salen de las etiquetas) -->
+<section class="sect--white" aria-labelledby="pl-title">
+  <div class="wrap pl-top">
+    <div class="pl-head">
+      <h1 class="h1" id="pl-title">Pit Log</h1>
+      <p>Every test day, exhibition, pull and win of “The Evil One”, logged by the crew as it happens.</p>
+    </div>
+    <!-- last-updated: pit-log -->
+    <p class="pl-upd"><span>Last updated: <b id="pl-updated"></b></span><span id="pl-total"></span></p>
+    <ul class="pl-stats" id="pl-stats" aria-describedby="pl-scope"></ul>
+    <p class="pl-scope" id="pl-scope"></p>
+  </div>
+</section>
+
+<!-- 2 · wins y hitos: solo entradas Win o Milestone con la etiqueta Featured (máximo 6). Única banda oscura -->
+<section class="sect--night pl-wm" aria-labelledby="wm-t">
+  <div class="wrap">
+    <div class="sect-head">
+      <h2 class="h2" id="wm-t">Wins &amp; milestones</h2>
+      <div class="pl-arws" id="wm-arws" hidden>
+        <button type="button" class="pl-arw" id="wm-prev" aria-controls="wm-track" aria-label="Previous wins and milestones">‹</button>
+        <button type="button" class="pl-arw" id="wm-next" aria-controls="wm-track" aria-label="Next wins and milestones">›</button>
+      </div>
+    </div>
+    <div class="pl-wm__grid">
+      <div class="pl-wins" id="pl-wins" aria-live="polite"></div>
+      <div id="wm-wrap"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · bitácora: una entrada del blog "Pit Log" por día. 10 por página con "Load more" -->
+<section class="pl-log" aria-labelledby="log-t">
+  <div class="wrap">
+    <div class="sect-head"><h2 class="h2" id="log-t">The log</h2></div>
+    <div class="pl-bar" role="search" aria-label="Search and filter the log">
+      <div class="pl-q">
+        <label class="vh" for="pl-q">Search the log</label>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input class="input" id="pl-q" type="search" placeholder="Search the log: Monroe, turbo, exhibition..." autocomplete="off" enterkeyhint="search">
+      </div>
+      <div class="pl-fgroup" id="f-year-wrap" role="group" aria-labelledby="f-year-l"><span class="label" id="f-year-l">Season</span><span id="f-year" style="display:contents"></span></div>
+      <div class="pl-fgroup pl-types" role="group" aria-labelledby="f-type-l"><span class="label" id="f-type-l">Type</span><span id="f-type" style="display:contents"></span></div>
+    </div>
+    <p class="pl-count" id="pl-count" role="status" aria-live="polite"></p>
+    <ol class="pl-list" id="pl-list"></ol>
+    <div class="pl-more" id="pl-more"></div>
+    <p class="note">Las entradas con "Example" son de ejemplo: bórralas o cámbialas por las reales. Faltan fechas y lugares de las exhibiciones (¿3 o 4?), fecha del primer pull y resultado de Monroe (¿el primer pull fue Monroe? Si sí, van en una sola entrada). Las fotos con la marca "Foto por tipo" son entradas sin imagen destacada (ver abajo). "Photos &amp; video" lleva a esa fecha en la Galería. <button type="button" class="pl-test" id="pl-test" aria-pressed="false">Probar con 200 entradas</button></p>
+  </div>
+</section>
+
+<!-- 4 · CTA único -->
+<section class="sect--white pl-cta" aria-labelledby="cta-t">
+  <div class="wrap pl-cta__in">
+    <div>
+      <h2 class="h3" id="cta-t">New entries hit Facebook first</h2>
+      <p>Photos, video and the day’s notes, straight from the pit.</p>
+    </div>
+    <a class="btn" href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V9c0-.6.4-1 1-1Z"/></svg>Follow on Facebook<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a>
+  </div>
+</section>
+
+<!-- Solo para la dueña: así se agrega, edita y borra. No se ve en el sitio real. -->
+<section class="pl-owner" aria-labelledby="own-t">
+  <div class="wrap">
+    <h2 class="label" id="own-t" style="margin-bottom:8px">Solo para la dueña · no se ve en el sitio</h2>
+    <p class="note">Cada día es una entrada del blog "Pit Log" (Contenido &gt; Blog posts). Las etiquetas hacen todo solas: contadores, filtros y la franja. La franja "Wins &amp; milestones" muestra SOLO las entradas Win o Milestone a las que les pongas también "Featured": máximo 6, las más recientes; si son más de 3 salen flechas. Para quitar una de la franja, le quitas "Featured" (la entrada sigue en la bitácora). La bitácora muestra 10 y "Load more" trae 10 más (en Shopify: paginación del blog); el buscador usa la búsqueda de la tienda solo en el Pit Log. "Last updated" es la fecha de la entrada más nueva, sola. <b>La foto de cada entrada es la imagen destacada del post</b> (súbela o elígela de Contenido &gt; Archivos). Si no le pones imagen, se usa la foto de su tipo (Test, Exhibition, Competition, Win), que defines una sola vez en Personalizar; si la entrada tiene foto propia, sale solo el link "Photos &amp; video" a la Galería. Pruébalo abajo.</p>
+    <figure class="adm" aria-labelledby="adm-cap">
+      <figcaption class="adm__bar" id="adm-cap"><span>Contenido &gt; Blog posts &gt; <b>Pit Log</b> &gt; Add blog post</span><span class="adm__only">Solo para la dueña</span></figcaption>
+      <form id="adm-form" novalidate>
+        <div class="adm__grid">
+          <div class="field span2"><label for="adm-title">Title</label><input class="input" id="adm-title" type="text" value="First win at the County Fair Pull"></div>
+          <div class="field"><label for="adm-date">Date</label><input class="input" id="adm-date" type="date"></div>
+          <div class="field"><label for="adm-vis">Visibility</label><select class="input" id="adm-vis" aria-describedby="adm-vis-hint"><option>Visible</option><option>Hidden</option></select><span class="hint" id="adm-vis-hint">Hidden: se guarda pero no sale en el sitio</span></div>
+          <div class="field span4" role="group" aria-labelledby="adm-img-l">
+            <span class="adm__lbl" id="adm-img-l">Imagen destacada</span>
+            <div class="adm__imgrow">
+              <span class="adm__thumb" id="adm-thumb"></span>
+              <div class="adm__imgctl">
+                <button type="button" class="btn btn--ghost btn--sm" id="adm-up">Subir imagen</button>
+                <input type="file" id="adm-file" accept="image/*" hidden>
+                <button type="button" class="btn btn--ghost btn--sm" id="adm-pick" aria-expanded="false" aria-controls="adm-files">Elegir de Archivos</button>
+                <button type="button" class="adm__rm" id="adm-noimg">Quitar imagen</button>
+                <span class="hint" id="adm-img-hint" aria-live="polite"></span>
+              </div>
+            </div>
+            <div class="adm__files" id="adm-files" role="group" aria-label="Contenido &gt; Archivos" hidden></div>
+          </div>
+          <div class="field span4"><label for="adm-text">Excerpt</label><textarea class="input" id="adm-text" rows="2">Example: write two or three lines about the day. What ran, what broke, what is next.</textarea></div>
+          <fieldset class="adm__tags span4"><legend>Tags</legend>
+            <label><input type="checkbox" value="Test">Test</label>
+            <label><input type="checkbox" value="Exhibition">Exhibition</label>
+            <label><input type="checkbox" value="Competition" checked>Competition</label>
+            <label><input type="checkbox" value="Win" checked>Win</label>
+            <label><input type="checkbox" value="Full pull">Full pull</label>
+            <label><input type="checkbox" value="Milestone">Milestone</label>
+            <label><input type="checkbox" value="Shop">Shop</label>
+            <label class="feat"><input type="checkbox" value="Featured" checked>Featured</label>
+            <span class="hint">Featured + Win o Milestone = sale en la franja (máx. 6). Full pull = el tractor arrastró el trineo hasta el final de la pista; es solo una etiqueta, no lleva contador.</span>
+          </fieldset>
+          <div class="field span4"><label for="adm-video">Video URL (metacampo)</label><input class="input" id="adm-video" type="url" placeholder="https://www.youtube.com/..."></div>
+        </div>
+        <div class="adm__foot">
+          <button class="adm__del" type="button" id="adm-del" disabled>Delete</button>
+          <span class="grow"></span>
+          <button class="btn btn--ghost btn--sm" type="submit">Save y ver en la página</button>
+        </div>
+      </form>
+      <p class="adm__msg" id="adm-msg" role="status" aria-live="polite"></p>
+    </figure>
+    <figure class="adm adm2" aria-labelledby="adm2-cap">
+      <figcaption class="adm__bar" id="adm2-cap"><span>Personalizar &gt; Plantillas &gt; Blog: Pit Log &gt; <b>Foto por tipo</b></span><span class="adm__only">Se define una vez</span></figcaption>
+      <div class="adm__types" id="adm-types"></div>
+      <p class="adm__types-hint">Para entradas sin imagen destacada. Si tiene varias etiquetas manda Win, luego Competition, Exhibition y Test; Milestone o Shop solos usan la de Test. Cambia una y mira la bitácora arriba.</p>
+    </figure>
+  </div>
+</section>
+
+</main>
+
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var SEASON = window.HM_SEASON || new Date().getFullYear();
+  var PAGE = 10;          /* entradas por página (en Shopify: {% paginate blog.articles by 10 %}) */
+  var FEATURED_MAX = 6;   /* máximo en la franja Wins & milestones */
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function ext(href, label, extra) { return '<a href="' + esc(href) + '" target="_blank" rel="noopener">' + label + '<span class="ext" aria-hidden="true">↗</span><span class="vh">' + (extra || '') + ' (opens in a new tab)</span></a>'; }
+  var BOLT = '<svg viewBox="0 0 12 16" aria-hidden="true"><polygon points="8,0 1,9 5,9 3,16 11,6 7,6"/></svg>';
+
+  /* "Last updated": en Shopify es la fecha de la entrada más nueva (blog.articles.first.published_at), sale sola. */
+  var LOG_UPDATED = '2026-10-01';
+
+  /* Blog "Pit Log" de Shopify: un artículo por día. En el tema lo pinta Liquid con {% for article in blog.articles %}.
+     date: fecha de la entrada (vacía = "[date pending]"); seq ordena las que aún no tienen fecha (mayor = más reciente).
+     tags: Test, Exhibition, Competition, Win, Full pull, Milestone, Shop, Featured (Featured = sale en la franja). demo: entrada de ejemplo.
+     img: imagen destacada del post (article.image). Vacía = la foto de su tipo (TYPE_PHOTOS, Personalizar).
+     gallery: handle del evento en la Galería (metacampo opcional); si falta, título + fecha. Solo las entradas con foto propia ligan a la Galería. */
+  var REAL = [
+    { id: 'drop', year: SEASON, date: '', seq: 90, title: 'Special edition: Lightning Night Tee', tags: ['Shop'], demo: true,
+      text: 'A special edition tee for the night the engine fired and lightning struck. One run only.', img: 'mock', link: ['limited.html', 'See the drop'] },
+    { id: 'monroe', year: SEASON, date: '', seq: 80, title: 'Green County Fall Nationals, Monroe, WI', tags: ['Competition'],
+      text: 'Badger State Tractor Pullers, Pro Stock class, at the Green County Fair. Result pending.', img: 'hm-hero', alt: 'Heavy Metal Pro Stock pulling down the track under a tall column of black smoke', video: 'https://www.youtube.com/watch?v=HfJ5FAJJ5Ac', link: ['schedule.html', 'Schedule'], gallery: 'monroe-' + SEASON },
+    { id: 'ex3', year: SEASON, date: '', seq: 70, title: 'Exhibition run', tags: ['Exhibition'],
+      text: 'In front of the grandstands with the crew. Place and notes from the day coming soon.', img: 'hm-grandstand', alt: 'The tractor from the side in front of full grandstands', gallery: 'exhibition-3' },
+    { id: 'ex2', year: SEASON, date: '', seq: 60, title: 'Exhibition run', tags: ['Exhibition'],
+      text: 'Another chance to put it on a real track. Place and notes from the day coming soon.', img: 'hm-front-white', alt: 'Front of the tractor on the track with white smoke', gallery: 'exhibition-2' },
+    { id: 'ex1', year: SEASON, date: '', seq: 50, title: 'First exhibition', tags: ['Exhibition'],
+      text: 'The first time the crowd heard it. Place and notes from the day coming soon.', img: 'hm-rear', alt: 'The tractor from the rear three quarters on the track, grandstands behind', gallery: 'exhibition-1' },
+    { id: 'first-pull', year: SEASON, date: '', seq: 40, title: 'First pull attempt', tags: ['Competition', 'Milestone', 'Featured'],
+      text: 'A small, unexpected issue ended the run early. We won’t sugarcoat it. Making it to a real track was already a point of pride.', img: 'hm-front-smoke', alt: 'Front of the tractor with the driver in a gold helmet and smoke behind', link: ['story.html', 'Read the story'], gallery: 'first-pull-' + SEASON },
+    { id: 't3', year: SEASON, date: '', seq: 30, title: 'Test day', tags: ['Test'], demo: true,
+      text: 'Example: what we tested, what we changed and what is next, in two or three lines.', img: '' },
+    { id: 't2', year: SEASON, date: '', seq: 20, title: 'Test day', tags: ['Test'], demo: true,
+      text: 'Example: a short note from the shop and, if there is one, a video.', img: '' },
+    { id: 't1', year: SEASON, date: '', seq: 15, title: 'Test day', tags: ['Test'], demo: true,
+      text: 'Example: first laps in the yard after start up. Notes from the crew go here.', img: 'hm-driver', alt: 'The driver in the seat, front of the tractor' },
+    { id: 'fire', year: SEASON, date: '', seq: 10, title: 'Engine fires, lightning strikes', tags: ['Test', 'Milestone', 'Featured'],
+      text: 'Chris fired the Cat 3208 for the first time. At that exact moment, lightning struck and the power went out. We call it a sign.', img: 'hm-engine', alt: 'The Cat 3208 engine with its turbo in the shop', link: ['story.html', 'Read the story'] },
+    { id: 'bolt', year: 2020, date: '2020-02', seq: 5, title: 'First bolt', tags: ['Milestone', 'Featured'],
+      text: 'The first bolt goes in at the family shop in Waterloo, WI. Nights and weekends from here on.', img: 'hm-side', alt: 'The tractor in profile on the grass under a blue sky', link: ['story.html', 'Read the story'] }
+  ];
+  var POSTS = REAL.slice();
+
+  /* Personalizar > Plantillas > Blog: Pit Log > "Foto por tipo": una imagen por tipo, se define una vez.
+     En Liquid: {{ article.image | default: section.settings['photo_' + tipo] }}. */
+  var FILES = [['hm-hero', 'Pulling under a tall column of black smoke'], ['hm-grandstand', 'The tractor in front of full grandstands'], ['hm-front-white', 'Front of the tractor with white smoke'], ['hm-front-smoke', 'Front of the tractor, driver in a gold helmet, smoke behind'], ['hm-rear', 'The tractor from the rear three quarters on the track'], ['hm-side', 'The tractor in profile on the grass'], ['hm-engine', 'The Cat 3208 engine with its turbo'], ['hm-driver', 'The driver in the seat'], ['hm-driver-crew', 'The driver and crew next to the rear tire'], ['hm-crew', 'The crew talking next to the tractor']];
+  function fileAlt(n) { var f = FILES.filter(function (x) { return x[0] === n; })[0]; return f ? f[1] : ''; }
+  var TYPE_PHOTOS = { 'Test': 'hm-driver-crew', 'Exhibition': 'hm-grandstand', 'Competition': 'hm-rear', 'Win': 'hm-front-smoke' };
+  var TYPE_ORDER = ['Win', 'Competition', 'Exhibition', 'Test'];
+  function typeOf(p) { return TYPE_ORDER.filter(function (t) { return p.tags.indexOf(t) > -1; })[0] || 'Test'; }
+  function ownPhoto(p) { return !!(p.src || (p.img && p.img !== 'mock')); }
+  function slug(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+  function galleryOf(p) { return p.gallery || slug(p.title + ' ' + (p.date || p.year)); }
+  /* liga a la Galería: solo entradas de pista (Test, Exhibition, Competition, Win) con foto propia */
+  function hasGallery(p) { return ownPhoto(p) && TYPE_ORDER.some(function (t) { return p.tags.indexOf(t) > -1; }); }
+  function newest() { return POSTS.reduce(function (m, p) { return p.date && p.date.length === 10 && p.date > m ? p.date : m; }, '0000'); }
+
+  /* boceto: 200 entradas de prueba (botón en la nota o ?demo=200) para ver que la página aguanta */
+  function makeTest(n) {
+    var seed = 7; function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+    var IMGS = [['hm-hero', 'Pulling under black smoke'], ['hm-grandstand', 'In front of the grandstands'], ['hm-front-white', 'Front of the tractor with white smoke'], ['hm-rear', 'Rear three quarters on the track'], ['hm-crew', 'The crew next to the tractor'], ['hm-driver', 'The driver in the seat'], ['hm-engine', 'The Cat 3208 engine'], ['hm-side', 'Profile on the grass']];
+    var PLACES = ['Monroe, WI', 'Jefferson, WI', 'Elkhorn, WI', 'Fond du Lac, WI', 'Bowling Green, OH', 'Plymouth, WI', 'Sedalia, MO', 'Tomah, WI', 'Manchester, IA', 'Mt. Pleasant, MI'];
+    var out = [];
+    for (var i = 0; i < n; i++) {
+      var y = SEASON - Math.floor(i / (n / 6)), m = 4 + Math.floor(rnd() * 6), d = 1 + Math.floor(rnd() * 28);
+      var r = rnd(), tags, title, text, place = PLACES[Math.floor(rnd() * PLACES.length)];
+      if (r < .34) { tags = ['Test']; title = 'Test day #' + (n - i); text = 'Example test entry: clutch, weights and a new turbo setting. Notes from the crew go here.'; }
+      else if (r < .52) { tags = ['Exhibition']; title = 'Exhibition, ' + place; text = 'Example exhibition entry in ' + place + '. Grandstands, smoke and a clean run.'; }
+      else { tags = ['Competition']; title = 'Pro Stock pull, ' + place; text = 'Example competition entry in ' + place + ': hook, distance and what is next.'; }
+      if (tags[0] === 'Competition' && rnd() < .3) tags.push('Full pull');
+      if (tags[0] === 'Competition' && rnd() < .14) { tags.push('Win'); title = 'Win in ' + place; }
+      if (rnd() < .05) tags.push('Milestone');
+      if ((tags.indexOf('Win') > -1 || tags.indexOf('Milestone') > -1) && rnd() < .6) tags.push('Featured');
+      var im = i % 4 === 3 ? ['', ''] : IMGS[i % IMGS.length];   /* 1 de cada 4 sin imagen: usa la foto de su tipo */
+      out.push({ id: 'x' + i, year: y, date: y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0'), seq: n - i, title: title, tags: tags, demo: true, text: text, img: im[0], alt: im[1] });
+    }
+    return out;
+  }
+
+  var TYPES = [['all', 'All'], ['Test', 'Test'], ['Exhibition', 'Exhibition'], ['Competition', 'Competition'], ['Win', 'Win'], ['Milestone', 'Milestone'], ['Shop', 'Shop']];
+  var TAGCLS = { 'Test': 't-test', 'Exhibition': 't-ex', 'Competition': 't-comp', 'Win': 't-win', 'Full pull': 't-full', 'Milestone': 't-mile', 'Shop': 't-shop' };
+  var HIDDEN_TAGS = ['Featured'];   /* etiquetas internas: no se ven como badge */
+  var url = new URLSearchParams(location.search);
+  var st = { year: +url.get('year') || SEASON, type: url.get('type') || 'all', q: url.get('q') || '', shown: PAGE, test: url.get('demo') === '200' };
+  if (url.get('year') === 'all') st.year = 'all';
+  if (!TYPES.some(function (t) { return t[0] === st.type; })) st.type = 'all';
+  if (st.test) { POSTS = makeTest(200); LOG_UPDATED = newest(); }
+  $('pl-q').value = st.q;
+
+  function has(p, t) { return p.tags.indexOf(t) > -1; }
+  function live() { return POSTS.filter(function (p) { return !p.hidden; }); }
+  function inYear(p) { return st.year === 'all' || p.year === st.year; }
+  function norm(s) { return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+  function matchQ(p) {
+    if (!st.q.trim()) return true;
+    var hay = norm([p.title, p.text, p.year, p.date, p.tags.filter(function (t) { return HIDDEN_TAGS.indexOf(t) < 0; }).join(' ')].join(' '));
+    return norm(st.q).trim().split(/\s+/).every(function (w) { return hay.indexOf(w) > -1; });
+  }
+  function years() {
+    var y = [SEASON]; live().forEach(function (p) { if (y.indexOf(p.year) < 0) y.push(p.year); });
+    return y.sort(function (a, b) { return b - a; });
+  }
+  function sortKey(p) { return p.year * 1e7 + (p.date ? +p.date.replace(/-/g, '').padEnd(8, '0').slice(4) : 0) * 1000 + p.seq; }
+  function count(list, t) { return list.filter(function (p) { return has(p, t); }).length; }
+  function longDate(iso) { var p = iso.split('-'); return new Date(+p[0], +p[1] - 1, +p[2] || 1).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); }
+
+  /* contadores: salen solos de las etiquetas. Wins en 0 = "Coming soon" (temporada de pruebas). Full pull es etiqueta, sin contador */
+  function renderStats() {
+    var list = live().filter(inYear);
+    var S = [['Competition', 'Competitions'], ['Exhibition', 'Exhibitions'], ['Win', 'Wins', 1], ['Test', 'Test days']];
+    $('pl-stats').innerHTML = S.map(function (s) {
+      var n = count(list, s[0]), soon = s[2] && !n;
+      var val = soon ? '<b class="pl-soon">' + BOLT + 'Coming soon</b>' : '<b>' + n + '</b>';
+      return '<li class="pl-stat' + (s[2] ? ' pl-stat--win' : '') + (n || soon ? '' : ' is-zero') + '">' + val + '<span>' + s[1] + '</span>' + (s[3] ? '<small>' + s[3] + '</small>' : '') + '</li>';
+    }).join('');
+    $('pl-scope').textContent = (st.year === 'all' ? 'All seasons' : st.year + (st.year === SEASON ? ' season so far' : ' season')) + ', counted from the log below.';
+    $('pl-updated').textContent = longDate(LOG_UPDATED);
+    var n = live().length;
+    $('pl-total').textContent = n + (n === 1 ? ' entry' : ' entries') + ' in the log';
+  }
+
+  /* filtros: Season en botones si hay pocas temporadas; con más de 4 se vuelve lista desplegable */
+  function renderFilters() {
+    var ys = years(), wrap = $('f-year'), hadSel = document.activeElement && document.activeElement.id === 'f-year-sel';
+    if (ys.length <= 4) {
+      wrap.innerHTML = ys.map(function (y) { return [y, String(y)]; }).concat([['all', 'All']]).map(function (y) {
+        return '<button type="button" class="chip" data-year="' + y[0] + '" aria-pressed="' + (st.year === y[0]) + '">' + y[1] + '</button>';
+      }).join('');
+    } else {
+      wrap.innerHTML = '<label class="vh" for="f-year-sel">Season</label><select class="input pl-sel" id="f-year-sel">' +
+        ys.map(function (y) { return '<option value="' + y + '"' + (st.year === y ? ' selected' : '') + '>' + y + '</option>'; }).join('') +
+        '<option value="all"' + (st.year === 'all' ? ' selected' : '') + '>All seasons</option></select>';
+      if (hadSel) $('f-year-sel').focus();
+    }
+    var pool = live().filter(inYear).filter(matchQ);
+    $('f-type').innerHTML = TYPES.map(function (t) {
+      var n = t[0] === 'all' ? pool.length : count(pool, t[0]);
+      /* testing: Win en 0 no muestra "0" (el filtro dice "First win: coming soon") */
+      return '<button type="button" class="chip" data-type="' + t[0] + '" aria-pressed="' + (st.type === t[0]) + '">' + t[1] + (t[0] === 'Win' && !n ? '' : '<span class="n">' + n + '</span>') + '</button>';
+    }).join('');
+  }
+
+  function pic(p, eager) {
+    if (p.img === 'mock') { var prod = (window.HM_CATALOG || []).filter(function (x) { return x.id === 'lightning-night-tee'; })[0]; return '<span class="ph ph--mock">' + (prod && window.hmMock ? window.hmMock(prod) : '') + '</span>'; }
+    if (p.src) return '<img class="photo" src="' + esc(p.src) + '" alt="' + esc(p.alt || '') + '" loading="' + (eager ? 'eager' : 'lazy') + '">';
+    if (!p.img) { var t = typeOf(p), f = TYPE_PHOTOS[t]; return '<img class="photo" src="img/' + esc(f) + '.webp" alt="' + esc(fileAlt(f)) + '" width="1050" height="1400" loading="' + (eager ? 'eager' : 'lazy') + '"><span class="pl-fb" aria-hidden="true">Foto por tipo: ' + esc(t) + '</span>'; }
+    return '<img class="photo" src="img/' + esc(p.img) + '.webp" alt="' + esc(p.alt || '') + '" width="1050" height="1400" loading="' + (eager ? 'eager' : 'lazy') + '">';
+  }
+  function when(p) {
+    if (!p.date) return '<b>' + p.year + '</b><span class="pend">[date pending]</span>';
+    var parts = p.date.split('-'), d = new Date(+parts[0], (+parts[1] || 1) - 1, +parts[2] || 1);
+    var mon = d.toLocaleDateString('en-US', { month: 'short' });
+    return parts[2] ? '<b>' + mon + ' ' + (+parts[2]) + '</b><span>' + parts[0] + '</span>' : '<b>' + mon + '</b><span>' + parts[0] + '</span>';
+  }
+  function hl(s) {
+    var out = esc(s), ws = st.q.trim().split(/\s+/).filter(function (w) { return w.length > 1; });
+    ws.forEach(function (w) { var re = new RegExp('(' + esc(w).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')(?![^<]*>)', 'ig'); out = out.replace(re, '<mark>$1</mark>'); });
+    return out;
+  }
+  function entry(p) {
+    var tags = p.tags.filter(function (t) { return HIDDEN_TAGS.indexOf(t) < 0; }).map(function (t) { return '<span class="badge ' + (TAGCLS[t] || '') + '">' + esc(t) + '</span>'; }).join('') + (p.demo ? '<span class="badge t-demo">Example</span>' : '');
+    var links = [];
+    if (hasGallery(p)) links.push('<a href="gallery.html?event=' + encodeURIComponent(galleryOf(p)) + '">Photos &amp; video<span class="vh"> from ' + esc(p.title) + ' in the gallery</span></a>');
+    if (p.video) links.push(ext(p.video, 'Watch video', ' ' + p.title));
+    if (p.link) links.push('<a href="' + p.link[0] + '">' + p.link[1] + '</a>');
+    return '<li class="pl-entry' + (has(p, 'Win') ? ' is-win' : '') + (has(p, 'Milestone') ? ' is-mile' : '') + '" id="e-' + p.id + '"><div class="pl-when">' + when(p) + '</div>' +
+      '<article class="pl-card" tabindex="-1" aria-labelledby="h-' + p.id + '"><div class="pl-card__pic">' + pic(p) + '</div><div class="pl-card__body"><div class="pl-tags">' + tags + '</div>' +
+      '<h3 class="h3" id="h-' + p.id + '">' + hl(p.title) + '</h3><p>' + hl(p.text) + '</p>' + (links.length ? '<div class="pl-links">' + links.join('') + '</div>' : '') + '</div></article></li>';
+  }
+  function filtered() {
+    return live().filter(inYear).filter(function (p) { return st.type === 'all' || has(p, st.type); }).filter(matchQ).sort(function (a, b) { return sortKey(b) - sortKey(a); });
+  }
+  function renderList(focusFrom) {
+    var list = filtered(), total = list.length, shown = Math.min(st.shown, total);
+    var yl = st.year === 'all' ? 'all seasons' : String(st.year);
+    var tl = st.type === 'all' ? 'all types' : st.type;
+    var ql = st.q.trim() ? ' · “' + st.q.trim() + '”' : '';
+    $('pl-count').textContent = (total ? 'Showing ' + shown + ' of ' + total : '0') + (total === 1 ? ' entry' : ' entries') + ' · ' + yl + ' · ' + tl + ql;
+    if (!total) {
+      var msg;
+      if (st.q.trim()) msg = '<p class="h3">No entries match “' + esc(st.q.trim()) + '”</p><p>Check the spelling, try one word, or search all seasons.</p><div class="btn-row"><button type="button" class="btn btn--ghost btn--sm" data-clear>Clear search</button>' + (st.year !== 'all' ? '<button type="button" class="btn btn--ghost btn--sm" data-year="all">Search all seasons</button>' : '') + '</div>';
+      else if (st.type === 'Win') msg = '<p class="h3">First win: coming soon</p><p>No wins logged yet. The day it happens, it goes here first.</p><button type="button" class="btn btn--ghost btn--sm" data-type="all" data-year="' + SEASON + '">Show ' + SEASON + ', all types</button>';
+      else msg = '<p class="h3">Nothing logged here yet</p><p>No ' + esc(tl.toLowerCase()) + ' entries for ' + esc(yl) + '. Try another season or type.</p><button type="button" class="btn btn--ghost btn--sm" data-type="all" data-year="' + SEASON + '">Show ' + SEASON + ', all types</button>';
+      $('pl-list').innerHTML = '<li class="pl-empty">' + msg + '</li>';
+      $('pl-more').innerHTML = '';
+      return;
+    }
+    if (focusFrom != null) {
+      /* Load more: agrega solo las nuevas, sin repintar las que ya están */
+      $('pl-list').insertAdjacentHTML('beforeend', list.slice(focusFrom, shown).map(entry).join(''));
+      var first = list[focusFrom] && document.querySelector('#e-' + list[focusFrom].id + ' .pl-card');
+      if (first) first.focus({ preventScroll: false });
+    } else {
+      $('pl-list').innerHTML = list.slice(0, shown).map(entry).join('');
+    }
+    var left = total - shown;
+    $('pl-more').innerHTML = (total > PAGE ? '<span class="pl-meter" aria-hidden="true"><span style="width:' + Math.round(shown / total * 100) + '%"></span></span>' : '') +
+      (left > 0 ? '<p>' + shown + ' of ' + total + ' entries</p><button type="button" class="btn btn--ghost" id="pl-load">Load more<span class="vh"> entries, ' + Math.min(PAGE, left) + ' of ' + left + ' left</span></button>'
+        : total > PAGE ? '<p>That is every entry for ' + esc(yl) + (st.type === 'all' ? '' : ', ' + esc(tl)) + '.</p><button type="button" class="btn btn--ghost btn--sm" id="pl-top">Back to search</button>' : '');
+  }
+
+  /* franja: SOLO Win o Milestone con Featured, máximo 6 (las más recientes). Todas las temporadas. */
+  var TROPHY = '<svg class="pl-trophy" viewBox="0 0 40 40" aria-hidden="true"><path d="M13 6h14v10a7 7 0 0 1-14 0Z"/><path d="M13 9H7c0 5 2 8 6 9M27 9h6c0 5-2 8-6 9M20 23v6M14 34h12M16 29h8v5h-8Z"/></svg>';
+  function renderWM() {
+    var wins = live().filter(function (p) { return has(p, 'Win'); }).sort(function (a, b) { return sortKey(b) - sortKey(a); });
+    if (!wins.length) {
+      $('pl-wins').innerHTML = TROPHY + '<p class="label">Wins</p><p class="pl-wins__big">Coming soon<span class="dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span></p><p>Still chasing the first one. The day it happens, it goes up here first.</p>';
+    } else {
+      var w = wins[0];
+      $('pl-wins').innerHTML = TROPHY + '<p class="label">Wins · all seasons</p><p class="pl-wins__big">' + wins.length + (wins.length === 1 ? ' win' : ' wins') + '</p><p>Latest: ' + esc(w.title) + ', ' + (w.date ? longDate(w.date.length === 7 ? w.date + '-01' : w.date) : w.year) + '.</p><button type="button" class="btn btn--light btn--sm" data-type="Win" data-year="all" data-go>See every win</button>';
+    }
+    var feat = live().filter(function (p) { return has(p, 'Featured') && (has(p, 'Win') || has(p, 'Milestone')); })
+      .sort(function (a, b) { return sortKey(b) - sortKey(a); }).slice(0, FEATURED_MAX);
+    if (!feat.length) {
+      $('wm-wrap').innerHTML = '<p class="pl-wm__empty">Big days from the log show up here.</p>';
+      $('wm-arws').hidden = true; return;
+    }
+    $('wm-wrap').innerHTML = '<ol class="pl-track" id="wm-track" tabindex="0" aria-label="Featured wins and milestones, ' + feat.length + ' items">' + feat.map(function (m, i) {
+      var yr = m.date ? new Date(+m.date.slice(0, 4), +m.date.slice(5, 7) - 1, 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : m.year;
+      var kind = has(m, 'Win') ? '<span class="badge t-win">Win</span>' : '<span class="badge t-mile">Milestone</span>';
+      return '<li class="pl-mile" aria-label="' + (i + 1) + ' of ' + feat.length + '"><div class="pl-mile__pic">' + pic(m, true) + '</div><div class="pl-mile__txt"><span class="pl-mile__yr">' + (m.id === 'fire' ? BOLT : '') + yr + ' ' + kind + '</span><h3 class="h3">' + esc(m.title) + '</h3><p>' + esc(m.text) + '</p>' + (m.link ? '<p><a href="' + m.link[0] + '">' + m.link[1] + '</a></p>' : '') + '</div></li>';
+    }).join('') + '</ol>';
+    $('wm-arws').hidden = feat.length <= 3;
+    var tr = $('wm-track');
+    tr.addEventListener('scroll', arrowsState, { passive: true });
+    tr.scrollLeft = 0; arrowsState();
+  }
+  function arrowsState() {
+    var tr = $('wm-track'); if (!tr) return;
+    var over = tr.scrollWidth > tr.clientWidth + 2;
+    if (!$('wm-arws').hidden || over) {
+      $('wm-prev').disabled = tr.scrollLeft < 4;
+      $('wm-next').disabled = tr.scrollLeft + tr.clientWidth >= tr.scrollWidth - 4;
+    }
+  }
+  function slide(dir) {
+    var tr = $('wm-track'); if (!tr) return;
+    var card = tr.querySelector('.pl-mile'), step = card ? card.getBoundingClientRect().width + 4 : tr.clientWidth;
+    var per = Math.max(1, Math.round(tr.clientWidth / step));
+    tr.scrollBy({ left: dir * step * per, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }
+  $('wm-prev').addEventListener('click', function () { slide(-1); });
+  $('wm-next').addEventListener('click', function () { slide(1); });
+  window.addEventListener('resize', arrowsState);
+  document.addEventListener('keydown', function (e) {
+    if (e.target.id !== 'wm-track') return;
+    if (e.key === 'ArrowRight') { e.preventDefault(); slide(1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); slide(-1); }
+  });
+
+  function writeURL() {
+    var q = new URLSearchParams();
+    if (st.year !== SEASON) q.set('year', st.year);
+    if (st.type !== 'all') q.set('type', st.type);
+    if (st.q.trim()) q.set('q', st.q.trim());
+    if (st.test) q.set('demo', '200');
+    try { history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : '')); } catch (e) {}
+  }
+  function refilter() { st.shown = PAGE; renderStats(); renderFilters(); renderList(); writeURL(); }
+  function render() { st.shown = PAGE; renderStats(); renderFilters(); renderList(); renderWM(); }
+  render();
+
+  /* clics: filtros, vaciar búsqueda, load more, volver al buscador */
+  document.addEventListener('click', function (e) {
+    var main = e.target.closest('main'); if (!main) return;
+    if (e.target.closest('#pl-load')) { var from = st.shown; st.shown += PAGE; renderList(from); return; }
+    if (e.target.closest('#pl-top')) { var bar = document.querySelector('.pl-bar'); bar.scrollIntoView({ block: 'start' }); window.scrollBy(0, -80); $('pl-q').focus({ preventScroll: true }); return; }
+    if (e.target.closest('[data-clear]')) { st.q = ''; $('pl-q').value = ''; refilter(); $('pl-q').focus(); return; }
+    var b = e.target.closest('[data-year],[data-type]'); if (!b) return;
+    var focusSel = null;
+    if (b.hasAttribute('data-year')) { var y = b.getAttribute('data-year'); st.year = y === 'all' ? 'all' : +y; if (b.classList.contains('chip')) focusSel = '[data-year="' + y + '"]'; }
+    if (b.hasAttribute('data-type')) { st.type = b.getAttribute('data-type'); if (b.classList.contains('chip')) focusSel = '[data-type="' + st.type + '"]'; }
+    refilter();
+    if (b.hasAttribute('data-go')) { $('log-t').scrollIntoView({ block: 'start' }); window.scrollBy(0, -90); }
+    var f = focusSel ? document.querySelector('.pl-bar ' + focusSel) : null;
+    if (!f && st.year !== SEASON && !document.querySelector('.pl-bar [data-year]')) f = $('f-year-sel');
+    f = f || document.querySelector('.pl-bar .chip[aria-pressed="true"]') || $('pl-q');
+    if (f) f.focus({ preventScroll: !!b.hasAttribute('data-go') ? true : false });
+  });
+  document.addEventListener('change', function (e) {
+    if (e.target.id !== 'f-year-sel') return;
+    st.year = e.target.value === 'all' ? 'all' : +e.target.value; refilter();
+  });
+  var qt;
+  $('pl-q').addEventListener('input', function () { var v = this.value; clearTimeout(qt); qt = setTimeout(function () { st.q = v; refilter(); }, 160); });
+  $('pl-q').addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); clearTimeout(qt); st.q = this.value; refilter(); } });
+
+  /* boceto: 200 entradas de prueba */
+  $('pl-test').addEventListener('click', function () {
+    st.test = !st.test;
+    POSTS = st.test ? makeTest(200) : REAL.slice(); added = null; $('adm-del').disabled = true;
+    LOG_UPDATED = st.test ? newest() : '2026-10-01';
+    st.year = SEASON; st.type = 'all'; st.q = ''; $('pl-q').value = '';
+    render(); writeURL();
+    this.textContent = st.test ? 'Volver a las entradas reales' : 'Probar con 200 entradas';
+    this.setAttribute('aria-pressed', String(st.test));
+  });
+  if (st.test) { $('pl-test').textContent = 'Volver a las entradas reales'; $('pl-test').setAttribute('aria-pressed', 'true'); }
+
+  /* editor simulado del blog: Save agrega la entrada y todo se mueve solo; Delete la quita */
+  var added = null, amsg = $('adm-msg');
+  $('adm-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var tags = [].slice.call(document.querySelectorAll('.adm__tags input:checked')).map(function (i) { return i.value; });
+    if (!tags.filter(function (t) { return t !== 'Featured'; }).length) { amsg.textContent = 'Pon al menos una etiqueta de tipo (Test, Exhibition, Competition...): es lo que mueve los contadores y los filtros.'; return; }
+    var d = $('adm-date').value;
+    var before = { w: count(live(), 'Win'), c: count(live(), 'Competition') };
+    if (added) POSTS.splice(POSTS.indexOf(added), 1);
+    added = { id: 'new', year: d ? +d.slice(0, 4) : SEASON, date: d, seq: 999, title: $('adm-title').value.trim() || 'Untitled entry', tags: tags, demo: true,
+      text: $('adm-text').value.trim(), img: admImg.kind === 'files' ? admImg.name : '', src: admImg.kind === 'file' ? admImg.src : '', alt: admImg.kind === 'files' ? fileAlt(admImg.name) : admImg.kind === 'file' ? 'Photo from the day: ' + ($('adm-title').value.trim() || 'Pit Log entry') : '', video: $('adm-video').value.trim(), hidden: $('adm-vis').value === 'Hidden' };
+    POSTS.push(added);
+    if (!added.hidden) LOG_UPDATED = d || new Date().toISOString().slice(0, 10);
+    st.year = added.year; st.type = 'all'; st.q = ''; $('pl-q').value = ''; render(); writeURL();
+    $('adm-del').disabled = false;
+    if (added.hidden) { amsg.textContent = 'Guardada como Hidden: sigue en el admin pero no sale en el sitio ni cuenta en los contadores.'; return; }
+    var inStrip = has(added, 'Featured') && (has(added, 'Win') || has(added, 'Milestone'));
+    var w = count(live(), 'Win');
+    amsg.textContent = (admImg.kind === 'none' ? 'Sin imagen destacada: usa la foto de ' + typeOf(added) + '. ' : '') + 'Guardada. Ya salió en la bitácora' + (inStrip ? ' y en la franja Wins & milestones (porque tiene Featured)' : has(added, 'Featured') ? '; Featured solo cuenta junto con Win o Milestone' : (has(added, 'Win') || has(added, 'Milestone')) ? '; no sale en la franja porque no tiene Featured' : '') +
+      '. Contadores: Wins ' + (before.w || 'Coming soon') + ' → ' + (w || 'Coming soon') + ', Competitions ' + before.c + ' → ' + count(live(), 'Competition') + '. Para editarla, cambia los campos y vuelve a guardar.';
+  });
+  /* imagen destacada del post: subir, elegir de Archivos o quitar (entonces usa la foto de su tipo) */
+  var admImg = { kind: 'files', name: 'hm-grandstand', src: '' };
+  function admTags() { return [].slice.call(document.querySelectorAll('.adm__tags input:checked')).map(function (i) { return i.value; }); }
+  function thumbHtml(src, alt, fb) { return '<img src="' + esc(src) + '" alt="' + esc(alt) + '">' + (fb ? '<span class="pl-fb" aria-hidden="true">Foto por tipo</span>' : ''); }
+  function renderAdmImg() {
+    var t = typeOf({ tags: admTags() });
+    if (admImg.kind === 'none') {
+      $('adm-thumb').innerHTML = thumbHtml('img/' + TYPE_PHOTOS[t] + '.webp', 'Foto por tipo: ' + t, true);
+      $('adm-img-hint').textContent = 'Sin imagen: se verá la foto de ' + t + ' (Personalizar). Sin foto propia no sale el link a la Galería.';
+    } else if (admImg.kind === 'file') {
+      $('adm-thumb').innerHTML = thumbHtml(admImg.src, 'Imagen subida: ' + admImg.label);
+      $('adm-img-hint').textContent = 'Subida: ' + admImg.label + '. En Shopify queda también en Contenido > Archivos.';
+    } else {
+      $('adm-thumb').innerHTML = thumbHtml('img/' + admImg.name + '.webp', 'Imagen destacada: ' + admImg.name);
+      $('adm-img-hint').textContent = 'De Archivos: ' + admImg.name + '.webp';
+    }
+    $('adm-noimg').disabled = admImg.kind === 'none';
+    [].forEach.call($('adm-files').querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', String(admImg.kind === 'files' && b.getAttribute('data-file') === admImg.name)); });
+  }
+  $('adm-files').innerHTML = FILES.map(function (f) { return '<button type="button" data-file="' + f[0] + '" aria-pressed="false"><img src="img/' + f[0] + '.webp" alt="" loading="lazy">' + f[0] + '</button>'; }).join('');
+  $('adm-up').addEventListener('click', function () { $('adm-file').click(); });
+  $('adm-file').addEventListener('change', function () {
+    var f = this.files && this.files[0]; if (!f) return;
+    if (!/^image\//.test(f.type)) { $('adm-img-hint').textContent = 'Ese archivo no es una imagen (usa JPG, PNG o WebP).'; this.value = ''; return; }
+    admImg = { kind: 'file', src: URL.createObjectURL(f), label: f.name, name: '' };
+    this.value = ''; renderAdmImg(); $('adm-up').focus();
+  });
+  $('adm-pick').addEventListener('click', function () {
+    var open = $('adm-files').hidden; $('adm-files').hidden = !open; this.setAttribute('aria-expanded', String(open));
+    if (open) { var sel = $('adm-files').querySelector('[aria-pressed="true"]') || $('adm-files').querySelector('button'); sel.focus(); }
+  });
+  $('adm-files').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-file]'); if (!b) return;
+    admImg = { kind: 'files', name: b.getAttribute('data-file'), src: '' };
+    $('adm-files').hidden = true; $('adm-pick').setAttribute('aria-expanded', 'false'); renderAdmImg(); $('adm-pick').focus();
+  });
+  $('adm-files').addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.stopPropagation(); this.hidden = true; $('adm-pick').setAttribute('aria-expanded', 'false'); $('adm-pick').focus(); } });
+  $('adm-noimg').addEventListener('click', function () { admImg = { kind: 'none', name: '', src: '' }; renderAdmImg(); $('adm-up').focus(); });
+  document.querySelector('.adm__tags').addEventListener('change', renderAdmImg);
+  renderAdmImg();
+
+  /* Personalizar: foto por tipo. Cambiarla repinta todas las entradas sin imagen destacada */
+  function renderTypes() {
+    $('adm-types').innerHTML = TYPE_ORDER.slice().reverse().map(function (t) {
+      var id = 'tp-' + t.toLowerCase();
+      return '<div class="adm__type"><span class="adm__thumb"><img src="img/' + TYPE_PHOTOS[t] + '.webp" alt=""></span><label for="' + id + '">' + t + '</label><select class="input" id="' + id + '" data-tp="' + t + '">' +
+        FILES.map(function (f) { return '<option value="' + f[0] + '"' + (f[0] === TYPE_PHOTOS[t] ? ' selected' : '') + '>' + f[0] + '</option>'; }).join('') + '</select></div>';
+    }).join('');
+  }
+  renderTypes();
+  $('adm-types').addEventListener('change', function (e) {
+    var sel = e.target.closest('[data-tp]'); if (!sel) return;
+    TYPE_PHOTOS[sel.getAttribute('data-tp')] = sel.value;
+    sel.parentNode.querySelector('img').src = 'img/' + sel.value + '.webp';
+    renderList(); renderWM(); renderAdmImg();
+  });
+
+  $('adm-del').addEventListener('click', function () {
+    if (!added) return;
+    POSTS.splice(POSTS.indexOf(added), 1); added = null; render(); writeURL();
+    this.disabled = true;
+    amsg.textContent = 'Borrada: desapareció de la bitácora, de la franja y los contadores bajaron solos. En Shopify, Delete es para siempre; si solo quieres esconderla, usa Hidden.';
+  });
+})();
+</script>
+</body>
+</html>

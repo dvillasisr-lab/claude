@@ -26,7 +26,9 @@ Lo que me vayas dando "para después" va aquí. No se trabaja hasta que digas.
 | 19 | Evolución del tractor | Línea de tiempo por temporada, primeras veces, alumni del crew (idea 9). | En espera |
 | 20 | Playera de crew personalizada | Camisa de mecánico con nombre bordado (idea 12). | En espera |
 | 21 | Colección con causa | Diseño anual con margen para una causa local (idea 13). | En espera |
-| 22 | Nombre de "Hook Alerts" | La dueña no está segura de la frase; elegir nombre de la lista de correo. | Por decidir |
+| 22 | Actualizar información faltante e imágenes | Llenar todos los [pending], XX y placeholders con datos y fotos reales en cada página. | En espera |
+| 23 | Correo con dominio propio | Cambiar heavymetalevil72@gmail.com por uno del dominio (ej. hello@heavymetalprostock.com) y actualizarlo en todo el sitio, políticas y Shopify. | En espera |
+| 24 | Exhibiciones | Confirmar si fueron 3 o 4 y, de cada una: fecha, lugar, liga, resultado, fotos y video. Cargarlas en Schedule, Pit Log y Gallery. | En espera |
 
 ## Datos que faltan
 - Cifras de patrocinio: ¿5,000+ fans es por evento o por temporada? (el sitio usa "XX+" en frases de venta y estimados "est." en contadores).
@@ -42,7 +44,7 @@ Lo que me vayas dando "para después" va aquí. No se trabaja hasta que digas.
 ## Datos confirmados
 - Email: heavymetalevil72@gmail.com · Teléfono: (920) 650-4374 · P.O. Box 42, Waterloo, WI 53594.
 - Chris lleva +20 años en el deporte.
-- Ya hubo 3 o 4 exhibiciones (editable; el sitio muestra 3 hasta que confirmes).
+- Ya hubo 3 o 4 exhibiciones (editable; el sitio muestra 3 hasta que confirmes; ver pendiente 24).
 - ¿Cuántos full pulls llevan (llegar a los 300 ft)?
 
 ## Decisiones ya tomadas
@@ -50,5 +52,7 @@ Lo que me vayas dando "para después" va aquí. No se trabaja hasta que digas.
 - "The Evil One" siempre entre comillas.
 - La frase es "This is f#cking evil" y va en la cinta amarilla (máximo 3 frases).
 - Nombre de marca: "Heavy Metal Pro Stock: “The Evil One”" (trademark en trámite); nunca "Heavy Metal" solo en merch.
+- La lista de correo se llama "The Evil List" (antes Hook Alerts).
+- No se menciona a Printify al cliente.
 - La edición especial no se numera. Wins en 0 se muestran como "Coming soon".
 - Hero con fondo de tormenta y rayo. Sin música con derechos (sonido de motor sintetizado).
