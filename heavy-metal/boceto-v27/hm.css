@@ -489,3 +489,4 @@ img:not(.img-skel){transition:opacity .35s}
 html.has-cookie{scroll-padding-bottom:200px}
 .spx.is-focus .spx__belt{animation:none}
 .spx.is-focus .spx__track{width:auto;overflow-x:auto}
+@media (min-width:861px){.ftr__cols--two{grid-template-columns:repeat(2,minmax(0,1fr));max-width:720px;margin-inline:auto}}

@@ -272,7 +272,7 @@
     setTimeout(renderSpx, 0);
     f.outerHTML = spHTML +
       '<footer class="ftr"><div class="wrap">' +
-        '<div class="ftr__cols">' +
+        '<div class="ftr__cols' + (f.hasAttribute('data-no-news') && !/evil-list/.test(location.pathname) ? ' ftr__cols--two' : '') + '">' +
           acc('Help', [['Contact us', 'contact.html'], ['Shipping', 'policies.html?p=shipping'], ['Returns &amp; exchanges', 'policies.html?p=refund'], ['Size guide', 'sizes.html'], ['Track my order', 'account.html'], ['FAQ', 'faq.html'], ['The Evil List', 'evil-list.html']]) +
           (f.hasAttribute('data-no-news') && /evil-list/.test(location.pathname) ? '<div class="ftr__news"><h2 class="ftr__h">The Evil List</h2><p style="margin:0" class="muted">You are on the sign up page.</p></div>' : '') +
           (f.hasAttribute('data-no-news') ? '' : '<div class="ftr__news"><h2 class="ftr__h">The Evil List</h2><p style="margin:0" class="muted">New drops and a heads up before every pull. One list, no spam. <a href="evil-list.html">What you get</a></p>' +

@@ -67,6 +67,26 @@ Lo que me vayas dando "para después" va aquí. No se trabaja hasta que digas.
 - La edición especial no se numera. Wins en 0 se muestran como "Coming soon".
 - Hero con fondo de tormenta y rayo. Sin música con derechos (sonido de motor sintetizado).
 
+## Antes de pasar a Shopify (QA del boceto v27, oct 2026)
+El boceto pasó la prueba completa: funcional, contenido, accesibilidad, velocidad y visual. El detalle está en `analisis/10-preparacion-shopify.md`. Para construir hace falta:
+
+| # | Qué falta | Quién lo da |
+|---|---|---|
+| 1 | Productos reales en Printify: nombres, diseños, mockups, tipo, colores, tallas y precios (hoy todo dice $XX) | Dueña |
+| 2 | Monto de envío gratis y escalones del carrito (que nunca cuadre justo, pendiente 27) y montos de Feed The Beast | Dueña |
+| 3 | Confirmar con Printify: envío en 5 días, "printed in USA", devoluciones, si ponen la nota en el paquete, inventario (sin conteo no salen solos "Sold out" ni "Almost gone!") y si funciona con el Crew Pack | Dueña con Printify |
+| 4 | Fans: ¿los 5,000+ son por pull o por temporada? (si es por temporada, el "100,000+" está mal en todo el sitio) | Dueña |
+| 5 | Exhibiciones: ¿3 o 4? Fecha, lugar, resultado y fotos de cada una, más Monroe y el día del primer pull (agosto 2026) | Dueña |
+| 6 | Black Smoke Guarantee: plazo y términos, revisión legal; nombre legal del negocio para las políticas | Dueña y abogado |
+| 7 | Contenido del Crew Pack y su descuento | Dueña |
+| 8 | Medidas reales de cada prenda para la guía de tallas | Dueña con Printify |
+| 9 | Porcentaje del código EVIL3208 | Dueña |
+| 10 | Link de Instagram y de la playlist de Spotify; videos del rayo y del motor | Dueña |
+| 11 | Datos [pending] de la ficha técnica (The Machine), tamaños de las zonas de calcomanías y fotos reales donde hay placeholders | Dueña y Chris |
+| 12 | Correo con dominio propio (pendiente 23) | Dueña |
+| 13 | Quitar las reseñas de ejemplo al instalar Judge.me | Al construir |
+| 14 | Lo que Shopify resuelve al construir: tamaños automáticos de imagen, etiquetas para redes (Open Graph), canonical, datos de producto con foto y precio real | Al construir |
+
 ## Siguiente fase (cuando apruebes el diseño)
 1. Datos y fotos reales (pendiente 22) y respuestas de la dueña (exhibiciones, Monroe, Crew Pack, precios).
 2. Construir el tema en el borrador "HM v14 BORRADOR rediseño": secciones Liquid con bloques editables, metaobjetos (Pull event, Season stats, Sponsor tier, Sponsor stat, Logo placement, Decal zone, Tractor part, Album, Booking option, Crew member), blog Pit Log, colecciones automáticas, plantillas de producto, Special edition, 404.
