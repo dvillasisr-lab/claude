@@ -1,0 +1,200 @@
+{%- comment -%}
+  Album web page (templates/metaobject/album.json): one event with all its photos and videos.
+  Thumbs are 400 px and lazy; the viewer (assets/hm-gallery.js) loads the large photo only when it opens.
+  "Pull details" shows when a pull_event entry points to this album in its gallery_album field.
+{%- endcomment -%}
+{%- liquid
+  assign a = metaobject
+  assign photos = a.photos.value
+  assign videos = a.videos.value
+  assign n_ph = photos.size | default: 0
+  assign n_vid = videos.size | default: 0
+  assign kind = a.kind.value | default: '' | downcase | capitalize
+  assign yr = a.season.value
+  if yr == blank and a.date.value != blank
+    assign yr = a.date.value | date: '%Y'
+  endif
+  assign gallery_url = section.settings.gallery_url | default: '/pages/gallery'
+  assign pull = nil
+  for e in metaobjects.pull_event.values
+    if e.gallery_album.value.system.handle == a.system.handle
+      assign pull = e
+      break
+    endif
+  endfor
+  assign aid = 'Album-' | append: section.id
+-%}
+
+<div class="hm-album" data-hm-album>
+  <section class="gw al-head" aria-labelledby="{{ aid }}-t">
+    <nav class="al-crumb" aria-label="Breadcrumb">
+      <a href="{{ gallery_url }}">{{ section.settings.back_label }}</a>
+    </nav>
+    <div class="al-head__row">
+      <div>
+        <p class="al-k">
+          {%- if a.date.value != blank -%}
+            {{ a.date.value | date: '%B %-d, %Y' }}
+          {%- else -%}
+            {{ yr }}
+          {%- endif -%}
+          {%- if kind != blank %} · {{ kind }}{% endif -%}
+        </p>
+        <h1 class="h1" id="{{ aid }}-t">{{ a.event_name.value }}</h1>
+        <p class="al-m">
+          {%- capture meta -%}
+            {%- if a.city.value != blank -%}<span>{{ a.city.value }}</span>{%- endif -%}
+            {%- if a.league.value != blank -%}<span>{{ a.league.value }}</span>{%- endif -%}
+            {%- if n_ph > 0 -%}<span>{{ n_ph }} {% if n_ph == 1 %}photo{% else %}photos{% endif %}</span>{%- endif -%}
+            {%- if n_vid > 0 -%}<span>{{ n_vid }} {% if n_vid == 1 %}video{% else %}videos{% endif %}</span>{%- endif -%}
+          {%- endcapture -%}
+          {{ meta }}
+        </p>
+      </div>
+      <div class="al-acts">
+        {%- if n_ph > 1 -%}
+          <button type="button" class="btn btn--sm" data-album-all>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-2h6l2 2h3v12H4Z M12 10a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" fill-rule="evenodd"/></svg>
+            View all {{ n_ph }} photos
+          </button>
+        {%- endif -%}
+        {%- if pull -%}
+          <a href="{{ section.settings.schedule_url | default: '/pages/schedule' }}">Pull details</a>
+        {%- endif -%}
+        {%- if a.pit_log_url.value != blank -%}
+          <a href="{{ a.pit_log_url.value }}">Pit Log</a>
+        {%- endif -%}
+        <a href="{{ gallery_url }}?event={{ a.system.handle }}">See it in the gallery</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="gw al-main" aria-label="Photos and videos">
+    {%- if n_ph == 0 and n_vid == 0 -%}
+      <div class="al-empty">
+        <p class="h3">{{ section.settings.empty_title }}</p>
+        <p>{{ section.settings.empty_text }}</p>
+        <a class="link" href="{{ gallery_url }}">{{ section.settings.back_label }}</a>
+      </div>
+    {%- else -%}
+      <ul class="al-grid">
+        {%- for v in videos -%}
+          {%- liquid
+            assign vid = ''
+            if v contains 'v='
+              assign vid = v | split: 'v=' | last | split: '&' | first
+            elsif v contains 'youtu.be/'
+              assign vid = v | split: 'youtu.be/' | last | split: '?' | first
+            elsif v contains '/shorts/'
+              assign vid = v | split: '/shorts/' | last | split: '?' | first
+            endif
+          -%}
+          <li class="al-v">
+            <a class="g-t g-t--vid" href="{{ v }}" target="_blank" rel="noopener">
+              {%- if a.cover.value != blank -%}
+                {{
+                  a.cover.value
+                  | image_url: width: 800
+                  | image_tag: widths: '400, 800', sizes: '(max-width: 600px) 100vw, 50vw', loading: 'lazy', class: 'photo', alt: ''
+                }}
+              {%- elsif vid != blank -%}
+                <img class="photo" src="https://i.ytimg.com/vi/{{ vid | escape }}/hqdefault.jpg" alt="" width="480" height="360" loading="lazy">
+              {%- endif -%}
+              <span class="badge g-kind" aria-hidden="true">Video</span>
+              <span class="g-play" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z"/></svg></span>
+              <span class="g-cap" aria-hidden="true"><b>{{ a.event_name.value }}</b><span>Watch the run ↗</span></span>
+              <span class="vh">{{ a.event_name.value }}: watch the video (opens in a new tab)</span>
+            </a>
+          </li>
+        {%- endfor -%}
+        {%- for p in photos -%}
+          {%- assign p_alt = p.alt | default: a.event_name.value -%}
+          <li>
+            <button type="button" class="g-t" data-album-k="{{ forloop.index0 }}" aria-label="Open photo: {{ p_alt | escape }}">
+              {{
+                p
+                | image_url: width: 800
+                | image_tag: widths: '400, 800', sizes: '(max-width: 600px) 50vw, (max-width: 1240px) 25vw, 17vw', loading: 'lazy', class: 'photo', alt: ''
+              }}
+              <span class="g-zoom" aria-hidden="true"
+                ><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg
+              ></span>
+            </button>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </section>
+
+  {%- liquid
+    assign d = a.date.value | date: '%Y-%m-%d'
+  -%}
+  <script type="application/json" data-album-data>
+    {"id":{{ a.system.handle | json }},"event":{{ a.event_name.value | json }},"year":{{ yr | default: 0 | plus: 0 }},"date":{{ d | json }},"kind":{{ kind | json }},"city":{{ a.city.value | default: '' | json }},"league":{{ a.league.value | default: '' | json }},
+    "photos":[
+      {%- for p in photos -%}
+        {%- unless forloop.first -%},{%- endunless -%}
+        {"t":{{ p | image_url: width: 400 | json }},"m":{{ p | image_url: width: 800 | json }},"l":{{ p | image_url: width: 1800 | json }},"w":{{ p.width | default: 1050 }},"h":{{ p.height | default: 1400 }},"alt":{{ p.alt | default: a.event_name.value | json }}}
+      {%- endfor -%}
+    ],"videos":[]}
+  </script>
+</div>
+
+<script src="{{ 'hm-gallery.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .hm-album .gw{padding-inline:var(--gutter)}
+  .al-head{padding-block:16px 12px}
+  .al-crumb a{display:inline-flex;align-items:center;min-height:44px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);text-underline-offset:4px}
+  .al-head__row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 24px}
+  .al-k{margin:0 0 4px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+  .al-m{margin:6px 0 0;font-size:var(--t-xs);color:var(--soft)}
+  .al-m span+span::before{content:"\00B7";margin-inline:.5em;color:var(--mute)}
+  .al-acts{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px}
+  .al-acts a{display:inline-flex;align-items:center;min-height:44px;font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-underline-offset:3px}
+  .al-acts .btn svg{width:14px;height:14px;fill:currentColor}
+  .al-main{padding-block:8px var(--sect)}
+  .al-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr));gap:6px}
+  .al-grid>li{aspect-ratio:3/4;min-width:0}
+  .al-grid>li.al-v{grid-column:span 2;grid-row:span 2;aspect-ratio:auto}
+  @media (max-width:420px){.al-grid>li.al-v{grid-column:1/-1;aspect-ratio:4/3;grid-row:auto}}
+  .hm-album .g-t{position:relative;display:block;width:100%;height:100%;padding:0;border:0;background:var(--tile);overflow:hidden;cursor:zoom-in;color:var(--night-ink);text-decoration:none}
+  .hm-album .g-t .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+  .hm-album .g-t:hover .photo,.hm-album .g-t:focus-visible .photo{transform:scale(1.06)}
+  .hm-album .g-t:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .hm-album .g-zoom{position:absolute;right:10px;top:10px;z-index:2;width:30px;height:30px;border-radius:50%;background:rgba(18,18,17,.55);display:grid;place-items:center;opacity:0;transition:opacity .2s}
+  .hm-album .g-zoom svg{width:14px;height:14px;fill:none;stroke:var(--night-ink);stroke-width:2}
+  .hm-album .g-t:hover .g-zoom{opacity:1}
+  .hm-album .g-t--vid{cursor:pointer}
+  .hm-album .g-t--vid::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,18,17,.15),rgba(18,18,17,0) 35%,rgba(18,18,17,.85))}
+  .hm-album .g-kind{position:absolute;left:12px;top:12px;z-index:3}
+  .hm-album .g-play{position:absolute;left:50%;top:44%;z-index:3;width:72px;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent);display:grid;place-items:center}
+  .hm-album .g-play svg{width:34%;height:34%;fill:var(--ink);margin-left:6%}
+  .hm-album .g-cap{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:16px;display:grid;gap:1px}
+  .hm-album .g-cap b{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-md);text-transform:uppercase;line-height:1.2}
+  .hm-album .g-cap span{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+  .al-empty{display:grid;gap:8px;justify-items:start;max-width:56ch;padding-block:24px}
+  .al-empty p{margin:0;color:var(--soft)}
+  @media (prefers-reduced-motion:reduce){.hm-album .g-t .photo{transition:none}.hm-album .g-t:hover .photo,.hm-album .g-t:focus-visible .photo{transform:none}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Album",
+  "tag": "div",
+  "class": "hm-album-section",
+  "enabled_on": { "templates": ["metaobject"] },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows the album being viewed (Content > Metaobjects > Album). The viewer and its styles come with the Gallery section."
+    },
+    { "type": "url", "id": "gallery_url", "label": "Gallery page", "info": "Empty = /pages/gallery" },
+    { "type": "url", "id": "schedule_url", "label": "Schedule page", "info": "Empty = /pages/schedule" },
+    { "type": "text", "id": "back_label", "label": "Back link", "default": "All events" },
+    { "type": "text", "id": "empty_title", "label": "No photos: title", "default": "No photos from this event yet" },
+    { "type": "text", "id": "empty_text", "label": "No photos: text", "default": "The crew posts photos and video after each pull. Check back soon." }
+  ],
+  "presets": [{ "name": "Album" }]
+}
+{% endschema %}

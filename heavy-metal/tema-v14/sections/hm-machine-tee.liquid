@@ -19,9 +19,9 @@
         <h2 class="h1" id="tee-h-{{ section.id }}">{{ section.settings.title | escape }}</h2>
         {%- if section.settings.text != blank -%}<p class="muted">{{ section.settings.text | escape }}</p>{%- endif -%}
         {%- if soon -%}
-          <a class="btn" href="{{ tee.url }}" data-hm-notify="{{ tee.handle }}">Coming soon · Notify me<span class="vh"> about {{ tee.title | escape }}</span></a>
+          <button type="button" class="btn" data-notify="{{ tee.handle }}" data-notify-state="soon" data-name="{{ tee.title | escape }}" data-url="{{ tee.url }}">Coming soon · Notify me<span class="vh"> about {{ tee.title | escape }}</span></button>
         {%- elsif tee.available == false -%}
-          <a class="btn" href="{{ tee.url }}" data-hm-notify="{{ tee.handle }}">Sold out · Notify me<span class="vh"> about {{ tee.title | escape }}</span></a>
+          <button type="button" class="btn" data-notify="{{ tee.handle }}" data-notify-state="soldout" data-name="{{ tee.title | escape }}" data-url="{{ tee.url }}">Sold out · Notify me<span class="vh"> about {{ tee.title | escape }}</span></button>
         {%- else -%}
           <a class="btn" href="{{ tee.url }}">{{ section.settings.cta | default: tee.title | escape }}</a>
         {%- endif -%}
@@ -37,7 +37,7 @@
         </div>
       {%- endif -%}
       <div class="mx-tee__card">
-        {%- render 'hm-card', product: tee -%}
+        {%- render 'hm-card', product: tee, sizes: '(max-width: 760px) 100vw, 33vw' -%}
       </div>
     </div>
   </div>

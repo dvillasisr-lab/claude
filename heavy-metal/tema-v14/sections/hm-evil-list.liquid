@@ -1,0 +1,480 @@
+{%- comment -%}
+  The Evil List signup page. {% form 'customer' %} with contact[tags] = evil-list (Shopify marks the customer as
+  accepting email marketing; turn on double opt-in in Settings > Notifications). The footer signup is hidden on
+  this page by the footer section (page handle "evil-list").
+  Questions: faq_item entries whose "pages" list includes evil_list; if there are none, the Question blocks.
+{%- endcomment -%}
+{%- liquid
+  assign faqs = metaobjects.faq_item.values
+  assign fkeys = ''
+  for f in faqs
+    assign pgs = f.pages.value | join: ',' | downcase | replace: '-', '_'
+    unless pgs contains 'evil_list'
+      continue
+    endunless
+    assign o = f.order.value | default: 999 | plus: 10000
+    assign ix = forloop.index | plus: 100
+    assign fkeys = fkeys | append: o | append: '-' | append: ix | append: ','
+  endfor
+  assign fkeys = fkeys | split: ',' | sort
+  assign eid = 'EvilList-' | append: section.id
+-%}
+
+<div class="hm-evil" data-evil>
+    <section class="el-hero" id="join" aria-labelledby="{{ eid }}-t">
+      <div class="el-sky" aria-hidden="true">
+        <i class="el-storm"></i><i class="el-clouds"></i><i class="el-flash"></i>
+        <svg class="el-bolt" viewBox="0 0 60 200"><path d="M34 0 12 92h18L16 200 52 72H32L46 0Z" fill="#F4F7FF"/></svg>
+      </div>
+      <div class="wrap el-hero__in">
+        <div>
+          <p class="el-k">
+            {%- if section.settings.kicker_strong != blank -%}<b>{{ section.settings.kicker_strong }}</b> · {% endif -%}
+            {{- section.settings.kicker -}}
+          </p>
+          <h1 class="el-h1" id="{{ eid }}-t">
+            {{ section.settings.title_before }}
+            {% if section.settings.title_accent != blank %}<span>{{ section.settings.title_accent }}</span>{% endif %}
+            {{ section.settings.title_after }}
+          </h1>
+          {%- if section.settings.lede != blank -%}<p class="el-lede">{{ section.settings.lede }}</p>{%- endif -%}
+
+          <div class="el-formbox">
+            {%- form 'customer', id: eid, class: 'el-form-wrap' -%}
+            {%- if form.posted_successfully? -%}
+              <div class="el-ok" role="status" tabindex="-1" data-el-ok>
+                <p class="label">{{ section.settings.ok_label }}</p>
+                <p class="h2">{{ section.settings.ok_title }}</p>
+                <p>{{ section.settings.ok_text }}</p>
+              </div>
+            {%- else -%}
+              <div class="el-form">
+                <input type="hidden" name="contact[tags]" value="evil-list">
+                {%- if form.errors -%}
+                  <div class="el-err full" role="alert">{{ form.errors | default_errors }}</div>
+                {%- endif -%}
+                <div class="field">
+                  <label for="{{ eid }}-email">Email</label>
+                  <input
+                    class="input"
+                    id="{{ eid }}-email"
+                    name="contact[email]"
+                    type="email"
+                    required
+                    inputmode="email"
+                    autocomplete="email"
+                    spellcheck="false"
+                    autocapitalize="off"
+                    placeholder="you@example.com"
+                    value="{{ form.email }}"
+                    aria-describedby="{{ eid }}-email-err {{ eid }}-consent"
+                    data-rule="email"
+                    {% if form.errors contains 'email' %}
+                      aria-invalid="true"
+                    {% endif %}
+                  >
+                  <p class="el-err" id="{{ eid }}-email-err">
+                    {%- if form.errors contains 'email' -%}
+                      {{ form.errors.translated_fields.email | capitalize }}
+                      {{ form.errors.messages.email }}.
+                    {%- endif -%}
+                  </p>
+                </div>
+                <div class="field">
+                  <label for="{{ eid }}-name">First name <span class="opt">(optional)</span></label>
+                  <input
+                    class="input"
+                    id="{{ eid }}-name"
+                    name="contact[first_name]"
+                    type="text"
+                    maxlength="40"
+                    autocomplete="given-name"
+                    autocapitalize="words"
+                    aria-describedby="{{ eid }}-name-err"
+                    data-rule="name"
+                  >
+                  <p class="el-err" id="{{ eid }}-name-err"></p>
+                </div>
+                <div class="full">
+                  <button class="btn btn--block el-go" type="submit">
+                    {{- section.settings.button }}
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                  </button>
+                </div>
+                {%- if section.settings.consent != blank -%}
+                  <div class="el-consent full" id="{{ eid }}-consent">{{ section.settings.consent }}</div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            {%- endform -%}
+          </div>
+        </div>
+
+        {%- if section.settings.show_sample -%}
+          <figure class="el-mail" aria-label="Sample email from The Evil List">
+            <span class="el-mail__tag">{{ section.settings.mail_tag }}</span>
+            <div class="el-mail__meta">
+              <span><b>{{ settings.hm_brand_name | default: 'Heavy Metal Pro Stock: “The Evil One”' }}</b> · The Evil List</span>
+              <span>Subject: <b>{{ section.settings.mail_subject }}</b></span>
+            </div>
+            <div class="el-mail__top">
+              {%- if section.settings.mail_logo != blank -%}
+                {{ section.settings.mail_logo | image_url: width: 200 | image_tag: loading: 'lazy', alt: '', class: 'el-mail__logo' }}
+              {%- else -%}
+                <span class="el-mail__brand">Heavy Metal</span>
+              {%- endif -%}
+              {%- if section.settings.mail_badge != blank -%}<span class="badge">{{ section.settings.mail_badge }}</span>{%- endif -%}
+            </div>
+            <div class="el-mail__band">
+              <p class="t">{{ section.settings.mail_title }}</p>
+              <p class="s">{{ section.settings.mail_sub }}</p>
+            </div>
+            <div class="el-mail__body">
+              <dl class="el-mail__row">
+                <dt>Where</dt>
+                <dd>{{ section.settings.mail_where }}</dd>
+                <dt>Class</dt>
+                <dd>{{ section.settings.mail_class }}</dd>
+              </dl>
+              <p>{{ section.settings.mail_text }}</p>
+              <span class="el-mail__cta">{{ section.settings.mail_cta }}</span>
+            </div>
+            <p class="el-mail__foot">You joined The Evil List. <u>Unsubscribe</u></p>
+            <figcaption class="vh">{{ section.settings.mail_caption }}</figcaption>
+          </figure>
+        {%- endif -%}
+      </div>
+    </section>
+
+  {%- assign perks = section.blocks | where: 'type', 'perk' -%}
+  {%- if perks.size > 0 or section.settings.freq != blank -%}
+    <section class="sect" aria-labelledby="{{ eid }}-get">
+      <div class="wrap">
+        <div class="sect-head">
+          <h2 class="h2" id="{{ eid }}-get">{{ section.settings.get_title }}</h2>
+          {%- if section.settings.get_text != blank -%}<p class="small muted el-sub">{{ section.settings.get_text }}</p>{%- endif -%}
+        </div>
+        {%- if perks.size > 0 -%}
+          <ul class="el-get">
+            {%- for block in perks -%}
+              <li class="el-card" {{ block.shopify_attributes }}>
+                <span class="el-ico" aria-hidden="true">
+                  <svg viewBox="0 0 32 32">
+                    {%- case block.settings.icon -%}
+                      {%- when 'drop' -%}
+                        <path d="M11 4 4 8l3 6 3-1.5V28h12V12.5l3 1.5 3-6-7-4c-1 2.5-3 4-5 4s-4-1.5-5-4Z"/><path d="m16 15-2 4h4l-2 4"/>
+                      {%- when 'log' -%}
+                        <path d="M7 4h14l4 4v20H7Z"/><path d="M21 4v4h4"/><path d="M11 14h10M11 18h10M11 22h6"/>
+                      {%- when 'shop' -%}
+                        <path d="M4 11h5l2-3h10l2 3h5v15H4Z"/><circle cx="16" cy="18" r="5"/><path d="M24 14h1"/>
+                      {%- else -%}
+                        <path d="M6 28V5"/><path d="M6 6h14l-3 4 3 4H6"/><path d="M19 28l4-9h-5l5-9"/>
+                    {%- endcase -%}
+                  </svg>
+                </span>
+                <h3 class="h3">{{ block.settings.title }}</h3>
+                <div class="el-card__t">{{ block.settings.text }}</div>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {%- if section.settings.freq != blank -%}
+          <p class="el-freq">
+            <b>{{ section.settings.freq }}</b><span>{{ section.settings.freq_after }}</span
+            ><a class="link" href="#join" data-el-join>{{ section.settings.button }}</a>
+          </p>
+        {%- endif -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  <section class="sect sect--white" aria-labelledby="{{ eid }}-faq">
+    <div class="wrap el-faq">
+      <div>
+        <h2 class="h2" id="{{ eid }}-faq">{{ section.settings.faq_title }}</h2>
+        {%- if section.settings.faq_text != blank -%}<div class="el-faq__t">{{ section.settings.faq_text }}</div>{%- endif -%}
+      </div>
+      <div>
+        {%- if fkeys.size > 0 -%}
+          {%- for fk in fkeys -%}
+            {%- assign want = fk | split: '-' | last | minus: 100 -%}
+            {%- for f in faqs -%}
+              {%- if forloop.index == want -%}
+                <details class="el-qa">
+                  <summary>{{ f.question.value }}</summary>
+                  <div class="el-qa__a">{{ f.answer | metafield_tag }}</div>
+                </details>
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'question' -%}
+              <details class="el-qa" {{ block.shopify_attributes }}>
+                <summary>{{ block.settings.question }}</summary>
+                <div class="el-qa__a">{{ block.settings.answer }}</div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% stylesheet %}
+  .el-hero{position:relative;isolation:isolate;overflow:hidden;background:#1A1D22;color:var(--night-ink);padding-block:clamp(32px,5vw,72px)}
+  .el-sky{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .el-sky i{position:absolute;inset:0}
+  .el-storm{background:radial-gradient(34% 52% at 72% 42%,rgba(178,184,192,.30),rgba(150,158,168,.12) 55%,transparent 80%),radial-gradient(70% 45% at 18% 8%,rgba(112,122,138,.32),transparent 70%),radial-gradient(55% 40% at 78% 16%,rgba(92,102,118,.38),transparent 70%),radial-gradient(80% 50% at 60% 100%,rgba(140,146,152,.26),transparent 70%),linear-gradient(180deg,#14171C 0%,#20252C 38%,#363D47 72%,#525963 100%)}
+  .el-sky .el-clouds{inset:-10% -20% auto;height:62%;opacity:.6;background:radial-gradient(30% 45% at 15% 40%,#3B414B,transparent 70%),radial-gradient(28% 40% at 45% 30%,#323842,transparent 70%),radial-gradient(30% 45% at 80% 45%,#3B414B,transparent 70%)}
+  .el-flash{background:#E9EEF6;opacity:0;mix-blend-mode:screen}
+  .el-bolt{position:absolute;right:4%;top:0;height:64%;width:auto;opacity:0;filter:drop-shadow(0 0 10px rgba(230,238,255,.9))}
+  .el-hero.is-strike .el-flash{animation:elFlash 1.4s steps(1,end) 1}
+  .el-hero.is-strike .el-bolt{animation:elBolt 1.4s steps(1,end) 1}
+  @keyframes elFlash{0%{opacity:0}6%{opacity:.8}10%{opacity:.1}16%{opacity:.6}22%{opacity:0}100%{opacity:0}}
+  @keyframes elBolt{0%{opacity:0}5%{opacity:1}24%{opacity:1}30%{opacity:0}36%{opacity:.8}42%{opacity:0}100%{opacity:0}}
+  .el-hero__in{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(28px,4vw,72px);align-items:center}
+  @media (max-width:900px){.el-hero__in{grid-template-columns:minmax(0,1fr)}}
+  .el-k{margin:0 0 10px;font-size:var(--t-xs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#ABA79D}
+  .el-k b{color:var(--accent);font-weight:700}
+  .el-h1{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:800;text-transform:uppercase;line-height:.92;letter-spacing:.01em;font-size:clamp(44px,7vw,96px);color:var(--night-ink);text-shadow:0 2px 18px rgba(0,0,0,.45);text-wrap:balance}
+  .el-h1 span{color:var(--accent)}
+  .el-lede{margin:14px 0 0;max-width:48ch;font-size:var(--t-lg);line-height:1.45;color:#D6D3CA}
+  .el-hero :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .el-formbox{margin-top:24px;max-width:600px}
+  .el-form{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:12px 10px}
+  .el-form .full{grid-column:1/-1}
+  .el-form .field label{color:#D6D3CA}
+  .el-form .opt{font-weight:400;text-transform:none;letter-spacing:0;color:#ABA79D}
+  .el-form .input{min-height:56px;font-size:18px;padding:0 14px;border-color:#F2F0E9;background:#FFFFFF}
+  .el-form .input::placeholder{color:#8A877F}
+  .el-form .input:focus{border-color:var(--accent);outline:2px solid var(--accent);outline-offset:0}
+  .el-form .input[aria-invalid="true"]{border-color:#FF8A78;outline:2px solid #FF8A78;outline-offset:0}
+  .el-err{margin:0;font-size:var(--t-sm);font-weight:600;color:#FFB4A8}
+  .el-err:empty{display:none}
+  .el-err ul{margin:0;padding-left:18px}
+  .el-go{min-height:56px;font-size:var(--t-sm);background:var(--accent);border-color:var(--accent);color:var(--ink);box-shadow:0 6px 22px rgba(0,0,0,.35)}
+  .el-go:hover{background:#FFD83D;border-color:#FFD83D;color:var(--ink)}
+  .el-go svg{width:18px;height:18px}
+  .el-consent{margin:2px 0 0;font-size:var(--t-xs);line-height:1.55;color:#C9C6BD;max-width:60ch}
+  .el-consent p{margin:0}
+  .el-consent a{color:var(--night-ink);text-underline-offset:3px}
+  .el-consent strong,.el-consent b{color:var(--night-ink);font-weight:600}
+  .el-ok{max-width:600px;padding:clamp(18px,2.4vw,28px);background:rgba(14,15,17,.72);border:1px solid rgba(242,240,233,.22);border-top:3px solid var(--accent);display:grid;gap:10px;justify-items:start;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .el-ok:focus{outline:none}
+  .el-ok:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .el-ok .h2{color:var(--night-ink)}
+  .el-ok p{margin:0;color:#D6D3CA;max-width:52ch}
+  .el-ok .label{color:var(--accent)}
+  .el-mail{margin:0;justify-self:end;width:100%;max-width:400px;transform:rotate(1.2deg);background:var(--surface);color:var(--text);box-shadow:0 30px 60px -20px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.06);position:relative}
+  @media (max-width:900px){.el-mail{justify-self:start;transform:none;max-width:460px}}
+  .el-mail__meta{padding:10px 14px;border-bottom:1px solid var(--line);font-size:var(--t-xs);line-height:1.45;display:grid;gap:1px;background:var(--bg)}
+  .el-mail__meta b{color:var(--ink)}
+  .el-mail__meta span{color:var(--mute)}
+  .el-mail__top{padding:14px 18px 0;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .el-mail__logo{height:14px;width:auto}
+  .el-mail__brand{font-family:var(--f-head);font-stretch:78%;font-weight:800;text-transform:uppercase;font-size:13px;color:var(--ink)}
+  .el-mail__band{margin:12px 18px 0;padding:14px 16px;background:var(--night);color:var(--night-ink);position:relative;overflow:hidden}
+  .el-mail__band::after{content:"";position:absolute;right:-10px;top:-6px;width:60px;height:80px;background:var(--accent);clip-path:polygon(55% 0,20% 52%,46% 52%,30% 100%,80% 40%,54% 40%,72% 0);opacity:.9}
+  .el-mail__band p{margin:0;position:relative;z-index:1;max-width:80%}
+  .el-mail__band .t{font-family:var(--f-head);font-stretch:78%;font-weight:800;text-transform:uppercase;font-size:clamp(20px,5.6vw,24px);line-height:1}
+  .el-mail__band .s{margin-top:6px;font-size:var(--t-xs);color:#CFCCC3}
+  .el-mail__body{padding:12px 18px 16px;display:grid;gap:10px;font-size:13px;line-height:1.5}
+  .el-mail__body p{margin:0}
+  .el-mail__row{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;margin:0;font-size:var(--t-xs)}
+  .el-mail__row dt{font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+  .el-mail__row dd{margin:0;color:var(--ink)}
+  .el-mail__cta{display:inline-flex;align-items:center;min-height:34px;padding:0 14px;background:var(--ink);color:var(--surface);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;justify-self:start}
+  .el-mail__foot{margin:0;padding:8px 18px 12px;border-top:1px solid var(--line);font-size:10px;color:var(--mute)}
+  .el-mail__foot u{color:var(--soft)}
+  .el-mail__tag{display:block;padding:6px 14px;background:var(--accent);color:var(--ink);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+  .el-sub{margin:0}
+  .el-get{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+  @media (max-width:1024px){.el-get{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:560px){.el-get{grid-template-columns:minmax(0,1fr)}}
+  .el-card{background:var(--surface);border:1px solid var(--line);padding:20px;display:grid;gap:8px;align-content:start}
+  .el-ico{width:44px;height:44px;display:grid;place-items:center;background:var(--accent);color:var(--ink);margin-bottom:6px}
+  .el-ico svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  .el-card__t,.el-card__t p{margin:0;font-size:var(--t-sm);color:var(--soft)}
+  .el-card a{color:var(--ink);text-underline-offset:3px}
+  .el-freq{margin:16px 0 0;width:fit-content;max-width:100%;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 14px;border-left:3px solid var(--accent);background:var(--surface);font-size:var(--t-sm);color:var(--soft)}
+  .el-freq b{font-family:var(--f-head);font-stretch:78%;font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:var(--t-md);color:var(--ink)}
+  .el-freq a{margin-left:6px;color:var(--ink);min-height:44px;display:inline-flex;align-items:center}
+  @media (max-width:560px){.el-freq a{margin-left:0}}
+  .el-faq{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(20px,3vw,48px);align-items:start}
+  @media (max-width:900px){.el-faq{grid-template-columns:minmax(0,1fr)}}
+  .el-faq__t{margin:8px 0 0;font-size:var(--t-sm);color:var(--soft);max-width:40ch}
+  .el-faq__t p{margin:0}
+  .el-faq__t a{color:var(--ink);text-underline-offset:3px}
+  .el-qa{border-top:1px solid var(--line)}
+  .el-qa:last-child{border-bottom:1px solid var(--line)}
+  .el-qa summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:56px;padding-block:10px;font-weight:700;font-size:var(--t-md);color:var(--ink)}
+  .el-qa summary::-webkit-details-marker{display:none}
+  .el-qa summary::after{content:"+";flex:none;font-size:22px;font-weight:400;line-height:1}
+  .el-qa[open] summary::after{content:"\2212"}
+  .el-qa__a{margin:0 0 16px;max-width:62ch;color:var(--soft)}
+  .el-qa__a p{margin:0 0 8px}
+  .el-qa__a p:last-child{margin:0}
+  .el-qa a{color:var(--ink);text-underline-offset:3px}
+  @media (prefers-reduced-motion:reduce){.el-hero.is-strike .el-flash,.el-hero.is-strike .el-bolt{animation:none}}
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function init(root) {
+      if (!root || root.dataset.ready) return;
+      root.dataset.ready = '1';
+      var form = root.querySelector('form');
+      var hero = root.querySelector('.el-hero');
+      var ok = root.querySelector('[data-el-ok]');
+      if (ok) {
+        hero.scrollIntoView({ block: 'start' });
+        ok.focus({ preventScroll: true });
+        if (!reduce) { hero.classList.add('is-strike'); }
+      }
+      root.addEventListener('click', function (e) {
+        if (!e.target.closest('[data-el-join]')) return;
+        e.preventDefault();
+        hero.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+        var f = root.querySelector('[data-rule="email"]') || ok;
+        if (f) setTimeout(function () { f.focus({ preventScroll: true }); }, reduce ? 0 : 450);
+      });
+      if (!form || ok) return;
+      form.noValidate = true;
+      var RULES = {
+        email: function (v) { return !v ? 'Add your email to join The Evil List.' : !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? 'Check the email: it should look like name@example.com.' : ''; },
+        name: function (v) { return v && !/[A-Za-zÀ-ÿ]/.test(v) ? 'Use letters for your first name, or leave it blank.' : ''; }
+      };
+      var fields = Array.prototype.slice.call(form.querySelectorAll('[data-rule]'));
+      function check(el) {
+        var msg = RULES[el.getAttribute('data-rule')](el.value.trim());
+        el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+        var err = document.getElementById(el.getAttribute('aria-describedby').split(' ')[0]);
+        if (err) err.textContent = msg;
+        return !msg;
+      }
+      fields.forEach(function (el) {
+        el.addEventListener('blur', function () { if (el.value.trim() || el.getAttribute('aria-invalid') === 'true') check(el); });
+        el.addEventListener('input', function () { if (el.getAttribute('aria-invalid') === 'true') check(el); });
+      });
+      form.addEventListener('submit', function (e) {
+        var bad = fields.filter(function (el) { return !check(el); });
+        if (bad.length) { e.preventDefault(); bad[0].focus(); }
+      });
+    }
+    function initAll(scope) { (scope || document).querySelectorAll('[data-evil]').forEach(init); }
+    document.addEventListener('shopify:section:load', function (e) { initAll(e.target); });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { initAll(); });
+    else initAll();
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "The Evil List",
+  "tag": "div",
+  "class": "hm-evil-list",
+  "settings": [
+    { "type": "header", "content": "Top" },
+    { "type": "text", "id": "kicker_strong", "label": "Small label (yellow part)", "default": "Email only" },
+    { "type": "text", "id": "kicker", "label": "Small label (rest)", "default": "from the crew of “The Evil One”" },
+    { "type": "text", "id": "title_before", "label": "Title before the yellow word", "default": "Join The" },
+    { "type": "text", "id": "title_accent", "label": "Yellow word", "default": "Evil" },
+    { "type": "text", "id": "title_after", "label": "Title after the yellow word", "default": "List" },
+    { "type": "textarea", "id": "lede", "label": "Intro", "default": "Hear it first: before every pull, before every drop, straight from the shop in Waterloo, WI." },
+    { "type": "text", "id": "button", "label": "Button", "default": "Join The Evil List" },
+    {
+      "type": "richtext",
+      "id": "consent",
+      "label": "Consent line",
+      "default": "<p>By joining you agree to receive <strong>marketing emails</strong> from Heavy Metal Pro Stock: “The Evil One”. Email only, no texts. <strong>Unsubscribe anytime</strong> with one tap. See our <a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a>.</p>"
+    },
+    { "type": "text", "id": "ok_label", "label": "After joining: label", "default": "Almost there" },
+    { "type": "text", "id": "ok_title", "label": "After joining: title", "default": "Check your inbox to confirm." },
+    {
+      "type": "text",
+      "id": "ok_text",
+      "label": "After joining: text",
+      "default": "We sent you a link. Tap it and you’re on The Evil List. Not there in a few minutes? Check spam or promotions."
+    },
+    { "type": "header", "content": "Sample email" },
+    { "type": "checkbox", "id": "show_sample", "label": "Show the sample email", "default": true },
+    { "type": "image_picker", "id": "mail_logo", "label": "Logo in the sample" },
+    { "type": "text", "id": "mail_tag", "label": "Tag", "default": "Sample email" },
+    { "type": "text", "id": "mail_subject", "label": "Subject", "default": "Heads up: we pull Saturday" },
+    { "type": "text", "id": "mail_badge", "label": "Badge", "default": "Pull day" },
+    { "type": "text", "id": "mail_title", "label": "Big line", "default": "We pull Saturday" },
+    { "type": "text", "id": "mail_sub", "label": "Small line", "default": "“The Evil One” is loaded and headed out." },
+    { "type": "text", "id": "mail_where", "label": "Where", "default": "Green County Fall Nationals, Monroe, WI" },
+    { "type": "text", "id": "mail_class", "label": "Class", "default": "Pro Stock" },
+    { "type": "text", "id": "mail_text", "label": "Text", "default": "Come by the pits and say hi to the crew. New tees will be at the trailer." },
+    { "type": "text", "id": "mail_cta", "label": "Button in the sample", "default": "See the schedule" },
+    {
+      "type": "text",
+      "id": "mail_caption",
+      "label": "Description (screen readers)",
+      "default": "Sample email: a heads-up before a pull, with where, class time and a link to the schedule."
+    },
+    { "type": "header", "content": "What you get" },
+    { "type": "text", "id": "get_title", "label": "Title", "default": "What you get" },
+    { "type": "text", "id": "get_text", "label": "Text", "default": "One list for everything. Email only." },
+    { "type": "text", "id": "freq", "label": "How often", "default": "A few emails a month during the season. No spam." },
+    { "type": "text", "id": "freq_after", "label": "After how often", "default": "That’s it." },
+    { "type": "header", "content": "Questions" },
+    {
+      "type": "paragraph",
+      "content": "Questions come from Content > Metaobjects > FAQ item (Pages includes evil_list). The Question blocks only show when there are none."
+    },
+    { "type": "text", "id": "faq_title", "label": "Title", "default": "Questions" },
+    { "type": "richtext", "id": "faq_text", "label": "Text", "default": "<p>More answers in the <a href=\"/pages/faq\" title=\"FAQ\">FAQ</a>.</p>" }
+  ],
+  "blocks": [
+    {
+      "type": "perk",
+      "name": "Perk",
+      "limit": 8,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "pull", "label": "Pull flag" },
+            { "value": "drop", "label": "New drop" },
+            { "value": "log", "label": "Pit Log" },
+            { "value": "shop", "label": "Behind the scenes" }
+          ],
+          "default": "pull"
+        },
+        { "type": "text", "id": "title", "label": "Title", "default": "A heads-up before every pull" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Where we pull, when our class runs and how to find the pits. Sent before we roll out.</p>" }
+      ]
+    },
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "How often will you email me?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Answer</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "The Evil List",
+      "blocks": [
+        { "type": "perk", "settings": { "icon": "pull", "title": "A heads-up before every pull", "text": "<p>Where we pull, when our class runs and how to find the pits. Sent before we roll out.</p>" } },
+        { "type": "perk", "settings": { "icon": "drop", "title": "New drops first", "text": "<p>New merch and special editions land in your inbox before anyone else hears about them.</p>" } },
+        { "type": "perk", "settings": { "icon": "log", "title": "Results and Pit Log news", "text": "<p>How far we pulled, what broke and what’s next, with a link to the full <a href=\"/blogs/pit-log\" title=\"Pit Log\">Pit Log</a> story.</p>" } },
+        { "type": "perk", "settings": { "icon": "shop", "title": "Behind the scenes", "text": "<p>Shop nights, the build and the crew behind “The Evil One”. The stuff we don’t post anywhere else.</p>" } },
+        { "type": "question", "settings": { "question": "How often will you email me?", "answer": "<p>A few emails a month during the season. Fewer in the offseason. No spam, and we never share your email.</p>" } },
+        { "type": "question", "settings": { "question": "How do I unsubscribe?", "answer": "<p>Tap “Unsubscribe” at the bottom of any email from The Evil List. One tap and you’re off. You can also turn it off in <a href=\"/account\" title=\"Your account\">your account</a>.</p>" } },
+        { "type": "question", "settings": { "question": "Do you send texts?", "answer": "<p>No. The Evil List is email only. We don’t ask for your phone number and we don’t send texts.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

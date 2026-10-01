@@ -1,103 +1,70 @@
 {
   "sections": {
     "main": {
-      "type": "main-product",
+      "type": "hm-main-product",
       "blocks": {
-        "vendor": {
-          "type": "text",
+        "details": {
+          "type": "collapsible",
           "settings": {
-            "text": "{{ product.vendor }}",
-            "text_style": "uppercase"
+            "heading": "Details",
+            "source": "details",
+            "content": "",
+            "open": false
           }
         },
-        "title": {
-          "type": "title"
-        },
-        "price": {
-          "type": "price"
-        },
-        "variant_picker": {
-          "type": "variant_picker",
+        "story": {
+          "type": "collapsible",
           "settings": {
-            "picker_type": "button",
-            "swatch_shape": "circle"
+            "heading": "Design story",
+            "source": "design_story",
+            "content": "<p>Designed by the crew that built “The Evil One” by hand in Waterloo, WI. Everything on the tractor is custom-built, and so is every graphic.</p><p><a href=\"/pages/our-story\">Read our story</a></p>",
+            "open": false
           }
         },
-        "quantity_selector": {
-          "type": "quantity_selector"
-        },
-        "buy_buttons": {
-          "type": "buy_buttons",
+        "shipping": {
+          "type": "collapsible",
           "settings": {
-            "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
-          }
-        },
-        "description": {
-          "type": "description"
-        },
-        "share": {
-          "type": "share",
-          "settings": {
-            "share_label": "Share"
+            "heading": "Shipping & returns",
+            "source": "shipping",
+            "content": "<p>Every piece is printed when you order it and ships in 5 days. Taxes and shipping are calculated at checkout.</p><p>Misprints and defects are replaced free: send a photo within 30 days of delivery. Printed-to-order items can’t be returned or exchanged for size, so check the size guide first.</p>",
+            "open": false
           }
         }
       },
-      "block_order": [
-        "vendor",
-        "title",
-        "price",
-        "variant_picker",
-        "quantity_selector",
-        "buy_buttons",
-        "description",
-        "share"
-      ],
+      "block_order": ["details", "story", "shipping"],
       "settings": {
-        "enable_sticky_info": true,
-        "color_scheme": "scheme-1",
-        "media_position": "left",
-        "gallery_layout": "stacked",
-        "media_size": "large",
-        "constrain_to_viewport": true,
-        "media_fit": "contain",
-        "image_zoom": "lightbox",
-        "mobile_thumbnails": "hide",
-        "hide_variants": true,
-        "enable_video_looping": false,
-        "padding_top": 36,
-        "padding_bottom": 12
+        "enable_zoom": true,
+        "show_short_description": true,
+        "short_description_words": 25,
+        "max_qty": 10,
+        "show_dynamic_checkout": true,
+        "sizes_page_url": "",
+        "show_guarantee": true,
+        "guarantee_label": "The Black Smoke Guarantee:",
+        "guarantee_text": "if [noun] ever stops being evil, we replace it.",
+        "notify_heading": "Notify me",
+        "notify_soon_text": "One email the moment this drops. Nothing else.",
+        "notify_soldout_text": "One email if this comes back. Nothing else.",
+        "reviews_heading": "Reviews"
       }
     },
-    "disclosures": {
-      "type": "disclosures",
+    "look": {
+      "type": "hm-complete-look",
       "settings": {
-        "padding_top": 36,
-        "padding_bottom": 0
+        "use_crew_pack": true,
+        "label": "Complete the look",
+        "text": "The tee and the cap, one price. You pick the tee size.",
+        "bundle_row": "Bundle",
+        "link_text": "Shop the Crew Pack"
       }
     },
-    "related-products": {
-      "type": "related-products",
+    "related": {
+      "type": "hm-related-products",
       "settings": {
         "heading": "You may also like",
-        "heading_size": "h2",
-        "products_to_show": 4,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "image_ratio": "square",
-        "image_shape": "default",
-        "show_secondary_image": true,
-        "show_vendor": false,
-        "show_rating": false,
-        "columns_mobile": "2",
-        "padding_top": 36,
-        "padding_bottom": 28
+        "limit": 4
       }
     }
   },
-  "order": [
-    "main",
-    "disclosures",
-    "related-products"
-  ]
+  "order": ["main", "look", "related"]
 }

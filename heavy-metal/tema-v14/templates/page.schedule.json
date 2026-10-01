@@ -1,0 +1,48 @@
+{
+  "sections": {
+    "main": {
+      "type": "hm-schedule",
+      "blocks": {
+        "g1": { "type": "watch_group", "settings": { "title": "NTPA", "text": "National Tractor Pullers Association" } },
+        "g1a": { "type": "watch_link", "settings": { "label": "ntpapull.com", "url": "https://ntpapull.com/", "note": "Official site, rules and results", "tag": "none" } },
+        "g1b": { "type": "watch_link", "settings": { "label": "[season] NTPA calendar", "url": "https://ntpapull.com/pullresults/Schedule/NTPA_ScheduleDynamic.php", "note": "Every NTPA pull this season", "tag": "none" } },
+        "g1c": { "type": "watch_link", "settings": { "label": "Full Pull LIVE", "url": "https://fullpull.live/", "note": "Official live stream · also the Full Pull app on iOS and Android", "tag": "paid" } },
+        "g2": { "type": "watch_group", "settings": { "title": "PPL Badger State", "text": "Badger State Tractor Pullers is a PPL member. PPL is now the IHRA Pro Pulling Series." } },
+        "g2a": { "type": "watch_link", "settings": { "label": "bstponline.com", "url": "https://bstponline.com/", "note": "Badger State Tractor Pullers, Wisconsin", "tag": "none" } },
+        "g2b": { "type": "watch_link", "settings": { "label": "Badger State events", "url": "https://bstponline.com/events/", "note": "Dates and places for this season", "tag": "none" } },
+        "g2c": { "type": "watch_link", "settings": { "label": "Badger State on Facebook", "url": "https://www.facebook.com/badgerstatetractors/", "note": "Day-of updates and weather calls", "tag": "none" } },
+        "g2d": { "type": "watch_link", "settings": { "label": "IHRA Pro Pulling live", "url": "https://www.ihra.com/pulling", "note": "[season] Pro Pulling broadcasts", "tag": "free" } },
+        "g2e": { "type": "watch_link", "settings": { "label": "ProPullingTV on YouTube", "url": "https://www.youtube.com/@ProPullingTV", "note": "Streams and replays", "tag": "free" } },
+        "g3": { "type": "watch_group", "settings": { "title": "Heavy Metal Pro Stock: “The Evil One”", "text": "Our own channels" } },
+        "g3a": { "type": "watch_link", "settings": { "label": "Facebook", "url": "https://www.facebook.com/heavymetalprostock/", "note": "New dates first, pit photos and our runs", "tag": "none" } },
+        "t1": { "type": "tip", "settings": { "title": "What is Pro Stock", "text": "A diesel class with limits on engine and turbo. “The Evil One” runs a Cat 3208 V8, 680 CI, at 10,000 lb." } },
+        "t2": { "type": "tip", "settings": { "title": "What is a full pull", "text": "The sled gets harder to drag the farther it goes. Reach the end of the track and it’s a full pull." } },
+        "t3": { "type": "tip", "settings": { "title": "Competition or exhibition", "text": "A competition counts for the class standings. An exhibition is a run for the crowd, no points on the line." } },
+        "t4": { "type": "tip", "settings": { "title": "Arrive early", "text": "Grandstands fill before the first class. Come early for a good seat and a look at the pits." } },
+        "t5": { "type": "tip", "settings": { "title": "Bring ear protection", "text": "Pro Stock tractors are loud. Ear plugs or muffs for everyone, kids first." } }
+      },
+      "block_order": ["g1", "g1a", "g1b", "g1c", "g2", "g2a", "g2b", "g2c", "g2d", "g2e", "g3", "g3a", "t1", "t2", "t3", "t4", "t5"],
+      "settings": {
+        "title": "Schedule",
+        "sub": "[season] testing season. Pro Stock, NTPA and PPL Badger State, all times Central.",
+        "sub_fb": "New dates on",
+        "sub_fb_after": "first.",
+        "updated": "2026-10-01",
+        "empty_title": "Dates coming soon",
+        "empty_text": "New dates go here and on Facebook first.",
+        "watch_title": "Where to watch",
+        "watch_sub": "Each league posts its own dates and streams. All links open in a new tab.",
+        "in_person": "<p><strong>In person:</strong> tickets are sold by each fair or venue.</p>",
+        "tips_title": "First time at a pull?",
+        "show_list": true,
+        "list_title": "The Evil List",
+        "list_text": "One email before every pull, plus new drops. Nothing else.",
+        "list_button": "Join The Evil List",
+        "list_consent": "Email only. By signing up you agree to receive marketing emails from Heavy Metal Pro Stock: “The Evil One”. Unsubscribe anytime.",
+        "list_ok": "You’re on the list. Check your inbox to confirm.",
+        "list_err": "Enter a valid email to join The Evil List."
+      }
+    }
+  },
+  "order": ["main"]
+}

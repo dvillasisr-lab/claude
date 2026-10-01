@@ -1,0 +1,232 @@
+{%- liquid
+  assign terms = search.terms | strip
+  assign best = settings.hm_best_sellers_collection
+  assign store_empty = false
+  if collections.all.all_products_count == 0
+    assign store_empty = true
+  endif
+-%}
+<div class="hm-srp">
+  <section class="srp-head">
+    <div class="wrap">
+      <h1 class="h1">
+        {%- if search.performed and terms != blank -%}
+          {%- if search.results_count > 0 -%}
+            Results for “{{ terms | escape }}”
+          {%- else -%}
+            No results for “{{ terms | escape }}”
+          {%- endif -%}
+        {%- else -%}
+          {{ section.settings.heading | escape }}
+        {%- endif -%}
+      </h1>
+      <form class="srp-form" action="{{ routes.search_url }}" method="get" role="search">
+        <label class="vh" for="hm-srp-q-{{ section.id }}">Search the store</label>
+        <input
+          class="input"
+          id="hm-srp-q-{{ section.id }}"
+          name="q"
+          type="search"
+          value="{{ terms | escape }}"
+          placeholder="{{ section.settings.placeholder | escape }}"
+          autocomplete="off"
+          enterkeyhint="search"
+        >
+        <input type="hidden" name="options[prefix]" value="last">
+        <button class="btn" type="submit">Search</button>
+      </form>
+      <p class="srp-count num" role="status">
+        {%- if search.performed and terms != blank -%}
+          {%- if search.results_count > 0 -%}
+            {{ search.results_count }} {% if search.results_count == 1 %}result{% else %}results{% endif %}
+          {%- else -%}
+            0 results
+          {%- endif -%}
+        {%- elsif store_empty -%}
+          Search the pages. Merch is coming soon.
+        {%- else -%}
+          Search for a product or a page.
+        {%- endif -%}
+      </p>
+    </div>
+  </section>
+
+  {%- if search.performed and terms != blank and search.results_count > 0 -%}
+    {%- paginate search.results by section.settings.per_page -%}
+      {%- liquid
+        assign products_found = search.results | where: 'object_type', 'product'
+        assign others = search.results | where: 'object_type', 'page'
+        assign articles = search.results | where: 'object_type', 'article'
+      -%}
+      {%- if products_found.size > 0 -%}
+        <section class="wrap srp-sect" aria-labelledby="hm-srp-p-{{ section.id }}">
+          <div class="sect-head">
+            <h2 class="h2" id="hm-srp-p-{{ section.id }}">Products ({{ products_found.size }})</h2>
+            <a class="link" href="{{ routes.all_products_collection_url }}">Shop all</a>
+          </div>
+          <div class="pgrid">
+            {%- for item in products_found -%}
+              {%- render 'hm-card', product: item, lazy: true -%}
+            {%- endfor -%}
+          </div>
+        </section>
+      {%- endif -%}
+      {%- assign pagelike = others | concat: articles -%}
+      {%- if pagelike.size > 0 -%}
+        <section class="wrap srp-sect" aria-labelledby="hm-srp-pg-{{ section.id }}">
+          <div class="sect-head"><h2 class="h2" id="hm-srp-pg-{{ section.id }}">Pages ({{ pagelike.size }})</h2></div>
+          <ul class="srp-pages">
+            {%- for item in pagelike -%}
+              <li>
+                <a href="{{ item.url }}">
+                  <span class="srp-pages__t">{{ item.title | escape }}</span>
+                  {%- assign blurb = item.excerpt | default: item.content | strip_html | truncatewords: 20 -%}
+                  {%- if blurb != blank -%}
+                    <span class="srp-pages__d">{{ blurb | escape }}</span>
+                  {%- endif -%}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </section>
+      {%- endif -%}
+      {%- if paginate.pages > 1 -%}
+        <nav class="wrap srp-sect hm-srp__pages" aria-label="Pagination">
+          {%- if paginate.previous -%}<a class="link" href="{{ paginate.previous.url }}" style="text-decoration:underline">Previous</a>{%- endif -%}
+          <span class="small muted num">Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+          {%- if paginate.next -%}<a class="link" href="{{ paginate.next.url }}" style="text-decoration:underline">Next</a>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  {%- endif -%}
+
+  {%- if search.performed and terms != blank and search.results_count == 0 -%}
+    <section class="wrap srp-sect" aria-labelledby="hm-srp-none-{{ section.id }}">
+      <div class="srp-none">
+        <h2 class="h2" id="hm-srp-none-{{ section.id }}">{{ section.settings.none_heading | escape }}</h2>
+        <p>We couldn’t find anything for “{{ terms | escape }}”. Try one of these instead.</p>
+        <ul class="srp-tips">
+          <li>Check the spelling.</li>
+          <li>Try one word, like “tee” or “hat”.</li>
+          <li>Search the category instead of the design name.</li>
+        </ul>
+        {%- assign pops = section.settings.popular | split: ',' -%}
+        {%- if pops.size > 0 -%}
+          <p class="label muted" style="margin-top:8px">Popular searches</p>
+          <ul class="srp-pop">
+            {%- for w in pops -%}
+              {%- assign w = w | strip -%}
+              {%- if w != blank -%}
+                <li><a href="{{ routes.search_url }}?q={{ w | url_encode }}">{{ w | escape }}</a></li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- if store_empty -%}
+    <section class="wrap srp-sect" aria-label="Merch coming soon">
+      {%- render 'hm-coming-soon', id: 'HmSoonSearch' -%}
+    </section>
+  {%- elsif search.results_count == 0 or terms == blank -%}
+    {%- if best and best.products_count > 0 -%}
+      <section class="wrap srp-sect" aria-labelledby="hm-srp-best-{{ section.id }}">
+        <div class="sect-head">
+          <h2 class="h2" id="hm-srp-best-{{ section.id }}">{{ section.settings.best_heading | escape }}</h2>
+          <a class="link" href="{{ best.url }}">Shop best sellers</a>
+        </div>
+        <div class="pgrid">
+          {%- for item in best.products limit: 4 -%}
+            {%- render 'hm-card', product: item, lazy: true -%}
+          {%- endfor -%}
+        </div>
+      </section>
+    {%- endif -%}
+  {%- endif -%}
+  <div class="srp-end"></div>
+</div>
+
+{% stylesheet %}
+  .hm-srp { overflow-x: clip; }
+  .hm-srp .srp-head { padding-block: 24px 20px; border-bottom: 1px solid var(--line); }
+  .hm-srp .srp-head .h1 { margin: 0; line-height: 1.2; overflow-wrap: anywhere; }
+  .hm-srp .srp-form { display: flex; max-width: 640px; margin-top: 14px; }
+  .hm-srp .srp-form .input { min-height: 48px; font-size: var(--t-md); border-right: 0; }
+  .hm-srp .srp-form .btn { min-height: 48px; flex: none; }
+  @media (min-width: 900px) {
+    .hm-srp .srp-head .wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: clamp(24px, 4vw, 64px); align-items: center; }
+    .hm-srp .srp-head .h1 { grid-column: 1; grid-row: 1 / span 2; }
+    .hm-srp .srp-form { grid-column: 2; max-width: none; margin-top: 0; }
+    .hm-srp .srp-count { grid-column: 2; }
+  }
+  .hm-srp .srp-count { margin: 10px 0 0; font-size: var(--t-xs); color: var(--mute); }
+  .hm-srp .srp-sect { padding-block: 28px 0; }
+  .hm-srp .srp-end { padding-bottom: var(--sect); }
+  .hm-srp .srp-pages { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); max-width: 860px; }
+  .hm-srp .srp-pages a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
+  .hm-srp .srp-pages a:hover .srp-pages__t { text-decoration: underline; text-underline-offset: 3px; }
+  .hm-srp .srp-pages__t { font-weight: 700; font-size: var(--t-sm); color: var(--ink); }
+  .hm-srp .srp-pages__d { grid-column: 1; font-size: var(--t-xs); color: var(--mute); }
+  .hm-srp .srp-pages svg { grid-column: 2; grid-row: 1 / span 2; width: 18px; height: 18px; }
+  .hm-srp .srp-none { display: grid; gap: 12px; max-width: 60ch; }
+  .hm-srp .srp-none p { margin: 0; color: var(--soft); }
+  .hm-srp .srp-tips { margin: 0; padding-left: 18px; color: var(--soft); font-size: var(--t-sm); }
+  .hm-srp .srp-pop { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+  .hm-srp .srp-pop a { display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border: 1px solid var(--line); background: var(--surface); font-size: var(--t-xs); font-weight: 600; text-decoration: none; color: var(--ink); }
+  .hm-srp .srp-pop a:hover { border-color: var(--ink); }
+  .hm-srp__pages { display: flex; gap: 20px; align-items: center; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM Search results",
+  "tag": "section",
+  "class": "hm-section hm-main-search",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading without a search",
+      "default": "Search"
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Search field placeholder",
+      "default": "Search the store"
+    },
+    {
+      "type": "range",
+      "id": "per_page",
+      "label": "Results per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "text",
+      "id": "none_heading",
+      "label": "No results heading",
+      "default": "Try something else"
+    },
+    {
+      "type": "text",
+      "id": "popular",
+      "label": "Popular searches",
+      "default": "tee, hoodie, cap, kids, sticker, special edition",
+      "info": "Separate with commas. Shown when a search finds nothing."
+    },
+    {
+      "type": "text",
+      "id": "best_heading",
+      "label": "Best sellers heading",
+      "default": "Best sellers",
+      "info": "Products come from the Best sellers collection in Theme settings."
+    }
+  ]
+}
+{% endschema %}

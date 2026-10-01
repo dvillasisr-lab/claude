@@ -1,0 +1,75 @@
+{
+  "sections": {
+    "evil": {
+      "type": "hm-evil-list",
+      "blocks": {
+        "perk_1": {
+          "type": "perk",
+          "settings": {
+            "icon": "pull",
+            "title": "A heads-up before every pull",
+            "text": "<p>Where we pull, when our class runs and how to find the pits. Sent before we roll out.</p>"
+          }
+        },
+        "perk_2": {
+          "type": "perk",
+          "settings": {
+            "icon": "drop",
+            "title": "New drops first",
+            "text": "<p>New merch and special editions land in your inbox before anyone else hears about them.</p>"
+          }
+        },
+        "perk_3": {
+          "type": "perk",
+          "settings": {
+            "icon": "log",
+            "title": "Results and Pit Log news",
+            "text": "<p>How far we pulled, what broke and what’s next, with a link to the full <a href=\"/blogs/pit-log\" title=\"Pit Log\">Pit Log</a> story.</p>"
+          }
+        },
+        "perk_4": {
+          "type": "perk",
+          "settings": {
+            "icon": "shop",
+            "title": "Behind the scenes",
+            "text": "<p>Shop nights, the build and the crew behind “The Evil One”. The stuff we don’t post anywhere else.</p>"
+          }
+        },
+        "question_5": {
+          "type": "question",
+          "settings": {
+            "question": "How often will you email me?",
+            "answer": "<p>A few emails a month during the season. Fewer in the offseason. No spam, and we never share your email.</p>"
+          }
+        },
+        "question_6": {
+          "type": "question",
+          "settings": {
+            "question": "How do I unsubscribe?",
+            "answer": "<p>Tap “Unsubscribe” at the bottom of any email from The Evil List. One tap and you’re off. You can also turn it off in <a href=\"/account\" title=\"Your account\">your account</a>.</p>"
+          }
+        },
+        "question_7": {
+          "type": "question",
+          "settings": {
+            "question": "Do you send texts?",
+            "answer": "<p>No. The Evil List is email only. We don’t ask for your phone number and we don’t send texts.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "perk_1",
+        "perk_2",
+        "perk_3",
+        "perk_4",
+        "question_5",
+        "question_6",
+        "question_7"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "evil"
+  ]
+}

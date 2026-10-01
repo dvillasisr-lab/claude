@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "egg": {
+      "type": "hm-3208",
+      "settings": {}
+    }
+  },
+  "order": ["egg"]
+}

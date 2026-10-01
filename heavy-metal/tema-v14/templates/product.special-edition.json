@@ -1,0 +1,44 @@
+{
+  "sections": {
+    "main": {
+      "type": "hm-special-edition",
+      "blocks": {
+        "fact1": {
+          "type": "fact",
+          "settings": {
+            "icon": "bolt",
+            "text": "<p><strong>One run only.</strong> When the window closes or the run sells out, it is gone.</p>"
+          }
+        },
+        "fact2": {
+          "type": "fact",
+          "settings": {
+            "icon": "truck",
+            "text": "<p><strong>Printed to order.</strong> Ships in 5 days, with tracking by email.</p>"
+          }
+        },
+        "fact3": {
+          "type": "fact",
+          "settings": {
+            "icon": "home",
+            "text": "<p><strong>Fuels the team.</strong> Every tee helps keep “The Evil One” on the track.</p>"
+          }
+        }
+      },
+      "block_order": ["fact1", "fact2", "fact3"],
+      "settings": {
+        "plate_small": "Limited time · limited quantity",
+        "plate_big": "Limited run",
+        "ended_text": "Sold out. Thank you.",
+        "notify_soon_text": "One email the moment this drop goes live. Nothing else.",
+        "notify_ended_text": "This one is gone. Get one email when the next special edition drops.",
+        "empty_text": "The next special edition is on its way. Join The Evil List to hear first.",
+        "show_archive": true,
+        "archive_heading": "Past editions",
+        "archive_empty_heading": "Nothing in the archive yet",
+        "archive_empty_text": "When a special edition closes or sells out, it moves here so you can see every run “The Evil One” has done."
+      }
+    }
+  },
+  "order": ["main"]
+}

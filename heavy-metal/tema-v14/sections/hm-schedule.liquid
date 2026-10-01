@@ -198,20 +198,23 @@
   <div class="wrap">
     <div class="sc-h"><h2 class="h2" id="watch-t-{{ section.id }}">{{ section.settings.watch_title | escape }}</h2>{% if section.settings.watch_sub != blank %}<p>{{ section.settings.watch_sub | escape }}</p>{% endif %}</div>
     <div class="sc-watch">
-      {%- assign open = false -%}
       {%- for block in section.blocks -%}
         {%- if block.type == 'watch_group' -%}
-          {%- if open -%}</ul></article>{%- endif -%}
+          {%- assign start = forloop.index -%}
           <article class="sc-wcard" aria-labelledby="w-{{ block.id }}" {{ block.shopify_attributes }}>
             <h3 class="h3" id="w-{{ block.id }}">{{ block.settings.title | escape }}</h3>
             {%- if block.settings.text != blank -%}<p class="vh">{{ block.settings.text | escape }}</p>{%- endif -%}
             <ul class="sc-wlist">
-          {%- assign open = true -%}
-        {%- elsif block.type == 'watch_link' and open and block.settings.url != blank -%}
-              <li {{ block.shopify_attributes }}><a href="{{ block.settings.url }}" target="_blank" rel="noopener">{{ block.settings.label | replace: '[season]', season | escape }}<span class="sc-ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a>{% if block.settings.note != blank or block.settings.tag != 'none' %}<span>{{ block.settings.note | replace: '[season]', season | escape }}{% if block.settings.tag == 'free' %} <span class="badge sc-wtag">Free</span>{% elsif block.settings.tag == 'paid' %} <span class="badge badge--line sc-wtag">Paid</span>{% endif %}</span>{% endif %}</li>
+              {%- for lb in section.blocks offset: start -%}
+                {%- if lb.type == 'watch_group' -%}{%- break -%}{%- endif -%}
+                {%- if lb.type == 'watch_link' and lb.settings.url != blank -%}
+                  <li {{ lb.shopify_attributes }}><a href="{{ lb.settings.url }}" target="_blank" rel="noopener">{{ lb.settings.label | replace: '[season]', season | escape }}<span class="sc-ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a>{% if lb.settings.note != blank or lb.settings.tag != 'none' %}<span>{{ lb.settings.note | replace: '[season]', season | escape }}{% if lb.settings.tag == 'free' %} <span class="badge sc-wtag">Free</span>{% elsif lb.settings.tag == 'paid' %} <span class="badge badge--line sc-wtag">Paid</span>{% endif %}</span>{% endif %}</li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </article>
         {%- endif -%}
       {%- endfor -%}
-      {%- if open -%}</ul></article>{%- endif -%}
     </div>
     {%- if section.settings.in_person != blank -%}<div class="sc-inperson">{{ section.settings.in_person }}</div>{%- endif -%}
   </div>

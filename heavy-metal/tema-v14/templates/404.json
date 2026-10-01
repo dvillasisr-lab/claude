@@ -1,10 +1,30 @@
 {
   "sections": {
     "main": {
-      "type": "main-404"
+      "type": "hm-404",
+      "blocks": {
+        "shop": { "type": "exit", "settings": { "label": "Shop", "link": "shopify://collections/all" } },
+        "schedule": { "type": "exit", "settings": { "label": "Schedule", "link": "shopify://pages/schedule" } },
+        "story": { "type": "exit", "settings": { "label": "Our Story", "link": "shopify://pages/our-story" } },
+        "home": { "type": "exit", "settings": { "label": "Home", "link": "" } }
+      },
+      "block_order": ["shop", "schedule", "story", "home"],
+      "settings": {
+        "kicker": "Page not found",
+        "title_a": "Pull ended at",
+        "start_ft": 404,
+        "full_ft": 440,
+        "lede": "<b>This pull ended early.</b> The page you want isn’t on the track: it moved, or it never made the run.",
+        "evil_label": "“The Evil One” says",
+        "evil_text": "You pulled off the track. Happens to the best of us. I once took out a fence post.",
+        "placeholder": "Search tees, hoodies...",
+        "full_msg": "Full pull! This thing is f#ck!ng evil. The page still isn’t here, but the shop is open.",
+        "crop_cutout": true,
+        "rig_label": "“The Evil One” stopped on the track, short of the full pull flag",
+        "psst_text": "Psst... 3208",
+        "psst_url": ""
+      }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }

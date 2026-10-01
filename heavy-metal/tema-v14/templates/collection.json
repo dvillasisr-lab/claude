@@ -1,36 +1,28 @@
 {
   "sections": {
-    "banner": {
-      "type": "main-collection-banner",
+    "main": {
+      "type": "hm-main-collection",
       "settings": {
-        "show_collection_description": true,
-        "show_collection_image": false,
-        "color_scheme": "scheme-1"
-      }
-    },
-    "product-grid": {
-      "type": "main-collection-product-grid",
-      "settings": {
-        "products_per_page": 16,
-        "columns_desktop": 4,
-        "color_scheme": "scheme-1",
-        "image_ratio": "adapt",
-        "image_shape": "default",
-        "show_secondary_image": false,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
+        "all_title": "Shop all",
+        "all_text": "Every tee, hoodie, hat and sticker from the crew behind “The Evil One”. Printed when you order.",
+        "show_description": true,
+        "category_menu": "",
+        "per_page": 24,
         "enable_filtering": true,
-        "filter_type": "horizontal",
         "enable_sorting": true,
-        "columns_mobile": "2",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "show_edition_link": false,
+        "edition_url": "",
+        "edition_title": "Limited run · one moment of the season",
+        "edition_text": "Out for a short window and a set quantity. When it closes or sells out, it is gone.",
+        "promo_url": "shopify://pages/evil-list",
+        "promo_label": "The Evil List",
+        "promo_title": "Get the next drop first",
+        "promo_text": "New merch and a heads-up before every pull, by email. No spam.",
+        "promo_link": "Join The Evil List",
+        "soon_heading": "Coming soon",
+        "soon_text": "The first drop from the crew behind “The Evil One” is on its way. Get a heads up when it lands."
       }
     }
   },
-  "order": [
-    "banner",
-    "product-grid"
-  ]
+  "order": ["main"]
 }

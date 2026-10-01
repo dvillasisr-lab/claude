@@ -164,6 +164,11 @@
       var ret = trigger;
       addToCart([{ id: id, quantity: 1 }], ret).then(function () {
         closeSheet(true);
+        var drawer = document.querySelector('[data-hm-cart]');
+        var open = drawer && !drawer.hidden;
+        var usable = ret && document.contains(ret) && ret.getClientRects().length && !ret.closest('[hidden]');
+        if (usable && (!open || drawer.contains(ret))) ret.focus({ preventScroll: true });
+        else if (open) { var c = drawer.querySelector('[data-hm-cart-close]'); if (c) c.focus(); }
       }).catch(function (err) {
         s.querySelector('[data-hm-qs-err]').textContent = err.message;
         b.removeAttribute('aria-busy');

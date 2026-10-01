@@ -1,0 +1,25 @@
+{
+  "sections": {
+    "main": {
+      "type": "hm-pit-log",
+      "settings": {
+        "title": "Pit Log",
+        "intro": "Every test day, exhibition, pull and win of “The Evil One”, logged by the crew.",
+        "wm_title": "Wins & milestones",
+        "featured_max": 6,
+        "wm_empty": "Big days from the log show up here.",
+        "wins_text": "Still chasing the first one. The day it happens, it goes up here first.",
+        "wins_link_text": "Hear it first on The Evil List",
+        "wins_link_url": "shopify://pages/evil-list",
+        "log_title": "The log",
+        "search_placeholder": "Search the log: Monroe, turbo, exhibition...",
+        "empty_title": "Nothing logged yet",
+        "empty_text": "The first entry from the pit shows up here.",
+        "cta_title": "New entries hit Facebook first",
+        "cta_text": "Photos, video and the day’s notes, straight from the pit.",
+        "cta_button": "Follow on Facebook"
+      }
+    }
+  },
+  "order": ["main"]
+}
