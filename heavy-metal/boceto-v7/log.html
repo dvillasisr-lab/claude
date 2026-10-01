@@ -202,7 +202,7 @@ html,body{overflow-x:clip}
 .adm2{margin-top:16px}
 .adm__types{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:12px}
 .adm__type{display:grid;gap:4px;align-content:start}
-.adm__type .adm__thumb{width:100%;height:auto;aspect-ratio:4/3}
+.adm__type .adm__thumb{width:100%;height:auto;aspect-ratio:16/9}
 .adm__type .input{min-height:32px;font-size:var(--t-xs);padding:0 6px}
 .adm__type label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
 .adm__types-hint{margin:0;padding:0 12px 12px;font-size:var(--t-xs);color:var(--soft)}
@@ -353,7 +353,7 @@ html,body{overflow-x:clip}
      date: fecha de la entrada (vacía = "[date pending]"); seq ordena las que aún no tienen fecha (mayor = más reciente).
      tags: Test, Exhibition, Competition, Win, Full pull, Milestone, Shop, Featured (Featured = sale en la franja). demo: entrada de ejemplo.
      img: imagen destacada del post (article.image). Vacía = la foto de su tipo (TYPE_PHOTOS, Personalizar).
-     gallery: handle del evento en la Galería (metacampo opcional); si falta, título + año. Solo las entradas con foto propia ligan a la Galería. */
+     gallery: handle del evento en la Galería (metacampo opcional); si falta, título + fecha. Solo las entradas con foto propia ligan a la Galería. */
   var REAL = [
     { id: 'drop', year: SEASON, date: '', seq: 90, title: 'Special edition: Lightning Night Tee', tags: ['Shop'], demo: true,
       text: 'A special edition tee for the night the engine fired and lightning struck. One run only.', img: 'mock', link: ['limited.html', 'See the drop'] },
@@ -370,7 +370,7 @@ html,body{overflow-x:clip}
     { id: 't3', year: SEASON, date: '', seq: 30, title: 'Test day', tags: ['Test'], demo: true,
       text: 'Example: what we tested, what we changed and what is next, in two or three lines.', img: '' },
     { id: 't2', year: SEASON, date: '', seq: 20, title: 'Test day', tags: ['Test'], demo: true,
-      text: 'Example: a short note from the shop and, if there is one, a video. No photo this day, so it shows the Test photo.', img: '' },
+      text: 'Example: a short note from the shop and, if there is one, a video.', img: '' },
     { id: 't1', year: SEASON, date: '', seq: 15, title: 'Test day', tags: ['Test'], demo: true,
       text: 'Example: first laps in the yard after start up. Notes from the crew go here.', img: 'hm-driver', alt: 'The driver in the seat, front of the tractor' },
     { id: 'fire', year: SEASON, date: '', seq: 10, title: 'Engine fires, lightning strikes', tags: ['Test', 'Milestone', 'Featured'],
@@ -389,7 +389,7 @@ html,body{overflow-x:clip}
   function typeOf(p) { return TYPE_ORDER.filter(function (t) { return p.tags.indexOf(t) > -1; })[0] || 'Test'; }
   function ownPhoto(p) { return !!(p.src || (p.img && p.img !== 'mock')); }
   function slug(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
-  function galleryOf(p) { return p.gallery || slug(p.title + ' ' + p.year); }
+  function galleryOf(p) { return p.gallery || slug(p.title + ' ' + (p.date || p.year)); }
   /* liga a la Galería: solo entradas de pista (Test, Exhibition, Competition, Win) con foto propia */
   function hasGallery(p) { return ownPhoto(p) && TYPE_ORDER.some(function (t) { return p.tags.indexOf(t) > -1; }); }
   function newest() { return POSTS.reduce(function (m, p) { return p.date && p.date.length === 10 && p.date > m ? p.date : m; }, '0000'); }

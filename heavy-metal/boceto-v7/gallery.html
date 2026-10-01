@@ -42,7 +42,7 @@ html,body{overflow-x:clip}
 
 /* álbum: ficha del evento a la izquierda, hoja de contactos (grid SKIMS, 4px) a la derecha */
 .g-list{list-style:none;margin:0;padding:0;display:grid}
-.g-album{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:16px clamp(20px,2.4vw,40px);padding:24px 0;border-bottom:1px solid var(--line);scroll-margin-top:140px}
+.g-album{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:16px clamp(20px,2.4vw,40px);padding:20px 0;border-bottom:1px solid var(--line);scroll-margin-top:140px}
 .g-album:focus{outline:none}
 .g-album:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 .g-info{display:grid;gap:6px;align-content:start}
@@ -62,8 +62,7 @@ html,body{overflow-x:clip}
 .g-links{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:2px}
 .g-links a{font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-underline-offset:3px;white-space:nowrap}
 
-.g-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
-@media (max-width:1024px){.g-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.g-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:4px}
 @media (max-width:760px){
   .g-album{grid-template-columns:minmax(0,1fr);padding:20px 0}
   .g-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:2px}
@@ -186,7 +185,7 @@ html,body{overflow-x:clip}
   var $ = function (id) { return document.getElementById(id); };
   var SEASON = window.HM_SEASON || new Date().getFullYear();
   var PAGE = 4;        /* álbumes por página (en Shopify: paginate de metaobjects.album) */
-  var MAX_TILES = 8;   /* cuadros por álbum; si hay más, el último dice "+N" y abre el visor ahí */
+  var MAX_TILES = 6;   /* cuadros por álbum; si hay más, el último dice "+N" y abre el visor ahí */
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   var PLAY = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg>';
   var CAM = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-2h6l2 2h3v12H4Z M12 10a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" fill-rule="evenodd"/></svg>';
@@ -294,7 +293,7 @@ html,body{overflow-x:clip}
     var d = dims(v.poster);
     return '<li><a class="g-tile g-tile--vid" href="' + esc(v.url) + '" target="_blank" rel="noopener"><img class="photo" src="img/' + esc(v.poster) + '.webp" alt="" width="' + d[0] + '" height="' + d[1] + '" loading="lazy">' +
       '<span class="badge badge--ink g-kind" aria-hidden="true">Video</span><span class="g-play" aria-hidden="true">' + PLAY + '</span>' +
-      '<span class="g-vtxt"><b>' + esc(v.title) + '</b><span aria-hidden="true">Watch on YouTube ↗</span></span><span class="vh">: watch on YouTube (opens in a new tab)</span></a></li>';
+      '<span class="g-vtxt"><span aria-hidden="true">Watch on YouTube ↗</span></span><span class="vh">' + esc(v.title) + ': watch on YouTube (opens in a new tab)</span></a></li>';
   }
   function album(a) {
     var ai = ALBUMS.indexOf(a), tiles = [];

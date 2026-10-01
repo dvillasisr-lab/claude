@@ -41,7 +41,7 @@
     { id: 'sticker-pack', name: 'Sticker Pack', sub: 'Die cut set', cat: 'gear', colors: [], sizes: [] },
     { id: 'hook-alert-koozie', name: 'Hook Alert Koozie', sub: 'Keep it cold', cat: 'gear', colors: [], sizes: [] },
     { id: 'crew-pack', name: 'Crew Pack Bundle', sub: 'Tee plus cap', cat: 'bundles', colors: [], sizes: TEE, tag: 'bundle' },
-    { id: 'lightning-night-tee', name: 'Lightning Night Tee', sub: 'Special edition', cat: 'limited', colors: ['Matte Black'], sizes: TEE, tag: 'limited', page: 'limited.html' }
+    { id: 'lightning-night-tee', name: 'Lightning Night Tee', sub: 'Special edition', cat: 'limited', colors: ['Matte Black'], sizes: TEE, tag: 'limited', status: 'soon', page: 'limited.html' }
   ];
   /* boceto: ?empty=1 simula la tienda sin merch (estado "Coming soon") */
   if (/[?&]empty=1/.test(location.search)) { CAT.length = 0; }
@@ -96,8 +96,10 @@
     var badge = p.tag === 'best' ? '<span class="badge">Best seller</span>' : p.tag === 'new' ? '<span class="badge badge--ink">New</span>' :
       p.tag === 'bundle' ? '<span class="badge badge--line">Save $X</span>' : p.tag === 'limited' ? '<span class="badge badge--ink">Special edition</span>' : '';
     var sw = p.colors.map(function (c) { return '<span class="swatch" style="--sw:' + SW[c] + '" title="' + c + '"></span>'; }).join('');
-    if (p.status === 'soon') badge = '<span class="badge badge--line">Coming soon</span>';
-    else if (p.status === 'soldout') badge = '<span class="badge badge--line">Sold out</span>';
+    /* el estado se suma a "Special edition" (no lo reemplaza) */
+    var keep = p.tag === 'limited' ? badge : '';
+    if (p.status === 'soon') badge = keep + '<span class="badge badge--line">Coming soon</span>';
+    else if (p.status === 'soldout') badge = keep + '<span class="badge badge--line">Sold out</span>';
     else if (p.left && p.left <= 5) badge = '<span class="badge badge--alert">Almost gone!</span>' + badge;
     var btn = p.status === 'soon' ? '<a class="btn card__add" href="' + href(p) + '#notify">Notify me<span class="vh"> when ' + p.name + ' drops</span></a>' :
       p.status === 'soldout' ? '<a class="btn card__add" href="' + href(p) + '#notify">Sold out · Notify me<span class="vh"> about ' + p.name + '</span></a>' :

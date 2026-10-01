@@ -284,6 +284,12 @@ html,body{overflow-x:clip}
     document.title = (st.cat === 'all' ? 'Tractor Pulling Shirts, Hoodies & Hats' : c[0] + ' · Tractor Pulling Merch') + ' · Heavy Metal Pro Stock: “The Evil One”';
     $('plp-count').textContent = n + (n === 1 ? ' product' : ' products') + (nFilters() ? ' of ' + total : '');
     $('plp-grid').innerHTML = list.map(window.hmCard).join('');
+    /* edición especial: la etiqueta "Special edition" se queda aunque el estado sea Coming soon o Sold out */
+    [].forEach.call($('plp-grid').querySelectorAll('.card[data-tag="limited"]'), function (c) {
+      var b = c.querySelector('.card__badges');
+      if (!b) { b = document.createElement('div'); b.className = 'card__badges'; c.querySelector('.card__media').appendChild(b); }
+      if (!/Special edition/.test(b.textContent)) b.insertAdjacentHTML('beforeend', '<span class="badge badge--ink">Special edition</span>');
+    });
     /* Special edition: sus tarjetas ya llevan a limited.html (p.page en hm.js); arriba, un acceso directo a la página de la edición */
     $('plp-ltd').hidden = st.cat !== 'limited';
     $('plp-grid').hidden = !n;
