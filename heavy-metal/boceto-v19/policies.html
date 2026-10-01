@@ -36,6 +36,8 @@ html,body{overflow-x:clip}
 .pol-doc li{margin-bottom:4px}
 .pol-doc a{color:var(--ink);text-underline-offset:3px}
 .pol-doc b{color:var(--ink)}
+.pol-doc .pend{font-size:var(--t-xs);font-weight:700;letter-spacing:.04em;color:var(--soft);text-transform:none}
+#bsg{scroll-margin-top:calc(var(--header) + 72px)}
 .pend{background:var(--tile);padding:0 4px;font-weight:600;color:var(--ink)}
 .pol-doc .lede-l{font-size:var(--t-md);color:var(--soft)}
 .facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border-top:1px solid var(--line);margin:0 0 16px}
@@ -218,6 +220,8 @@ html,body{overflow-x:clip}
         <p>Approved refunds go back to your original payment method. Your bank may take 5 to 10 business days to post it.</p>
         <h3>6. How to start a claim</h3>
         <p>Email <a href="mailto:heavymetalevil72@gmail.com">heavymetalevil72@gmail.com</a> with your order number and photos, call <a href="tel:+19206504374">(920) 650-4374</a>, or use the <a href="contact.html">contact form</a>. We reply within 2 business days.</p>
+        <h3 id="bsg">7. The Black Smoke Guarantee <span class="pend">[pending]</span></h3>
+        <p>If the print on your item cracks or peels in the first year, we replace it. Free. To claim it, follow the steps in section 6 and include a photo of the print. <b>[terms pending]</b>: what counts as normal wear, the care instructions that apply and what our print partner covers are being confirmed before this guarantee goes live.</p>
       </article>
 
       <!-- SHIPPING -->
@@ -394,6 +398,8 @@ html,body{overflow-x:clip}
     show(new URL(a.href).searchParams.get('p'), true);
   });
   show(new URLSearchParams(location.search).get('p'), false);
+  /* ancla dentro de una política (ej. ?p=refund#bsg desde la ficha de producto) */
+  if (location.hash.length > 1) { var hEl = document.getElementById(location.hash.slice(1)); if (hEl && !hEl.closest('[hidden]')) requestAnimationFrame(function () { hEl.scrollIntoView({ block: 'start' }); }); }
 
   /* preferencias guardadas en este navegador (boceto: en vivo lo maneja la API de privacidad de Shopify) */
   function load(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
