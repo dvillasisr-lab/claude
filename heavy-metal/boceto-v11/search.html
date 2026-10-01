@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Search · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Search Heavy Metal Pro Stock: “The Evil One”. Tractor pull tees, hoodies, hats and pages about the tractor, its schedule, Pit Log and sponsors.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Resultados de búsqueda: campo arriba, productos con hmCard, lista de páginas, estado sin resultados. */
+html,body{overflow-x:clip}
+.srp-head{padding-block:24px 20px;border-bottom:1px solid var(--line)}
+.srp-head .h1{line-height:36px;overflow-wrap:anywhere}
+.srp-form{display:flex;max-width:640px;margin-top:14px}
+.srp-form .input{min-height:48px;font-size:var(--t-md);border-right:0}
+.srp-form .btn{min-height:48px;flex:none}
+.srp-count{margin:10px 0 0;font-size:var(--t-xs);color:var(--mute)}
+.srp-sect{padding-block:28px 0}
+.srp-end{padding-block:28px var(--sect)}
+.srp-pages{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);max-width:860px}
+.srp-pages a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line);text-decoration:none}
+.srp-pages a:hover .srp-pages__t{text-decoration:underline;text-underline-offset:3px}
+.srp-pages__t{font-weight:700;font-size:var(--t-sm);color:var(--ink)}
+.srp-pages__d{grid-column:1;font-size:var(--t-xs);color:var(--mute)}
+.srp-pages svg{grid-column:2;grid-row:1/span 2;width:18px;height:18px}
+.srp-none{display:grid;gap:12px;max-width:60ch}
+.srp-none p{margin:0;color:var(--soft)}
+.srp-tips{margin:0;padding-left:18px;color:var(--soft);font-size:var(--t-sm)}
+.srp-pop{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:0}
+.srp-pop a{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border:1px solid var(--line);background:var(--surface);font-size:var(--t-xs);font-weight:600;text-decoration:none;color:var(--ink)}
+.srp-pop a:hover{border-color:var(--ink)}
+mark{background:var(--accent);color:var(--ink);padding:0 1px}
+.soon__form .btn{flex:none;white-space:nowrap}
+.soon__form .input{min-width:0}
+</style>
+</head>
+<body>
+<div data-hm-header data-current=""></div>
+<main id="main">
+  <section class="srp-head">
+    <div class="wrap">
+      <h1 class="h1" id="srp-title">Search</h1>
+      <form class="srp-form" action="search.html" method="get" role="search">
+        <label class="vh" for="srp-q">Search the store</label>
+        <input class="input" id="srp-q" name="q" type="search" placeholder="Search tees, hoodies, the machine..." autocomplete="off" enterkeyhint="search">
+        <button class="btn" type="submit">Search</button>
+      </form>
+      <p class="srp-count num" id="srp-count" role="status"></p>
+    </div>
+  </section>
+
+  <section class="wrap srp-sect" id="srp-products" aria-labelledby="srp-products-h" hidden>
+    <div class="sect-head"><h2 class="h2" id="srp-products-h">Products</h2><a class="link" href="shop.html?cat=all">Shop all</a></div>
+    <div class="pgrid" id="srp-grid"></div>
+  </section>
+
+  <section class="wrap srp-sect" id="srp-pages-sect" aria-labelledby="srp-pages-h" hidden>
+    <div class="sect-head"><h2 class="h2" id="srp-pages-h">Pages</h2></div>
+    <ul class="srp-pages" id="srp-pages"></ul>
+  </section>
+
+  <section class="wrap srp-sect" id="srp-none" hidden aria-labelledby="srp-none-h">
+    <div class="srp-none">
+      <h2 class="h2" id="srp-none-h">Try something else</h2>
+      <p id="srp-none-p">We couldn't find anything for that search.</p>
+      <ul class="srp-tips"><li>Check the spelling.</li><li>Try one word, like "tee" or "hat".</li><li>Search the category instead of the design name.</li></ul>
+      <p class="label muted" style="margin-top:8px">Popular searches</p>
+      <ul class="srp-pop" id="srp-pop"></ul>
+      <p class="note">Ya no las escribes tú: estas búsquedas salen solas de los productos más vendidos y de las sugerencias automáticas de Shopify (Search &amp; Discovery).</p>
+    </div>
+  </section>
+
+  <section class="wrap srp-sect" id="srp-best" hidden aria-labelledby="srp-best-h">
+    <div class="sect-head"><h2 class="h2" id="srp-best-h">Best sellers</h2><a class="link" href="shop.html?cat=all&amp;sort=best">Shop best sellers</a></div>
+    <div class="pgrid" id="srp-best-grid"></div>
+  </section>
+
+  <section class="wrap srp-sect" id="srp-soon" hidden aria-label="Merch coming soon"></section>
+
+  <div class="wrap srp-end">
+    <p class="note">En Shopify esto es la plantilla /search con Search &amp; Discovery: sinónimos (hoodie = sweatshirt, hat = cap), resultados de productos y páginas, y filtros iguales a Shop. Sin resultados muestra sugerencias y best sellers para no dejar un callejón sin salida; sin merch muestra "Coming soon" (<a href="search.html?empty=1&amp;q=tee">probar tienda vacía</a>).</p>
+  </div>
+</main>
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var CAT = window.HM_CATALOG || [];
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+  var LABEL = { tees: 'tees tee shirt t-shirt long sleeve', sweats: 'sweatshirts sweatshirt hoodie crewneck sweater', hats: 'hats hat cap caps beanie', kids: 'kids kid youth children', gear: 'stickers sticker gear koozie decal', bundles: 'bundles bundle set pack', limited: 'special edition limited drop' };
+  /* sinónimos simples (Search & Discovery los maneja en Shopify) */
+  var SYN = { shirt: 'tee', tshirt: 'tee', sweater: 'sweatshirt', hoody: 'hoodie', cap: 'hat', youth: 'kids' };
+  var SEASON = window.HM_SEASON || new Date().getFullYear();
+  var PAGES = [
+    ['The Machine', 'machine.html', 'Cat 3208 V8, 680 cu in, 10,000 lb. Everything on it is custom-built.', 'machine tractor cat 3208 v8 engine turbo specs 680 challenger chassis pro stock evil one'],
+    ['Our Story', 'story.html', 'From a 2014 idea in Tomah, WI to the first pull in 2026.', 'story history chris team crew family lightning first pull evil one waterloo tomah'],
+    ['Schedule', 'schedule.html', 'Testing season ' + SEASON + ' on the NTPA and PPL Badger State circuits. Join The Evil List.', 'schedule pulls events dates calendar ntpa ppl badger state evil list monroe'],
+    ['Pit Log', 'log.html', 'Results, test runs and notes from every pull, newest first.', 'pit log blog results result tests test runs news updates diary journal pull report wins'],
+    ['Special edition', 'limited.html', 'Limited runs for a short window. When they sell out, they are gone.', 'special edition limited drop lightning night tee exclusive'],
+    ['Sponsors', 'sponsors.html', 'Title Partner, Pit Partner and Crew Supporter packages.', 'sponsors sponsor sponsorship partner title pit crew supporter media kit brand'],
+    ['FAQ', 'faq.html', 'Answers about orders, shipping, sizes and the team.', 'faq questions answers help orders shipping returns sizing team'],
+    ['Size guide', 'sizes.html', 'Measurements for tees, sweatshirts and kids sizes.', 'size sizes sizing guide fit chart measurements tee hoodie kids youth'],
+    ['Shipping Policy', 'policies.html?p=shipping', 'Printed to order, ships in 5 days.', 'shipping ship delivery policy policies orders'],
+    ['Refund Policy', 'policies.html?p=refund', 'Returns and exchanges.', 'refund returns return exchange exchanges policy policies'],
+    ['Privacy Policy', 'policies.html?p=privacy', 'What we collect and why.', 'privacy data cookies policy policies'],
+    ['Terms of Service', 'policies.html?p=terms', 'The terms for using this store.', 'terms service conditions policy policies'],
+    ['Cookie Preferences', 'policies.html?p=cookies', 'Choose which cookies we can use on this browser.', 'cookies cookie preferences consent gpc privacy policy policies'],
+    ['Contact Information', 'policies.html?p=contact', 'Email, phone and mailing address.', 'contact information email phone address policy policies'],
+    ['Contact', 'contact.html', 'Questions about merch or sponsorship? We answer within 2 business days.', 'contact email phone call help question support']
+  ];
+
+  function norm(t) { t = t.toLowerCase().replace(/[^a-z0-9]/g, ''); t = SYN[t] || t; return t.length > 3 && /s$/.test(t) && !/ss$/.test(t) ? t.slice(0, -1) : t; }
+  function tokens(q) { return q.toLowerCase().split(/\s+/).map(norm).filter(Boolean); }
+  function match(hay, toks) { hay = hay.toLowerCase(); return toks.every(function (t) { return hay.indexOf(t) > -1; }); }
+  function prodHay(p) { return [p.name, p.sub, p.cat, LABEL[p.cat] || '', p.colors.join(' '), p.tag || ''].join(' '); }
+  function bestFour() {
+    var b = CAT.filter(function (p) { return p.tag === 'best'; });
+    return b.concat(CAT.filter(function (p) { return p.tag === 'new'; })).slice(0, 4);
+  }
+
+  /* búsquedas populares automáticas: best sellers + categorías (en Shopify salen de Search & Discovery) */
+  var EMPTY = !CAT.length; /* tienda sin merch (?empty=1 en el boceto) */
+  $('srp-pop').innerHTML = (EMPTY ? ['the machine', 'schedule', 'pit log', 'sponsors', 'story'] : CAT.filter(function (p) { return p.tag === 'best'; }).map(function (p) { return p.name.toLowerCase().replace(/ tee$| cap$/, ''); })
+    .concat(['tee', 'hoodie', 'kids', 'special edition'])).slice(0, 7)
+    .map(function (w) { return '<li><a href="search.html?q=' + encodeURIComponent(w) + '">' + esc(w) + '</a></li>'; }).join('');
+
+  var q = (new URLSearchParams(location.search).get('q') || '').trim().slice(0, 80);
+  var input = $('srp-q'); input.value = q;
+  var toks = tokens(q);
+
+  /* esqueleto fantasma: tarjetas grises unos 700 ms antes de los resultados (?loading=slow lo deja 3 s). Sin brillo con "reducir movimiento". */
+  var SKEL_MS = /[?&]loading=slow/.test(location.search) ? 3000 : 700;
+  function load(grid, list, n) {
+    grid.innerHTML = window.hmSkeleton ? window.hmSkeleton(Math.min(n, Math.max(list.length, 4))) : '';
+    grid.setAttribute('aria-busy', 'true');
+    setTimeout(function () { grid.innerHTML = list.map(window.hmCard).join(''); grid.removeAttribute('aria-busy'); }, SKEL_MS);
+  }
+  function soon() { $('srp-soon').hidden = false; $('srp-soon').innerHTML = window.hmComingSoon ? window.hmComingSoon() : ''; }
+
+  if (!q) {
+    $('srp-title').textContent = 'Search';
+    $('srp-count').textContent = EMPTY ? 'Search the pages. Merch is coming soon.' : 'Search for a product or a page.';
+    if (EMPTY) { soon(); return; }
+    $('srp-best').hidden = false;
+    load($('srp-best-grid'), bestFour(), 4);
+    return;
+  }
+
+  var prods = toks.length ? CAT.filter(function (p) { return match(prodHay(p), toks); }) : [];
+  var pages = toks.length ? PAGES.filter(function (pg) { return match(pg[0] + ' ' + pg[2] + ' ' + pg[3], toks); }) : [];
+  var n = prods.length + pages.length;
+  document.title = 'Search: ' + q + ' · Heavy Metal Pro Stock: “The Evil One”';
+  $('srp-title').innerHTML = n ? 'Results for "' + esc(q) + '"' : 'No results for "' + esc(q) + '"';
+  $('srp-count').textContent = n ? prods.length + (prods.length === 1 ? ' product' : ' products') + ' and ' + pages.length + (pages.length === 1 ? ' page' : ' pages') : '0 results';
+
+  if (prods.length) {
+    $('srp-products').hidden = false;
+    $('srp-products-h').textContent = 'Products (' + prods.length + ')';
+    load($('srp-grid'), prods, 8);
+  }
+  if (pages.length) {
+    $('srp-pages-sect').hidden = false;
+    $('srp-pages-h').textContent = 'Pages (' + pages.length + ')';
+    $('srp-pages').innerHTML = pages.map(function (pg) {
+      return '<li><a href="' + pg[1] + '"><span class="srp-pages__t">' + esc(pg[0]) + '</span><span class="srp-pages__d">' + esc(pg[2]) + '</span>' + ARROW + '</a></li>';
+    }).join('');
+  }
+  if (!n) {
+    $('srp-none').hidden = false;
+    $('srp-none-p').textContent = 'We couldn\'t find anything for "' + q + '". Try one of these instead.';
+    if (!EMPTY) { $('srp-best').hidden = false; load($('srp-best-grid'), bestFour(), 4); }
+  }
+  if (EMPTY) soon();
+})();
+</script>
+</body>
+</html>
