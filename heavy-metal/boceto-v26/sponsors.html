@@ -253,6 +253,36 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
 @media (max-width:760px){.why ul{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}.why a{padding:6px 4px}}
 @media (max-width:900px){.sp-end{grid-template-columns:1fr}}
 @media (max-width:480px){.sp-form{grid-template-columns:1fr}}
+/* Ya patrocinan (metaobjeto Sponsor, mismo que la franja del resto del sitio) */
+.sp-on{padding-block:24px;border-bottom:1px solid var(--line)}
+.sp-on__in{display:grid;grid-template-columns:minmax(200px,260px) 1fr;gap:16px 40px;align-items:center}
+.sp-on__h{font-size:var(--t-h3);line-height:1.25;margin:0}
+.sp-on__sub{margin:4px 0 0;font-size:var(--t-xs);color:var(--mute)}
+.sp-on__sub a{color:var(--ink)}
+.sp-on__groups{display:flex;flex-wrap:wrap;align-items:flex-start;gap:16px 28px;min-width:0}
+.sp-on__g{display:flex;flex-direction:column;gap:8px;flex:1 1 auto;min-width:0}
+.sp-on__g--title{flex-grow:0}
+.sp-on__lbl{border-top:1px solid var(--line);padding-top:6px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:0}
+.sp-on__tiles{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0;padding:0;list-style:none}
+.sp-on__tiles li{display:flex}
+.sp-on .spl{font-size:11px;padding:6px}
+.sp-on .spl--wide{width:132px;height:52px}
+.sp-on .spl--square,.sp-on .spl--circle{width:60px;height:60px}
+.sp-on .spl--title.spl--wide{width:168px;height:64px;font-size:13px}
+.sp-on .spl--title.spl--square,.sp-on .spl--title.spl--circle{width:72px;height:72px;font-size:12px}
+.sp-on__empty{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.sp-on__empty .spl--wide{flex:1 1 132px}
+.sp-on .note{max-width:none}
+@media (max-width:720px){
+  .sp-on__in{grid-template-columns:1fr}
+  .sp-on__g{flex:1 1 100%}
+  .sp-on__groups{gap:12px}
+  .sp-on .spl{font-size:10px;padding:4px}
+  .sp-on .spl--wide{width:112px;height:44px}
+  .sp-on .spl--square,.sp-on .spl--circle{width:52px;height:52px}
+  .sp-on .spl--title.spl--wide{width:150px;height:56px;font-size:12px}
+  .sp-on__empty .spl:nth-child(n+4){display:none}
+}
 </style>
 <!-- Meta y JSON-LD: en Shopify salen de las mismas entradas Sponsor stat (pulls x fans per pull); aquí el JS los vuelve a calcular -->
 <script type="application/ld+json" id="sp-ld">
@@ -366,6 +396,20 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
   </ul></div>
 </nav>
 
+<!-- 2b · Ya patrocinan: en Shopify, bloque Liquid que recorre las entradas activas del metaobjeto "Sponsor" ordenadas por paquete -->
+<section class="sect--white sp-on" id="on-board" aria-labelledby="on-t">
+  <div class="wrap">
+    <div class="sp-on__in">
+      <div>
+        <h2 class="sp-on__h" id="on-t">They already back “The Evil One”</h2>
+        <p class="sp-on__sub" id="on-sub"></p>
+      </div>
+      <div id="on-list"></div>
+    </div>
+    <p class="note" id="on-note">Esta sección y la franja antes del footer en el resto del sitio salen del mismo metaobjeto <b>Sponsor</b> (Contenido &gt; Metaobjetos &gt; Sponsor). Agregas un patrocinador una vez y aparece en los dos lugares, ordenado por paquete. Sin patrocinadores sale una línea y lugares "Your logo here". <button type="button" class="linklike" data-spdemo="1">Ver con ejemplos</button> · <button type="button" class="linklike" data-spdemo="0">Ver vacío</button></p>
+  </div>
+</section>
+
 <!-- 3 · Cifras estimadas (array STATS: metaobjeto "Sponsor stat") -->
 <section class="sect" style="padding-block:32px" id="numbers" aria-labelledby="stats-t">
   <div class="wrap sp-num">
@@ -476,6 +520,27 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
+
+  /* Ya patrocinan: lee window.HM_SPONSORS() (hm.js). hm.js vuelve a llamar esto al tocar "Ver con ejemplos / Ver vacío". */
+  window.hmRenderTrusted = function () {
+    var box = $('on-list'), sub = $('on-sub'); if (!box || !window.HM_SPONSORS) return;
+    var list = window.HM_SPONSORS();
+    if (!list.length) {
+      sub.innerHTML = 'No sponsors yet. Be the first name on “The Evil One”. <a href="#sp-tiers">See packages</a>';
+      box.innerHTML = '<div class="sp-on__empty">' + [['wide', ' spl--title'], ['circle', ''], ['square', ''], ['wide', '']].map(function (x) {
+        return '<a class="spl spl--open spl--' + x[0] + x[1] + '" href="#contact"><span>Your logo here</span></a>';
+      }).join('') + '</div>';
+      return;
+    }
+    var G = [['title', 'Title partner', 'Title partners'], ['pit', 'Pit partner', 'Pit partners'], ['crew', 'Crew supporter', 'Crew supporters']];
+    sub.innerHTML = list.length + (list.length === 1 ? ' business backs' : ' businesses back') + ' this season. <a href="#sp-tiers">Join them</a>' + (window.HM_SPONSORS_DEMO && window.HM_SPONSORS_DEMO() ? ' <i class="spx__ex">Ejemplos</i>' : '');
+    box.innerHTML = '<div class="sp-on__groups">' + G.map(function (g) {
+      var xs = list.filter(function (x) { return x.t === g[0]; }); if (!xs.length) return '';
+      return '<div class="sp-on__g sp-on__g--' + g[0] + '"><p class="sp-on__lbl" id="on-g-' + g[0] + '">' + (xs.length === 1 ? g[1] : g[2]) + '</p>' +
+        '<ul class="sp-on__tiles" aria-labelledby="on-g-' + g[0] + '">' + xs.map(function (x) { return '<li>' + window.hmSpLogo(x) + '</li>'; }).join('') + '</ul></div>';
+    }).join('') + '</div>';
+  };
+  window.hmRenderTrusted();
 
   /* Pestañas: scroll dentro de la página y marca la sección visible */
   var links = Array.prototype.slice.call(document.querySelectorAll('.sp-tabs a'));
