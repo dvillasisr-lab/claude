@@ -28,7 +28,7 @@
         "m5": { "type": "milestone", "settings": { "year": "Today", "event": "[season] season", "place": "", "target": "#season", "kind": "now" } },
         "c1": { "type": "chapter", "settings": { "position": "50% 58%", "tag": "Tomah, WI", "eyebrow": "2014 · Tomah, WI", "title": "The name was never up for debate", "text": "<p>Chris, a lifelong heavy metal fan, decided to build a Pro Stock pulling tractor. The name picked itself, and so did the nickname: “The Evil One”.</p>", "anchor": "ch-2014" } },
         "c2": { "type": "chapter", "settings": { "position": "50% 52%", "tag": "Never a solo job", "eyebrow": "Feb 2020 · First bolt", "title": "Built nights and weekends", "text": "<p>The first bolt went in at the family shop in Waterloo. Then came nights and weekends stolen from work and family, sketches redrawn a thousand times, and a shop the whole family turned into a second home.</p>", "anchor": "ch-2020" } },
-        "c3": { "type": "chapter", "settings": { "position": "50% 45%", "tag": "Cat 3208 · 680 ci", "eyebrow": "The shop · Waterloo, WI", "title": "Nothing off the shelf", "text": "<p>A Cat 3208 V8 in reverse flow, a setup you won’t find on any other tractor on the track. 636 cubic inches stock, built out to 680. Nothing about it was quick. <a href=\"/pages/the-machine\" title=\"The Machine\">Full spec sheet</a></p>", "anchor": "ch-shop" } }
+        "c3": { "type": "chapter", "settings": { "position": "50% 45%", "tag": "Cat 3208 · 680 ci", "eyebrow": "The shop · Waterloo, WI", "title": "Nothing off the shelf", "text": "<p>A Cat 3208 V8 in reverse flow, a setup you won’t find on any other tractor on the track. 636 cubic inches stock, built out to 680. Nothing about it was quick. <a href=\"/pages/spec-sheet\" title=\"The Machine\">Full spec sheet</a></p>", "anchor": "ch-shop" } }
       },
       "block_order": ["m1", "m2", "m3", "m4", "m5", "c1", "c2", "c3"],
       "settings": {
@@ -83,7 +83,7 @@
         "no_win_line": "Chasing our first win",
         "foot_text": "On the NTPA & PPL Badger State circuits. Every run goes in the Pit Log.",
         "link_text": "See the Pit Log",
-        "link_url": "shopify://blogs/pit-log"
+        "link_url": "/blogs/pit-log"
       }
     },
     "pair": {

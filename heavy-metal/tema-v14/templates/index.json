@@ -8,7 +8,7 @@
         "cta1_label": "Shop the drop",
         "cta1_link": "shopify://collections/all",
         "cta2_label": "Meet the machine",
-        "cta2_link": "/pages/the-machine",
+        "cta2_link": "/pages/spec-sheet",
         "target_ft": 300,
         "sim_label": "Pull sim",
         "sim_class": "Pro Stock · WI",
@@ -101,7 +101,7 @@
         "link_label": "Meet the machine",
         "caption_1": "On the track",
         "caption_2": "Cat 3208 V8 · in the shop",
-        "link_url": "/pages/the-machine"
+        "link_url": "/pages/spec-sheet"
       }
     },
     "lightning": {
@@ -117,7 +117,7 @@
         "duration": "",
         "caption": "Engine fires for the first time · Waterloo, WI",
         "soon_msg": "Video coming soon",
-        "link_url": "/pages/our-story"
+        "link_url": "/pages/about"
       }
     },
     "next_pull": {

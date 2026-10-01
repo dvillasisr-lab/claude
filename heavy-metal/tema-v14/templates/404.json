@@ -5,7 +5,7 @@
       "blocks": {
         "shop": { "type": "exit", "settings": { "label": "Shop", "link": "shopify://collections/all" } },
         "schedule": { "type": "exit", "settings": { "label": "Schedule", "link": "shopify://pages/schedule" } },
-        "story": { "type": "exit", "settings": { "label": "Our Story", "link": "shopify://pages/our-story" } },
+        "story": { "type": "exit", "settings": { "label": "Our Story", "link": "/pages/about" } },
         "home": { "type": "exit", "settings": { "label": "Home", "link": "" } }
       },
       "block_order": ["shop", "schedule", "story", "home"],

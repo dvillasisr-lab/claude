@@ -77,7 +77,7 @@
           "settings": {
             "title": "I have no clue",
             "text": "Honest. Start with the story.",
-            "link": "/pages/our-story",
+            "link": "/pages/about",
             "main": false
           }
         }
