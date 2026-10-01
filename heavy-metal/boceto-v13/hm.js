@@ -235,9 +235,10 @@
       '<footer class="ftr"><div class="wrap">' +
         '<div class="ftr__cols">' +
           acc('Help', [['Contact us', 'contact.html'], ['Shipping', 'policies.html?p=shipping'], ['Returns &amp; exchanges', 'policies.html?p=refund'], ['Size guide', 'sizes.html'], ['Track my order', 'account.html'], ['FAQ', 'faq.html']]) +
-          '<div class="ftr__news"><h2 class="ftr__h">The Evil List</h2><p style="margin:0" class="muted">New drops and a heads up before every pull. One list, no spam. <a href="evil-list.html">What you get</a></p>' +
+          (f.hasAttribute('data-no-news') ? '<div class="ftr__news"><h2 class="ftr__h">The Evil List</h2><p style="margin:0" class="muted">You are on the sign up page.</p></div>' : '') +
+          (f.hasAttribute('data-no-news') ? '' : '<div class="ftr__news"><h2 class="ftr__h">The Evil List</h2><p style="margin:0" class="muted">New drops and a heads up before every pull. One list, no spam. <a href="evil-list.html">What you get</a></p>' +
             '<form class="ftr__form" id="ftr-form" novalidate><label class="vh" for="ftr-email">Email</label><input class="input" id="ftr-email" type="email" required placeholder="Email address" autocomplete="email"><button type="submit" aria-label="Sign up">' + I.arrow + '</button></form>' +
-            '<p class="consent" id="ftr-msg">By signing up you agree to receive marketing emails. Unsubscribe anytime. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p></div>' +
+            '<p class="consent" id="ftr-msg">By signing up you agree to receive marketing emails. Unsubscribe anytime. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p></div>') +
           acc('The team', [['The Machine', 'machine.html'], ['Our Story', 'story.html'], ['Schedule', 'schedule.html'], ['Pit Log', 'log.html'], ['Gallery', 'gallery.html'], ['The Evil List', 'evil-list.html'], ['Sponsors', 'sponsors.html'], ['Book the team', 'book.html']]) +
         '</div>' +
         '<div class="ftr__social"><a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener" aria-label="Facebook (opens in a new tab)">' + I.fb + '</a><a href="#" aria-label="Instagram (pending)">' + I.ig + '</a></div>' +
