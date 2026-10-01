@@ -399,8 +399,8 @@ html,body{overflow-x:clip}
 
   /* avisar cuando vuelva la talla agotada */
   var nb = $('notify-open'), nf = $('notify');
-  nb.addEventListener('click', function () { var o = nf.hidden; nf.hidden = !o; nb.setAttribute('aria-expanded', String(o)); if (o) $('notify-email').focus(); });
-  nf.addEventListener('submit', function (e) {
+  if (nb) nb.addEventListener('click', function () { var o = nf.hidden; nf.hidden = !o; nb.setAttribute('aria-expanded', String(o)); if (o) $('notify-email').focus(); });
+  if (nf) nf.addEventListener('submit', function (e) {
     e.preventDefault(); var em = $('notify-email');
     if (!em.value || !em.checkValidity()) { em.setAttribute('aria-invalid', 'true'); em.focus(); return; }
     nf.outerHTML = '<p class="soldout" role="status">We will email you when ' + sold.join(', ') + ' is back.</p>';
