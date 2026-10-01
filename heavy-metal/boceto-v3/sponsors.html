@@ -35,8 +35,9 @@
 .sp-tier--main .btn:hover{background:var(--surface);border-color:var(--surface)}
 .sp-fan{margin:12px 0 0;font-size:var(--t-sm);color:var(--soft)}
 @media (max-width:1024px){.sp-top__in{grid-template-columns:1fr}.sp-photo{aspect-ratio:16/7;min-height:0}}
-@media (max-width:860px){.sp-tiers{grid-template-columns:1fr}.sp-tier{grid-template-rows:auto}}
-@media (max-width:480px){.sp-photo{aspect-ratio:16/8}}
+@media (max-width:860px){.sp-tiers{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(260px,84%);overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:thin}.sp-tier{scroll-snap-align:start}.sp-hint{display:block}}
+@media (max-width:480px){.sp-photo{aspect-ratio:16/6}}
+.sp-hint{display:none;margin:8px 0 0;font-size:var(--t-xs);color:var(--mute)}
 
 /* 2 · barra de pestañas sticky (dentro de la página) */
 .sp-tabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header));z-index:40;background:var(--surface);border-block:1px solid var(--line)}
@@ -140,7 +141,7 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
         </div>
         <a class="link" href="#contact" style="text-decoration:underline">Not sure? Ask us</a>
       </div>
-      <ul class="sp-tiers" aria-label="Sponsorship packages">
+      <ul class="sp-tiers" aria-label="Sponsorship packages" tabindex="0">
         <li class="sp-tier">
           <div class="sp-tier__top"><h2 class="h3">Title Partner</h2></div>
           <p class="sp-price num">$25,000<small>All season</small></p>
@@ -179,6 +180,7 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
           <a class="btn btn--ghost btn--block" href="#contact" data-pkg="crew">Request this package</a>
         </li>
       </ul>
+      <p class="sp-hint" aria-hidden="true">Swipe to see all 3 packages</p>
       <p class="sp-fan">A fan, not a business? <a href="ride.html">Put your name on the tractor with Ride With The Evil One</a>.</p>
     </div>
   </div>
