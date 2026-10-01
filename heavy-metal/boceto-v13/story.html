@@ -275,6 +275,13 @@ html,body{overflow-x:clip}
   .st-vid__play{width:60px;height:60px}
   .st-facts li{padding-right:12px;margin-right:12px}
   .st-facts li+li{padding-left:12px}
+  /* celular: datos en 2 columnas parejas, el tercero abajo a todo lo ancho */
+  .st-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .st-facts li{margin-right:0;padding-bottom:10px}
+  .st-facts li:nth-child(odd):not(:first-child){padding-left:0;border-left:0;border-top:1px solid var(--line)}
+  .st-facts li:last-child:nth-child(odd){grid-column:1/-1}
+  /* reproductor: sin renglón cortado a la mitad */
+  .st-spot__list li:nth-child(n+4){display:none}
 }
 </style>
 </head>
