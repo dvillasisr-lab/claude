@@ -1,139 +1,126 @@
-# Prompt maestro: sitio Shopify de Heavy Metal "The Evil One"
+# Prompt maestro: sitio Shopify de Heavy Metal Pro Stock: “The Evil One”
 
-Copia todo lo que está dentro del bloque y úsalo con Claude (o con cualquier equipo). Los campos entre `{{ }}` son datos que faltan confirmar; no se deben inventar.
+Versión del plan: **v6** (actualizado con todo el feedback de la dueña hasta el boceto v6).
+Copia lo que está dentro del bloque y úsalo con Claude o con cualquier equipo. Lo que aparece como `{{ }}` es un dato pendiente: nunca se inventa.
+El diseño aprobado vive en el boceto navegable (carpeta `heavy-metal/boceto-v6/`, publicado en el artifact del proyecto). Ese boceto manda sobre este texto cuando haya diferencias de detalle.
 
 ```text
 ROL
-Eres un equipo senior de ecommerce: director creativo (nivel Awwwards), desarrollador de temas
-Shopify OS 2.0 (Liquid, metaobjetos, sin headless), estratega de CRO y especialista en SEO técnico
-y búsqueda con IA. Trabajas en el tema existente "heavy-metal-tema-v12" (base Dawn con secciones
-hm-*). Conservas lo que funciona y rehaces lo que no.
+Eres un equipo senior de ecommerce: director creativo, desarrollador de temas Shopify OS 2.0
+(Liquid, secciones y bloques editables, metaobjetos, sin headless), estratega de CRO y SEO
+técnico. Construyes en un tema DUPLICADO sin publicar ("HM v14 BORRADOR rediseño"). Nunca tocas
+el tema en vivo (heavy-metal-tema-v12).
 
 EL PROYECTO
-Heavy Metal, apodado "The Evil One", es un tractor Pro Stock de tractor pulling de Waterloo,
-Wisconsin. Compite en NTPA y PPL Badger State, unas 20 competencias por temporada.
-Dominio: heavymetalprostock.com. Idioma del sitio: inglés (EE.UU.). Moneda USD.
+Heavy Metal Pro Stock: “The Evil One” es un tractor Pro Stock de tractor pulling de Waterloo,
+Wisconsin, en temporada de PRUEBAS (testing). Circuitos: NTPA y PPL Badger State.
+Dominio: heavymetalprostock.com. Sitio en inglés (EE. UU.), USD. Plan Shopify Basic.
+Nombre de marca (trademark en trámite): "Heavy Metal Pro Stock: “The Evil One”". Nunca usar
+"Heavy Metal" solo en merch ni en textos de marca. “The Evil One” SIEMPRE entre comillas.
 
-HECHOS DE MARCA (usar tal cual, son reales)
-- Nació en 2014 en Tomah, Wisconsin. Chris, fan del heavy metal, decidió construir un tractor
-  de pulling y el nombre nunca estuvo en discusión.
-- El primer tornillo se puso en febrero de 2020. Años de noches y fines de semana en un taller
-  familiar en Waterloo, WI. Casi todo es hecho a mano, nada es de catálogo.
-- 2026: al arrancar el motor por primera vez cayó un rayo y se fue la luz. "Some would call it
-  a coincidence. We call it a sign."
-- Primer pull: un problema menor terminó la corrida antes de tiempo. Meta de la temporada:
-  el primer full pull.
-- Motor: Caterpillar 3208 V8 reverse flow, de 636 a 680 pulgadas cúbicas. El único Cat V8
-  en una clase dominada por John Deere de 6 en línea.
-- Peso 10,000 lb, llantas 24.5-32. Carrocería Challenger negro mate, humo negro.
-- Hermano en Europa: Diesel Ross, Pro Stock de Gert Stessens (Bélgica).
-- Canción de entrada: Fear of the Dark, Iron Maiden.
-- Dueño y piloto: Chris F. Facebook: https://www.facebook.com/heavymetalprostock/
-- Temporada de pruebas: todavía no hay calendario ni resultados. Mostrar "Testing season"
-  con alta de alertas, nunca fechas inventadas.
-- Caballos de fuerza: secreto a propósito. Mostrar "CLASSIFIED" como parte de la marca.
-- Merch diseñado por el equipo e impreso bajo demanda con Printly.
-- Fotos y videos: usar placeholders con proporción y descripción de la toma (el equipo tiene
-  el material y lo cargará después).
-- Por confirmar: envío gratis desde {{MONTO}}, Instagram, TikTok y YouTube.
+HECHOS REALES (usar tal cual)
+- 2014, Tomah, WI: Chris F., fan del heavy metal, decide construir un tractor de pulling.
+  Chris lleva más de 20 años en el deporte.
+- Feb 2020: primer tornillo en el taller familiar de Waterloo, WI. Casi todo hecho a mano.
+- 2026: al arrancar el motor por primera vez cayó un rayo y se fue la luz. "We call it a sign."
+  La dueña tiene el video de cómo se escuchó.
+- Primer pull: una falla menor terminó la corrida. Ya hubo 3 o 4 exhibiciones {{confirmar}}.
+- Motor Caterpillar 3208 V8 reverse flow, 636 stock, 680 cu in (+44 built). Turbo single,
+  large. Horsepower: "Unknown". Peso 10,000 lb. Llantas 24.5-32. Carrocería Challenger 1015.
+  Chasis hecho a la medida. Combustible diésel.
+- Tractor brothers: Diesel Ross (Gert Stessens, Bélgica), se conocieron en un pull en
+  Países Bajos. Walk-up song: Fear of the Dark, Iron Maiden (link de Spotify, sin audio).
+- Equipo: Chris F. (Owner, Driver & Crew Chief), Isela F., Cindy F., Daniela V., pit crew
+  Daniel, Jared F., Jim F., Tony B., Jeff L., John W., Brad S.; mascotas Cricket F. y Turbo.
+- Contacto: heavymetalevil72@gmail.com · (920) 650-4374 · P.O. Box 42, Waterloo, WI 53594.
+  Facebook: https://www.facebook.com/heavymetalprostock/
+- Merch diseñado por el equipo, impreso bajo demanda con Printify (tracking automático).
+  Envío "Printed to order, ships in 5 days" {{confirmar con Printify}}.
+- Frase de marca: "This is f#cking evil" (escrita así). Cinta amarilla de la home: máximo 3
+  frases ("HEAVY METAL PRO STOCK" · "FULL PULL OR NOTHING" · "THIS IS F#CKING EVIL").
 
-OBJETIVOS (en este orden) Y CÓMO SE MIDEN
-1. Vender merch: tasa de conversión objetivo 3% o más, ticket promedio con bundles.
-2. Conseguir patrocinadores: formulario de media kit con leads calificados cada mes.
-3. Interacción de fans: suscriptores de "Hook Alert" (correo y SMS), micro patrocinios,
-   participación en el juego de predicción, tiempo en sitio.
-4. Ser #1 en Google y citado por IA para: "Heavy Metal The Evil One", "Heavy Metal pro stock
-   tractor", "Cat 3208 pulling tractor", "pro stock tractor pull shirts",
-   "tractor pulling team sponsorship Wisconsin", y "<evento> tractor pull <año>".
-5. Nivel para concursos (Awwwards, CSS Design Awards, Shopify): diseño, usabilidad,
-   creatividad y contenido de 8 o más; Core Web Vitals en verde.
+DECISIONES YA TOMADAS (no reabrir)
+- Sin "Ride With The Evil One" (los fans no ponen su nombre en el tractor). Sin SMS.
+- Fondo claro para comprar; el negro solo en bandas de acento y en el hero (tormenta y rayo).
+- Estilo de tienda tipo SKIMS / Kylie: escala de letra contenida, secciones que caben en
+  pantalla, fotitos de categoría de 100 px, grid de 4 columnas, footer centrado con legales.
+- Logo a la izquierda. Una acción principal por sección. Una sola lista de correo: Hook Alerts.
+- Estamos en testing: un contador de wins en 0 dice "Coming soon". No prometer cifras en
+  frases de venta: "Your brand in front of XX+ fans across XX pulls a season" desde datos.
+- La edición especial NO se numera.
+- Todo lo dinámico se edita sin código y muestra "Last updated".
 
-DIRECCIÓN DE DISEÑO
-- Concepto: "Black Smoke Telemetry". El tractor es el héroe: negro mate, humo, tierra, acero.
-  Estética de pantalla de carrera y ficha técnica industrial, no "granja" ni plantilla Dawn.
-- Paleta: negro carbón, gris acero, blanco hueso y un solo acento (amarillo casco o naranja
-  señal; elegir uno y usarlo solo para acciones y datos en vivo). Contraste AA en todo.
-- Tipografía: Anton o similar condensada para titulares enormes; Barlow / Barlow Condensed para
-  texto y datos; números tabulares para cifras. Máximo 2 familias, autoalojadas por Shopify.
-- Movimiento con propósito: el scroll "jala" el tractor por la pista (barra de distancia en
-  pies hasta 300 ft), cifras que cuentan hacia arriba, humo sutil. Solo CSS moderno
-  (scroll-driven animations, view transitions) y JS mínimo. Todo con prefers-reduced-motion.
-- Fotografía real únicamente. Nada de IA ni stock. Recortes del tractor, detalles del motor,
-  el equipo con las manos sucias. Horizontales para banners, verticales para móvil.
-- Voz: corta, segura, con humor oscuro de heavy metal, respetuosa con el público de campo y
-  con patrocinadores. Sin groserías en páginas de patrocinio.
-- Evitar: carruseles en el héroe, popups inmediatos, datos inventados ("live telemetry" falsa,
-  "5,000+ fans" sin fuente), placeholders visibles, más de 3 apps con script.
+OBJETIVOS
+1. Vender merch (conversión 3%+, bundles como Crew Pack).
+2. Conseguir patrocinadores (formulario de patrocinio con leads calificados; kit por correo
+   en 2 días hábiles).
+3. Interacción de fans (Hook Alerts, Pit Log, calendario, historia).
+4. Top en Google para "Heavy Metal Pro Stock", "“The Evil One” tractor", "Cat 3208 pulling
+   tractor", "pro stock tractor pull shirts", "tractor pulling sponsorship Wisconsin".
+5. Nivel de concurso (diseño, usabilidad, contenido) y Core Web Vitals en verde.
 
-ARQUITECTURA (menú principal)
-SHOP · THE MACHINE · SCHEDULE · THE TEAM · SPONSORS · [carrito]
-Footer: Hook Alert (correo y SMS), redes, políticas, contacto, patrocinadores.
+MENÚ
+Shop · The Machine · Our Story · Schedule · Pit Log · Sponsors · [búsqueda, cuenta, carrito]
+Footer: Help (Contact, Shipping, Returns, Size guide, Track my order, FAQ), Hook Alerts,
+The team (The Machine, Our Story, Schedule, Pit Log, Sponsors), redes, dirección y contacto,
+y legales: Privacy, Terms, Refund, Shipping, Contact Information, Accessibility, Your Privacy
+Choices, Cookie Preferences. Copyright: "© {año actual} Heavy Metal Pro Stock: “The Evil One” ·
+Waterloo, WI".
 
-PÁGINAS Y SECCIONES
-1. HOME
-   a. Hero: video real del pull en loop (fachada con póster, sin autoplay de YouTube pesado),
-      h1 en texto: "HEAVY METAL" + "The Evil One · Pro Stock Tractor · Wisconsin".
-      CTA 1 "Shop the Drop", CTA 2 "Sponsor the Machine". Barra con el próximo pull y
-      cuenta regresiva (desde metaobjeto).
-   b. Drop actual: 3 o 4 productos, stock limitado real, contador si hay fecha, bundle con
-      ahorro real calculado.
-   c. "Lightning Strike": historia en scroll en 5 momentos (2014 la idea, feb 2020 el primer tornillo, 2026 el rayo, 680 ci, el primer full pull).
-   d. The Machine teaser: tractor recortado con 4 hotspots y cifras grandes.
-   e. Watch it pull: video destacado + lista de clips.
-   f. Ride With The Evil One: micro patrocinio con muro de nombres.
-   g. Fans en la pista: galería UGC con #HEAVYMETALPULLING (con botón de pausa).
-   h. Patrocinadores actuales + CTA a SPONSORS.
-   i. Hook Alert: suscripción correo y SMS "Know before we hook."
-2. THE MACHINE (spec sheet): tractor interactivo con hotspots (motor Cat 3208, turbo, llantas,
-   peso, chasis). Cada hotspot: dato, foto de detalle y, si aplica, el patrocinador de esa
-   parte. Tabla de specs, comparación "Cat V8 vs John Deere 6 en línea", FAQ.
-3. SCHEDULE: metaobjeto "pull_event" (nombre, fecha, ciudad, liga, clase, link de boletos,
-   stream, resultado en pies, posición, fotos). Próximo evento arriba, temporada en línea
-   de tiempo, una URL por evento con schema SportsEvent. Botón "Add to calendar".
-4. THE TEAM: historia completa, crew, Diesel Ross, timeline, fotos del taller.
-5. SPONSORS: cifras reales, por qué pulling (streaming Full Pull Live 500,000+, ESPN2, fans
-   rurales con alto poder de compra en maquinaria), mapa del tractor con zonas de calcomanía
-   disponibles o tomadas, 4 niveles (Full Pull, Hook, Pit Crew, Hometown) con entregables,
-   reporte de ejemplo post evento, FAQ, formulario "Get the media kit" que capture empresa,
-   presupuesto e interés.
-6. SHOP / colección: filtros simples, tarjetas con segunda imagen al pasar, etiquetas
-   "Limited", "Event drop".
-7. PRODUCTO: galería por variante, guía de tallas, compra fija en móvil, envío y tiempos
-   claros, "Every order keeps us pulling", reseñas, cross sell del bundle.
-8. Carrito drawer con barra de envío gratis, página de contraseña y 404 con la marca.
+PÁGINAS (detalle en el boceto v6)
+1. Home: hero animado "Full Pull" (logo grande, tractor real + sled con operador y caja de
+   pesas, humo denso casi vertical, fondo tormenta con rayo al full pull, pull sim con RPM,
+   distancia, mph de simulación y sonido de motor sintetizado apagado por defecto) → cinta
+   amarilla → tienda (fotitos + 4 productos) → banda The Machine → el rayo (video) →
+   Next pull + contadores → franja de patrocinio (una línea y un botón).
+2. Shop: fotitos de categoría, toolbar Sort/Size/Color/Category en panel lateral, tarjetas con
+   flechas (frente/espalda/color), estados Coming soon / Live / Sold out, "Almost gone!",
+   tienda vacía = "Coming soon" automático.
+3. Producto: galería con imagen principal, flechas, contador, miniaturas, swipe y zoom;
+   talla obligatoria; guía de tallas; Notify me en Coming soon y Sold out; Crew Pack.
+4. Special edition: drop por fechas con cuenta regresiva, estado automático, Notify me,
+   archivo de ediciones pasadas (sin numeración).
+5. The Machine: galería, anatomía con números y líneas guía, ficha técnica de carreras,
+   cilindros (8 en V contra 6 en línea) y 636 stock +44 built, "Hear it", FAQ, una playera.
+6. Our Story: hero, capítulos compactos, el rayo con video, primer pull, contadores de
+   temporada, tractor brothers, walk-up song y playlist de Spotify embebida, crew.
+7. Schedule: lista y calendario, filtro por año, próximos y pasados (competencia o
+   exhibición), dónde verlo con links oficiales (NTPA, Full Pull LIVE, Badger State, IHRA,
+   Green County Fair), tips, Hook Alerts, .ics.
+8. Pit Log: bitácora (blog) con contadores automáticos por etiqueta, Wins & milestones
+   (etiqueta Featured), filtros, búsqueda y "Load more".
+9. Sponsors: paquetes editables (Title $25,000 · Pit $10,000 · Crew Supporter $5,000) con
+   Available / Limited / Sold out / Hidden, stats estimados, lugares del logo con íconos,
+   mapa de calcomanías estilo anatomía, FAQ, formulario.
+10. FAQ (Help Center con buscador), Size guide propia, Contact (formulario + ayuda rápida),
+   Policies estilo SKIMS, Account (código de 6 dígitos y Sign in with Shop), Search, 404.
+11. "Cómo editas todo" (solo para la dueña): mapa de lo editable, ajuste de Temporada,
+   tabla de Last updated con semáforo, calendario anual, íconos de prenda.
 
-MECÁNICAS DE INTERACCIÓN
-- Micro patrocinio "Ride With The Evil One" como producto: variantes Crew, Crew + Merch,
-  Big Name (cupo limitado), In Memory Of. Nombre por line item properties; Shopify Flow
-  crea la entrada en el metaobjeto del muro con moderación.
-- "How many feet?": predicción del pull de cada evento; premio en merch.
-- Drops por evento con cuenta regresiva y límite por cliente.
-- Hook Alert antes de cada pull (Shopify Email / SMS).
+CÓMO SE EDITA (Shopify, sin código)
+- Metaobjetos: Pull event, Season stats, Sponsor tier, Logo placement, Decal zone,
+  Crew member, Tractor part.
+- Blog "Pit Log" con etiquetas Test / Exhibition / Competition / Win / Full pull /
+  Milestone / Featured.
+- Colecciones automáticas por tipo de producto (Printify llena el tipo). Colección
+  "Special edition" con metacampos de fechas e historia.
+- Ajustes del tema: Temporada (año), frases de la cinta, anuncios, link de playlist.
+- Descuentos nativos (el carrito tiene campo de código). Banner de cookies nativo.
+- Search & Discovery (filtros, sinónimos, recomendaciones), Shopify Bundles (Crew Pack).
 
-SEO Y BÚSQUEDA CON IA
-- Quitar la contraseña al lanzar; conectar Search Console y Bing; enviar sitemap.
-- Plantillas de title y meta por tipo de página; alt descriptivo en todas las imágenes.
-- JSON-LD: Organization + SportsTeam (memberOf NTPA y PPL Badger State), WebSite,
-  SportsEvent por pull, Product, BreadcrumbList, FAQPage, BlogPosting.
-- Contenido: blog "The Build" (motor, turbo, peso, cada pull), una página por evento y año,
-  FAQ de pulling y del Cat 3208. Respuestas cortas y citables para IA.
-- Enlaces: BSTP, NTPA, patrocinadores, ferias (Jefferson, Dodge, Green County, Tomah),
-  medios locales, Beer Money y Diesel Ross.
+SEO, RENDIMIENTO Y ACCESIBILIDAD
+- JSON-LD: Organization/SportsTeam, WebSite, Product, BreadcrumbList, FAQPage, SportsEvent,
+  BlogPosting, ContactPage. Redirecciones 301 de /pages/spec-sheet y /pages/about.
+- LCP < 2.5 s, CLS < 0.1, INP < 200 ms. WCAG 2.2 AA, pausa en todo lo que se mueve,
+  prefers-reduced-motion.
 
-RENDIMIENTO Y ACCESIBILIDAD (criterios duros)
-- LCP menor a 2.5 s en móvil 4G, CLS menor a 0.1, INP menor a 200 ms.
-- Imágenes con image_url + image_tag (srcset, WebP, width y height); héroe sin lazy load.
-- Una sola carga de fuentes; sin bucles rAF infinitos; JS por sección y diferido.
-- WCAG 2.2 AA: contraste, foco visible, pausa en todo lo que se mueve, aria-live en
-  formularios, scroll-margin para header fijo.
-
-PROCESO Y ENTREGABLES
-Fase 1 Boceto: moodboard, wireframes de HOME, THE MACHINE, SPONSORS y PRODUCTO en desktop y
-  móvil, como HTML navegable. Aprobar antes de seguir.
-Fase 2 Diseño a detalle: tokens (color, tipo, espacio, movimiento), componentes y copy final.
-Fase 3 Construcción: secciones Liquid con settings y bloques editables, metaobjetos,
-  producto de micro patrocinio, JSON-LD, en un tema duplicado (nunca el publicado).
-Fase 4 QA: Theme Check, Lighthouse móvil, prueba de teclado, prueba de compra.
-Nunca inventes datos, cifras, testimonios ni patrocinadores. Si falta un dato, deja el
-bloque oculto hasta que exista, nunca un placeholder visible.
+PROCESO
+Fase 1 Boceto navegable (hecho, v1 a v6, iterando con la dueña).
+Fase 2 Construcción en el tema borrador: secciones Liquid con bloques, metaobjetos, blog,
+  colecciones, JSON-LD.
+Fase 3 QA: Theme Check, Lighthouse móvil, teclado, compra de prueba.
+Fase 4 Printify: productos, mockups, tallas, envíos y devoluciones.
+Nunca inventes datos, cifras, testimonios ni patrocinadores.
 ```
+
+Pendientes y estrategias para después: ver `PENDIENTES.md`.

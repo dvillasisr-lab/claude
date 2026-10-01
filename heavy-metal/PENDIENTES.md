@@ -17,9 +17,13 @@ Lo que me vayas dando "para después" va aquí. No se trabaja hasta que digas.
 | 10 | Estrategia de dónde se menciona a los patrocinadores | Locutor, redes, sitio, correos, eventos; frecuencia por paquete. | En espera |
 | 11 | Modelo 3D del tractor | Sección del sitio para el modelo 3D interactivo cuando exista. | En espera |
 | 12 | Printify | Cuando el diseño esté listo: productos, mockups, tallas reales, envíos, devoluciones, tracking. | Después del diseño |
+| 13 | Estrategia de shipping | Definir el monto de "Free US shipping over $XX" y los escalones del carrito. | En espera |
+| 14 | Estrategia de pricing y cupones | Precios por prenda, márgenes con Printify, cupones (bienvenida, eventos, patrocinadores). | En espera |
+| 15 | Pop up de descuento | Cuándo sale, a quién, qué ofrece (ligado a Hook Alerts). | En espera |
+| 16 | Ideas de otros sitios de pulling | Lista de lo que tienen otros equipos que aporte valor (respondida en el chat de v6). | Para decidir |
 
 ## Datos que faltan
-- Cifras de patrocinio: ¿5,000+ fans es por evento o por temporada? (v5 usa estimados marcados como "est.").
+- Cifras de patrocinio: ¿5,000+ fans es por evento o por temporada? (el sitio usa "XX+" en frases de venta y estimados "est." en contadores).
 - Crew Pack: ¿dos playeras o playera + gorra?
 - Precios de la merch (y nombres y fotos reales).
 - Video del rayo (cómo se escuchó) y video del motor.
@@ -32,9 +36,13 @@ Lo que me vayas dando "para después" va aquí. No se trabaja hasta que digas.
 ## Datos confirmados
 - Email: heavymetalevil72@gmail.com · Teléfono: (920) 650-4374 · P.O. Box 42, Waterloo, WI 53594.
 - Chris lleva +20 años en el deporte.
-- Ya hubo 3 o 4 exhibiciones (debe ser editable).
+- Ya hubo 3 o 4 exhibiciones (editable; el sitio muestra 3 hasta que confirmes).
+- ¿Cuántos full pulls llevan (llegar a los 300 ft)?
 
 ## Decisiones ya tomadas
 - Sin "Ride With" ni SMS. Horsepower: "Unknown".
 - "The Evil One" siempre entre comillas.
-- La frase "f#ckin' evil" sí puede ir en la cinta amarilla de la home.
+- La frase es "This is f#cking evil" y va en la cinta amarilla (máximo 3 frases).
+- Nombre de marca: "Heavy Metal Pro Stock: “The Evil One”" (trademark en trámite); nunca "Heavy Metal" solo en merch.
+- La edición especial no se numera. Wins en 0 se muestran como "Coming soon".
+- Hero con fondo de tormenta y rayo. Sin música con derechos (sonido de motor sintetizado).
