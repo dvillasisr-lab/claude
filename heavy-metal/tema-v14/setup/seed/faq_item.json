@@ -1,0 +1,1927 @@
+[
+  {
+    "handle": "do-i-need-an-account-to-order",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Do I need an account to order?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"No. You can check out as a guest. If you later sign in with the same email, your past orders show up in \"}, {\"type\": \"link\", \"url\": \"/account\", \"children\": [{\"type\": \"text\", \"value\": \"your account\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "orders"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "1"
+      }
+    ]
+  },
+  {
+    "handle": "where-is-my-order-confirmation",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Where is my order confirmation?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"We email it right after checkout. If you can’t find it, check your spam or promotions folder, then sign in to \"}, {\"type\": \"link\", \"url\": \"/account\", \"children\": [{\"type\": \"text\", \"value\": \"your account\"}]}, {\"type\": \"text\", \"value\": \" to see the order. Still nothing? \"}, {\"type\": \"link\", \"url\": \"/pages/contact?topic=order\", \"children\": [{\"type\": \"text\", \"value\": \"Message us\"}]}, {\"type\": \"text\", \"value\": \" with the email you used.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "orders"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "2"
+      }
+    ]
+  },
+  {
+    "handle": "can-i-change-or-cancel-my-order",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Can I change or cancel my order?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Every item is printed when you order it, so message us as soon as possible with your order number: pick “Order help” on the \"}, {\"type\": \"link\", \"url\": \"/pages/contact?topic=order\", \"children\": [{\"type\": \"text\", \"value\": \"contact form\"}]}, {\"type\": \"text\", \"value\": \". Once an order goes to print we can’t change it, so the sooner you reach us the better.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "orders"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "handle": "how-do-i-reach-you",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How do I reach you?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Use the \"}, {\"type\": \"link\", \"url\": \"/pages/contact\", \"children\": [{\"type\": \"text\", \"value\": \"contact form\"}]}, {\"type\": \"text\", \"value\": \" and pick a topic. We reply within 2 business days. For other ways to reach us, see our \"}, {\"type\": \"link\", \"url\": \"/pages/policies?p=contact\", \"children\": [{\"type\": \"text\", \"value\": \"Contact Information\"}]}, {\"type\": \"text\", \"value\": \" policy.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "orders"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "4"
+      }
+    ]
+  },
+  {
+    "handle": "i-entered-the-wrong-shipping-address-what-now",
+    "fields": [
+      {
+        "key": "question",
+        "value": "I entered the wrong shipping address. What now?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Message us right away with your order number and the correct address. If the order hasn’t shipped, we update it. If it already shipped, we’ll work with the carrier, but we can’t promise a reroute.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "orders"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "5"
+      }
+    ]
+  },
+  {
+    "handle": "how-long-does-shipping-take",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How long does shipping take?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Printed when you order, ships in 5 days. Transit time depends on your address and the method you choose at checkout. Details in the \"}, {\"type\": \"link\", \"url\": \"/pages/policies?p=shipping\", \"children\": [{\"type\": \"text\", \"value\": \"Shipping Policy\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "shipping"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "6"
+      }
+    ]
+  },
+  {
+    "handle": "how-much-is-shipping",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How much is shipping?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Shipping is calculated at checkout.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "shipping"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "7"
+      }
+    ]
+  },
+  {
+    "handle": "do-you-ship-outside-the-us",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Do you ship outside the US?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Not right now. We ship to US addresses only.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "shipping"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "8"
+      }
+    ]
+  },
+  {
+    "handle": "how-do-i-track-my-order",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How do I track my order?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"When your order ships, we email you a tracking link. You can also see it in your account.\"}]}, {\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"You don’t need an account: open the order status page from that email, or go to \"}, {\"type\": \"link\", \"url\": \"/account\", \"children\": [{\"type\": \"text\", \"value\": \"Account\"}]}, {\"type\": \"text\", \"value\": \" > Orders and use the email you ordered with.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "shipping"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "9"
+      }
+    ]
+  },
+  {
+    "handle": "who-ships-my-order",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Who ships my order?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"We print your item to order and hand it to the carrier (usually USPS, UPS or FedEx, depending on the item and your address). The carrier and tracking number are in your shipping email.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "shipping"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "10"
+      }
+    ]
+  },
+  {
+    "handle": "my-tracking-hasnt-updated-is-something-wrong",
+    "fields": [
+      {
+        "key": "question",
+        "value": "My tracking hasn’t updated. Is something wrong?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"A label is often created before the carrier scans the package, so tracking can sit still for a bit. If it still hasn’t moved after a few business days, \"}, {\"type\": \"link\", \"url\": \"/pages/contact?topic=order\", \"children\": [{\"type\": \"text\", \"value\": \"message us\"}]}, {\"type\": \"text\", \"value\": \" with your order number and we’ll check with the carrier.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "shipping"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "11"
+      }
+    ]
+  },
+  {
+    "handle": "my-package-says-delivered-but-i-dont-have-it",
+    "fields": [
+      {
+        "key": "question",
+        "value": "My package says delivered, but I don’t have it."
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Check around your door, mailbox and with neighbors, and give it one more day: carriers sometimes mark a package delivered early. If it still hasn’t shown up, \"}, {\"type\": \"link\", \"url\": \"/pages/contact?topic=order\", \"children\": [{\"type\": \"text\", \"value\": \"message us\"}]}, {\"type\": \"text\", \"value\": \" with your order number and we’ll help sort it out with the carrier.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "shipping"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "12"
+      }
+    ]
+  },
+  {
+    "handle": "will-all-my-items-arrive-together",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Will all my items arrive together?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Not always. Different items can be printed in different places, so they may ship in separate packages. Each package gets its own tracking email.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "shipping"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "13"
+      }
+    ]
+  },
+  {
+    "handle": "can-i-return-or-exchange-an-item",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Can I return or exchange an item?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Everything is printed when you order it, so returns work differently than a regular store. What’s covered, and for how long, is in the \"}, {\"type\": \"link\", \"url\": \"/pages/policies?p=refund\", \"children\": [{\"type\": \"text\", \"value\": \"Refund Policy\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "returns"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "14"
+      }
+    ]
+  },
+  {
+    "handle": "my-item-arrived-damaged-or-misprinted",
+    "fields": [
+      {
+        "key": "question",
+        "value": "My item arrived damaged or misprinted."
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Sorry about that. Send us your order number and a photo of the problem: pick “Returns & exchanges” on the \"}, {\"type\": \"link\", \"url\": \"/pages/contact?topic=returns\", \"children\": [{\"type\": \"text\", \"value\": \"contact form\"}]}, {\"type\": \"text\", \"value\": \". Next steps follow the \"}, {\"type\": \"link\", \"url\": \"/pages/policies?p=refund\", \"children\": [{\"type\": \"text\", \"value\": \"Refund Policy\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "returns"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "15"
+      }
+    ]
+  },
+  {
+    "handle": "what-is-the-black-smoke-guarantee",
+    "fields": [
+      {
+        "key": "question",
+        "value": "What is The Black Smoke Guarantee?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"If your item ever stops being evil, we replace it. It covers defects like the print cracking, peeling or fading, or seams coming apart, with normal use. Send your order number and a photo through the \"}, {\"type\": \"link\", \"url\": \"/pages/contact\", \"children\": [{\"type\": \"text\", \"value\": \"contact form\"}]}, {\"type\": \"text\", \"value\": \". Full terms in the \"}, {\"type\": \"link\", \"url\": \"/pages/policies?p=refund#bsg\", \"children\": [{\"type\": \"text\", \"value\": \"Refund Policy\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "returns"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "16"
+      }
+    ]
+  },
+  {
+    "handle": "i-ordered-the-wrong-size",
+    "fields": [
+      {
+        "key": "question",
+        "value": "I ordered the wrong size."
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Check the \"}, {\"type\": \"link\", \"url\": \"/pages/policies?p=refund\", \"children\": [{\"type\": \"text\", \"value\": \"Refund Policy\"}]}, {\"type\": \"text\", \"value\": \" for what we can do. Next time, compare the \"}, {\"type\": \"link\", \"url\": \"/pages/sizes\", \"children\": [{\"type\": \"text\", \"value\": \"Size guide\"}]}, {\"type\": \"text\", \"value\": \" with a shirt you own before ordering.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "returns"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "17"
+      }
+    ]
+  },
+  {
+    "handle": "how-do-i-start-a-return-or-exchange",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How do I start a return or exchange?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Message us with your order number on the \"}, {\"type\": \"link\", \"url\": \"/pages/contact?topic=returns\", \"children\": [{\"type\": \"text\", \"value\": \"contact form\"}]}, {\"type\": \"text\", \"value\": \". Please don’t mail anything back before we reply.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "returns"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "18"
+      }
+    ]
+  },
+  {
+    "handle": "how-do-the-sizes-run",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How do the sizes run?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Unisex fit. Between sizes? Size up for a relaxed fit. Measurements for every style are in the \"}, {\"type\": \"link\", \"url\": \"/pages/sizes\", \"children\": [{\"type\": \"text\", \"value\": \"Size guide\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "sizing"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "19"
+      }
+    ]
+  },
+  {
+    "handle": "what-sizes-do-you-carry",
+    "fields": [
+      {
+        "key": "question",
+        "value": "What sizes do you carry?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Adult tees, long sleeves, hoodies and crewnecks come in S to 3XL. Kids styles come in YS to YXL. Caps and beanies are one size.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "sizing"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "20"
+      }
+    ]
+  },
+  {
+    "handle": "how-do-i-measure-myself",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How do I measure myself?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"The easiest way is to lay a shirt you like flat and measure it. The \"}, {\"type\": \"link\", \"url\": \"/pages/sizes\", \"children\": [{\"type\": \"text\", \"value\": \"Size guide\"}]}, {\"type\": \"text\", \"value\": \" shows where to measure chest, length and sleeve.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "sizing"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "21"
+      }
+    ]
+  },
+  {
+    "handle": "will-it-shrink",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Will it shrink?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Cotton can shrink a little in a hot wash or dryer. Wash cold and hang dry to keep the fit. Fabric details for each style are on its product page.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "sizing"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "22"
+      }
+    ]
+  },
+  {
+    "handle": "how-do-i-wash-printed-merch",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How do I wash printed merch?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"list\", \"listType\": \"unordered\", \"children\": [{\"type\": \"list-item\", \"children\": [{\"type\": \"text\", \"value\": \"Turn it inside out and wash cold.\"}]}, {\"type\": \"list-item\", \"children\": [{\"type\": \"text\", \"value\": \"Hang dry.\"}]}, {\"type\": \"list-item\", \"children\": [{\"type\": \"text\", \"value\": \"Don’t iron over the print and skip bleach.\"}]}]}, {\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"That keeps the print sharp for more seasons.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "products"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "23"
+      }
+    ]
+  },
+  {
+    "handle": "what-are-the-shirts-made-of",
+    "fields": [
+      {
+        "key": "question",
+        "value": "What are the shirts made of?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Fabric and weight depend on the style. Each product page lists them.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "products"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "24"
+      }
+    ]
+  },
+  {
+    "handle": "who-prints-the-merch",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Who prints the merch?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"We print every item when you order it. That’s why nothing sits in a warehouse and why orders take a few days to ship.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "products"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "25"
+      }
+    ]
+  },
+  {
+    "handle": "the-color-looks-different-from-the-picture",
+    "fields": [
+      {
+        "key": "question",
+        "value": "The color looks different from the picture."
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Screens show color differently, so the printed item can look slightly different. If it looks clearly wrong, \"}, {\"type\": \"link\", \"url\": \"/pages/contact?topic=returns\", \"children\": [{\"type\": \"text\", \"value\": \"send us a photo\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "products"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "26"
+      }
+    ]
+  },
+  {
+    "handle": "what-does-coming-soon-mean",
+    "fields": [
+      {
+        "key": "question",
+        "value": "What does “Coming soon” mean?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"The design is done and it drops soon, but it can’t be ordered yet. Tap \"}, {\"type\": \"text\", \"value\": \"Notify me\", \"bold\": true}, {\"type\": \"text\", \"value\": \" on the item and we’ll email you the moment it goes live. Subscribers to The Evil List hear about every drop first.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "drops"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "27"
+      }
+    ]
+  },
+  {
+    "handle": "how-does-notify-me-work",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How does “Notify me” work?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Enter your email on the item page. We send you one email when it drops or is back in stock. It doesn’t reserve an item for you, and it doesn’t sign you up for anything else. To get every drop and pull day, join \"}, {\"type\": \"link\", \"url\": \"/pages/evil-list\", \"children\": [{\"type\": \"text\", \"value\": \"The Evil List\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "drops"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "28"
+      }
+    ]
+  },
+  {
+    "handle": "a-size-is-sold-out-will-it-come-back",
+    "fields": [
+      {
+        "key": "question",
+        "value": "A size is sold out. Will it come back?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Sometimes, yes. Some items and sizes run in limited numbers. When a product page shows “Almost gone!” or how many are left, that count is real. If a size sells out, tap \"}, {\"type\": \"text\", \"value\": \"Notify me\", \"bold\": true}, {\"type\": \"text\", \"value\": \" on the product page and we’ll email you when it’s back. Special edition pieces don’t come back.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "drops"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "29"
+      }
+    ]
+  },
+  {
+    "handle": "what-does-almost-gone-mean",
+    "fields": [
+      {
+        "key": "question",
+        "value": "What does “Almost gone!” mean?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Only a few pieces are left. When they’re gone, the item switches to Sold out.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "drops"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "30"
+      }
+    ]
+  },
+  {
+    "handle": "the-shop-says-coming-soon-is-the-store-open",
+    "fields": [
+      {
+        "key": "question",
+        "value": "The shop says “Coming soon”. Is the store open?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Not yet, or we’re between drops. Leave your email in the Coming soon box and you’ll hear when the next drop lands.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "drops"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "31"
+      }
+    ]
+  },
+  {
+    "handle": "what-payment-methods-do-you-accept",
+    "fields": [
+      {
+        "key": "question",
+        "value": "What payment methods do you accept?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Shop Pay, Apple Pay, Google Pay, PayPal and major credit and debit cards, including Visa and Mastercard.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "payments"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "32"
+      }
+    ]
+  },
+  {
+    "handle": "is-checkout-secure",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Is checkout secure?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Yes. Checkout runs on Shopify. Payments are processed by Shopify and its payment partners, and we never see or store your full card number.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "payments"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "33"
+      }
+    ]
+  },
+  {
+    "handle": "where-do-i-enter-a-discount-code",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Where do I enter a discount code?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"In your cart: open \"}, {\"type\": \"text\", \"value\": \"Discount code\", \"bold\": true}, {\"type\": \"text\", \"value\": \", type the code and tap \"}, {\"type\": \"text\", \"value\": \"Apply\", \"bold\": true}, {\"type\": \"text\", \"value\": \". You can also enter it at checkout, in the discount code box. The discount shows before you pay.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "payments"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "34"
+      }
+    ]
+  },
+  {
+    "handle": "my-discount-code-doesnt-work",
+    "fields": [
+      {
+        "key": "question",
+        "value": "My discount code doesn’t work."
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Check the spelling, the dates and any minimum order. Each code shows its terms when you apply it. Still stuck? \"}, {\"type\": \"link\", \"url\": \"/pages/contact?topic=order\", \"children\": [{\"type\": \"text\", \"value\": \"Message us\"}]}, {\"type\": \"text\", \"value\": \" with the code before you check out.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "payments"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "35"
+      }
+    ]
+  },
+  {
+    "handle": "do-you-charge-sales-tax",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Do you charge sales tax?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Sales tax depends on your address and is calculated at checkout. Prices are in US dollars.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "payments"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "36"
+      }
+    ]
+  },
+  {
+    "handle": "how-does-sign-in-work-theres-no-password",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How does sign-in work? There’s no password."
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Right, no password to remember. Enter your email on the \"}, {\"type\": \"link\", \"url\": \"/account\", \"children\": [{\"type\": \"text\", \"value\": \"Account\"}]}, {\"type\": \"text\", \"value\": \" page, we email you a 6-digit code, and you type it in to sign in.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "account"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "37"
+      }
+    ]
+  },
+  {
+    "handle": "i-didnt-get-my-sign-in-code",
+    "fields": [
+      {
+        "key": "question",
+        "value": "I didn’t get my sign-in code."
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Give it a minute and check spam or promotions. Make sure the email is spelled right, then request a new code and use the newest one.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "account"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "38"
+      }
+    ]
+  },
+  {
+    "handle": "i-checked-out-as-a-guest-can-i-see-my-orders",
+    "fields": [
+      {
+        "key": "question",
+        "value": "I checked out as a guest. Can I see my orders?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Yes. Sign in with the same email you used at checkout and your past orders show up.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "account"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "39"
+      }
+    ]
+  },
+  {
+    "handle": "how-do-i-update-my-saved-address",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How do I update my saved address?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Sign in, open \"}, {\"type\": \"text\", \"value\": \"Addresses\", \"bold\": true}, {\"type\": \"text\", \"value\": \" in \"}, {\"type\": \"link\", \"url\": \"/account\", \"children\": [{\"type\": \"text\", \"value\": \"your account\"}]}, {\"type\": \"text\", \"value\": \" and edit or add one. For an order already placed, see “I entered the wrong shipping address” above.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "account"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "40"
+      }
+    ]
+  },
+  {
+    "handle": "how-do-i-delete-my-account-or-data",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How do I delete my account or data?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Send a request through the \"}, {\"type\": \"link\", \"url\": \"/pages/contact?topic=other\", \"children\": [{\"type\": \"text\", \"value\": \"contact form\"}]}, {\"type\": \"text\", \"value\": \". How we handle it is in the \"}, {\"type\": \"link\", \"url\": \"/pages/policies?p=privacy\", \"children\": [{\"type\": \"text\", \"value\": \"Privacy Policy\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "account"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "41"
+      }
+    ]
+  },
+  {
+    "handle": "what-is-the-evil-list",
+    "fields": [
+      {
+        "key": "question",
+        "value": "What is The Evil List?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Our one email list: new merch drops and a heads-up before every pull. No spam. See \"}, {\"type\": \"link\", \"url\": \"/pages/evil-list\", \"children\": [{\"type\": \"text\", \"value\": \"what you get on The Evil List\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "evil_list"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "42"
+      }
+    ]
+  },
+  {
+    "handle": "how-do-i-sign-up",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How do I sign up?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Enter your email on \"}, {\"type\": \"link\", \"url\": \"/pages/evil-list\", \"children\": [{\"type\": \"text\", \"value\": \"The Evil List page\"}]}, {\"type\": \"text\", \"value\": \", at the bottom of any page or on the \"}, {\"type\": \"link\", \"url\": \"/pages/schedule\", \"children\": [{\"type\": \"text\", \"value\": \"Schedule\"}]}, {\"type\": \"text\", \"value\": \". The Evil List is email only.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "evil_list"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "43"
+      }
+    ]
+  },
+  {
+    "handle": "how-do-i-unsubscribe",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How do I unsubscribe?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Use the unsubscribe link at the bottom of any email from The Evil List, or turn it off in \"}, {\"type\": \"link\", \"url\": \"/account\", \"children\": [{\"type\": \"text\", \"value\": \"your account\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "evil_list"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\", \"evil_list\"]"
+      },
+      {
+        "key": "order",
+        "value": "44"
+      }
+    ]
+  },
+  {
+    "handle": "how-do-i-sponsor-the-team",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How do I sponsor the team?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"There are three packages, from Crew Supporter for local shops up to Title Partner. See what each includes and costs on \"}, {\"type\": \"link\", \"url\": \"/pages/sponsors\", \"children\": [{\"type\": \"text\", \"value\": \"Sponsors\"}]}, {\"type\": \"text\", \"value\": \", or pick “Sponsorship” on the \"}, {\"type\": \"link\", \"url\": \"/pages/contact?topic=sponsorship\", \"children\": [{\"type\": \"text\", \"value\": \"contact form\"}]}, {\"type\": \"text\", \"value\": \".\"}]}, {\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Not sure yet? Request our sponsor info kit on \"}, {\"type\": \"link\", \"url\": \"/pages/sponsors#contact\", \"children\": [{\"type\": \"text\", \"value\": \"Sponsors\"}]}, {\"type\": \"text\", \"value\": \": a short PDF with the packages, who sees your logo, the decal map and real photos. We email it within 2 business days. It’s information to help you decide, not a contract. No commitment.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "sponsors"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "45"
+      }
+    ]
+  },
+  {
+    "handle": "where-would-my-brand-show-up",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Where would my brand show up?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Depending on the package: team gear, the trailer and pit area, this website, our social media, on the tractor and in announcer mentions.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "sponsors"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "46"
+      }
+    ]
+  },
+  {
+    "handle": "i-run-a-small-local-shop-is-there-a-smaller-option",
+    "fields": [
+      {
+        "key": "question",
+        "value": "I run a small local shop. Is there a smaller option?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Crew Supporter is built for local shops and fans: your name on the trailer supporters board, a listing on this website, a thank-you post on our socials and a Heavy Metal Pro Stock: “The Evil One” sponsor decal for your shop.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "sponsors"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "47"
+      }
+    ]
+  },
+  {
+    "handle": "what-is-a-special-edition",
+    "fields": [
+      {
+        "key": "question",
+        "value": "What is a Special edition?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"A short run of merch made for one moment of the season, like the night the engine first fired and the lightning struck. It has its own design and lives on its own page, apart from the regular shop. See the current one on \"}, {\"type\": \"link\", \"url\": \"/collections/special-edition\", \"children\": [{\"type\": \"text\", \"value\": \"Special edition\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "special_edition"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "48"
+      }
+    ]
+  },
+  {
+    "handle": "how-long-is-a-special-edition-on-sale",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How long is a Special edition on sale?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Only for a limited time. The \"}, {\"type\": \"link\", \"url\": \"/collections/special-edition\", \"children\": [{\"type\": \"text\", \"value\": \"Special edition\"}]}, {\"type\": \"text\", \"value\": \" page shows when it opens and when it closes. When the window closes or it sells out, it’s gone.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "special_edition"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "49"
+      }
+    ]
+  },
+  {
+    "handle": "when-is-there-a-new-one",
+    "fields": [
+      {
+        "key": "question",
+        "value": "When is there a new one?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"There’s no fixed calendar. A Special edition drops around a big moment of the season. The Evil List gets the heads-up first: sign up at the bottom of any page.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "special_edition"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "50"
+      }
+    ]
+  },
+  {
+    "handle": "will-a-special-edition-come-back",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Will a Special edition come back?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"No. When the run sells out, it’s gone. Regular designs stay in the \"}, {\"type\": \"link\", \"url\": \"/collections/all\", \"children\": [{\"type\": \"text\", \"value\": \"shop\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "special_edition"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "51"
+      }
+    ]
+  },
+  {
+    "handle": "where-can-i-see-the-evil-one-pull",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Where can I see “The Evil One” pull?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"We run Pro Stock on the NTPA and PPL Badger State circuits. This is our testing season: dates are on the \"}, {\"type\": \"link\", \"url\": \"/pages/schedule\", \"children\": [{\"type\": \"text\", \"value\": \"Schedule\"}]}, {\"type\": \"text\", \"value\": \" as they’re confirmed.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "52"
+      }
+    ]
+  },
+  {
+    "handle": "can-i-watch-online",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Can I watch online?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"NTPA pulls stream on \"}, {\"type\": \"link\", \"url\": \"https://fullpull.live/\", \"children\": [{\"type\": \"text\", \"value\": \"Full Pull LIVE\"}], \"target\": \"_blank\"}, {\"type\": \"text\", \"value\": \", the official paid stream. PPL is now the IHRA Pro Pulling Series, with free streams at \"}, {\"type\": \"link\", \"url\": \"https://www.ihra.com/pulling\", \"children\": [{\"type\": \"text\", \"value\": \"IHRA Pulling\"}], \"target\": \"_blank\"}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "53"
+      }
+    ]
+  },
+  {
+    "handle": "does-the-tractor-do-exhibitions",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Does the tractor do exhibitions?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"We’ve run a few exhibitions while testing; in competition, every pass is to pull.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "54"
+      }
+    ]
+  },
+  {
+    "handle": "can-we-book-the-evil-one-for-our-event",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Can we book “The Evil One” for our event?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Yes. The tractor and the crew do exhibitions and appearances at fairs, shows and other events. Tell us about yours on \"}, {\"type\": \"link\", \"url\": \"/pages/book\", \"children\": [{\"type\": \"text\", \"value\": \"Book the team\"}]}, {\"type\": \"text\", \"value\": \" and we’ll get back to you within 2 business days.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "55"
+      }
+    ]
+  },
+  {
+    "handle": "where-can-i-see-photos-and-videos",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Where can I see photos and videos?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"In the \"}, {\"type\": \"link\", \"url\": \"/pages/gallery\", \"children\": [{\"type\": \"text\", \"value\": \"Gallery\"}]}, {\"type\": \"text\", \"value\": \", sorted by event. Every past pull on the \"}, {\"type\": \"link\", \"url\": \"/pages/schedule\", \"children\": [{\"type\": \"text\", \"value\": \"Schedule\"}]}, {\"type\": \"text\", \"value\": \" and every \"}, {\"type\": \"link\", \"url\": \"/blogs/pit-log\", \"children\": [{\"type\": \"text\", \"value\": \"Pit Log\"}]}, {\"type\": \"text\", \"value\": \" entry with photos has a “Photos & video” link that takes you straight to that day.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "56"
+      }
+    ]
+  },
+  {
+    "handle": "where-can-i-see-results-and-test-runs",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Where can I see results and test runs?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"On the \"}, {\"type\": \"link\", \"url\": \"/blogs/pit-log\", \"children\": [{\"type\": \"text\", \"value\": \"Pit Log\"}]}, {\"type\": \"text\", \"value\": \". After every pull or test day we post what happened: distance, what broke, what we fixed. Filter by year to see past seasons.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "57"
+      }
+    ]
+  },
+  {
+    "handle": "do-you-post-bad-runs-too",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Do you post bad runs too?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Yes. We won’t sugarcoat it. Early runs ended short, and the Pit Log says so.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "58"
+      }
+    ]
+  },
+  {
+    "handle": "how-much-horsepower-does-it-make",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How much horsepower does it make?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Unknown.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "59"
+      }
+    ]
+  },
+  {
+    "handle": "what-engine-does-it-run",
+    "fields": [
+      {
+        "key": "question",
+        "value": "What engine does it run?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"A Cat 3208 V8, reverse flow, taken from 636 to 680 cubic inches, with a single large turbo. Full specs on \"}, {\"type\": \"link\", \"url\": \"/pages/the-machine\", \"children\": [{\"type\": \"text\", \"value\": \"The Machine\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "60"
+      }
+    ]
+  },
+  {
+    "handle": "who-drives-it",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Who drives it?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Chris F., owner, driver and crew chief, with more than 20 years in the sport. Meet the whole crew in \"}, {\"type\": \"link\", \"url\": \"/pages/our-story\", \"children\": [{\"type\": \"text\", \"value\": \"our story\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\", \"machine\"]"
+      },
+      {
+        "key": "order",
+        "value": "61"
+      }
+    ]
+  },
+  {
+    "handle": "whats-the-walk-up-song",
+    "fields": [
+      {
+        "key": "question",
+        "value": "What’s the walk-up song?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Fear of the Dark, Iron Maiden. \"}, {\"type\": \"link\", \"url\": \"https://open.spotify.com/track/6p8eFfPw3nQkf37aT3AkmK\", \"children\": [{\"type\": \"text\", \"value\": \"Play it on Spotify\"}], \"target\": \"_blank\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"faq\"]"
+      },
+      {
+        "key": "order",
+        "value": "62"
+      }
+    ]
+  },
+  {
+    "handle": "why-a-cat-v8-when-almost-nobody-runs-one",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Why a Cat V8, when almost nobody runs one?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Most Pro Stock tractors run an inline six. Chris went the other way: a Caterpillar 3208 V8 in reverse flow, a setup you won’t find on any other tractor on the track. That’s the point. Nothing about it is off the shelf, and nothing about it was quick.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"machine\"]"
+      },
+      {
+        "key": "order",
+        "value": "63"
+      }
+    ]
+  },
+  {
+    "handle": "what-is-pro-stock-exactly",
+    "fields": [
+      {
+        "key": "question",
+        "value": "What is Pro Stock, exactly?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"One of the diesel classes in tractor pulling. The tractors still look like farm tractors, run a single diesel engine and hook up at a set maximum weight. The exact limits on engine size, turbo and weight are set by each league’s rulebook (NTPA, PPL).\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"machine\"]"
+      },
+      {
+        "key": "order",
+        "value": "64"
+      }
+    ]
+  },
+  {
+    "handle": "how-much-does-it-weigh-and-why-does-that-matter",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How much does it weigh, and why does that matter?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"10,000 LB, front weight box included. Every tractor in a class hooks up at the same maximum weight, so being heavier is not an advantage. Where the weight sits is the game: weight up front keeps the nose down and the rear tires biting as the sled gets harder to drag.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"machine\"]"
+      },
+      {
+        "key": "order",
+        "value": "65"
+      }
+    ]
+  },
+  {
+    "handle": "what-is-a-full-pull",
+    "fields": [
+      {
+        "key": "question",
+        "value": "What is a full pull?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Dragging the sled all the way to the end of the track. When more than one tractor goes the distance, those tractors come back for a pull-off. “The Evil One” is still chasing its first one.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"machine\"]"
+      },
+      {
+        "key": "order",
+        "value": "66"
+      }
+    ]
+  },
+  {
+    "handle": "what-does-the-sled-actually-do",
+    "fields": [
+      {
+        "key": "question",
+        "value": "What does the sled actually do?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"It’s a weight transfer sled. Once the tractor starts pulling, a box of weights on the sled moves forward, from over the sled’s wheels toward the pan up front. That pushes the pan into the dirt, so every foot is harder than the one before.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"machine\"]"
+      },
+      {
+        "key": "order",
+        "value": "67"
+      }
+    ]
+  },
+  {
+    "handle": "how-fast-does-it-go-down-the-track",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How fast does it go down the track?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"We’ll post it once we’ve measured it.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"machine\"]"
+      },
+      {
+        "key": "order",
+        "value": "68"
+      }
+    ]
+  },
+  {
+    "handle": "where-can-i-see-it-and-can-i-get-close-in-the-pits",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Where can I see it, and can I get close in the pits?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Upcoming pulls are on the \"}, {\"type\": \"link\", \"url\": \"/pages/schedule\", \"children\": [{\"type\": \"text\", \"value\": \"Schedule\"}]}, {\"type\": \"text\", \"value\": \". Pit access depends on each event: some pulls open the pits to fans, others need a pit pass. Check with the organizer, and if you find us, come say hi.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "tractor"
+      },
+      {
+        "key": "pages",
+        "value": "[\"machine\"]"
+      },
+      {
+        "key": "order",
+        "value": "69"
+      }
+    ]
+  },
+  {
+    "handle": "which-package-fits-my-business",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Which package fits my business?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. Not sure? Pick “Not sure yet” in the form and we’ll send you the info kit.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "sponsors"
+      },
+      {
+        "key": "pages",
+        "value": "[\"sponsors\"]"
+      },
+      {
+        "key": "order",
+        "value": "70"
+      }
+    ]
+  },
+  {
+    "handle": "where-does-the-evil-one-pull",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Where does “The Evil One” pull?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"On the NTPA and PPL Badger State circuits, 20+ pulls a season (est.), plus exhibitions. Driver and owner Chris F. has 20+ years in the sport. Dates go up on the \"}, {\"type\": \"link\", \"url\": \"/pages/schedule\", \"children\": [{\"type\": \"text\", \"value\": \"Schedule\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "sponsors"
+      },
+      {
+        "key": "pages",
+        "value": "[\"sponsors\"]"
+      },
+      {
+        "key": "order",
+        "value": "71"
+      }
+    ]
+  },
+  {
+    "handle": "how-many-people-will-see-my-brand",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How many people will see my brand?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Your brand in front of 100,000+ fans across 20+ pulls a season (est.), in the stands alone. Streams and social media come on top of that. Current numbers are in our sponsor info kit.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "sponsors"
+      },
+      {
+        "key": "pages",
+        "value": "[\"sponsors\"]"
+      },
+      {
+        "key": "order",
+        "value": "72"
+      }
+    ]
+  },
+  {
+    "handle": "how-long-does-a-package-run",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How long does a package run?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Packages are built around the pulling season. We confirm the exact dates and terms in writing with you before anything goes on the tractor.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "sponsors"
+      },
+      {
+        "key": "pages",
+        "value": "[\"sponsors\"]"
+      },
+      {
+        "key": "order",
+        "value": "73"
+      }
+    ]
+  },
+  {
+    "handle": "what-if-the-package-i-want-is-sold-out",
+    "fields": [
+      {
+        "key": "question",
+        "value": "What if the package I want is sold out?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Hit “Join the waitlist” on that package. We’ll contact you if a spot opens up.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "sponsors"
+      },
+      {
+        "key": "pages",
+        "value": "[\"sponsors\"]"
+      },
+      {
+        "key": "order",
+        "value": "74"
+      }
+    ]
+  },
+  {
+    "handle": "what-happens-after-i-send-the-form",
+    "fields": [
+      {
+        "key": "question",
+        "value": "What happens after I send the form?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"If you asked for the sponsor info kit, we email it within 2 business days: a short PDF with the packages, who sees your logo, the decal map and real photos, so you can decide. If you picked a package, we also reply to set up a call. No commitment: nothing is signed until we agree on the terms in writing.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "sponsors"
+      },
+      {
+        "key": "pages",
+        "value": "[\"sponsors\"]"
+      },
+      {
+        "key": "order",
+        "value": "75"
+      }
+    ]
+  },
+  {
+    "handle": "how-often-will-you-email-me",
+    "fields": [
+      {
+        "key": "question",
+        "value": "How often will you email me?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"A few emails a month during the season. Fewer in the offseason. No spam, and we never share your email.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "evil_list"
+      },
+      {
+        "key": "pages",
+        "value": "[\"evil_list\"]"
+      },
+      {
+        "key": "order",
+        "value": "76"
+      }
+    ]
+  },
+  {
+    "handle": "do-you-send-texts",
+    "fields": [
+      {
+        "key": "question",
+        "value": "Do you send texts?"
+      },
+      {
+        "key": "answer",
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"No. The Evil List is email only. We don’t ask for your phone number and we don’t send texts.\"}]}]}"
+      },
+      {
+        "key": "category",
+        "value": "evil_list"
+      },
+      {
+        "key": "pages",
+        "value": "[\"evil_list\"]"
+      },
+      {
+        "key": "order",
+        "value": "77"
+      }
+    ]
+  }
+]

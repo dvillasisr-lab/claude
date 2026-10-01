@@ -1,0 +1,102 @@
+[
+  {
+    "handle": "static-display",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Static display"
+      },
+      {
+        "key": "icon",
+        "value": "display"
+      },
+      {
+        "key": "text",
+        "value": "“The Evil One” parked at your event for photos and questions, for the hours you set."
+      },
+      {
+        "key": "needs",
+        "value": "Needs: a flat, safe spot for the tractor and trailer."
+      },
+      {
+        "key": "order",
+        "value": "1"
+      }
+    ]
+  },
+  {
+    "handle": "exhibition-pull",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Exhibition pull"
+      },
+      {
+        "key": "icon",
+        "value": "pull"
+      },
+      {
+        "key": "text",
+        "value": "A run down your track for the crowd. No points on the line, all the smoke."
+      },
+      {
+        "key": "needs",
+        "value": "Only where there is a pulling track and sled on site."
+      },
+      {
+        "key": "order",
+        "value": "2"
+      }
+    ]
+  },
+  {
+    "handle": "meet-chris-f",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Meet Chris F."
+      },
+      {
+        "key": "icon",
+        "value": "meet"
+      },
+      {
+        "key": "text",
+        "value": "Owner, driver and crew chief with 20+ years in the sport. Photos and stories next to the tractor."
+      },
+      {
+        "key": "needs",
+        "value": "Pairs well with a static display."
+      },
+      {
+        "key": "order",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "handle": "social-shout-out",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Social shout-out"
+      },
+      {
+        "key": "icon",
+        "value": "social"
+      },
+      {
+        "key": "text",
+        "value": "We tell our fans on Facebook where to find us before the day, and post from your event after."
+      },
+      {
+        "key": "needs",
+        "value": "Comes with any booking."
+      },
+      {
+        "key": "order",
+        "value": "4"
+      }
+    ]
+  }
+]

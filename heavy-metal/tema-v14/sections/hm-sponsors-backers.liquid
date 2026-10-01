@@ -1,0 +1,216 @@
+{%- comment -%}
+  Sponsors · "They already back “The Evil One”". Active sponsor entries grouped by their tier
+  (tier order), then by the sponsor "order" field. Same data as the footer sponsor strip.
+{%- endcomment -%}
+{%- liquid
+  assign tiers = metaobjects.sponsor_tier.values
+  assign sponsors = metaobjects.sponsor.values
+
+  assign tkeys = ''
+  for t in tiers
+    assign o = t.order.value | default: 999 | plus: 10000
+    assign ix = forloop.index | plus: 100
+    assign tkeys = tkeys | append: o | append: '-' | append: ix | append: ','
+  endfor
+  assign tkeys = tkeys | split: ',' | sort
+
+  assign skeys = ''
+  assign total = 0
+  assign tier_handles = ''
+  for t in tiers
+    assign tier_handles = tier_handles | append: '|' | append: t.system.handle | append: '|'
+  endfor
+  assign loose = 0
+  for s in sponsors
+    if s.active.value != true
+      continue
+    endif
+    assign total = total | plus: 1
+    assign th = s.tier.value.system.handle | default: 'none'
+    assign th_key = '|' | append: th | append: '|'
+    unless tier_handles contains th_key
+      assign loose = loose | plus: 1
+    endunless
+    assign o = s.order.value | default: 999 | plus: 10000
+    assign ix = forloop.index | plus: 100
+    assign skeys = skeys | append: o | append: '-' | append: ix | append: ','
+  endfor
+  assign skeys = skeys | split: ',' | sort
+-%}
+
+<section class="sect--white sp-on" id="on-board" aria-labelledby="OnT-{{ section.id }}">
+  <div class="wrap">
+    <div class="sp-on__in">
+      <div>
+        <h2 class="sp-on__h" id="OnT-{{ section.id }}">{{ section.settings.title }}</h2>
+        <p class="sp-on__sub">
+          {%- if total > 0 -%}
+            {{ total }}
+            {% if total == 1 %}business backs{% else %}businesses back{% endif %}
+            this season. <a href="#packages">{{ section.settings.join_label }}</a>
+          {%- else -%}
+            {{ section.settings.empty_text }} <a href="#packages">{{ section.settings.empty_link }}</a>
+          {%- endif -%}
+        </p>
+      </div>
+
+      {%- if total > 0 -%}
+        {%- liquid
+          assign gkeys = tkeys
+          if loose > 0
+            assign extra = '99999-0' | split: ','
+            assign gkeys = tkeys | concat: extra
+          endif
+        -%}
+        <div class="sp-on__groups">
+          {%- for tk in gkeys -%}
+            {%- liquid
+              assign want = tk | split: '-' | last | minus: 100
+              assign is_loose = false
+              if tk == '99999-0'
+                assign is_loose = true
+                assign gkey = 'crew'
+                assign glabel = section.settings.other_label
+                assign ghandle = ''
+              else
+                for t in tiers
+                  if forloop.index == want
+                    assign gkey = t.key.value | default: 'crew'
+                    assign glabel = t.name.value
+                    assign ghandle = t.system.handle
+                    break
+                  endif
+                endfor
+              endif
+            -%}
+            {%- capture tiles -%}
+              {%- for sk in skeys -%}
+                {%- assign sw = sk | split: '-' | last | minus: 100 -%}
+                {%- for s in sponsors -%}
+                  {%- if forloop.index == sw -%}
+                    {%- liquid
+                      assign th = s.tier.value.system.handle | default: 'none'
+                      assign show = false
+                      if is_loose
+                        assign th_key = '|' | append: th | append: '|'
+                        unless tier_handles contains th_key
+                          assign show = true
+                        endunless
+                      elsif th == ghandle
+                        assign show = true
+                      endif
+                    -%}
+                    {%- if show -%}
+                      {%- liquid
+                        assign shp = s.shape.value | default: 'wide' | downcase
+                        if shp == 'round'
+                          assign shp = 'circle'
+                        endif
+                        assign cls = 'spl spl--' | append: gkey | append: ' spl--' | append: shp
+                      -%}
+                      {%- capture inner -%}
+                        {%- if s.logo.value != blank -%}
+                          {{
+                            s.logo.value
+                            | image_url: width: 336
+                            | image_tag: widths: '168, 336', sizes: '168px', loading: 'lazy', alt: s.name.value
+                          }}
+                        {%- else -%}
+                          <span>{{ s.name.value }}</span>
+                        {%- endif -%}
+                      {%- endcapture -%}
+                      <li>
+                        {%- if s.link.value != blank -%}
+                          <a
+                            class="{{ cls }}"
+                            href="{{ s.link.value }}"
+                            target="_blank"
+                            rel="noopener"
+                            aria-label="{{ s.name.value | escape }} (opens their site)"
+                          >
+                            {{- inner -}}
+                          </a>
+                        {%- else -%}
+                          <span class="{{ cls }}">{{ inner }}</span>
+                        {%- endif -%}
+                      </li>
+                    {%- endif -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endfor -%}
+            {%- endcapture -%}
+            {%- if tiles != blank -%}
+              <div class="sp-on__g sp-on__g--{{ gkey }}">
+                <p class="sp-on__lbl" id="OnG-{{ section.id }}-{{ forloop.index }}">{{ glabel }}</p>
+                <ul class="sp-on__tiles" aria-labelledby="OnG-{{ section.id }}-{{ forloop.index }}">
+                  {{ tiles }}
+                </ul>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="sp-on__empty">
+          <a class="spl spl--open spl--wide spl--title" href="#contact" data-sp-pkg-go><span>Your logo here</span></a>
+          <a class="spl spl--open spl--circle" href="#contact" data-sp-pkg-go><span>Your logo here</span></a>
+          <a class="spl spl--open spl--square" href="#contact" data-sp-pkg-go><span>Your logo here</span></a>
+          <a class="spl spl--open spl--wide" href="#contact" data-sp-pkg-go><span>Your logo here</span></a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sp-on{padding-block:24px;border-bottom:1px solid var(--line)}
+  .sp-on__in{display:grid;grid-template-columns:minmax(200px,260px) 1fr;gap:16px 40px;align-items:center}
+  .sp-on__h{font-family:var(--f-head);font-stretch:78%;font-weight:700;text-transform:uppercase;font-size:var(--t-h3);line-height:1.25;margin:0;color:var(--ink)}
+  .sp-on__sub{margin:4px 0 0;font-size:var(--t-xs);color:var(--mute)}
+  .sp-on__sub a{color:var(--ink)}
+  .sp-on__groups{display:flex;flex-wrap:wrap;align-items:flex-start;gap:16px 28px;min-width:0}
+  .sp-on__g{display:flex;flex-direction:column;gap:8px;flex:1 1 auto;min-width:0}
+  .sp-on__g--title{flex-grow:0}
+  .sp-on__lbl{border-top:1px solid var(--line);padding-top:6px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:0}
+  .sp-on__tiles{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0;padding:0;list-style:none}
+  .sp-on__tiles li{display:flex}
+  .sp-on .spl{font-size:11px;padding:6px;overflow:hidden}
+  .sp-on .spl img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+  .sp-on .spl--wide{width:132px;height:52px}
+  .sp-on .spl--square,.sp-on .spl--circle{width:60px;height:60px}
+  .sp-on .spl--title.spl--wide{width:168px;height:64px;font-size:13px}
+  .sp-on .spl--title.spl--square,.sp-on .spl--title.spl--circle{width:72px;height:72px;font-size:12px}
+  .sp-on__empty{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+  .sp-on__empty .spl--wide{flex:1 1 132px}
+  @media (max-width:720px){
+    .sp-on__in{grid-template-columns:1fr}
+    .sp-on__g{flex:1 1 100%}
+    .sp-on__groups{gap:12px}
+    .sp-on .spl{font-size:10px;padding:4px}
+    .sp-on .spl--wide{width:112px;height:44px}
+    .sp-on .spl--square,.sp-on .spl--circle{width:52px;height:52px}
+    .sp-on .spl--title.spl--wide{width:150px;height:56px;font-size:12px}
+    .sp-on__empty .spl:nth-child(n+4){display:none}
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Sponsors: backers",
+  "tag": "div",
+  "class": "hm-sponsors-backers",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Logos come from Content > Metaobjects > Sponsor (only Active ones), grouped by package. Same list as the sponsor strip in the footer."
+    },
+    { "type": "text", "id": "title", "label": "Title", "default": "They already back “The Evil One”" },
+    { "type": "text", "id": "join_label", "label": "Link next to the count", "default": "Join them" },
+    { "type": "text", "id": "other_label", "label": "Label for sponsors with no package", "default": "Supporters" },
+    { "type": "header", "content": "No sponsors yet" },
+    { "type": "text", "id": "empty_text", "label": "Text", "default": "No sponsors yet. Be the first name on “The Evil One”." },
+    { "type": "text", "id": "empty_link", "label": "Link", "default": "See packages" }
+  ],
+  "presets": [{ "name": "Sponsors: backers" }]
+}
+{% endschema %}

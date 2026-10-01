@@ -1,0 +1,156 @@
+{%- comment -%}
+  Our Story · 7 · Crew (anchor id="crew"). From "Crew member" metaobjects sorted by Order.
+  Group driver = the big card; then Team, Pit crew and Mascots. No photo = initials (mascots get a paw).
+{%- endcomment -%}
+{%- liquid
+  assign keys = ''
+  for e in shop.metaobjects.crew_member.values
+    assign o = e.order.value | default: 999 | plus: 10000
+    assign keys = keys | append: o | append: '|' | append: e.system.handle | append: ','
+  endfor
+  assign keys = keys | split: ',' | sort
+  assign groups = 'team,pit_crew,mascot' | split: ','
+-%}
+<section class="sect sect--white" id="crew" aria-labelledby="crew-h-{{ section.id }}">
+  <div class="wrap">
+    <div class="sect-head">
+      <h2 class="h1" id="crew-h-{{ section.id }}">{{ section.settings.title | escape }}</h2>
+      {%- if section.settings.subtitle != blank -%}<p class="small muted" style="margin:0">{{ section.settings.subtitle | escape }}</p>{%- endif -%}
+    </div>
+    {%- if keys.size == 0 and request.design_mode -%}
+      <p class="muted">Add people in Content &gt; Metaobjects &gt; Crew member.</p>
+    {%- endif -%}
+    <div class="st-crew">
+      {%- for k in keys -%}
+        {%- assign h = k | split: '|' | last -%}
+        {%- assign m = shop.metaobjects.crew_member[h] -%}
+        {%- if m.group.value == 'driver' -%}
+          {%- liquid
+            assign words = m.name.value | split: ' '
+            assign ini = ''
+            for w in words limit: 2
+              assign c = w | slice: 0
+              assign ini = ini | append: c
+            endfor
+          -%}
+          <div class="st-chief">
+            {%- if m.photo.value != blank -%}
+              <span class="st-av st-av--photo">{{ m.photo.value | image_url: width: 200 | image_tag: widths: '100, 200', sizes: '84px', loading: 'lazy' }}</span>
+            {%- else -%}
+              <span class="st-av" aria-hidden="true">{{ ini | upcase }}</span>
+            {%- endif -%}
+            <p class="h2">{{ m.name.value | escape }}</p>
+            <p class="small muted">{{ m.role.value | escape }}</p>
+            {%- if section.settings.chief_years != blank -%}<p class="st-chief__yrs"><b>{{ section.settings.chief_years | escape }}</b><span>{{ section.settings.chief_years_text | escape }}</span></p>{%- endif -%}
+            {%- if m.bio.value != blank -%}<p class="small" style="color:var(--soft)">{{ m.bio.value | escape | newline_to_br }}</p>{%- endif -%}
+          </div>
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+      <ul class="st-grid" aria-label="{{ section.settings.list_label | escape }}">
+        {%- for g in groups -%}
+          {%- liquid
+            assign any = false
+            for k in keys
+              assign h = k | split: '|' | last
+              assign m = shop.metaobjects.crew_member[h]
+              if m.group.value == g
+                assign any = true
+                break
+              endif
+            endfor
+            case g
+              when 'team'
+                assign gl = section.settings.team_label
+              when 'pit_crew'
+                assign gl = section.settings.pit_label
+              else
+                assign gl = section.settings.mascot_label
+            endcase
+          -%}
+          {%- if any -%}
+            {%- if gl != blank -%}<li class="st-sub">{{ gl | escape }}</li>{%- endif -%}
+            {%- for k in keys -%}
+              {%- assign h = k | split: '|' | last -%}
+              {%- assign m = shop.metaobjects.crew_member[h] -%}
+              {%- if m.group.value == g -%}
+                {%- liquid
+                  assign words = m.name.value | split: ' '
+                  assign ini = ''
+                  for w in words limit: 2
+                    assign c = w | slice: 0
+                    assign ini = ini | append: c
+                  endfor
+                  assign light = false
+                  assign note = m.note.value | downcase
+                  if note contains 'white'
+                    assign light = true
+                  endif
+                -%}
+                <li class="st-m{% if g == 'mascot' %} st-m--pet{% endif %}">
+                  {%- if m.photo.value != blank -%}
+                    <span class="st-av st-av--photo">{{ m.photo.value | image_url: width: 120 | image_tag: widths: '60, 120', sizes: '44px', loading: 'lazy' }}</span>
+                  {%- elsif g == 'mascot' -%}
+                    <span class="st-av{% if light %} st-av--paw-w{% endif %}" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="16" rx="5" ry="4"/><circle cx="6" cy="10" r="2"/><circle cx="18" cy="10" r="2"/><circle cx="9.5" cy="6" r="2"/><circle cx="14.5" cy="6" r="2"/></svg></span>
+                  {%- else -%}
+                    <span class="st-av" aria-hidden="true">{{ ini | upcase }}</span>
+                  {%- endif -%}
+                  <div>
+                    <p class="st-m__n">{{ m.name.value | escape }}</p>
+                    <p class="st-m__r">{{ m.role.value | escape }}{% if m.note.value != blank %} · {{ m.note.value | escape }}{% endif %}</p>
+                  </div>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+#crew{scroll-margin-top:var(--header)}
+.st-crew{display:grid;grid-template-columns:minmax(0,280px) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
+.st-chief{display:grid;gap:8px;justify-items:start;padding:18px;background:var(--bg);border:1px solid var(--line)}
+.st-chief .st-av{width:84px;height:84px;font-size:26px}
+.st-chief p{margin:0}
+.st-chief__yrs{display:flex;align-items:baseline;gap:8px;padding:8px 0;border-block:1px solid var(--line);width:100%}
+.st-chief__yrs b{font-family:var(--f-head);font-stretch:72%;font-weight:800;font-size:clamp(36px,3.4vw,48px);line-height:.9;color:var(--ink);background:linear-gradient(transparent 62%,var(--accent) 62%);padding-inline:2px}
+.st-chief__yrs span{font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);max-width:12ch;line-height:1.25}
+.st-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 16px}
+.st-m{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:center}
+.st-av{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--ink);color:var(--surface);font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:15px;letter-spacing:.04em;flex:none;overflow:hidden}
+.st-av--photo{background:var(--tile)}
+.st-av--photo img{width:100%;height:100%;object-fit:cover}
+.st-av--paw-w{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.st-av svg{width:20px;height:20px;fill:currentColor}
+.st-m__n{margin:0;font-weight:700;color:var(--ink);font-size:var(--t-sm);line-height:1.25}
+.st-m__r{margin:0;font-size:var(--t-xs);color:var(--mute);line-height:1.35}
+.st-m--pet .st-m__r::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:6px;vertical-align:1px}
+.st-sub{grid-column:1/-1;margin:4px 0 -4px;font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);border-top:1px solid var(--line);padding-top:10px}
+.st-sub:first-child{margin-top:0}
+@media (max-width:1100px){.st-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:860px){.st-crew{grid-template-columns:1fr}.st-chief{grid-template-columns:64px minmax(0,1fr);align-items:center;column-gap:14px}.st-chief .st-av{width:64px;height:64px;font-size:20px;grid-row:span 4;align-self:start}}
+@media (max-width:560px){.st-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}.st-m{grid-template-columns:38px minmax(0,1fr);gap:8px}.st-grid .st-av{width:38px;height:38px;font-size:13px}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Story: crew",
+  "tag": "div",
+  "class": "hm-story-crew",
+  "settings": [
+    { "type": "paragraph", "content": "People come from Content > Metaobjects > Crew member (sorted by Order). Group Driver is the big card. No photo = initials." },
+    { "type": "text", "id": "title", "label": "Title", "default": "The people behind the pull" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Family, friends and two mascots." },
+    { "type": "text", "id": "chief_years", "label": "Driver big number", "default": "20+" },
+    { "type": "text", "id": "chief_years_text", "label": "Driver big number text", "default": "years in tractor pulling" },
+    { "type": "text", "id": "team_label", "label": "Team heading", "default": "Team" },
+    { "type": "text", "id": "pit_label", "label": "Pit crew heading", "default": "Pit crew" },
+    { "type": "text", "id": "mascot_label", "label": "Mascots heading", "default": "Mascots" },
+    { "type": "text", "id": "list_label", "label": "List label (screen readers)", "default": "Crew members" }
+  ],
+  "presets": [{ "name": "Story: crew" }]
+}
+{% endschema %}

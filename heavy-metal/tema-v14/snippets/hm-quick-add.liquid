@@ -1,0 +1,52 @@
+{% doc %}
+  Quick add size sheet (bottom sheet on phones, small dialog on desktop). Render once from layout/theme.liquid.
+  Opened by any `[data-quick="<handle>"]` button (product cards, cart add-ons, Crew Pack upgrade).
+  Sizes come from the product variants (AJAX `/products/<handle>.js`); sold out sizes are disabled.
+  `assets/hm-quick-add.js` also runs the card image arrows and opens the Notify me dialog (`hm-notify-modal`).
+
+  @example
+  {% render 'hm-quick-add' %}
+{% enddoc %}
+<div class="scrim hm-qs-scrim" data-hm-qs-scrim hidden></div>
+<div
+  class="qsheet hm-qs"
+  id="hm-qsheet"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="hm-qs-name"
+  tabindex="-1"
+  hidden
+  data-hm-qsheet
+  data-root="{{ routes.root_url }}"
+  data-money-format="{{ shop.money_format | escape }}"
+>
+  <div class="hm-qs__head">
+    <div>
+      <p class="h3" id="hm-qs-name" style="margin:0"></p>
+      <p class="small muted" style="margin:2px 0 0">
+        <span class="num" data-hm-qs-price></span> · <span data-hm-qs-color></span>
+      </p>
+    </div>
+    <button class="icon-btn" type="button" data-hm-qs-close aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+    </button>
+  </div>
+  <p class="label" id="hm-qs-label">Select a size</p>
+  <div class="qsheet__sizes" data-hm-qs-sizes role="group" aria-labelledby="hm-qs-label" aria-busy="true"></div>
+  <p class="small hm-qs__err" data-hm-qs-err role="alert"></p>
+  <a class="link" data-hm-qs-more href="{{ routes.all_products_collection_url }}" style="text-decoration:underline">
+    View full details
+  </a>
+</div>
+<script src="{{ 'hm-quick-add.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .hm-qs__head { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+  .hm-qs .qsheet__sizes { grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); }
+  .hm-qs .qsheet__sizes button { color: var(--ink); padding: 0 6px; }
+  .hm-qs .qsheet__sizes button[aria-busy="true"] { opacity: .5; }
+  .hm-qs__err { margin: 0; color: var(--alert); font-weight: 600; }
+  .hm-qs__err:empty { display: none; }
+  .hm-qs-scrim, .hm-nfy-scrim { z-index: 84; }
+  .card__add[aria-busy="true"] { opacity: 1; pointer-events: none; }
+{% endstylesheet %}

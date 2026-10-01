@@ -1,0 +1,425 @@
+{%- comment -%}
+  Sponsors · decal map. Zones from the decal_zone metaobject (sorted by order), drawn over the tractor photo.
+  pos_x / pos_y / label_x are pixels on a 1120 × 576 photo; row = top | bottom puts the label above or below.
+  Hotspots are a keyboard group (arrow keys, Home, End). The list under the photo works the same way.
+  "Ask about this zone" preselects the zone package in the request form (handled in hm-sponsors-request).
+{%- endcomment -%}
+{%- liquid
+  assign season = settings.hm_season | default: 'this season'
+  assign zones = metaobjects.decal_zone.values
+  assign zkeys = ''
+  for z in zones
+    assign o = z.order.value | default: 999 | plus: 10000
+    assign ix = forloop.index | plus: 100
+    assign zkeys = zkeys | append: o | append: '-' | append: ix | append: ','
+  endfor
+  assign zkeys = zkeys | split: ',' | sort
+  assign n = zkeys.size
+  assign newest = ''
+  if section.settings.image != blank
+    assign zoom_url = section.settings.image | image_url: width: 1600
+  endif
+-%}
+
+{%- if n > 0 -%}
+  <section class="sect" id="decals" aria-labelledby="MapT-{{ section.id }}" data-dz>
+    <div class="wrap">
+      <div class="sect-head">
+        <h2 class="h2" id="MapT-{{ section.id }}">{{ section.settings.title }}</h2>
+        <p class="dz-hint">{{ section.settings.hint }}</p>
+      </div>
+      <div class="dz">
+        <figure class="dz-stage" data-dz-stage>
+          <svg class="dz-lines" viewBox="0 0 1120 676" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            {%- for zk in zkeys -%}
+              {%- assign want = zk | split: '-' | last | minus: 100 -%}
+              {%- for z in zones -%}
+                {%- if forloop.index == want -%}
+                  {%- liquid
+                    assign px = z.pos_x.value | default: 0
+                    assign py = z.pos_y.value | default: 0 | plus: 50
+                    assign lx = z.label_x.value | default: px
+                    assign y1 = 24
+                    assign row = z.row.value | default: 'top' | downcase
+                    if row == 'bottom'
+                      assign y1 = 652
+                    endif
+                  -%}
+                  <line x1="{{ lx }}" y1="{{ y1 }}" x2="{{ px }}" y2="{{ py }}" data-i="{{ forloop.parentloop.index0 }}"/>
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endfor -%}
+          </svg>
+          {%- for zk in zkeys -%}
+            {%- assign want = zk | split: '-' | last | minus: 100 -%}
+            {%- for z in zones -%}
+              {%- if forloop.index == want -%}
+                {%- liquid
+                  assign i = forloop.parentloop.index0
+                  assign num = forloop.parentloop.index | plus: 100 | append: '' | slice: 1, 2
+                  assign px = z.pos_x.value | default: 0
+                  assign lx = z.label_x.value | default: px
+                  assign lpct = lx | times: 100.0 | divided_by: 1120
+                  assign row = z.row.value | default: 'top' | downcase
+                  assign sold = false
+                  assign zst = z.status.value | default: 'available' | downcase
+                  if zst == 'sold'
+                    assign sold = true
+                  endif
+                -%}
+                <span
+                  class="dz-tag dz-tag--{% if row == 'bottom' %}b{% else %}t{% endif %}{% if sold %} is-sold{% endif %}"
+                  style="left: {{ lpct }}%;"
+                  data-i="{{ i }}"
+                  aria-hidden="true"
+                >
+                  <i>{{ num }}</i>{{ z.name.value }}</span
+                >
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+          <div class="dz-img" role="group" aria-label="Decal zones on the tractor" data-dz-pts>
+            {%- if section.settings.image != blank -%}
+              {%- assign img_alt = section.settings.image.alt | default: section.settings.image_alt -%}
+              {{
+                section.settings.image
+                | image_url: width: 1600
+                | image_tag:
+                  widths: '560, 840, 1120, 1600',
+                  sizes: '(max-width: 960px) 100vw, 70vw',
+                  loading: 'lazy',
+                  alt: img_alt
+              }}
+            {%- else -%}
+              {{ 'image' | placeholder_svg_tag: 'dz-ph' }}
+            {%- endif -%}
+            {%- for zk in zkeys -%}
+              {%- assign want = zk | split: '-' | last | minus: 100 -%}
+              {%- for z in zones -%}
+                {%- if forloop.index == want -%}
+                  {%- liquid
+                    assign i = forloop.parentloop.index0
+                    assign num = forloop.parentloop.index | plus: 100 | append: '' | slice: 1, 2
+                    assign px = z.pos_x.value | default: 0
+                    assign py = z.pos_y.value | default: 0
+                    assign xpct = px | times: 100.0 | divided_by: 1120
+                    assign ypct = py | times: 100.0 | divided_by: 576
+                    assign sold = false
+                    assign zst = z.status.value | default: 'available' | downcase
+                    if zst == 'sold'
+                      assign sold = true
+                    endif
+                    assign tier = z.tier.value
+                    assign tier_name = tier.name.value | default: section.settings.no_tier
+                    assign tier_handle = ''
+                    assign tst = tier.status.value | default: 'available' | downcase
+                    if tier and tst != 'hidden'
+                      assign tier_handle = tier.system.handle
+                    endif
+                    assign up = z.updated.value | date: '%Y-%m-%d'
+                    if up != blank and up > newest
+                      assign newest = up
+                    endif
+                  -%}
+                  <button
+                    type="button"
+                    class="dz-hs{% if sold %} is-sold{% endif %}"
+                    style="left: {{ xpct }}%; top: {{ ypct }}%;"
+                    data-i="{{ i }}"
+                    data-num="{{ num }}"
+                    data-name="{{ z.name.value | escape }}"
+                    data-size="{{ z.size.value | escape }}"
+                    data-tier="{{ tier_name | escape }}"
+                    data-pkg="{{ tier_handle }}"
+                    data-sold="{% if sold %}1{% else %}0{% endif %}"
+                    data-x="{{ px | times: 100.0 | divided_by: 1120 }}"
+                    data-y="{{ py | times: 100.0 | divided_by: 576 }}"
+                    data-desc="{{ z.description.value | escape }}"
+                    aria-pressed="{% if forloop.parentloop.first %}true{% else %}false{% endif %}"
+                    {% unless forloop.parentloop.first %}
+                      tabindex="-1"
+                    {% endunless %}
+                    aria-label="{{ num }}, {{ z.name.value | escape }}: {% if sold %}sold{% else %}available{% endif %}"
+                  >
+                    <span aria-hidden="true">{{ forloop.parentloop.index }}</span>
+                  </button>
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endfor -%}
+          </div>
+        </figure>
+
+        <div class="dz-panel">
+          <div
+            class="dz-zoom"
+            role="img"
+            aria-label="Close-up of the selected zone"
+            data-dz-zoom
+            {% if zoom_url %}
+              style="--dz-img: url('{{ zoom_url }}');"
+            {% endif %}
+          ></div>
+          {%- comment -%} Panel starts with the first zone; JS updates it. {%- endcomment -%}
+          {%- for zk in zkeys limit: 1 -%}
+            {%- assign want = zk | split: '-' | last | minus: 100 -%}
+            {%- for z in zones -%}
+              {%- if forloop.index == want -%}
+                {%- liquid
+                  assign first_sold = false
+                  assign zst = z.status.value | default: 'available' | downcase
+                  if zst == 'sold'
+                    assign first_sold = true
+                  endif
+                  assign first_tier = z.tier.value.name.value | default: section.settings.no_tier
+                  assign first_pkg = z.tier.value.system.handle | default: 'unsure'
+                -%}
+                <div class="dz-panel__txt">
+                  <p class="label muted" data-dz-label aria-live="polite">01 · Decal zone</p>
+                  <p class="dz-panel__val" data-dz-name>{{ z.name.value }}</p>
+                  <dl class="dz-facts">
+                    <dt data-dz-size-dt {% if z.size.value == blank %}hidden{% endif %}>Size</dt>
+                    <dd class="num" data-dz-size {% if z.size.value == blank %}hidden{% endif %}>{{ z.size.value }}</dd>
+                    <dt>Package</dt>
+                    <dd data-dz-tier>{{ first_tier }}</dd>
+                    <dt>Status</dt>
+                    <dd>
+                      <span class="dz-st{% if first_sold %} is-sold{% endif %}" data-dz-status>
+                        {%- if first_sold -%}Sold for {{ season }}{%- else -%}Available{%- endif -%}
+                      </span>
+                    </dd>
+                  </dl>
+                  <p class="dz-panel__body" data-dz-desc>{{ z.description.value | newline_to_br }}</p>
+                </div>
+                <a
+                  class="sp-go"
+                  href="#contact"
+                  data-dz-cta
+                  data-sp-pkg="{{ first_pkg }}"
+                  data-sp-msg="{% if first_sold %}Please add me to the waitlist for the {% else %}I’m interested in the {% endif %}{{ z.name.value | escape }} decal zone."
+                >
+                  {%- if first_sold -%}{{ section.settings.cta_sold }}{%- else -%}{{ section.settings.cta }}{%- endif -%}
+                </a>
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+          <div class="dz-nav">
+            <span class="small muted num" data-dz-count>01 / {{ n | plus: 100 | append: '' | slice: 1, 2 }}</span>
+            <span class="dz-nav__btns">
+              <button type="button" data-dz-prev aria-label="Previous zone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+              </button>
+              <button type="button" data-dz-next aria-label="Next zone">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <ol class="dz-list" aria-label="{{ section.settings.list_label | escape }}">
+        {%- for zk in zkeys -%}
+          {%- assign want = zk | split: '-' | last | minus: 100 -%}
+          {%- for z in zones -%}
+            {%- if forloop.index == want -%}
+              {%- assign zst = z.status.value | default: 'available' | downcase -%}
+              <li>
+                <button
+                  type="button"
+                  class="dz-li{% if zst == 'sold' %} is-sold{% endif %}"
+                  data-dz-pick="{{ forloop.parentloop.index0 }}"
+                  aria-pressed="{% if forloop.parentloop.first %}true{% else %}false{% endif %}"
+                >
+                  <i aria-hidden="true">{{ forloop.parentloop.index | plus: 100 | append: '' | slice: 1, 2 }}</i>
+                  {{ z.name.value -}}
+                  <span class="vh">, {% if zst == 'sold' %}sold{% else %}available{% endif %}</span>
+                </button>
+              </li>
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </ol>
+      {%- if newest != blank -%}
+        <p class="sp-upd sp-upd--end">Last updated: {{ newest | date: '%B %-d, %Y' }}</p>
+      {%- endif -%}
+    </div>
+    <script type="application/json" data-dz-season>{{ season | json }}</script>
+    <script type="application/json" data-dz-copy>
+      {{ section.settings.cta | json }}
+    </script>
+    <script type="application/json" data-dz-copy-sold>
+      {{ section.settings.cta_sold | json }}
+    </script>
+  </section>
+{%- endif -%}
+
+{% stylesheet %}
+  .dz-hint{font-size:11px;color:var(--mute);margin:0}
+  .dz{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,320px);gap:clamp(20px,3vw,48px);align-items:center}
+  .dz-stage{position:relative;aspect-ratio:1120/676;width:100%;max-width:calc((100svh - var(--header) - 2 * var(--sect) - 90px) * 1120 / 676);min-width:min(100%,560px);margin:0 auto}
+  .dz-img{position:absolute;left:0;right:0;top:7.396%;height:85.207%}
+  .dz-img>img,.dz-img>svg{width:100%;height:100%;object-fit:cover;display:block}
+  .dz-img>svg{background:var(--tile);fill:#C9C6BE}
+  .dz-lines{position:absolute;inset:0;z-index:1;width:100%;height:100%;pointer-events:none;overflow:visible;filter:drop-shadow(0 0 1px rgba(255,255,255,.95))}
+  .dz-lines line{stroke:var(--mute);stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke;transition:stroke .15s}
+  .dz-lines line.on{stroke:var(--ink);stroke-dasharray:none;stroke-width:1.5}
+  .dz-tag{position:absolute;z-index:1;transform:translateX(-50%);display:inline-flex;gap:6px;align-items:center;white-space:nowrap;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);background:var(--surface);border:1px solid var(--line);padding:3px 8px;cursor:pointer;user-select:none}
+  .dz-tag--t{top:0}.dz-tag--b{bottom:0}
+  .dz-tag i{font-style:normal;color:var(--mute)}
+  .dz-tag.on{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+  .dz-tag.on i{color:var(--accent)}
+  .dz-tag.is-sold{text-decoration:line-through;color:var(--mute)}
+  .dz-tag.on.is-sold{color:var(--line)}
+  .dz-hs{position:absolute;z-index:2;transform:translate(-50%,-50%);width:44px;height:44px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
+  .dz-hs span{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--ink);font-size:11px;font-weight:800;box-shadow:0 0 0 2px var(--ink);transition:transform .15s}
+  .dz-hs.is-sold span{background:var(--surface);color:var(--mute);box-shadow:0 0 0 2px var(--mute)}
+  .dz-hs:hover span{transform:scale(1.12)}
+  .dz-hs[aria-pressed="true"] span{background:var(--ink);color:var(--accent);box-shadow:0 0 0 2px var(--accent),0 0 0 6px rgba(28,27,25,.3)}
+  .dz-hs:focus-visible{outline:none}
+  .dz-hs:focus-visible span{outline:2px solid var(--ink);outline-offset:4px}
+  .dz-panel{display:grid;gap:12px;align-content:start}
+  .dz-zoom{margin:0;position:relative;aspect-ratio:16/10;background-color:var(--tile);background-image:var(--dz-img,none);background-repeat:no-repeat;background-size:300% auto;transition:background-position .3s}
+  .dz-zoom::after{content:"";position:absolute;left:50%;top:50%;width:34%;aspect-ratio:3/2;transform:translate(-50%,-50%);border:2px dashed var(--accent);box-shadow:0 0 0 1px var(--ink)}
+  .dz-panel__txt{display:grid;gap:4px}
+  .dz-panel__txt p{margin:0}
+  .dz-panel__val{font-family:var(--f-head);font-stretch:70%;font-weight:800;font-size:var(--t-h1);line-height:1.1;text-transform:uppercase;color:var(--ink)}
+  .dz-panel__body{font-size:var(--t-sm);color:var(--soft)}
+  .dz-facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;margin:0;font-size:var(--t-sm)}
+  .dz-facts dt{color:var(--mute);font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;align-self:center}
+  .dz-facts dd{margin:0;color:var(--ink);font-weight:600}
+  .dz-st{display:inline-flex;align-items:center;gap:6px}
+  .dz-st::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 1px var(--ink)}
+  .dz-st.is-sold::before{background:var(--surface);box-shadow:0 0 0 1px var(--mute)}
+  .dz-nav{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px}
+  .dz-nav__btns{display:flex;gap:4px}
+  .dz-nav button{width:40px;height:40px;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;color:var(--ink)}
+  .dz-nav button:hover{border-color:var(--ink)}
+  .dz-nav svg{width:16px;height:16px}
+  .dz .sp-go{justify-self:start;display:inline-flex;align-items:center;min-height:44px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+  .dz-list{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+  .dz-li{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 10px;border:1px solid var(--line);background:var(--surface);font:inherit;font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);cursor:pointer}
+  .dz-li i{font-style:normal;color:var(--mute)}
+  .dz-li:hover{border-color:var(--ink)}
+  .dz-li[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+  .dz-li[aria-pressed="true"] i{color:var(--accent)}
+  .dz-li.is-sold{text-decoration:line-through;color:var(--mute)}
+  .dz-li.is-sold[aria-pressed="true"]{color:var(--line)}
+  .dz .sp-upd--end,.sect .sp-upd--end{margin:12px 0 0;text-align:right;font-size:var(--t-xs);color:var(--mute)}
+  @media (max-width:960px){.dz{grid-template-columns:1fr}.dz-panel{grid-template-columns:minmax(0,220px) minmax(0,1fr);align-items:start}.dz-panel .dz-nav,.dz-panel .sp-go{grid-column:1/-1}}
+  @media (max-width:760px){
+    .dz-stage{aspect-ratio:1120/576;min-width:0}
+    .dz-img{top:0;height:100%}
+    .dz-lines,.dz-tag{display:none}
+    .dz-hs{width:40px;height:40px}
+    .dz-hs span{width:24px;height:24px;font-size:10px}
+    .dz-panel{grid-template-columns:110px minmax(0,1fr);gap:12px}
+    .dz-zoom{aspect-ratio:1}
+  }
+  @media (prefers-reduced-motion:reduce){.dz-zoom,.dz-hs span{transition:none}}
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    function parse(el) {
+      try { return el ? JSON.parse(el.textContent) : ''; } catch (e) { return ''; }
+    }
+    function init(root) {
+      if (!root || root.dataset.ready) return;
+      root.dataset.ready = '1';
+      var pts = root.querySelector('[data-dz-pts]');
+      var stage = root.querySelector('[data-dz-stage]');
+      var hs = Array.prototype.slice.call(root.querySelectorAll('.dz-hs'));
+      var list = Array.prototype.slice.call(root.querySelectorAll('[data-dz-pick]'));
+      if (!hs.length) return;
+      var season = parse(root.querySelector('[data-dz-season]'));
+      var cta = parse(root.querySelector('[data-dz-copy]')) || 'Ask about this zone';
+      var ctaSold = parse(root.querySelector('[data-dz-copy-sold]')) || 'Join the waitlist for this zone';
+      var q = function (s) { return root.querySelector(s); };
+      var total = hs.length, cur = 0;
+      function nn(i) { return (i < 9 ? '0' : '') + (i + 1); }
+      function set(i, focusEl) {
+        cur = (i + total) % total;
+        var b = hs[cur], d = b.dataset, sold = d.sold === '1';
+        hs.forEach(function (x, j) {
+          x.setAttribute('aria-pressed', j === cur ? 'true' : 'false');
+          x.tabIndex = j === cur ? 0 : -1;
+        });
+        list.forEach(function (x, j) { x.setAttribute('aria-pressed', j === cur ? 'true' : 'false'); });
+        stage.querySelectorAll('.dz-tag, line').forEach(function (e) { e.classList.toggle('on', +e.getAttribute('data-i') === cur); });
+        q('[data-dz-label]').textContent = d.num + ' · Decal zone';
+        q('[data-dz-name]').textContent = d.name;
+        var size = q('[data-dz-size]');
+        size.textContent = d.size; size.hidden = !d.size; q('[data-dz-size-dt]').hidden = !d.size;
+        q('[data-dz-tier]').textContent = d.tier;
+        var st = q('[data-dz-status]');
+        st.textContent = sold ? 'Sold for ' + season : 'Available';
+        st.classList.toggle('is-sold', sold);
+        q('[data-dz-desc]').textContent = d.desc;
+        q('[data-dz-count]').textContent = d.num + ' / ' + nn(total - 1);
+        var link = q('[data-dz-cta]');
+        link.textContent = sold ? ctaSold : cta;
+        link.setAttribute('data-sp-pkg', d.pkg || 'unsure');
+        link.setAttribute('data-sp-msg', (sold ? 'Please add me to the waitlist for the ' : 'I’m interested in the ') + d.name + ' decal zone.');
+        var zoom = q('[data-dz-zoom]');
+        zoom.style.backgroundPosition = d.x + '% ' + d.y + '%';
+        zoom.setAttribute('aria-label', 'Close-up of zone ' + d.num + ', ' + d.name);
+        if (focusEl) focusEl.focus();
+      }
+      function onStage(e) {
+        var t = e.target.closest('[data-i]');
+        if (!t || !stage.contains(t)) return;
+        var i = +t.getAttribute('data-i');
+        set(i, t.classList.contains('dz-hs') ? hs[i] : null);
+      }
+      function onKey(e) {
+        var k = e.key, d = k === 'ArrowRight' || k === 'ArrowDown' ? 1 : k === 'ArrowLeft' || k === 'ArrowUp' ? -1 : 0;
+        if (k === 'Home') { e.preventDefault(); set(0); hs[cur].focus(); return; }
+        if (k === 'End') { e.preventDefault(); set(total - 1); hs[cur].focus(); return; }
+        if (d) { e.preventDefault(); set(cur + d); hs[cur].focus(); }
+      }
+      function onRoot(e) {
+        if (e.target.closest('[data-dz-prev]')) set(cur - 1);
+        else if (e.target.closest('[data-dz-next]')) set(cur + 1);
+        else {
+          var p = e.target.closest('[data-dz-pick]');
+          if (p) set(+p.getAttribute('data-dz-pick'));
+        }
+      }
+      stage.addEventListener('click', onStage);
+      pts.addEventListener('keydown', onKey);
+      root.addEventListener('click', onRoot);
+      set(0);
+    }
+    function initAll(scope) { (scope || document).querySelectorAll('[data-dz]').forEach(init); }
+    document.addEventListener('shopify:section:load', function (e) { initAll(e.target); });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { initAll(); });
+    else initAll();
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Sponsors: decal map",
+  "tag": "div",
+  "class": "hm-sponsors-decals",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Zones come from Content > Metaobjects > Decal zone (pos_x, pos_y and label_x in pixels on a 1120 × 576 photo)."
+    },
+    { "type": "image_picker", "id": "image", "label": "Tractor photo (side view, 1120 × 576)" },
+    { "type": "text", "id": "image_alt", "label": "Photo description (if the file has no alt text)", "default": "“The Evil One” in profile on the fairground grass, facing right, with numbered decal zones" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Decal map" },
+    { "type": "text", "id": "hint", "label": "Hint", "default": "Tap a number. On a keyboard, use the arrow keys." },
+    { "type": "text", "id": "list_label", "label": "Zone list name (screen readers)", "default": "All decal zones" },
+    { "type": "text", "id": "no_tier", "label": "Package when the zone has none", "default": "To confirm" },
+    { "type": "text", "id": "cta", "label": "Zone link", "default": "Ask about this zone" },
+    { "type": "text", "id": "cta_sold", "label": "Zone link when sold", "default": "Join the waitlist for this zone" }
+  ],
+  "presets": [{ "name": "Sponsors: decal map" }]
+}
+{% endschema %}

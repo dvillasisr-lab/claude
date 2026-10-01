@@ -1,0 +1,100 @@
+{%- comment -%}
+  The Machine · 6 · The single CTA: the spec tee. Text + "On the print" list + the shop card (snippet hm-card).
+  No product picked, or the product is not published = the section does not render.
+  Sold out or tagged coming-soon = the button turns into "Notify me".
+{%- endcomment -%}
+{%- assign tee = section.settings.product -%}
+{%- if tee != blank -%}
+{%- liquid
+  assign soon = false
+  if tee.tags contains 'coming-soon'
+    assign soon = true
+  endif
+-%}
+<section class="sect sect--white" aria-labelledby="tee-h-{{ section.id }}">
+  <div class="wrap">
+    <div class="mx-tee">
+      <div class="mx-tee__txt">
+        {%- if section.settings.label != blank -%}<p class="label muted">{{ section.settings.label | escape }}</p>{%- endif -%}
+        <h2 class="h1" id="tee-h-{{ section.id }}">{{ section.settings.title | escape }}</h2>
+        {%- if section.settings.text != blank -%}<p class="muted">{{ section.settings.text | escape }}</p>{%- endif -%}
+        {%- if soon -%}
+          <a class="btn" href="{{ tee.url }}" data-hm-notify="{{ tee.handle }}">Coming soon · Notify me<span class="vh"> about {{ tee.title | escape }}</span></a>
+        {%- elsif tee.available == false -%}
+          <a class="btn" href="{{ tee.url }}" data-hm-notify="{{ tee.handle }}">Sold out · Notify me<span class="vh"> about {{ tee.title | escape }}</span></a>
+        {%- else -%}
+          <a class="btn" href="{{ tee.url }}">{{ section.settings.cta | default: tee.title | escape }}</a>
+        {%- endif -%}
+      </div>
+      {%- if section.blocks.size > 0 -%}
+        <div class="mx-tee__print">
+          <p class="label muted" id="print-l-{{ section.id }}">{{ section.settings.print_label | escape }}</p>
+          <ul class="mx-tee__list" aria-labelledby="print-l-{{ section.id }}">
+            {%- for block in section.blocks -%}
+              <li class="{% if block.settings.highlight %}is-unk{% endif %}" {{ block.shopify_attributes }}><i>{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</i>{{ block.settings.text | escape }}</li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+      <div class="mx-tee__card">
+        {%- render 'hm-card', product: tee -%}
+      </div>
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{% stylesheet %}
+.mx-tee{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,3fr) minmax(0,4fr);grid-template-areas:"txt print card";gap:clamp(24px,3.4vw,56px);align-items:center}
+.mx-tee__txt{grid-area:txt;display:grid;gap:12px;justify-items:start}
+.mx-tee__txt p{margin:0}
+.mx-tee__txt .muted{max-width:60ch}
+.mx-tee__print{grid-area:print;align-self:center}
+.mx-tee__print .label{margin:0 0 6px}
+.mx-tee__card{grid-area:card;justify-self:stretch;width:100%}
+.mx-tee__list{list-style:none;margin:0;padding:0;display:grid;border-bottom:1px solid var(--line)}
+.mx-tee__list li{display:flex;align-items:baseline;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-family:var(--f-head);font-stretch:70%;font-weight:800;font-size:clamp(22px,2.2vw,32px);line-height:1;text-transform:uppercase;color:var(--ink);white-space:nowrap}
+.mx-tee__list i{font-style:normal;font-family:var(--f-sans);font-stretch:100%;font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--mute)}
+.mx-tee__list li.is-unk{box-shadow:inset 3px 0 0 var(--accent);padding-left:10px}
+@media (max-width:1100px){.mx-tee{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"txt card" "print card"}}
+@media (max-width:760px){.mx-tee{grid-template-columns:1fr;grid-template-areas:"txt" "print" "card"}.mx-tee__list li{font-size:22px;padding:8px 0}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Machine: spec tee",
+  "tag": "div",
+  "class": "hm-machine-tee",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Product", "info": "Empty or unpublished = the section is hidden." },
+    { "type": "text", "id": "label", "label": "Label", "default": "The one to wear" },
+    { "type": "text", "id": "title", "label": "Title", "default": "The spec sheet, on a tee" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Cat V8 Spec Tee: the numbers on this page, printed to order. Horsepower still unknown." },
+    { "type": "text", "id": "cta", "label": "Button", "default": "Shop the Cat V8 Spec Tee" },
+    { "type": "text", "id": "print_label", "label": "Print list title", "default": "On the print" }
+  ],
+  "blocks": [
+    {
+      "type": "line",
+      "name": "Print line",
+      "limit": 8,
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Cat 3208 V8" },
+        { "type": "checkbox", "id": "highlight", "label": "Yellow mark", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Machine: spec tee",
+      "blocks": [
+        { "type": "line", "settings": { "text": "Cat 3208 V8" } },
+        { "type": "line", "settings": { "text": "680 CI" } },
+        { "type": "line", "settings": { "text": "10,000 LB" } },
+        { "type": "line", "settings": { "text": "24.5-32" } },
+        { "type": "line", "settings": { "text": "HP: Unknown", "highlight": true } }
+      ]
+    }
+  ]
+}
+{% endschema %}

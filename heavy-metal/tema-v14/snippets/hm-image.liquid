@@ -45,6 +45,9 @@
     {{- img_src | image_tag: widths: img_widths, sizes: img_sizes, loading: img_loading, decoding: 'async', alt: img_alt, class: img_class -}}
   {%- endif -%}
 {%- elsif placeholder != 'none' -%}
-  {%- assign ph_name = placeholder | default: 'image' -%}
-  {{- ph_name | placeholder_svg_tag: img_class | append: ' placeholder-svg' -}}
+  {%- liquid
+    assign ph_name = placeholder | default: 'image'
+    assign ph_class = img_class | append: ' placeholder-svg' | strip
+  -%}
+  {{- ph_name | placeholder_svg_tag: ph_class -}}
 {%- endif -%}

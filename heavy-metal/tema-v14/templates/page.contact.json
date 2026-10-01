@@ -1,25 +1,131 @@
 {
   "sections": {
     "main": {
-      "type": "main-page",
+      "type": "hm-contact",
+      "blocks": {
+        "topic_order": {
+          "type": "topic",
+          "settings": {
+            "label": "Order help",
+            "key": "order",
+            "order_field": true
+          }
+        },
+        "topic_returns": {
+          "type": "topic",
+          "settings": {
+            "label": "Returns & exchanges",
+            "key": "returns",
+            "order_field": true
+          }
+        },
+        "topic_sponsorship": {
+          "type": "topic",
+          "settings": {
+            "label": "Sponsorship",
+            "key": "sponsorship",
+            "order_field": false
+          }
+        },
+        "topic_press": {
+          "type": "topic",
+          "settings": {
+            "label": "Press & media",
+            "key": "press",
+            "order_field": false
+          }
+        },
+        "topic_other": {
+          "type": "topic",
+          "settings": {
+            "label": "Something else",
+            "key": "other",
+            "order_field": false
+          }
+        },
+        "help_1": {
+          "type": "help_link",
+          "settings": {
+            "label": "FAQ",
+            "account": false,
+            "link": "/pages/faq"
+          }
+        },
+        "help_2": {
+          "type": "help_link",
+          "settings": {
+            "label": "Shipping",
+            "account": false,
+            "link": "/pages/policies?p=shipping"
+          }
+        },
+        "help_3": {
+          "type": "help_link",
+          "settings": {
+            "label": "Returns & exchanges",
+            "account": false,
+            "link": "/pages/policies?p=refund"
+          }
+        },
+        "help_4": {
+          "type": "help_link",
+          "settings": {
+            "label": "Size guide",
+            "account": false,
+            "link": "/pages/sizes"
+          }
+        },
+        "help_5": {
+          "type": "help_link",
+          "settings": {
+            "label": "Track my order",
+            "account": true
+          }
+        }
+      },
+      "block_order": [
+        "topic_order",
+        "topic_returns",
+        "topic_sponsorship",
+        "topic_press",
+        "topic_other",
+        "help_1",
+        "help_2",
+        "help_3",
+        "help_4",
+        "help_5"
+      ],
       "settings": {
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "form": {
-      "type": "contact-form",
-      "settings": {
-        "heading": "",
-        "heading_size": "h1",
-        "color_scheme": "scheme-1",
-        "padding_top": 36,
-        "padding_bottom": 36
+        "heading": "Contact us",
+        "intro": "Questions about an order, merch or sponsorship? Send us a message and we’ll get back to you within 2 business days.",
+        "topic_label": "Topic",
+        "name_label": "Name",
+        "name_placeholder": "e.g. Jake Miller",
+        "email_label": "Email",
+        "email_placeholder": "you@example.com",
+        "order_label": "Order number",
+        "order_placeholder": "e.g. #1001",
+        "message_label": "Message",
+        "message_placeholder": "How can we help?",
+        "consent": "We use your details only to answer your message. See our <a href=\"/pages/policies?p=privacy\">Privacy Policy</a>.",
+        "button_label": "Send message",
+        "button_note": "We reply within 2 business days",
+        "success": "Thanks. Your message is in. We’ll reply within 2 business days.",
+        "error_summary": "Please add your name, a valid email and a message.",
+        "error_name": "Add your name.",
+        "error_email": "Enter a valid email, like name@example.com.",
+        "error_message": "Write your message.",
+        "aside_label": "Help and ways to follow the team",
+        "help_heading": "Quick help",
+        "reply_heading": "Reply time",
+        "reply_text": "We reply within 2 business days. For order help, add your order number so we can find it fast.",
+        "follow_heading": "Follow the team",
+        "facebook_name": "",
+        "instagram_name": ""
       }
     }
   },
   "order": [
-    "main",
-    "form"
+    "main"
   ]
 }

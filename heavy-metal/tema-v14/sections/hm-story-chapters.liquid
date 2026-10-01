@@ -1,0 +1,183 @@
+{%- comment -%}
+  Our Story · 2 · Milestones index (blocks "Milestone") + chapters in three columns, a snap carousel on phones (blocks "Chapter").
+  A "Today" milestone fills [season] with the theme season and shows the season headline from "Season stats".
+{%- endcomment -%}
+{%- liquid
+  assign season = 'now' | date: '%Y'
+  if settings.hm_season != blank
+    assign season = settings.hm_season
+  endif
+  assign now_line = section.settings.now_default
+  for e in shop.metaobjects.season_stats.values
+    assign es = e.season.value | append: ''
+    assign ss = season | append: ''
+    if es == ss
+      assign w = e.wins.value | default: 0
+      if w == 1
+        assign now_line = 'First win in the books'
+      elsif w > 1
+        assign now_line = w | append: ' wins and counting'
+      endif
+    endif
+  endfor
+  assign ms = 0
+  assign ch = 0
+  for block in section.blocks
+    if block.type == 'milestone'
+      assign ms = ms | plus: 1
+    else
+      assign ch = ch | plus: 1
+    endif
+  endfor
+-%}
+{%- if ms > 0 -%}
+<nav class="st-tl" aria-label="{{ section.settings.nav_label | escape }}">
+  <div class="wrap">
+    <ol>
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'milestone' -%}
+          {%- liquid
+            assign ev = block.settings.event | replace: '[season]', season
+            assign pl = block.settings.place
+            if block.settings.kind == 'now' and pl == blank
+              assign pl = now_line
+            endif
+          -%}
+          <li class="{% if block.settings.kind == 'bolt' %}st-tl__bolt{% elsif block.settings.kind == 'now' %}st-tl__now{% endif %}" {{ block.shopify_attributes }}>
+            <a href="{{ block.settings.target | default: '#' | escape }}" data-st-jump>
+              <span class="st-tl__yr">{% if block.settings.kind == 'bolt' %}<svg viewBox="0 0 12 16" aria-hidden="true"><polygon class="st-bolt-fill" points="8,0 1,9 5,9 3,16 11,6 7,6"/></svg>{% endif %}{{ block.settings.year | escape }}</span>
+              <span class="st-tl__ev">{{ ev | escape }}</span>
+              <span class="st-tl__pl">{{ pl | escape }}</span>
+            </a>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ol>
+  </div>
+</nav>
+{%- endif -%}
+{%- if ch > 0 -%}
+<section class="sect st-chsect" aria-labelledby="chs-h-{{ section.id }}">
+  <div class="wrap">
+    <div class="sect-head st-chs__head">
+      <h2 class="h1" id="chs-h-{{ section.id }}">{{ section.settings.title | escape }}</h2>
+      {%- if section.settings.subtitle != blank -%}<p class="small muted" style="margin:0">{{ section.settings.subtitle | escape }}</p>{%- endif -%}
+    </div>
+    <div class="st-chs" tabindex="0" role="region" aria-label="{{ section.settings.carousel_label | escape }}">
+      {%- assign n = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'chapter' -%}
+          {%- assign n = n | plus: 1 -%}
+          <article class="st-ch"{% if block.settings.anchor != blank %} id="{{ block.settings.anchor | handleize }}"{% endif %} aria-labelledby="ch-h-{{ block.id }}" {{ block.shopify_attributes }}>
+            <figure class="st-photo">
+              {%- if block.settings.image != blank -%}
+                {%- assign stl = 'object-position:' | append: block.settings.position -%}
+                {{ block.settings.image | image_url: width: 900 | image_tag: widths: '320, 480, 640, 900', sizes: '(max-width: 760px) 80vw, 33vw', class: 'photo', style: stl, loading: 'lazy' }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'photo' }}
+              {%- endif -%}
+              {%- if block.settings.tag != blank -%}<figcaption class="st-tag">{{ block.settings.tag | escape }}</figcaption>{%- endif -%}
+            </figure>
+            <p class="st-eyebrow"><b>{% if n < 10 %}0{% endif %}{{ n }}</b>{{ block.settings.eyebrow | escape }}</p>
+            <h3 class="h2" id="ch-h-{{ block.id }}">{{ block.settings.title | escape }}</h3>
+            <div class="st-ch__txt">{{ block.settings.text }}</div>
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+<script src="{{ 'hm-story.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+.st-tl{background:var(--surface);border-block:1px solid var(--line)}
+.st-tl ol{list-style:none;margin:0;padding:0;display:grid;grid-auto-columns:minmax(0,1fr);grid-auto-flow:column}
+.st-tl a{display:grid;gap:3px;padding:14px 14px 14px 0;text-decoration:none;height:100%}
+.st-tl li+li a{padding-left:14px;border-left:1px solid var(--line)}
+.st-tl a:hover .st-tl__ev{text-decoration:underline;text-underline-offset:3px}
+.st-tl__yr{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h2);line-height:1;color:var(--ink);text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.st-tl__yr::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ink);flex:none}
+.st-tl__bolt .st-tl__yr::before{display:none}
+.st-tl__yr svg{width:10px;height:16px;flex:none}
+.st-tl__now .st-tl__yr::before{background:var(--accent);box-shadow:0 0 0 2px var(--ink)}
+.st-tl__ev{font-size:var(--t-sm);font-weight:600;color:var(--ink)}
+.st-tl__pl{font-size:var(--t-xs);color:var(--mute)}
+.st-chsect{padding-block:clamp(32px,4vw,52px)}
+.st-chs__head{margin-bottom:16px}
+.st-chs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,2.4vw,32px)}
+.st-chs:focus-visible{outline-offset:6px}
+.st-ch{display:flex;flex-direction:column;gap:8px;min-width:0;scroll-margin-top:calc(var(--header) + 16px)}
+.st-ch .st-photo{aspect-ratio:2/1;margin-bottom:4px}
+.st-ch p{margin:0}
+.st-ch__txt{color:var(--soft);font-size:var(--t-sm);line-height:1.55;max-width:46ch}
+.st-ch__txt p{margin:0}
+.st-ch__txt a{white-space:nowrap;margin-left:2px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-underline-offset:4px;color:var(--ink)}
+.st-ch:target .st-photo,.st-ch.is-hit .st-photo{outline:3px solid var(--accent);outline-offset:3px}
+@media (max-width:900px){
+  .st-tl .wrap{padding-inline:0}
+  .st-tl ol{display:flex;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin;padding-inline:var(--gutter);scroll-padding-inline:var(--gutter)}
+  .st-tl li{flex:0 0 168px;scroll-snap-align:start}
+}
+@media (max-width:760px){
+  .st-chs{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:thin;margin-inline:calc(var(--gutter) * -1);padding:0 var(--gutter) 8px;scroll-padding-inline:var(--gutter)}
+  .st-ch{flex:0 0 min(80%,320px);scroll-snap-align:start}
+  .st-ch .st-photo{aspect-ratio:16/9}
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Story: milestones + chapters",
+  "tag": "div",
+  "class": "hm-story-chapters",
+  "settings": [
+    { "type": "text", "id": "nav_label", "label": "Milestones label (screen readers)", "default": "Story milestones" },
+    { "type": "text", "id": "now_default", "label": "“Today” line when there are no wins", "default": "Chasing our first win" },
+    { "type": "text", "id": "title", "label": "Chapters title", "default": "How it got built" },
+    { "type": "text", "id": "subtitle", "label": "Chapters subtitle", "default": "Twelve years, one family shop, zero shortcuts." },
+    { "type": "text", "id": "carousel_label", "label": "Chapters label (screen readers)", "default": "Chapters, scroll sideways for more" }
+  ],
+  "blocks": [
+    {
+      "type": "milestone",
+      "name": "Milestone",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "year", "label": "Year", "default": "2014" },
+        { "type": "text", "id": "event", "label": "Event", "default": "Idea is born", "info": "[season] = the theme season." },
+        { "type": "text", "id": "place", "label": "Place or note", "default": "Tomah, WI", "info": "On a “Today” milestone, empty = the season headline from Season stats." },
+        { "type": "text", "id": "target", "label": "Jumps to (anchor)", "default": "#ch-2014", "info": "Chapter anchor like #ch-2014, or #bolt, #first-pull, #season, #crew." },
+        { "type": "select", "id": "kind", "label": "Style", "default": "dot", "options": [
+          { "value": "dot", "label": "Dot" },
+          { "value": "bolt", "label": "Lightning bolt" },
+          { "value": "now", "label": "Today (yellow)" }
+        ] }
+      ]
+    },
+    {
+      "type": "chapter",
+      "name": "Chapter",
+      "limit": 9,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        { "type": "text", "id": "position", "label": "Photo focus (x% y%)", "default": "50% 50%" },
+        { "type": "text", "id": "tag", "label": "Photo tag", "default": "Tomah, WI" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "2014 · Tomah, WI" },
+        { "type": "text", "id": "title", "label": "Title", "default": "The name was never up for debate" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Chris, a lifelong heavy metal fan, decided to build a Pro Stock pulling tractor. The name picked itself, and so did the nickname: “The Evil One”.</p>" },
+        { "type": "text", "id": "anchor", "label": "Anchor", "default": "ch-2014", "info": "Lets a milestone jump here (#ch-2014)." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Story: milestones + chapters",
+      "blocks": [
+        { "type": "milestone" },
+        { "type": "chapter" }
+      ]
+    }
+  ]
+}
+{% endschema %}

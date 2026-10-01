@@ -1,0 +1,603 @@
+{%- comment -%}
+  Sponsors · FAQ + request form.
+  FAQ: faq_item entries whose "pages" list includes "sponsors" (sorted by order). If there are none, the
+  "Question" blocks of this section are used. In answers, [pitch] and [pulls] are replaced with the
+  figures calculated from Sponsor stats.
+  Form: {% form 'contact' %}; contact[topic] = Sponsorship. The package list comes from sponsor_tier
+  (Sold out = waitlist, Hidden = not listed) plus "Not sure yet" (info kit).
+  Any link on the page with data-sp-pkg="<tier handle>" (or "unsure") preselects that package here.
+{%- endcomment -%}
+{%- liquid
+  assign season = settings.hm_season | default: 'this season'
+
+  assign stats = metaobjects.sponsor_stats.main
+  assign pulls = stats.pulls_per_season.value | default: 0
+  assign fans = stats.fans_per_pull.value | default: 0
+  assign plus = ''
+  if stats.show_plus.value
+    assign plus = '+'
+  endif
+  assign est = ''
+  if stats.estimated.value
+    assign est = ' (est.)'
+  endif
+  assign reach = pulls | times: fans
+  assign g_m = reach | divided_by: 1000000
+  assign g_t = reach | modulo: 1000000 | divided_by: 1000
+  assign g_u = reach | modulo: 1000
+  assign u3 = g_u | plus: 1000 | append: '' | slice: 1, 3
+  assign t3 = g_t | plus: 1000 | append: '' | slice: 1, 3
+  if g_m > 0
+    assign reach_txt = g_m | append: ',' | append: t3 | append: ',' | append: u3
+  elsif g_t > 0
+    assign reach_txt = g_t | append: ',' | append: u3
+  else
+    assign reach_txt = g_u | append: ''
+  endif
+  assign pulls_line = pulls | append: plus | append: ' pulls a season' | append: est
+  assign pitch_line = 'Your brand in front of ' | append: reach_txt | append: plus | append: ' fans across ' | append: pulls_line
+
+  assign faqs = metaobjects.faq_item.values
+  assign fkeys = ''
+  for f in faqs
+    assign pgs = f.pages.value | join: ',' | downcase
+    unless pgs contains 'sponsors'
+      continue
+    endunless
+    assign o = f.order.value | default: 999 | plus: 10000
+    assign ix = forloop.index | plus: 100
+    assign fkeys = fkeys | append: o | append: '-' | append: ix | append: ','
+  endfor
+  assign fkeys = fkeys | split: ',' | sort
+
+  assign tiers = metaobjects.sponsor_tier.values
+  assign tkeys = ''
+  for t in tiers
+    assign st = t.status.value | default: 'available' | downcase
+    if st == 'hidden'
+      continue
+    endif
+    assign o = t.order.value | default: 999 | plus: 10000
+    assign ix = forloop.index | plus: 100
+    assign tkeys = tkeys | append: o | append: '-' | append: ix | append: ','
+  endfor
+  assign tkeys = tkeys | split: ',' | sort
+  assign preselect = 'unsure'
+  for t in tiers
+    assign st = t.status.value | default: 'available' | downcase
+    if t.featured.value and st != 'hidden' and st != 'soldout'
+      assign preselect = t.system.handle
+      break
+    endif
+  endfor
+
+  assign fid = 'SponsorForm-' | append: section.id
+-%}
+
+<section class="sect sect--white" aria-labelledby="FaqT-{{ section.id }}">
+  <div class="wrap sp-end">
+    <div class="faq" id="faq">
+      <h2 class="h2" id="FaqT-{{ section.id }}">{{ section.settings.faq_title }}</h2>
+      {%- capture ld_items -%}
+        {%- if fkeys.size > 0 -%}
+          {%- for fk in fkeys -%}
+            {%- assign want = fk | split: '-' | last | minus: 100 -%}
+            {%- for f in faqs -%}
+              {%- if forloop.index == want -%}
+                {%- liquid
+                  assign q_txt = f.question.value
+                  assign a_txt = f.answer | metafield_text | replace: '[pitch]', pitch_line | replace: '[pulls]', pulls_line
+                -%}
+                {%- unless forloop.parentloop.first %},{% endunless -%}
+                {"@type":"Question","name":{{ q_txt | json }},"acceptedAnswer":{"@type":"Answer","text":{{ a_txt | json }}}}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- unless forloop.first %},{% endunless -%}
+            {%- assign a_txt = block.settings.answer | strip_html | replace: '[pitch]', pitch_line | replace: '[pulls]', pulls_line -%}
+            {"@type":"Question","name":{{ block.settings.question | json }},"acceptedAnswer":{"@type":"Answer","text":{{ a_txt | json }}}}
+          {%- endfor -%}
+        {%- endif -%}
+      {%- endcapture -%}
+
+      {%- if fkeys.size > 0 -%}
+        {%- for fk in fkeys -%}
+          {%- assign want = fk | split: '-' | last | minus: 100 -%}
+          {%- for f in faqs -%}
+            {%- if forloop.index == want -%}
+              <details>
+                <summary>{{ f.question.value }}</summary>
+                <div class="faq__a">
+                  {{ f.answer | metafield_tag | replace: '[pitch]', pitch_line | replace: '[pulls]', pulls_line }}
+                </div>
+              </details>
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          <details {{ block.shopify_attributes }}>
+            <summary>{{ block.settings.question }}</summary>
+            <div class="faq__a">
+              {{ block.settings.answer | replace: '[pitch]', pitch_line | replace: '[pulls]', pulls_line }}
+            </div>
+          </details>
+        {%- endfor -%}
+      {%- endif -%}
+
+      {%- if section.settings.book_text != blank -%}
+        <a class="sp-book" href="{{ section.settings.book_url | default: '/pages/book' }}">
+          <span class="sp-book__q">{{ section.settings.book_text }}</span>
+          <span class="sp-book__go"
+            >{{ section.settings.book_label }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg
+          ></span>
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div id="contact" class="sp-req" data-sp-request>
+      <h2 class="h2" id="{{ fid }}-t" data-sp-title>{{ section.settings.form_title }}</h2>
+      <p class="small muted sp-req__lede">{{ section.settings.form_text }}</p>
+
+      {%- form 'contact', id: fid, class: 'sp-form' -%}
+        {%- if form.posted_successfully? -%}
+          <div class="sp-ok full" role="status" tabindex="-1" data-sp-ok>
+            <p class="label">{{ section.settings.ok_label }}</p>
+            <p class="h3">{{ section.settings.ok_title }}</p>
+            <p>{{ section.settings.ok_text }}</p>
+          </div>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <div class="sp-status is-err full" role="alert" data-sp-server-err>
+            {{ form.errors | default_errors }}
+          </div>
+        {%- endif -%}
+
+        <input type="hidden" name="contact[topic]" value="{{ section.settings.topic | escape }}">
+
+        <div class="field">
+          <label for="{{ fid }}-company">Company</label>
+          <input
+            class="input"
+            id="{{ fid }}-company"
+            name="contact[company]"
+            type="text"
+            required
+            autocomplete="organization"
+            placeholder="e.g. Waterloo Ag Supply"
+            aria-describedby="{{ fid }}-company-err"
+            data-rule="company"
+          >
+          <p class="err" id="{{ fid }}-company-err"></p>
+        </div>
+        <div class="field">
+          <label for="{{ fid }}-name">Your name</label>
+          <input
+            class="input"
+            id="{{ fid }}-name"
+            name="contact[name]"
+            type="text"
+            required
+            autocomplete="name"
+            placeholder="e.g. Jake Miller"
+            aria-describedby="{{ fid }}-name-err"
+            data-rule="name"
+          >
+          <p class="err" id="{{ fid }}-name-err"></p>
+        </div>
+        <div class="field">
+          <label for="{{ fid }}-email">Email</label>
+          <input
+            class="input"
+            id="{{ fid }}-email"
+            name="contact[email]"
+            type="email"
+            required
+            autocomplete="email"
+            spellcheck="false"
+            placeholder="you@company.com"
+            value="{{ form.email }}"
+            aria-describedby="{{ fid }}-email-err"
+            data-rule="email"
+            {% if form.errors contains 'email' %}
+              aria-invalid="true"
+            {% endif %}
+          >
+          <p class="err" id="{{ fid }}-email-err">
+            {%- if form.errors contains 'email' -%}
+              {{ form.errors.translated_fields.email | capitalize }}
+              {{ form.errors.messages.email }}.
+            {%- endif -%}
+          </p>
+        </div>
+        <div class="field">
+          <label for="{{ fid }}-phone">Phone <span class="opt">(optional)</span></label>
+          <input
+            class="input"
+            id="{{ fid }}-phone"
+            name="contact[phone]"
+            type="tel"
+            autocomplete="tel"
+            inputmode="tel"
+            aria-describedby="{{ fid }}-phone-err"
+            data-rule="phone"
+          >
+          <p class="err" id="{{ fid }}-phone-err"></p>
+        </div>
+        <div class="field full">
+          <label for="{{ fid }}-pkg">Package</label>
+          <select class="input" id="{{ fid }}-pkg" name="contact[package]" data-sp-select>
+            {%- for tk in tkeys -%}
+              {%- assign want = tk | split: '-' | last | minus: 100 -%}
+              {%- for t in tiers -%}
+                {%- if forloop.index == want -%}
+                  {%- assign st = t.status.value | default: 'available' | downcase -%}
+                  {%- if st == 'soldout' -%}
+                    <option
+                      value="{{ t.name.value | escape }} (waitlist)"
+                      data-handle="{{ t.system.handle }}"
+                      data-wait="1"
+                      {% if preselect == t.system.handle %}
+                        selected
+                      {% endif %}
+                    >
+                      {{ t.name.value }} · Waitlist (sold out for {{ season }})
+                    </option>
+                  {%- else -%}
+                    <option
+                      value="{{ t.name.value | escape }}"
+                      data-handle="{{ t.system.handle }}"
+                      {% if preselect == t.system.handle %}
+                        selected
+                      {% endif %}
+                    >
+                      {{ t.name.value -}}
+                      {%- if t.price.value != blank %} · {{ t.price.value | times: 100 | money_without_trailing_zeros }}{% endif %}
+                    </option>
+                  {%- endif -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endfor -%}
+            <option
+              value="Not sure yet: send the info kit"
+              data-handle="unsure"
+              {% if preselect == 'unsure' %}
+                selected
+              {% endif %}
+            >
+              {{ section.settings.unsure_label }}
+            </option>
+          </select>
+        </div>
+        {%- assign why_opts = section.settings.why_options | split: ',' -%}
+        {%- if why_opts.size > 0 -%}
+          <div class="field full">
+            <label for="{{ fid }}-why">{{ section.settings.why_label }} <span class="opt">(optional)</span></label>
+            <select class="input" id="{{ fid }}-why" name="contact[why]">
+              <option value="">Choose one</option>
+              {%- for w in why_opts -%}
+                {%- assign w = w | strip -%}
+                {%- if w != blank -%}
+                  <option value="{{ w | escape }}">{{ w }}</option>
+                {%- endif -%}
+              {%- endfor -%}
+            </select>
+          </div>
+        {%- endif -%}
+        <div class="field full">
+          <label for="{{ fid }}-msg">Message <span class="opt">(optional)</span></label>
+          <textarea
+            class="input"
+            id="{{ fid }}-msg"
+            name="contact[body]"
+            maxlength="2000"
+            placeholder="Tell us about your business and what you’d like to get out of it..."
+            data-sp-msg-field
+          ></textarea>
+        </div>
+        {%- if section.settings.unsure_note != blank -%}
+          <div class="sp-next full">{{ section.settings.unsure_note }}</div>
+        {%- endif -%}
+        {%- if section.settings.consent != blank -%}
+          <div class="consent full">{{ section.settings.consent }}</div>
+        {%- endif -%}
+        <div class="full">
+          <button
+            class="btn"
+            type="submit"
+            data-sp-submit
+            data-label="{{ section.settings.submit_label | escape }}"
+            data-label-wait="{{ section.settings.submit_wait | escape }}"
+            data-label-kit="{{ section.settings.submit_kit | escape }}"
+          >
+            {{ section.settings.submit_label }}
+          </button>
+        </div>
+        <p class="sp-status is-err full" role="alert" data-sp-status></p>
+      {%- endform -%}
+      <script type="application/json" data-sp-titles>
+        {
+          "pkg": {{ section.settings.form_title | json }},
+          "wait": {{ section.settings.form_title_wait | json }},
+          "kit": {{ section.settings.form_title_kit | json }}
+        }
+      </script>
+    </div>
+  </div>
+  <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{ ld_items | strip }}]}
+  </script>
+</section>
+
+{% stylesheet %}
+  .sp-end{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(20px,3vw,48px);align-items:start}
+  .faq .h2{margin-bottom:12px}
+  .faq details{border-top:1px solid var(--line)}
+  .faq details:last-of-type{border-bottom:1px solid var(--line)}
+  .faq summary{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:48px;cursor:pointer;font-weight:600;font-size:var(--t-sm);list-style:none;color:var(--ink)}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";font-size:18px;flex:none}
+  .faq details[open] summary::after{content:"\2212"}
+  .faq__a{margin:0 0 14px;color:var(--soft);font-size:var(--t-sm);max-width:60ch}
+  .faq__a p{margin:0 0 8px}
+  .faq__a p:last-child{margin:0}
+  .faq__a a{color:var(--ink)}
+  .sp-book{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:4px 16px;margin-top:20px;padding:12px 14px;background:var(--bg);border:1px solid var(--line);text-decoration:none;color:var(--ink);transition:border-color .15s}
+  .sp-book:hover{border-color:var(--ink)}
+  .sp-book__q{font-size:var(--t-sm);font-weight:600}
+  .sp-book__go{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px}
+  .sp-book__go svg{width:16px;height:16px;transition:transform .15s}
+  .sp-book:hover .sp-book__go svg{transform:translateX(3px)}
+  .sp-req{scroll-margin-top:calc(var(--header) + 56px)}
+  .sp-req__lede{margin:4px 0 12px}
+  .sp-form{background:var(--surface);border:1px solid var(--line);padding:clamp(16px,2vw,24px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px}
+  .sp-form .full{grid-column:1/-1}
+  .sp-form textarea.input{min-height:96px;padding-block:10px;resize:vertical}
+  .sp-form select.input{cursor:pointer}
+  .sp-form .input[aria-invalid="true"]{border-color:var(--alert);outline:1px solid var(--alert)}
+  .sp-form .field .opt{font-weight:400;text-transform:none;letter-spacing:0;color:var(--mute)}
+  .sp-form .err{margin:0;font-size:var(--t-xs);color:var(--alert);font-weight:600}
+  .sp-form .err:empty{display:none}
+  .sp-status{margin:0;font-size:var(--t-sm);font-weight:600;min-height:1.5em}
+  .sp-status.is-err{color:var(--alert)}
+  .sp-status:empty{min-height:0}
+  .sp-status ul{margin:0;padding-left:18px}
+  .sp-ok{display:grid;gap:6px;padding:12px 14px;background:var(--bg);border-left:3px solid var(--accent)}
+  .sp-ok p{margin:0;color:var(--soft);font-size:var(--t-sm)}
+  .sp-ok .h3{color:var(--ink)}
+  .sp-ok:focus{outline:none}
+  .sp-ok:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .sp-next{margin:0;padding:10px 12px;background:var(--bg);border-left:3px solid var(--accent);font-size:var(--t-sm);color:var(--ink)}
+  .sp-next p{margin:0}
+  .sp-next strong,.sp-next b{display:block;font-size:var(--t-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+  .sp-form .consent p{margin:0}
+  @media (max-width:900px){.sp-end{grid-template-columns:1fr}}
+  @media (max-width:480px){.sp-form{grid-template-columns:1fr}}
+  @media (prefers-reduced-motion:reduce){.sp-book__go svg{transition:none}.sp-book:hover .sp-book__go svg{transform:none}}
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function box() { return document.querySelector('[data-sp-request]'); }
+    function titles(b) {
+      try { return JSON.parse(b.querySelector('[data-sp-titles]').textContent); } catch (e) { return {}; }
+    }
+    function sync(b) {
+      var sel = b.querySelector('[data-sp-select]');
+      if (!sel) return;
+      var opt = sel.options[sel.selectedIndex];
+      var wait = !!(opt && opt.getAttribute('data-wait'));
+      var kit = !!(opt && opt.getAttribute('data-handle') === 'unsure');
+      var t = titles(b), h = b.querySelector('[data-sp-title]'), s = b.querySelector('[data-sp-submit]');
+      if (h) h.textContent = wait ? t.wait || t.pkg : kit ? t.kit || t.pkg : t.pkg;
+      if (s) s.textContent = wait ? s.getAttribute('data-label-wait') : kit ? s.getAttribute('data-label-kit') : s.getAttribute('data-label');
+    }
+    function pick(handle, msg) {
+      var b = box();
+      if (!b) return;
+      var sel = b.querySelector('[data-sp-select]');
+      if (sel && handle) {
+        for (var i = 0; i < sel.options.length; i++) {
+          if (sel.options[i].getAttribute('data-handle') === handle) { sel.selectedIndex = i; break; }
+        }
+        sync(b);
+      }
+      var m = b.querySelector('[data-sp-msg-field]');
+      if (m && msg && !m.value) m.value = msg;
+      b.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      var first = b.querySelector('input:not([type="hidden"])');
+      if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, reduce ? 0 : 450);
+    }
+    var RULES = {
+      company: function (v) { return v ? '' : 'Add your company.'; },
+      name: function (v) { return v ? '' : 'Add your name.'; },
+      email: function (v) {
+        return !v ? 'Add your email so we can reply.' : !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? 'Check the email: it should look like name@example.com.' : '';
+      },
+      phone: function (v) { return v && v.replace(/\D/g, '').length < 10 ? 'Check the phone: 10 digits, area code first.' : ''; }
+    };
+    function check(el) {
+      var msg = RULES[el.getAttribute('data-rule')](el.value.trim());
+      el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+      var err = document.getElementById(el.getAttribute('aria-describedby'));
+      if (err) err.textContent = msg;
+      return !msg;
+    }
+    function initForm(b) {
+      if (!b || b.dataset.ready) return;
+      b.dataset.ready = '1';
+      var form = b.querySelector('form');
+      if (!form) return;
+      form.noValidate = true;
+      var fields = Array.prototype.slice.call(form.querySelectorAll('[data-rule]'));
+      fields.forEach(function (el) {
+        el.addEventListener('blur', function () { if (el.value.trim() || el.getAttribute('aria-invalid') === 'true') check(el); });
+        el.addEventListener('input', function () { if (el.getAttribute('aria-invalid') === 'true') check(el); });
+      });
+      var sel = form.querySelector('[data-sp-select]');
+      if (sel) sel.addEventListener('change', function () { sync(b); });
+      form.addEventListener('submit', function (e) {
+        var bad = fields.filter(function (el) { return !check(el); });
+        var st = form.querySelector('[data-sp-status]');
+        if (bad.length) {
+          e.preventDefault();
+          if (st) st.textContent = bad.length === 1 ? 'One thing to fix before we can send it.' : bad.length + ' things to fix before we can send it.';
+          bad[0].focus();
+        } else if (st) st.textContent = '';
+      });
+      sync(b);
+      var ok = form.querySelector('[data-sp-ok]') || form.querySelector('[data-sp-server-err]');
+      if (ok) {
+        b.scrollIntoView({ block: 'start' });
+        if (ok.hasAttribute('data-sp-ok')) ok.focus({ preventScroll: true });
+      }
+    }
+    if (!window.hmSponsorPick) {
+      window.hmSponsorPick = pick;
+      document.addEventListener('click', function (e) {
+        var a = e.target.closest('[data-sp-pkg], [data-sp-pkg-go], [data-sp-jump]');
+        if (!a) return;
+        if (a.hasAttribute('data-sp-jump')) {
+          var id = (a.getAttribute('href') || '#packages').split('#')[1] || 'packages';
+          var t = document.getElementById(id);
+          if (!t) return;
+          e.preventDefault();
+          t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+          var list = t.querySelector('[tabindex="0"]') || t;
+          if (!list.hasAttribute('tabindex')) list.setAttribute('tabindex', '-1');
+          list.focus({ preventScroll: true });
+          return;
+        }
+        if (!box()) return;
+        e.preventDefault();
+        pick(a.getAttribute('data-sp-pkg'), a.getAttribute('data-sp-msg'));
+      });
+    }
+    function initAll(scope) { (scope || document).querySelectorAll('[data-sp-request]').forEach(initForm); }
+    document.addEventListener('shopify:section:load', function (e) { initAll(e.target); });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { initAll(); });
+    else initAll();
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Sponsors: FAQ and form",
+  "tag": "div",
+  "class": "hm-sponsors-request",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Questions come from Content > Metaobjects > FAQ item (Pages includes sponsors). The Question blocks below only show when there are none. In answers, [pitch] and [pulls] use the Sponsor stats numbers."
+    },
+    { "type": "text", "id": "faq_title", "label": "FAQ title", "default": "FAQ" },
+    { "type": "text", "id": "book_text", "label": "Book the team line", "default": "Want “The Evil One” at your event?" },
+    { "type": "text", "id": "book_label", "label": "Book the team link", "default": "Book the team" },
+    { "type": "url", "id": "book_url", "label": "Book the team page" },
+    { "type": "header", "content": "Request form" },
+    { "type": "text", "id": "topic", "label": "Email subject (topic)", "default": "Sponsorship request" },
+    { "type": "text", "id": "form_title", "label": "Title", "default": "Request a package" },
+    { "type": "text", "id": "form_title_wait", "label": "Title for a sold out package", "default": "Join the waitlist" },
+    { "type": "text", "id": "form_title_kit", "label": "Title for Not sure yet", "default": "Request the info kit" },
+    { "type": "text", "id": "form_text", "label": "Text", "default": "Tell us a little about your business and pick a package, or just ask for the info kit." },
+    { "type": "text", "id": "unsure_label", "label": "Not sure option", "default": "Not sure yet (send me the info kit)" },
+    { "type": "text", "id": "why_label", "label": "Why question", "default": "What do you want out of it?" },
+    {
+      "type": "text",
+      "id": "why_options",
+      "label": "Why answers (comma separated, empty = hide)",
+      "default": "Reach farmers and pulling fans, Get my local business seen, Support the sport, Something else"
+    },
+    {
+      "type": "richtext",
+      "id": "unsure_note",
+      "label": "Info kit note",
+      "default": "<p><strong>Not sure yet?</strong>Pick “Not sure yet” above to request our sponsor info kit: a short PDF with the packages, who sees your logo, the decal map and real photos. We email it within 2 business days. No commitment.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "consent",
+      "label": "Privacy line",
+      "default": "<p>We use your details only to reply about sponsorship. See our <a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a>.</p>"
+    },
+    { "type": "text", "id": "submit_label", "label": "Button", "default": "Send request" },
+    { "type": "text", "id": "submit_wait", "label": "Button for a sold out package", "default": "Join the waitlist" },
+    { "type": "text", "id": "submit_kit", "label": "Button for Not sure yet", "default": "Request the info kit" },
+    { "type": "header", "content": "After sending" },
+    { "type": "text", "id": "ok_label", "label": "Label", "default": "Request sent" },
+    { "type": "text", "id": "ok_title", "label": "Title", "default": "Thanks, your request is in." },
+    {
+      "type": "text",
+      "id": "ok_text",
+      "label": "Text",
+      "default": "We’ll email our sponsor info kit (a short PDF to help you decide, no commitment) within 2 business days."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Which package fits my business?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>Answer</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sponsors: FAQ and form",
+      "blocks": [
+        {
+          "type": "question",
+          "settings": {
+            "question": "Which package fits my business?",
+            "answer": "<p>Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. Not sure? Pick “Not sure yet” in the form and we’ll send you the info kit.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "Where does “The Evil One” pull?",
+            "answer": "<p>On the NTPA and PPL Badger State circuits, [pulls], plus exhibitions. Driver and owner Chris F. has 20+ years in the sport. Dates go up on the <a href=\"/pages/schedule\" title=\"Schedule\">Schedule</a>.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How many people will see my brand?",
+            "answer": "<p>[pitch], in the stands alone. Streams and social media come on top of that. Current numbers are in our sponsor info kit.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "How long does a package run?",
+            "answer": "<p>Packages are built around the pulling season. We confirm the exact dates and terms in writing with you before anything goes on the tractor.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "What if the package I want is sold out?",
+            "answer": "<p>Hit “Join the waitlist” on that package. We’ll contact you if a spot opens up.</p>"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "question": "What happens after I send the form?",
+            "answer": "<p>If you asked for the sponsor info kit, we email it within 2 business days: a short PDF with the packages, who sees your logo, the decal map and real photos, so you can decide. If you picked a package, we also reply to set up a call. No commitment: nothing is signed until we agree on the terms in writing.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

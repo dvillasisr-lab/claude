@@ -1,0 +1,117 @@
+{
+  "sections": {
+    "top": {
+      "type": "hm-machine-top",
+      "blocks": {
+        "k1": { "type": "key", "settings": { "label": "Engine", "value": "Cat 3208 V8" } },
+        "k2": { "type": "key", "settings": { "label": "Built to", "value": "680 CU IN" } },
+        "k3": { "type": "key", "settings": { "label": "Weight", "value": "10,000 LB" } },
+        "k4": { "type": "key", "settings": { "label": "Horsepower", "value": "Unknown" } },
+        "p1": { "type": "photo", "settings": { "caption": "The Cat 3208, in the shop", "position": "50% 55%" } },
+        "p2": { "type": "photo", "settings": { "caption": "Profile, matte black", "position": "50% 78%" } },
+        "p3": { "type": "photo", "settings": { "caption": "From the rear, on the track", "position": "50% 70%" } },
+        "p4": { "type": "photo", "settings": { "caption": "Head on, white smoke", "position": "50% 65%" } }
+      },
+      "block_order": ["k1", "k2", "k3", "k4", "p1", "p2", "p3", "p4"],
+      "settings": {
+        "label": "Pro Stock · Waterloo, WI",
+        "title": "The Machine",
+        "lede": "A Caterpillar 3208 V8, reverse flow: a setup you won’t find on any other tractor on the track. Nothing about it is off the shelf, and nothing about it was quick.",
+        "keys_label": "Key specs",
+        "egg_word": "3208",
+        "photos_label": "Photos of “The Evil One”"
+      }
+    },
+    "anatomy": {
+      "type": "hm-machine-anatomy",
+      "settings": {
+        "title": "Anatomy",
+        "hint": "Tap a number. On a keyboard, use the arrow keys.",
+        "group_label": "Parts of the tractor",
+        "list_label": "All parts as a list"
+      }
+    },
+    "specs": {
+      "type": "hm-machine-specs",
+      "blocks": {
+        "b1": { "type": "big", "settings": { "label": "Engine", "value": "V8", "unit": "", "sub": "Cat 3208, reverse flow", "unknown": false } },
+        "b2": { "type": "big", "settings": { "label": "Displacement", "value": "680", "unit": "CU IN", "sub": "636 stock, +44 built", "unknown": false } },
+        "b3": { "type": "big", "settings": { "label": "Turbo", "value": "1", "unit": "Turbo", "sub": "Single, large", "unknown": false } },
+        "b4": { "type": "big", "settings": { "label": "Weight", "value": "10,000", "unit": "LB", "sub": "Front weight box included", "unknown": false } },
+        "b5": { "type": "big", "settings": { "label": "Tires", "value": "24.5-32", "unit": "", "sub": "Rear", "unknown": false } },
+        "b6": { "type": "big", "settings": { "label": "Horsepower", "value": "Unknown", "unit": "", "sub": "We’ll let the track answer.", "unknown": true } },
+        "r1": { "type": "row", "settings": { "label": "Chassis", "value": "Custom-built" } },
+        "r2": { "type": "row", "settings": { "label": "Body", "value": "Challenger 1015" } },
+        "r3": { "type": "row", "settings": { "label": "Class", "value": "Pro Stock" } },
+        "r4": { "type": "row", "settings": { "label": "Fuel", "value": "Diesel" } },
+        "r5": { "type": "row", "settings": { "label": "Home", "value": "Waterloo, WI" } },
+        "r6": { "type": "row", "settings": { "label": "Leagues", "value": "NTPA & PPL Badger State" } },
+        "r7": { "type": "row", "settings": { "label": "Nickname", "value": "“The Evil One”" } },
+        "r8": { "type": "row", "settings": { "label": "Front tires", "value": "" } },
+        "r9": { "type": "row", "settings": { "label": "Wheelbase", "value": "" } },
+        "r10": { "type": "row", "settings": { "label": "Rear axle", "value": "" } },
+        "r11": { "type": "row", "settings": { "label": "Clutch", "value": "" } },
+        "r12": { "type": "row", "settings": { "label": "Build hours", "value": "" } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4", "b5", "b6", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12"],
+      "settings": {
+        "title": "Spec sheet",
+        "subtitle": "Everything on it is custom-built.",
+        "updated": "2026-10-01",
+        "hear_title": "Hear it",
+        "video_url": "https://www.youtube.com/watch?v=HfJ5FAJJ5Ac",
+        "cap_title": "Play: Monroe, WI",
+        "cap_sub": "Green County Fall Nationals, 2026",
+        "open_text": "Watch on YouTube",
+        "soon_text": "Video coming soon"
+      }
+    },
+    "compare": {
+      "type": "hm-machine-compare",
+      "blocks": {
+        "c1": { "type": "cylinders", "settings": { "label": "Cylinders", "us_count": 8, "us": "8, in two banks (V)", "them_count": 6, "them": "6, in one bank (inline)" } },
+        "c2": { "type": "row", "settings": { "label": "Engine", "us": "Caterpillar 3208", "them": "Inline six diesel" } },
+        "c3": { "type": "row", "settings": { "label": "Flow", "us": "Reverse flow", "them": "Varies by build" } },
+        "c4": { "type": "displacement", "settings": { "label": "Displacement", "stock": 636, "built": 680, "unit": "CU IN", "them": "Varies by build" } },
+        "c5": { "type": "row", "settings": { "label": "On the track", "us": "Not on any other tractor", "them": "The common choice" } }
+      },
+      "block_order": ["c1", "c2", "c3", "c4", "c5"],
+      "settings": {
+        "title": "Cat V8 vs the field",
+        "text": "Most Pro Stock tractors run an inline six. “The Evil One” runs a Caterpillar V8, built out from 636 to 680 cubic inches. No numbers for the field here: only what holds for any inline six.",
+        "us_head": "“The Evil One”",
+        "them_head": "The usual setup",
+        "table_label": "The engine of “The Evil One” compared with the usual Pro Stock setup"
+      }
+    },
+    "faq": {
+      "type": "hm-machine-faq",
+      "settings": {
+        "title": "Questions from the fence line",
+        "text": "What’s worth knowing before you watch it pull.",
+        "page_key": "machine",
+        "open_first": true
+      }
+    },
+    "tee": {
+      "type": "hm-machine-tee",
+      "blocks": {
+        "l1": { "type": "line", "settings": { "text": "Cat 3208 V8", "highlight": false } },
+        "l2": { "type": "line", "settings": { "text": "680 CI", "highlight": false } },
+        "l3": { "type": "line", "settings": { "text": "10,000 LB", "highlight": false } },
+        "l4": { "type": "line", "settings": { "text": "24.5-32", "highlight": false } },
+        "l5": { "type": "line", "settings": { "text": "HP: Unknown", "highlight": true } }
+      },
+      "block_order": ["l1", "l2", "l3", "l4", "l5"],
+      "settings": {
+        "product": "cat-v8-spec-tee",
+        "label": "The one to wear",
+        "title": "The spec sheet, on a tee",
+        "text": "Cat V8 Spec Tee: the numbers on this page, printed to order. Horsepower still unknown.",
+        "cta": "Shop the Cat V8 Spec Tee",
+        "print_label": "On the print"
+      }
+    }
+  },
+  "order": ["top", "anatomy", "specs", "compare", "faq", "tee"]
+}

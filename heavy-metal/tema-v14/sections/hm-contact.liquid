@@ -49,9 +49,6 @@
                   {% if block.settings.order_field %}
                     data-order="true"
                   {% endif %}
-                  {% if form.topic == block.settings.label %}
-                    selected
-                  {% endif %}
                   {{ block.shopify_attributes }}
                 >
                   {{- block.settings.label | escape -}}

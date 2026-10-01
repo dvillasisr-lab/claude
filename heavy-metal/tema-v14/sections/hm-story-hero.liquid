@@ -1,0 +1,126 @@
+{%- comment -%}
+  Our Story · 1 · Compact hero: text + facts (blocks) + a two photo diptych sized by height.
+{%- endcomment -%}
+{%- liquid
+  assign fs_page = section.settings.full_story_page
+  if fs_page == blank
+    assign fs_page = pages['the-full-story']
+  endif
+  if fs_page == blank
+    assign fs_page = pages['full-story']
+  endif
+-%}
+<section class="st-hero" aria-labelledby="st-h1-{{ section.id }}">
+  <div class="wrap">
+    <div class="st-hero__txt">
+      {%- if section.settings.label != blank -%}<p class="label muted">{{ section.settings.label | escape }}</p>{%- endif -%}
+      <h1 class="h-hero" id="st-h1-{{ section.id }}">{{ section.settings.title | escape }}</h1>
+      <p class="lede">{{ section.settings.lede | escape }}{% if fs_page != blank and section.settings.more_text != blank %} <a class="st-hero__more" href="{{ fs_page.url }}">{{ section.settings.more_text | escape }}</a>{% endif %}</p>
+      {%- if section.blocks.size > 0 -%}
+        <ul class="st-facts">
+          {%- for block in section.blocks -%}
+            <li class="{% if block.settings.highlight %}st-facts__big{% endif %}" {{ block.shopify_attributes }}><b>{{ block.settings.value | escape }}</b>{{ block.settings.text | escape }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+    <div class="st-hero__pics">
+      <figure class="st-photo">
+        {%- if section.settings.image_1 != blank -%}
+          {%- assign st1 = 'object-position:' | append: section.settings.position_1 -%}
+          {{ section.settings.image_1 | image_url: width: 1000 | image_tag: widths: '400, 600, 800, 1000', sizes: '(max-width: 760px) 50vw, 400px', class: 'photo', style: st1, fetchpriority: 'high' }}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'photo' }}
+        {%- endif -%}
+        {%- if section.settings.caption_1 != blank -%}<figcaption class="st-tag">{{ section.settings.caption_1 | escape }}</figcaption>{%- endif -%}
+      </figure>
+      <figure class="st-photo" aria-hidden="true">
+        {%- if section.settings.image_2 != blank -%}
+          {%- assign st2 = 'object-position:' | append: section.settings.position_2 -%}
+          {{ section.settings.image_2 | image_url: width: 800 | image_tag: widths: '300, 500, 800', sizes: '(max-width: 760px) 50vw, 300px', class: 'photo', style: st2, alt: '' }}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'photo' }}
+        {%- endif -%}
+      </figure>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+.st-photo{position:relative;overflow:hidden;background:var(--tile);margin:0}
+.st-photo img,.st-photo svg.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.st-tag{position:absolute;left:8px;bottom:8px;background:rgba(255,255,255,.92);color:var(--ink);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px}
+.st-eyebrow{font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:0;display:flex;align-items:center;gap:8px}
+.st-eyebrow b{display:inline-grid;place-items:center;min-width:26px;height:20px;padding:0 5px;background:var(--ink);color:var(--surface);font-size:11px;letter-spacing:.04em}
+.st-bolt-fill{fill:var(--accent)}
+.st-hero{--hh:clamp(300px,calc(70svh - 2 * 28px),500px);padding-block:28px}
+.st-hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,3.4vw,56px);align-items:center}
+.st-hero__txt{display:grid;gap:14px;max-width:540px}
+.st-hero__txt .lede{max-width:46ch}
+.st-hero__more{font-weight:700;color:var(--ink);white-space:nowrap;text-underline-offset:4px;text-decoration-thickness:2px;text-decoration-color:var(--ink)}
+.st-hero__pics{display:flex;gap:4px;height:var(--hh)}
+.st-hero__pics .st-photo{height:100%;aspect-ratio:4/5}
+.st-hero__pics .st-photo:nth-child(2){aspect-ratio:3/5}
+.st-facts{display:flex;flex-wrap:wrap;gap:0;margin:6px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.st-facts li{display:grid;gap:2px;padding:10px 18px 0 0;margin-right:18px;font-size:var(--t-xs);color:var(--mute)}
+.st-facts li+li{padding-left:18px;border-left:1px solid var(--line)}
+.st-facts b{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h2);line-height:1;color:var(--ink);text-transform:uppercase}
+.st-facts__big b{background:linear-gradient(transparent 60%,var(--accent) 60%);padding-inline:2px;margin-inline:-2px;justify-self:start}
+@media (max-width:1200px){.st-hero__pics .st-photo:nth-child(2){display:none}}
+@media (max-width:760px){
+  .st-hero{--hh:auto;padding-block:20px 24px}
+  .st-hero .wrap{grid-template-columns:1fr;gap:18px}
+  .st-hero__pics{height:auto;order:-1}
+  .st-hero__pics .st-photo{flex:1;height:auto;aspect-ratio:16/10}
+}
+@media (max-width:560px){
+  .st-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .st-facts li{margin-right:0;padding:10px 12px 10px 0}
+  .st-facts li+li{padding-left:12px}
+  .st-facts li:nth-child(odd):not(:first-child){padding-left:0;border-left:0;border-top:1px solid var(--line)}
+  .st-facts li:last-child:nth-child(odd){grid-column:1/-1}
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Story: hero",
+  "tag": "div",
+  "class": "hm-story-hero",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Label", "default": "Our Story · Tomah to Waterloo, WI" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Built in Wisconsin. Built to pull." },
+    { "type": "textarea", "id": "lede", "label": "Intro", "default": "It started in 2014 with one idea. That idea became a Pro Stock tractor, built by a family in its own shop. And that tractor was nicknamed “The Evil One”." },
+    { "type": "text", "id": "more_text", "label": "Full story link text", "default": "Read the full story" },
+    { "type": "page", "id": "full_story_page", "label": "Full story page", "info": "Empty = the page with handle the-full-story or full-story." },
+    { "type": "header", "content": "Photos" },
+    { "type": "image_picker", "id": "image_1", "label": "Main photo" },
+    { "type": "text", "id": "position_1", "label": "Main photo focus (x% y%)", "default": "50% 40%" },
+    { "type": "text", "id": "caption_1", "label": "Main photo tag", "default": "Chris in the seat" },
+    { "type": "image_picker", "id": "image_2", "label": "Second photo (desktop only, decorative)" },
+    { "type": "text", "id": "position_2", "label": "Second photo focus (x% y%)", "default": "50% 30%" }
+  ],
+  "blocks": [
+    {
+      "type": "fact",
+      "name": "Fact",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "value", "label": "Big text", "default": "20+ years" },
+        { "type": "text", "id": "text", "label": "Line below", "default": "Chris F. in tractor pulling" },
+        { "type": "checkbox", "id": "highlight", "label": "Yellow marker", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Story: hero",
+      "blocks": [
+        { "type": "fact", "settings": { "value": "20+ years", "text": "Chris F. in tractor pulling", "highlight": true } },
+        { "type": "fact", "settings": { "value": "12 years", "text": "idea to engine fire" } },
+        { "type": "fact", "settings": { "value": "11 + 2", "text": "crew and mascots" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

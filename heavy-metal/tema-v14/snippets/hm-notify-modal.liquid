@@ -1,0 +1,78 @@
+{% doc %}
+  "Notify me" dialog for Coming soon and Sold out products. Render once from layout/theme.liquid.
+  Saves the email as a customer with the tags `notify` and `notify-<handle>` (form 'customer'),
+  so the owner can email that segment with Shopify Email when the product drops or comes back.
+  Opened by any `[data-notify="<handle>"]` button (data-name, data-url, data-notify-state = soon | soldout).
+  Submit is sent in the background by `assets/hm-quick-add.js`; without JS it posts normally.
+
+  @example
+  {% render 'hm-notify-modal' %}
+{% enddoc %}
+<div class="scrim hm-nfy-scrim" data-hm-nfy-scrim hidden></div>
+<div
+  class="qsheet nfy hm-nfy"
+  id="hm-nfy"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="hm-nfy-t"
+  aria-describedby="hm-nfy-d"
+  tabindex="-1"
+  hidden
+  data-hm-nfy
+>
+  <div class="hm-qs__head">
+    <div>
+      <p class="label" data-hm-nfy-k>Coming soon</p>
+      <p class="h3" id="hm-nfy-t" style="margin:0"></p>
+    </div>
+    <button class="icon-btn" type="button" data-hm-nfy-close aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+    </button>
+  </div>
+
+  {%- form 'customer', id: 'HmNotifyModal', class: 'hm-nfy__form', novalidate: 'novalidate', data-hm-notify-form: '' -%}
+    <input type="hidden" name="contact[tags]" value="notify" data-hm-nfy-tags>
+    <p class="small muted" id="hm-nfy-d" data-hm-nfy-d style="margin:0 0 10px">
+      We will email you the moment it drops. One email, no spam.
+    </p>
+    <div data-hm-form-fields>
+      <label class="vh" for="hm-nfy-email">Email</label>
+      <div style="display:flex;gap:8px">
+        <input
+          class="input"
+          id="hm-nfy-email"
+          type="email"
+          name="contact[email]"
+          required
+          autocomplete="email"
+          spellcheck="false"
+          placeholder="Email address"
+          aria-describedby="hm-nfy-err"
+        >
+        <button class="btn" type="submit">Notify me</button>
+      </div>
+      <p class="consent" style="margin-top:8px">
+        Email only. Unsubscribe anytime. You can also join
+        <a href="{{ routes.root_url | append: '/pages/evil-list' | replace: '//', '/' }}">The Evil List</a>
+        for every drop.
+      </p>
+    </div>
+    <p class="small hm-form-err" id="hm-nfy-err" role="alert" data-hm-form-errors>
+      {%- if form.errors -%}{{ form.errors | default_errors }}{%- endif -%}
+    </p>
+    <p role="status" data-hm-form-ok{% unless form.posted_successfully? %} hidden{% endunless %} style="margin:0">
+      <b>You are on the list.</b> We will email you when it is available.
+    </p>
+  {%- endform -%}
+  <a class="link" data-hm-nfy-more href="{{ routes.all_products_collection_url }}" style="text-decoration:underline;font-size:var(--t-xs)">
+    View product details
+  </a>
+</div>
+
+{% stylesheet %}
+  .hm-form-err { margin: 6px 0 0; color: var(--alert); font-weight: 600; }
+  .hm-form-err:empty { display: none; }
+  .hm-nfy .input[aria-invalid="true"] { border-color: var(--alert); outline: 1px solid var(--alert); }
+  .hm-nfy .btn { flex: none; white-space: nowrap; }
+  .hm-nfy .input { min-width: 0; }
+{% endstylesheet %}

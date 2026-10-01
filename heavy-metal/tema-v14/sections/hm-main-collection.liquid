@@ -1,0 +1,701 @@
+{%- liquid
+  assign is_all = false
+  if collection.handle == 'all' or collection.handle == blank
+    assign is_all = true
+  endif
+
+  assign title = collection.title
+  assign desc = collection.description | strip_html | strip
+  if is_all
+    assign title = section.settings.all_title | default: collection.title
+    assign desc = section.settings.all_text
+  endif
+
+  assign evil_url = section.settings.promo_url
+  if evil_url == blank
+    assign evil_url = routes.root_url | append: '/pages/evil-list' | replace: '//', '/'
+  endif
+
+  assign empty_store = false
+  if collection.all_products_count == 0
+    assign empty_store = true
+  endif
+
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign sort_label = ''
+  for option in collection.sort_options
+    if option.value == sort_by
+      assign sort_label = option.name
+    endif
+  endfor
+
+  assign active_count = 0
+  for filter in collection.filters
+    if filter.type == 'price_range'
+      if filter.min_value.value != null or filter.max_value.value != null
+        assign active_count = active_count | plus: 1
+      endif
+    else
+      assign active_count = active_count | plus: filter.active_values.size
+    endif
+  endfor
+
+  assign menu = section.settings.category_menu
+  assign clear_url = collection.url | append: '?sort_by=' | append: sort_by
+-%}
+
+<div class="hm-plp" data-hm-plp data-section-id="{{ section.id }}" data-url="{{ collection.url }}">
+  <section class="wrap plp-head" aria-labelledby="plp-title-{{ section.id }}">
+    <nav class="plp-crumbs vh" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="{{ routes.root_url }}">Home</a></li>
+        {%- unless is_all -%}
+          <li><a href="{{ routes.all_products_collection_url }}">Shop</a></li>
+        {%- endunless -%}
+        <li aria-current="page">{{ title | escape }}</li>
+      </ol>
+    </nav>
+    <div class="plp-head__row">
+      <h1 class="h1" id="plp-title-{{ section.id }}">{{ title | escape }}</h1>
+      {%- if desc != blank and section.settings.show_description -%}
+        <p class="plp-desc">{{ desc | truncatewords: 40 | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- unless empty_store -%}
+      {%- if menu != blank and menu.links.size > 0 -%}
+        <div class="plp-cats">
+          <ul class="cats" aria-label="Shop by category">
+            {%- for link in menu.links -%}
+              {%- liquid
+                assign thumb = nil
+                if link.type == 'collection_link'
+                  assign thumb = link.object.featured_image
+                elsif link.type == 'product_link'
+                  assign thumb = link.object.featured_image
+                endif
+                assign current = false
+                if link.url == collection.url or link.current
+                  assign current = true
+                endif
+              -%}
+              <li>
+                <a class="cat" href="{{ link.url }}"{% if current %} aria-current="true"{% endif %}>
+                  <span class="thumb">
+                    {%- if thumb -%}
+                      {{- thumb | image_url: width: 200 | image_tag: width: 100, height: 100, widths: '100, 200', sizes: '100px', loading: 'lazy', class: 'photo', alt: '' -}}
+                    {%- else -%}
+                      {{- 'collection-apparel-1' | placeholder_svg_tag: 'photo' -}}
+                    {%- endif -%}
+                  </span>
+                  <span>{{ link.title | escape }}</span>
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <div class="plp-bar" data-hm-region="bar">
+        <div class="plp-bar__in">
+          {%- if section.settings.enable_sorting -%}
+            <button class="plp-tool" type="button" data-plp-open="sort" aria-haspopup="dialog" aria-expanded="false" aria-controls="plp-drawer-{{ section.id }}">
+              <span>Sort</span>
+            </button>
+          {%- endif -%}
+          {%- if section.settings.enable_filtering -%}
+            {%- for filter in collection.filters limit: 3 -%}
+              <button class="plp-tool" type="button" data-plp-open="f{{ forloop.index }}" aria-haspopup="dialog" aria-expanded="false" aria-controls="plp-drawer-{{ section.id }}">
+                <span>{{ filter.label | escape }}</span>
+                {%- if filter.active_values.size > 0 -%}
+                  <span class="plp-tool__n">({{ filter.active_values.size }})</span>
+                {%- endif -%}
+              </button>
+            {%- endfor -%}
+            {%- if collection.filters.size > 3 -%}
+              <button class="plp-tool" type="button" data-plp-open="f4" aria-haspopup="dialog" aria-expanded="false" aria-controls="plp-drawer-{{ section.id }}">
+                <span>More filters</span>
+              </button>
+            {%- endif -%}
+          {%- endif -%}
+          {%- if menu != blank and menu.links.size > 0 -%}
+            <button class="plp-tool" type="button" data-plp-open="category" aria-haspopup="dialog" aria-expanded="false" aria-controls="plp-drawer-{{ section.id }}">
+              <span>Category</span>
+            </button>
+          {%- endif -%}
+          <p class="plp-bar__meta">
+            <span class="num" role="status">
+              {{- collection.products_count }}
+              {% if collection.products_count == 1 %}product{% else %}products{% endif -%}
+              {%- if active_count > 0 %} of {{ collection.all_products_count }}{% endif -%}
+            </span>
+            {%- if sort_label != blank -%}
+              <span class="plp-bar__sort">Sorted by {{ sort_label | escape }}</span>
+            {%- endif -%}
+          </p>
+        </div>
+      </div>
+    {%- endunless -%}
+  </section>
+
+  {%- if empty_store -%}
+    <div class="wrap plp-soon">
+      {%- render 'hm-coming-soon',
+        id: 'HmSoonCollection',
+        heading: section.settings.soon_heading,
+        text: section.settings.soon_text
+      -%}
+      <p class="plp-soon__more">
+        <a class="link" href="{{ evil_url }}" style="text-decoration:underline">Join The Evil List</a>
+      </p>
+    </div>
+  {%- else -%}
+    <div class="wrap">
+      <div data-hm-region="chips">
+        {%- if active_count > 0 or sort_by != collection.default_sort_by -%}
+          <div class="plp-chips" role="group" aria-label="Active filters">
+            {%- for filter in collection.filters -%}
+              {%- if filter.type == 'price_range' -%}
+                {%- if filter.min_value.value != null or filter.max_value.value != null -%}
+                  <a class="plp-chip" href="{{ filter.url_to_remove }}" data-hm-plp-link>
+                    {{- filter.label | escape }}:
+                    {{ filter.min_value.value | default: 0 | money_without_trailing_zeros }} to
+                    {{ filter.max_value.value | default: filter.range_max | money_without_trailing_zeros -}}
+                    <span class="vh"> (remove)</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+                  </a>
+                {%- endif -%}
+              {%- else -%}
+                {%- for value in filter.active_values -%}
+                  <a class="plp-chip" href="{{ value.url_to_remove }}" data-hm-plp-link>
+                    {{- filter.label | escape }}: {{ value.label | escape -}}
+                    <span class="vh"> (remove)</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+                  </a>
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if sort_by != collection.default_sort_by -%}
+              <a class="plp-chip" href="{{ collection.url }}?{% for filter in collection.filters %}{% for value in filter.active_values %}{{ value.param_name }}={{ value.value | url_encode }}&{% endfor %}{% endfor %}" data-hm-plp-link>
+                Sort: {{ sort_label | escape -}}
+                <span class="vh"> (remove)</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+              </a>
+            {%- endif -%}
+            {%- if active_count > 1 -%}
+              <a class="plp-chips__clear" href="{{ clear_url }}" data-hm-plp-link>Clear all</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="plp-results" data-hm-region="results">
+        {%- if section.settings.show_edition_link and section.settings.edition_url != blank -%}
+          <a class="plp-ltd" href="{{ section.settings.edition_url }}">
+            <span class="badge badge--ink">Special edition</span>
+            <span>
+              <b>{{ section.settings.edition_title | escape }}</b>
+              <span class="muted">{{ section.settings.edition_text | escape }}</span>
+            </span>
+            <span class="link" aria-hidden="true">View the edition</span>
+          </a>
+        {%- endif -%}
+
+        {%- paginate collection.products by section.settings.per_page -%}
+          <h2 class="vh">Products</h2>
+          {%- if collection.products.size > 0 -%}
+            <div class="pgrid" data-hm-grid>
+              {%- for product in collection.products -%}
+                {%- liquid
+                  assign lazy = true
+                  if forloop.index <= 4 and paginate.current_page == 1
+                    assign lazy = false
+                  endif
+                  assign prio = false
+                  if forloop.first and paginate.current_page == 1
+                    assign prio = true
+                  endif
+                -%}
+                {%- render 'hm-card', product: product, lazy: lazy, priority: prio -%}
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <div class="plp-empty">
+              <h2 class="h2">Nothing matches these filters</h2>
+              <p>Try another size or color, or clear the filters to see everything in this category.</p>
+              <a class="btn" href="{{ clear_url }}" data-hm-plp-link>Clear filters</a>
+            </div>
+          {%- endif -%}
+
+          {%- if collection.products.size > 0 -%}
+            {%- liquid
+              assign seen = paginate.current_offset | plus: collection.products.size
+            -%}
+            <div class="plp-foot" data-hm-foot>
+              <p class="small muted num">
+                You’ve seen {{ seen }} of {{ paginate.items }}
+                {% if paginate.items == 1 %}product{% else %}products{% endif %}
+              </p>
+              {%- if paginate.next -%}
+                <a class="link" href="{{ paginate.next.url }}" data-hm-more style="text-decoration:underline">Load more</a>
+              {%- endif -%}
+              {%- if paginate.previous -%}
+                <a class="link muted" href="{{ paginate.previous.url }}" style="text-decoration:underline">Previous page</a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+          <template data-hm-promo>
+            <a class="plp-promo" href="{{ evil_url }}">
+              <span class="label muted">{{ section.settings.promo_label | escape }}</span>
+              <span class="h2">{{ section.settings.promo_title | escape }}</span>
+              <p>{{ section.settings.promo_text | escape }}</p>
+              <span class="link">{{ section.settings.promo_link | escape }}</span>
+            </a>
+          </template>
+          <span hidden data-hm-last-page="{% if paginate.next %}false{% else %}true{% endif %}"></span>
+        {%- endpaginate -%}
+      </div>
+    </div>
+
+    {%- comment -%} Filter and sort drawer (one drawer, accordions; GET form so it works without JS) {%- endcomment -%}
+    <div class="plp-scrim" data-plp-scrim hidden></div>
+    <aside
+      class="plp-drawer"
+      id="plp-drawer-{{ section.id }}"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="plp-drawer-t-{{ section.id }}"
+      tabindex="-1"
+      hidden
+      data-plp-drawer
+    >
+      <form action="{{ collection.url }}" method="get" class="hm-plp__form" data-hm-filter-form>
+        <div class="plp-drawer__head">
+          <div>
+            <p class="h3" id="plp-drawer-t-{{ section.id }}" style="margin:0">Filter and sort</p>
+            <p class="small muted" data-hm-region="status" style="margin:0">
+              {%- if active_count > 0 -%}
+                {{ active_count }} {% if active_count == 1 %}filter{% else %}filters{% endif %} selected
+              {%- else -%}
+                No filters selected
+              {%- endif -%}
+            </p>
+          </div>
+          <button class="icon-btn" type="button" data-plp-close aria-label="Close filters">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+          </button>
+        </div>
+        <div class="plp-drawer__body" data-hm-region="drawer">
+          {%- if section.settings.enable_sorting -%}
+            <section class="plp-acc">
+              <h2>
+                <button class="plp-acc__btn" type="button" id="plp-acc-sort-btn-{{ section.id }}" aria-expanded="false" aria-controls="plp-acc-sort-{{ section.id }}" data-acc="sort">
+                  Sort<span class="vh">: </span><span class="plp-acc__val">{{ sort_label | escape }}</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+              </h2>
+              <div class="plp-acc__panel" id="plp-acc-sort-{{ section.id }}" role="region" aria-labelledby="plp-acc-sort-btn-{{ section.id }}" hidden>
+                <fieldset>
+                  <legend class="vh">Sort by</legend>
+                  <div class="plp-opts">
+                    {%- for option in collection.sort_options -%}
+                      <label class="plp-opt" for="plp-sort-{{ section.id }}-{{ forloop.index }}">
+                        <input type="radio" name="sort_by" id="plp-sort-{{ section.id }}-{{ forloop.index }}" value="{{ option.value | escape }}"{% if option.value == sort_by %} checked{% endif %}>
+                        {{- option.name | escape -}}
+                      </label>
+                    {%- endfor -%}
+                  </div>
+                </fieldset>
+              </div>
+            </section>
+          {%- else -%}
+            <input type="hidden" name="sort_by" value="{{ sort_by | escape }}">
+          {%- endif -%}
+
+          {%- if section.settings.enable_filtering -%}
+            {%- for filter in collection.filters -%}
+              {%- liquid
+                assign key = 'f' | append: forloop.index
+                if forloop.index > 4
+                  assign key = 'f4'
+                endif
+                assign fname = filter.label | downcase
+                assign kind = 'list'
+                if filter.type == 'price_range'
+                  assign kind = 'price'
+                elsif fname contains 'size'
+                  assign kind = 'size'
+                elsif fname contains 'color' or fname contains 'colour'
+                  assign kind = 'color'
+                endif
+                assign val_label = filter.active_values | map: 'label' | join: ', '
+                if val_label == blank
+                  assign val_label = 'All'
+                endif
+              -%}
+              <section class="plp-acc">
+                <h2>
+                  <button class="plp-acc__btn" type="button" id="plp-acc-{{ forloop.index }}-btn-{{ section.id }}" aria-expanded="false" aria-controls="plp-acc-{{ forloop.index }}-{{ section.id }}" data-acc="{{ key }}">
+                    {{- filter.label | escape -}}
+                    <span class="vh">: </span><span class="plp-acc__val">{{ val_label | escape }}</span>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                  </button>
+                </h2>
+                <div class="plp-acc__panel" id="plp-acc-{{ forloop.index }}-{{ section.id }}" role="region" aria-labelledby="plp-acc-{{ forloop.index }}-btn-{{ section.id }}" hidden>
+                  <fieldset>
+                    <legend class="vh">{{ filter.label | escape }}</legend>
+                    {%- case kind -%}
+                      {%- when 'price' -%}
+                        <div class="hm-plp__price">
+                          <label>
+                            <span class="small muted">From</span>
+                            <input class="input" type="number" inputmode="decimal" min="0" step="1" name="{{ filter.min_value.param_name }}" id="plp-pmin-{{ section.id }}"
+                              {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                              placeholder="0">
+                          </label>
+                          <label>
+                            <span class="small muted">To</span>
+                            <input class="input" type="number" inputmode="decimal" min="0" step="1" name="{{ filter.max_value.param_name }}" id="plp-pmax-{{ section.id }}"
+                              {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                              placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}">
+                          </label>
+                        </div>
+                      {%- when 'size' -%}
+                        <div class="plp-sizes">
+                          {%- for value in filter.values -%}
+                            {%- assign off = false -%}
+                            {%- if value.count == 0 and value.active == false -%}{%- assign off = true -%}{%- endif -%}
+                            <label class="plp-size" for="plp-{{ section.id }}-{{ filter.param_name | handleize }}-{{ forloop.index }}">
+                              <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value | escape }}" id="plp-{{ section.id }}-{{ filter.param_name | handleize }}-{{ forloop.index }}"
+                                {% if value.active %}checked{% endif %}{% if off %} disabled{% endif %}
+                                aria-label="{{ value.label | escape }}, {{ value.count }} items">
+                              <span aria-hidden="true">{{ value.label | escape }}</span>
+                            </label>
+                          {%- endfor -%}
+                        </div>
+                      {%- when 'color' -%}
+                        <div class="plp-colors">
+                          {%- for value in filter.values -%}
+                            {%- liquid
+                              assign off = false
+                              if value.count == 0 and value.active == false
+                                assign off = true
+                              endif
+                              assign sw = value.swatch.color
+                              if sw == blank
+                                assign vname = value.label | downcase
+                                case vname
+                                  when 'matte black', 'black', 'jet black', 'vintage black'
+                                    assign sw = '#1C1B19'
+                                  when 'smoke gray', 'smoke grey', 'gray', 'grey', 'heather gray', 'heather grey', 'sport grey', 'sport gray'
+                                    assign sw = '#8C8A82'
+                                  when 'bone', 'natural', 'cream', 'sand', 'ivory'
+                                    assign sw = '#E9E6DC'
+                                  when 'safety yellow', 'yellow', 'gold'
+                                    assign sw = '#F5C400'
+                                  when 'white'
+                                    assign sw = '#FFFFFF'
+                                  else
+                                    assign sw = 'var(--tile)'
+                                endcase
+                              endif
+                            -%}
+                            <label class="plp-color" for="plp-{{ section.id }}-{{ filter.param_name | handleize }}-{{ forloop.index }}">
+                              <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value | escape }}" id="plp-{{ section.id }}-{{ filter.param_name | handleize }}-{{ forloop.index }}"
+                                {% if value.active %}checked{% endif %}{% if off %} disabled{% endif %}>
+                              <span>
+                                <span class="plp-sw" style="--sw:{{ sw }}"></span>
+                                {{- value.label | escape }} <span class="plp-opt__n">({{ value.count }})</span>
+                              </span>
+                            </label>
+                          {%- endfor -%}
+                        </div>
+                      {%- else -%}
+                        <div class="plp-opts">
+                          {%- for value in filter.values -%}
+                            {%- assign off = false -%}
+                            {%- if value.count == 0 and value.active == false -%}{%- assign off = true -%}{%- endif -%}
+                            <label class="plp-opt{% if off %} is-off{% endif %}" for="plp-{{ section.id }}-{{ filter.param_name | handleize }}-{{ forloop.index }}">
+                              <input type="checkbox" name="{{ value.param_name }}" value="{{ value.value | escape }}" id="plp-{{ section.id }}-{{ filter.param_name | handleize }}-{{ forloop.index }}"
+                                {% if value.active %}checked{% endif %}{% if off %} disabled{% endif %}>
+                              {{- value.label | escape -}}
+                              <span class="plp-opt__n">{{ value.count }}</span>
+                            </label>
+                          {%- endfor -%}
+                        </div>
+                    {%- endcase -%}
+                  </fieldset>
+                </div>
+              </section>
+            {%- endfor -%}
+          {%- endif -%}
+
+          {%- if menu != blank and menu.links.size > 0 -%}
+            <section class="plp-acc">
+              <h2>
+                <button class="plp-acc__btn" type="button" id="plp-acc-cat-btn-{{ section.id }}" aria-expanded="false" aria-controls="plp-acc-cat-{{ section.id }}" data-acc="category">
+                  Category<span class="vh">: </span><span class="plp-acc__val">{{ title | escape }}</span>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+              </h2>
+              <div class="plp-acc__panel" id="plp-acc-cat-{{ section.id }}" role="region" aria-labelledby="plp-acc-cat-btn-{{ section.id }}" hidden>
+                <ul class="plp-opts hm-plp__cats">
+                  {%- for link in menu.links -%}
+                    <li>
+                      <a class="plp-opt" href="{{ link.url }}"{% if link.url == collection.url or link.current %} aria-current="page"{% endif %}>
+                        {{- link.title | escape -}}
+                        {%- if link.type == 'collection_link' -%}
+                          <span class="plp-opt__n">{{ link.object.products_count }}</span>
+                        {%- endif -%}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            </section>
+          {%- endif -%}
+        </div>
+        <div class="plp-drawer__foot">
+          <a class="btn btn--ghost" href="{{ clear_url }}" data-hm-plp-link>Clear all</a>
+          <button class="btn" type="submit" data-hm-region="view">
+            View {{ collection.products_count }} {% if collection.products_count == 1 %}item{% else %}items{% endif %}
+          </button>
+        </div>
+      </form>
+    </aside>
+  {%- endif -%}
+</div>
+
+<script src="{{ 'hm-collection.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .hm-plp { overflow-x: clip; }
+  .plp-head { padding-block: clamp(16px, 2vw, 28px) 0; }
+  .plp-head__row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 20px; margin-bottom: 16px; }
+  .plp-head .h1 { margin: 0; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.15; }
+  .plp-desc { margin: 0; font-size: var(--t-sm); color: var(--mute); max-width: 70ch; }
+  .plp-cats { padding-bottom: 12px; }
+  .plp-cats .cats { padding: 4px; margin-inline: -4px; }
+  .plp-cats .thumb { display: block; }
+  .plp-cats .thumb .photo, .plp-cats .thumb svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+  @media (min-width: 1200px) { .plp-cats .cats { justify-content: space-between; } }
+  .plp-bar { border-top: 1px solid var(--line); }
+  .plp-bar__in { display: flex; align-items: center; gap: 4px; min-height: 52px; overflow-x: auto; scrollbar-width: none; }
+  .plp-bar__in::-webkit-scrollbar { display: none; }
+  .plp-tool { flex: none; min-height: 44px; padding: 0 12px; background: none; border: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .plp-tool:first-child { padding-left: 0; }
+  .plp-tool:hover span:first-child { text-decoration: underline; text-underline-offset: 4px; }
+  .plp-tool__n { font-weight: 600; color: var(--mute); }
+  .plp-bar__meta { margin: 0 0 0 auto; flex: none; font-size: var(--t-xs); color: var(--mute); white-space: nowrap; padding-left: 16px; }
+  .plp-bar__sort::before { content: "\00B7"; margin: 0 8px; }
+  @media (max-width: 760px) { .plp-bar__sort { display: none; } .plp-bar__in { gap: 0; } .plp-tool { padding: 0 7px; letter-spacing: .04em; } .plp-bar__meta { padding-left: 8px; } }
+  .plp-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-block: 4px 0; }
+  .plp-chip { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 0 10px 0 12px; border: 1px solid var(--line); background: var(--surface); font-size: var(--t-xs); font-weight: 600; color: var(--ink); text-decoration: none; }
+  .plp-chip:hover { border-color: var(--ink); }
+  .plp-chip svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2; fill: none; }
+  .plp-chips__clear { font-size: var(--t-xs); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; text-decoration: underline; text-underline-offset: 3px; min-height: 32px; display: inline-flex; align-items: center; padding: 0 4px; color: var(--ink); }
+  .plp-results { padding-block: 12px var(--sect); }
+  .plp-results[aria-busy="true"] .pgrid { opacity: .45; transition: opacity .2s; }
+  .plp-empty { display: grid; justify-items: start; gap: 12px; padding-block: 40px; max-width: 52ch; }
+  .plp-empty p { margin: 0; color: var(--soft); }
+  .plp-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 24px; margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--line); }
+  .plp-foot p { margin: 0; }
+  .plp-scrim { position: fixed; inset: 0; z-index: 79; background: rgba(28,27,25,.4); }
+  .plp-drawer { position: fixed; top: 0; right: 0; bottom: 0; z-index: 80; width: min(450px, 100vw); background: var(--surface); padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px); box-shadow: -24px 0 48px -32px rgba(0,0,0,.4); }
+  .hm-plp__form { display: flex; flex-direction: column; height: 100%; }
+  .plp-drawer__head { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 64px; padding: 0 12px 0 20px; border-bottom: 1px solid var(--line); }
+  .plp-drawer__body { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 0 20px; }
+  .plp-acc { border-bottom: 1px solid var(--line); }
+  .plp-acc h2 { margin: 0; }
+  .plp-acc__btn { width: 100%; min-height: 64px; display: flex; align-items: center; gap: 12px; background: none; border: 0; padding: 0; font-size: var(--t-md); font-weight: 600; color: var(--ink); cursor: pointer; text-align: left; }
+  .plp-acc__val { margin-left: auto; font-size: var(--t-xs); font-weight: 500; color: var(--mute); text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 55%; }
+  .plp-acc__btn svg { flex: none; width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; transition: transform .15s; }
+  .plp-acc__btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+  .plp-acc__panel { padding-bottom: 16px; }
+  .plp-acc fieldset { border: 0; margin: 0; padding: 0; }
+  .plp-opts { display: grid; gap: 0; list-style: none; margin: 0; padding: 0; }
+  .plp-opt { display: flex; align-items: center; gap: 12px; min-height: 44px; font-size: var(--t-sm); cursor: pointer; color: var(--ink); text-decoration: none; }
+  .plp-opt[aria-current="page"] { font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+  .plp-opt input { flex: none; }
+  .plp-opt__n { margin-left: auto; font-size: var(--t-xs); color: var(--mute); }
+  .plp-opt.is-off { color: var(--mute); cursor: default; }
+  .plp-sizes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .plp-size { position: relative; }
+  .plp-size input, .plp-color input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .plp-size span { display: grid; place-items: center; min-height: 44px; border: 1px solid var(--line); font-size: var(--t-xs); font-weight: 700; cursor: pointer; background: var(--surface); }
+  .plp-size input:checked + span { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+  .plp-size input:disabled + span { color: var(--mute); background: var(--bg); cursor: not-allowed; text-decoration: line-through; }
+  .plp-size input:focus-visible + span, .plp-color input:focus-visible + span .plp-sw { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .plp-size span:hover { border-color: var(--ink); }
+  .plp-colors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 12px; }
+  .plp-color { position: relative; }
+  .plp-color > span { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: var(--t-sm); cursor: pointer; }
+  .plp-sw { width: 24px; height: 24px; border-radius: 50%; background: var(--sw); box-shadow: inset 0 0 0 1px rgba(28,27,25,.3); flex: none; }
+  .plp-color input:checked + span .plp-sw { box-shadow: inset 0 0 0 1px rgba(28,27,25,.3), 0 0 0 2px var(--surface), 0 0 0 3px var(--ink); }
+  .plp-color input:checked + span { font-weight: 700; }
+  .plp-color input:disabled + span { color: var(--mute); cursor: not-allowed; }
+  .hm-plp__price { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .hm-plp__price label { display: grid; gap: 4px; }
+  .plp-drawer__foot { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 8px; padding: 12px 20px; border-top: 1px solid var(--line); }
+  .plp-drawer__foot .btn { min-height: 52px; padding-inline: 12px; white-space: nowrap; }
+  @media (prefers-reduced-motion: reduce) { .plp-acc__btn svg { transition: none; } }
+  .plp-ltd { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 6px 16px; align-items: center; padding: 14px 16px; margin-bottom: 16px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); text-decoration: none; color: var(--ink); font-size: var(--t-sm); }
+  .plp-ltd b { display: block; text-transform: uppercase; letter-spacing: .04em; font-size: var(--t-xs); }
+  .plp-ltd .muted { font-size: var(--t-xs); }
+  .plp-ltd .link { text-decoration: underline; }
+  .plp-ltd:hover { border-color: var(--ink); }
+  @media (max-width: 600px) { .plp-ltd { grid-template-columns: minmax(0, 1fr); } }
+  .plp-soon { padding-block: 8px var(--sect); }
+  .plp-soon__more { text-align: center; margin: 16px 0 0; }
+  .plp-crumbs.vh:focus-within { position: static !important; width: auto; height: auto; clip: auto; overflow: visible; white-space: normal; font-size: var(--t-xs); margin-bottom: 8px; }
+  .plp-crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; }
+  .hm-plp .pgrid .card__name { text-wrap: balance; }
+  .plp-promo { display: grid; align-content: end; gap: 10px; padding: clamp(16px, 2vw, 28px); background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); text-decoration: none; color: var(--ink); min-height: 100%; }
+  .plp-promo .h2 { margin: 0; }
+  .plp-promo p { margin: 0; font-size: var(--t-sm); color: var(--soft); max-width: 44ch; }
+  .plp-promo .link { justify-self: start; text-decoration: underline; }
+  .plp-promo:hover { border-color: var(--ink); }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM Shop grid",
+  "tag": "section",
+  "class": "hm-section hm-main-collection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "all_title",
+      "label": "Title on Shop all",
+      "default": "Shop all",
+      "info": "Used on /collections/all. Other collections use their own title."
+    },
+    {
+      "type": "textarea",
+      "id": "all_text",
+      "label": "Text on Shop all",
+      "default": "Every tee, hoodie, hat and sticker from the crew behind “The Evil One”. Printed when you order."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show collection description",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "category_menu",
+      "label": "Category menu",
+      "info": "Each link to a collection shows its image as a round thumbnail. Create the menu in Online Store > Navigation."
+    },
+    {
+      "type": "header",
+      "content": "Grid"
+    },
+    {
+      "type": "range",
+      "id": "per_page",
+      "label": "Products per page",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Enable filters",
+      "default": true,
+      "info": "Filters come from the Search & Discovery app (size, color, availability)."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable sorting",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Special edition link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_edition_link",
+      "label": "Show special edition link above the grid",
+      "default": false
+    },
+    {
+      "type": "url",
+      "id": "edition_url",
+      "label": "Special edition link"
+    },
+    {
+      "type": "text",
+      "id": "edition_title",
+      "label": "Link title",
+      "default": "Limited run · one moment of the season"
+    },
+    {
+      "type": "text",
+      "id": "edition_text",
+      "label": "Link text",
+      "default": "Out for a short window and a set quantity. When it closes or sells out, it is gone."
+    },
+    {
+      "type": "header",
+      "content": "The Evil List tile",
+      "info": "Fills the gap when the last row of products is not full."
+    },
+    {
+      "type": "url",
+      "id": "promo_url",
+      "label": "Link",
+      "info": "Empty = /pages/evil-list"
+    },
+    {
+      "type": "text",
+      "id": "promo_label",
+      "label": "Label",
+      "default": "The Evil List"
+    },
+    {
+      "type": "text",
+      "id": "promo_title",
+      "label": "Title",
+      "default": "Get the next drop first"
+    },
+    {
+      "type": "text",
+      "id": "promo_text",
+      "label": "Text",
+      "default": "New merch and a heads-up before every pull, by email. No spam."
+    },
+    {
+      "type": "text",
+      "id": "promo_link",
+      "label": "Link text",
+      "default": "Join The Evil List"
+    },
+    {
+      "type": "header",
+      "content": "Empty store"
+    },
+    {
+      "type": "text",
+      "id": "soon_heading",
+      "label": "Heading",
+      "default": "Coming soon"
+    },
+    {
+      "type": "textarea",
+      "id": "soon_text",
+      "label": "Text",
+      "default": "The first drop from the crew behind “The Evil One” is on its way. Get a heads up when it lands."
+    }
+  ]
+}
+{% endschema %}

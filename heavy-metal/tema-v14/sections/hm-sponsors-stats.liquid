@@ -1,0 +1,132 @@
+{%- comment -%}
+  Sponsors · the season in numbers, from the sponsor_stats entry "main".
+  Reach = pulls_per_season × fans_per_pull. "+" when show_plus, "(est.)" when estimated.
+{%- endcomment -%}
+{%- liquid
+  assign stats = metaobjects.sponsor_stats.main
+  assign pulls = stats.pulls_per_season.value | default: 0
+  assign fans = stats.fans_per_pull.value | default: 0
+  assign states = stats.states.value | default: 0
+  assign plus = ''
+  if stats.show_plus.value
+    assign plus = '+'
+  endif
+  assign est = false
+  if stats.estimated.value
+    assign est = true
+  endif
+  assign reach = pulls | times: fans
+
+  assign nums = reach | append: ',' | append: fans | split: ','
+  assign fmt = ''
+  for raw in nums
+    assign v = raw | plus: 0
+    assign g_m = v | divided_by: 1000000
+    assign g_t = v | modulo: 1000000 | divided_by: 1000
+    assign g_u = v | modulo: 1000
+    assign u3 = g_u | plus: 1000 | append: '' | slice: 1, 3
+    assign t3 = g_t | plus: 1000 | append: '' | slice: 1, 3
+    if g_m > 0
+      assign out = g_m | append: ',' | append: t3 | append: ',' | append: u3
+    elsif g_t > 0
+      assign out = g_t | append: ',' | append: u3
+    else
+      assign out = g_u | append: ''
+    endif
+    assign fmt = fmt | append: out | append: ';'
+  endfor
+  assign fmt = fmt | split: ';'
+  assign reach_txt = fmt[0]
+  assign fans_txt = fmt[1]
+-%}
+{%- capture est_tag -%}{%- if est -%}<span class="sp-est">(est.)</span>{%- endif -%}{%- endcapture -%}
+
+{%- if reach > 0 or states > 0 or stats.social_text.value != blank -%}
+  <section class="sect sp-stats-sect" id="numbers" aria-labelledby="StatsT-{{ section.id }}">
+    <div class="wrap sp-num">
+      <h2 class="vh" id="StatsT-{{ section.id }}">{{ section.settings.title }}</h2>
+      {%- if reach > 0 -%}
+        <dl class="sp-big">
+          <dt>{{ section.settings.reach_label }}</dt>
+          <dd>
+            <span class="sp-big__v num">{{ reach_txt }}{{ plus }}{{ est_tag }}</span>
+            <span class="sp-big__how">
+              <b>{{ section.settings.how_label }}</b>
+              {{ pulls }}{{ plus }} pulls × {{ fans_txt }}{{ plus }} fans per pull. {{ section.settings.how_extra }}
+            </span>
+          </dd>
+        </dl>
+      {%- endif -%}
+      <div class="sp-stats-col">
+        <dl class="sp-stats">
+          {%- if pulls > 0 -%}
+            <div class="spec">
+              <dt>Pulls per season</dt>
+              <dd class="num">{{ pulls }}{{ plus }}{{ est_tag }}</dd>
+            </div>
+          {%- endif -%}
+          {%- if states > 0 -%}
+            <div class="spec">
+              <dt>States we pull in</dt>
+              <dd class="num">{{ states }}{{ plus }}{{ est_tag }}</dd>
+            </div>
+          {%- endif -%}
+          {%- if fans > 0 -%}
+            <div class="spec">
+              <dt>Fans per pull</dt>
+              <dd class="num">{{ fans_txt }}{{ plus }}{{ est_tag }}</dd>
+            </div>
+          {%- endif -%}
+          {%- if stats.social_text.value != blank -%}
+            <div class="spec">
+              <dt>Social media</dt>
+              <dd class="is-text">{{ stats.social_text.value }}</dd>
+            </div>
+          {%- endif -%}
+        </dl>
+        {%- if stats.updated.value != blank -%}
+          <p class="sp-upd">Last updated: {{ stats.updated.value | date: '%B %-d, %Y' }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% stylesheet %}
+  .sp-stats-sect{padding-block:32px}
+  .sp-num{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(20px,3vw,48px);align-items:end}
+  .sp-big{display:grid;gap:4px;margin:0}
+  .sp-big dt{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+  .sp-big dd{margin:0}
+  .sp-big__v{display:block;font-family:var(--f-head);font-stretch:62%;font-weight:800;font-size:clamp(34px,3.4vw,48px);line-height:.95;letter-spacing:-.01em;color:var(--ink)}
+  .sp-big__how{display:block;margin-top:6px;font-size:var(--t-sm);color:var(--soft);max-width:44ch}
+  .sp-big__how b{color:var(--ink);font-weight:700}
+  .sp-est{font-family:var(--f-sans);font-stretch:100%;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-left:6px;vertical-align:.35em;white-space:nowrap}
+  .sp-stats-col{display:grid;gap:10px}
+  .sp-stats-col .sp-upd{margin:0;font-size:var(--t-xs);color:var(--mute);text-align:right}
+  .sp-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0}
+  .sp-stats .spec dd{font-size:var(--t-h1);white-space:nowrap}
+  .sp-stats .spec dd.is-text{font-size:var(--t-md);white-space:normal;line-height:1.2;text-wrap:balance}
+  .sp-stats .sp-est{vertical-align:.25em;margin-left:4px;font-size:10px}
+  @media (max-width:900px){.sp-num{grid-template-columns:1fr;align-items:start}}
+  @media (max-width:600px){.sp-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Sponsors: numbers",
+  "tag": "div",
+  "class": "hm-sponsors-stats",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Numbers come from Content > Metaobjects > Sponsor stats (entry \"main\"). The total is calculated: pulls per season × fans per pull."
+    },
+    { "type": "text", "id": "title", "label": "Title (screen readers)", "default": "The season in numbers" },
+    { "type": "text", "id": "reach_label", "label": "Label of the big number", "default": "Fans in the stands per season" },
+    { "type": "text", "id": "how_label", "label": "Explanation label", "default": "How we count it:" },
+    { "type": "text", "id": "how_extra", "label": "Explanation extra", "default": "Streams and social media come on top." }
+  ],
+  "presets": [{ "name": "Sponsors: numbers" }]
+}
+{% endschema %}

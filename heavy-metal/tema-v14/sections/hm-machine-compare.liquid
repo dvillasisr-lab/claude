@@ -1,0 +1,147 @@
+{%- comment -%}
+  The Machine · 4 · Cat V8 vs the field: cylinders as pips (8 in two banks vs 6 in one row) and displacement as one bar
+  (stock in black + built in yellow). Rows are blocks.
+{%- endcomment -%}
+<section class="sect sect--white" aria-labelledby="vs-h-{{ section.id }}">
+  <div class="wrap mx-vs">
+    <div class="mx-vs__txt">
+      <h2 class="h1" id="vs-h-{{ section.id }}">{{ section.settings.title | escape }}</h2>
+      {%- if section.settings.text != blank -%}<p class="muted">{{ section.settings.text | escape }}</p>{%- endif -%}
+    </div>
+    <div class="mx-cmp" role="table" aria-label="{{ section.settings.table_label | escape }}">
+      <div role="row" style="display:contents">
+        <span class="mx-cmp__hd" role="columnheader"><span class="vh">Spec</span></span>
+        <span class="mx-cmp__hd" role="columnheader">{{ section.settings.us_head | escape }}</span>
+        <span class="mx-cmp__hd" role="columnheader">{{ section.settings.them_head | escape }}</span>
+      </div>
+      {%- for block in section.blocks -%}
+        <div role="row" style="display:contents" {{ block.shopify_attributes }}>
+          <span class="mx-cmp__rh" role="rowheader">{{ block.settings.label | escape | replace: 'Displacement', 'Displace&shy;ment' }}</span>
+          {%- case block.type -%}
+            {%- when 'cylinders' -%}
+              {%- liquid
+                assign us_n = block.settings.us_count | default: 8
+                assign us_cols = us_n | divided_by: 2
+                if us_n < 4
+                  assign us_cols = us_n
+                endif
+                assign them_n = block.settings.them_count
+              -%}
+              <span class="mx-cmp__us" role="cell"><span class="mx-pips" style="--c:{{ us_cols }}" aria-hidden="true">{% for i in (1..us_n) %}<i></i>{% endfor %}</span>{{ block.settings.us | escape }}</span>
+              <span class="mx-cmp__them" role="cell"><span class="mx-pips" style="--c:{{ them_n }}" aria-hidden="true">{% for i in (1..them_n) %}<i></i>{% endfor %}</span>{{ block.settings.them | escape }}</span>
+            {%- when 'displacement' -%}
+              {%- liquid
+                assign stock = block.settings.stock | default: 0
+                assign built = block.settings.built | default: 0
+                if built < stock
+                  assign built = stock
+                endif
+                if built < 1
+                  assign built = 1
+                endif
+                assign added = built | minus: stock
+                assign stock_pct = stock | times: 100.0 | divided_by: built | round: 2
+                assign add_pct = 100 | minus: stock_pct | round: 2
+              -%}
+              <span class="mx-cmp__us" role="cell"><span class="num">{{ built }} {{ block.settings.unit | escape }}</span><span class="mx-bar" aria-hidden="true"><span class="mx-bar__stock" style="width:{{ stock_pct }}%"></span><span class="mx-bar__add" style="left:{{ stock_pct }}%;width:{{ add_pct }}%"></span></span><span class="mx-bar-k"><span><b></b>{{ stock }} stock</span><span><b class="y"></b>+{{ added }} built</span></span></span>
+              <span class="mx-cmp__them" role="cell">{{ block.settings.them | escape }}</span>
+            {%- else -%}
+              <span class="mx-cmp__us" role="cell">{{ block.settings.us | escape }}</span>
+              <span class="mx-cmp__them" role="cell">{{ block.settings.them | escape }}</span>
+          {%- endcase -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+.mx-vs{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(20px,4vw,56px);align-items:start}
+.mx-vs__txt{display:grid;gap:10px}
+.mx-vs__txt p{margin:0}
+.mx-cmp{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr) minmax(0,1fr);margin:0}
+.mx-cmp [role=row]>*{padding:12px 16px 12px 0;border-bottom:1px solid var(--line);font-size:var(--t-sm);min-width:0}
+.mx-cmp .mx-cmp__hd{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-md);text-transform:uppercase;color:var(--ink);border-bottom:2px solid var(--ink);padding-block:6px}
+.mx-cmp__rh{font-size:var(--t-xs)!important;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);hyphens:manual}
+.mx-cmp__us{font-weight:700;color:var(--ink)}
+.mx-cmp__them{color:var(--soft)}
+.mx-cmp__us,.mx-cmp__them{display:grid;gap:6px;align-content:start}
+.mx-pips{display:grid;grid-template-columns:repeat(var(--c),14px);grid-auto-rows:14px;gap:4px;height:32px;align-content:center}
+.mx-pips i{width:14px;height:14px;border-radius:50%;background:var(--ink)}
+.mx-cmp__them .mx-pips i{background:none;border:1.5px solid var(--mute)}
+.mx-bar{position:relative;display:block;height:10px;background:var(--line);max-width:260px}
+.mx-bar span{position:absolute;left:0;top:0;bottom:0}
+.mx-bar .mx-bar__stock{background:var(--ink)}
+.mx-bar .mx-bar__add{background:var(--accent)}
+.mx-bar-k{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:var(--mute);font-weight:400}
+.mx-bar-k b{display:inline-block;width:8px;height:8px;margin-right:4px;background:var(--ink)}
+.mx-bar-k b.y{background:var(--accent)}
+@media (max-width:960px){.mx-vs{grid-template-columns:1fr}}
+@media (max-width:760px){
+  .mx-cmp{grid-template-columns:minmax(0,96px) minmax(0,1fr) minmax(0,1fr)}
+  .mx-cmp__rh{font-size:10px!important;letter-spacing:0}
+  .mx-cmp [role=row]>*{padding-right:8px;font-size:var(--t-xs)}
+  .mx-pips{grid-template-columns:repeat(var(--c),10px);grid-auto-rows:10px;gap:3px;height:23px}
+  .mx-pips i{width:10px;height:10px}
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Machine: V8 vs the field",
+  "tag": "div",
+  "class": "hm-machine-compare",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Cat V8 vs the field" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Most Pro Stock tractors run an inline six. “The Evil One” runs a Caterpillar V8, built out from 636 to 680 cubic inches. No numbers for the field here: only what holds for any inline six." },
+    { "type": "text", "id": "us_head", "label": "Our column", "default": "“The Evil One”" },
+    { "type": "text", "id": "them_head", "label": "Other column", "default": "The usual setup" },
+    { "type": "text", "id": "table_label", "label": "Table label (screen readers)", "default": "The engine of “The Evil One” compared with the usual Pro Stock setup" }
+  ],
+  "blocks": [
+    {
+      "type": "cylinders",
+      "name": "Cylinders (pips)",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Cylinders" },
+        { "type": "range", "id": "us_count", "label": "Our cylinders", "min": 2, "max": 12, "step": 2, "default": 8 },
+        { "type": "text", "id": "us", "label": "Our text", "default": "8, in two banks (V)" },
+        { "type": "range", "id": "them_count", "label": "Their cylinders", "min": 2, "max": 12, "step": 1, "default": 6 },
+        { "type": "text", "id": "them", "label": "Their text", "default": "6, in one bank (inline)" }
+      ]
+    },
+    {
+      "type": "displacement",
+      "name": "Displacement (bar)",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Displacement" },
+        { "type": "number", "id": "stock", "label": "Stock", "default": 636 },
+        { "type": "number", "id": "built", "label": "Built to", "default": 680 },
+        { "type": "text", "id": "unit", "label": "Unit", "default": "CU IN" },
+        { "type": "text", "id": "them", "label": "Their text", "default": "Varies by build" }
+      ]
+    },
+    {
+      "type": "row",
+      "name": "Row",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Engine" },
+        { "type": "text", "id": "us", "label": "Our text", "default": "Caterpillar 3208" },
+        { "type": "text", "id": "them", "label": "Their text", "default": "Inline six diesel" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Machine: V8 vs the field",
+      "blocks": [
+        { "type": "cylinders" },
+        { "type": "row" },
+        { "type": "displacement" }
+      ]
+    }
+  ]
+}
+{% endschema %}

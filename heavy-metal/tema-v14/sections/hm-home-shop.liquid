@@ -79,11 +79,11 @@
         {%- if coll != blank and limit > 0 -%}
           {%- for product in coll.products limit: limit -%}
             {%- if extra != blank and product.id == extra.id -%}{%- continue -%}{%- endif -%}
-            {% render 'hm-card', product: product %}
+            {% render 'hm-card', product: product, sizes: '(min-width: 1200px) 300px, (min-width: 761px) 25vw, 68vw' %}
           {%- endfor -%}
         {%- endif -%}
         {%- if extra != blank -%}
-          {% render 'hm-card', product: extra %}
+          {% render 'hm-card', product: extra, sizes: '(min-width: 1200px) 300px, (min-width: 761px) 25vw, 68vw' %}
         {%- endif -%}
       </div>
       <div class="swipe" data-hm-swipe aria-hidden="true">

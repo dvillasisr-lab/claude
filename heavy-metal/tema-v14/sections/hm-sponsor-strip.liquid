@@ -1,0 +1,200 @@
+{%- liquid
+  comment
+    Hidden on the templates listed in the setting (default: 404, page.sponsors, page.3208).
+  endcomment
+  assign tpl_full = template.name
+  if template.suffix != blank
+    assign tpl_full = template.name | append: '.' | append: template.suffix
+  endif
+  assign hide_list = section.settings.hide_on | remove: ' ' | downcase | split: ','
+  assign hidden_here = false
+  for t in hide_list
+    if t == tpl_full
+      assign hidden_here = true
+    endif
+  endfor
+
+  comment
+    Active sponsors sorted by tier order, then sponsor order. Build sortable keys "tier-order-index".
+  endcomment
+  assign all_sponsors = shop.metaobjects.sponsor.values
+  assign keys = ''
+  for s in all_sponsors limit: 50
+    if s.active.value != true
+      continue
+    endif
+    assign tier_order = s.tier.value.order.value | default: 99 | plus: 1000
+    assign own_order = s.order.value | default: 999 | plus: 1000
+    assign idx = forloop.index0 | plus: 1000
+    assign key = tier_order | append: '-' | append: own_order | append: '-' | append: idx
+    assign keys = keys | append: key | append: ','
+  endfor
+  assign sorted_keys = keys | split: ',' | sort
+  assign has_sponsors = false
+  if sorted_keys.size > 0
+    assign has_sponsors = true
+  endif
+-%}
+
+{%- unless hidden_here -%}
+  {%- capture items -%}
+    {%- if has_sponsors -%}
+      {%- for k in sorted_keys -%}
+        {%- liquid
+          assign parts = k | split: '-'
+          assign i = parts[2] | minus: 1000
+          assign s = all_sponsors[i]
+          assign tier_key = s.tier.value.key.value | default: 'crew' | downcase
+          assign shape = s.shape.value | default: 'wide' | downcase
+          if shape == 'round'
+            assign shape = 'circle'
+          endif
+          assign sname = s.name.value | default: s.system.handle
+          assign slink = s.link.value
+        -%}
+        {%- if slink != blank -%}
+          <a class="spl spl--{{ tier_key }} spl--{{ shape }}" href="{{ slink }}" target="_blank" rel="noopener sponsored" aria-label="{{ sname | escape }} (opens their site in a new tab)">
+        {%- else -%}
+          <span class="spl spl--{{ tier_key }} spl--{{ shape }}">
+        {%- endif -%}
+          {%- if s.logo.value != blank -%}
+            {%- liquid
+              assign logo_w = 360
+              if shape != 'wide'
+                assign logo_w = 220
+              endif
+            -%}
+            {{- s.logo.value | image_url: width: logo_w | image_tag: alt: sname, loading: 'lazy', decoding: 'async', sizes: '240px', widths: '120, 240, 360' -}}
+          {%- else -%}
+            <span>{{ sname | escape }}</span>
+          {%- endif -%}
+        {%- if slink != blank -%}</a>{%- else -%}</span>{%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      {%- assign open_shapes = 'wide,circle,square,wide,circle,square' | split: ',' -%}
+      {%- for sh in open_shapes -%}
+        <a class="spl spl--open spl--{{ sh }}{% if forloop.first %} spl--title{% endif %}" href="{{ section.settings.open_url | default: '/pages/sponsors' }}">
+          <span>{{ section.settings.open_tile | escape }}</span>
+        </a>
+      {%- endfor -%}
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- liquid
+    assign dup = items | replace: '<a class="spl ', '<a tabindex="-1" aria-hidden="true" class="spl spl--dup ' | replace: '<span class="spl ', '<span aria-hidden="true" class="spl spl--dup '
+    assign dup_tab = items | replace: '<a class="spl ', '<a tabindex="-1" class="spl '
+    if has_sponsors
+      assign heading = section.settings.heading_with
+      assign cta = section.settings.cta_with
+    else
+      assign heading = section.settings.heading_empty
+      assign cta = section.settings.cta_empty
+    endif
+  -%}
+
+  <section
+    class="spx"
+    aria-labelledby="SpxH-{{ section.id }}"
+    data-hm-spx
+    style="--spx-speed: {{ section.settings.speed }}s;"
+  >
+    <div class="wrap spx__head">
+      <h2 class="spx__h" id="SpxH-{{ section.id }}">{{ heading | escape }}</h2>
+      <div class="spx__tools">
+        <button type="button" class="spx__pause" aria-pressed="false" data-hm-spx-toggle>
+          <span data-icon-pause>{% render 'hm-icon', name: 'pause', size: 10 %}</span>
+          <span data-icon-play hidden>{% render 'hm-icon', name: 'play', size: 10 %}</span>
+          <span data-hm-spx-label>Pause</span>
+          <span class="vh"> sponsor logos</span>
+        </button>
+        {%- if cta != blank -%}
+          <a class="spx__cta" href="{{ section.settings.cta_url | default: '/pages/sponsors' }}">{{ cta | escape }} →</a>
+        {%- endif -%}
+      </div>
+    </div>
+    <div class="spx__track" role="group" aria-label="Sponsors" data-hm-spx-track>
+      <div class="spx__belt">{{ items }}{{ dup }}</div>
+      <div class="spx__belt" aria-hidden="true">{{ dup_tab }}{{ dup_tab }}</div>
+    </div>
+  </section>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "HM sponsor strip",
+  "tag": "div",
+  "class": "hm-spx-section",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Logos come from Content > Metaobjects > Sponsor (active ones, sorted by package order and then by order)."
+    },
+    {
+      "type": "text",
+      "id": "heading_with",
+      "label": "Title with sponsors",
+      "default": "Backed by"
+    },
+    {
+      "type": "text",
+      "id": "cta_with",
+      "label": "Link text with sponsors",
+      "default": "Become a sponsor"
+    },
+    {
+      "type": "text",
+      "id": "heading_empty",
+      "label": "Title without sponsors",
+      "default": "Your logo could be here"
+    },
+    {
+      "type": "text",
+      "id": "cta_empty",
+      "label": "Link text without sponsors",
+      "default": "Sponsor “The Evil One”"
+    },
+    {
+      "type": "text",
+      "id": "open_tile",
+      "label": "Empty tile text",
+      "default": "Your logo here"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Sponsors page link"
+    },
+    {
+      "type": "url",
+      "id": "open_url",
+      "label": "Empty tiles link",
+      "info": "Empty uses /pages/sponsors"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Seconds per loop",
+      "min": 20,
+      "max": 90,
+      "step": 5,
+      "unit": "s",
+      "default": 40
+    },
+    {
+      "type": "text",
+      "id": "hide_on",
+      "label": "Hide on templates",
+      "default": "404,page.sponsors,page.3208",
+      "info": "Template names separated by commas, for example 404 or page.sponsors"
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM sponsor strip"
+    }
+  ]
+}
+{% endschema %}

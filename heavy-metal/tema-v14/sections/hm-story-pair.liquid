@@ -1,0 +1,207 @@
+{%- comment -%}
+  Our Story · 6 · Tractor brothers + walk-up song, side by side with the same weight.
+  Spotify: paste the playlist link; the official player (iframe) only loads after a click (facade).
+{%- endcomment -%}
+{%- liquid
+  assign pl_url = section.settings.playlist_url
+  assign pl_id = ''
+  if pl_url contains 'playlist/'
+    assign pl_id = pl_url | split: 'playlist/' | last | split: '?' | first | split: '/' | first
+  endif
+-%}
+<section class="sect" aria-label="{{ section.settings.aria_label | escape }}">
+  <div class="wrap st-pair">
+    <article class="st-card" aria-labelledby="bro-h-{{ section.id }}">
+      <p class="st-eyebrow"><b>{{ section.settings.bro_number | escape }}</b>{{ section.settings.bro_eyebrow | escape }}</p>
+      <div class="st-bros">
+        <figure class="st-photo">
+          {%- if section.settings.bro_image_1 != blank -%}
+            {{ section.settings.bro_image_1 | image_url: width: 700 | image_tag: widths: '300, 500, 700', sizes: '(max-width: 1000px) 45vw, 22vw', class: 'photo', loading: 'lazy' }}
+          {%- else -%}
+            {{ 'image' | placeholder_svg_tag: 'photo' }}
+          {%- endif -%}
+          {%- if section.settings.bro_tag_1 != blank -%}<figcaption class="st-tag">{{ section.settings.bro_tag_1 | escape }}</figcaption>{%- endif -%}
+        </figure>
+        <span class="st-bros__amp" aria-hidden="true">+</span>
+        <figure class="st-photo">
+          {%- if section.settings.bro_image_2 != blank -%}
+            {{ section.settings.bro_image_2 | image_url: width: 700 | image_tag: widths: '300, 500, 700', sizes: '(max-width: 1000px) 45vw, 22vw', class: 'photo', loading: 'lazy' }}
+          {%- endif -%}
+          {%- if section.settings.bro_tag_2 != blank -%}<figcaption class="st-tag">{{ section.settings.bro_tag_2 | escape }}</figcaption>{%- endif -%}
+        </figure>
+      </div>
+      <h2 class="h1" id="bro-h-{{ section.id }}">{{ section.settings.bro_title | escape }}</h2>
+      {%- if section.settings.bro_lede != blank -%}<div class="lede st-bros__lede">{{ section.settings.bro_lede }}</div>{%- endif -%}
+      {%- if section.settings.bro_text != blank -%}<div class="body st-bros__body">{{ section.settings.bro_text }}</div>{%- endif -%}
+      {%- if section.blocks.size > 0 -%}
+        <ul class="st-route">
+          {%- for block in section.blocks -%}
+            <li {{ block.shopify_attributes }}><b>{{ block.settings.label | escape }}</b> {{ block.settings.value | escape }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </article>
+
+    <article class="st-card st-song" aria-labelledby="song-h-{{ section.id }}" data-st-song>
+      <p class="st-eyebrow"><b>{{ section.settings.song_number | escape }}</b>{{ section.settings.song_eyebrow | escape }}</p>
+      <h2 class="vh" id="song-h-{{ section.id }}">{{ section.settings.song_eyebrow | escape }}: {{ section.settings.song_title | escape }} by {{ section.settings.song_artist | escape }}</h2>
+      <div class="st-song__main">
+        <div class="st-song__art" aria-hidden="true"><svg viewBox="0 0 140 280"><polygon class="st-bolt-fill" points="88,0 20,150 58,150 30,280 122,105 78,105"/></svg></div>
+        <div>
+          <p class="st-song__t">{{ section.settings.song_title | escape }}</p>
+          <p class="st-song__a">{{ section.settings.song_artist | escape }}</p>
+        </div>
+        {%- if section.settings.song_url != blank -%}
+          <a class="st-song__go" href="{{ section.settings.song_url }}" target="_blank" rel="noopener">
+            <span class="st-song__pb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5v17l14-8.5z"/></svg></span>
+            <span class="st-song__lbl">{{ section.settings.song_link_text | escape }} <span aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></span>
+          </a>
+        {%- endif -%}
+      </div>
+      <div class="st-wave" aria-hidden="true">
+        {%- assign hs = '30,55,40,70,50,85,60,35,75,95,65,45,80,55,30,60,90,70,40,65,85,50,35,75,55,45,30,60,40,25,50,70,45,80,35,60' | split: ',' -%}
+        {%- for v in hs -%}<i style="--h:{{ v }}%"></i>{%- endfor -%}
+      </div>
+      {%- if section.settings.song_caption != blank -%}
+        <p class="st-song__cap">{{ section.settings.song_caption | escape }}{% if section.settings.tagline != blank %} <span class="st-tagline">{{ section.settings.tagline | escape }}</span>{% endif %}</p>
+      {%- endif -%}
+
+      {%- if pl_id != '' -%}
+      <div class="st-pl">
+        <div class="st-pl__head">
+          <h3 class="h3" id="pl-h-{{ section.id }}">{{ section.settings.pl_title | escape }}</h3>
+          <small>{{ section.settings.pl_sub | escape }}{% if section.settings.pl_updated != blank %} · Last updated: <time datetime="{{ section.settings.pl_updated | date: '%Y-%m-%d' }}">{{ section.settings.pl_updated | date: '%B %-d, %Y' }}</time>{% endif %}</small>
+        </div>
+        <div class="st-spot" data-spotify-box>
+          <div class="st-spot__face">
+            <div class="st-spot__cover" aria-hidden="true"><svg viewBox="0 0 140 280"><polygon class="st-bolt-fill" points="88,0 20,150 58,150 30,280 122,105 78,105"/></svg></div>
+            <div class="st-spot__meta">
+              <b>{{ section.settings.pl_title | escape }}</b>
+              <span>{{ settings.hm_brand_name | default: shop.name | escape }}</span>
+            </div>
+            <button type="button" class="btn btn--light btn--sm st-spot__load" data-spotify-load="{{ pl_id | escape }}" data-spotify-title="{{ section.settings.pl_title | escape }}">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>{{ section.settings.pl_button | escape }}
+            </button>
+            <p class="st-spot__fine">{{ section.settings.pl_fine | escape }}</p>
+          </div>
+        </div>
+      </div>
+      {%- endif -%}
+    </article>
+  </div>
+</section>
+<script src="{{ 'hm-story.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+.st-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:stretch}
+.st-card{display:flex;flex-direction:column;gap:14px;min-width:0;padding:clamp(18px,2vw,24px);border:1px solid var(--line);background:var(--surface)}
+.st-card p{margin:0}
+.st-bros{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:stretch;flex:1 0 auto;min-height:clamp(170px,13vw,220px)}
+.st-bros .st-photo{min-height:100%}
+.st-bros__amp{align-self:center;font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:var(--t-h1);color:var(--ink)}
+.st-bros__lede p,.st-bros__body p{margin:0}
+.st-bros__lede strong,.st-bros__lede b{color:var(--ink)}
+.st-route{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0;padding:0;list-style:none;font-size:var(--t-xs);color:var(--mute)}
+.st-route b{color:var(--ink)}
+.st-song{background:var(--night);color:var(--night-ink);border-color:var(--night);gap:12px}
+.st-song .st-eyebrow{color:#A8A59A}
+.st-song .st-eyebrow b{background:var(--accent);color:var(--ink)}
+.st-song__main{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:16px;align-items:center}
+.st-song__art{aspect-ratio:1/1;background:#1E1E1C;border:1px solid #2E2E2B;display:grid;place-items:center;position:relative;overflow:hidden}
+.st-song__art::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(245,196,0,.22),transparent 62%)}
+.st-song__art svg{position:relative;width:34%;height:auto;filter:drop-shadow(0 0 10px rgba(245,196,0,.6))}
+.st-song__t{font-family:var(--f-head);font-stretch:72%;font-weight:800;text-transform:uppercase;font-size:var(--t-h1);line-height:1;margin:0;color:var(--night-ink)}
+.st-song__a{font-size:var(--t-sm);font-weight:600;color:#CFCCC3;margin-top:4px!important}
+.st-wave{display:flex;align-items:center;gap:3px;height:22px}
+.st-wave i{flex:1;background:#3A3A34;border-radius:1px;height:var(--h)}
+.st-wave i:nth-child(-n+16){background:var(--accent)}
+.st-song__cap{color:#CFCCC3;font-size:var(--t-sm)}
+.st-song__go{display:inline-flex;align-items:center;gap:10px;color:var(--night-ink);font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;min-height:44px}
+.st-song__pb{width:44px;height:44px;border-radius:50%;background:var(--accent);color:var(--ink);display:grid;place-items:center;flex:none;transition:background .15s}
+.st-song__pb svg{width:16px;height:16px;margin-left:3px;fill:currentColor}
+.st-song__go:hover .st-song__pb{background:var(--night-ink)}
+.st-song__go:hover .st-song__lbl{text-decoration:underline;text-underline-offset:4px}
+.st-song__go:focus-visible{outline:2px solid var(--night-ink);outline-offset:3px}
+.st-song small{font-size:var(--t-xs);color:#A8A59A}
+.st-tagline{font-size:var(--t-xs);color:#A8A59A;letter-spacing:.04em;white-space:nowrap}
+.st-pl{display:grid;gap:8px;border-top:1px solid #2E2E2B;padding-top:12px}
+.st-pl__head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px}
+.st-pl__head .h3{color:var(--night-ink);font-size:var(--t-md)}
+.st-spot{min-height:352px;border-radius:12px;overflow:hidden;background:#2A2A26}
+.st-spot iframe{display:block;width:100%;height:352px;border:0;border-radius:12px}
+.st-spot__face{height:352px;display:grid;grid-template-columns:112px minmax(0,1fr);grid-template-rows:auto 1fr auto;gap:14px;padding:16px;background:linear-gradient(180deg,#4A4320 0%,#2A2A26 46%);align-items:end}
+.st-spot__cover{aspect-ratio:1/1;background:#121211;border-radius:6px;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.4)}
+.st-spot__cover svg{width:30%;height:auto;filter:drop-shadow(0 0 10px rgba(245,196,0,.6))}
+.st-spot__meta{display:grid;gap:2px;min-width:0}
+.st-spot__meta b{font-size:var(--t-lg);color:#fff;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st-spot__meta span{font-size:var(--t-xs);color:#CFCCC3}
+.st-spot__load{grid-column:1/-1;justify-self:start;align-self:center}
+.st-spot__load svg{width:14px;height:14px;fill:currentColor}
+.st-spot__fine{grid-column:1/-1;font-size:11px;color:#A8A59A}
+@media (max-width:1000px){.st-pair{grid-template-columns:1fr}}
+@media (max-width:560px){
+  .st-song__main{grid-template-columns:56px minmax(0,1fr);gap:12px}
+  .st-song__go{grid-column:1/-1}
+  .st-bros{min-height:0}
+  .st-bros .st-photo{aspect-ratio:4/3;min-height:0}
+  .st-spot__face{grid-template-columns:84px minmax(0,1fr);gap:12px}
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Story: brothers + song",
+  "tag": "div",
+  "class": "hm-story-pair",
+  "settings": [
+    { "type": "text", "id": "aria_label", "label": "Section label (screen readers)", "default": "Friends and the song" },
+    { "type": "header", "content": "Tractor brothers" },
+    { "type": "text", "id": "bro_number", "label": "Number", "default": "06" },
+    { "type": "text", "id": "bro_eyebrow", "label": "Eyebrow", "default": "Friends on the circuit" },
+    { "type": "image_picker", "id": "bro_image_1", "label": "Our tractor photo" },
+    { "type": "text", "id": "bro_tag_1", "label": "Our tractor tag", "default": "“The Evil One”" },
+    { "type": "image_picker", "id": "bro_image_2", "label": "Brother tractor photo" },
+    { "type": "text", "id": "bro_tag_2", "label": "Brother tractor tag", "default": "Diesel Ross" },
+    { "type": "text", "id": "bro_title", "label": "Title", "default": "Tractor brothers" },
+    { "type": "richtext", "id": "bro_lede", "label": "Intro", "default": "<p>“The Evil One” has a brother across the ocean: <strong>Diesel Ross</strong>, a Pro Stock tractor in Europe owned by Gert Stessens from Belgium.</p>" },
+    { "type": "richtext", "id": "bro_text", "label": "Text", "default": "<p>We met Gert at a pull in the Netherlands. Between the look of the two tractors and the friendship between Gert and Chris, “The Evil One” and Diesel Ross are considered tractor brothers.</p>" },
+    { "type": "header", "content": "Walk-up song" },
+    { "type": "text", "id": "song_number", "label": "Number", "default": "07" },
+    { "type": "text", "id": "song_eyebrow", "label": "Eyebrow", "default": "Walk-up song" },
+    { "type": "text", "id": "song_title", "label": "Song", "default": "Fear of the Dark" },
+    { "type": "text", "id": "song_artist", "label": "Artist line", "default": "Iron Maiden · 2015 Remaster" },
+    { "type": "url", "id": "song_url", "label": "Song link (Spotify)" },
+    { "type": "text", "id": "song_link_text", "label": "Song link text", "default": "Listen on Spotify" },
+    { "type": "text", "id": "song_caption", "label": "Caption", "default": "The song “The Evil One” rolls up to the line with. Turn it up before the next pull." },
+    { "type": "text", "id": "tagline", "label": "Tagline", "default": "#HEAVYMETALPULLING" },
+    { "type": "header", "content": "Pit playlist (Spotify)" },
+    { "type": "url", "id": "playlist_url", "label": "Playlist link", "info": "In Spotify: Share > Copy link to playlist. Empty = the playlist is hidden. Songs update from Spotify on their own." },
+    { "type": "text", "id": "pl_title", "label": "Title", "default": "The pit playlist" },
+    { "type": "text", "id": "pl_sub", "label": "Line", "default": "What plays in the trailer and the pit" },
+    { "type": "text", "id": "pl_updated", "label": "Last updated (YYYY-MM-DD)", "default": "2026-09-28" },
+    { "type": "text", "id": "pl_button", "label": "Load button", "default": "Play the playlist" },
+    { "type": "text", "id": "pl_fine", "label": "Fine print", "default": "Loads the Spotify player." }
+  ],
+  "blocks": [
+    {
+      "type": "fact",
+      "name": "Brother fact",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Owner" },
+        { "type": "text", "id": "value", "label": "Value", "default": "Gert Stessens" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Story: brothers + song",
+      "blocks": [
+        { "type": "fact", "settings": { "label": "Owner", "value": "Gert Stessens" } },
+        { "type": "fact", "settings": { "label": "Home", "value": "Belgium" } },
+        { "type": "fact", "settings": { "label": "Met", "value": "at a pull in the Netherlands" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
