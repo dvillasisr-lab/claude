@@ -30,6 +30,7 @@ Lo que me vayas dando "para después" va aquí. No se trabaja hasta que digas.
 | 23 | Correo con dominio propio | Cambiar heavymetalevil72@gmail.com por uno del dominio (ej. hello@heavymetalprostock.com) y actualizarlo en todo el sitio, políticas y Shopify. | En espera |
 | 24 | Exhibiciones | Confirmar si fueron 3 o 4 y, de cada una: fecha, lugar, liga, resultado, fotos y video. Cargarlas en Schedule, Pit Log y Gallery. | En espera |
 | 25 | Reseñas con Judge.me | Instalar la app (plan gratis), agregar el bloque de reseñas al tema, activar el correo que pide la reseña después de la entrega, definir moderación y quitar las reseñas de ejemplo. | En espera |
+| 26 | Apps de carrito | Evaluar UpCart, Rebuy o AfterSell (regalo al llegar a $XX, upsell después del pago) cuando haya ventas; hoy el carrito nativo basta. | En espera |
 
 ## Datos que faltan
 - Cifras de patrocinio: ¿5,000+ fans es por evento o por temporada? (el sitio usa "XX+" en frases de venta y estimados "est." en contadores).
