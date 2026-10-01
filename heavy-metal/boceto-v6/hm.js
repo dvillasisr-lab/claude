@@ -142,6 +142,9 @@
     'Printed to order · ships in 5 days'
   ];
 
+  function byId(id) { return CAT.filter(function (x) { return x.id === id; })[0]; }
+  /* "Add to your order": solo productos que existen y están a la venta */
+  var ADDONS = ['sticker-pack', 'hook-alert-koozie', 'crew-cap', 'kids-hoodie'].map(byId).filter(function (p) { return p && p.status === 'live'; });
   var h = document.querySelector('[data-hm-header]');
   if (h) {
     var cur = h.getAttribute('data-current') || '';
@@ -187,10 +190,10 @@
         '<div class="drawer__body">' +
           '<div id="cart-empty" class="cempty"><p style="margin:0">Your cart is empty.</p><div class="btn-row"><a class="btn" href="shop.html?cat=new">Shop the drop</a><a class="btn btn--ghost" href="shop.html?cat=all&amp;sort=best">Best sellers</a></div></div>' +
           '<ul id="lines" class="lines"></ul>' +
-          '<div class="upgrade" id="upgrade" hidden><span class="thumb thumb--mock">' + mock(CAT.filter(function (x) { return x.id === 'crew-pack'; })[0]) + '</span><span><b>Make it a Crew Pack</b><br><span class="muted">Add the Crew Cap and save $X.</span></span><button class="btn btn--ghost btn--sm" type="button" data-quick="crew-cap">Add · $XX</button></div>' +
-          '<div class="addons"><p class="label">Add to your order</p><div class="addons__row">' +
-            ['sticker-pack', 'hook-alert-koozie', 'crew-cap', 'evil-one-beanie'].map(function (id) { var p = CAT.filter(function (x) { return x.id === id; })[0]; return '<div class="addon"><a href="' + href(p) + '" class="thumb thumb--mock">' + mock(p) + '</a><a href="' + href(p) + '" class="addon__n">' + p.name + '</a><span class="num">$XX</span><button class="btn btn--ghost btn--sm" type="button" data-quick="' + id + '">+ Add</button></div>'; }).join('') +
-          '</div></div>' +
+          (byId('crew-pack') && byId('crew-cap') ? '<div class="upgrade" id="upgrade" hidden><span class="thumb thumb--mock">' + mock(byId('crew-pack')) + '</span><span><b>Make it a Crew Pack</b><br><span class="muted">Add the Crew Cap and save $X.</span></span><button class="btn btn--ghost btn--sm" type="button" data-quick="crew-cap">Add · $XX</button></div>' : '<div id="upgrade" hidden></div>') +
+          (ADDONS.length ? '<div class="addons"><p class="label">Add to your order</p><div class="addons__row">' +
+            ADDONS.map(function (p) { return '<div class="addon"><a href="' + href(p) + '" class="thumb thumb--mock">' + mock(p) + '</a><a href="' + href(p) + '" class="addon__n">' + p.name + '</a><span class="num">$XX</span><button class="btn btn--ghost btn--sm" type="button" data-quick="' + p.id + '">+ Add</button></div>'; }).join('') +
+          '</div></div>' : '') +
           '<details class="giftnote"><summary>Discount code</summary><form class="coupon" id="coupon-form"><label class="vh" for="coupon">Discount code</label><input class="input" id="coupon" autocomplete="off" placeholder="Enter code"><button class="btn btn--ghost btn--sm" type="submit">Apply</button></form><p class="small muted" id="coupon-msg" style="margin:6px 0 0"></p></details>' +
           '<details class="giftnote"><summary>Add a note or gift message</summary><label class="vh" for="cart-note">Order note</label><textarea class="input" id="cart-note" rows="3" maxlength="200" placeholder="Gift message, or a note for the crew"></textarea></details>' +
           '<p class="note">Carrito nativo del tema, sin apps de pago: barra de envío gratis con escalones (ajustes del tema), "Add to your order" con productos complementarios de Search &amp; Discovery, Crew Pack con Shopify Bundles y nota del pedido nativa. Si después quieres reglas automáticas (regalo al llegar a $XX, upsell después del pago), las apps de carrito más usadas son UpCart, Rebuy o AfterSell; cuestan de $15 a $99 al mes.</p>' +

@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4 -->
-<title>The Machine · Heavy Metal, “The Evil One”</title>
-<meta name="description" content="Heavy Metal spec sheet: a Cat 3208 V8 reverse flow built up from the factory 636 to 680 cubic inches, single large turbo, 10,000 LB, 24.5-32 tires. Horsepower unknown. “The Evil One”, a Pro Stock from Waterloo, Wisconsin.">
+<title>The Machine · Heavy Metal Pro Stock, “The Evil One”</title>
+<meta name="description" content="Heavy Metal Pro Stock spec sheet: a Cat 3208 V8 reverse flow built up from the factory 636 to 680 cubic inches, single large turbo, 10,000 LB, 24.5-32 tires. Horsepower unknown. “The Evil One”, a Pro Stock from Waterloo, Wisconsin.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
 <style>
-/* Machine v5: galería SKIMS arriba, anatomía con líneas guía estilo plano técnico, ficha de carreras en la única banda
-   oscura (con "Hear it"), comparativa con pictogramas de motor del mismo tamaño, FAQ y un solo CTA: Cat V8 Spec Tee. */
+/* Machine v6: galería SKIMS arriba, anatomía con líneas guía estilo plano técnico, ficha de carreras en la única banda
+   oscura (con "Hear it" y Last updated), comparativa con pips como en v4 (alineados), FAQ y un solo CTA: Cat V8 Spec Tee. */
 html,body{overflow-x:clip}
 :root{--line-night:rgba(242,240,233,.16);--mute-night:#A9A69E}
 .mx-photo{position:relative;overflow:hidden;background:var(--tile);margin:0}
@@ -108,6 +108,11 @@ html,body{overflow-x:clip}
 .mx-fine div{display:flex;justify-content:space-between;gap:12px;padding-block:7px;border-bottom:1px solid var(--line-night);font-size:var(--t-xs)}
 .mx-fine dt{letter-spacing:.1em;text-transform:uppercase;color:var(--mute-night);font-weight:600}
 .mx-fine dd{margin:0;font-weight:700;color:var(--night-ink);text-align:right}
+/* filas por confirmar: valor "[pending]" en amarillo punteado, para que nadie lo lea como dato */
+.mx-fine dd.pend{color:var(--accent);font-weight:600;letter-spacing:.04em;border-bottom:1px dashed var(--accent);align-self:center;line-height:1.3}
+.mx-upd{display:flex;flex-wrap:wrap;gap:4px 16px;margin:12px 0 0;font-size:var(--t-xs);color:var(--mute-night)}
+.mx-upd b{color:var(--night-ink);font-weight:700}
+.mx-upd .pend{color:var(--accent);font-weight:600}
 .mx-hear{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px}
 .mx-hear__poster{position:relative;display:block;overflow:hidden;background:#1E1E1C;text-decoration:none;color:var(--night-ink);min-height:300px;max-height:460px}
 .mx-hear__poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;transition:transform .4s}
@@ -130,36 +135,19 @@ html,body{overflow-x:clip}
 .mx-cmp .us{font-weight:700;color:var(--ink)}
 .mx-cmp .us,.mx-cmp .them{display:grid;gap:6px;align-content:start}
 .them{color:var(--soft)}
-/* cilindros: cada celda = cifra grande + vista de punta (V o I) + bloque visto desde arriba, todo del mismo alto */
-.cyl{display:grid;gap:8px}
-.cyl__top{display:flex;align-items:center;gap:10px;height:52px}
-.cyl__big{font-family:var(--f-head);font-stretch:62%;font-weight:800;font-size:52px;line-height:1;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
-.cyl__kind{font-family:var(--f-head);font-stretch:70%;font-weight:800;font-size:var(--t-h2);text-transform:uppercase;line-height:1}
-.cyl__end{width:40px;height:40px;flex:none;margin-left:6px}
-.cyl__plan{display:block;width:100%;max-width:240px;height:auto;aspect-ratio:240/96}
-.cyl__cap{font-size:var(--t-xs);font-weight:400;color:var(--mute)}
-/* colores de los pictogramas: Heavy Metal relleno, "the usual" en contorno */
-.cyl svg .blk{fill:var(--tile);stroke:var(--line);stroke-width:1.5}
-.cyl svg .crank{stroke:var(--mute);stroke-width:1;stroke-dasharray:4 3}
-.cyl svg .bore{stroke-width:2}
-.cyl svg .rod{fill:none;stroke-width:8;stroke-linecap:round}
-.us .cyl svg .rod{stroke:var(--ink)}
-.them .cyl svg .rod{stroke:var(--soft)}
-.us .cyl svg .bore{fill:var(--ink);stroke:var(--ink)}
-.them .cyl svg .bore{fill:var(--surface);stroke:var(--soft)}
-.us .cyl__big,.us .cyl__kind{color:var(--ink)}
-.them .cyl__big,.them .cyl__kind{color:var(--soft)}
-/* desplazamiento: dos barras etiquetadas, Factory y Ours, sobre la misma escala (0 a 680) */
-.disp{display:grid;gap:8px;max-width:260px}
-.disp__row{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;font-size:var(--t-xs)}
-.disp__k{font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
-.disp__v{text-align:right;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
-.disp__bar{grid-column:1/-1;height:10px;background:var(--line);position:relative}
-.disp__bar i{position:absolute;left:0;top:0;bottom:0;background:var(--soft)}
-.disp__row--ours .disp__k{color:var(--ink)}
-.disp__row--ours .disp__bar i{background:var(--ink)}
-.disp__bar i.add{left:93.53%;width:6.47%;background:var(--accent)}  /* 636/680 = 93.53%: lo que el crew le sumó */
-.disp__why{margin:0;font-size:var(--t-xs);font-weight:400;color:var(--soft)}
+/* cilindros (como v4): 8 pips en dos filas de 4 contra 6 en una fila. La caja de pips mide lo mismo en las dos
+   celdas (2 filas) y la fila de 6 queda centrada en vertical, así los textos de abajo arrancan a la misma altura. */
+.pips{display:grid;grid-template-columns:repeat(var(--c),14px);grid-auto-rows:14px;gap:4px;height:32px;align-content:center}
+.pips i{width:14px;height:14px;border-radius:50%;background:var(--ink)}
+.them .pips i{background:none;border:1.5px solid var(--mute)}
+/* desplazamiento (como v4): una barra, 636 stock en negro + 44 built en amarillo = 680 */
+.bar{position:relative;display:block;height:10px;background:var(--line);max-width:260px}
+.bar span{position:absolute;left:0;top:0;bottom:0}
+.bar .stock{width:93.53%;background:var(--ink)}      /* 636/680 */
+.bar .add{left:93.53%;width:6.47%;background:var(--accent)}
+.bar-k{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11px;color:var(--mute);font-weight:400}
+.bar-k b{display:inline-block;width:8px;height:8px;margin-right:4px;background:var(--ink)}
+.bar-k b.y{background:var(--accent)}
 
 /* 5 · FAQ */
 .mx-faq{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(20px,4vw,56px)}
@@ -210,10 +198,8 @@ html,body{overflow-x:clip}
   .mx-cmp{grid-template-columns:minmax(0,96px) minmax(0,1fr) minmax(0,1fr)}
   .mx-cmp .rh{font-size:10px;letter-spacing:0}
   .mx-cmp [role=row]>*{padding-right:8px;font-size:var(--t-xs)}
-  .cyl__top{height:40px;gap:6px}
-  .cyl__big{font-size:38px}
-  .cyl__kind{font-size:15px}
-  .cyl__end{width:28px;height:28px}
+  .pips{grid-template-columns:repeat(var(--c),10px);grid-auto-rows:10px;gap:3px;height:23px}
+  .pips i{width:10px;height:10px}
   .mx-tee{grid-template-columns:1fr}
   .mx-tee .card{max-width:260px}
 }
@@ -231,7 +217,6 @@ html,body{overflow-x:clip}
         <p class="label muted">Pro Stock · Waterloo, WI</p>
         <h1 class="h-hero" id="mx-h1">The Machine</h1>
         <p class="lede">A Caterpillar 3208 V8, reverse flow: a setup you won't find on any other tractor on the track. Nothing about it is off the shelf, and nothing about it was quick.</p>
-        <p class="note">"The Machine" es solo el nombre de esta página (la del tractor). En el menú se puede cambiar, por ejemplo a "The Tractor", en Shopify: Tienda online &gt; Navegación.</p>
       </div>
       <dl class="mx-keys" aria-label="Key specs">
         <div><dt>Engine</dt><dd>Cat 3208 V8</dd></div>
@@ -292,20 +277,16 @@ html,body{overflow-x:clip}
       </div>
       <dl class="mx-big">
         <div><dt><i>01</i>Engine</dt><dd><span class="mx-v">V8</span><span class="mx-s">Cat 3208, reverse flow</span></dd></div>
-        <div><dt><i>02</i>Displacement</dt><dd><span class="mx-v">680<small>CU IN</small></span><span class="mx-s">Factory: 636 cu in</span></dd></div>
+        <div><dt><i>02</i>Displacement</dt><dd><span class="mx-v">680<small>CU IN</small></span><span class="mx-s">636 stock, +44 built</span></dd></div>
         <div><dt><i>03</i>Turbo</dt><dd><span class="mx-v">1<small>Turbo</small></span><span class="mx-s">Single, large</span></dd></div>
         <div><dt><i>04</i>Weight</dt><dd><span class="mx-v">10,000<small>LB</small></span><span class="mx-s">Front weight box included</span></dd></div>
         <div><dt><i>05</i>Tires</dt><dd><span class="mx-v">24.5-32</span><span class="mx-s">Rear</span></dd></div>
         <div class="mx-unk"><dt><i>06</i>Horsepower</dt><dd><span class="mx-v">Unknown</span><span class="mx-s">We'll let the track answer.</span></dd></div>
       </dl>
-      <dl class="mx-fine">
-        <div><dt>Chassis</dt><dd>Custom-built</dd></div>
-        <div><dt>Body</dt><dd>Challenger 1015</dd></div>
-        <div><dt>Class</dt><dd>Pro Stock</dd></div>
-        <div><dt>Home</dt><dd>Waterloo, WI</dd></div>
-        <div><dt>Leagues</dt><dd>NTPA &amp; PPL Badger State</dd></div>
-        <div><dt>Nickname</dt><dd>“The Evil One”</dd></div>
-      </dl>
+      <dl class="mx-fine" id="spec-fine"><!-- filas: las pinta el JS desde SPEC.rows --></dl>
+      <!-- last-updated: spec-sheet (ficha técnica de The Machine; fecha en SPEC.updated) -->
+      <p class="mx-upd" id="spec-upd"></p>
+      <p class="note">Las filas <b>[pending]</b> son datos por confirmar con Chris (igual que "most Pro Stock tractors run an inline six", aquí y en el FAQ). La ficha y su "Last updated" se editan en Personalizar &gt; The Machine &gt; Spec sheet; en Shopify una fila sin valor no sale. "Hear it": el video del arranque cuando exista.</p>
     </div>
     <div class="mx-hear">
       <h2 class="h2" id="hear-h">Hear it</h2>
@@ -323,8 +304,7 @@ html,body{overflow-x:clip}
   <div class="wrap mx-vs">
     <div class="mx-vs__txt">
       <h2 class="h1" id="vs-h">Cat V8 vs the field</h2>
-      <p class="muted">Most Pro Stock tractors run an inline six. Heavy Metal runs a Caterpillar V8. Both engines are drawn the same way: the block seen from above, crankshaft through the middle, plus a small end view.</p>
-      <p class="note">Confirmar con Chris "most Pro Stock tractors run an inline six" (aquí y en el FAQ). En "Hear it" va el video del arranque cuando exista; mientras, el de Monroe.</p>
+      <p class="muted">Most Pro Stock tractors run an inline six. Heavy Metal runs a Caterpillar V8, built out from 636 to 680 cubic inches. No numbers for the field here: only what holds for any inline six.</p>
     </div>
     <div class="mx-cmp" role="table" aria-label="Heavy Metal's engine compared with the usual Pro Stock setup">
       <div role="row" style="display:contents">
@@ -334,8 +314,8 @@ html,body{overflow-x:clip}
       </div>
       <div role="row" style="display:contents">
         <span class="rh" role="rowheader">Cylinders</span>
-        <span class="us" role="cell"><span class="cyl"><span class="cyl__top"><span class="cyl__big">8</span><span class="cyl__kind">V</span><svg class="cyl__end" viewBox="0 0 40 40" aria-hidden="true"><path class="rod" d="M20 32 9 9M20 32 31 9"/></svg></span><svg class="cyl__plan" viewBox="0 0 240 96" aria-hidden="true"><rect class="blk" x="8" y="8" width="224" height="80" rx="10"/><line class="crank" x1="2" y1="48" x2="238" y2="48"/><circle class="bore" cx="42" cy="28" r="12"/><circle class="bore" cx="90" cy="28" r="12"/><circle class="bore" cx="138" cy="28" r="12"/><circle class="bore" cx="186" cy="28" r="12"/><circle class="bore" cx="54" cy="68" r="12"/><circle class="bore" cx="102" cy="68" r="12"/><circle class="bore" cx="150" cy="68" r="12"/><circle class="bore" cx="198" cy="68" r="12"/></svg><span class="cyl__cap">8 cylinders: two banks of 4, set in a V</span></span></span>
-        <span class="them" role="cell"><span class="cyl"><span class="cyl__top"><span class="cyl__big">6</span><span class="cyl__kind">Inline</span><svg class="cyl__end" viewBox="0 0 40 40" aria-hidden="true"><path class="rod" d="M20 32V6"/></svg></span><svg class="cyl__plan" viewBox="0 0 240 96" aria-hidden="true"><rect class="blk" x="8" y="8" width="224" height="80" rx="10"/><line class="crank" x1="2" y1="48" x2="238" y2="48"/><circle class="bore" cx="30" cy="48" r="12"/><circle class="bore" cx="66" cy="48" r="12"/><circle class="bore" cx="102" cy="48" r="12"/><circle class="bore" cx="138" cy="48" r="12"/><circle class="bore" cx="174" cy="48" r="12"/><circle class="bore" cx="210" cy="48" r="12"/></svg><span class="cyl__cap">6 cylinders: one bank of 6, in a straight line</span></span></span>
+        <span class="us" role="cell"><span class="pips" style="--c:4" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>8, in two banks (V)</span>
+        <span class="them" role="cell"><span class="pips" style="--c:6" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>6, in one bank (inline)</span>
       </div>
       <div role="row" style="display:contents">
         <span class="rh" role="rowheader">Engine</span>
@@ -349,11 +329,7 @@ html,body{overflow-x:clip}
       </div>
       <div role="row" style="display:contents">
         <span class="rh" role="rowheader">Displace&shy;ment</span>
-        <span class="us" role="cell"><span class="disp">
-          <span class="disp__row"><span class="disp__k">Factory</span><span class="disp__v">636 cu in</span><span class="disp__bar" aria-hidden="true"><i style="width:93.53%"></i></span></span>
-          <span class="disp__row disp__row--ours"><span class="disp__k">Ours</span><span class="disp__v">680 cu in</span><span class="disp__bar" aria-hidden="true"><i style="width:93.53%"></i><i class="add"></i></span></span>
-          <span class="disp__why">Built up from the factory 636 to 680 cu in: 44 more, in yellow.</span>
-        </span></span>
+        <span class="us" role="cell"><span class="num">680 CU IN</span><span class="bar" aria-hidden="true"><span class="stock"></span><span class="add"></span></span><span class="bar-k"><span><b></b>636 stock</span><span><b class="y"></b>+44 built</span></span></span>
         <span class="them" role="cell">Varies by build</span>
       </div>
       <div role="row" style="display:contents">
@@ -387,7 +363,7 @@ html,body{overflow-x:clip}
       </details>
       <details>
         <summary>What is a full pull?</summary>
-        <p>Dragging the sled all the way to the end of the track. When more than one tractor goes the distance, those tractors come back for a pull-off. Heavy Metal is still chasing its first one.</p>
+        <p>Dragging the sled all the way to the end of the track. When more than one tractor goes the distance, those tractors come back for a pull-off. Heavy Metal Pro Stock is still chasing its first one.</p>
       </details>
       <details>
         <summary>What does the sled actually do?</summary>
@@ -410,7 +386,7 @@ html,body{overflow-x:clip}
 </section>
 
 <!-- 6 · CTA único: Cat V8 Spec Tee -->
-<section class="sect sect--white" aria-labelledby="tee-h">
+<section class="sect sect--white" id="tee-sec" aria-labelledby="tee-h">
   <div class="wrap">
     <div class="mx-tee">
       <div class="mx-tee__txt">
@@ -418,7 +394,8 @@ html,body{overflow-x:clip}
         <h2 class="h1" id="tee-h">The spec sheet, on a tee</h2>
         <p class="muted">Cat V8 Spec Tee: the numbers on this page, printed to order. Horsepower still unknown.</p>
         <ul class="mx-tee__list" aria-label="On the print"><li>Cat 3208 V8</li><li>680 CI</li><li>10,000 LB</li><li>24.5-32</li><li>HP: Unknown</li></ul>
-        <a class="btn" href="product.html?p=cat-v8-spec-tee">Shop the Cat V8 Spec Tee</a>
+        <a class="btn" id="tee-cta" href="product.html?p=cat-v8-spec-tee">Shop the Cat V8 Spec Tee</a>
+        <p class="note">Quitarla es fácil: en Shopify es un bloque de la sección (Personalizar &gt; The Machine &gt; Spec tee: el ojo la oculta, el bote la borra). Y se cuida sola: si la playera queda en Sold out, la tarjeta y el botón cambian a "Notify me"; si la despublicas, la sección no sale.</p>
       </div>
       <div id="tee-card"></div>
     </div>
@@ -430,10 +407,51 @@ html,body{overflow-x:clip}
 <script src="hm.js"></script>
 <script>
 (function () {
-  /* tarjeta: la misma que en Shop */
+  /* ============================================================
+     FICHA TÉCNICA (simula la sección "Spec sheet": cada fila es un bloque con Etiqueta y Valor)
+     pending: true = dato por confirmar; se ve "[pending]". En Shopify, una fila sin valor no se pinta.
+     updated: fecha de "Last updated" (AAAA-MM-DD), se cambia al editar cualquier dato.
+     ============================================================ */
+  var SPEC = {
+    updated: '2026-10-01',
+    rows: [
+      { k: 'Chassis', v: 'Custom-built' },
+      { k: 'Body', v: 'Challenger 1015' },
+      { k: 'Class', v: 'Pro Stock' },
+      { k: 'Fuel', v: 'Diesel' },                     /* seguro: el Cat 3208 es diésel */
+      { k: 'Home', v: 'Waterloo, WI' },
+      { k: 'Leagues', v: 'NTPA & PPL Badger State' },
+      { k: 'Nickname', v: '“The Evil One”' },
+      { k: 'Front tires', pending: true },
+      { k: 'Wheelbase', pending: true },
+      { k: 'Rear axle', pending: true },
+      { k: 'Clutch', pending: true },
+      { k: 'Build hours', pending: true }
+    ]
+  };
+  var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function longDate(iso) { var d = iso.split('-'); return MONTHS[+d[1] - 1] + ' ' + (+d[2]) + ', ' + d[0]; }
+  document.getElementById('spec-fine').innerHTML = SPEC.rows.map(function (r) {
+    return '<div><dt>' + esc(r.k) + '</dt>' + (r.pending ? '<dd class="pend">[pending]</dd>' : '<dd>' + esc(r.v) + '</dd>') + '</div>';
+  }).join('');
+  var hasPend = SPEC.rows.some(function (r) { return r.pending; });
+  document.getElementById('spec-upd').innerHTML = '<span>Last updated: <b><time datetime="' + SPEC.updated + '">' + longDate(SPEC.updated) + '</time></b></span>' +
+    (hasPend ? '<span><span class="pend">[pending]</span> = still being confirmed</span>' : '');
+
+  /* tarjeta: la misma que en Shop. Lee el status del catálogo:
+     live = "Shop" normal; soon / soldout = lo que pinta hmCard ("Notify me") y el botón de texto igual;
+     sin producto (despublicado o tienda vacía) = la sección no sale. */
   var tee = (window.HM_CATALOG || []).filter(function (p) { return p.id === 'cat-v8-spec-tee'; })[0];
-  var tc = document.getElementById('tee-card');
-  if (tee && tc && window.hmCard) tc.innerHTML = window.hmCard(tee);
+  var tc = document.getElementById('tee-card'), cta = document.getElementById('tee-cta');
+  if (!tee || !window.hmCard) document.getElementById('tee-sec').hidden = true;
+  else {
+    tc.innerHTML = window.hmCard(tee);
+    if (tee.status !== 'live') {
+      cta.href = 'product.html?p=' + tee.id + '#notify';
+      cta.textContent = tee.status === 'soldout' ? 'Sold out · Notify me' : 'Coming soon · Notify me';
+    }
+  }
 
   /* ============================================================
      ANATOMÍA (patrón reutilizable: Sponsors lo copia para el mapa de calcomanías)
@@ -540,6 +558,8 @@ html,body{overflow-x:clip}
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",
+  "name": "The Machine · Heavy Metal Pro Stock, “The Evil One”",
+  "about": {"@type": "SportsTeam", "name": "Heavy Metal Pro Stock", "alternateName": "“The Evil One”", "sport": "Tractor pulling"},
   "mainEntity": [
     {
       "@type": "Question",
@@ -570,7 +590,7 @@ html,body{overflow-x:clip}
       "name": "What is a full pull?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Dragging the sled all the way to the end of the track. When more than one tractor goes the distance, those tractors come back for a pull-off. Heavy Metal is still chasing its first one."
+        "text": "Dragging the sled all the way to the end of the track. When more than one tractor goes the distance, those tractors come back for a pull-off. Heavy Metal Pro Stock is still chasing its first one."
       }
     },
     {
@@ -602,7 +622,7 @@ html,body{overflow-x:clip}
       "name": "Where can I see it, and can I get close in the pits?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Upcoming pulls are on the Schedule page page. Pit access depends on each event: some pulls open the pits to fans, others need a pit pass. Check with the organizer, and if you find us, come say hi."
+        "text": "Upcoming pulls are on the Schedule page. Pit access depends on each event: some pulls open the pits to fans, others need a pit pass. Check with the organizer, and if you find us, come say hi."
       }
     }
   ]

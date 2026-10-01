@@ -57,7 +57,12 @@
 .sc-year .input{min-height:40px;width:auto;padding-right:28px;font-weight:700}
 
 /* pestañas Upcoming / Past results */
-.sc-tabs{display:flex;border-bottom:1px solid var(--line)}
+.sc-tabrow{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:0 16px;border-bottom:1px solid var(--line)}
+.sc-tabs{display:flex}
+.sc-upd{margin:0;padding-bottom:12px;font-size:var(--t-xs);color:var(--mute)}
+.sc-upd time{color:var(--soft);font-weight:600}
+.sc-upd--cal{padding:8px 0 0}
+@media (max-width:480px){.sc-tabrow .sc-upd{order:-1;width:100%;padding:0 0 4px}}
 .sc-tab{min-height:44px;padding:0 18px;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);cursor:pointer}
 .sc-tab:first-child{padding-left:0}
 .sc-tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
@@ -110,32 +115,43 @@
 .cal-nav button:disabled{border-color:var(--line);color:var(--line);background:var(--surface);cursor:default}
 .cal{width:100%;border-collapse:collapse;table-layout:fixed}
 .cal th{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding:0 0 6px 8px;text-align:left}
-.cal td{border:1px solid var(--line);height:74px;vertical-align:top;padding:0;background:var(--surface)}
+.cal td{border:1px solid var(--line);height:84px;vertical-align:top;padding:0;background:var(--surface)}
 .cal td.out{background:transparent;border:none}
 .cal .d{display:inline-grid;place-items:center;min-width:22px;height:22px;margin:5px 0 0 5px;padding:0 3px;font-size:var(--t-xs);font-variant-numeric:tabular-nums;color:var(--soft)}
 .cal td.today .d{background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--ink);color:var(--ink);font-weight:700}
 .cal td.has{background:#FBFAF7}
-.cal .day{display:flex;flex-direction:column;align-items:stretch;gap:3px;width:100%;height:100%;min-height:74px;padding:0 5px 6px 0;background:none;border:0;text-align:left;cursor:pointer;color:inherit}
-.cal .day .d{color:var(--ink);font-weight:700;align-self:flex-start}
+.cal .day{display:flex;flex-direction:column;align-items:stretch;gap:4px;width:100%;height:100%;min-height:84px;padding:0 0 6px;background:none;border:0;text-align:left;cursor:pointer;color:inherit}
+.cal .day__top{display:flex;justify-content:space-between;align-items:flex-start;gap:2px}
+.cal .day .d{color:var(--ink);font-weight:700}
+.cal .own-tag{margin:6px 5px 0 0;padding:0 3px;font-size:9px;vertical-align:0}
+.own-tag .s{display:none}
 .cal .day:hover{background:var(--bg)}
 .cal .day:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
 .cal td.sel{box-shadow:inset 0 0 0 2px var(--ink)}
-.ev{display:block;margin-left:5px;padding:2px 5px;font-size:10px;font-weight:700;letter-spacing:.02em;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* chip del evento: nombre corto + color por tipo (negro = competition, amarillo = exhibition; próximos con contorno) */
+.ev{display:block;margin:0 5px;padding:4px 6px;border-radius:2px;font-family:var(--f-head);font-stretch:78%;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ev small{display:block;font-family:var(--f-sans);font-stretch:100%;font-size:9px;font-weight:600;letter-spacing:.06em;opacity:.85}
 .ev--c{background:var(--ink);color:var(--surface)}
 .ev--e{background:var(--accent);color:var(--ink)}
-.ev--up{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
-.ev--up.ev--e{box-shadow:inset 0 0 0 1.5px #B38F00}
+.ev--up{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink),inset 4px 0 0 var(--ink)}
+.ev--up.ev--e{box-shadow:inset 0 0 0 1.5px #B38F00,inset 4px 0 0 var(--accent)}
+.ev--x{text-decoration:line-through;opacity:.6}
 .cal-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:10px 0 0;padding:0;list-style:none;font-size:var(--t-xs);color:var(--soft)}
 .cal-legend li{display:flex;align-items:center;gap:6px}
-.cal-legend i{display:inline-block;width:14px;height:10px}
-.cal-legend .k-c{background:var(--ink)} .cal-legend .k-e{background:var(--accent)} .cal-legend .k-u{box-shadow:inset 0 0 0 1.5px var(--ink);background:var(--surface)}
+.cal-legend i{display:inline-block;width:18px;height:12px;border-radius:2px}
+.cal-legend .k-c{background:var(--ink)} .cal-legend .k-e{background:var(--accent)} .cal-legend .k-u{box-shadow:inset 0 0 0 1.5px var(--ink),inset 4px 0 0 var(--ink);background:var(--surface)}
 .cal-legend .k-t{border:1.5px solid var(--ink);border-radius:50%;width:12px;height:12px}
 @media (max-width:600px){
-  .cal td{height:50px}
-  .cal .day{min-height:50px;gap:4px;padding:0 4px 6px 0}
-  .cal th{padding-left:4px}
-  .cal .d{margin:3px 0 0 3px}
-  .ev{margin-left:4px;height:6px;padding:0;font-size:0}
+  .cal td{height:60px}
+  .cal .day{min-height:60px;gap:3px;padding-bottom:4px}
+  .cal th{padding-left:3px}
+  .cal .d{margin:3px 0 0 3px;min-width:18px;height:18px}
+  .ev{margin:0 2px;padding:3px 3px;font-size:10px;letter-spacing:0;text-overflow:clip}
+  .ev small{display:none}
+  .ev--up{box-shadow:inset 0 0 0 1.5px var(--ink),inset 3px 0 0 var(--ink);padding-left:5px}
+  .ev--up.ev--e{box-shadow:inset 0 0 0 1.5px #B38F00,inset 3px 0 0 var(--accent)}
+  .cal .own-tag{margin:3px 2px 0 0;padding:0 2px;font-size:8px}
+  .own-tag .l{display:none}.own-tag .s{display:inline}
 }
 
 /* panel lateral: agenda del mes y detalle del pull */
@@ -232,7 +248,7 @@
   <div class="wrap sc-top">
     <div class="sc-top__row">
       <h1 class="h1" id="sc-title">Schedule <span id="h1-year" class="num">2026</span></h1>
-      <p class="sc-status"><span class="badge">Testing</span> <span><span id="st-year" class="num">2026</span> testing season. Dates go up here and on <a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a> first.</span></p>
+      <p class="sc-status"><span class="badge">Testing</span> <span><span id="st-year" class="num">2026</span> testing season. New dates hit <a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a> first.</span></p>
     </div>
   </div>
 
@@ -254,9 +270,13 @@
 
     <!-- Vista lista: próximos e historial -->
     <div id="view-list">
+      <div class="sc-tabrow">
       <div class="sc-tabs" role="tablist" aria-label="Pulls">
         <button class="sc-tab" type="button" role="tab" id="tab-up" aria-controls="panel-up" aria-selected="true">Upcoming<span class="n" id="n-up"></span></button>
         <button class="sc-tab" type="button" role="tab" id="tab-past" aria-controls="panel-past" aria-selected="false" tabindex="-1">Past results<span class="n" id="n-past"></span></button>
+      </div>
+      <!-- last-updated: schedule -->
+      <p class="sc-upd">Last updated: <time class="upd num" datetime=""></time></p>
       </div>
       <div role="tabpanel" id="panel-up" aria-labelledby="tab-up" class="sc-table-wrap" tabindex="0"></div>
       <div role="tabpanel" id="panel-past" aria-labelledby="tab-past" tabindex="0" hidden></div>
@@ -280,12 +300,13 @@
             <li><i class="k-u" aria-hidden="true"></i>Upcoming (outline)</li>
             <li><i class="k-t" aria-hidden="true"></i>Today</li>
           </ul>
+          <p class="sc-upd sc-upd--cal">Last updated: <time class="upd num" datetime=""></time></p>
         </div>
         <div class="cal-side" id="cal-side" tabindex="-1" aria-live="polite"></div>
       </div>
     </div>
 
-    <p class="note">¿Qué es lo de Monroe? Es el pull del video de YouTube: Green County Fall Nationals, Monroe, WI (Badger State Tractor Pullers). Confirma que “The Evil One” corrió ahí, la fecha y el resultado. Las 3 exhibiciones marcadas “Ejemplo” son de muestra: pásanos fecha, lugar y resultado reales.</p>
+    <p class="note">Monroe es el pull del video de YouTube (Green County Fall Nationals, Badger State): confírmanos fecha y resultado. Todo lo marcado “Ejemplo” lleva fechas inventadas solo para que veas cómo se llena el calendario; existe únicamente en el boceto y se quita solo en cuanto guardas un pull con fecha real. Pásanos fecha, lugar y resultado de las 3 o 4 exhibiciones.</p>
   </div>
 </section>
 
@@ -315,15 +336,15 @@
         </ul>
       </article>
       <article class="wcard wcard--hm" aria-labelledby="w-hm">
-        <h3 class="h3" id="w-hm">Heavy Metal</h3>
+        <h3 class="h3" id="w-hm">Heavy Metal Pro Stock</h3>
         <p>Our own channels</p>
         <ul class="wlist">
-          <li><a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Heavy Metal on Facebook<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>New dates first, pit photos and our runs</span></li>
+          <li><a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Heavy Metal Pro Stock on Facebook<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>New dates first, pit photos and our runs</span></li>
           <li><a href="https://www.youtube.com/watch?v=HfJ5FAJJ5Ac" target="_blank" rel="noopener">Monroe, WI run on YouTube<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Green County Fall Nationals, Badger State Tractor Pullers</span></li>
         </ul>
       </article>
     </div>
-    <p class="sc-inperson"><b>In person:</b> tickets are sold by each fair or venue. We add the ticket link to the pull as soon as it goes on sale.</p>
+    <p class="sc-inperson"><b>In person:</b> tickets are sold by each fair or venue.</p>
   </div>
 </section>
 
@@ -363,25 +384,25 @@
 <section class="sc-owner" aria-labelledby="own-t">
   <div class="wrap">
     <h2 class="label" id="own-t" style="margin-bottom:8px">Solo para la dueña · no se ve en el sitio</h2>
-    <p class="note">Cada pull es una entrada de Contenido &gt; Metaobjetos &gt; Pull event, sin código. Llenas los campos (Type: Competition o Exhibition) y guardas: lista, calendario, historial, filtro de año y .ics se actualizan solos. El año por defecto es la temporada del tema. Status “Hidden” lo guarda sin mostrarlo.</p>
+    <p class="note">El calendario NO se edita aparte: se genera solo desde las entradas de Contenido &gt; Metaobjetos &gt; Pull event. ¿Un error? Abre esa entrada, corrige fecha, nombre o tipo y guarda: calendario, lista, historial, contadores y .ics se actualizan solos. Status “Hidden” lo esconde sin borrarlo. Al guardar, cambia también “Last updated” en Personalizar &gt; Schedule.</p>
     <figure class="adm" aria-labelledby="adm-cap">
       <figcaption class="adm__bar" id="adm-cap"><span>Contenido &gt; Metaobjetos &gt; <b>Pull event</b> &gt; Green County Fall Nationals</span><span class="adm__only">Solo para la dueña</span></figcaption>
       <form id="adm-form" novalidate>
         <div class="adm__grid">
           <div class="field"><label for="adm-date">Date</label><input class="input" id="adm-date" type="date"></div>
           <div class="field span2"><label for="adm-event">Event</label><input class="input" id="adm-event" type="text" value="Green County Fall Nationals"></div>
+          <div class="field"><label for="adm-short">Calendar label</label><input class="input" id="adm-short" type="text" value="Monroe" maxlength="14" aria-describedby="adm-sh-hint"><span class="hint" id="adm-sh-hint">Nombre corto del cuadrito del calendario (opcional)</span></div>
           <div class="field"><label for="adm-city">City</label><input class="input" id="adm-city" type="text" value="Monroe, WI"></div>
           <div class="field"><label for="adm-league">League</label><select class="input" id="adm-league"><option>NTPA</option><option selected>Badger State Tractor Pullers</option><option>IHRA Pro Pulling (PPL)</option><option>Other</option></select></div>
           <div class="field"><label for="adm-type">Type <span class="adm__new">Nuevo</span></label><select class="input" id="adm-type" aria-describedby="adm-ty-hint"><option selected>Competition</option><option>Exhibition</option></select><span class="hint" id="adm-ty-hint">Exhibition: corrida para el público, sin puntos</span></div>
           <div class="field"><label for="adm-status">Status</label><select class="input" id="adm-status" aria-describedby="adm-st-hint"><option>Upcoming</option><option selected>Done</option><option>Cancelled</option><option>Hidden</option></select><span class="hint" id="adm-st-hint">Hidden: se guarda pero no sale en el sitio</span></div>
           <div class="field"><label for="adm-dist">Distance</label><input class="input" id="adm-dist" type="text" placeholder="e.g. 312.4 ft"></div>
-          <div class="field span2"><label for="adm-result">Result</label><input class="input" id="adm-result" type="text" placeholder="e.g. 3rd place, or Full pull" aria-describedby="adm-res-hint"><span class="hint" id="adm-res-hint">Si escribes “Full pull” sale la etiqueta amarilla</span></div>
+          <div class="field span2"><label for="adm-result">Result</label><input class="input" id="adm-result" type="text" placeholder="e.g. 3rd place, or Full pull" aria-describedby="adm-res-hint"><span class="hint" id="adm-res-hint">“Full pull” saca la etiqueta amarilla; “1st place” o “Win” suma un win</span></div>
           <div class="field span2"><label for="adm-video">Video or photos URL</label><input class="input" id="adm-video" type="url" value="https://www.youtube.com/watch?v=HfJ5FAJJ5Ac"></div>
           <div class="field span2"><label for="adm-site">Event website / tickets</label><input class="input" id="adm-site" type="url" value="https://greencountyfair.net/"></div>
         </div>
         <div class="adm__foot">
           <button class="adm__del" type="button" id="adm-del">Delete</button>
-          <button class="btn btn--ghost btn--sm" type="button" id="adm-test" aria-pressed="false">Probar calendario con fechas de prueba</button>
           <span class="grow"></span>
           <button class="btn btn--sm" type="submit">Save y ver arriba</button>
         </div>

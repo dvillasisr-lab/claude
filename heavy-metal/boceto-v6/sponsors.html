@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sponsor “The Evil One” · Heavy Metal Pro Stock</title>
-<meta name="description" content="Put your brand on “The Evil One”, a Pro Stock pulling tractor from Waterloo, WI, in front of an estimated 100,000+ fans a season. Title Partner $25,000, Pit Partner $10,000, Crew Supporter $5,000.">
+<meta name="description" content="Sponsor Heavy Metal Pro Stock and put your brand on “The Evil One”, a Pro Stock pulling tractor from Waterloo, WI. Your brand in front of XX+ fans across XX pulls a season. Title Partner $25,000, Pit Partner $10,000, Crew Supporter $5,000.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -79,7 +79,12 @@
 @media (min-width:861px) and (max-width:1024px){.sp-photo{display:none}}
 @media (max-width:860px){.sp-tiers{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(260px,84%);overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:thin}.sp-tier{scroll-snap-align:start}.sp-hint{display:block}}
 @media (max-width:480px){.sp-photo{aspect-ratio:16/6}}
-.sp-hint{display:none;margin:8px 0 0;font-size:var(--t-xs);color:var(--mute)}
+.sp-hint{display:none;margin:0;font-size:var(--t-xs);color:var(--mute)}
+.sp-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 16px;margin-top:8px}
+.sp-upd{margin:0 0 0 auto;font-size:var(--t-xs);color:var(--mute)}
+.sp-stats-col{display:grid;gap:10px}
+.sp-stats-col .sp-upd{margin:0}
+.sp-seg button[aria-pressed="false"].is-off{text-decoration:line-through;opacity:.7}
 
 /* 2 · barra de pestañas sticky (dentro de la página) */
 .sp-tabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header));z-index:40;background:var(--surface);border-block:1px solid var(--line)}
@@ -108,10 +113,11 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
 /* 4 · dónde sale tu marca: lista desde el metaobjeto "Logo placement" */
 .sp-place{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 24px}
 .sp-place li{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:start;padding:14px 0;border-top:1px solid var(--line)}
-.sp-place__pic{width:64px;height:64px;overflow:hidden;background:var(--tile);display:grid;place-items:center;margin:0}
-.sp-place__pic img{width:100%;height:100%;object-fit:cover}
-.sp-place__pic img.mock{object-fit:contain;padding:6px}
-.sp-place svg{width:28px;height:28px;fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+.sp-place__pic{width:64px;height:64px;background:var(--tile);display:grid;place-items:center;margin:0;color:var(--ink)}
+.sp-place__pic svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+.sp-place li.is-new .sp-place__pic{background:var(--accent)}
+.sp-place li.is-new{animation:sp-in .5s ease-out}
+@keyframes sp-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .sp-place p{margin:2px 0 0;font-size:var(--t-sm);color:var(--soft)}
 .sp-chips{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 0;padding:0;list-style:none}
 .sp-place .sp-chips li{display:block;padding:2px 7px;border:1px solid var(--line);border-top:1px solid var(--line);font-size:11px;color:var(--soft);line-height:1.4}
@@ -191,28 +197,24 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
 .sp-status:empty{padding:0;border:0}
 .sp-next{margin:0;padding:10px 12px;background:var(--bg);border-left:3px solid var(--accent);font-size:var(--t-sm);color:var(--ink)}
 .sp-next b{display:block;font-size:var(--t-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
-.sp-reach{font-style:normal;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;margin:8px 0 14px;border:1px solid var(--line);background:var(--surface)}
-.sp-reach>div{padding:10px 14px;display:grid;gap:2px;min-width:0}
-.sp-reach>div+div{border-left:1px solid var(--line)}
-.sp-reach dt{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
-.sp-reach dd{margin:0;font-size:var(--t-sm);font-weight:700;color:var(--ink);overflow-wrap:anywhere}
-.sp-reach dd a{color:inherit;text-underline-offset:3px}
-.sp-reach dd span{display:block;font-weight:400;font-size:var(--t-xs);color:var(--soft)}
-@media (max-width:1100px) and (min-width:901px),(max-width:600px){.sp-reach{grid-template-columns:1fr}.sp-reach>div+div{border-left:0;border-top:1px solid var(--line)}}
 @media (max-width:900px){.sp-end{grid-template-columns:1fr}}
 @media (max-width:480px){.sp-form{grid-template-columns:1fr}}
 </style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {"@type": "Question", "name": "Which package fits my business?", "acceptedAnswer": {"@type": "Answer", "text": "Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. If you are not sure, pick Not sure in the form and we will help."}},
-    {"@type": "Question", "name": "Where does “The Evil One” pull?", "acceptedAnswer": {"@type": "Answer", "text": "An estimated 20+ pulls per season on the NTPA and PPL Badger State circuits, across 10+ states, plus exhibitions. Driver and owner Chris F. has 20+ years in the sport."}},
-    {"@type": "Question", "name": "How many people will see my brand?", "acceptedAnswer": {"@type": "Answer", "text": "We estimate 100,000+ fans in the stands per season: 20+ pulls times 5,000+ fans per pull. Streams and social media come on top of that."}},
-    {"@type": "Question", "name": "How long does a package run?", "acceptedAnswer": {"@type": "Answer", "text": "Packages are built around the pulling season. We confirm the exact dates and terms in writing with you before anything goes on the tractor."}},
-    {"@type": "Question", "name": "What if the package I want is sold out?", "acceptedAnswer": {"@type": "Answer", "text": "Join the waitlist from that package. We will contact you if a spot opens up."}},
-    {"@type": "Question", "name": "What happens after I send the form?", "acceptedAnswer": {"@type": "Answer", "text": "We will email you our sponsor kit within 2 business days. Prefer to talk? Call us at (920) 650-4374 or email heavymetalevil72@gmail.com."}}
+  "@graph": [
+    {"@type": "WebPage", "name": "Sponsor “The Evil One” · Heavy Metal Pro Stock", "description": "Sponsorship packages for Heavy Metal Pro Stock, home of “The Evil One”, a Pro Stock pulling tractor from Waterloo, WI.",
+     "publisher": {"@type": "SportsTeam", "name": "Heavy Metal Pro Stock", "alternateName": "“The Evil One”", "sport": "Tractor pulling", "location": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "Waterloo", "addressRegion": "WI", "addressCountry": "US"}}}},
+    {"@type": "FAQPage",
+     "mainEntity": [
+      {"@type": "Question", "name": "Which package fits my business?", "acceptedAnswer": {"@type": "Answer", "text": "Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. If you are not sure, pick Not sure in the form and we will help."}},
+      {"@type": "Question", "name": "Where does “The Evil One” pull?", "acceptedAnswer": {"@type": "Answer", "text": "On the NTPA and PPL Badger State circuits, XX pulls a season, plus exhibitions. Driver and owner Chris F. has 20+ years in the sport."}},
+      {"@type": "Question", "name": "How many people will see my brand?", "acceptedAnswer": {"@type": "Answer", "text": "Your brand goes in front of XX+ fans across XX pulls a season, in the stands alone. Streams and social media come on top of that. We send current numbers with the sponsor kit."}},
+      {"@type": "Question", "name": "How long does a package run?", "acceptedAnswer": {"@type": "Answer", "text": "Packages are built around the pulling season. We confirm the exact dates and terms in writing with you before anything goes on the tractor."}},
+      {"@type": "Question", "name": "What if the package I want is sold out?", "acceptedAnswer": {"@type": "Answer", "text": "Join the waitlist from that package. We will contact you if a spot opens up."}},
+      {"@type": "Question", "name": "What happens after I send the form?", "acceptedAnswer": {"@type": "Answer", "text": "We will email you our sponsor kit within 2 business days."}}
+     ]}
   ]
 }
 </script>
@@ -230,14 +232,16 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
       <div class="sp-head">
         <div>
           <h1 class="h1" id="sp-title">Sponsor “The Evil One”</h1>
-          <p>Put your brand in front of <span id="sp-reach-lede">100,000+</span> fans a season (est.), on a Pro Stock tractor built from scratch in Waterloo, WI, by a driver with 20+ years in the sport.</p>
+          <p><span data-pitch>Your brand in front of XX+ fans across XX pulls a season</span>, on a Pro Stock tractor built from scratch in Waterloo, WI, by a driver with 20+ years in the sport.</p>
         </div>
         <a class="link" href="#contact" style="text-decoration:underline">Not sure? Ask us</a>
       </div>
       <!-- En Shopify: un bloque Liquid recorre las entradas del metaobjeto "Sponsor tier". Aquí: array TIERS al final. -->
       <ul class="sp-tiers" id="sp-tiers" aria-label="Sponsorship packages" tabindex="0"></ul>
-      <p class="sp-hint" id="sp-hint" aria-hidden="true">Swipe to see all 3 packages</p>
-      <div class="note sp-owner" id="sp-owner">Esto no sale en el sitio. Prueba cómo se ve Pit Partner:
+      <div class="sp-foot"><p class="sp-hint" id="sp-hint" aria-hidden="true">Swipe to see all 3 packages</p>
+        <!-- last-updated: Sponsor packages (Contenido > Metaobjetos > Sponsor tier, campo Updated) -->
+        <p class="sp-upd" id="sp-tiers-upd">Last updated: October 1, 2026</p></div>
+      <div class="note sp-owner" id="sp-owner">Esto no sale en el sitio. La frase de venta (XX+ fans, XX pulls) se llena en Personalizar &gt; Sponsors &gt; Sales line; vacía se ve "XX". Prueba cómo se ve Pit Partner:
         <span class="sp-seg" role="group" aria-label="Estado de Pit Partner, solo boceto">
           <button type="button" data-st="available" aria-pressed="true">Available</button>
           <button type="button" data-st="limited" aria-pressed="false">Limited</button>
@@ -256,12 +260,13 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
                 <div><dt>Spots left</dt><dd id="adm-l">(vacío)</dd></div>
                 <div><dt>Featured</dt><dd class="tog" id="adm-f"><i></i>Sí</dd></div>
                 <div><dt>Tagline</dt><dd id="adm-t">Season package</dd></div>
+                <div><dt>Updated</dt><dd id="adm-u">Oct 1, 2026</dd></div>
                 <div class="w"><dt>Benefits (una línea cada uno)</dt><dd id="adm-b">Logo on the team shirt sleeve · Logo on the trailer · …</dd></div>
               </dl>
               <div class="adm__bar"><span class="adm__del">Eliminar entrada</span><span class="adm__save">Guardar</span></div>
             </div>
             <ol class="adm__how">
-              <li><b>Precio o beneficios:</b> cambia el campo y Guardar. La página se actualiza sola.</li>
+              <li><b>Precio o beneficios:</b> cambia el campo, pon la fecha en Updated y Guardar. "Last updated" muestra la fecha más nueva.</li>
               <li><b>Lleno:</b> Status = Sold out. Sale atenuado y el botón pasa a "Join the waitlist".</li>
               <li><b>Quedan pocos:</b> Status = Limited y escribe Spots left (1 = "1 spot left").</li>
               <li><b>Esconder sin borrar:</b> Status = Hidden (lo guardas para la próxima temporada).</li>
@@ -281,7 +286,7 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
     <li><a href="#placements">Where your logo goes</a></li>
     <li><a href="#decals">Decal map</a></li>
     <li><a href="#faq">FAQ</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#contact">Request</a></li>
   </ul></div>
 </nav>
 
@@ -290,7 +295,11 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
   <div class="wrap sp-num">
     <h2 class="vh" id="stats-t">The season in numbers</h2>
     <dl class="sp-big" id="sp-big"></dl>
-    <dl class="sp-stats" id="sp-stats"></dl>
+    <div class="sp-stats-col">
+      <dl class="sp-stats" id="sp-stats"></dl>
+      <!-- last-updated: Sponsor stats (Contenido > Metaobjetos > Sponsor stat, campo Updated) -->
+      <p class="sp-upd" id="sp-stats-upd">Last updated: October 1, 2026</p>
+    </div>
   </div>
 </section>
 
@@ -299,7 +308,10 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
   <div class="wrap">
     <div class="sect-head"><h2 class="h2" id="place-t">Where your logo goes</h2><p class="small muted" style="margin:0" id="place-sub">What each package gets is listed under each place.</p></div>
     <ul class="sp-place" id="sp-place"></ul>
-    <p class="note">Cifras, lugares del logo y zonas de calcomanía se editan sin código en Contenido &gt; Metaobjetos &gt; <b>Sponsor stat</b>, <b>Logo placement</b> (nombre, descripción, paquetes, estado, foto) y <b>Decal zone</b> (nombre, tamaño, paquete, Available / Sold). Tamaños "XX x XX in" y paquetes "To confirm": confirmar con Chris y con las reglas de NTPA / PPL.</p>
+    <div class="note sp-owner" id="place-owner">Esto no sale en el sitio. Cada lugar es una entrada de Contenido &gt; Metaobjetos &gt; <b>Logo placement</b> (nombre, descripción, ícono de la lista, paquetes, Status). <b>Agregar entrada</b> pone un lugar nuevo; <b>Status Hidden</b> lo esconde sin borrarlo; <b>Eliminar entrada</b> lo quita para siempre. Cifras: <b>Sponsor stat</b>. Zonas del mapa: <b>Decal zone</b> (tamaños "XX x XX in" y paquetes "To confirm": confirmar con Chris y las reglas de NTPA / PPL). Pruébalo:
+      <span class="sp-seg" id="place-seg" role="group" aria-label="Mostrar u ocultar lugares, solo boceto"></span>
+      <span class="sp-seg"><button type="button" id="place-add" aria-pressed="false">+ Add placement</button></span>
+    </div>
   </div>
 </section>
 
@@ -348,8 +360,8 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
     <div class="faq" id="faq">
       <h2 class="h2" id="faq-t" style="margin-bottom:12px">FAQ</h2>
       <details><summary>Which package fits my business?</summary><p>Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. Not sure? Pick "Not sure" in the form and we'll help.</p></details>
-      <details><summary>Where does “The Evil One” pull?</summary><p>An estimated 20+ pulls per season on the NTPA and PPL Badger State circuits, across 10+ states, plus exhibitions. Driver and owner Chris F. has 20+ years in the sport. Dates go up on the <a href="schedule.html">Schedule</a>.</p></details>
-      <details><summary>How many people will see my brand?</summary><p>We estimate <span class="num" data-reach>100,000+</span> fans in the stands per season: 20+ pulls times 5,000+ fans per pull. Streams and social media come on top of that.</p></details>
+      <details><summary>Where does “The Evil One” pull?</summary><p>On the NTPA and PPL Badger State circuits, <span data-pulls>XX</span> pulls a season, plus exhibitions. Driver and owner Chris F. has 20+ years in the sport. Dates go up on the <a href="schedule.html">Schedule</a>.</p></details>
+      <details><summary>How many people will see my brand?</summary><p><span data-pitch>Your brand in front of XX+ fans across XX pulls a season</span>, in the stands alone. Streams and social media come on top of that. We send current numbers with the sponsor kit.</p></details>
       <details><summary>How long does a package run?</summary><p>Packages are built around the pulling season. We confirm the exact dates and terms in writing with you before anything goes on the tractor.</p></details>
       <details><summary>What if the package I want is sold out?</summary><p>Hit "Join the waitlist" on that package. We'll contact you if a spot opens up.</p></details>
       <details><summary>What happens after I send the form?</summary><p>We'll email you our sponsor kit within 2 business days.</p></details>
@@ -357,12 +369,7 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
 
     <div id="contact">
       <h2 class="h2" id="form-t">Request a package</h2>
-      <p class="small muted" style="margin:4px 0 0">Prefer to talk? Call us or email us directly.</p>
-      <address><dl class="sp-reach">
-        <div><dt>Call us</dt><dd><a href="tel:+19206504374">(920) 650-4374</a><span>Ask for Chris</span></dd></div>
-        <div><dt>Email</dt><dd><a href="mailto:heavymetalevil72@gmail.com">heavymetalevil72@gmail.com</a><span>Reply within 2 business days</span></dd></div>
-        <div><dt>Mail</dt><dd>P.O. Box 42<span>Waterloo, WI 53594</span></dd></div>
-      </dl></address>
+      <p class="small muted" style="margin:4px 0 12px">Tell us a little about your business. We'll reply within 2 business days.</p>
       <form class="sp-form" id="sp-form" novalidate aria-labelledby="form-t">
         <div class="field"><label for="f-company">Company</label><input class="input" id="f-company" name="company" type="text" required autocomplete="organization" placeholder="e.g. Waterloo Ag Supply"></div>
         <div class="field"><label for="f-name">Your name</label><input class="input" id="f-name" name="name" type="text" required autocomplete="name" placeholder="e.g. Jake Miller"></div>
@@ -398,14 +405,17 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
       e.preventDefault();
       t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
       history.replaceState(null, '', a.getAttribute('href'));
-      setCur(a);
+      setCur(a); lockUntil = Date.now() + 1200;
     });
   });
   function setCur(a) { links.forEach(function (x) { if (x === a) x.setAttribute('aria-current', 'true'); else x.removeAttribute('aria-current'); }); }
   var secs = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  /* lockUntil: tras un clic en una pestaña se respeta esa pestaña (FAQ y Request quedan lado a lado en pantallas anchas) */
+  var lockUntil = 0;
   function onScroll() {
-    var y = 140, cur = links[0];
-    secs.forEach(function (s, i) { if (s && s.getBoundingClientRect().top <= y) cur = links[i]; });
+    if (Date.now() < lockUntil) return;
+    var y = 140, cur = links[0], best = -Infinity;
+    secs.forEach(function (s, i) { if (!s) return; var t = Math.round(s.getBoundingClientRect().top); if (t <= y && t > best) { best = t; cur = links[i]; } });
     if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 4) cur = links[links.length - 1];
     setCur(cur);
   }
@@ -415,14 +425,26 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
      status: available | limited | soldout | hidden. spots_left solo cuenta con limited. */
   var SEASON = window.HM_SEASON || new Date().getFullYear();
   var TIERS = [
-    { handle: 'title', name: 'Title Partner', price: 25000, tagline: 'All season', featured: false, status: 'available', spots_left: null,
+    { handle: 'title', name: 'Title Partner', price: 25000, tagline: 'All season', featured: false, status: 'available', spots_left: null, updated: '2026-10-01',
       benefits: ['Your name in the team name all season', 'Biggest logo on the tractor itself', 'Top logo on all team gear and the trailer', 'Top billing on the website and every social post', 'Announcer shout-out at every pull', 'VIP pit passes at every pull'] },
-    { handle: 'pit', name: 'Pit Partner', price: 10000, tagline: 'Season package', featured: true, status: 'available', spots_left: null,
+    { handle: 'pit', name: 'Pit Partner', price: 10000, tagline: 'Season package', featured: true, status: 'available', spots_left: null, updated: '2026-10-01',
       benefits: ['Logo on the team shirt sleeve', 'Logo on the trailer', 'Logo and link on this website', 'Monthly social shout-outs', 'Announcer mention at select pulls', 'Pit passes at select pulls'] },
-    { handle: 'crew', name: 'Crew Supporter', price: 5000, tagline: 'Built for local shops and fans', featured: false, status: 'available', spots_left: null,
-      benefits: ['Name on the trailer supporters board', 'Listed on this website', 'Thank-you post on our socials', 'Heavy Metal sponsor decal for your shop'] }
+    { handle: 'crew', name: 'Crew Supporter', price: 5000, tagline: 'Built for local shops and fans', featured: false, status: 'available', spots_left: null, updated: '2026-09-12',
+      benefits: ['Name on the trailer supporters board', 'Listed on this website', 'Thank-you post on our socials', 'Heavy Metal Pro Stock sponsor decal for your shop'] }
   ];
   var money = function (n) { return '$' + n.toLocaleString('en-US'); };
+  /* fechas 'AAAA-MM-DD' de los campos Updated: se muestran como "October 1, 2026" */
+  var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var longDate = function (d) { var p = String(d).split('-'); return MONTHS[+p[1] - 1] + ' ' + (+p[2]) + ', ' + p[0]; };
+  var shortDate = function (d) { var p = String(d).split('-'); return MONTHS[+p[1] - 1].slice(0, 3) + ' ' + (+p[2]) + ', ' + p[0]; };
+  var newest = function (list) { return list.map(function (x) { return x.updated; }).filter(Boolean).sort().pop(); };
+
+  /* Frase de venta: ajuste de la sección (Personalizar > Sponsors > Sales line). Vacío = "XX". No es promesa: se llena solo con datos reales. */
+  var PITCH = { fans: null, pulls: null };
+  var pitchFans = PITCH.fans ? PITCH.fans.toLocaleString('en-US') + '+' : 'XX+';
+  var pitchPulls = PITCH.pulls ? String(PITCH.pulls) : 'XX';
+  document.querySelectorAll('[data-pitch]').forEach(function (e) { e.textContent = 'Your brand in front of ' + pitchFans + ' fans across ' + pitchPulls + ' pulls a season'; });
+  document.querySelectorAll('[data-pulls]').forEach(function (e) { e.textContent = pitchPulls; });
   var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var byHandle = function (h) { for (var i = 0; i < TIERS.length; i++) if (TIERS[i].handle === h) return TIERS[i]; return null; };
 
@@ -448,6 +470,7 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
     ul.style.setProperty('--n', vis.length);
     ul.innerHTML = vis.map(tierHTML).join('');
     $('sp-hint').textContent = 'Swipe to see all ' + vis.length + ' packages';
+    var up = newest(vis); $('sp-tiers-upd').hidden = !up; if (up) $('sp-tiers-upd').textContent = 'Last updated: ' + longDate(up);
     /* opciones del formulario, desde los mismos datos */
     var sel = $('f-pkg'), keep = sel.value || 'pit';
     sel.innerHTML = vis.map(function (t) {
@@ -483,7 +506,7 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
     t.status = st; t.spots_left = st === 'limited' ? 1 : null;
     document.querySelectorAll('.sp-seg button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-st') === st ? 'true' : 'false'); });
     $('adm-n').textContent = t.name; $('adm-p').textContent = money(t.price); $('adm-t').textContent = t.tagline;
-    $('adm-s').textContent = ST_LABEL[st]; $('adm-l').textContent = t.spots_left ? String(t.spots_left) : '(vacío)';
+    $('adm-u').textContent = shortDate(t.updated); $('adm-s').textContent = ST_LABEL[st]; $('adm-l').textContent = t.spots_left ? String(t.spots_left) : '(vacío)';
     $('adm-b').textContent = t.benefits.slice(0, 2).join(' · ') + ' · +' + (t.benefits.length - 2) + ' más';
     render();
   }
@@ -498,6 +521,7 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
     { key: 'fans',   label: 'Fans per pull',     n: 5000, plus: true, est: true },
     { key: 'social', label: 'Social media',      text: 'Growing' }
   ];
+  var STATS_UPDATED = '2026-10-01'; /* campo Updated del metaobjeto Sponsor stat */
   var stat = function (k) { for (var i = 0; i < STATS.length; i++) if (STATS[i].key === k) return STATS[i]; return null; };
   var fmt = function (s) { return s.text ? esc(s.text) : s.n.toLocaleString('en-US') + (s.plus ? '+' : ''); };
   var EST = '<span class="sp-est">(est.)</span>';
@@ -509,48 +533,73 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
     $('sp-stats').innerHTML = STATS.map(function (s) {
       return '<div class="spec"><dt>' + esc(s.label) + '</dt><dd class="num">' + fmt(s) + (s.est ? EST : '') + '</dd></div>';
     }).join('');
-    $('sp-reach-lede').textContent = reach;
-    document.querySelectorAll('[data-reach]').forEach(function (e) { e.textContent = reach; });
+    $('sp-stats-upd').textContent = 'Last updated: ' + longDate(STATS_UPDATED);
   })();
 
   /* Dónde sale tu marca: simula el metaobjeto "Logo placement".
-     tiers = qué paquete lo incluye y qué recibe; status: active | hidden; photo opcional (sin foto usa el ícono). */
+     icon = uno de la lista de íconos (sin fotos); tiers = qué paquete lo incluye y qué recibe; status: active | hidden. */
   var ICONS = {
-    gear: '<path d="M11 5l-6 4 3 5 3-2v15h10V12l3 2 3-5-6-4c-1 2-3 3-5 3s-4-1-5-3Z"/>',
-    trailer: '<path d="M3 9h20v14H3zM23 14h4l2 4v5h-6"/><circle cx="9" cy="24" r="2.5"/><circle cx="25" cy="24" r="2.5"/>',
-    web: '<rect x="4" y="6" width="24" height="18"/><path d="M4 11h24M12 28h8M16 24v4"/>',
-    social: '<path d="M5 7h22v15H14l-6 5v-5H5z"/>',
-    tractor: '<circle cx="9" cy="21" r="6"/><circle cx="25" cy="24" r="3"/><path d="M9 15V7h5v6h11l3 6v5M15 21h7"/>',
-    announcer: '<path d="M5 13h5l7-6v18l-7-6H5zM22 11c2 1.5 2 8.5 0 10M25 8c4 3 4 13 0 16"/>'
+    tractor: '<circle cx="10" cy="21" r="7"/><circle cx="10" cy="21" r="2"/><circle cx="25.5" cy="24" r="4"/><path d="M5 14.5V7h7l2 7h12l2 5v2.5M17 21h4.5M21 14V8.5M19.5 8.5h3"/>',
+    trailer: '<rect x="2" y="8" width="21" height="13"/><path d="M23 18h7M7 12h11"/><circle cx="9" cy="23.5" r="2.5"/><circle cx="16" cy="23.5" r="2.5"/>',
+    shirt: '<path d="M11.5 5 4 8.5l2.8 6.2 3.2-1.6V27h12V13.1l3.2 1.6L28 8.5 20.5 5c-.7 2-2.4 3.2-4.5 3.2S12.2 7 11.5 5Z"/><path d="M23 10.5h2.5"/>',
+    web: '<rect x="3" y="5" width="26" height="20"/><path d="M3 10h26M7 15h9M7 19h6M12 29h8M16 25v4"/><rect x="19.5" y="14" width="5.5" height="7"/>',
+    social: '<path d="M4 5h24v16H14l-6 5.5V21H4z"/><path d="M16 17.5l-3.5-3.3a2.1 2.1 0 0 1 3-3l.5.5.5-.5a2.1 2.1 0 0 1 3 3z"/>',
+    mic: '<rect x="12" y="3" width="8" height="14" rx="4"/><path d="M8 13a8 8 0 0 0 16 0M16 21v6M11 27.5h10M12 9h2M18 9h2"/>',
+    pass: '<path d="M13 3h6v5h-6z"/><rect x="8" y="8" width="16" height="20"/><circle cx="16" cy="15.5" r="3"/><path d="M11.5 24c.9-2 2.5-3 4.5-3s3.6 1 4.5 3"/>'
   };
   var PLACEMENTS = [
-    { name: 'Team gear', icon: 'gear', status: 'active', photo: 'img/icons/tee-black.svg', mock: true,
-      description: 'Shirts and merch the crew and fans wear.', tiers: [['title', 'top logo'], ['pit', 'shirt sleeve']] },
-    { name: 'Trailer and pit area', icon: 'trailer', status: 'active', photo: null,
-      description: 'Where fans line up to see the tractor up close.', tiers: [['title', 'top logo'], ['pit', 'logo'], ['crew', 'supporters board']] },
-    { name: 'This website', icon: 'web', status: 'active', photo: null,
-      description: 'Our sponsor list, seen by every fan who shops the merch.', tiers: [['title', 'top billing'], ['pit', 'logo and link'], ['crew', 'listed']] },
-    { name: 'Social media', icon: 'social', status: 'active', photo: 'img/hm-crew.webp', pos: '50% 40%',
-      description: 'Posts from the track, the pits and the shop.', tiers: [['title', 'every post'], ['pit', 'monthly'], ['crew', 'thank-you post']] },
-    { name: 'On the tractor', icon: 'tractor', status: 'active', photo: 'img/hm-side.webp', pos: '50% 60%',
+    { handle: 'tractor', name: 'On the tractor', icon: 'tractor', status: 'active',
       description: 'On “The Evil One” itself, in every photo and video.', tiers: [['title', 'biggest logo']] },
-    { name: 'Announcer mentions', icon: 'announcer', status: 'active', photo: 'img/hm-grandstand.webp', pos: '50% 70%',
+    { handle: 'trailer', name: 'Trailer and pit area', icon: 'trailer', status: 'active',
+      description: 'Where fans line up to see the tractor up close.', tiers: [['title', 'top logo'], ['pit', 'logo'], ['crew', 'supporters board']] },
+    { handle: 'gear', name: 'Team shirts and gear', icon: 'shirt', status: 'active',
+      description: 'Shirts and merch the crew and fans wear.', tiers: [['title', 'top logo'], ['pit', 'shirt sleeve']] },
+    { handle: 'web', name: 'This website', icon: 'web', status: 'active',
+      description: 'Our sponsor list, seen by every fan who shops the merch.', tiers: [['title', 'top billing'], ['pit', 'logo and link'], ['crew', 'listed']] },
+    { handle: 'social', name: 'Social media', icon: 'social', status: 'active',
+      description: 'Posts from the track, the pits and the shop.', tiers: [['title', 'every post'], ['pit', 'monthly'], ['crew', 'thank-you post']] },
+    { handle: 'announcer', name: 'Announcer mentions', icon: 'mic', status: 'active',
       description: 'Your name over the PA when the tractor hooks.', tiers: [['title', 'every pull'], ['pit', 'select pulls']] }
   ];
+  /* Entrada de ejemplo para el botón "+ Add placement" (sale de beneficios reales de los paquetes) */
+  var EXAMPLE = { handle: 'pits', name: 'Pit passes', icon: 'pass', status: 'active', isNew: true,
+    description: 'Your team in the pits with the crew, up close to the tractor.', tiers: [['title', 'VIP, every pull'], ['pit', 'select pulls']] };
   var SHORT = { title: 'Title', pit: 'Pit', crew: 'Crew' };
+  var WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
   function renderPlaces() {
     var vis = PLACEMENTS.filter(function (p) { return p.status !== 'hidden'; });
     $('sp-place').innerHTML = vis.map(function (p) {
-      var pic = p.photo
-        ? '<img class="' + (p.mock ? 'mock' : '') + '" src="' + p.photo + '" alt="" width="64" height="64" loading="lazy"' + (p.pos ? ' style="object-position:' + p.pos + '"' : '') + '>'
-        : '<svg viewBox="0 0 32 32" aria-hidden="true">' + (ICONS[p.icon] || '') + '</svg>';
       var chips = p.tiers.filter(function (t) { var x = byHandle(t[0]); return x && x.status !== 'hidden'; })
         .map(function (t) { var x = byHandle(t[0]); return '<li><b>' + esc(SHORT[x.handle] || x.name) + '</b> · ' + esc(t[1]) + '</li>'; }).join('');
-      return '<li><figure class="sp-place__pic">' + pic + '</figure><div><h3 class="h3">' + esc(p.name) + '</h3><p>' + esc(p.description) + '</p>' +
+      return '<li' + (p.isNew ? ' class="is-new"' : '') + '><figure class="sp-place__pic"><svg viewBox="0 0 32 32" aria-hidden="true">' + (ICONS[p.icon] || ICONS.web) + '</svg></figure><div><h3 class="h3">' + esc(p.name) + '</h3><p>' + esc(p.description) + '</p>' +
         (chips ? '<ul class="sp-chips" aria-label="Included in">' + chips + '</ul>' : '') + '</div></li>';
     }).join('');
-    $('place-sub').textContent = (vis.length === 6 ? 'Six places. ' : '') + 'What each package gets is listed under each place.';
+    var n = vis.length;
+    $('place-sub').textContent = (n > 1 && n <= 10 ? WORDS[n] + ' places. ' : '') + 'What each package gets is listed under each place.';
+    placeSeg();
   }
+  /* Control SOLO de boceto: un botón por lugar (Status Hidden / Active) y "+ Add placement" (Agregar entrada) */
+  function placeSeg() {
+    var seg = $('place-seg'); if (!seg) return;
+    seg.innerHTML = PLACEMENTS.map(function (p, i) {
+      var on = p.status !== 'hidden';
+      return '<button type="button" data-pl="' + i + '" aria-pressed="' + on + '" class="' + (on ? '' : 'is-off') + '" title="' + (on ? 'Status Active: clic para Hidden' : 'Status Hidden: clic para mostrar') + '">' + esc(p.name) + '</button>';
+    }).join('');
+    var added = PLACEMENTS.indexOf(EXAMPLE) > -1, add = $('place-add');
+    add.setAttribute('aria-pressed', added ? 'true' : 'false');
+    add.textContent = added ? 'Eliminar entrada de ejemplo' : '+ Add placement';
+  }
+  $('place-seg').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-pl]'); if (!b) return;
+    var p = PLACEMENTS[+b.getAttribute('data-pl')]; p.status = p.status === 'hidden' ? 'active' : 'hidden';
+    renderPlaces();
+    var nb = $('place-seg').querySelector('[data-pl="' + b.getAttribute('data-pl') + '"]'); if (nb) nb.focus();
+  });
+  $('place-add').addEventListener('click', function () {
+    var i = PLACEMENTS.indexOf(EXAMPLE);
+    if (i > -1) PLACEMENTS.splice(i, 1); else { EXAMPLE.status = 'active'; PLACEMENTS.push(EXAMPLE); }
+    renderPlaces();
+  });
   renderPlaces();
 
   /* Mapa de calcomanías: simula el metaobjeto "Decal zone". x, y en px del recorte (1120x576);

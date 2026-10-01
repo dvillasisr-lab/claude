@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Cómo editas todo · Heavy Metal Pro Stock: “The Evil One”</title>
-<meta name="description" content="Manual de la dueña: dónde se edita en Shopify cada cosa dinámica de la tienda, el año de temporada, el calendario anual y los íconos de prenda.">
+<meta name="description" content="Manual de la dueña: dónde se edita en Shopify cada cosa dinámica de la tienda, el año de temporada, la tabla de Last updated, el calendario anual y los íconos de prenda.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
@@ -21,7 +21,8 @@ html,body{overflow-x:clip}
 .crumbs [aria-current]{color:var(--ink);font-weight:600}
 .ed-only{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--accent);padding:3px 8px;justify-self:start}
 
-.asks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:8px;max-width:1100px}
+.asks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:8px;max-width:1400px}
+@media (max-width:1100px){.asks{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .ask{border:1px solid var(--line);background:var(--bg);padding:14px 16px;display:grid;gap:6px;align-content:start}
 .ask q{font-size:var(--t-sm);color:var(--soft);font-style:italic;quotes:"“" "”"}
 .ask p{margin:0;font-size:var(--t-sm);color:var(--ink)}
@@ -144,6 +145,54 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
 @media (max-width:1024px){.icons-in{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:760px){.igrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:420px){.igrid{grid-template-columns:minmax(0,1fr)}}
+/* 03 · Last updated */
+.lu-how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.lu-how__i{background:var(--surface);border:1px solid var(--line);padding:14px 16px;display:grid;gap:8px;align-content:start}
+.lu-how__i p{margin:0;font-size:var(--t-sm);color:var(--soft)}
+.lu-how__i b{color:var(--ink)}
+.lu-k{justify-self:start;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border:1px solid var(--line);color:var(--soft);background:var(--bg)}
+.lu-k--auto{background:var(--ink);border-color:var(--ink);color:var(--accent)}
+.lu-k--ok{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+@media (max-width:1024px){.lu-how{grid-template-columns:minmax(0,1fr)}}
+.lu-today{display:flex;align-items:center;gap:8px;font-size:var(--t-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--soft)}
+.lu-today .input{width:auto;min-height:36px}
+.lu-wrap{background:var(--surface);border:1px solid var(--line)}
+.lu{width:100%;border-collapse:collapse;font-size:var(--t-sm)}
+.lu th,.lu td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--line)}
+.lu thead th{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);background:var(--bg);white-space:nowrap}
+.lu tbody tr:last-child>*{border-bottom:0}
+.lu tbody th{font-weight:700;color:var(--ink);min-width:150px}
+.lu tbody th small{display:block;font-weight:400;font-size:var(--t-xs);color:var(--mute);margin-top:2px}
+.lu td{color:var(--soft)}
+.lu td a{color:var(--ink);font-weight:600;text-underline-offset:3px;margin-right:8px;white-space:nowrap}
+.lu .path span{white-space:normal}
+.lu .fq{white-space:nowrap;font-weight:600;color:var(--ink)}
+.lu .dt{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
+.lu .dt small{display:block;font-weight:400;color:var(--mute);font-size:var(--t-xs)}
+.lu .src{display:inline-block;margin-top:4px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.lu .src--auto{color:var(--ink)}
+.light{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-xs);font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;padding:3px 8px;border:1px solid var(--line);color:var(--ink);background:var(--bg)}
+.light::before{content:"";width:10px;height:10px;border-radius:50%;flex:none}
+.light--ok::before{background:#2F7A4A}
+.light--soon{background:#FFF6CC;border-color:#EFE1A0}
+.light--soon::before{background:var(--accent);box-shadow:inset 0 0 0 1px rgba(28,27,25,.35)}
+.light--late{background:#FBE9E7;border-color:#E8B4AE;color:var(--alert)}
+.light--late::before{background:var(--alert)}
+.lu .due{display:block;margin:6px 0 8px;font-size:var(--t-xs);color:var(--mute);white-space:nowrap}
+.lu-done{min-height:30px;padding:0 10px;font-size:10px}
+@media (max-width:1100px){
+  .lu,.lu tbody,.lu tr,.lu th,.lu td{display:block}
+  .lu thead{display:none}
+  .lu tr{border-bottom:1px solid var(--line);padding:12px 14px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 16px}
+  .lu tbody tr:last-child{border-bottom:0}
+  .lu th,.lu td{border:0;padding:0}
+  .lu tbody th{grid-column:1/-1;min-width:0}
+  .lu td::before{content:attr(data-l);display:block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:2px}
+  .lu td[data-l="Estado"]{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+  .lu td[data-l="Estado"]::before{display:none}
+  .lu .due{margin:0}
+}
+@media (max-width:520px){.lu tr{grid-template-columns:minmax(0,1fr)}}
 </style>
 </head>
 <body>
@@ -158,13 +207,15 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       <div class="asks">
         <div class="ask"><q>¿Cómo hago que todo lo dinámico se pueda editar fácil para agregar, borrar o editar?</q><p><b>Cada lista es un formulario.</b> Pulls, contadores, paquetes, lugares del logo y crew son entradas de <b>Metaobjetos</b>; la bitácora es un <b>blog</b>; anuncios y frases son <b>bloques</b> del editor. Abajo está el mapa completo.</p></div>
         <div class="ask"><q>¿Cómo tengo una sección en Editar tema con todos los 2026 que cada año se actualizan?</q><p><b>Es un solo ajuste:</b> Personalizar &gt; Ajustes del tema &gt; <b>Temporada</b>. Cambias el número una vez al año y todos los “2026” de la temporada cambian juntos. El copyright se pone solo con el año actual.</p></div>
+        <div class="ask"><q>Last updated tal vez debería estar en más lados; necesito una sección para saber dónde están todos esos y nunca se me pase actualizarlo.</q><p><b>Ya está en una sola tabla</b> (sección 03): cada cosa que cambia, en qué página sale, dónde se edita, cada cuánto revisarla y un <b>semáforo</b> que te dice qué está vencido hoy.</p></div>
       </div>
       <nav class="toc" aria-label="En esta página">
         <a href="#puertas"><span>01</span>Las 3 puertas</a>
         <a href="#temporada"><span>02</span>Año de temporada</a>
-        <a href="#mapa"><span>03</span>Mapa de todo</a>
-        <a href="#calendario"><span>04</span>Calendario anual</a>
-        <a href="#iconos"><span>05</span>Íconos de prenda</a>
+        <a href="#al-dia"><span>03</span>Last updated</a>
+        <a href="#mapa"><span>04</span>Mapa de todo</a>
+        <a href="#calendario"><span>05</span>Calendario anual</a>
+        <a href="#iconos"><span>06</span>Íconos de prenda</a>
       </nav>
     </div>
   </section>
@@ -172,7 +223,7 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
   <!-- 01 · Las 3 puertas -->
   <section class="sect" id="puertas" aria-labelledby="pu-t">
     <div class="wrap">
-      <div class="sect-head"><h2 class="h2 kick" id="pu-t"><i>01</i>Las 3 puertas del admin</h2><p>Casi todo se edita desde uno de estos tres lugares. Si no sabes dónde está algo, búscalo en el mapa (sección 03).</p></div>
+      <div class="sect-head"><h2 class="h2 kick" id="pu-t"><i>01</i>Las 3 puertas del admin</h2><p>Casi todo se edita desde uno de estos tres lugares. Si no sabes dónde está algo, búscalo en el mapa (sección 04).</p></div>
       <div class="doors">
         <article class="door">
           <span class="door__n">1</span>
@@ -233,10 +284,35 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
     </div>
   </section>
 
-  <!-- 03 · Mapa -->
-  <section class="sect" id="mapa" aria-labelledby="ma-t">
+  <!-- 03 · Last updated: todo lo que se debe mantener al día -->
+  <section class="sect" id="al-dia" aria-labelledby="lu-t">
     <div class="wrap">
-      <div class="sect-head"><h2 class="h2 kick" id="ma-t"><i>03</i>Mapa de todo lo editable</h2><p>Qué es, dónde está en el admin, cómo agregar, editar y borrar u ocultar, y en qué páginas se ve. Filtra por tipo o busca.</p></div>
+      <div class="sect-head"><h2 class="h2 kick" id="lu-t"><i>03</i>Last updated: todo lo que se debe mantener al día</h2><p>Cada cosa que cambia en la tienda, en qué página sale su “Last updated”, dónde se edita y cada cuánto revisarla. El semáforo se calcula contra la fecha de hoy: vencidos primero.</p></div>
+      <div class="lu-how">
+        <div class="lu-how__i"><span class="lu-k lu-k--auto">Automática</span><p><b>Metaobjetos y Pit Log:</b> Shopify guarda sola la fecha cada vez que das <b>Guardar</b> en una entrada (pull, contador, paquete) o en un post del blog. El tema la toma de ahí y pinta “Last updated: Oct 1, 2026”. No hay fecha que escribir.</p></div>
+        <div class="lu-how__i"><span class="lu-k">A mano</span><p><b>Políticas y textos de Personalizar</b> (FAQ, playlist, anuncios, año) no guardan fecha propia. Ahí cambias la fecha tú: arriba del texto de la política o en el campo “Last updated” de la sección.</p></div>
+        <div class="lu-how__i"><span class="lu-k lu-k--ok">Semáforo</span><p><b>Al día</b>: dentro del plazo. <b>Revisar</b>: le queda poco (último cuarto del plazo). <b>Vencido</b>: ya pasó. De noviembre a abril no hay pulls, así que lo de “después de cada pull” se mide por temporada.</p></div>
+      </div>
+      <div class="tools lu-tools">
+        <div class="chips" role="group" aria-label="Filtrar por estado" id="lu-chips"></div>
+        <div class="lu-today"><label for="lu-date">Fecha de hoy</label><input class="input" id="lu-date" type="date"><button class="btn btn--ghost btn--sm" type="button" id="lu-now">Hoy</button></div>
+      </div>
+      <p class="count" id="lu-count" role="status" aria-live="polite"></p>
+      <div class="lu-wrap">
+        <table class="lu">
+          <caption class="vh">Contenido con fecha Last updated y su estado</caption>
+          <thead><tr><th scope="col">Qué cambia</th><th scope="col">Dónde sale</th><th scope="col">Dónde se edita</th><th scope="col">Cada cuánto</th><th scope="col">Last updated</th><th scope="col">Estado</th></tr></thead>
+          <tbody id="lu-body"></tbody>
+        </table>
+      </div>
+      <div class="cal-foot"><button class="btn btn--ghost btn--sm" type="button" id="lu-reset">Volver a las fechas de ejemplo</button><p>Fechas de ejemplo. “Ya lo actualicé” simula darle Guardar en el admin (se guarda en este navegador).</p></div>
+    </div>
+  </section>
+
+  <!-- 04 · Mapa -->
+  <section class="sect sect--white" id="mapa" aria-labelledby="ma-t">
+    <div class="wrap">
+      <div class="sect-head"><h2 class="h2 kick" id="ma-t"><i>04</i>Mapa de todo lo editable</h2><p>Qué es, dónde está en el admin, cómo agregar, editar y borrar u ocultar, y en qué páginas se ve. Filtra por tipo o busca.</p></div>
       <div class="tools">
         <div class="chips" role="group" aria-label="Filtrar por tipo" id="chips"></div>
         <div class="find"><label class="vh" for="find">Buscar en el mapa</label><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input class="input" id="find" type="search" placeholder="Buscar: pulls, sold out, menú..." autocomplete="off"></div>
@@ -248,19 +324,19 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
     </div>
   </section>
 
-  <!-- 04 · Calendario anual -->
-  <section class="sect sect--white" id="calendario" aria-labelledby="ca-t">
+  <!-- 05 · Calendario anual -->
+  <section class="sect" id="calendario" aria-labelledby="ca-t">
     <div class="wrap">
-      <div class="sect-head"><h2 class="h2 kick" id="ca-t"><i>04</i>Calendario anual del dueño</h2><p>Lo que toca actualizar cada temporada. Las palomitas se guardan en este navegador para que lleves la cuenta.</p></div>
+      <div class="sect-head"><h2 class="h2 kick" id="ca-t"><i>05</i>Calendario anual del dueño</h2><p>Lo que toca actualizar cada temporada. Las palomitas se guardan en este navegador para que lleves la cuenta.</p></div>
       <div class="cal" id="cal"></div>
       <div class="cal-foot"><button class="btn btn--ghost btn--sm" type="button" id="cal-reset">Empezar temporada nueva (borrar palomitas)</button><p id="cal-status" role="status" aria-live="polite"></p></div>
     </div>
   </section>
 
-  <!-- 05 · Íconos -->
-  <section class="sect" id="iconos" aria-labelledby="ic-t">
+  <!-- 06 · Íconos -->
+  <section class="sect sect--white" id="iconos" aria-labelledby="ic-t">
     <div class="wrap">
-      <div class="sect-head"><h2 class="h2 kick" id="ic-t"><i>05</i>Íconos de prenda</h2><p>Placeholders para productos y colecciones mientras no hay mockups o fotos reales.</p></div>
+      <div class="sect-head"><h2 class="h2 kick" id="ic-t"><i>06</i>Íconos de prenda</h2><p>Placeholders para productos y colecciones mientras no hay mockups o fotos reales.</p></div>
       <div class="icons-in">
         <div class="icons-txt">
           <p><b>Son genéricos: sin logo, sin texto y sin “Heavy Metal”.</b> Solo la silueta de la prenda en tres colores, sobre el mismo fondo hueso de las tarjetas de la tienda.</p>
