@@ -55,5 +55,16 @@ Lo que me vayas dando "para después" va aquí. No se trabaja hasta que digas.
 - Nombre de marca: "Heavy Metal Pro Stock: “The Evil One”" (trademark en trámite); nunca "Heavy Metal" solo en merch.
 - La lista de correo se llama "The Evil List" (antes Hook Alerts).
 - No se menciona a Printify al cliente.
+- Nunca email ni teléfono directo para contactar: todo por formularios (solo en políticas, por ley).
+- Cinta amarilla: Full pull or nothing · This thing is f#ck!ng evil · Born in a lightning storm.
 - La edición especial no se numera. Wins en 0 se muestran como "Coming soon".
 - Hero con fondo de tormenta y rayo. Sin música con derechos (sonido de motor sintetizado).
+
+## Siguiente fase (cuando apruebes el diseño)
+1. Datos y fotos reales (pendiente 22) y respuestas de la dueña (exhibiciones, Monroe, Crew Pack, precios).
+2. Construir el tema en el borrador "HM v14 BORRADOR rediseño": secciones Liquid con bloques editables, metaobjetos (Pull event, Season stats, Sponsor tier, Sponsor stat, Logo placement, Decal zone, Tractor part, Album, Booking option, Crew member), blog Pit Log, colecciones automáticas, plantillas de producto, Special edition, 404.
+3. Configurar Shopify: cuentas de cliente nuevas con Shop, banner de cookies, notificaciones (confirmación de envío), envíos y envío gratis, impuestos, políticas, Shopify Email para The Evil List, Search & Discovery, Shopify Bundles.
+4. Apps: Printify (productos y mockups), Judge.me (reseñas).
+5. Dominio de correo propio y Search Console, sitemap, redirecciones 301.
+6. QA en el borrador: teclado, celular real, Lighthouse, compra de prueba con código de 100%.
+7. Revisión legal de políticas y publicación del tema.

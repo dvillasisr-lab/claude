@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tractor Pulling Shirts, Hoodies &amp; Hats · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Shop Heavy Metal Pro Stock: “The Evil One” merch. Tractor pull tees, hoodies, hats, kids sizes, stickers and limited Special editions from the crew in Waterloo, WI. Printed to order.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Shop / colección. Encabezado de 100px (SKIMS swim), fotitos de categoría (Kylie), toolbar de palabras que abre UN drawer, grid 4/2. */
+html,body{overflow-x:clip}
+.plp-head{padding-block:16px 12px}
+.plp-crumbs ol{list-style:none;margin:0 0 6px;padding:0;display:flex;flex-wrap:wrap;gap:4px;font-size:var(--t-xs);color:var(--mute)}
+.plp-crumbs li+li::before{content:"/";margin-right:4px}
+.plp-crumbs a{text-decoration:none;color:var(--soft)}
+.plp-crumbs a:hover{text-decoration:underline;text-underline-offset:3px}
+.plp-crumbs [aria-current]{color:var(--ink);font-weight:600}
+.plp-head__row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:4px 24px}
+.plp-head .h1{font-size:clamp(24px,2.4vw,30px);line-height:36px}
+.plp-desc{margin:2px 0 0;font-size:var(--t-sm);color:var(--soft);max-width:70ch;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plp-count{margin:0;font-size:var(--t-xs);color:var(--mute);white-space:nowrap}
+.plp-cats{padding-bottom:16px}
+.plp-cats .cats{padding:4px;margin-inline:-4px}
+
+/* toolbar SKIMS: líneas arriba y abajo, palabras en mayúsculas 12px */
+.plp-bar{border-block:1px solid var(--line);background:var(--bg)}
+.plp-bar__in{display:flex;align-items:center;gap:4px;min-height:52px;overflow-x:auto;scrollbar-width:none}
+.plp-bar__in::-webkit-scrollbar{display:none}
+.plp-tool{flex:none;min-height:44px;padding:0 12px;background:none;border:0;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.plp-tool:first-child{padding-left:0}
+.plp-tool:hover span:first-child{text-decoration:underline;text-underline-offset:4px}
+.plp-tool__n{font-weight:600;color:var(--mute)}
+.plp-bar__sort{margin-left:auto;flex:none;font-size:var(--t-xs);color:var(--mute);white-space:nowrap;padding-left:16px}
+@media (max-width:760px){.plp-bar__sort{display:none}}
+
+/* chips de filtros activos */
+.plp-chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-block:12px 0}
+.plp-chip{display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:0 10px 0 12px;border:1px solid var(--line);background:var(--surface);font-size:var(--t-xs);font-weight:600;color:var(--ink);cursor:pointer;border-radius:0}
+.plp-chip:hover{border-color:var(--ink)}
+.plp-chip svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none}
+.plp-chips__clear{background:none;border:0;font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:32px;padding:0 4px;color:var(--ink)}
+
+.plp-results{padding-block:20px var(--sect)}
+.plp-empty{display:grid;justify-items:start;gap:12px;padding-block:40px;max-width:52ch}
+.plp-empty p{margin:0;color:var(--soft)}
+.plp-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 24px;margin-top:32px;padding-top:16px;border-top:1px solid var(--line)}
+.plp-foot p{margin:0}
+
+/* drawer derecho de 450px */
+.plp-scrim{position:fixed;inset:0;z-index:79;background:rgba(28,27,25,.4)}
+.plp-drawer{position:fixed;top:0;right:0;bottom:0;z-index:80;width:min(450px,100vw);background:var(--surface);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:-24px 0 48px -32px rgba(0,0,0,.4)}
+.plp-drawer__head{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:64px;padding:0 12px 0 20px;border-bottom:1px solid var(--line)}
+.plp-drawer__head p{margin:0}
+.plp-drawer__body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:0 20px}
+.plp-acc{border-bottom:1px solid var(--line)}
+.plp-acc h2{margin:0}
+.plp-acc__btn{width:100%;min-height:64px;display:flex;align-items:center;gap:12px;background:none;border:0;padding:0;font-size:var(--t-md);font-weight:600;color:var(--ink);cursor:pointer;text-align:left}
+.plp-acc__val{margin-left:auto;font-size:var(--t-xs);font-weight:500;color:var(--mute);text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:55%}
+.plp-acc__btn svg{flex:none;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.6;transition:transform .15s}
+.plp-acc__btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+.plp-acc__panel{padding-bottom:16px}
+.plp-acc fieldset{border:0;margin:0;padding:0}
+.plp-opts{display:grid;gap:0}
+.plp-opt{display:flex;align-items:center;gap:12px;min-height:44px;font-size:var(--t-sm);cursor:pointer}
+.plp-opt input{flex:none}
+.plp-opt__n{margin-left:auto;font-size:var(--t-xs);color:var(--mute)}
+.plp-opt.is-off{color:var(--mute);cursor:default}
+.plp-sizes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.plp-size{position:relative}
+.plp-size input,.plp-color input{position:absolute;opacity:0;width:1px;height:1px}
+.plp-size span{display:grid;place-items:center;min-height:44px;border:1px solid var(--line);font-size:var(--t-xs);font-weight:700;cursor:pointer;background:var(--surface)}
+.plp-size input:checked+span{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.plp-size input:disabled+span{color:var(--mute);background:var(--bg);cursor:not-allowed;text-decoration:line-through}
+.plp-size input:focus-visible+span,.plp-color input:focus-visible+span .plp-sw{outline:2px solid var(--ink);outline-offset:2px}
+.plp-size span:hover{border-color:var(--ink)}
+.plp-colors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 12px}
+.plp-color{position:relative}
+.plp-color>span{display:flex;align-items:center;gap:10px;min-height:44px;font-size:var(--t-sm);cursor:pointer}
+.plp-sw{width:24px;height:24px;border-radius:50%;background:var(--sw);box-shadow:inset 0 0 0 1px rgba(28,27,25,.3);flex:none}
+.plp-color input:checked+span .plp-sw{box-shadow:inset 0 0 0 1px rgba(28,27,25,.3),0 0 0 2px var(--surface),0 0 0 3px var(--ink)}
+.plp-color input:checked+span{font-weight:700}
+.plp-color input:disabled+span{color:var(--mute);cursor:not-allowed}
+.plp-drawer__foot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:8px;padding:12px 20px;border-top:1px solid var(--line)}
+.plp-drawer__foot .btn{min-height:52px}
+@media (prefers-reduced-motion:reduce){.plp-acc__btn svg{transition:none}}
+.plp-ltd{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:6px 16px;align-items:center;padding:14px 16px;margin-bottom:16px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);text-decoration:none;color:var(--ink);font-size:var(--t-sm)}
+.plp-ltd b{display:block;text-transform:uppercase;letter-spacing:.04em;font-size:var(--t-xs)}
+.plp-ltd .muted{font-size:var(--t-xs)}
+.plp-ltd .link{text-decoration:underline}
+.plp-ltd:hover{border-color:var(--ink)}
+@media (max-width:600px){.plp-ltd{grid-template-columns:minmax(0,1fr)}}
+.plp-soon{padding-block:8px var(--sect)}
+.soon__form .btn{flex:none;white-space:nowrap}
+.soon__form .input{min-width:0}
+.plp-notes{padding-bottom:var(--sect)}
+.plp-notes .note{margin-top:0}
+.plp-notes .note+.note{margin-top:8px}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="shop"></div>
+<main id="main">
+  <section class="wrap plp-head" aria-labelledby="plp-title">
+    <nav class="plp-crumbs" aria-label="Breadcrumb"><ol id="plp-crumbs"><li><a href="index.html">Home</a></li><li aria-current="page">Shop all</li></ol></nav>
+    <div class="plp-head__row">
+      <div style="min-width:0;max-width:100%">
+        <h1 class="h1" id="plp-title">Shop all</h1>
+        <p class="plp-desc" id="plp-desc">Every tee, hoodie, hat and sticker from the crew behind “The Evil One”. Printed to order.</p>
+      </div>
+      <p class="plp-count num" id="plp-count" role="status">14 products</p>
+    </div>
+  </section>
+
+  <div class="wrap plp-cats" id="plp-cats"></div>
+
+  <div class="plp-bar">
+    <div class="wrap plp-bar__in" id="plp-bar">
+      <button class="plp-tool" type="button" data-plp-open="sort" aria-haspopup="dialog" aria-controls="plp-drawer"><span>Sort</span></button>
+      <button class="plp-tool" type="button" data-plp-open="size" aria-haspopup="dialog" aria-controls="plp-drawer"><span>Size</span><span class="plp-tool__n" id="plp-n-size"></span></button>
+      <button class="plp-tool" type="button" data-plp-open="color" aria-haspopup="dialog" aria-controls="plp-drawer"><span>Color</span><span class="plp-tool__n" id="plp-n-color"></span></button>
+      <button class="plp-tool" type="button" data-plp-open="category" aria-haspopup="dialog" aria-controls="plp-drawer"><span>Category</span></button>
+      <p class="plp-bar__sort" id="plp-bar-sort">Sorted by Featured</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="plp-chips" id="plp-chips" aria-label="Active filters" role="group" hidden></div>
+    <div class="plp-results">
+      <a class="plp-ltd" id="plp-ltd" href="limited.html" hidden><span class="badge badge--ink">Special edition</span><span><b>Limited run · one moment of the season</b><span class="muted">Out for a short window and a set quantity. When it closes or sells out, it is gone.</span></span><span class="link" aria-hidden="true">View the edition</span></a>
+      <div class="pgrid" id="plp-grid"></div>
+      <div class="plp-empty" id="plp-empty" hidden>
+        <h2 class="h2">Nothing matches these filters</h2>
+        <p>Try another size or color, or clear the filters to see everything in this category.</p>
+        <button class="btn" type="button" id="plp-empty-clear">Clear filters</button>
+      </div>
+      <div class="plp-foot">
+        <p class="small muted num" id="plp-seen">You've seen 14 of 14 products</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- tienda vacía: si no hay ningún producto activo, en lugar de fotitos, filtros y grid sale "Coming soon" -->
+  <div class="wrap plp-soon" id="plp-soon" hidden></div>
+
+  <div class="wrap plp-notes">
+    <p class="note">Categorías: cada fotito es una colección automática (Productos &gt; Colecciones &gt; Crear colección &gt; Automática, condición "Tipo de producto es igual a T-Shirt", o una etiqueta como <b>hats</b>). Printify llena el tipo al publicar, así que cada diseño nuevo cae solo en su categoría. La foto de la fotito es la imagen de la colección. Para agregar o quitar una: crea o borra la colección y ponla en el menú (Tienda online &gt; Navegación). Filtros de talla y color: app Search &amp; Discovery; orden Featured = orden manual de la colección. Mientras carga (y al cambiar filtros) sale un esqueleto gris; lo pinta el tema solo: <a id="plp-skel-link" href="shop.html?loading=slow">Ver esqueleto lento</a>.</p>
+    <p class="note" id="plp-empty-note">Sin merch: si no hay productos activos, la tienda muestra "Coming soon" con aviso por email; al publicar el primero, vuelve sola a esta vista. <a id="plp-empty-link" href="shop.html?empty=1">Probar tienda vacía</a></p>
+  </div>
+</main>
+
+<div class="plp-scrim" id="plp-scrim" hidden></div>
+<aside class="plp-drawer" id="plp-drawer" role="dialog" aria-modal="true" aria-labelledby="plp-drawer-t" hidden>
+  <div class="plp-drawer__head">
+    <div><p class="h3" id="plp-drawer-t">Filter and sort</p><p class="small muted" id="plp-status">No filters selected</p></div>
+    <button class="icon-btn" type="button" id="plp-close" aria-label="Close filters"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg></button>
+  </div>
+  <div class="plp-drawer__body" id="plp-body"></div>
+  <div class="plp-drawer__foot">
+    <button class="btn btn--ghost" type="button" id="plp-clear">Clear all</button>
+    <button class="btn" type="button" id="plp-view">View 14 items</button>
+  </div>
+</aside>
+
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var CAT = window.HM_CATALOG || [], SW = window.HM_SW || {};
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+
+  var CATS = {
+    all: ['Shop all', 'Every tee, hoodie, hat and sticker from the crew behind “The Evil One”. Printed to order.'],
+    'new': ['New drop', 'The latest designs from the crew in Waterloo, WI.'],
+    tees: ['Tees', 'Tractor pull tees and long sleeves with “The Evil One” front and back.'],
+    sweats: ['Sweatshirts', 'Hoodies and crewnecks for cold nights at the track.'],
+    hats: ['Hats', 'Caps and beanies for the pits and the grandstand.'],
+    kids: ['Kids', 'Youth sizes for the next generation of pullers.'],
+    gear: ['Stickers & gear', 'Stickers, koozies and the small stuff for the truck and the cooler.'],
+    bundles: ['Bundles', 'Sets that pair a tee with a cap. Every piece keeps its own size.'],
+    limited: ['Special edition', 'Limited runs for a short window. When one sells out, it is gone.']
+  };
+  var SORTS = [['featured', 'Featured'], ['best', 'Best selling'], ['new', 'Newest'], ['price-asc', 'Price low to high'], ['price-desc', 'Price high to low'], ['az', 'A to Z']];
+  var SIZE_ORDER = ['S', 'M', 'L', 'XL', '2XL', '3XL', 'YS', 'YM', 'YL', 'YXL', 'One size'];
+  var COLOR_ORDER = ['Matte Black', 'Black', 'Smoke Gray', 'Bone', 'Safety Yellow'];
+  var P_SIZE = 'filter.v.option.size', P_COLOR = 'filter.v.option.color';
+
+  /* estado desde la URL */
+  var url = new URLSearchParams(location.search);
+  var st = {
+    cat: CATS[url.get('cat')] ? url.get('cat') : 'all',
+    sort: SORTS.some(function (s) { return s[0] === url.get('sort'); }) ? url.get('sort') : 'featured',
+    size: url.getAll(P_SIZE).filter(function (s) { return SIZE_ORDER.indexOf(s) > -1; }),
+    color: url.getAll(P_COLOR).filter(function (c) { return COLOR_ORDER.indexOf(c) > -1; })
+  };
+
+  function sizesOf(p) { return p.sizes.length ? p.sizes : ['One size']; }
+  function inCat(p, c) { return c === 'all' ? true : c === 'new' ? p.tag === 'new' : p.cat === c; }
+  function okSize(p, sel) { return !sel.length || sizesOf(p).some(function (s) { return sel.indexOf(s) > -1; }); }
+  function okColor(p, sel) { return !sel.length || p.colors.some(function (c) { return sel.indexOf(c) > -1; }); }
+  function pool() { return CAT.filter(function (p) { return inCat(p, st.cat); }); }
+  function results() {
+    var list = pool().filter(function (p) { return okSize(p, st.size) && okColor(p, st.color); });
+    var rank = function (tag) { return function (a, b) { return (b.tag === tag) - (a.tag === tag); }; };
+    if (st.sort === 'best') list.sort(rank('best'));
+    else if (st.sort === 'new') list.sort(rank('new'));
+    else if (st.sort === 'az') list.sort(function (a, b) { return a.name.localeCompare(b.name); });
+    /* featured = orden manual de la colección; precio: todos $XX en el boceto */
+    return list;
+  }
+  function sortLabel() { return SORTS.filter(function (s) { return s[0] === st.sort; })[0][1]; }
+  function nFilters() { return st.size.length + st.color.length; }
+
+  function writeURL() {
+    var q = new URLSearchParams();
+    q.set('cat', st.cat);
+    if (st.sort !== 'featured') q.set('sort', st.sort);
+    st.size.forEach(function (s) { q.append(P_SIZE, s); });
+    st.color.forEach(function (c) { q.append(P_COLOR, c); });
+    if (SLOW) q.set('loading', 'slow');
+    try { history.replaceState(null, '', location.pathname + '?' + q.toString()); } catch (e) {}
+  }
+
+  /* opciones disponibles en la categoría actual, con conteo (como Search & Discovery) */
+  function sizeOpts() {
+    var have = {}; pool().forEach(function (p) { sizesOf(p).forEach(function (s) { have[s] = 1; }); });
+    return SIZE_ORDER.filter(function (s) { return have[s]; }).map(function (s) {
+      return [s, pool().filter(function (p) { return okColor(p, st.color) && sizesOf(p).indexOf(s) > -1; }).length];
+    });
+  }
+  function colorOpts() {
+    var have = {}; pool().forEach(function (p) { p.colors.forEach(function (c) { have[c] = 1; }); });
+    return COLOR_ORDER.filter(function (c) { return have[c]; }).map(function (c) {
+      return [c, pool().filter(function (p) { return okSize(p, st.size) && p.colors.indexOf(c) > -1; }).length];
+    });
+  }
+  function prune() {
+    var s = sizeOpts().map(function (o) { return o[0]; }), c = colorOpts().map(function (o) { return o[0]; });
+    st.size = st.size.filter(function (x) { return s.indexOf(x) > -1; });
+    st.color = st.color.filter(function (x) { return c.indexOf(x) > -1; });
+  }
+
+  /* drawer: acordeones */
+  var CHEV = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+  var openAcc = { sort: true };
+  function acc(key, title, val, inner) {
+    var ex = !!openAcc[key];
+    return '<section class="plp-acc"><h2><button class="plp-acc__btn" type="button" id="plp-acc-' + key + '-btn" aria-expanded="' + ex + '" aria-controls="plp-acc-' + key + '" data-acc="' + key + '">' + title +
+      '<span class="plp-acc__val">' + esc(val) + '</span>' + CHEV + '</button></h2>' +
+      '<div class="plp-acc__panel" id="plp-acc-' + key + '" role="region" aria-labelledby="plp-acc-' + key + '-btn"' + (ex ? '' : ' hidden') + '>' + inner + '</div></section>';
+  }
+  function drawerHTML() {
+    var sort = '<fieldset><legend class="vh">Sort by</legend><div class="plp-opts">' + SORTS.map(function (s, i) {
+      return '<label class="plp-opt" for="plp-sort-' + i + '"><input type="radio" name="plp-sort" id="plp-sort-' + i + '" value="' + s[0] + '"' + (st.sort === s[0] ? ' checked' : '') + '>' + s[1] + '</label>';
+    }).join('') + '</div></fieldset>' ;
+    var so = sizeOpts();
+    var size = '<fieldset><legend class="vh">Size</legend><div class="plp-sizes">' + so.map(function (o, i) {
+      var on = st.size.indexOf(o[0]) > -1, off = !o[1] && !on;
+      return '<label class="plp-size" for="plp-size-' + i + '"><input type="checkbox" id="plp-size-' + i + '" value="' + o[0] + '" data-f="size"' + (on ? ' checked' : '') + (off ? ' disabled' : '') + ' aria-label="' + o[0] + ', ' + o[1] + ' items"><span aria-hidden="true">' + o[0] + '</span></label>';
+    }).join('') + '</div></fieldset>';
+    var co = colorOpts();
+    var color = co.length ? '<fieldset><legend class="vh">Color</legend><div class="plp-colors">' + co.map(function (o, i) {
+      var on = st.color.indexOf(o[0]) > -1, off = !o[1] && !on;
+      return '<label class="plp-color" for="plp-color-' + i + '"><input type="checkbox" id="plp-color-' + i + '" value="' + o[0] + '" data-f="color"' + (on ? ' checked' : '') + (off ? ' disabled' : '') + '><span><span class="plp-sw" style="--sw:' + (SW[o[0]] || 'var(--tile)') + '"></span>' + o[0] + ' <span class="plp-opt__n">(' + o[1] + ')</span></span></label>';
+    }).join('') + '</div></fieldset>' : '<p class="small muted" style="margin:0">No color options in this category.</p>';
+    var cat = '<fieldset><legend class="vh">Category</legend><div class="plp-opts">' + Object.keys(CATS).map(function (k, i) {
+      var n = CAT.filter(function (p) { return inCat(p, k); }).length;
+      return '<label class="plp-opt" for="plp-cat-' + i + '"><input type="radio" name="plp-cat" id="plp-cat-' + i + '" value="' + k + '"' + (st.cat === k ? ' checked' : '') + '>' + esc(CATS[k][0]) + '<span class="plp-opt__n">' + n + '</span></label>';
+    }).join('') + '</div></fieldset>';
+    return acc('sort', 'Sort', sortLabel(), sort) +
+      acc('size', 'Size', st.size.join(', ') || 'All', size) +
+      acc('color', 'Color', st.color.join(', ') || 'All', color) +
+      acc('category', 'Category', CATS[st.cat][0], cat);
+  }
+
+  var SLOW = /[?&]loading=slow/.test(location.search), SKEL_MS = SLOW ? 3000 : 700, paintN = 0;
+  var X = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>';
+  function render(opts) {
+    opts = opts || {};
+    var list = results(), n = list.length, total = pool().length, c = CATS[st.cat];
+    $('plp-title').textContent = c[0];
+    $('plp-desc').textContent = c[1];
+    $('plp-crumbs').innerHTML = '<li><a href="index.html">Home</a></li>' + (st.cat === 'all' ? '<li aria-current="page">Shop all</li>' : '<li><a href="shop.html?cat=all">Shop</a></li><li aria-current="page">' + esc(c[0]) + '</li>');
+    document.title = (st.cat === 'all' ? 'Tractor Pulling Shirts, Hoodies & Hats' : c[0] + ' · Tractor Pulling Merch') + ' · Heavy Metal Pro Stock: “The Evil One”';
+    $('plp-count').textContent = n + (n === 1 ? ' product' : ' products') + (nFilters() ? ' of ' + total : '');
+    /* esqueleto fantasma: 8 tarjetas grises unos 700 ms antes del grid real (al abrir y al cambiar filtros u orden) */
+    var grid = $('plp-grid'), token = ++paintN;
+    function paint() {
+      if (token !== paintN) return;
+      grid.innerHTML = list.map(window.hmCard).join('');
+      grid.removeAttribute('aria-busy');
+      /* edición especial: la etiqueta "Special edition" se queda aunque el estado sea Coming soon o Sold out */
+      [].forEach.call(grid.querySelectorAll('.card[data-tag="limited"]'), function (c) {
+        var b = c.querySelector('.card__badges');
+        if (!b) { b = document.createElement('div'); b.className = 'card__badges'; c.querySelector('.card__media').appendChild(b); }
+        if (!/Special edition/.test(b.textContent)) b.insertAdjacentHTML('beforeend', '<span class="badge badge--ink">Special edition</span>');
+      });
+      grid.hidden = !n;
+      $('plp-empty').hidden = !!n;
+    }
+    if (opts.noSkel) paint();
+    else {
+      grid.innerHTML = window.hmSkeleton ? window.hmSkeleton(8) : '';
+      grid.setAttribute('aria-busy', 'true');
+      grid.hidden = false; $('plp-empty').hidden = true;
+      setTimeout(paint, SKEL_MS);
+    }
+    /* Special edition: sus tarjetas ya llevan a limited.html (p.page en hm.js); arriba, un acceso directo a la página de la edición */
+    $('plp-ltd').hidden = st.cat !== 'limited';
+    $('plp-seen').textContent = "You've seen " + n + ' of ' + n + (n === 1 ? ' product' : ' products');
+    $('plp-n-size').textContent = st.size.length ? '(' + st.size.length + ')' : '';
+    $('plp-n-color').textContent = st.color.length ? '(' + st.color.length + ')' : '';
+    $('plp-bar-sort').textContent = 'Sorted by ' + sortLabel();
+    /* chips */
+    var chips = st.size.map(function (s) { return ['size', s, 'Size: ' + s]; }).concat(st.color.map(function (s) { return ['color', s, 'Color: ' + s]; }));
+    if (st.sort !== 'featured') chips.push(['sort', st.sort, 'Sort: ' + sortLabel()]);
+    $('plp-chips').innerHTML = chips.map(function (ch) {
+      return '<button class="plp-chip" type="button" data-chip="' + ch[0] + '" data-v="' + esc(ch[1]) + '" aria-label="Remove ' + esc(ch[2]) + '">' + esc(ch[2]) + X + '</button>';
+    }).join('') + (chips.length > 1 ? '<button class="plp-chips__clear" type="button" data-chip="all">Clear all</button>' : '');
+    $('plp-chips').hidden = !chips.length;
+    /* drawer */
+    $('plp-status').textContent = nFilters() ? nFilters() + (nFilters() === 1 ? ' filter selected' : ' filters selected') : 'No filters selected';
+    $('plp-view').textContent = 'View ' + n + (n === 1 ? ' item' : ' items');
+    if (!opts.keepDrawer) $('plp-body').innerHTML = drawerHTML();
+    /* fotitos */
+    [].forEach.call(document.querySelectorAll('#plp-cats .cat'), function (a) {
+      var k = new URL(a.href, location.href).searchParams.get('cat');
+      if (k === st.cat) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+    });
+    writeURL();
+  }
+
+  function setCat(k) { st.cat = k; prune(); render(); }
+  function clearAll() { st.size = []; st.color = []; st.sort = 'featured'; render(); }
+
+  /* tienda vacía (?empty=1 en el boceto): "Coming soon" en lugar de fotitos, filtros y grid */
+  if (!CAT.length) {
+    ['plp-cats', 'plp-chips', 'plp-drawer', 'plp-scrim'].forEach(function (id) { $(id).hidden = true; });
+    document.querySelector('.plp-bar').hidden = true;
+    document.querySelector('.plp-results').hidden = true;
+    $('plp-title').textContent = 'Shop';
+    $('plp-crumbs').innerHTML = '<li><a href="index.html">Home</a></li><li aria-current="page">Shop</li>';
+    $('plp-desc').textContent = 'Merch from the crew behind “The Evil One” in Waterloo, WI.';
+    $('plp-count').hidden = true;
+    $('plp-soon').hidden = false;
+    $('plp-soon').innerHTML = window.hmComingSoon ? window.hmComingSoon() : '';
+    $('plp-empty-link').href = 'shop.html'; $('plp-empty-link').textContent = 'Ver la tienda con merch';
+    return;
+  }
+
+  if (SLOW) { $('plp-skel-link').href = 'shop.html'; $('plp-skel-link').textContent = 'Ver a velocidad normal'; }
+  $('plp-cats').innerHTML = window.hmCats ? window.hmCats(st.cat) : '';
+  prune();
+  render();
+
+  /* fotitos de categoría: cambian la URL y el grid sin brincar */
+  $('plp-cats').addEventListener('click', function (e) {
+    var a = e.target.closest('a.cat'); if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+    var k = new URL(a.href, location.href).searchParams.get('cat'); if (!CATS[k]) return;
+    e.preventDefault(); setCat(k);
+  });
+
+  /* chips */
+  $('plp-chips').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-chip]'); if (!b) return;
+    var t = b.getAttribute('data-chip'), v = b.getAttribute('data-v');
+    if (t === 'all') { clearAll(); }
+    else if (t === 'sort') { st.sort = 'featured'; render(); }
+    else { st[t] = st[t].filter(function (x) { return x !== v; }); render(); }
+    var first = $('plp-chips').querySelector('button'); (first || $('plp-bar').querySelector('button')).focus();
+  });
+  $('plp-empty-clear').addEventListener('click', function () { st.size = []; st.color = []; render(); $('plp-bar').querySelector('button').focus(); });
+
+  /* drawer: abrir, cerrar, foco */
+  var drawer = $('plp-drawer'), scrim = $('plp-scrim'), lastBtn = null;
+  function openDrawer(key, btn) {
+    lastBtn = btn; openAcc = {}; openAcc[key] = true;
+    render({ noSkel: true });
+    drawer.hidden = false; scrim.hidden = false; document.body.style.overflow = 'hidden';
+    [].forEach.call(document.querySelectorAll('[data-plp-open]'), function (b) { b.setAttribute('aria-expanded', 'false'); });
+    btn.setAttribute('aria-expanded', 'true');
+    var panel = $('plp-acc-' + key);
+    var f = panel && panel.querySelector('input:checked:not(:disabled), input:not(:disabled)');
+    $('plp-acc-' + key + '-btn').scrollIntoView({ block: 'nearest' });
+    (f || $('plp-close')).focus();
+  }
+  function closeDrawer() {
+    if (drawer.hidden) return;
+    drawer.hidden = true; scrim.hidden = true; document.body.style.overflow = '';
+    if (lastBtn) { lastBtn.setAttribute('aria-expanded', 'false'); lastBtn.focus(); }
+  }
+  $('plp-bar').addEventListener('click', function (e) { var b = e.target.closest('[data-plp-open]'); if (b) openDrawer(b.getAttribute('data-plp-open'), b); });
+  $('plp-close').addEventListener('click', closeDrawer);
+  scrim.addEventListener('click', closeDrawer);
+  $('plp-view').addEventListener('click', closeDrawer);
+  $('plp-clear').addEventListener('click', function () { clearAll(); $('plp-close').focus(); });
+  document.addEventListener('keydown', function (e) {
+    if (drawer.hidden) return;
+    if (e.key === 'Escape') { e.preventDefault(); closeDrawer(); return; }
+    if (e.key !== 'Tab') return;
+    var f = [].filter.call(drawer.querySelectorAll('button, input:not(:disabled)'), function (el) { return el.offsetParent !== null; });
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+
+  /* dentro del drawer: acordeones y opciones (se aplican al momento) */
+  $('plp-body').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-acc]'); if (!b) return;
+    var k = b.getAttribute('data-acc'), ex = b.getAttribute('aria-expanded') === 'true';
+    openAcc[k] = !ex; b.setAttribute('aria-expanded', String(!ex)); $('plp-acc-' + k).hidden = ex;
+  });
+  $('plp-body').addEventListener('change', function (e) {
+    var t = e.target, focusId = t.id;
+    if (t.name === 'plp-sort') st.sort = t.value;
+    else if (t.name === 'plp-cat') { st.cat = t.value; prune(); }
+    else if (t.getAttribute('data-f')) {
+      var k = t.getAttribute('data-f');
+      st[k] = t.checked ? st[k].concat(t.value) : st[k].filter(function (x) { return x !== t.value; });
+    }
+    var top = $('plp-body').scrollTop;
+    render();
+    $('plp-body').scrollTop = top;
+    var el = $(focusId); if (el) el.focus();
+  });
+})();
+</script>
+</body>
+</html>
