@@ -28,8 +28,9 @@ html,body{overflow-x:clip}
 .pl-stat:first-child{padding-left:0;border-left:0}
 .pl-stat:last-child{padding-right:0}
 .pl-stat b{font-family:var(--f-head);font-stretch:78%;font-size:30px;line-height:1;color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums;height:30px;display:flex;align-items:flex-end}
-.pl-stat b.pl-soon{font-family:var(--f-sans);font-stretch:100%;font-size:var(--t-sm);font-weight:600;gap:4px;align-items:center;padding-top:10px;white-space:nowrap}
-.pl-stat b.pl-soon svg{width:8px;height:11px;fill:var(--accent);stroke:var(--ink);stroke-width:.8;flex:none}
+/* Wins en 0: "Soon" con el rayo, mismo tamaño y letra que los números */
+.pl-stat b.pl-soon{gap:.14em;white-space:nowrap;text-transform:uppercase}
+.pl-stat b.pl-soon svg{width:.5em;height:.82em;margin-bottom:.06em;fill:var(--accent);stroke:var(--ink);stroke-width:.6;flex:none}
 .pl-stat span{white-space:nowrap}
 .pl-stat small{font-size:11px;color:var(--mute)}
 .pl-stat.is-zero b{color:var(--mute)}
@@ -41,7 +42,6 @@ html,body{overflow-x:clip}
   .pl-stats{display:grid;grid-template-columns:repeat(4,auto);justify-content:space-between}
   .pl-stat{padding:0 10px}
   .pl-stat b{font-size:24px;height:24px}
-  .pl-stat b.pl-soon{font-size:var(--t-xs);padding-top:6px}
 }
 
 /* 2 · wins y hitos destacados */
@@ -75,7 +75,20 @@ html,body{overflow-x:clip}
 .pl-mile__yr .badge{font-size:9px}
 .pl-mile h3{color:var(--night-ink)}
 .pl-mile p{margin:0;font-size:var(--t-xs);color:#B5B2AA}
-.pl-mile a{color:var(--night-ink);text-underline-offset:3px}
+/* toda la tarjeta es el link (link estirado sobre el título); hover: subrayado + flecha */
+.pl-mile__lnk{color:inherit;text-decoration:none}
+.pl-mile__lnk::after{content:"";position:absolute;inset:0;z-index:1}
+.pl-mile__lnk:focus-visible{outline:none}
+.pl-mile__lnk:focus-visible::after{outline:2px solid var(--accent);outline-offset:-2px}
+.pl-mile__arw{display:inline-block;margin-left:.3em;color:var(--accent);transition:transform .15s}
+.pl-mile.is-link{cursor:pointer;transition:background .15s}
+.pl-mile.is-link:hover{background:#242422}
+.pl-mile.is-link:hover .pl-mile__lnk{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
+.pl-mile.is-link:hover .pl-mile__arw{transform:translateX(3px)}
+.pl-card h3 a{color:inherit;text-decoration:none}
+.pl-card h3 a:hover{text-decoration:underline;text-underline-offset:3px}
+.pl-card h3 a .arw{display:inline-block;margin-left:.3em;transition:transform .15s}
+.pl-card h3 a:hover .arw{transform:translateX(3px)}
 .pl-wm__empty{border:1px solid #2E2D2A;padding:18px 20px;margin:0;color:#B5B2AA;font-size:var(--t-sm)}
 @media (max-width:1024px){.pl-wm__grid{grid-template-columns:1fr}}
 @media (max-width:640px){
@@ -363,7 +376,7 @@ html,body{overflow-x:clip}
     { id: 'drop', year: SEASON, date: '', seq: 90, title: 'Special edition: Lightning Night Tee', tags: ['Shop'], demo: true,
       text: 'A special edition tee for the night the engine fired and lightning struck. One run only.', img: 'mock', link: ['limited.html', 'See the drop'] },
     { id: 'monroe', year: SEASON, date: '', seq: 80, title: 'Green County Fall Nationals, Monroe, WI', tags: ['Competition'],
-      text: 'Badger State Tractor Pullers, Pro Stock class, at the Green County Fair. Result pending.', img: 'hm-hero', alt: 'Heavy Metal Pro Stock pulling down the track under a tall column of black smoke', video: 'https://www.youtube.com/watch?v=HfJ5FAJJ5Ac', link: ['schedule.html', 'Schedule'], gallery: 'monroe-' + SEASON },
+      text: 'Badger State Tractor Pullers, Pro Stock class, at the Green County Fair. Result pending.', img: 'hm-hero', alt: '“The Evil One” pulling down the track under a tall column of black smoke', video: 'https://www.youtube.com/watch?v=HfJ5FAJJ5Ac', link: ['schedule.html', 'Schedule'], gallery: 'monroe-' + SEASON },
     { id: 'ex3', year: SEASON, date: '', seq: 70, title: 'Exhibition run', tags: ['Exhibition'],
       text: 'In front of the grandstands with the crew. Place and notes from the day coming soon.', img: 'hm-grandstand', alt: 'The tractor from the side in front of full grandstands', gallery: 'exhibition-3' },
     { id: 'ex2', year: SEASON, date: '', seq: 60, title: 'Exhibition run', tags: ['Exhibition'],
@@ -454,7 +467,7 @@ html,body{overflow-x:clip}
     var S = [['Competition', 'Competitions'], ['Exhibition', 'Exhibitions'], ['Win', 'Wins', 1], ['Test', 'Test days']];
     $('pl-stats').innerHTML = S.map(function (s) {
       var n = count(list, s[0]), soon = s[2] && !n;
-      var val = soon ? '<b class="pl-soon">' + BOLT + 'Coming soon</b>' : '<b>' + n + '</b>';
+      var val = soon ? '<b class="pl-soon">' + BOLT + 'Soon</b>' : '<b>' + n + '</b>';
       return '<li class="pl-stat' + (s[2] ? ' pl-stat--win' : '') + (n || soon ? '' : ' is-zero') + '">' + val + '<span>' + s[1] + '</span>' + (s[3] ? '<small>' + s[3] + '</small>' : '') + '</li>';
     }).join('');
     if ($('pl-scope')) $('pl-scope').textContent = (st.year === 'all' ? 'All seasons' : st.year + (st.year === SEASON ? ' season so far' : ' season'));
@@ -506,10 +519,11 @@ html,body{overflow-x:clip}
     var links = [];
     if (hasGallery(p)) links.push('<a href="gallery.html?event=' + encodeURIComponent(galleryOf(p)) + '">Photos &amp; video<span class="vh"> from ' + esc(p.title) + ' in the gallery</span></a>');
     if (p.video) links.push(ext(p.video, 'Watch video', ' ' + p.title));
-    if (p.link) links.push('<a href="' + p.link[0] + '">' + p.link[1] + '</a>');
+    var story = p.link && p.link[0] === 'story.html';   /* la historia va en el título, sin "Read the story" repetido */
+    if (p.link && !story) links.push('<a href="' + p.link[0] + '">' + p.link[1] + '</a>');
     return '<li class="pl-entry' + (has(p, 'Win') ? ' is-win' : '') + (has(p, 'Milestone') ? ' is-mile' : '') + '" id="e-' + p.id + '"><div class="pl-when">' + when(p) + '</div>' +
       '<article class="pl-card" tabindex="-1" aria-labelledby="h-' + p.id + '"><div class="pl-card__pic">' + pic(p) + '</div><div class="pl-card__body"><div class="pl-tags">' + tags + '</div>' +
-      '<h3 class="h3" id="h-' + p.id + '">' + hl(p.title) + '</h3><p>' + hl(p.text) + '</p>' + (links.length ? '<div class="pl-links">' + links.join('') + '</div>' : '') + '</div></article></li>';
+      '<h3 class="h3" id="h-' + p.id + '">' + (story ? '<a href="' + p.link[0] + '">' + hl(p.title) + '<span class="arw" aria-hidden="true">→</span><span class="vh">: read the story</span></a>' : hl(p.title)) + '</h3><p>' + hl(p.text) + '</p>' + (links.length ? '<div class="pl-links">' + links.join('') + '</div>' : '') + '</div></article></li>';
   }
   function filtered() {
     return live().filter(inYear).filter(function (p) { return st.type === 'all' || has(p, st.type); }).filter(matchQ).sort(function (a, b) { return sortKey(b) - sortKey(a); });
@@ -562,7 +576,8 @@ html,body{overflow-x:clip}
     $('wm-wrap').innerHTML = '<ol class="pl-track" id="wm-track" tabindex="0" aria-label="Featured wins and milestones, ' + feat.length + ' items">' + feat.map(function (m, i) {
       var yr = m.date ? new Date(+m.date.slice(0, 4), +m.date.slice(5, 7) - 1, 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : m.year;
       var kind = has(m, 'Win') ? '<span class="badge t-win">Win</span>' : '<span class="badge t-mile">Milestone</span>';
-      return '<li class="pl-mile" aria-label="' + (i + 1) + ' of ' + feat.length + '"><div class="pl-mile__pic">' + pic(m, true) + '</div><div class="pl-mile__txt"><span class="pl-mile__yr">' + (m.id === 'fire' ? BOLT : '') + yr + ' ' + kind + '</span><h3 class="h3">' + esc(m.title) + '</h3><p>' + esc(m.text) + '</p>' + (m.link ? '<p><a href="' + m.link[0] + '">' + m.link[1] + '</a></p>' : '') + '</div></li>';
+      var t = m.link ? '<a class="pl-mile__lnk" href="' + m.link[0] + '">' + esc(m.title) + '<span class="pl-mile__arw" aria-hidden="true">→</span></a>' : esc(m.title);
+      return '<li class="pl-mile' + (m.link ? ' is-link' : '') + '" aria-label="' + (i + 1) + ' of ' + feat.length + '"><div class="pl-mile__pic">' + pic(m, true) + '</div><div class="pl-mile__txt"><span class="pl-mile__yr">' + (m.id === 'fire' ? BOLT : '') + yr + ' ' + kind + '</span><h3 class="h3">' + t + '</h3><p>' + esc(m.text) + '</p></div></li>';
     }).join('') + '</ol>';
     $('wm-arws').hidden = feat.length <= 3;
     var tr = $('wm-track');

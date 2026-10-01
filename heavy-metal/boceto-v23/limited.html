@@ -325,7 +325,7 @@ html,body{overflow-x:clip}
   /* talla elegida */
   /* datos estructurados: Product con la marca registrada */
   var ld = document.createElement('script'); ld.type = 'application/ld+json';
-  ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'Product', name: P.name, description: 'Special edition tee, limited run. Designed by the Heavy Metal Pro Stock crew in Waterloo, WI, printed to order.', sku: ED.id, category: 'Special edition', brand: { '@type': 'Brand', name: 'Heavy Metal Pro Stock: “The Evil One”' }, url: location.href.split('#')[0].split('?')[0], offers: { '@type': 'Offer', priceCurrency: 'USD', price: 'XX.XX', availability: 'https://schema.org/' + (realState(ED, new Date()) === 'live' ? 'InStock' : 'OutOfStock'), itemCondition: 'https://schema.org/NewCondition' } });
+  ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'Product', name: P.name, description: 'Special edition tee, limited run. Designed by the Heavy Metal Pro Stock: “The Evil One” crew in Waterloo, WI, printed to order.', sku: ED.id, category: 'Special edition', brand: { '@type': 'Brand', name: 'Heavy Metal Pro Stock: “The Evil One”' }, url: location.href.split('#')[0].split('?')[0], offers: { '@type': 'Offer', priceCurrency: 'USD', price: 'XX.XX', availability: 'https://schema.org/' + (realState(ED, new Date()) === 'live' ? 'InStock' : 'OutOfStock'), itemCondition: 'https://schema.org/NewCondition' } });
   document.head.appendChild(ld);
 
   $('sizes').addEventListener('change', function (e) {

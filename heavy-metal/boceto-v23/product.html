@@ -1115,7 +1115,7 @@ html,body{overflow-x:clip}
   var base = location.href.split('#')[0].split('?')[0];
   var url = base + '?p=' + p.id;
   var ld = [{
-    '@context': 'https://schema.org', '@type': 'Product', name: p.name, description: p.sub + '. Designed by the Heavy Metal Pro Stock crew in Waterloo, WI, printed to order.',
+    '@context': 'https://schema.org', '@type': 'Product', name: p.name, description: p.sub + '. Designed by the Heavy Metal Pro Stock: “The Evil One” crew in Waterloo, WI, printed to order.',
     sku: p.id, brand: { '@type': 'Brand', name: 'Heavy Metal Pro Stock: “The Evil One”' }, category: cname, url: url,
     offers: { '@type': 'Offer', url: url, priceCurrency: 'USD', price: 'XX.XX', availability: live ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock', itemCondition: 'https://schema.org/NewCondition' }
   }, {

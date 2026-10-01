@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4 -->
 <title>The Machine · Heavy Metal Pro Stock: “The Evil One”</title>
-<meta name="description" content="Heavy Metal Pro Stock spec sheet: a Cat 3208 V8 reverse flow built up from the factory 636 to 680 cubic inches, single large turbo, 10,000 LB, 24.5-32 tires. Horsepower unknown. “The Evil One”, a Pro Stock from Waterloo, Wisconsin.">
+<meta name="description" content="Spec sheet of Heavy Metal Pro Stock: “The Evil One”, a Pro Stock from Waterloo, Wisconsin. A Cat 3208 V8 reverse flow, built up from the factory 636 to 680 cubic inches, single large turbo, 10,000 LB, 24.5-32 tires. Horsepower unknown.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -19,9 +19,12 @@ html,body{overflow-x:clip}
 .mx-n{font-variant-numeric:tabular-nums;font-weight:800;letter-spacing:.04em}
 
 /* 1 · hero + galería (PDP de SKIMS: fotos pegadas a 4px) */
-.mx-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 40px;align-items:end;margin-bottom:20px}
-.mx-top__txt{display:grid;gap:10px}
-.mx-keys{display:flex;flex-wrap:wrap;gap:0;margin:0;border-top:1px solid var(--line)}
+/* v23: menos aire arriba y los datos clave justo debajo del lede (antes quedaban lejos, abajo a la derecha) */
+.mx-hero{padding-block:clamp(20px,2.4vw,32px) clamp(32px,3.6vw,48px)}
+.mx-top{display:grid;gap:14px;margin-bottom:18px;max-width:760px}
+.mx-top__txt{display:grid;gap:8px}
+.mx-top__txt .lede{max-width:60ch}
+.mx-keys{display:flex;flex-wrap:wrap;gap:0;margin:0;border-top:1px solid var(--line);justify-self:start}
 .mx-keys div{padding:8px 18px 0 0;margin-right:18px;border-right:1px solid var(--line)}
 .mx-keys div:last-child{border-right:0;margin-right:0;padding-right:0}
 .mx-keys dt{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
@@ -160,7 +163,7 @@ html,body{overflow-x:clip}
 .faq details p{margin:0 0 14px;max-width:62ch;color:var(--soft);font-size:var(--t-sm)}
 
 /* 6 · CTA único: Cat V8 Spec Tee */
-.mx-tee{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,300px);gap:clamp(24px,5vw,72px);align-items:center;max-width:980px}
+.mx-tee{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,260px);gap:clamp(24px,4vw,56px);align-items:center;max-width:900px}
 .mx-tee__txt{display:grid;gap:12px;justify-items:start}
 .mx-tee__txt p{margin:0}
 .mx-tee__list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
@@ -216,7 +219,7 @@ html,body{overflow-x:clip}
 <main id="main">
 
 <!-- 1 · hero + galería real -->
-<section class="sect" aria-labelledby="mx-h1">
+<section class="sect mx-hero" aria-labelledby="mx-h1">
   <div class="wrap">
     <div class="mx-top">
       <div class="mx-top__txt">
@@ -369,7 +372,7 @@ html,body{overflow-x:clip}
       </details>
       <details>
         <summary>What is a full pull?</summary>
-        <p>Dragging the sled all the way to the end of the track. When more than one tractor goes the distance, those tractors come back for a pull-off. Heavy Metal Pro Stock is still chasing its first one.</p>
+        <p>Dragging the sled all the way to the end of the track. When more than one tractor goes the distance, those tractors come back for a pull-off. “The Evil One” is still chasing its first one.</p>
       </details>
       <details>
         <summary>What does the sled actually do?</summary>
@@ -565,7 +568,7 @@ html,body{overflow-x:clip}
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "name": "The Machine · Heavy Metal Pro Stock: “The Evil One”",
-  "about": {"@type": "SportsTeam", "name": "Heavy Metal Pro Stock", "alternateName": "“The Evil One”", "sport": "Tractor pulling"},
+  "about": {"@type": "SportsTeam", "name": "Heavy Metal Pro Stock: “The Evil One”", "sport": "Tractor pulling"},
   "mainEntity": [
     {
       "@type": "Question",
@@ -596,7 +599,7 @@ html,body{overflow-x:clip}
       "name": "What is a full pull?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Dragging the sled all the way to the end of the track. When more than one tractor goes the distance, those tractors come back for a pull-off. Heavy Metal Pro Stock is still chasing its first one."
+        "text": "Dragging the sled all the way to the end of the track. When more than one tractor goes the distance, those tractors come back for a pull-off. “The Evil One” is still chasing its first one."
       }
     },
     {
