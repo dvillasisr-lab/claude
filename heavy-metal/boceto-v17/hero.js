@@ -50,7 +50,7 @@
   var box = $('.fp__box'), pile = $('.fp__pile'), wheelie = $('.fp__wheelie'), smokeG = $('.fp__smoke');
   var wheels = [].slice.call(root.querySelectorAll('.fp__sw'));
   var TARGET = parseInt(root.getAttribute('data-target') || '300', 10);
-  var HOOK = 700, PULL = 7500, DUR = HOOK + PULL;
+  var HOOK = 500, PULL = 5000, DUR = HOOK + PULL;
   var rmq = matchMedia('(prefers-reduced-motion: reduce)'), reduce = rmq.matches;
   var NS = 'http://www.w3.org/2000/svg';
 
