@@ -14,30 +14,21 @@
 html,body{overflow-x:clip}
 .ext{font-size:.85em;margin-left:2px;text-decoration:none;display:inline-block}
 
-/* 1 · título + contadores */
-.pl-top{padding-block:28px 22px}
-.pl-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 20px}
-.pl-head p{margin:0;font-size:var(--t-sm);color:var(--soft);max-width:60ch}
-.pl-upd{margin:10px 0 0;font-size:var(--t-xs);color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 14px}
-.pl-upd b{color:var(--ink);font-weight:600}
-.pl-stats{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.pl-stat{padding:12px 16px 12px 0;display:grid;gap:2px;align-content:start}
-.pl-stat+.pl-stat{padding-left:16px;border-left:1px solid var(--line)}
-.pl-stat b{font-family:var(--f-head);font-stretch:78%;font-size:clamp(28px,3vw,40px);line-height:1;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
-.pl-stat b.pl-soon{font-size:clamp(18px,1.7vw,22px);line-height:1.05;text-transform:uppercase;color:var(--ink);display:inline-flex;align-items:center;gap:6px;min-height:clamp(28px,3vw,40px)}
-.pl-stat b.pl-soon svg{width:10px;height:14px;fill:var(--accent);stroke:var(--ink);stroke-width:.8;flex:none}
-.pl-stat span{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
-.pl-stat small{font-size:11px;color:var(--mute);line-height:1.3}
-.pl-stat.is-zero b{color:#B6B1AD}
-.pl-stat--win:not(.is-zero) b:not(.pl-soon){box-shadow:inset 0 -.18em 0 var(--accent)}
-.pl-scope{margin:8px 0 0;font-size:var(--t-xs);color:var(--mute)}
-@media (max-width:760px){
-  .pl-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .pl-stat{padding:10px 10px 10px 0}
-  .pl-stat+.pl-stat{padding-left:10px}
-  .pl-stat:nth-child(3){border-left:0;padding-left:0}
-  .pl-stat:nth-child(n+3){border-top:1px solid var(--line)}
-}
+/* 1 · título, una línea de contexto, meta y contadores en una línea tranquila */
+.pl-top{padding-block:32px 28px}
+.pl-head p{margin:6px 0 0;font-size:var(--t-sm);color:var(--soft);max-width:72ch}
+.pl-upd{margin:6px 0 0;font-size:var(--t-xs);color:var(--mute);display:flex;flex-wrap:wrap;gap:2px 0}
+.pl-upd b{color:var(--soft);font-weight:500}
+#pl-total:not(:empty)::before{content:"·";margin:0 8px}
+.pl-stats{list-style:none;margin:18px 0 0;padding:12px 0 0;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:4px 20px;font-size:var(--t-xs);color:var(--soft)}
+.pl-stat{display:inline-flex;align-items:baseline;gap:6px}
+.pl-stat span{order:-1}
+.pl-stat b{color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums}
+.pl-stat b.pl-soon{display:inline-flex;align-items:center;gap:4px;font-weight:600}
+.pl-stat b.pl-soon svg{width:8px;height:11px;fill:var(--accent);stroke:var(--ink);stroke-width:.8;flex:none}
+.pl-stat small{font-size:11px;color:var(--mute)}
+.pl-stat.is-zero b{color:var(--mute)}
+.pl-scope{margin:4px 0 0;font-size:var(--t-xs);color:var(--mute)}
 
 /* 2 · wins y hitos destacados */
 .pl-wm{padding-block:clamp(32px,4vw,48px)}
@@ -79,23 +70,21 @@ html,body{overflow-x:clip}
 
 /* 3 · bitácora */
 .pl-log{padding-block:clamp(32px,4vw,48px)}
-.pl-bar{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 16px;align-items:center;padding:12px 0;margin-bottom:8px;border-bottom:1px solid var(--line);background:var(--bg)}
+.pl-bar{display:flex;flex-wrap:wrap;gap:10px 20px;align-items:center;padding:12px 0;margin-bottom:8px;border-bottom:1px solid var(--line);background:var(--bg)}
 @media (min-width:761px){.pl-bar{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header));z-index:40}}
-.pl-q{position:relative;max-width:420px}
+.pl-q{position:relative;flex:1 1 240px;max-width:340px}
 .pl-q svg{position:absolute;left:12px;top:50%;width:18px;height:18px;transform:translateY(-50%);fill:none;stroke:var(--mute);stroke-width:1.6;pointer-events:none}
-.pl-q .input{padding-left:38px;min-height:40px}
+.pl-q .input{padding-left:38px;min-height:36px}
 .pl-q .input::-webkit-search-cancel-button{cursor:pointer}
 .pl-fgroup{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
-.pl-fgroup>.label{color:var(--mute);margin-right:4px}
-.pl-types{grid-column:1/-1}
+.pl-fgroup>.label{color:var(--mute);margin-right:2px}
 .pl-sel{min-height:36px;width:auto;padding:0 32px 0 10px;font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
-.chip{min-height:36px;padding:0 12px;background:var(--surface);border:1px solid var(--line);font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip{min-height:34px;padding:0 10px;background:var(--surface);border:1px solid var(--line);font-size:var(--t-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
 .chip:hover{border-color:var(--ink)}
 .chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
 .chip .n{font-weight:600;opacity:.7;font-variant-numeric:tabular-nums}
 @media (max-width:760px){
-  .pl-bar{grid-template-columns:minmax(0,1fr)}
-  .pl-q{max-width:none}
+  .pl-q{max-width:none;flex-basis:100%}
   .pl-fgroup{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;width:100%;padding-bottom:2px}
   .pl-fgroup::-webkit-scrollbar{display:none}
   .chip{flex:none}
@@ -219,10 +208,10 @@ html,body{overflow-x:clip}
   <div class="wrap pl-top">
     <div class="pl-head">
       <h1 class="h1" id="pl-title">Pit Log</h1>
-      <p>Every test day, exhibition, pull and win of “The Evil One”, logged by the crew as it happens.</p>
+      <p>Every test day, exhibition, pull and win of “The Evil One”, logged by the crew.</p>
     </div>
     <!-- last-updated: pit-log -->
-    <p class="pl-upd"><span>Last updated: <b id="pl-updated"></b></span><span id="pl-total"></span></p>
+    <p class="pl-upd"><span>Updated <b id="pl-updated"></b></span><span id="pl-total"></span></p>
     <ul class="pl-stats" id="pl-stats" aria-describedby="pl-scope"></ul>
     <p class="pl-scope" id="pl-scope"></p>
   </div>
@@ -452,10 +441,10 @@ html,body{overflow-x:clip}
       var val = soon ? '<b class="pl-soon">' + BOLT + 'Coming soon</b>' : '<b>' + n + '</b>';
       return '<li class="pl-stat' + (s[2] ? ' pl-stat--win' : '') + (n || soon ? '' : ' is-zero') + '">' + val + '<span>' + s[1] + '</span>' + (s[3] ? '<small>' + s[3] + '</small>' : '') + '</li>';
     }).join('');
-    $('pl-scope').textContent = (st.year === 'all' ? 'All seasons' : st.year + (st.year === SEASON ? ' season so far' : ' season')) + ', counted from the log below.';
+    if ($('pl-scope')) $('pl-scope').textContent = (st.year === 'all' ? 'All seasons' : st.year + (st.year === SEASON ? ' season so far' : ' season')) + ', counted from the log below.';
     $('pl-updated').textContent = longDate(LOG_UPDATED);
     var n = live().length;
-    $('pl-total').textContent = n + (n === 1 ? ' entry' : ' entries') + ' in the log';
+    if ($('pl-total')) $('pl-total').textContent = n + (n === 1 ? ' entry' : ' entries');
   }
 
   /* filtros: Season en botones si hay pocas temporadas; con más de 4 se vuelve lista desplegable */

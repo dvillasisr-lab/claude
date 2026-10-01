@@ -116,7 +116,7 @@ html,body{overflow-x:clip}
       <h1 class="h-hero" id="bk-title">Book “The Evil One”</h1>
       <p class="lede">Bring a Pro Stock pulling tractor built from scratch in Waterloo, WI, to your event. Put it on display, run it for the crowd where the track allows it, and meet the driver.</p>
       <ul class="bk-proof" id="bk-proof"></ul>
-      <div class="btn-row"><a class="btn" href="#quote" data-goform>Ask for a quote</a><a class="link" href="sponsors.html" style="text-decoration:underline">Sponsor instead</a></div>
+      <div class="btn-row"><a class="btn" href="#offer-t">See what we bring</a><a class="link" href="sponsors.html" style="text-decoration:underline">Sponsor instead</a></div>
     </div>
     <figure class="bk-photo"><img class="photo" src="img/hm-driver-crew.webp" alt="Chris F. and the crew next to the rear tire of “The Evil One”" width="1050" height="1400" fetchpriority="high"></figure>
   </div>
@@ -259,7 +259,7 @@ html,body{overflow-x:clip}
   function paint() {
     OPTIONS.forEach(function (o) { var c = $('o-' + o.key), li = c && c.closest('.bk-opt'); if (li) li.classList.toggle('is-on', c.checked); });
     var p = picked().map(function (o) { return o.name; }), out = $('bk-picked');
-    if (out) out.innerHTML = p.length ? 'Picked: <b>' + esc(p.join(', ').replace(/, ([^,]*)$/, ' and $1')) + '</b>. It goes into the form below.' : 'Tap the options you want, then ask for a quote.';
+    if (out) out.innerHTML = p.length ? 'Picked: <b>' + esc(p.join(', ').replace(/, ([^,]*)$/, ' and $1')) + '</b> · added to the form below' : 'Tap the options you want, then ask for a quote.';
   }
   function syncForm() {
     OPTIONS.forEach(function (o) { var c = $('o-' + o.key), f = document.querySelector('#bk-form [data-opt="' + o.key + '"]'); if (c && f) f.checked = c.checked; });
