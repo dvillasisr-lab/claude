@@ -1,8 +1,8 @@
-/* HERO "Full Pull" v7: el tractor real jala el sled de transferencia de peso (la caja de pesas avanza sobre los rieles
+/* HERO "Full Pull" v8: el tractor real jala el sled de transferencia de peso (la caja de pesas avanza sobre los rieles
    hacia el pan) hasta la distancia de full pull. Una pasada de ~8.2 s (0.7 s enganchado + 7.5 s de jalón) que termina
    en FULL PULL! con rayo; Pause y "Pull again".
-   - Arranque: la trompa del tractor sale a la altura del botón "Shop the drop" (el sled puede quedar fuera de pantalla
-     a la izquierda) y recorre hasta la bandera.
+   - Arranque (v8): el tractor sale pegado al borde izquierdo de la pantalla, visible desde el primer frame (el sled
+     queda fuera a la izquierda) y recorre hasta la bandera. El rig pasa DETRÁS del texto y los botones.
    - Todo se calcula desde el tiempo; el layout solo se mide al cargar y al cambiar de tamaño.
    - Humo: capa SVG propia detrás del texto. Bocanadas opacas en tres tonos que salen de la chimenea, suben casi
      rectas (heredan parte del avance del tractor) y se abren al subir.
@@ -30,7 +30,7 @@
   var $ = function (s) { return root.querySelector(s); };
   var brand = $('.fp__brand'), rig = $('.fp__rig'), track = $('.fp__track'), top = $('.fp__top'), rail = $('[data-fp-rail]'), flag = $('[data-fp-flag]');
   var fill = $('.fp__rail-fill'), dist = $('[data-fp-dist]'), chip = $('[data-fp-chip]'), needle = $('.fp__needle'), rpm = $('[data-fp-rpm]');
-  var ctrl = $('[data-fp-ctrl]'), shopBtn = brand.querySelector('.btn-row .btn');
+  var ctrl = $('[data-fp-ctrl]');
   var box = $('.fp__box'), pile = $('.fp__pile'), wheelie = $('.fp__wheelie'), smokeG = $('.fp__smoke');
   var wheels = [].slice.call(root.querySelectorAll('.fp__sw'));
   var TARGET = parseInt(root.getAttribute('data-target') || '300', 10);
@@ -39,7 +39,7 @@
   var NS = 'http://www.w3.org/2000/svg';
 
   /* rig en unidades del viewBox (2700 x 576): trompa del tractor, chimenea, recorrido de la caja, apoyo del wheelie, radio de las ruedas del sled */
-  var U = { w: 2700, nose: 2680, stackX: 2115, stackY: 38, boxTravel: 720, px: 1780, py: 548, wheelR: 105 };
+  var U = { w: 2700, nose: 2680, rear: 1600, stackX: 2115, stackY: 38, boxTravel: 720, px: 1780, py: 548, wheelR: 105 };
 
   /* ---------- medidas (solo al cargar y en resize) ---------- */
   var G = {};
@@ -51,10 +51,9 @@
     else { left = tp.left - tr.left + parseFloat(cs.paddingLeft); right = tp.right - tr.left - parseFloat(cs.paddingRight); }
     var flagW = flag.getBoundingClientRect().width + Math.max(22, rigW * .04);
     var noseOff = U.nose * scale, finish = right - flagW;
-    /* arranca con la trompa a la altura del botón "Shop the drop" (su orilla derecha) para que el recorrido sea largo;
-       el sled queda fuera de pantalla a la izquierda. Si la pista queda corta, arranca más a la izquierda. */
-    var sb = shopBtn ? shopBtn.getBoundingClientRect() : null;
-    var startNose = sb ? sb.right - tr.left : rigW * .3, minTravel = Math.max(140, tr.width * (narrow ? .38 : .45));
+    /* arranca con la llanta trasera del tractor justo en el borde izquierdo de la pantalla (x = 0): se ve desde el
+       primer frame y el sled queda fuera a la izquierda. Si la pista quedara muy corta, arranca un poco más atrás. */
+    var startNose = (U.nose - U.rear) * scale, minTravel = Math.max(120, tr.width * .3);
     if (finish - startNose < minTravel) startNose = finish - minTravel;
     G = { scale: scale, noseOff: noseOff, start: startNose, finish: finish, rigTop: rg.top - rr.top,
       R: Math.max(40, Math.min(170, rigW * .1)), rise: (rg.top - rr.top) + U.stackY * scale + 60, rigW: rigW };

@@ -150,11 +150,15 @@ html,body{overflow-x:clip}
 .sp__line{margin:0;font-size:var(--t-md);color:var(--soft)}
 .sp__line b{color:var(--ink);font-weight:800}
 .sp .note{grid-column:1/-1;margin:0}
-@media (max-width:600px){.sp__in{grid-template-columns:1fr;align-items:start}.sp__in .btn{width:100%}}
+/* link secundario discreto a book.html, debajo del botón (no compite con él) */
+.sp__cta{display:grid;justify-items:center;gap:10px}
+.sp__alt{font-size:var(--t-sm);font-weight:600;color:var(--soft);text-decoration:underline;text-underline-offset:3px;padding:4px 2px}
+.sp__alt:hover{color:var(--ink)}
+@media (max-width:600px){.sp__in{grid-template-columns:1fr;align-items:start}.sp__cta{justify-items:stretch}.sp__in .btn{width:100%}.sp__alt{justify-self:center}}
 </style>
 <div data-hm-header data-current="home"></div>
 <main id="main">
-<!-- HERO Full Pull v7. Requiere hero.css y hero.js (después de hm.js).
+<!-- HERO Full Pull v8. Requiere hero.css y hero.js (después de hm.js).
      En Shopify: sección "HM Hero"; ajustes = distancia de full pull, textos y botones; fondo único de tormenta.
      Las frases de la cinta amarilla son bloques de texto de la sección (máximo 3). -->
 <section class="fp" data-fp data-target="300" aria-labelledby="fp-title">
@@ -367,7 +371,7 @@ html,body{overflow-x:clip}
         <h2 class="h1" id="sp-title">Partner with “The Evil One”</h2>
         <p class="sp__line" id="sp-line">Your brand in front of <b>100,000+ fans</b> across <b>20+ pulls</b> a season (est.)</p>
       </div>
-      <a class="btn" href="sponsors.html">See sponsor packages</a>
+      <div class="sp__cta"><a class="btn" href="sponsors.html">See sponsor packages</a><a class="sp__alt" href="book.html">Book the team for your event<span aria-hidden="true"> →</span></a></div>
       <p class="note">Frase de venta = Metaobjetos &gt; Sponsor stat (pulls por temporada × fans por pull, los mismos de Sponsors; vacíos = “XX”). Frases de la cinta amarilla = bloques de texto de la sección HM Hero.</p>
     </div>
   </section>
