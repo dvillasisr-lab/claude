@@ -137,7 +137,7 @@
   .fp__top,.fp__side{display:contents}
   .fp__brand,.fp__tele{position:relative;z-index:2;margin-inline:var(--gutter)}
   .fp__brand{order:1;padding-top:20px}
-  .fp__tele{order:2;margin-top:14px;margin-bottom:8px;width:auto;grid-template-columns:auto minmax(0,1fr) auto;padding:8px 12px 4px;gap:4px 14px}
+  .fp__tele{order:2;margin-top:14px;margin-bottom:16px;width:auto;grid-template-columns:auto minmax(0,1fr) auto;padding:8px 12px 4px;gap:4px 14px}
   .fp__track{order:3}
   .fp__tele-head{display:none}
   .fp__tach{width:72px}
@@ -146,7 +146,7 @@
   .fp__stats div{display:grid;gap:1px}
   .fp__stats dd{font-size:17px}
   .fp__ctrls{border-top:1px solid var(--fp-panel-line)}
-  .fp__flag{height:calc(var(--righ) * 1.3)}
+  .fp__flag{height:calc(var(--righ) * 1.08)}
 }
 @media (max-width:600px){
   .fp{--logo:min(78vw,380px)}
@@ -155,6 +155,7 @@
   .fp__brand .btn-row .btn{flex:1 1 140px}
   .fp-marquee{height:36px}
   .fp-marquee__track{font-size:15px}
+  .fp__tele{margin-bottom:10px}
 }
 @media (max-width:420px){
   .fp__tele{gap:4px 10px}

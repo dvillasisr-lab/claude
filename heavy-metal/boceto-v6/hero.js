@@ -52,10 +52,10 @@
     var flagW = flag.getBoundingClientRect().width + Math.max(22, rigW * .04);
     var noseOff = U.nose * scale, finish = right - flagW;
     /* arranca con el sled casi completo en pantalla; si la pista queda corta, el sled entra desde la izquierda */
-    var startNose = -rigW * (narrow ? .02 : .04) + noseOff, minTravel = Math.max(110, tr.width * .3);
+    var startNose = rigW * (narrow ? -.02 : .006) + noseOff, minTravel = Math.max(110, tr.width * (narrow ? .3 : .26));
     if (finish - startNose < minTravel) startNose = finish - minTravel;
     G = { scale: scale, noseOff: noseOff, start: startNose, finish: finish, rigTop: rg.top - rr.top,
-      R: Math.max(38, Math.min(150, rigW * .085)), rise: (rg.top - rr.top) + U.stackY * scale + 60, rigW: rigW };
+      R: Math.max(40, Math.min(170, rigW * .1)), rise: (rg.top - rr.top) + U.stackY * scale + 60, rigW: rigW };
     rail.style.left = startNose + 'px'; rail.style.width = (finish - startNose) + 'px';
     flag.style.left = finish + 4 + 'px';
     root.style.setProperty('--edge', (tr.width - right) + 'px');
@@ -79,7 +79,7 @@
   }
 
   /* ---------- humo: columna densa y casi vertical ---------- */
-  var P = [], POOL = reduce ? 0 : 140, alive = 0, INHERIT = .6;
+  var P = [], POOL = reduce ? 0 : 200, alive = 0, INHERIT = .6;
   function makePool() {
     for (var i = P.length; i < POOL; i++) {
       var c = document.createElementNS(NS, 'circle'); c.setAttribute('r', '50'); c.setAttribute('fill', 'url(#fpPuff' + (i % 3) + ')'); c.style.opacity = '0';
@@ -113,8 +113,8 @@
       var rise = G.rise * p.vr * (1 - Math.pow(1 - a, 2.1));                   /* sale con fuerza y se frena arriba */
       var x = p.x0 + (rigX - p.rx) * INHERIT + p.drift * a + Math.sin(a * 3 + p.wob) * G.R * .18 * a;
       var y = p.y0 - rise;
-      var sc = G.R * p.size * (.14 + .86 * Math.pow(a, .55)) / 50;
-      var op = (a < .05 ? a / .05 : 1) * (a < .5 ? 1 : 1 - Math.pow((a - .5) / .5, 1.4)) * (p.big ? .95 : .75);
+      var sc = G.R * p.size * (.22 + .78 * Math.pow(a, .55)) / 50;
+      var op = (a < .05 ? a / .05 : 1) * (a < .5 ? 1 : 1 - Math.pow((a - .5) / .5, 1.4)) * (p.big ? 1 : .8);
       p.el.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') scale(' + sc.toFixed(3) + ')');
       p.el.style.opacity = op.toFixed(3);
     }
@@ -219,7 +219,7 @@
       emit(clock, x, sp, pulling);
       if (pulling) emit(clock, x, sp, true);
       if (pulling && ms - HOOK < 150) { emit(clock, x, sp, true); emit(clock, x, sp, true); }
-      nextPuff = clock + (pulling ? 34 : 200);
+      nextPuff = clock + (pulling ? 30 : 200);
     }
     if (P.length) smoke(clock, x);
   }
@@ -256,7 +256,7 @@
     ctrl.hidden = snd.hidden = reduce;
     if (reduce) { state = 'done'; ms = DUR; A.want = false; setSndUi(); audioSync(); root.classList.remove('is-running', 'is-pulling', 'is-strike'); paint(DUR, 0); }
   }
-  var onRm = function (e) { reduce = e.matches; if (!reduce) { POOL = 140; makePool(); applyReduce(); restart(); } else applyReduce(); };
+  var onRm = function (e) { reduce = e.matches; if (!reduce) { POOL = 200; makePool(); applyReduce(); restart(); } else applyReduce(); };
   if (rmq.addEventListener) rmq.addEventListener('change', onRm); else if (rmq.addListener) rmq.addListener(onRm);
 
   measure();
