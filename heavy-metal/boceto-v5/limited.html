@@ -26,7 +26,7 @@ html,body{overflow-x:clip}
 @media (min-width:900px){.stage{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header) + 16px)}}
 @media (max-width:899px){.stage{margin-inline:calc(-1 * var(--gutter));width:auto;aspect-ratio:1/1}}
 .stage .mock{width:62%;position:relative;z-index:2;filter:drop-shadow(0 24px 30px rgba(0,0,0,.5))}
-.stage__bolt{position:absolute;z-index:1;right:12%;top:-4%;height:70%;width:auto;fill:var(--accent);opacity:.9}
+.stage__bolt{position:absolute;z-index:1;right:8%;top:6%;height:40%;width:auto;fill:var(--accent);opacity:.9}
 .stage__glow{position:absolute;inset:0;background:radial-gradient(40% 35% at 78% 22%,rgba(245,196,0,.18),transparent 70%)}
 .stage.is-flash .stage__glow{animation:flash 4s 1}
 @keyframes flash{0%,8%,14%,100%{opacity:1}4%,11%{opacity:3}}
@@ -72,7 +72,7 @@ html,body{overflow-x:clip}
 .opt__legend{padding:0;margin-bottom:8px;font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px}
 .opt__legend b{color:var(--ink);font-weight:600;letter-spacing:.04em}
 .opt__legend a{color:var(--ink);text-transform:none;letter-spacing:.02em;text-underline-offset:3px}
-.opt input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.opt input{position:absolute;opacity:0;width:1px;height:1px;border:0;clip-path:inset(50%);pointer-events:none}
 .sizes{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
 .size{display:grid;place-items:center;min-height:44px;background:var(--surface);border:1px solid var(--line);cursor:pointer;font-size:var(--t-xs);font-weight:700;letter-spacing:.04em}
 .size:hover{border-color:var(--ink)}
@@ -266,7 +266,8 @@ html,body{overflow-x:clip}
     return '<input type="radio" name="size" id="sz-' + i + '" value="' + s + '"><label class="size" for="sz-' + i + '">' + s + '</label>';
   }).join('');
 
-  function fmt(d) { return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }) + ', ' + d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) + ' CT'; }
+  var TZ = { timeZone: 'America/Chicago' };
+  function fmt(d) { return d.toLocaleDateString('en-US', Object.assign({ weekday: 'short', month: 'short', day: 'numeric' }, TZ)) + ', ' + d.toLocaleTimeString('en-US', Object.assign({ hour: 'numeric', minute: '2-digit' }, TZ)) + ' CT'; }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
 
   /* en el boceto, si una fecha ya pasó, el reloj usa una de ejemplo para que se vea contando */
