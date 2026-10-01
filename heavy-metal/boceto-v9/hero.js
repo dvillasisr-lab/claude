@@ -1,4 +1,11 @@
-/* HERO "Full Pull" v8: el tractor real jala el sled de transferencia de peso (la caja de pesas avanza sobre los rieles
+/* HERO "Full Pull" v9 (sobre v8):
+   - Frame 0: el tractor completo con la llanta trasera tocando el borde izquierdo; la animación espera a que cargue
+     el recorte del tractor (máx. 2.5 s) para que nunca se vea "ya avanzado".
+   - Sled al 80%. En escritorio la pista se coloca (desde JS) para que el sled siempre pase DEBAJO de los botones.
+   - El humo sale inclinado por el viento hacia el centro (columna ancha), ya está en el aire desde el frame 0
+     (calentando motor) y se queda unos segundos al terminar: llena el centro del hero.
+   - Escritorio: el poste de la bandera sube hasta el pull sim (marcador de la meta).
+   v8: el tractor real jala el sled de transferencia de peso (la caja de pesas avanza sobre los rieles
    hacia el pan) hasta la distancia de full pull. Una pasada de ~8.2 s (0.7 s enganchado + 7.5 s de jalón) que termina
    en FULL PULL! con rayo; Pause y "Pull again".
    - Arranque (v8): el tractor sale pegado al borde izquierdo de la pantalla, visible desde el primer frame (el sled
@@ -39,26 +46,41 @@
   var NS = 'http://www.w3.org/2000/svg';
 
   /* rig en unidades del viewBox (2700 x 576): trompa del tractor, chimenea, recorrido de la caja, apoyo del wheelie, radio de las ruedas del sled */
-  var U = { w: 2700, nose: 2680, rear: 1600, stackX: 2115, stackY: 38, boxTravel: 720, px: 1780, py: 548, wheelR: 105 };
+  var U = { w: 2700, nose: 2680, rear: 1602, stackX: 2115, stackY: 38, boxTravel: 720, px: 1780, py: 548, wheelR: 84, sledTop: 159 };
 
   /* ---------- medidas (solo al cargar y en resize) ---------- */
   var G = {};
+  var tele = $('.fp__tele'), btnRow = $('.fp__brand .btn-row');
   function measure() {
+    var narrow = matchMedia('(max-width:860px)').matches;
+    /* escritorio: la pista sube detrás del texto lo más posible, pero el sled (cabina, escalera, operador) siempre pasa
+       por DEBAJO de los botones. El tractor sí pasa detrás del texto. */
+    if (narrow) { root.style.removeProperty('--tuck'); flag.style.height = ''; }
+    else {
+      root.style.setProperty('--tuck', '0px');
+      var tr0 = track.getBoundingClientRect(), b0 = btnRow.getBoundingClientRect(), tp0 = top.getBoundingClientRect();
+      var dirtH = track.querySelector('.fp__dirt').getBoundingClientRect().height, s0 = rig.getBoundingClientRect().width / U.w;
+      var dirtTop0 = tr0.bottom - dirtH, want = b0.bottom + 12 + (U.py - U.sledTop) * s0;
+      root.style.setProperty('--tuck', Math.max(0, Math.round(dirtTop0 - want)) + 'px');
+    }
     var tr = track.getBoundingClientRect(), rr = root.getBoundingClientRect(), tp = top.getBoundingClientRect(), cs = getComputedStyle(top);
-    var rg = rig.getBoundingClientRect(), rigW = rg.width, scale = rigW / U.w, narrow = matchMedia('(max-width:860px)').matches;
+    var rg = rig.getBoundingClientRect(), rigW = rg.width, scale = rigW / U.w;
     var left, right;
     if (narrow) { left = brand.getBoundingClientRect().left - tr.left; right = tr.width - left; }
     else { left = tp.left - tr.left + parseFloat(cs.paddingLeft); right = tp.right - tr.left - parseFloat(cs.paddingRight); }
     var flagW = flag.getBoundingClientRect().width + Math.max(22, rigW * .04);
     var noseOff = U.nose * scale, finish = right - flagW;
-    /* arranca con la llanta trasera del tractor justo en el borde izquierdo de la pantalla (x = 0): se ve desde el
-       primer frame y el sled queda fuera a la izquierda. Si la pista quedara muy corta, arranca un poco más atrás. */
+    /* arranca con la llanta trasera del tractor tocando el borde izquierdo de la pantalla (x = 0): el tractor completo se
+       ve desde el primer frame y el sled queda fuera a la izquierda. Si la pista quedara muy corta, arranca un poco más atrás. */
     var startNose = (U.nose - U.rear) * scale, minTravel = Math.max(120, tr.width * .3);
     if (finish - startNose < minTravel) startNose = finish - minTravel;
     G = { scale: scale, noseOff: noseOff, start: startNose, finish: finish, rigTop: rg.top - rr.top,
-      R: Math.max(40, Math.min(170, rigW * .1)), rise: (rg.top - rr.top) + U.stackY * scale + 60, rigW: rigW };
+      cx: narrow ? 0 : ($('.fp__sub').getBoundingClientRect().right + tele.getBoundingClientRect().left) / 2 - rr.left,
+      R: Math.max(40, Math.min(190, rigW * .115)), rise: (rg.top - rr.top) + U.stackY * scale + 40, rigW: rigW, narrow: narrow };
     rail.style.left = startNose + 'px'; rail.style.width = (finish - startNose) + 'px';
     flag.style.left = finish + 4 + 'px';
+    /* escritorio: el poste sube hasta el pull sim; queda como el marcador de la meta */
+    if (!narrow) flag.style.height = Math.max(40, tr.bottom - track.querySelector('.fp__dirt').getBoundingClientRect().height - tele.getBoundingClientRect().bottom) + 'px';
     root.style.setProperty('--edge', (tr.width - right) + 'px');
     rail.querySelectorAll('.fp__tick').forEach(function (t) { t.remove(); });
     [0, 1 / 3, 2 / 3, 1].forEach(function (f, i) {
@@ -80,7 +102,7 @@
   }
 
   /* ---------- humo: columna densa y casi vertical ---------- */
-  var P = [], POOL = reduce ? 0 : 200, alive = 0, INHERIT = .6;
+  var P = [], POOL = reduce ? 0 : 360, alive = 0, INHERIT = .2;
   function makePool() {
     for (var i = P.length; i < POOL; i++) {
       var c = document.createElementNS(NS, 'circle'); c.setAttribute('r', '50'); c.setAttribute('fill', 'url(#fpPuff' + (i % 3) + ')'); c.style.opacity = '0';
@@ -94,28 +116,38 @@
     return [rigX + sx * G.scale, G.rigTop + sy * G.scale];
   }
   var nextPuff = 0;
+  /* viento hacia la derecha: la columna sube recta y arriba se dobla hacia el centro del hero (en celular casi recta) */
   function emit(clock, rigX, sp, big) {
     for (var i = 0; i < P.length; i++) if (!P[i].on) {
       var p = P[i]; p.on = true; alive++;
       p.t0 = clock; p.rx = rigX; p.big = big;
-      p.life = big ? 2300 + Math.random() * 900 : 1100 + Math.random() * 500;
+      p.life = big ? 3200 + Math.random() * 1400 : 1500 + Math.random() * 600;
       p.x0 = sp[0] + (Math.random() - .5) * G.R * .12; p.y0 = sp[1];
-      p.vr = big ? .82 + Math.random() * .3 : .22 + Math.random() * .1;
-      p.drift = -G.rigW * (.008 + Math.random() * .03); p.wob = Math.random() * 6.28;
-      p.size = big ? .75 + Math.random() * .5 : .35 + Math.random() * .15;
+      p.vr = big ? .8 + Math.random() * .3 : .3 + Math.random() * .12;
+      /* escritorio: la columna se dobla hacia el hueco del centro (al inicio el viento la empuja a la derecha; al final
+         queda atrás del tractor). Celular: casi recta. */
+      p.drift = G.narrow ? G.rigW * (.01 + Math.random() * .04) : (G.cx - p.x0) * (.55 + Math.random() * .55) + (Math.random() - .5) * G.R;
+      if (!big) p.drift *= .4;
+      p.wob = Math.random() * 6.28;
+      p.size = big ? .8 + Math.random() * .55 : .4 + Math.random() * .2;
       return;
     }
+  }
+  /* al cargar y en "Pull again": el motor ya lleva un rato acelerando, así que la columna ya está en el aire en el frame 0 */
+  function preroll(clock, rigX) {
+    var sp = stackPoint(rigX, 0);
+    for (var t = -4200; t < 0; t += 28) emit(clock + t, rigX, sp, true);
   }
   function smoke(clock, rigX) {
     for (var i = 0; i < P.length; i++) {
       var p = P[i]; if (!p.on) continue;
       var a = (clock - p.t0) / p.life;
       if (a >= 1) { p.on = false; alive--; p.el.style.opacity = '0'; continue; }
-      var rise = G.rise * p.vr * (1 - Math.pow(1 - a, 2.1));                   /* sale con fuerza y se frena arriba */
+      var rise = G.rise * p.vr * (1 - Math.pow(1 - a, 1.15));                   /* sale con fuerza y se frena arriba */
       var x = p.x0 + (rigX - p.rx) * INHERIT + p.drift * a + Math.sin(a * 3 + p.wob) * G.R * .18 * a;
       var y = p.y0 - rise;
       var sc = G.R * p.size * (.22 + .78 * Math.pow(a, .55)) / 50;
-      var op = (a < .05 ? a / .05 : 1) * (a < .5 ? 1 : 1 - Math.pow((a - .5) / .5, 1.4)) * (p.big ? 1 : .8);
+      var op = (a < .05 ? a / .05 : 1) * (a < .58 ? 1 : 1 - Math.pow((a - .58) / .42, 1.4)) * (p.big ? 1 : .8);
       p.el.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ') scale(' + sc.toFixed(3) + ')');
       p.el.style.opacity = op.toFixed(3);
     }
@@ -149,28 +181,31 @@
       if (pulling && ms - HOOK < 150) { emit(clock, x, sp, true); emit(clock, x, sp, true); }
       nextPuff = clock + (pulling ? 30 : 200);
     }
+    /* al terminar: bocanadas de ralentí unos segundos, para que el cielo no se vacíe de golpe */
+    if (P.length && state === 'done' && clock < idleUntil && clock >= nextPuff) { emit(clock, x, stackPoint(x, 0), Math.random() < .5); nextPuff = clock + 110; }
     if (P.length) smoke(clock, x);
   }
 
   /* ---------- reloj ---------- */
-  var state = 'run', ms = 0, clock = 0, last = 0, raf = 0, visible = true;
+  var state = 'run', ms = 0, clock = 0, last = 0, raf = 0, visible = true, idleUntil = 0, ready = false;
   function loop(now) {
     var dt = last ? Math.min(64, now - last) : 16; last = now;
     if (state !== 'paused') clock += dt;
     if (state === 'run') ms += dt;
     paint(Math.min(ms, DUR), clock);
     if (state === 'run' && ms >= DUR) finish();
-    if (visible && (state === 'run' || (state === 'done' && alive > 0))) raf = requestAnimationFrame(loop);
+    if (visible && (state === 'run' || (state === 'done' && (alive > 0 || clock < idleUntil)))) raf = requestAnimationFrame(loop);
     else { raf = 0; last = 0; }
   }
-  function kick() { if (!reduce && !raf && visible) { last = 0; raf = requestAnimationFrame(loop); } }
+  function kick() { if (!reduce && ready && !raf && visible) { last = 0; raf = requestAnimationFrame(loop); } }
   function finish() {
-    state = 'done'; root.classList.remove('is-running', 'is-pulling'); ctrl.textContent = 'Pull again';
+    state = 'done'; idleUntil = clock + 5000; root.classList.remove('is-running', 'is-pulling'); ctrl.textContent = 'Pull again';
     if (!reduce) { root.classList.remove('is-strike'); void root.offsetWidth; root.classList.add('is-strike'); }
   }
   function restart() {
     if (reduce) { paint(DUR, 0); return; }
-    ms = 0; state = 'run'; nextPuff = 0; root.classList.remove('is-strike', 'is-full'); root.classList.add('is-running');
+    ms = 0; state = 'run'; nextPuff = 0; idleUntil = 0; root.classList.remove('is-strike', 'is-full'); root.classList.add('is-running');
+    if (P.length) preroll(clock, G.start - G.noseOff);
     ctrl.textContent = 'Pause'; kick();
   }
   ctrl.addEventListener('click', function () {
@@ -183,12 +218,19 @@
     ctrl.hidden = reduce;
     if (reduce) { state = 'done'; ms = DUR; root.classList.remove('is-running', 'is-pulling', 'is-strike'); paint(DUR, 0); }
   }
-  var onRm = function (e) { reduce = e.matches; if (!reduce) { POOL = 200; makePool(); applyReduce(); restart(); } else applyReduce(); };
+  var onRm = function (e) { reduce = e.matches; if (!reduce) { POOL = 360; makePool(); applyReduce(); restart(); } else applyReduce(); };
   if (rmq.addEventListener) rmq.addEventListener('change', onRm); else if (rmq.addListener) rmq.addListener(onRm);
 
   measure();
-  if (reduce) applyReduce();
-  else restart();
+  if (reduce) { ready = true; applyReduce(); }
+  else {
+    /* frame 0 quieto (tractor en el borde, humo ya arriba) hasta que el recorte del tractor cargó: nunca arranca "ya avanzado" */
+    restart(); paint(0, clock);
+    var go = function () { if (ready) return; ready = true; last = 0; kick(); };
+    var im = new Image(); im.onload = im.onerror = go; im.src = rig.querySelector('image').getAttribute('href');
+    if (im.complete) go(); else setTimeout(go, 2500);
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { measure(); paint(Math.min(ms, DUR), clock); });
   if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) kick(); }).observe(root);
   var rt; addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { measure(); paint(Math.min(ms, DUR), clock); }, 80); });
 })();

@@ -24,6 +24,7 @@
 .fp__storm,.fp__flash{inset:0}
 /* arriba oscuro (el logo hueso resalta); hacia el horizonte más claro (el humo negro y el rig se recortan) */
 .fp__storm{background:
+  radial-gradient(34% 52% at var(--glow-x,52%) 38%,rgba(178,184,192,.42),rgba(150,158,168,.18) 55%,transparent 80%),  /* v9: claro entre nubes al centro: el humo negro se recorta ahí */
   radial-gradient(70% 45% at 18% 8%,rgba(112,122,138,.32),transparent 70%),
   radial-gradient(55% 40% at 78% 16%,rgba(92,102,118,.38),transparent 70%),
   radial-gradient(80% 50% at 60% 100%,rgba(140,146,152,.30),transparent 70%),
@@ -53,7 +54,7 @@
 .fp__brand .btn-row{margin-top:4px}
 .fp__brand .btn{background:var(--accent);border-color:var(--accent);color:var(--ink);box-shadow:0 4px 18px rgba(0,0,0,.45)}
 .fp__brand .btn:hover{background:#FFD83D;border-color:#FFD83D}
-.fp__brand .btn--ghost{background:rgba(14,15,17,.62);border-color:var(--fp-ink);color:var(--fp-ink);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.fp__brand .btn--ghost{background:rgba(14,15,17,.9);border-color:var(--fp-ink);color:var(--fp-ink);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .fp__brand .btn--ghost:hover{background:var(--fp-ink);color:var(--ink)}
 
 /* pull sim (sencillo, como v5) */
@@ -118,6 +119,13 @@
 @keyframes fpMarquee{to{transform:translateX(-50%)}}
 
 /* ---------- responsive ---------- */
+/* v9, escritorio ancho: texto y botones en una fila bajo el logo. El bloque queda más bajo (la pista sube) y los botones
+   se van hacia el centro: menos aire entre el texto y el pull sim, y el tractor arranca detrás del texto, no de los botones */
+@media (min-width:1180px){
+  .fp__brand{grid-template-columns:auto 1fr;column-gap:clamp(20px,2vw,36px);align-items:center}
+  .fp__h1,.fp__tag{grid-column:1/-1}
+  .fp__brand .btn-row{margin-top:0;flex-wrap:nowrap}
+}
 @media (max-width:860px){
   /* móvil y tablet: logo, panel compacto, pista */
   .fp{--rigw:122vw;--logo:min(60vw,420px);--tuck:calc(var(--righ) * .2)}
