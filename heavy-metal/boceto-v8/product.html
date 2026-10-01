@@ -226,7 +226,7 @@ html,body{overflow-x:clip}
         </div>
         <ul class="pg__thumbs" id="pg-thumbs" aria-label="Image thumbnails"></ul>
         <div class="pg__dots" id="pg-dots" role="group" aria-label="Choose image"></div>
-        <p class="note">Galería: son las fotos del producto en Shopify (Printify sube sus mockups al publicar, una por vista y color; puedes agregar fotos reales y ordenarlas arrastrando). Aquí hay 15 de prueba: frente y espalda por color + "Foto de Printify". Ver con pocas: <a href="product.html?p=crew-cap&amp;imgs=3">3 fotos</a> · <a href="product.html?imgs=1">1 foto</a>.</p>
+        <p class="note">Galería: son las fotos del producto en Shopify (Printify sube sus mockups al publicar, una por vista y color; puedes agregar fotos reales y ordenarlas arrastrando). Aquí hay 15 de prueba: frente y espalda por color + "Foto del producto" (el mockup que sube Printify). Ver con pocas: <a href="product.html?p=crew-cap&amp;imgs=3">3 fotos</a> · <a href="product.html?imgs=1">1 foto</a>.</p>
       </section>
 
       <section class="buy" aria-labelledby="p-name">
@@ -427,8 +427,8 @@ html,body{overflow-x:clip}
   if (p.id === 'crew-pack') $('look').remove();
   else document.querySelectorAll('[data-mock]').forEach(function (el) { var m = CAT.filter(function (x) { return x.id === el.getAttribute('data-mock'); })[0]; if (m) el.innerHTML = window.hmMock(m); });
 
-  /* galería: en Shopify son las fotos del producto (Printify sube un mockup por vista y color).
-     Boceto: frente y espalda de cada color con hmMock y "Foto de Printify" hasta completar 15 (?imgs=N para probar otra cantidad). */
+  /* galería: en Shopify son las fotos del producto (el proveedor de impresión sube un mockup por vista y color).
+     Boceto: frente y espalda de cada color con hmMock y "Foto del producto" hasta completar 15 (?imgs=N para probar otra cantidad). */
   var N = Math.max(1, Math.min(30, parseInt(new URLSearchParams(location.search).get('imgs'), 10) || 15));
   var hasBack = /^(tees|sweats|kids|limited|bundles)$/.test(p.cat);
   var SHOTS = ['Puesto', 'Detalle del estampado', 'En los pits', 'Modelo', 'Espalda puesta', 'Etiqueta', 'Doblada', 'Tela de cerca', 'En las gradas', 'Manga', 'Grupo', 'Flat lay', 'Con el tractor'];
@@ -441,7 +441,7 @@ html,body{overflow-x:clip}
   IMGS = IMGS.slice(0, N);
   function imgHTML(m, i) {
     if (m.mock) return '<span class="ph ph--mock">' + window.hmMock(p, '', m.view, m.color || undefined) + '</span>';
-    return '<span class="ph"><span class="ph__tag"><b>Foto de Printify · ' + (i + 1) + '</b>' + m.label + '</span></span>';
+    return '<span class="ph"><span class="ph__tag"><b>Foto del producto · ' + (i + 1) + '</b>' + m.label + '</span></span>';
   }
   function imgAlt(m) { return p.name + ', ' + m.label.toLowerCase() + (m.mock ? '' : ' (photo coming soon)'); }
 
@@ -548,7 +548,7 @@ html,body{overflow-x:clip}
   $('acc-details').innerHTML = '<ul>' + [
     p.sub,
     hasColors ? 'Colors: ' + p.colors.join(', ') : '',
-    isWear ? 'Fabric: XX% cotton, XX oz (from the print partner)' : 'Material: XX (from the supplier)',
+    isWear ? 'Fabric: XX% cotton, XX oz' : 'Material: XX (from the supplier)',
     isWear ? 'Regular fit. Between sizes? Size up.' : (hasSizes ? '' : 'One size'),
     isWear ? 'Wash cold inside out, hang dry' : '',
     isKids ? 'Youth sizes YS to YXL' : ''
@@ -562,7 +562,7 @@ html,body{overflow-x:clip}
     '<p>Measured flat, in inches. Regular fit. Printed-to-order items can\'t be returned for size, so compare with a shirt you own.</p>' +
     '<div class="tbl-wrap"><table class="tbl"><caption class="vh">Measurements in inches</caption><thead><tr><th scope="col">Size</th><th scope="col">Chest width</th><th scope="col">Body length</th><th scope="col">Sleeve</th></tr></thead><tbody>' +
     rows.map(function (r) { return '<tr><th scope="row">' + r + '</th><td>XX</td><td>XX</td><td>XX</td></tr>'; }).join('') +
-    '</tbody></table></div><p>Chest: armpit to armpit. Length: top of shoulder to hem. Exact measurements come from the print partner.</p>' +
+    '</tbody></table></div><p>Chest: armpit to armpit. Length: top of shoulder to hem.</p>' +
     '<p><a class="link" href="sizes.html">See full size guide</a></p>';
   var sg = $('size-guide');
   function openSG() { if (!sg.open) sg.showModal(); }

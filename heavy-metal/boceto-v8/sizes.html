@@ -134,7 +134,7 @@ html,body{overflow-x:clip}
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
-  /* Medidas en pulgadas (prenda en plano). Tomadas de la tabla de product.html: todas XX hasta copiar las reales de la ficha de Printify.
+  /* Medidas en pulgadas (prenda en plano). Tomadas de la tabla de product.html: todas XX hasta copiar las reales de la ficha del proveedor de impresión.
      Para publicar: cambia null por el número en pulgadas; la vista en cm se calcula sola. */
   var ADULT = ['S', 'M', 'L', 'XL', '2XL', '3XL'], YOUTH = ['YS', 'YM', 'YL', 'YXL'];
   var COLS = ['Chest width', 'Body length', 'Sleeve'];
@@ -159,7 +159,7 @@ html,body{overflow-x:clip}
     '<figcaption>A: chest width · B: body length · C: sleeve</figcaption>';
 
   var FIT = '<p class="fit"><b>Fit</b><span>Unisex fit. Between sizes? Size up for a relaxed fit.</span></p>';
-  var PEND = ' <span class="pend">[pending, confirm with Printify]</span>';
+  var PEND = ' <span class="pend">[pending]</span>';
 
   $('sz-docs').innerHTML = DOCS.map(function (d) {
     var head = '<header><span class="ico" aria-hidden="true">' + (P[d.mock] ? hmMock(P[d.mock]) : '') + '</span><div><h2 class="h2" id="t-' + d.s + '">' + d.name.replace('&', '&amp;') + '</h2><p>' + d.sub + '</p></div></header>';

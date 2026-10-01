@@ -469,7 +469,7 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       p: [['Home', 'index.html'], ['Our Story', 'story.html']] },
     { n: 'Pit Log (bitácora)', t: 'admin', q: 'Lo que pasó en cada pull, exhibición o día de pruebas: texto, distancia, qué se rompió, fotos. Es un blog de Shopify llamado Pit Log. La página muestra 10 entradas con “Load more”, buscador y filtros; las etiquetas arman solas los contadores, los filtros y la franja Wins & milestones.',
       w: [['Contenido', 'Entradas de blog'], ['Blog: Pit Log']],
-      a: 'Crear entrada, elige el blog Pit Log, título, texto, foto y etiquetas: Test, Exhibition, Competition, Win, Full pull, Milestone o Shop. La fecha pone el año del filtro.', e: 'Abre la entrada, cambia y Guardar. Agrega la etiqueta Featured a un Win o Milestone para que salga en la franja Wins & milestones (máximo 6; quítala para sacarlo). Puedes programar la publicación.', d: 'Visibilidad: Oculta. O Eliminar entrada.',
+      a: 'Crear entrada, elige el blog Pit Log, título, texto, foto y etiquetas: Test, Exhibition, Competition, Win, Full pull, Milestone o Shop. La fecha pone el año del filtro. Imagen destacada: el cuadro “Imagen” (a la derecha, al crear o editar la entrada) es la imagen destacada; la foto que subas ahí es la que se ve en la bitácora. Si lo dejas vacío, se usa la foto de su tipo (Test, Exhibition, Competition, Win).', e: 'Abre la entrada, cambia y Guardar. Agrega la etiqueta Featured a un Win o Milestone para que salga en la franja Wins & milestones (máximo 6; quítala para sacarlo). Puedes programar la publicación.', d: 'Visibilidad: Oculta. O Eliminar entrada.',
       p: [['Pit Log', 'log.html'], ['Home', 'index.html'], ['FAQ', 'faq.html']] },
     { n: 'Sponsor tiers (paquetes)', t: 'lista', q: 'Title Partner, Pit Partner y Crew Supporter: nombre, precio, beneficios, cuál va destacado, orden y la casilla Sold out.',
       w: [['Contenido', 'Metaobjetos', 'Sponsor tier']],
@@ -586,7 +586,11 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
     { n: 'Envío gratis y barra del carrito', t: 'admin', q: 'El monto de envío gratis ($XX) y los escalones de la barra del carrito (envío gratis, sticker de regalo).',
       w: [['Configuración', 'Envío y entrega'], ['Personalizar', 'Ajustes del tema', 'Carrito']],
       a: 'Crea la tarifa gratis con mínimo de compra en Envío y entrega.', e: 'Pon el mismo monto en el ajuste del carrito para que la barra cuadre.', d: 'Apaga la barra en Ajustes del tema > Carrito.',
-      p: [['Carrito (todas)', 'shop.html'], ['Shipping Policy', 'policies.html?p=shipping']] }
+      p: [['Carrito (todas)', 'shop.html'], ['Shipping Policy', 'policies.html?p=shipping']] },
+    { n: 'Correo de envío y rastreo', t: 'auto', q: 'Cómo le llega la guía al cliente. Printify no le escribe al cliente: cuando envía, marca el pedido como enviado (preparado) en Shopify con el número de guía, y Shopify manda su propio correo “Shipping confirmation” desde la tienda, con tu nombre y el link de rastreo. En la tienda decimos solo “we email you a tracking link”, sin mencionar a Printify.',
+      w: [['Configuración', 'Notificaciones', 'Notificaciones para clientes', 'Confirmación de envío']],
+      a: 'Ya viene activo en Shopify. Revísalo con un pedido de prueba: compra algo barato con un código de 100%, espera a que Printify lo envíe y confirma que te llega el correo “Shipping confirmation” con el link y que la guía sale en Account > Orders.', e: 'Cambia el texto o el logo del correo en Notificaciones > Confirmación de envío.', d: 'Se activa o desactiva en Configuración > Notificaciones. Si lo apagas, el cliente no recibe la guía por correo (solo la ve en su página de estado del pedido).',
+      p: [['Account', 'account.html'], ['FAQ', 'faq.html#orders'], ['Shipping Policy', 'policies.html?p=shipping']] }
   ];
 
   var cur = 'all';

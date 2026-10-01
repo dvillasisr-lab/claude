@@ -180,13 +180,13 @@ html,body{overflow-x:clip}
         <div class="trk" aria-labelledby="trk-t">
           <h2 class="h3" id="trk-t">Track a package without an account</h2>
           <ol>
-            <li>Your order ships and the tracking number is added to it automatically.</li>
-            <li>You get a shipping email with the carrier and a <b>Track package</b> link.</li>
+            <li>When your order ships, we email you a tracking link.</li>
+            <li>That email has the carrier and a <b>Track package</b> link. You can also see it in your account.</li>
             <li>The <b>View your order</b> button in that email opens your order status page, with live tracking. No password needed.</li>
           </ol>
           <p class="small muted">No email? Check spam, then <a href="contact.html?topic=order">message us</a> or call <a href="tel:+19206504374">(920) 650-4374</a>.</p>
         </div>
-        <p class="note">Rastreo: no envías nada tú. Printify sube el número de guía a Shopify solo al enviar; Shopify manda el correo de envío con el link, y el cliente lo ve en su página de estado del pedido o en Account &gt; Orders, sin crear cuenta.</p>
+        <p class="note">Rastreo: Printify no le escribe al cliente. Cuando envía, marca el pedido como enviado en Shopify con el número de guía, y Shopify manda su propio correo "Shipping confirmation" desde la tienda (se activa o desactiva en Configuración &gt; Notificaciones). Confírmalo con un pedido de prueba. El cliente también ve la guía en su página de estado del pedido o en Account &gt; Orders, sin crear cuenta.</p>
         <p class="note">Cuentas nativas de Shopify (Configuración &gt; Cuentas de clientes, sin app): entran con un código de 6 dígitos o con Shop, sin contraseñas. El switch de The Evil List depende de Shopify Email.</p>
       </div>
     </section>
@@ -305,14 +305,14 @@ html,body{overflow-x:clip}
 
   /* The Evil List */
   $('hk-save').addEventListener('click', function () {
-    $('hk-status').textContent = 'Saved. The Evil List emails ' + ($('hk-email').checked ? 'on' : 'off') + '.';
+    $('hk-status').textContent = 'Saved. Emails from The Evil List are ' + ($('hk-email').checked ? 'on' : 'off') + '.';
   });
 
 
   /* detalle del pedido */
   var ORD = {
-    1002: { date: 'Sep 29, 2026', step: 1, note: 'Printing. Ships by Oct 6. Every item is printed to order. The tracking number shows up here, and in your email, the moment it ships.', lines: [['evil-one-tee', 'Matte Black / L', '$XX'], ['hook-alert-koozie', 'One size', '$XX']], track: '' },
-    1001: { date: 'Sep 15, 2026', step: 2, note: 'Shipped Sep 21. Tracking was added automatically and emailed to you.', lines: [['680-ci-hoodie', 'Matte Black / XL', '$XX'], ['crew-cap', 'Black / One size', '$XX']], track: '9400 0000 0000 0000 0000 00' }
+    1002: { date: 'Sep 29, 2026', step: 1, note: 'Printing. Ships by Oct 6. Every item is printed to order. When it ships, we email you a tracking link and it shows up here.', lines: [['evil-one-tee', 'Matte Black / L', '$XX'], ['hook-alert-koozie', 'One size', '$XX']], track: '' },
+    1001: { date: 'Sep 15, 2026', step: 2, note: 'Shipped Sep 21. We emailed you the tracking link.', lines: [['680-ci-hoodie', 'Matte Black / XL', '$XX'], ['crew-cap', 'Black / One size', '$XX']], track: '9400 0000 0000 0000 0000 00' }
   };
   function prod(id) { return window.HM_CATALOG.filter(function (p) { return p.id === id; })[0]; }
   document.querySelectorAll('[data-mock]').forEach(function (el) { el.innerHTML = window.hmMock(prod(el.getAttribute('data-mock'))); });
