@@ -92,7 +92,9 @@ html,body{overflow-x:clip}
 .trk{background:var(--surface);border:1px solid var(--line);padding:16px;display:grid;gap:8px}
 .trk ol{margin:0;padding-left:20px;display:grid;gap:4px;font-size:var(--t-sm);color:var(--soft)}
 .trk p{margin:0}
-.trk a{color:var(--ink);text-underline-offset:3px}
+.inside .trk li{display:list-item;grid-template-columns:none;padding:0;border:0;font-size:var(--t-sm)}
+.inside .trk li b{font-family:inherit;font-stretch:100%;text-transform:none;letter-spacing:0}
+.trk a{color:var(--ink);text-underline-offset:3px;white-space:nowrap}
 @media (max-width:860px){
   .in{grid-template-columns:minmax(0,1fr);gap:16px}
   .in-nav{display:flex;gap:8px;overflow-x:auto;border:0;scrollbar-width:none;margin-inline:calc(var(--gutter) * -1);padding-inline:var(--gutter)}

@@ -23,7 +23,7 @@
 .fp__day,.fp__dusk,.fp__print,.fp__storm,.fp__flash{inset:0}
 .fp__day{background:linear-gradient(180deg,#BBD6EA 0%,#DCEAF1 48%,#F4F1E8 100%)}
 .fp__dusk{opacity:0;background:linear-gradient(180deg,#E0845A 0%,#EEA466 40%,#F7CB8C 72%,#FAE3B8 100%)}
-.fp__sun{left:52%;top:10%;width:clamp(90px,13vw,240px);aspect-ratio:1;border-radius:50%;
+.fp__sun{left:56%;top:24%;width:clamp(64px,8vw,150px);aspect-ratio:1;border-radius:50%;
   background:radial-gradient(circle at 50% 50%,#FFF6D8 0 38%,#FFD27A 62%,rgba(255,180,90,0) 72%);will-change:transform}
 .fp__print,.fp__storm,.fp__flash,.fp__bolt,.fp__clouds{display:none}
 
@@ -141,19 +141,22 @@
 
 /* ---------- responsive ---------- */
 @media (max-width:860px){
-  .fp{--rigw:96vw;--logo:min(56vw,440px)}
-  .fp__top{grid-template-columns:1fr;gap:16px}
-  .fp__side{justify-items:stretch;max-width:none}
-  .fp__side .note{max-width:none}
-  .fp__tele{min-width:0;grid-template-columns:auto 1fr auto;padding:10px 12px;gap:4px 14px}
+  /* móvil y tablet: logo, telemetría compacta, pista; la nota de boceto va al final */
+  .fp{--rigw:96vw;--logo:min(60vw,440px)}
+  .fp__top,.fp__side{display:contents}
+  .fp__brand,.fp__tele,.fp__side .note{position:relative;z-index:1;margin-inline:var(--gutter)}
+  .fp__brand{order:1;padding-top:20px}
+  .fp__tele{order:2;margin-top:14px;margin-bottom:6px;min-width:0;grid-template-columns:auto 1fr auto;padding:8px 12px;gap:4px 14px}
+  .fp__track{order:3}
+  .fp__side .note{order:4;max-width:none;margin-block:10px 14px}
   .fp__tele-head{display:none}
-  .fp__tach{width:84px}
-  .fp__dist{font-size:36px}
+  .fp__tach{width:76px}
+  .fp__dist{font-size:34px}
   .fp__ctrl{grid-column:auto;align-self:end}
   .fp__flag{height:calc(var(--righ) * 1.15)}
 }
 @media (max-width:600px){
-  .fp{--logo:min(88vw,420px)}
+  .fp{--logo:min(80vw,400px)}
   .fp__tag{font-size:30px}
   .fp__brand .btn-row{width:100%}
   .fp__brand .btn-row .btn{flex:1 1 140px}

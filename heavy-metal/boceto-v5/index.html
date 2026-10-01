@@ -47,13 +47,6 @@ html,body{overflow-x:clip}
 .home-head .link{white-space:nowrap}
 .ext::after{content:" \2197"}
 
-/* 0 · HERO: en pantallas anchas la pista se alinea con la columna de contenido (no con el borde de la ventana) */
-@media (min-width:861px){
-  .fp{--edge:max(var(--gutter), calc((100% - var(--maxw)) / 2 + var(--gutter)))}
-  .fp__rail{left:var(--edge);right:calc(var(--edge) + 40px)}
-  .fp__flag{right:calc(var(--edge) + 40px)}
-}
-
 /* 1 · SHOP: cabe en 100svh menos el header */
 .shop-home{background:var(--bg);padding-block:clamp(32px,4vw,48px)}
 .shop-home .cats{margin-bottom:20px}
@@ -152,49 +145,97 @@ html,body{overflow-x:clip}
 </style>
 <div data-hm-header data-current="home"></div>
 <main id="main">
-<!-- HERO Full Pull: pegar tal cual como primera sección del <main> de index.html.
-     Requiere <link rel="stylesheet" href="hero.css"> y <script src="hero.js"></script> después de hm.js. -->
-<section class="fp" data-fp data-target="300" aria-labelledby="fp-title">
+<!-- HERO Full Pull v5. Requiere hero.css y hero.js (después de hm.js).
+     En Shopify: sección "HM Hero"; ajustes = fondo (sky | print | storm), distancia de full pull, textos y botones;
+     las frases de la cinta amarilla son bloques de texto de la sección. -->
+<section class="fp" data-fp data-bg="sky" data-target="300" aria-labelledby="fp-title">
+  <div class="fp__sky" aria-hidden="true">
+    <i class="fp__day"></i><i class="fp__dusk"></i><i class="fp__sun"></i>
+    <i class="fp__print"></i><i class="fp__storm"></i><i class="fp__clouds"></i>
+    <svg class="fp__bolt" viewBox="0 0 120 420"><path d="M70 0 L38 150 L66 150 L22 300 L52 300 L8 420 L96 250 L64 250 L104 120 L74 120 L98 0 Z" fill="#F7F9FF"/></svg>
+    <i class="fp__flash"></i>
+  </div>
   <div class="wrap fp__top">
     <div class="fp__brand">
-      <h1 id="fp-title" style="margin:0"><img class="fp__logo" src="img/logo-ink.svg" alt="Heavy Metal" width="420" height="61"></h1>
-      <p class="fp__tag">The Evil One</p>
+      <h1 id="fp-title" class="fp__h1"><img class="fp__logo" src="img/logo-stack-ink.svg" alt="Heavy Metal" width="1106" height="612"></h1>
+      <p class="fp__tag">“The Evil One”</p>
       <p class="fp__sub">Pro Stock pulling tractor from Waterloo, Wisconsin. The only Cat V8 in the class. Merch designed by the crew.</p>
       <div class="btn-row"><a class="btn" href="shop.html?cat=new">Shop the drop</a><a class="btn btn--ghost" href="machine.html">Meet the machine</a></div>
     </div>
-    <div class="fp__tele" aria-label="Pull simulation">
-      <div class="fp__tele-head"><span>Pull sim</span><span>Pro Stock · WI</span></div>
-      <svg class="fp__tach" viewBox="0 0 120 100" aria-hidden="true">
-        <path d="M14 86 A52 52 0 1 1 106 86" fill="none" stroke="var(--line)" stroke-width="6" stroke-linecap="round"/>
-        <path d="M112 50 A52 52 0 0 1 106 86" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round"/>
-        <g class="fp__needle" style="transform:rotate(-120deg)"><polygon points="58,64 62,64 60.8,14 59.2,14" fill="var(--ink)"/></g>
-        <circle cx="60" cy="60" r="6" fill="var(--ink)"/>
-        <text x="60" y="94" text-anchor="middle" font-size="11" font-weight="700" fill="var(--mute)" font-family="Archivo, Arial, sans-serif"><tspan data-fp-rpm>900</tspan> RPM</text>
-      </svg>
-      <div class="fp__read">
-        <span class="label muted">Distance</span>
-        <span class="fp__dist"><span data-fp-dist>000</span><small>FT</small></span>
-        <span class="fp__chip" data-fp-chip>Hooked</span>
+    <div class="fp__side">
+      <div class="fp__tele" role="group" aria-label="Pull simulation">
+        <div class="fp__tele-head"><span>Pull sim</span><span>Pro Stock · WI</span></div>
+        <svg class="fp__tach" viewBox="0 0 120 100" aria-hidden="true">
+          <path class="t-arc" d="M14 86 A52 52 0 1 1 106 86" fill="none" stroke-width="6" stroke-linecap="round"/>
+          <path d="M112 50 A52 52 0 0 1 106 86" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round"/>
+          <g class="fp__needle" style="transform:rotate(-120deg)"><polygon class="t-ink" points="58,64 62,64 60.8,14 59.2,14"/></g>
+          <circle class="t-ink" cx="60" cy="60" r="6"/>
+          <text x="60" y="94" text-anchor="middle" font-size="11" font-weight="700" font-family="Archivo, Arial, sans-serif"><tspan data-fp-rpm>900</tspan> RPM</text>
+        </svg>
+        <div class="fp__read">
+          <span class="label">Distance</span>
+          <span class="fp__dist"><span data-fp-dist>000</span><small>FT</small></span>
+          <span class="fp__chip" data-fp-chip>Hooked</span>
+        </div>
+        <button class="fp__ctrl" type="button" data-fp-ctrl>Pause</button>
       </div>
-      <button class="fp__ctrl" type="button" data-fp-ctrl>Pause</button>
+      <div class="note">Fondo del hero (prueba): <span class="fp-bgpick" role="group" aria-label="Hero background"><button type="button" data-bg="sky">A · Día a atardecer</button><button type="button" data-bg="print">B · Amarillo serigrafía</button><button type="button" data-bg="storm">C · Tormenta y rayo</button></span>Recomendado: A. En Shopify es un ajuste de la sección; las frases de la cinta amarilla son bloques de texto.</div>
     </div>
   </div>
   <div class="fp__track" aria-hidden="true">
     <div class="fp__dirt"></div>
-    <div class="fp__rail"><div class="fp__rail-bar"></div><div class="fp__rail-fill"></div>
-      <span class="fp__tick" style="left:0">0 FT</span><span class="fp__tick" style="left:33.33%">100</span><span class="fp__tick" style="left:66.66%">200</span><span class="fp__tick" style="left:100%">300 FT</span></div>
-    <div class="fp__flag"></div>
-    <div class="fp__rig">
-      <div class="fp__sled"></div><div class="fp__chain"></div>
-      <div class="fp__tractor">
-        <div class="fp__smoke"><i></i><i></i><i></i><i></i><i></i></div>
-        <img src="img/hm-tractor-cutout.webp" alt="" width="1120" height="576">
-        <div class="fp__dust"><i></i><i></i><i></i><i></i></div>
-      </div>
-    </div>
+    <div class="fp__rail" data-fp-rail><div class="fp__rail-fill"></div></div>
+    <div class="fp__flag" data-fp-flag></div>
+    <svg class="fp__rig" viewBox="0 0 2240 576" overflow="visible" focusable="false">
+      <defs>
+        <radialGradient id="fpPuff"><stop offset="0" class="fp__puff-c" stop-opacity=".95"/><stop offset=".55" class="fp__puff-c" stop-opacity=".78"/><stop offset="1" class="fp__puff-e" stop-opacity="0"/></radialGradient>
+      </defs>
+      <ellipse cx="1120" cy="550" rx="1080" ry="12" fill="rgba(28,27,25,.2)"/>
+      <!-- SLED: trineo de arrastre. Atrás: cabina y ruedas; arriba: caja de pesas sobre rieles; al frente: pan (patín) -->
+      <g class="fp__sled">
+        <rect x="58" y="258" width="122" height="134" fill="#1E1E1C" stroke="#3A3936" stroke-width="4"/>
+        <rect x="74" y="274" width="90" height="56" fill="#46525C"/>
+        <line x1="96" y1="274" x2="96" y2="330" stroke="#1E1E1C" stroke-width="4"/>
+        <rect x="58" y="350" width="122" height="10" fill="#F5C400"/>
+        <line x1="120" y1="258" x2="120" y2="206" stroke="#3A3936" stroke-width="6"/>
+        <rect x="106" y="190" width="28" height="18" rx="4" fill="#F5C400"/>
+        <rect x="40" y="390" width="996" height="32" fill="#232321" stroke="#3A3936" stroke-width="4"/>
+        <rect x="40" y="406" width="996" height="6" fill="#F5C400"/>
+        <path d="M430 422 L520 468 L620 422 L720 468 L820 422" fill="none" stroke="#2C2C2A" stroke-width="12" stroke-linejoin="round"/>
+        <rect x="186" y="376" width="808" height="14" fill="#34332F"/>
+        <line x1="186" y1="379" x2="994" y2="379" stroke="#A9A59B" stroke-width="3"/>
+        <path d="M84 424 Q 245 370 404 424 Z" fill="#1A1A19"/>
+        <g class="fp__sw" data-c="168 486"><circle cx="168" cy="486" r="60" fill="#1C1C1A"/><circle cx="168" cy="486" r="52" fill="none" stroke="#33322E" stroke-width="10" stroke-dasharray="9 7"/><circle cx="168" cy="486" r="24" fill="#8C8F92"/><rect x="164" y="464" width="8" height="44" fill="#3A3936"/><rect x="146" y="482" width="44" height="8" fill="#3A3936"/></g>
+        <g class="fp__sw" data-c="318 486"><circle cx="318" cy="486" r="60" fill="#1C1C1A"/><circle cx="318" cy="486" r="52" fill="none" stroke="#33322E" stroke-width="10" stroke-dasharray="9 7"/><circle cx="318" cy="486" r="24" fill="#8C8F92"/><rect x="314" y="464" width="8" height="44" fill="#3A3936"/><rect x="296" y="482" width="44" height="8" fill="#3A3936"/></g>
+        <path d="M824 422 H1020 L1048 470 L1038 548 H846 L814 482 Z" fill="#1B1B1A" stroke="#3A3936" stroke-width="4" stroke-linejoin="round"/>
+        <line x1="846" y1="545" x2="1038" y2="545" stroke="#6B6862" stroke-width="6"/>
+        <line x1="860" y1="470" x2="1030" y2="470" stroke="#2C2C2A" stroke-width="4"/>
+        <path class="fp__pile" d="M1030 550 Q1066 512 1112 550 Z" fill="#7A6649"/>
+        <path d="M1010 436 L1062 452" stroke="#2A2A28" stroke-width="18" stroke-linecap="round"/>
+        <circle cx="1068" cy="454" r="11" fill="none" stroke="#9C9A92" stroke-width="5"/>
+        <g class="fp__box">
+          <rect x="198" y="200" width="44" height="16" fill="#2A2A28"/><rect x="356" y="200" width="44" height="16" fill="#2A2A28"/>
+          <rect x="190" y="214" width="218" height="160" fill="#1F1F1D" stroke="#3A3936" stroke-width="4"/>
+          <rect x="190" y="214" width="218" height="16" fill="#F5C400"/>
+          <line x1="190" y1="262" x2="408" y2="262" stroke="#3A3936" stroke-width="4"/><line x1="190" y1="300" x2="408" y2="300" stroke="#3A3936" stroke-width="4"/><line x1="190" y1="338" x2="408" y2="338" stroke="#3A3936" stroke-width="4"/>
+          <rect x="282" y="240" width="34" height="122" fill="#2A2A28"/>
+          <circle cx="214" cy="378" r="9" fill="#9C9A92"/><circle cx="384" cy="378" r="9" fill="#9C9A92"/>
+        </g>
+      </g>
+      <!-- cadena y gancho -->
+      <line x1="1076" y1="455" x2="1166" y2="447" stroke="#9C9A92" stroke-width="10" stroke-dasharray="15 5"/>
+      <line x1="1076" y1="455" x2="1166" y2="447" stroke="#2A2A28" stroke-width="3" stroke-dasharray="15 5"/>
+      <rect x="1158" y="438" width="140" height="18" fill="#141413"/>
+      <path d="M1170 444 q-18 0 -18 14 q0 12 12 12" fill="none" stroke="#9C9A92" stroke-width="7" stroke-linecap="round"/>
+      <!-- tractor real -->
+      <g class="fp__wheelie"><g class="fp__shake"><image href="img/hm-tractor-cutout.webp" x="1120" y="0" width="1120" height="576"/></g></g>
+      <g class="fp__fly fp__fly--tire" fill="#7A6649"><circle cx="1150" cy="528" r="9"/><circle cx="1158" cy="534" r="12"/><circle cx="1146" cy="522" r="7"/><circle cx="1160" cy="530" r="10"/><circle cx="1152" cy="536" r="8"/></g>
+      <g class="fp__fly fp__fly--pan" fill="#8A7556"><circle cx="1046" cy="540" r="7"/><circle cx="1050" cy="536" r="9"/><circle cx="1044" cy="542" r="6"/><circle cx="1052" cy="538" r="8"/></g>
+      <g class="fp__smoke"></g>
+    </svg>
   </div>
 </section>
-<div class="fp-marquee" aria-hidden="true"><div class="fp-marquee__track"><span>Heavy Metal · Pro Stock · Wisconsin · Full pull or nothing · Heavy Metal · Pro Stock · Wisconsin · Full pull or nothing ·</span><span>Heavy Metal · Pro Stock · Wisconsin · Full pull or nothing · Heavy Metal · Pro Stock · Wisconsin · Full pull or nothing ·</span></div></div>
+<div class="fp-marquee" aria-hidden="true" data-fp-marquee><div class="fp-marquee__track"><span>Full pull or nothing<i></i>F#ckin’ evil<i></i>Pro Stock · Waterloo, WI<i></i>Cat V8 · 680 ci<i></i>Horsepower: Unknown<i></i>Get hooked<i></i></span><span>Full pull or nothing<i></i>F#ckin’ evil<i></i>Pro Stock · Waterloo, WI<i></i>Cat V8 · 680 ci<i></i>Horsepower: Unknown<i></i>Get hooked<i></i></span></div></div>
 
   <!-- 1 · SHOP: categorías + una sola fila de producto -->
   <section class="shop-home" aria-labelledby="drop-title">

@@ -30,7 +30,7 @@
     { id: 'full-pull-ls', name: 'Full Pull or Nothing Long Sleeve', sub: 'Back print', cat: 'tees', colors: ['Matte Black', 'Bone'], sizes: TEE },
     { id: 'cat-v8-spec-tee', name: 'Cat V8 Spec Tee', sub: 'Spec sheet print', cat: 'tees', colors: ['Smoke Gray'], sizes: TEE },
     { id: '680-ci-hoodie', name: '680 CI Hoodie', sub: 'Pullover hoodie', cat: 'sweats', colors: ['Matte Black', 'Smoke Gray'], sizes: TEE, tag: 'best' },
-    { id: 'evil-one-crewneck', name: 'The Evil One Crewneck', sub: 'Crewneck sweatshirt', cat: 'sweats', colors: ['Bone'], sizes: TEE, tag: 'new' },
+    { id: 'evil-one-crewneck', name: '“The Evil One” Crewneck', sub: 'Crewneck sweatshirt', cat: 'sweats', colors: ['Bone'], sizes: TEE, tag: 'new' },
     { id: 'crew-cap', name: 'Crew Cap', sub: 'Structured cap', cat: 'hats', colors: ['Black'], sizes: [], tag: 'best' },
     { id: 'evil-one-beanie', name: 'Evil One Beanie', sub: 'Cuffed knit', cat: 'hats', colors: ['Black', 'Safety Yellow'], sizes: [], tag: 'new' },
     { id: 'little-evil-one-tee', name: 'Little Evil One Kids Tee', sub: 'Youth sizes', cat: 'kids', colors: ['Matte Black'], sizes: ['YS', 'YM', 'YL', 'YXL'] },
