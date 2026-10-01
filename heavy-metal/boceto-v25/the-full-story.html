@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Hallmark · v25: long-read con el texto largo de la dueña; hero a sangre con foto y composición a todo el ancho; columna de lectura ~64ch -->
+<title>The Full Story · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="The full story of Heavy Metal Pro Stock: “The Evil One”, in the team's own words: one idea in Tomah, Wisconsin in 2014, twelve years of late nights in a family shop in Waterloo, the night the engine fired and lightning struck, and a first pull in August 2026.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Twelve years in the making: the full story of Heavy Metal Pro Stock: “The Evil One”",
+  "about": { "@type": "SportsTeam", "name": "Heavy Metal Pro Stock: “The Evil One”", "sport": "Tractor pulling", "foundingDate": "2014", "foundingLocation": "Tomah, WI" },
+  "image": "img/hm-hero.webp"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* v25 · Long-read: hero a sangre con foto (titular a la izquierda, entrada a la derecha), columna de lectura de ~64ch, 3 fotos del ancho del texto. */
+html,body{overflow-x:clip}
+.fs{--read:17px;--col:64ch;background:var(--surface)}
+
+/* barra de lectura */
+.fs-prog{position:fixed;left:0;right:0;top:0;height:calc(4px + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px);z-index:70;pointer-events:none}
+.fs-prog span{display:block;height:4px;background:var(--accent);transform-origin:0 50%;transform:scaleX(0)}
+
+/* hero a sangre: foto completa + degradado; titular izquierda, entrada derecha alineada abajo */
+.fs-hero{position:relative;display:flex;align-items:flex-end;min-height:clamp(440px,64svh,660px);background:var(--night);color:var(--night-ink);overflow:hidden}
+.fs-hero__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 66%}
+.fs-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,18,17,.30) 0%,rgba(18,18,17,.10) 30%,rgba(18,18,17,.70) 66%,rgba(18,18,17,.94) 100%),linear-gradient(90deg,rgba(18,18,17,.45) 0%,rgba(18,18,17,0) 45%,rgba(18,18,17,.35) 100%)}
+.fs-hero .wrap{position:relative;z-index:1;width:100%;padding-block:clamp(56px,7vw,96px) clamp(28px,3.4vw,48px);display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px clamp(32px,5vw,88px);align-items:end}
+.fs-kicker{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin:0 0 14px;font-size:var(--t-xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#E6E3DA}
+.fs-kicker .badge{font-size:11px}
+.fs-hero h1{font-family:var(--f-head);font-stretch:68%;font-weight:800;text-transform:uppercase;font-size:clamp(52px,7.4vw,128px);line-height:.86;letter-spacing:-.005em;margin:0;color:var(--night-ink);text-wrap:balance}
+.fs-hero h1 em{font-style:normal;color:var(--accent)}
+.fs-hero__side{padding-bottom:.4em}
+.fs-dek{font-size:clamp(17px,.4vw + 14px,20px);line-height:1.5;color:#E6E3DA;max-width:42ch;margin:0}
+.fs-meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin:18px 0 0;padding:12px 0 0;border-top:1px solid rgba(242,240,233,.28);font-size:var(--t-sm);color:#CFCCC3;list-style:none;max-width:42ch}
+.nw{white-space:nowrap}
+.fs-meta b{color:var(--night-ink);font-weight:700}
+.fs-meta a{color:var(--night-ink);text-underline-offset:4px}
+
+/* columna de lectura */
+.fs-read{padding-block:clamp(36px,4vw,60px) clamp(56px,7vw,104px);padding-inline:var(--gutter)}
+#story-body,.fs-end{max-width:var(--col);margin-inline:auto;font-size:var(--read)}
+#story-body p{font-size:var(--read);line-height:1.65;color:var(--text);margin:0 0 1.05em}
+#story-body h2{font-family:var(--f-head);font-stretch:72%;font-weight:800;text-transform:uppercase;font-size:clamp(24px,1vw + 16px,28px);line-height:1.05;letter-spacing:.005em;color:var(--ink);margin:2.1em 0 .55em;text-wrap:balance}
+#story-body > h2:first-child{margin-top:0}
+#story-body strong{color:var(--ink);font-weight:700}
+#story-body figure{margin:2.2em 0}
+#story-body figure img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;background:var(--tile)}
+#story-body figcaption{margin:8px 0 0;font-size:var(--t-xs);line-height:1.45;color:var(--mute)}
+#story-body blockquote{margin:1.5em 0;padding:2px 0 2px 18px;border-left:3px solid var(--accent)}
+#story-body blockquote p{font-size:calc(var(--read) * 1.2);line-height:1.4;font-weight:700;color:var(--ink);margin:0}
+#story-body blockquote footer{margin-top:6px;font-size:var(--t-sm);color:var(--mute)}
+#story-body a{color:var(--ink);font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:4px}
+#story-body a:hover{text-decoration-color:var(--ink)}
+
+/* cierre */
+.fs-end .note{font-size:var(--t-xs)}
+.fs-end{margin-top:clamp(40px,5vw,64px);padding-top:clamp(24px,3vw,36px);border-top:2px solid var(--ink)}
+.fs-end__crew{margin:0;font-family:var(--f-head);font-stretch:74%;font-weight:800;text-transform:uppercase;font-size:clamp(24px,1.4vw + 16px,32px);line-height:1.1}
+.fs-end a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:6px}
+.fs-end a:hover{text-decoration-color:var(--ink)}
+.fs-ctas{display:flex;flex-wrap:wrap;gap:10px 28px;margin:18px 0 0;font-size:var(--t-md);font-weight:700}
+.fs-ctas a{text-decoration-thickness:2px;text-underline-offset:5px}
+
+@media (max-width:860px){
+  .fs-hero{min-height:min(86svh,720px)}
+  .fs-hero__bg{object-position:50% 60%}
+  .fs-hero .wrap{grid-template-columns:1fr;padding-top:120px}
+  .fs-hero h1{font-size:clamp(48px,14vw,84px)}
+  .fs-dek,.fs-meta{max-width:none}
+}
+@media (max-width:600px){
+  .fs{--read:16px}
+}
+</style>
+</head>
+<body>
+<div class="fs-prog" aria-hidden="true"><span id="fs-bar"></span></div>
+<div data-hm-header data-current="story"></div>
+<main id="main" class="fs">
+
+<header class="fs-hero" aria-labelledby="fs-h1">
+  <img class="fs-hero__bg" src="img/hm-hero.webp" alt="“The Evil One” pulling on the track, a column of black smoke rolling up into a blue sky" width="776" height="1400" fetchpriority="high">
+  <div class="wrap">
+    <div>
+      <p class="fs-kicker"><span class="badge">The full story</span><span>Tomah to Waterloo, WI</span></p>
+      <h1 id="fs-h1">Twelve years <em>in the making</em></h1>
+    </div>
+    <div class="fs-hero__side">
+      <p class="fs-dek">One idea in 2014. A family shop in Waterloo, twelve years of late nights, and the night the engine fired and the lights went out. This is how <span class="nw">Heavy Metal Pro Stock:</span> “The Evil One” came to be, in our own words.</p>
+      <ul class="fs-meta">
+        <li><b id="fs-rt">5 min read</b></li>
+        <li><a href="story.html">Back to Our Story</a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<div class="fs-read">
+<!-- AQUÍ VA EL TEXTO LARGO. Todo lo que está dentro de <article id="story-body"> es la historia: solo <p>, <h2>, <figure> y una <blockquote>.
+     El tiempo de lectura y la barra se calculan solos.
+     En Shopify: una página (Tienda online > Páginas) o un artículo de blog, pegado en el editor de texto enriquecido, con las fotos insertadas entre secciones. -->
+<article id="story-body">
+  <h2>The Idea</h2>
+  <p>It started in 2014, in Tomah, Wisconsin, with one idea.</p>
+  <p>Chris had spent more than 20 years in tractor pulling, and his whole life loving heavy metal. The loud, heavy, unapologetic kind of music you feel in your chest before you hear it. So when he decided to build his own pulling tractor, the name was never up for debate: Heavy Metal Pro Stock. A machine that would sound the way that music feels, and hit the track just as hard.</p>
+  <p>That idea became a Pro Stock tractor. And that tractor became “The Evil One”.</p>
+
+  <h2>Twelve Years in the Making</h2>
+  <p>“The Evil One” wasn't built overnight. The idea was born in 2014. The first bolt went in at the family shop in Waterloo, Wisconsin, in February 2020. And it took until 2026 to hear it run.</p>
+  <p>Twelve years of planning, building and rebuilding. Twelve years of parts, late nights in the shop and a vision that never went away. When almost everything on a tractor is built by hand, nothing about it is quick. And nothing about it is easy to give up on, either.</p>
+
+  <figure>
+    <img src="img/hm-engine.webp" alt="The Caterpillar 3208 V8 with its turbo and chrome piping, in the family shop" width="787" height="1400" loading="lazy" style="object-position:50% 42%">
+    <figcaption>The Caterpillar 3208 V8 in the family shop in Waterloo, WI.</figcaption>
+  </figure>
+
+  <h2>The Night the Lights Went Out</h2>
+  <p>In 2026, the moment finally came. Chris was in the shop at home, ready to hear the engine come to life for the very first time.</p>
+  <p>He turned it over. And at that exact moment, lightning struck and the power went out.</p>
+  <p>Some would call it a coincidence. We call it a sign. From that night on, there was no doubt about what we had built.</p>
+  <blockquote>
+    <p>“This thing is f#ck!ng evil.”</p>
+    <footer>Chris, owner and driver</footer>
+  </blockquote>
+
+  <h2>A Rough Start</h2>
+  <p>The first pull, in August 2026, was supposed to be the big moment. It didn't go the way we wanted.</p>
+  <p>A small, unexpected issue came up, and we didn't finish the run. After everything that went into this tractor, it was a hard day. We won't sugarcoat it.</p>
+  <p>But that day also became one of our proudest. Getting a tractor we built with our own hands onto a real track was already a win. The pull didn't finish that day. The story was just getting started.</p>
+
+  <figure>
+    <img src="img/hm-rear.webp" alt="“The Evil One” from the rear three quarters on the track, grandstands behind it" width="1050" height="1400" loading="lazy" style="object-position:50% 60%">
+    <figcaption>On a real track for the first time, August 2026.</figcaption>
+  </figure>
+
+  <h2>Built by Family</h2>
+  <p>“The Evil One” calls Waterloo, Wisconsin home.</p>
+  <p>Behind the tractor is a family that has believed in it since the very first day. Every hour in the shop, every road trip to a pull, every part fixed and fixed again happened because the whole family decided to make this thing live.</p>
+  <p>This isn't a company project, and it isn't a showpiece. It's a family's tractor, built in a home shop and taken to the track because we love this sport.</p>
+
+  <figure>
+    <img src="img/hm-crew.webp" alt="Chris in his fire suit with the crew beside “The Evil One” in the pits" width="1050" height="1400" loading="lazy" style="object-position:50% 64%">
+    <figcaption>Chris and the crew in the pits, next to “The Evil One”.</figcaption>
+  </figure>
+
+  <h2>The Driver</h2>
+  <p>Chris is the owner, the builder behind the idea and the one in the seat.</p>
+  <p>He has been pulling for more than 20 years. Two decades on the track, and every one of them poured into this tractor: he dreamed it up, built it and now drives it.</p>
+  <p>He's the heavy metal fan who gave it its name, the one who fired it up the night the lightning hit, and the one behind the wheel at every pull.</p>
+
+  <h2>What Makes It Different</h2>
+  <p>On a Pro Stock track you'll see plenty of powerful tractors. What sets “The Evil One” apart is under the hood.</p>
+  <p>It runs a Caterpillar 3208 V8, reverse flow: a setup you won't find on any other tractor on the track. It gives “The Evil One” its own personality and its own sound.</p>
+  <p>From the factory, the 3208 measures 636 cubic inches. Ours doesn't. We built it out to 680.</p>
+  <p>And the engine is only the beginning. Ask us what's custom-built on this tractor and the answer is simple: everything.</p>
+
+  <h2>Proudest Moments</h2>
+  <p><strong>The first pull.</strong> It didn't end the way we wanted, but seeing the tractor we built at home on a real track is something we'll never forget.</p>
+  <p><strong>A great dyno session.</strong> The day the numbers confirmed what we already felt: all the work was paying off.</p>
+  <p><strong>Best results:</strong> still being written. “The Evil One” is just getting started.</p>
+
+  <h2>The Season</h2>
+  <p>“The Evil One” is built to compete. Every time it hits the track, it's there to pull.</p>
+  <p>We expect around 20 competitions a season on the NTPA and PPL Badger State circuits. That's where you'll find us. Follow us on Facebook and Instagram to know where we'll be next.</p>
+
+  <h2>Sponsor “The Evil One”</h2>
+  <p>Every pull draws thousands of fans. Across 20+ competitions a season, that's 100,000+ people (est.) watching “The Evil One”, and the names on it.</p>
+  <p>We're looking for our first sponsors. The brands that join now won't be one more logo: they'll be part of the story from the very beginning.</p>
+  <p>Your brand can ride on the tractor, the trailer and the team shirts, and show up on our website, our social media, our merch and in announcer mentions at every pull.</p>
+  <p>If your business wants to be in front of pulling fans across Wisconsin and the NTPA circuit, backed by a driver with 20+ years on the track, we want to talk to you. <a href="sponsors.html"><span aria-hidden="true">→</span> Sponsor “The Evil One”</a></p>
+</article>
+
+<footer class="fs-end">
+  <p class="fs-end__crew"><a href="story.html#crew">Meet the people behind the pull <span aria-hidden="true">→</span></a></p>
+  <nav class="fs-ctas" aria-label="What's next">
+    <a href="schedule.html">See the schedule →</a>
+    <a href="shop.html">Shop the merch →</a>
+    <a href="story.html">Back to Our Story</a>
+  </nav>
+  <p class="note">Nota de boceto: este es el texto largo de la dueña (versión de octubre de 2026), ya corregido y usado tal cual: subtítulos (h2) por tema, 3 fotos del ancho del texto y una sola cita. En Shopify esta es una página (Tienda online &gt; Páginas) o un artículo de blog, editada en el editor de texto enriquecido. El tiempo de lectura se calcula solo.</p>
+  <p class="note">Correcciones: la marca siempre como Heavy Metal Pro Stock: “The Evil One”, primer tornillo en febrero de 2020 en Waterloo, primer pull en agosto de 2026 y la cita como "f#ck!ng". "No exhibitions" se cambió por "built to compete" porque ya hicieron 3 o 4 exhibiciones (por confirmar el número). Quité TikTok porque todavía no existe la cuenta. Los 100,000+ fans por temporada son una estimación tomada del dato de Sponsor.</p>
+</footer>
+</div>
+
+</main>
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var art = document.getElementById('story-body');
+
+  /* tiempo de lectura: palabras del artículo a 200 por minuto */
+  var words = (art.innerText || art.textContent).split(/\s+/).filter(Boolean).length;
+  document.getElementById('fs-rt').textContent = Math.max(1, Math.round(words / 200)) + ' min read';
+
+  /* barra de lectura: avance dentro del artículo */
+  var bar = document.getElementById('fs-bar'), tick = false;
+  function prog() {
+    tick = false;
+    var r = art.getBoundingClientRect(), total = r.height - innerHeight * .6;
+    var p = Math.min(1, Math.max(0, -r.top / (total > 0 ? total : 1)));
+    bar.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+  }
+  addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(prog); } }, { passive: true });
+  addEventListener('resize', prog);
+  prog();
+})();
+</script>
+</body>
+</html>
