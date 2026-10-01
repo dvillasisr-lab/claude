@@ -82,6 +82,26 @@ html,body{overflow-x:clip}
 .st-ch .link{white-space:nowrap;margin-left:2px}
 .st-ch:target .st-photo,.st-ch.is-hit .st-photo{outline:3px solid var(--accent);outline-offset:3px}
 
+/* 3b · entrada a la historia completa: banda grande con foto, no un link chico */
+.st-read{padding-block:0 clamp(32px,4vw,52px)}
+.st-read__card{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);background:var(--ink);color:var(--night-ink);text-decoration:none;overflow:hidden;min-height:clamp(300px,34vw,440px)}
+.st-read__card .st-photo{min-height:240px;background:#1E1E1C}
+.st-read__card .st-photo img{transition:transform .6s ease}
+.st-read__txt{display:grid;align-content:center;gap:14px;padding:clamp(24px,4vw,56px)}
+.st-read__txt p{margin:0}
+.st-read__k{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:var(--t-xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#A8A59A}
+.st-read__h{font-family:var(--f-head);font-stretch:66%;font-weight:800;text-transform:uppercase;font-size:clamp(40px,5.6vw,84px);line-height:.9;color:var(--night-ink);text-wrap:balance}
+.st-read__h em{font-style:normal;color:var(--accent)}
+.st-read__d{font-size:clamp(16px,1.2vw,19px);line-height:1.5;color:#CFCCC3;max-width:46ch}
+.st-read__go{display:inline-flex;align-items:center;gap:12px;justify-self:start;font-family:var(--f-head);font-stretch:72%;font-weight:800;text-transform:uppercase;font-size:clamp(22px,2vw,30px);line-height:1.1;color:var(--night-ink);text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:7px}
+.st-read__go span{font-family:var(--f-sans);font-stretch:100%;font-size:.8em;color:var(--accent)}
+.st-read__card:hover .st-read__go{text-decoration-color:var(--night-ink)}
+.st-read__card:hover .st-photo img{transform:scale(1.03)}
+.st-read__card:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.st-read__card .st-photo img{transition:none}.st-read__card:hover .st-photo img{transform:none}}
+@media (max-width:760px){.st-read__card{grid-template-columns:1fr}.st-read__card .st-photo{aspect-ratio:16/10;min-height:0}}
+.st-hero__more{font-weight:700;color:var(--ink);text-underline-offset:4px;text-decoration-thickness:2px;text-decoration-color:var(--accent)}
+
 /* 4 · EL RAYO: la única banda oscura, clímax de la página */
 .st-bolt{position:relative;overflow:hidden;scroll-margin-top:var(--header)}
 .st-bolt::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 80% at 18% 30%,rgba(245,196,0,.10),transparent 70%);pointer-events:none}
@@ -297,7 +317,7 @@ html,body{overflow-x:clip}
     <div class="st-hero__txt">
       <p class="label muted">Our Story · Tomah to Waterloo, WI</p>
       <h1 class="h-hero" id="st-h1">Built in Wisconsin. Built to pull.</h1>
-      <p class="lede">It started in 2014 with one idea. That idea became a Pro Stock tractor, built by a family in its own shop. And that tractor was nicknamed “The Evil One”.</p>
+      <p class="lede">It started in 2014 with one idea. That idea became a Pro Stock tractor, built by a family in its own shop. And that tractor was nicknamed “The Evil One”. <a class="st-hero__more" href="the-full-story.html">Read the full story</a></p>
       <ul class="st-facts">
         <li class="st-facts__big"><b>20+ years</b>Chris F. in tractor pulling</li>
         <li><b>12 years</b>idea to engine fire</li>
@@ -356,6 +376,21 @@ html,body{overflow-x:clip}
         <p>A Cat 3208 V8 in reverse flow, a setup you won't find on any other tractor on the track. 636 cubic inches stock, built out to 680. Nothing about it was quick. <a class="link" href="machine.html">Full spec sheet</a></p>
       </article>
     </div>
+  </div>
+</section>
+
+<!-- 3b · entrada a la historia completa -->
+<section class="st-read" aria-labelledby="read-h">
+  <div class="wrap">
+    <a class="st-read__card" href="the-full-story.html">
+      <figure class="st-photo"><img class="photo" src="img/hm-driver-crew.webp" alt="" width="1050" height="1400" loading="lazy" style="object-position:50% 30%"></figure>
+      <div class="st-read__txt">
+        <p class="st-read__k"><span class="badge">Long read</span><span>In our own words · 7 chapters</span></p>
+        <h2 class="st-read__h" id="read-h">Twelve years <em>in the making</em></h2>
+        <p class="st-read__d">The sketches, the nights and weekends, the family shop, and the night the engine fired and lightning struck. The whole story, the way we tell it.</p>
+        <p class="st-read__go">Read the full story <span aria-hidden="true">· 4 min read →</span></p>
+      </div>
+    </a>
   </div>
 </section>
 
