@@ -11,38 +11,35 @@
 <style>
 /* Shop / colección. Encabezado de 100px (SKIMS swim), fotitos de categoría (Kylie), toolbar de palabras que abre UN drawer, grid 4/2. */
 html,body{overflow-x:clip}
-.plp-head{padding-block:16px 12px}
-.plp-crumbs ol{list-style:none;margin:0 0 6px;padding:0;display:flex;flex-wrap:wrap;gap:4px;font-size:var(--t-xs);color:var(--mute)}
-.plp-crumbs li+li::before{content:"/";margin-right:4px}
-.plp-crumbs a{text-decoration:none;color:var(--soft)}
-.plp-crumbs a:hover{text-decoration:underline;text-underline-offset:3px}
-.plp-crumbs [aria-current]{color:var(--ink);font-weight:600}
-.plp-head__row{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:4px 24px}
-.plp-head .h1{font-size:clamp(24px,2.4vw,30px);line-height:36px}
-.plp-desc{margin:2px 0 0;font-size:var(--t-sm);color:var(--soft);max-width:70ch}
-.plp-count{margin:0;font-size:var(--t-xs);color:var(--mute);white-space:nowrap}
-.plp-cats{padding-bottom:16px}
+.plp-head{padding-block:clamp(16px,2vw,28px) 0}
+.plp-head__row{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 20px;margin-bottom:16px}
+.plp-head .h1{margin:0;font-size:clamp(24px,2.4vw,30px);line-height:1.15}
+.plp-desc{margin:0;font-size:var(--t-sm);color:var(--mute);max-width:70ch}
+.plp-cats{padding-bottom:12px}
 .plp-cats .cats{padding:4px;margin-inline:-4px}
+/* las fotitos ya dicen "New drop" y "Special edition": sin etiquetas extra encima */
+.plp-cats .thumb__new{display:none}
 
-/* toolbar SKIMS: líneas arriba y abajo, palabras en mayúsculas 12px */
-.plp-bar{border-block:1px solid var(--line);background:var(--bg)}
+/* toolbar dentro del mismo bloque: una sola línea arriba, palabras en mayúsculas 12px, conteo a la derecha */
+.plp-bar{border-top:1px solid var(--line)}
 .plp-bar__in{display:flex;align-items:center;gap:4px;min-height:52px;overflow-x:auto;scrollbar-width:none}
 .plp-bar__in::-webkit-scrollbar{display:none}
 .plp-tool{flex:none;min-height:44px;padding:0 12px;background:none;border:0;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .plp-tool:first-child{padding-left:0}
 .plp-tool:hover span:first-child{text-decoration:underline;text-underline-offset:4px}
 .plp-tool__n{font-weight:600;color:var(--mute)}
-.plp-bar__sort{margin-left:auto;flex:none;font-size:var(--t-xs);color:var(--mute);white-space:nowrap;padding-left:16px}
-@media (max-width:760px){.plp-bar__sort{display:none}}
+.plp-bar__meta{margin:0 0 0 auto;flex:none;font-size:var(--t-xs);color:var(--mute);white-space:nowrap;padding-left:16px}
+.plp-bar__sort::before{content:"\00B7";margin:0 8px}
+@media (max-width:760px){.plp-bar__sort{display:none}.plp-bar__in{gap:0}.plp-tool{padding:0 7px;letter-spacing:.04em}.plp-bar__meta{padding-left:8px}}
 
 /* chips de filtros activos */
-.plp-chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-block:12px 0}
+.plp-chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-block:4px 0}
 .plp-chip{display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:0 10px 0 12px;border:1px solid var(--line);background:var(--surface);font-size:var(--t-xs);font-weight:600;color:var(--ink);cursor:pointer;border-radius:0}
 .plp-chip:hover{border-color:var(--ink)}
 .plp-chip svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none}
 .plp-chips__clear{background:none;border:0;font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:32px;padding:0 4px;color:var(--ink)}
 
-.plp-results{padding-block:20px var(--sect)}
+.plp-results{padding-block:12px var(--sect)}
 .plp-empty{display:grid;justify-items:start;gap:12px;padding-block:40px;max-width:52ch}
 .plp-empty p{margin:0;color:var(--soft)}
 .plp-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 24px;margin-top:32px;padding-top:16px;border-top:1px solid var(--line)}
@@ -102,28 +99,24 @@ html,body{overflow-x:clip}
 <body>
 <div data-hm-header data-current="shop"></div>
 <main id="main">
+  <!-- Encabezado en un solo bloque: título + frase corta, fotitos y toolbar (Sort/Filter + conteo) -->
   <section class="wrap plp-head" aria-labelledby="plp-title">
-    <nav class="plp-crumbs" aria-label="Breadcrumb"><ol id="plp-crumbs"><li><a href="index.html">Home</a></li><li aria-current="page">Shop all</li></ol></nav>
+    <nav class="plp-crumbs vh" aria-label="Breadcrumb"><ol id="plp-crumbs"><li><a href="index.html">Home</a></li><li aria-current="page">Shop all</li></ol></nav>
     <div class="plp-head__row">
-      <div style="min-width:0;max-width:100%">
-        <h1 class="h1" id="plp-title">Shop all</h1>
-        <p class="plp-desc" id="plp-desc">Every tee, hoodie, hat and sticker from the crew behind “The Evil One”. Printed to order.</p>
+      <h1 class="h1" id="plp-title">Shop all</h1>
+      <p class="plp-desc" id="plp-desc">Every tee, hoodie, hat and sticker from the crew behind “The Evil One”. Printed to order.</p>
+    </div>
+    <div class="plp-cats" id="plp-cats"></div>
+    <div class="plp-bar">
+      <div class="plp-bar__in" id="plp-bar">
+        <button class="plp-tool" type="button" data-plp-open="sort" aria-haspopup="dialog" aria-controls="plp-drawer"><span>Sort</span></button>
+        <button class="plp-tool" type="button" data-plp-open="size" aria-haspopup="dialog" aria-controls="plp-drawer"><span>Size</span><span class="plp-tool__n" id="plp-n-size"></span></button>
+        <button class="plp-tool" type="button" data-plp-open="color" aria-haspopup="dialog" aria-controls="plp-drawer"><span>Color</span><span class="plp-tool__n" id="plp-n-color"></span></button>
+        <button class="plp-tool" type="button" data-plp-open="category" aria-haspopup="dialog" aria-controls="plp-drawer"><span>Category</span></button>
+        <p class="plp-bar__meta"><span class="num" id="plp-count" role="status">14 products</span><span class="plp-bar__sort" id="plp-bar-sort">Sorted by Featured</span></p>
       </div>
-      <p class="plp-count num" id="plp-count" role="status">14 products</p>
     </div>
   </section>
-
-  <div class="wrap plp-cats" id="plp-cats"></div>
-
-  <div class="plp-bar">
-    <div class="wrap plp-bar__in" id="plp-bar">
-      <button class="plp-tool" type="button" data-plp-open="sort" aria-haspopup="dialog" aria-controls="plp-drawer"><span>Sort</span></button>
-      <button class="plp-tool" type="button" data-plp-open="size" aria-haspopup="dialog" aria-controls="plp-drawer"><span>Size</span><span class="plp-tool__n" id="plp-n-size"></span></button>
-      <button class="plp-tool" type="button" data-plp-open="color" aria-haspopup="dialog" aria-controls="plp-drawer"><span>Color</span><span class="plp-tool__n" id="plp-n-color"></span></button>
-      <button class="plp-tool" type="button" data-plp-open="category" aria-haspopup="dialog" aria-controls="plp-drawer"><span>Category</span></button>
-      <p class="plp-bar__sort" id="plp-bar-sort">Sorted by Featured</p>
-    </div>
-  </div>
 
   <div class="wrap">
     <div class="plp-chips" id="plp-chips" aria-label="Active filters" role="group" hidden></div>

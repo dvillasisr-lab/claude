@@ -12,22 +12,24 @@
 /* Help Center: banner corto con buscador, lista lateral de categorías (igual que policies.html) y acordeones */
 html,body{overflow-x:clip}
 .hc-banner{background:var(--surface);border-bottom:1px solid var(--line)}
-.hc-banner .wrap{padding-block:28px 24px;display:grid;gap:8px}
+.hc-banner .wrap{padding-block:clamp(24px,3vw,40px) 12px;display:grid;gap:6px}
+.hc-banner .h1{margin:0}
 .crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px;font-size:var(--t-xs);color:var(--mute)}
 .crumbs li+li::before{content:"/";margin-right:4px}
 .crumbs a{color:var(--soft);text-underline-offset:3px}
 .crumbs [aria-current]{color:var(--ink);font-weight:600}
-.hc-banner .lede{font-size:var(--t-sm)}
+.hc-banner .lede{margin:0;font-size:var(--t-sm);color:var(--mute)}
 .hc-banner .lede a,.still p a{color:var(--ink);text-underline-offset:3px;overflow-wrap:anywhere}
-.hc-search{position:relative;max-width:560px;margin-top:8px}
+.hc-search{position:relative;max-width:560px;margin-top:10px}
 .hc-search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;fill:none;stroke:var(--mute);stroke-width:2;pointer-events:none}
 .hc-search .input{padding-left:40px;padding-right:44px;min-height:48px;font-size:var(--t-md)}
 .hc-search .input::-webkit-search-cancel-button{display:none}
 .hc-clear{position:absolute;right:2px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;background:none;cursor:pointer;display:grid;place-items:center}
 .hc-clear svg{position:static;transform:none;stroke:var(--ink)}
-.hc-lu{margin:0;font-size:var(--t-xs);color:var(--mute)}
+.hc-lu{margin:0 0 12px;font-size:var(--t-xs);color:var(--mute)}
 .hc-lu time{color:var(--ink);font-weight:600}
 .hc-count{margin:0;font-size:var(--t-xs);color:var(--mute);min-height:1.5em}
+.hc-count:empty{min-height:12px}
 
 .hc{display:grid;grid-template-columns:240px minmax(0,880px);gap:clamp(32px,6vw,120px);padding-block:32px var(--sect);align-items:start}
 .hc-nav ul{list-style:none;margin:0;padding:0;display:grid}
@@ -80,11 +82,9 @@ mark{background:#FFF0A8;color:inherit;padding:0}
 <main id="main">
   <section class="hc-banner">
     <div class="wrap">
-      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">Help Center</li></ol></nav>
+      <nav class="crumbs vh" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">Help Center</li></ol></nav>
       <h1 class="h1">Help Center</h1>
-      <!-- last-updated: faq -->
-      <p class="hc-lu" id="hc-lu">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p>
-      <p class="lede">Orders, shipping, sizing and the tractor. Search or pick a topic. Still stuck? <a href="contact.html">Send us a message</a>.</p>
+      <p class="lede">Orders, shipping, sizing and the tractor. Search or pick a topic.</p>
       <form class="hc-search" role="search" id="hc-form">
         <label class="vh" for="hc-q">Search the Help Center</label>
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -114,7 +114,7 @@ mark{background:#FFF0A8;color:inherit;padding:0}
     </nav>
 
     <div class="hc-body" id="hc-body">
-      <p class="note">Rastreo: Printify no le escribe al cliente. Cuando envía, marca el pedido como enviado en Shopify con el número de guía, y Shopify manda su propio correo "Shipping confirmation" desde la tienda (se activa o desactiva en Configuración &gt; Notificaciones). Confírmalo con un pedido de prueba. Cada pregunta es un bloque de la sección FAQ en Personalizar: agregas, editas, mueves u ocultas sin código.</p>
+      <p class="note">Encabezado simplificado: título, una línea y el buscador; "Last updated" va al final. Rastreo: Printify marca el pedido como enviado y Shopify manda el correo "Shipping confirmation" (Configuración &gt; Notificaciones). Cada pregunta es un bloque de la sección FAQ en Personalizar.</p>
 
       <section class="hc-cat" id="orders" aria-labelledby="h-orders">
         <h2 id="h-orders">Orders</h2>
@@ -230,6 +230,9 @@ mark{background:#FFF0A8;color:inherit;padding:0}
         <p><b>No answers match "<span id="hc-term"></span>".</b></p>
         <p>Try a shorter word, or <a href="contact.html">send us a message</a>.</p>
       </div>
+
+      <!-- last-updated: faq -->
+      <p class="hc-lu" id="hc-lu">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p>
 
       <aside class="still" aria-labelledby="still-t">
         <div><h2 class="h2" id="still-t">Still need help?</h2><p>Send us a message and we'll get back to you within 2 business days.</p></div>
