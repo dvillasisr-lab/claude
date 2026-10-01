@@ -26,6 +26,7 @@ html,body{overflow-x:clip}
 .seg label:has(input:focus-visible){outline:2px solid var(--ink);outline-offset:2px}
 .seg-wrap{display:grid;gap:4px;justify-items:start}
 .seg-wrap .small{color:var(--mute)}
+@media (max-width:560px){.seg-wrap{justify-items:stretch}.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.seg label{justify-content:center;text-align:center;white-space:normal;min-height:44px;padding:4px 6px;line-height:1.2;font-size:11px;letter-spacing:.04em}}
 
 .acc{padding-block:32px var(--sect)}
 /* sesión cerrada */

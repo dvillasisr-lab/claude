@@ -202,7 +202,7 @@
       '</div>' +
       '<div class="scrim" id="scrim" hidden></div>' +
       '<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">' +
-        '<div class="wrap"><form class="search__bar" action="search.html" role="search"><span aria-hidden="true">' + I.search + '</span><label class="vh" for="q">Search the store</label><input id="q" name="q" type="search" placeholder="Search tees, hoodies, the machine..." autocomplete="off"><button class="icon-btn" type="button" id="search-close" aria-label="Close search">' + I.close + '</button></form>' +
+        '<div class="wrap"><form class="search__bar" action="search.html" role="search"><span aria-hidden="true">' + I.search + '</span><label class="vh" for="q">Search the store</label><input id="q" name="q" type="search" placeholder="Search tees, hoodies, caps..." autocomplete="off"><button class="icon-btn" type="button" id="search-close" aria-label="Close search">' + I.close + '</button></form>' +
         '<div class="search__body"><div><div id="recent-wrap" hidden><p class="label muted">Your recent searches</p><ul id="recent"></ul></div><p class="label muted" id="sugg-h">Trending</p><ul id="sugg"></ul><p class="label muted" style="margin-top:20px">Pages</p><ul id="search-pages"><li><a href="machine.html">The Machine</a></li><li><a href="schedule.html">Schedule</a></li><li><a href="sponsors.html">Sponsors</a></li><li><a href="faq.html">FAQ</a></li></ul><p class="note">Ya no las escribes tú: "Trending" sale solo de los productos más vendidos, mientras escriben Shopify sugiere búsquedas automáticas (Predictive Search, en inglés) y "recent searches" se guarda en el navegador de cada cliente.</p></div>' +
         '<div><p class="label muted" id="search-h">Best sellers</p><div class="search__res" id="search-res" style="margin-top:12px"></div><p id="search-all" style="margin:16px 0 0" hidden><a class="link" href="search.html">See all results</a></p></div></div></div>' +
       '</div>' +
@@ -431,6 +431,31 @@
   if (sd) sd.addEventListener('click', function (e) { e.preventDefault(); var u = new URL(location.href); if (slow) u.searchParams.delete('loading'); else u.searchParams.set('loading', 'slow'); location.href = u.toString(); });
   if (sd && slow) sd.textContent = 'Quitar esqueleto';
   if (slow) { document.documentElement.classList.add('hm-loading'); setTimeout(function () { document.documentElement.classList.remove('hm-loading'); }, 2500); }
+
+  /* tiras que se deslizan: marca el borde donde queda más contenido (CSS .hm-hs--l / --r lo desvanece).
+     No aplica a carruseles de una foto a la vez (galería de producto) ni a lo marcado con data-no-fade. */
+  function hsUpd(el) {
+    var max = el.scrollWidth - el.clientWidth;
+    el.classList.toggle('hm-hs--l', max > 2 && el.scrollLeft > 4);
+    el.classList.toggle('hm-hs--r', max > 2 && el.scrollLeft < max - 4);
+  }
+  function hsScan(full) {
+    [].forEach.call(document.querySelectorAll('main *, .drawer *'), function (el) {
+      if (el.hmHs === false || (el.hmHs === 0 && full !== true)) return;
+      if (el.hmHs) { hsUpd(el); return; }
+      var ox = getComputedStyle(el).overflowX;
+      if (ox !== 'auto' && ox !== 'scroll') { el.hmHs = 0; return; }
+      var first = el.firstElementChild;
+      if (el.closest('[data-no-fade]') || (first && first.getBoundingClientRect().width >= el.clientWidth * .9)) { el.hmHs = false; return; }
+      el.hmHs = true; hsUpd(el);
+    });
+  }
+  var hsT;
+  function hsLater() { clearTimeout(hsT); hsT = setTimeout(hsScan, 120); }
+  document.addEventListener('scroll', function (e) { var t = e.target; if (t && t.hmHs) hsUpd(t); }, true);
+  window.addEventListener('resize', function () { clearTimeout(hsT); hsT = setTimeout(function () { hsScan(true); }, 150); });
+  window.addEventListener('load', function () { hsScan(); setTimeout(hsScan, 1500); });
+  if ('MutationObserver' in window) new MutationObserver(hsLater).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'open'] });
 
   /* banner de cookies: se muestra una vez por visita del boceto */
   var ck = $('cookie');

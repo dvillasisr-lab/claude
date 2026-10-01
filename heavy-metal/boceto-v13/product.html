@@ -82,6 +82,8 @@ html,body{overflow-x:clip}
 .lb__arw:hover{background:rgba(255,255,255,.22);border-color:var(--night-ink)}
 .lb__arw--prev{left:12px}.lb__arw--next{right:12px}
 .lb__hint{position:absolute;left:0;right:0;bottom:calc(16px + env(safe-area-inset-bottom,0px));margin:0;text-align:center;font-size:11px;color:#B5B2AA}
+.lb__hint-t{display:none}
+@media (hover:none){.lb__hint-k{display:none}.lb__hint-t{display:inline}.lb__arw{background:rgba(18,18,17,.62);border-color:rgba(255,255,255,.35)}}
 
 /* buy box */
 .buy{display:grid;gap:16px;align-content:start;min-width:0}
@@ -562,7 +564,7 @@ html,body{overflow-x:clip}
   <figure class="lb__fig"><div class="lb__img" id="lb-img"></div></figure>
   <button class="lb__arw lb__arw--prev" type="button" id="lb-prev" aria-label="Previous image">‹</button>
   <button class="lb__arw lb__arw--next" type="button" id="lb-next" aria-label="Next image">›</button>
-  <p class="lb__hint">Click or tap the image to zoom · arrow keys to browse · Esc to close</p>
+  <p class="lb__hint"><span class="lb__hint-k">Click or tap the image to zoom · arrow keys to browse · Esc to close</span><span class="lb__hint-t">Tap the image to zoom · swipe to browse</span></p>
 </dialog>
 
 <dialog class="rvlb" id="rvlb" aria-labelledby="rvlb-t">

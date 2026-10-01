@@ -55,6 +55,7 @@ html,body{overflow-x:clip}
 .tbl tbody th{font-weight:700;color:var(--ink)}
 .tbl td{color:var(--soft)}
 .tbl .u{font-weight:400;text-transform:none;letter-spacing:0}
+@media (max-width:560px){.tbl thead th{white-space:normal;vertical-align:bottom;letter-spacing:.04em}.tbl th,.tbl td{padding-right:8px}}
 .fig{margin:0;background:var(--surface);border:1px solid var(--line);padding:12px}
 .fig svg{width:100%;height:auto;display:block}
 .fig figcaption{font-size:11px;color:var(--mute);margin-top:6px}
@@ -78,7 +79,7 @@ html,body{overflow-x:clip}
   .sz-nav ul{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:10px var(--gutter)}
   .sz-nav ul::-webkit-scrollbar{display:none}
   .sz-nav li{flex:none}
-  .sz-nav a{font-size:var(--t-xs);line-height:1;padding:9px 12px;border:1px solid var(--line);background:var(--surface)}
+  .sz-nav a{font-size:var(--t-xs);line-height:1;padding:15px 12px;border:1px solid var(--line);background:var(--surface)}
   .sz-nav a[aria-current="page"]{border-color:var(--ink)}
 }
 </style>

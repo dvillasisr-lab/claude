@@ -392,11 +392,44 @@ img:not(.img-skel){transition:opacity .35s}
   /* insignias de la tarjeta: una debajo de otra, sin partirse en dos renglones */
   .card__badges{flex-direction:column;align-items:flex-start;right:8px}
   .card__badges .badge{white-space:nowrap}
-  /* tiras que se deslizan: se desvanecen a la derecha para que se note que hay más */
-  .cats{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 40px),transparent);padding-right:40px}
 }
 @media (hover:none){
   /* botón de la tarjeta en celular: cabe en un renglón y, si no, se parte limpio */
-  .card__add{min-height:44px;padding:6px 8px;letter-spacing:.04em;line-height:1.2;text-align:center}
-  .card__arw{width:36px;height:44px;top:calc(50% - 22px)}
+  .card__add{display:flex;min-height:44px;padding:6px 8px;letter-spacing:.04em;line-height:1.2;text-align:center}
+  .card__arw{width:36px;height:44px;top:calc(62.5cqw - 22px)}
+  /* el botón queda debajo de la foto: puntos y flechas se miden sobre la foto (4:5), no sobre foto + botón */
+  .card__media{container-type:inline-size}
+  .card__dots{bottom:auto;top:calc(125cqw - 14px)}
 }
+@media (max-width:760px){.cookie .btn{min-height:44px}}
+/* iPhone SE y teléfonos de 320 a 380px: el carrito ya no se sale del header */
+.hdr__in .icon-btn{flex:none}
+@media (max-width:380px){
+  .hdr__in{gap:8px}
+  .hdr__logo img{height:16px}
+  .hdr__icons{gap:0}
+}
+@media (max-width:860px){
+  /* footer: links con área táctil de 44px */
+  .ftr__list a{line-height:44px}
+  .ftr__legal{gap:0 18px}
+  .ftr__legal a{padding-block:10px}
+  .ftr__social{gap:8px}
+  .ftr__social a{width:44px;height:44px}
+}
+/* tiras que se deslizan (chips, tarjetas, tablas): hm.js les pone hm-hs--l / hm-hs--r y se desvanecen en el borde
+   donde queda más contenido, para que en el celular se note que se pueden deslizar */
+.hm-hs--r{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(to right,#000 calc(100% - 36px),transparent)}
+.hm-hs--l{-webkit-mask-image:linear-gradient(to left,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(to left,#000 calc(100% - 36px),transparent)}
+.hm-hs--l.hm-hs--r{-webkit-mask-image:linear-gradient(to right,transparent,#000 36px,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(to right,transparent,#000 36px,#000 calc(100% - 36px),transparent)}
+/* pantallas bajitas (iPhone SE): el pie del carrito ocupa menos para que se vean los productos */
+@media (max-height:700px) and (max-width:760px){
+  .drawer__foot{padding:10px 20px;gap:8px}
+  .drawer__foot>p.small{display:none}
+  .tiers{padding-block:8px}
+}
+/* celular: links de texto sueltos (SEE THE PIT LOG, Size guide...) con área táctil más alta sin mover el diseño */
+@media (hover:none){
+  a.link,button.link{padding-block:12px;margin-block:-12px}
+}
+@media (hover:none) and (max-width:380px){.card__add{font-size:10px;letter-spacing:.02em;padding-inline:4px}}

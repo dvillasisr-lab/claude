@@ -98,7 +98,7 @@ html,body{overflow-x:clip}
 .g-t:hover .g-cap,.g-t:focus-visible .g-cap{opacity:1;transform:none}
 .g-cap b{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-sm);text-transform:uppercase;letter-spacing:.03em;line-height:1.2}
 .g-cap span{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#CFCCC3}
-@media (hover:none){.g-cap{opacity:1;transform:none;padding:28px 10px 8px}.g-cap b{font-size:12px}.g-cap span{font-size:10px}}
+@media (hover:none){.g-cap{opacity:1;transform:none;padding:32px 10px 8px;background:linear-gradient(180deg,rgba(18,18,17,0),rgba(18,18,17,.62) 45%,rgba(18,18,17,.9));text-shadow:0 1px 2px rgba(0,0,0,.5)}.g-cap b{font-size:12px}.g-cap span{font-size:10px}}
 .g-zoom{position:absolute;right:10px;top:10px;z-index:2;width:30px;height:30px;border-radius:50%;background:rgba(18,18,17,.55);display:grid;place-items:center;opacity:0;transition:opacity .2s}
 .g-zoom svg{width:14px;height:14px;fill:none;stroke:var(--night-ink);stroke-width:2}
 .g-t:hover .g-zoom{opacity:1}
@@ -241,7 +241,7 @@ html,body{overflow-x:clip}
           <div class="g-find">
             <label class="vh" for="g-find" id="g-find-l">Find an event (searches every season)</label>
             <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
-            <input class="input" id="g-find" type="search" placeholder="Find an event, town or year" autocomplete="off" spellcheck="false"
+            <input class="input" id="g-find" type="search" placeholder="Event, town or year" autocomplete="off" spellcheck="false"
               role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="g-opts" aria-describedby="g-find-hint">
             <span class="vh" id="g-find-hint">Type to filter, use the up and down arrows to choose, Enter to open the event.</span>
             <ul class="g-opts" id="g-opts" role="listbox" aria-labelledby="g-find-l" hidden></ul>
