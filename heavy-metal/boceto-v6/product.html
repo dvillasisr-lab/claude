@@ -307,7 +307,7 @@ html,body{overflow-x:clip}
             <summary>Shipping &amp; returns</summary>
             <div class="acc__body">
               <p>Every piece is printed when you order it and ships in 5 days. Free US shipping on orders over $XX. Taxes and shipping are calculated at checkout.</p>
-              <p>Misprints and defects are replaced free: send a photo within XX days of delivery. Printed-to-order items can't be returned or exchanged for size, so check the size guide first.</p>
+              <p>Misprints and defects are replaced free: send a photo within 30 days of delivery. Printed-to-order items can't be returned or exchanged for size, so check the size guide first.</p>
               <p><a href="policies.html?p=shipping">Shipping policy</a> · <a href="policies.html?p=refund">Refund policy</a></p>
             </div>
           </details>
@@ -386,12 +386,16 @@ html,body{overflow-x:clip}
   var CATNAME = { tees: 'Tees', sweats: 'Sweatshirts', hats: 'Hats', kids: 'Kids', gear: 'Stickers & gear', bundles: 'Bundles', limited: 'Special edition' };
   var id = new URLSearchParams(location.search).get('p') || 'evil-one-tee';
   var p = CAT.filter(function (x) { return x.id === id; })[0] || CAT.filter(function (x) { return x.id === 'evil-one-tee'; })[0];
+  /* tienda sin productos activos (boceto: ?empty=1): en lugar de la ficha sale "Coming soon" */
+  /* la edición especial tiene su propia página (limited.html): ahí manda el estado del drop */
+  if (p && p.page) { location.replace(p.page); return; }
+  if (!p) { document.querySelector('main').innerHTML = '<div class="wrap" style="padding-block:var(--sect)"><h1 class="vh">Merch coming soon</h1>' + (window.hmComingSoon ? window.hmComingSoon() : '') + '</div>'; ['satc'].forEach(function (k) { var e = $(k); if (e) e.hidden = true; }); return; }
 
   /* textos por producto: hechos reales de la historia, sin inventar materiales */
   var STORY = {
     'evil-one-tee': ['Chris came up with the idea in 2014 in Tomah, WI. He was a heavy metal fan, so the name was never up for discussion. The nickname stuck: “The Evil One”.'],
     'lightning-strike-tee': ['In 2026 Chris fired the engine for the first time. At that exact moment, lightning struck, and the power went out.', 'Some would call it a coincidence. We call it a sign. This graphic is that night.'],
-    'full-pull-ls': ['This season the goal is simple: the first full pull, across about 20 competitions on the NTPA and PPL Badger State circuits.', 'We\'ve run a few exhibitions while testing; in competition, every pass is to pull.'],
+    'full-pull-ls': ['This season the goal is simple: the first full pull, on the NTPA and PPL Badger State circuits.', 'We\'ve run a few exhibitions while testing; in competition, every pass is to pull.'],
     'cat-v8-spec-tee': ['The real spec sheet: CAT 3208 V8, reverse flow, 680 CU IN, single large turbo, 10,000 LB, Challenger 1015 body. Horsepower: Unknown.'],
     '680-ci-hoodie': ['The Cat 3208 V8 started at 636 cubic inches. The crew took it to 680, a setup you won\'t find on any other tractor on the track.', 'Nothing about it is off the shelf, and nothing about it was quick.'],
     'evil-one-crewneck': ['The first bolt went in in February 2020, in the family shop in Waterloo, WI. Nights and weekends stolen from work and family built the rest.'],
@@ -492,7 +496,7 @@ html,body{overflow-x:clip}
   function add() {
     if (!need()) return;
     var n = qtyN();
-    window.hmAdd(p.name, variant() + (n > 1 ? ' · Qty ' + n : ''), '$XX');
+    window.hmAdd(p.name, variant(), '$XX', n);
   }
   $('atc').addEventListener('click', add);
   $('satc-btn').addEventListener('click', function () { if (live) add(); else toNotify(true); });

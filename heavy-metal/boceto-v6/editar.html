@@ -231,7 +231,7 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
           <h3 class="h3">Listas: Metaobjetos</h3>
           <p class="path"><span>Contenido</span><span>Metaobjetos</span></p>
           <p>Cada lista es un tipo y cada renglón una entrada con campos fijos. Llenas, guardas y la página se actualiza.</p>
-          <ul><li>Pull event, Season stats, Sponsor tier, Sponsor stat</li><li>Logo placement, Decal zone, Crew member</li></ul>
+          <ul><li>Pull event, Season stats, Sponsor tier, Sponsor stat</li><li>Logo placement, Decal zone, Crew member, Tractor part</li></ul>
         </article>
         <article class="door">
           <span class="door__n">2</span>
@@ -321,7 +321,7 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       <p class="count" id="count" role="status" aria-live="polite"></p>
       <ul class="map" id="map"></ul>
       <p class="empty" id="map-empty" hidden>Nada coincide. Prueba otra palabra o elige “Todo”.</p>
-      <p class="note">Los tipos de metaobjeto (Pull event, Season stats, Sponsor tier, Sponsor stat, Logo placement, Decal zone, Crew member), los metacampos de Special edition y las colecciones automáticas los dejamos creados al montar el tema. Tú solo llenas entradas; no tienes que tocar Configuración &gt; Datos personalizados.</p>
+      <p class="note">Los tipos de metaobjeto (Pull event, Season stats, Sponsor tier, Sponsor stat, Logo placement, Decal zone, Crew member, Tractor part), los metacampos de Special edition y las colecciones automáticas los dejamos creados al montar el tema. Tú solo llenas entradas; no tienes que tocar Configuración &gt; Datos personalizados.</p>
     </div>
   </section>
 
@@ -378,11 +378,11 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
   var FQ = { pull: ['Después de cada pull', 14], mes: ['Mensual', 31], temp: ['Cada temporada', 365] };
   var LU = [
     { n: 'Calendario de pulls', k: 'schedule', s: 'Pull event: fechas, estado y resultado', p: [['Schedule', 'schedule.html'], ['Home', 'index.html']], w: ['Contenido', 'Metaobjetos', 'Pull event'], f: 'pull', d: '2026-09-21', src: 'auto' },
-    { n: 'Pit Log', k: 'Pit Log', s: 'Un post por pull, exhibición o prueba', p: [['Pit Log', 'log.html'], ['Home', 'index.html']], w: ['Contenido', 'Entradas de blog', 'Pit Log'], f: 'pull', d: '2026-09-22', src: 'auto' },
-    { n: 'Contadores de temporada', k: 'season-stats', s: 'Competitions, exhibitions y wins (0 sale como “Coming soon”)', p: [['Home', 'index.html'], ['Our Story', 'story.html'], ['Pit Log', 'log.html']], w: ['Contenido', 'Metaobjetos', 'Season stats'], f: 'pull', d: '2026-09-08', src: 'auto' },
-    { n: 'Paquetes de patrocinio', k: 'Sponsor packages', s: 'Title Partner, Pit Partner, Crew Supporter: precio y beneficios', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Sponsor tier'], f: 'temp', d: '2026-02-10', src: 'auto' },
-    { n: 'Stats de patrocinio', k: 'Sponsor stats', s: 'Cifras estimadas: pulls, estados, fans (est.)', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Sponsor stat'], f: 'temp', d: '2025-11-20', src: 'auto' },
-    { n: 'Frase de venta (Sales line)', k: 'sales-line', s: '“XX+ fans across XX pulls”: valores fans y pulls', p: [['Sponsors', 'sponsors.html']], w: ['Personalizar', 'Sponsors', 'Sales line'], f: 'temp', d: '2026-04-02', src: 'mano' },
+    { n: 'Pit Log', k: 'pit-log', s: 'Un post por pull, exhibición o prueba', p: [['Pit Log', 'log.html'], ['Home', 'index.html']], w: ['Contenido', 'Entradas de blog', 'Pit Log'], f: 'pull', d: '2026-09-22', src: 'auto' },
+    { n: 'Contadores de temporada', k: 'season-stats', s: 'Competitions, exhibitions, wins y full pulls (0 sale como “Coming soon”)', p: [['Home', 'index.html'], ['Our Story', 'story.html']], w: ['Contenido', 'Metaobjetos', 'Season stats'], f: 'pull', d: '2026-09-08', src: 'auto' },
+    { n: 'Paquetes de patrocinio', k: 'sponsor-packages', s: 'Title Partner, Pit Partner, Crew Supporter: precio y beneficios', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Sponsor tier'], f: 'temp', d: '2026-02-10', src: 'auto' },
+    { n: 'Stats de patrocinio', k: 'sponsor-stats', s: 'Cifras estimadas: pulls, estados, fans (est.)', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Sponsor stat'], f: 'temp', d: '2025-11-20', src: 'auto' },
+    { n: 'Frase de venta (Sales line)', k: 'sales-line', s: '“XX+ fans across XX pulls”: valores fans y pulls', p: [['Sponsors', 'sponsors.html'], ['Home', 'index.html']], w: ['Personalizar', 'Sponsors', 'Sales line'], f: 'temp', d: '2026-04-02', src: 'mano' },
     { n: 'Lugares del logo', k: 'logo-placements', s: 'Team gear, tráiler, sitio, redes, tractor, locutor', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Logo placement'], f: 'temp', d: '2026-02-10', src: 'auto' },
     { n: 'Calcomanías', k: 'decal-zones', s: 'Zonas del mapa de calcomanías del tractor', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Decal zone'], f: 'temp', d: '2025-10-05', src: 'auto' },
     { n: 'Playlist', k: 'playlist', s: 'Walk-up song: Fear of the Dark, o la playlist del equipo', p: [['Our Story', 'story.html'], ['FAQ', 'faq.html']], w: ['Personalizar', 'Our Story', 'Walk-up song'], f: 'mes', d: '2026-08-20', src: 'mano' },
@@ -460,12 +460,12 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       p: [['Todas', 'index.html']] },
     { n: 'Pull events (calendario)', t: 'lista', q: 'Cada pull: nombre, fecha, ciudad, liga (NTPA o PPL Badger State), estado, link del evento y resultado. De aquí salen la tabla del Schedule, el próximo pull de la home, “Add to calendar” y el filtro por año.',
       w: [['Contenido', 'Metaobjetos', 'Pull event']],
-      a: 'Agregar entrada, llena los campos y Guardar. Aparece sola en su año.', e: 'Abre la entrada y cambia fecha, estado (Upcoming, Done, Canceled) o resultado.', d: 'Estado Hidden lo oculta sin perder el historial. Eliminar solo si fue un error.',
+      a: 'Agregar entrada, llena los campos y Guardar. Aparece sola en su año.', e: 'Abre la entrada y cambia fecha, estado (Upcoming, Done, Cancelled) o resultado.', d: 'Estado Hidden lo oculta sin perder el historial. Eliminar solo si fue un error.',
       p: [['Schedule', 'schedule.html'], ['Home', 'index.html'], ['Pit Log', 'log.html']] },
     { n: 'Season stats (contadores)', t: 'lista', q: 'Los números de la temporada: competencias, exhibiciones, wins y full pulls. Una entrada por año, así el historial queda y el filtro por año funciona.',
       w: [['Contenido', 'Metaobjetos', 'Season stats']],
-      a: 'Al arrancar la temporada: Agregar entrada con el año nuevo y todo en 0.', e: 'Después de cada pull súmale 1 al contador que toque y Guardar. Un contador en 0 nunca sale como “0”: la tienda muestra “Coming soon”.', d: 'No borres años pasados. Desmarca Visible si no quieres mostrar uno.',
-      p: [['Home', 'index.html'], ['Our Story', 'story.html'], ['Pit Log', 'log.html'], ['Sponsors', 'sponsors.html']] },
+      a: 'Al arrancar la temporada: Agregar entrada con el año nuevo y todo en 0.', e: 'Después de cada pull súmale 1 al contador que toque y Guardar. Un contador en 0 nunca sale como “0”: la tienda muestra “Coming soon”. Pit Log y Schedule cuentan solos (etiquetas y pulls): si cambias un número aquí, revisa que cuadre con ellos.', d: 'No borres años pasados. Desmarca Visible si no quieres mostrar uno.',
+      p: [['Home', 'index.html'], ['Our Story', 'story.html']] },
     { n: 'Pit Log (bitácora)', t: 'admin', q: 'Lo que pasó en cada pull, exhibición o día de pruebas: texto, distancia, qué se rompió, fotos. Es un blog de Shopify llamado Pit Log. La página muestra 10 entradas con “Load more”, buscador y filtros; las etiquetas arman solas los contadores, los filtros y la franja Wins & milestones.',
       w: [['Contenido', 'Entradas de blog'], ['Blog: Pit Log']],
       a: 'Crear entrada, elige el blog Pit Log, título, texto, foto y etiquetas: Test, Exhibition, Competition, Win, Full pull, Milestone o Shop. La fecha pone el año del filtro.', e: 'Abre la entrada, cambia y Guardar. Agrega la etiqueta Featured a un Win o Milestone para que salga en la franja Wins & milestones (máximo 6; quítala para sacarlo). Puedes programar la publicación.', d: 'Visibilidad: Oculta. O Eliminar entrada.',
@@ -482,10 +482,10 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       w: [['Contenido', 'Metaobjetos', 'Sponsor stat']],
       a: 'Agregar entrada con la cifra, su etiqueta y si es estimada.', e: 'Al cerrar la temporada cambia los números por los reales y la fecha Updated.', d: 'Status Hidden o Eliminar.',
       p: [['Sponsors', 'sponsors.html']] },
-    { n: 'Frase de venta (Sales line)', t: 'tema', q: 'La frase “XX+ fans across XX pulls” de Sponsors. No se escribe la cifra en el texto: se llenan los valores fans y pulls; vacíos se ven “XX”.',
+    { n: 'Frase de venta (Sales line)', t: 'tema', q: 'La frase “XX+ fans across XX pulls” de Sponsors y de la franja de patrocinio de la home. No se escribe la cifra en el texto: se llenan los valores fans y pulls; vacíos se ven “XX”.',
       w: [['Personalizar', 'Sponsors', 'Sales line']],
       a: 'No se agrega: son dos valores.', e: 'Pon fans y pulls con datos reales y Guardar.', d: 'Déjalos vacíos para mostrar “XX”.',
-      p: [['Sponsors', 'sponsors.html']] },
+      p: [['Sponsors', 'sponsors.html'], ['Home', 'index.html']] },
     { n: 'Decal zones (mapa de calcomanías)', t: 'lista', q: 'Las zonas marcadas sobre la foto del tractor: nombre, posición, tamaño de guía y paquete al que pertenece.',
       w: [['Contenido', 'Metaobjetos', 'Decal zone']],
       a: 'Agregar entrada. Posición: x = % desde la izquierda, y = % desde arriba de la foto.', e: 'Mueve x y y hasta que el punto quede en su lugar; cambia el paquete si se vendió.', d: 'Desmarca Visible o Eliminar.',
@@ -525,6 +525,10 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
     { n: 'Spec sheet (ficha técnica de The Machine)', t: 'tema', q: 'La ficha del tractor: motor, cilindrada, turbo, peso, llantas, carrocería, liga y su “Last updated”. Horsepower: Unknown. Una fila sin valor no sale.',
       w: [['Personalizar', 'The Machine', 'Spec sheet']],
       a: 'Agregar bloque Spec: nombre y valor.', e: 'Clic en la fila y cambia el valor. Cambia también la fecha “Last updated” de la sección.', d: 'Ojo para ocultar una fila; Eliminar bloque para quitarla.',
+      p: [['The Machine', 'machine.html']] },
+    { n: 'Anatomía de The Machine (Tractor part)', t: 'lista', q: 'Las partes numeradas sobre la foto del tractor (Engine, Displacement, Turbo, Body, Weight, Tires): nombre, valor, texto del panel, foto y posición del número.',
+      w: [['Contenido', 'Metaobjetos', 'Tractor part']],
+      a: 'Agregar entrada con nombre, valor, texto, foto y posición (x, y sobre la foto del tractor).', e: 'Cambia el texto o el valor y Guardar. Si un dato cambia, cambia también la Spec sheet.', d: 'Desmarca Visible o Eliminar.',
       p: [['The Machine', 'machine.html']] },
     { n: 'Quitar la playera de The Machine (Spec tee)', t: 'tema', q: 'La sección “The spec sheet, on a tee” con la Cat V8 Spec Tee al final de The Machine. Es un bloque de sección: se quita sin código.',
       w: [['Personalizar', 'The Machine', 'Spec tee']],

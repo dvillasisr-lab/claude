@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- Hallmark · v6: capítulos compactos en 3 columnas, playlist con el embed de Spotify, stats con "Last updated" -->
-<title>Our Story · Heavy Metal Pro Stock, “The Evil One”</title>
+<title>Our Story · Heavy Metal Pro Stock: “The Evil One”</title>
 <meta name="description" content="Heavy Metal Pro Stock: from one idea in Tomah, Wisconsin to a Pro Stock pulling tractor built by a family in Waterloo. The first bolt, the night lightning struck, the first pull and the crew behind “The Evil One”, led by a driver with 20+ years in the sport.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "AboutPage",
-  "name": "Our Story · Heavy Metal Pro Stock, “The Evil One”",
+  "name": "Our Story · Heavy Metal Pro Stock: “The Evil One”",
   "about": {
     "@type": "SportsTeam",
     "name": "Heavy Metal Pro Stock",
@@ -316,7 +316,7 @@ html,body{overflow-x:clip}
       <li><a href="#ch-2020"><span class="yr">Feb 2020</span><span class="ev">First bolt</span><span class="pl">Family shop, Waterloo</span></a></li>
       <li class="bolt-li"><a href="#bolt"><span class="yr"><svg viewBox="0 0 12 16" aria-hidden="true"><polygon class="bolt" points="8,0 1,9 5,9 3,16 11,6 7,6"/></svg>2026</span><span class="ev">Engine fires, lightning strikes</span><span class="pl">Watch the video</span></a></li>
       <li><a href="#first-pull"><span class="yr">2026</span><span class="ev">First pull attempt</span><span class="pl">A real track, a short run</span></a></li>
-      <li class="now"><a href="#season"><span class="yr">Today</span><span class="ev"><span data-season>2026</span> season</span><span class="pl" id="tl-now">Chasing the next full pull</span></a></li>
+      <li class="now"><a href="#season"><span class="yr">Today</span><span class="ev"><span data-season>2026</span> season</span><span class="pl" id="tl-now">Chasing our first full pull</span></a></li>
     </ol>
   </div>
 </nav>
@@ -412,7 +412,7 @@ html,body{overflow-x:clip}
       </div>
     </div>
     <div class="note st-ctl" id="season-ctl">
-      <span>En Shopify se edita en Contenido &gt; Metaobjetos &gt; Season stats (una entrada por año; el selector de año sale solo), o se calcula solo desde el Pit Log. Puse 2 competencias y 3 exhibiciones (igual que el Pit Log); confirma si fueron 3 o 4. Full pulls va en "XX": confirma cuántas veces llegaron al final de la pista (300 ft), contando exhibiciones si así lo quieres. Wins en 0 se ve "Coming soon". Prueba los contadores:</span>
+      <span>En Shopify se edita en Contenido &gt; Metaobjetos &gt; Season stats (una entrada por año; el selector de año sale solo), o se calcula solo desde el Pit Log. Puse 2 competencias y 3 exhibiciones (igual que el Pit Log); confirma si fueron 3 o 4. Full pulls: confirma cuántas veces llegaron al final de la pista (300 ft), contando exhibiciones si así lo quieres; mientras no haya número, igual que en el Pit Log y el Schedule, se ve "Coming soon" (y wins en 0 también). Prueba los contadores:</span>
       <span class="st-ctl__row" id="season-btns"></span>
     </div>
   </div>
@@ -429,7 +429,7 @@ html,body{overflow-x:clip}
         <div class="ph ph--dark" role="img" aria-label="Photo of Diesel Ross coming soon"><span class="ph__tag"><b>Diesel Ross</b>Photo soon</span></div>
       </div>
       <h2 class="h1" id="bro-h">Tractor brothers</h2>
-      <p class="lede">“The Evil One” has a little brother across the ocean: <b style="color:var(--ink)">Diesel Ross</b>, a Pro Stock tractor in Europe owned by Gert Stessens from Belgium.</p>
+      <p class="lede">“The Evil One” has a brother across the ocean: <b style="color:var(--ink)">Diesel Ross</b>, a Pro Stock tractor in Europe owned by Gert Stessens from Belgium.</p>
       <p class="body" style="margin:0">We met Gert at a pull in the Netherlands. Between the look of the two tractors and the friendship between Gert and Chris, “The Evil One” and Diesel Ross are considered tractor brothers.</p>
       <ul class="st-route">
         <li><b>Owner</b> Gert Stessens</li>
@@ -553,10 +553,11 @@ html,body{overflow-x:clip}
     ['wins', 'Wins', function (r) { return r.wins ? 'this season' : 'we are in testing'; }]
   ];
   function val(k, v) {
-    if (k === 'wins' && !v) return '<span class="st-soon">Coming soon</span>';
+    /* testing: wins y full pulls en 0 (o sin confirmar) dicen "Coming soon", igual que en el Pit Log y el Schedule */
+    if ((k === 'wins' || k === 'full_pulls') && !(isNum(v) && v > 0)) return '<span class="st-soon">Coming soon</span>';
     return isNum(v) ? String(v) : String(v || 'XX');
   }
-  function fmtDay(iso) { var d = new Date(iso + 'T12:00:00'); return isNaN(d) ? iso : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }
+  function fmtDay(iso) { var d = new Date(iso + 'T12:00:00'); return isNaN(d) ? iso : d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); }
   var yrSel = document.getElementById('season-yr'), dl = document.getElementById('season-stats'), sh = document.getElementById('season-h'), upd = document.getElementById('season-upd'), tlNow = document.getElementById('tl-now');
   var cur = SEASON_STATS[0];
   SEASON_STATS.slice().sort(function (a, b) { return b.season - a.season; }).forEach(function (r) {
@@ -566,7 +567,7 @@ html,body{overflow-x:clip}
     dl.innerHTML = FIELDS.map(function (f) {
       return '<div' + (f[0] === 'full_pulls' ? ' class="st-fp"' : '') + '><dt>' + f[1] + '</dt><dd class="num">' + val(f[0], cur[f[0]]) + '<small>' + f[2](cur) + '</small></dd></div>';
     }).join('');
-    var fp = cur.full_pulls, line = !isNum(fp) ? 'Chasing the next full pull' : fp ? fp + (fp === 1 ? ' full pull' : ' full pulls') + ' and counting' : 'Chasing our first full pull';
+    var fp = cur.full_pulls, line = !isNum(fp) ? 'Chasing our first full pull' : fp ? fp + (fp === 1 ? ' full pull' : ' full pulls') + ' and counting' : 'Chasing our first full pull';
     sh.textContent = line;
     if (tlNow) tlNow.textContent = line;
     upd.setAttribute('datetime', cur.updated); upd.textContent = fmtDay(cur.updated);

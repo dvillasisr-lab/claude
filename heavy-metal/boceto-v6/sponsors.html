@@ -84,6 +84,7 @@
 .sp-upd{margin:0 0 0 auto;font-size:var(--t-xs);color:var(--mute)}
 .sp-stats-col{display:grid;gap:10px}
 .sp-stats-col .sp-upd{margin:0}
+.sp-upd--end{margin:12px 0 0;text-align:right}
 .sp-seg button[aria-pressed="false"].is-off{text-decoration:line-through;opacity:.7}
 
 /* 2 · barra de pestañas sticky (dentro de la página) */
@@ -239,7 +240,8 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
       <!-- En Shopify: un bloque Liquid recorre las entradas del metaobjeto "Sponsor tier". Aquí: array TIERS al final. -->
       <ul class="sp-tiers" id="sp-tiers" aria-label="Sponsorship packages" tabindex="0"></ul>
       <div class="sp-foot"><p class="sp-hint" id="sp-hint" aria-hidden="true">Swipe to see all 3 packages</p>
-        <!-- last-updated: Sponsor packages (Contenido > Metaobjetos > Sponsor tier, campo Updated) -->
+        <!-- last-updated: sponsor-packages (Metaobjetos > Sponsor tier, campo Updated) -->
+        <!-- last-updated: sales-line (Personalizar > Sponsors > Sales line): esta fecha es la más nueva de las dos -->
         <p class="sp-upd" id="sp-tiers-upd">Last updated: October 1, 2026</p></div>
       <div class="note sp-owner" id="sp-owner">Esto no sale en el sitio. La frase de venta (XX+ fans, XX pulls) se llena en Personalizar &gt; Sponsors &gt; Sales line; vacía se ve "XX". Prueba cómo se ve Pit Partner:
         <span class="sp-seg" role="group" aria-label="Estado de Pit Partner, solo boceto">
@@ -297,7 +299,7 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
     <dl class="sp-big" id="sp-big"></dl>
     <div class="sp-stats-col">
       <dl class="sp-stats" id="sp-stats"></dl>
-      <!-- last-updated: Sponsor stats (Contenido > Metaobjetos > Sponsor stat, campo Updated) -->
+      <!-- last-updated: sponsor-stats (Metaobjetos > Sponsor stat, campo Updated) -->
       <p class="sp-upd" id="sp-stats-upd">Last updated: October 1, 2026</p>
     </div>
   </div>
@@ -308,6 +310,8 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
   <div class="wrap">
     <div class="sect-head"><h2 class="h2" id="place-t">Where your logo goes</h2><p class="small muted" style="margin:0" id="place-sub">What each package gets is listed under each place.</p></div>
     <ul class="sp-place" id="sp-place"></ul>
+    <!-- last-updated: logo-placements (Metaobjetos > Logo placement) -->
+    <p class="sp-upd sp-upd--end" id="place-upd"></p>
     <div class="note sp-owner" id="place-owner">Esto no sale en el sitio. Cada lugar es una entrada de Contenido &gt; Metaobjetos &gt; <b>Logo placement</b> (nombre, descripción, ícono de la lista, paquetes, Status). <b>Agregar entrada</b> pone un lugar nuevo; <b>Status Hidden</b> lo esconde sin borrarlo; <b>Eliminar entrada</b> lo quita para siempre. Cifras: <b>Sponsor stat</b>. Zonas del mapa: <b>Decal zone</b> (tamaños "XX x XX in" y paquetes "To confirm": confirmar con Chris y las reglas de NTPA / PPL). Pruébalo:
       <span class="sp-seg" id="place-seg" role="group" aria-label="Mostrar u ocultar lugares, solo boceto"></span>
       <span class="sp-seg"><button type="button" id="place-add" aria-pressed="false">+ Add placement</button></span>
@@ -351,6 +355,8 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
         </div>
       </div>
     </div>
+    <!-- last-updated: decal-zones (Metaobjetos > Decal zone) -->
+    <p class="sp-upd sp-upd--end" id="dz-upd"></p>
   </div>
 </section>
 
@@ -440,7 +446,7 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
   var newest = function (list) { return list.map(function (x) { return x.updated; }).filter(Boolean).sort().pop(); };
 
   /* Frase de venta: ajuste de la sección (Personalizar > Sponsors > Sales line). Vacío = "XX". No es promesa: se llena solo con datos reales. */
-  var PITCH = { fans: null, pulls: null };
+  var PITCH = { fans: null, pulls: null, updated: '2026-10-01' };
   var pitchFans = PITCH.fans ? PITCH.fans.toLocaleString('en-US') + '+' : 'XX+';
   var pitchPulls = PITCH.pulls ? String(PITCH.pulls) : 'XX';
   document.querySelectorAll('[data-pitch]').forEach(function (e) { e.textContent = 'Your brand in front of ' + pitchFans + ' fans across ' + pitchPulls + ' pulls a season'; });
@@ -470,7 +476,7 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
     ul.style.setProperty('--n', vis.length);
     ul.innerHTML = vis.map(tierHTML).join('');
     $('sp-hint').textContent = 'Swipe to see all ' + vis.length + ' packages';
-    var up = newest(vis); $('sp-tiers-upd').hidden = !up; if (up) $('sp-tiers-upd').textContent = 'Last updated: ' + longDate(up);
+    var up = newest(vis.concat([PITCH])); $('sp-tiers-upd').hidden = !up; if (up) $('sp-tiers-upd').textContent = 'Last updated: ' + longDate(up);
     /* opciones del formulario, desde los mismos datos */
     var sel = $('f-pkg'), keep = sel.value || 'pit';
     sel.innerHTML = vis.map(function (t) {
@@ -562,6 +568,7 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
       description: 'Your name over the PA when the tractor hooks.', tiers: [['title', 'every pull'], ['pit', 'select pulls']] }
   ];
   /* Entrada de ejemplo para el botón "+ Add placement" (sale de beneficios reales de los paquetes) */
+  var PLACEMENTS_UPDATED = '2026-10-01'; /* la fecha Updated más nueva de las entradas Logo placement */
   var EXAMPLE = { handle: 'pits', name: 'Pit passes', icon: 'pass', status: 'active', isNew: true,
     description: 'Your team in the pits with the crew, up close to the tractor.', tiers: [['title', 'VIP, every pull'], ['pit', 'select pulls']] };
   var SHORT = { title: 'Title', pit: 'Pit', crew: 'Crew' };
@@ -575,6 +582,7 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
         (chips ? '<ul class="sp-chips" aria-label="Included in">' + chips + '</ul>' : '') + '</div></li>';
     }).join('');
     var n = vis.length;
+    $('place-upd').textContent = 'Last updated: ' + longDate(PLACEMENTS_UPDATED);
     $('place-sub').textContent = (n > 1 && n <= 10 ? WORDS[n] + ' places. ' : '') + 'What each package gets is listed under each place.';
     placeSeg();
   }
@@ -612,6 +620,8 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
     { name: 'Front weight box', x: 1045,y: 430, lx: 965, row: 'b', size: 'XX x XX in', tier: null,    status: 'available', desc: 'The front weight bracket, low and close to the track.' },
     { name: 'Engine side panel',x: 620, y: 225, lx: 560, row: 'b', size: 'XX x XX in', tier: 'title', status: 'available', desc: 'Both sides of the engine bay, above the exhaust. The biggest flat surface on the tractor.' }
   ];
+  var ZONES_UPDATED = '2026-10-01'; /* la fecha Updated más nueva de las entradas Decal zone */
+  $('dz-upd').textContent = 'Last updated: ' + longDate(ZONES_UPDATED);
   var dzPts = $('dz-pts'), dzStage = $('dz-stage'), dzLines = $('dz-lines'), dzCur = 0, NS = 'http://www.w3.org/2000/svg';
   function nn(i) { return (i < 9 ? '0' : '') + (i + 1); }
   function tierName(z) { var t = z.tier && byHandle(z.tier); return t ? t.name : 'To confirm'; }

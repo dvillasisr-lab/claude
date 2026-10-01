@@ -375,7 +375,7 @@ html,body{overflow-x:clip}
         <p class="sp__line" id="sp-line">Your brand in front of <b>XX+ fans</b> across <b>XX pulls</b> a season.</p>
       </div>
       <a class="btn" href="sponsors.html">See sponsor packages</a>
-      <p class="note">“XX+ fans” y “XX pulls” salen de Metaobjetos &gt; Season stats (campos fans y pulls). Cinta amarilla = 3 bloques de texto de la sección HM Hero. Sonido del pull sim: motor sintetizado en el navegador (sin música: Fear of the Dark necesita licencia), apagado por defecto.</p>
+      <p class="note">“XX+ fans” y “XX pulls” salen de Personalizar &gt; Sponsors &gt; Sales line (los mismos valores que la página Sponsors). Cinta amarilla = 3 bloques de texto de la sección HM Hero. Sonido del pull sim: motor sintetizado en el navegador (sin música: Fear of the Dark necesita licencia), apagado por defecto.</p>
     </div>
   </section>
 </main>
@@ -388,6 +388,8 @@ html,body{overflow-x:clip}
   var cats = document.getElementById('home-cats'), row = document.getElementById('home-row');
   if (cats && window.hmCats) cats.innerHTML = window.hmCats('new').replace(' aria-label="Shop by category"', '');
   if (!row || !window.hmCard || !window.HM_CATALOG) return;
+  /* tienda sin productos activos (boceto: ?empty=1): sin fotitos ni fila, sale "Coming soon" como en Shop */
+  if (!window.HM_CATALOG.length) { cats.hidden = true; row.outerHTML = window.hmComingSoon ? window.hmComingSoon() : ''; return; }
   var all = window.HM_CATALOG, ltd = all.filter(function (p) { return p.tag === 'limited'; })[0];
   var pick = all.filter(function (p) { return p.tag === 'new'; }).slice(0, ltd ? 3 : 4);
   all.forEach(function (p) { if (pick.length < (ltd ? 3 : 4) && p.tag === 'best' && pick.indexOf(p) < 0) pick.push(p); });
@@ -407,16 +409,17 @@ html,body{overflow-x:clip}
   ];
   if (/[?&]next=1/.test(location.search)) {
     var d0 = new Date(Date.now() + 12 * 864e5);
-    EVENTS.push({ date: d0.toISOString().slice(0, 10), event: '[Example] Badger State Pull', city: '[City], WI', league: 'Badger State Tractor Pullers', type: 'Competition', status: 'Scheduled' });
+    EVENTS.push({ date: d0.toISOString().slice(0, 10), event: '[Example] Badger State Pull', city: '[City], WI', league: 'Badger State Tractor Pullers', type: 'Competition', status: 'Upcoming' });
   }
-  /* fans y pulls: estimados que pone la dueña; "XX" mientras no estén */
   var SEASON_STATS = [
-    { season: SEASON, competitions: 2, exhibitions: 3, wins: 0, fans: 'XX', pulls: 'XX', updated: '2026-09-28' }
+    { season: SEASON, competitions: 2, exhibitions: 3, wins: 0, updated: '2026-09-28' }
   ];
+  /* frase de venta: los mismos valores que Sponsors (Personalizar > Sponsors > Sales line); vacíos = "XX" */
+  var PITCH = { fans: null, pulls: null };
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var today = new Date().toISOString().slice(0, 10);
-  var next = EVENTS.filter(function (e) { return e.date && e.date >= today && e.status !== 'Hidden' && e.status !== 'Canceled'; })
+  var next = EVENTS.filter(function (e) { return e.date && e.date >= today && e.status !== 'Hidden' && e.status !== 'Cancelled'; })
     .sort(function (a, b) { return a.date < b.date ? -1 : 1; })[0];
   $('nx-kick').hidden = !next;   /* sin fecha, el título ya dice "Next pull: date TBA" */
   if (next) {
@@ -434,9 +437,9 @@ html,body{overflow-x:clip}
       var soon = !f[1];
       return '<div><dt>' + f[0] + '</dt><dd class="' + (soon ? 'is-soon' : 'num') + '">' + (soon ? 'Coming soon' : f[1]) + '</dd></div>';
     }).join('');
-    if (st.updated) $('nx-upd').textContent = 'Last updated: ' + new Date(st.updated + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    $('sp-line').innerHTML = 'Your brand in front of <b>' + esc(st.fans) + '+ fans</b> across <b>' + esc(st.pulls) + ' pulls</b> a season.';
+    if (st.updated) $('nx-upd').textContent = 'Last updated: ' + new Date(st.updated + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   }
+  $('sp-line').innerHTML = 'Your brand in front of <b>' + (PITCH.fans ? esc(PITCH.fans.toLocaleString('en-US')) : 'XX') + '+ fans</b> across <b>' + (PITCH.pulls ? esc(PITCH.pulls) : 'XX') + ' pulls</b> a season.';
 })();
 
 /* First fire: el póster "se va la luz" una vez al entrar en pantalla; play avisa que el video está pendiente. */

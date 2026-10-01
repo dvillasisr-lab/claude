@@ -148,7 +148,7 @@ html,body{overflow-x:clip}
 
     <div class="buy">
       <div class="buy__head">
-        <div class="buy__eyebrow"><span class="badge badge--ink">Special edition</span><span class="label muted" id="ed-drop">Drop 01</span></div>
+        <div class="buy__eyebrow"><span class="badge badge--ink">Special edition</span><span class="label muted" id="ed-drop">2026 season</span></div>
         <h1 class="h1 buy__name" id="ed-name">Lightning Night Tee</h1>
         <p class="buy__price"><span class="num">$XX</span> · <span id="ed-color">Matte Black</span></p>
         <p class="buy__story" id="ed-story"></p>
@@ -170,6 +170,8 @@ html,body{overflow-x:clip}
         <div class="units">
           <div class="units__row"><span id="units-l">Units left</span><b id="units-n">XX of XX left</b></div>
           <div class="bar" id="bar" aria-hidden="true"><span></span></div>
+          <!-- last-updated: special-edition (Productos > el producto > Metacampos, campo Updated) -->
+          <p class="clock__when" id="ed-upd" style="margin:0"></p>
         </div>
       </div>
 
@@ -236,11 +238,12 @@ html,body{overflow-x:clip}
      start / end: fechas del drop (hora de Wisconsin). runSize: tamaño del tiraje; left: inventario que queda (Shopify lo da solo).
      null = aún sin dato (se muestra XX). demo: true = ejemplo del boceto. */
   var EDITIONS = [
-    { id: 'lightning-night-tee', drop: 'Drop 01', year: SEASON,
+    /* la edición especial NO se numera: se identifica por su nombre y su temporada */
+    { id: 'lightning-night-tee', year: SEASON, updated: '2026-10-01',
       start: SEASON + '-10-17T19:00:00-05:00', end: SEASON + '-10-31T23:59:00-05:00',
       runSize: null, left: null,
       story: 'For the night Chris fired the engine for the first time. <q>At that exact moment, lightning struck, and the power went out.</q> We call it a sign. This tee is for that night.' },
-    { id: 'example-edition', drop: 'Drop 00', year: SEASON, demo: true, name: 'Edition name', sub: 'Example archive entry',
+    { id: 'example-edition', year: SEASON, demo: true, name: 'Edition name', sub: 'Example archive entry',
       start: SEASON + '-06-01T19:00:00-05:00', end: SEASON + '-06-15T23:59:00-05:00', runSize: null, left: 0 }
   ];
   var ED = EDITIONS[0], P = prod(ED.id) || { name: 'Lightning Night Tee', colors: ['Matte Black'], sizes: ['S', 'M', 'L', 'XL', '2XL', '3XL'], cat: 'limited' };
@@ -258,7 +261,8 @@ html,body{overflow-x:clip}
   /* pintar la ficha */
   $('stage-mock').outerHTML = window.hmMock ? window.hmMock(P) : '';
   $('ed-story').innerHTML = ED.story;
-  $('ed-drop').textContent = ED.drop + ' · ' + ED.year;
+  $('ed-drop').textContent = ED.year + ' season';
+  if (ED.updated) { var up = ED.updated.split('-'); $('ed-upd').textContent = 'Last updated: ' + new Date(+up[0], +up[1] - 1, +up[2]).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); }
   $('ed-color').textContent = P.colors[0] || 'One color';
   $('run-size').textContent = ED.runSize == null ? 'XX' : ED.runSize;
   $('sizes').innerHTML = P.sizes.map(function (s, i) {
@@ -340,7 +344,7 @@ html,body{overflow-x:clip}
     var em = $('nt-email'), ok = em.value.trim() !== '' && em.checkValidity(), m = $('nt-msg');
     em.setAttribute('aria-invalid', ok ? 'false' : 'true');
     if (!ok) { m.className = 'notify__msg small is-err'; m.textContent = 'Enter a valid email so we can let you know.'; em.focus(); return; }
-    m.className = 'notify__msg small'; m.textContent = "You're on the list. We'll email you once, when it drops.";
+    m.className = 'notify__msg small'; m.textContent = (override || realState(ED, new Date())) === 'sold' ? "You're on the list. We'll email you once, when the next special edition drops." : "You're on the list. We'll email you once, when it drops.";
   });
 
   /* archivo: ediciones cerradas, filtro por año */
@@ -351,7 +355,7 @@ html,body{overflow-x:clip}
   function card(e) {
     var p = prod(e.id) || { name: e.name, sub: e.sub, colors: ['Smoke Gray'], cat: 'tees', sizes: [] };
     return '<li class="ed"><div class="ed__media"><span class="ph ph--mock">' + (window.hmMock ? window.hmMock(p) : '') + '</span><span class="badge badge--ink">Sold out</span></div>' +
-      '<div class="ed__txt"><h3 class="card__name">' + esc(p.name) + (e.demo ? ' <span class="badge t-demo">Example</span>' : '') + '</h3><p>' + esc(e.drop) + ' · ' + e.year + ' · Run of ' + (e.runSize == null ? 'XX' : e.runSize) + '</p><p>' + esc(p.sub || '') + '</p></div></li>';
+      '<div class="ed__txt"><h3 class="card__name">' + esc(p.name) + (e.demo ? ' <span class="badge t-demo">Example</span>' : '') + '</h3><p>' + e.year + ' season · Run of ' + (e.runSize == null ? 'XX' : e.runSize) + '</p><p>' + esc(p.sub || '') + '</p></div></li>';
   }
   function renderPast() {
     var list = past.filter(function (e) { return yr === 'all' || e.year === yr; });

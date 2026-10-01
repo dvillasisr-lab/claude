@@ -198,7 +198,7 @@ html,body{overflow-x:clip}
       <h1 class="h1" id="pl-title">Pit Log</h1>
       <p>Every test day, exhibition, pull and win of “The Evil One”, logged by the crew as it happens.</p>
     </div>
-    <!-- last-updated: Pit Log -->
+    <!-- last-updated: pit-log -->
     <p class="pl-upd"><span>Last updated: <b id="pl-updated"></b></span><span id="pl-total"></span></p>
     <ul class="pl-stats" id="pl-stats" aria-describedby="pl-scope"></ul>
     <p class="pl-scope" id="pl-scope"></p>
@@ -418,7 +418,8 @@ html,body{overflow-x:clip}
     var pool = live().filter(inYear).filter(matchQ);
     $('f-type').innerHTML = TYPES.map(function (t) {
       var n = t[0] === 'all' ? pool.length : count(pool, t[0]);
-      return '<button type="button" class="chip" data-type="' + t[0] + '" aria-pressed="' + (st.type === t[0]) + '">' + t[1] + '<span class="n">' + n + '</span></button>';
+      /* testing: Win en 0 no muestra "0" (el filtro dice "First win: coming soon") */
+      return '<button type="button" class="chip" data-type="' + t[0] + '" aria-pressed="' + (st.type === t[0]) + '">' + t[1] + (t[0] === 'Win' && !n ? '' : '<span class="n">' + n + '</span>') + '</button>';
     }).join('');
   }
 

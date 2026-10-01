@@ -55,6 +55,7 @@
   function href(p) { return p.page || 'product.html?p=' + p.id; }
   function catHref(k) { return k === 'limited' ? 'limited.html' : 'shop.html?cat=' + k; }
   /* temporada: en Shopify es un ajuste global del tema (Personalizar > Ajustes del tema > Temporada) */
+  /* last-updated: season */
   var SEASON = window.HM_SEASON = 2026;
   /* mockups planos de prenda mientras no hay fotos de producto (en Shopify: la foto real de Printify) */
   var SHAPE = {
@@ -136,6 +137,7 @@
   };
 
   var PAGES = [['shop', 'shop.html', 'Shop'], ['machine', 'machine.html', 'The Machine'], ['story', 'story.html', 'Our Story'], ['schedule', 'schedule.html', 'Schedule'], ['log', 'log.html', 'Pit Log'], ['sponsors', 'sponsors.html', 'Sponsors']];
+  /* last-updated: announcements (Personalizar > Encabezado > Barra de anuncios) */
   var MSGS = [
     'Testing season ' + SEASON + ': <a href="schedule.html">get Hook Alerts</a>',
     'Free US shipping on orders over $XX',
@@ -176,7 +178,7 @@
         '<div class="mnav__top"><img src="img/logo-ink.svg" alt="Heavy Metal Pro Stock" height="18" style="height:18px;width:auto"><button class="icon-btn" type="button" id="menu-close" aria-label="Close menu">' + I.close + '</button></div>' +
         '<div class="mnav__thumbs">' + CATS.map(function (c) { return '<a href="' + catHref(c[0]) + '">' + thumb(c[1], c[0]) + '<span>' + c[1] + '</span></a>'; }).join('') + '</div>' +
         PAGES.map(function (p) { return '<a class="mnav__link" href="' + p[1] + '">' + p[2] + I.arrow + '</a>'; }).join('') +
-        '<div class="mnav__sub"><a href="account.html">Account</a><a href="contact.html">Contact</a><a href="faq.html">FAQ</a><a href="policies.html?p=shipping">Shipping &amp; returns</a><a href="https://www.facebook.com/heavymetalprostock/">Facebook</a></div>' +
+        '<div class="mnav__sub"><a href="account.html">Account</a><a href="contact.html">Contact</a><a href="faq.html">FAQ</a><a href="policies.html?p=shipping">Shipping &amp; returns</a><a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook ↗<span class="vh"> (opens in a new tab)</span></a></div>' +
       '</div>' +
       '<div class="scrim" id="scrim" hidden></div>' +
       '<div class="search" id="search" hidden role="dialog" aria-modal="true" aria-label="Search">' +
@@ -218,8 +220,8 @@
             '<p class="consent" id="ftr-msg">By signing up you agree to receive marketing emails. Unsubscribe anytime. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p></div>' +
           acc('The team', [['The Machine', 'machine.html'], ['Our Story', 'story.html'], ['Schedule', 'schedule.html'], ['Pit Log', 'log.html'], ['Sponsors', 'sponsors.html']]) +
         '</div>' +
-        '<div class="ftr__social"><a href="https://www.facebook.com/heavymetalprostock/" aria-label="Facebook">' + I.fb + '</a><a href="#" aria-label="Instagram (pending)">' + I.ig + '</a><a href="#" aria-label="TikTok (pending)">' + I.tt + '</a><a href="https://www.youtube.com/watch?v=HfJ5FAJJ5Ac" aria-label="YouTube">' + I.yt + '</a></div>' +
-        '<p class="ftr__biz">© ' + SEASON + ' Heavy Metal Pro Stock: “The Evil One” · Waterloo, WI<br><span class="muted">P.O. Box 42, Waterloo, WI 53594 · <a href="mailto:heavymetalevil72@gmail.com">heavymetalevil72@gmail.com</a> · <a href="tel:+19206504374">(920) 650-4374</a></span></p>' +
+        '<div class="ftr__social"><a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener" aria-label="Facebook (opens in a new tab)">' + I.fb + '</a><a href="#" aria-label="Instagram (pending)">' + I.ig + '</a><a href="#" aria-label="TikTok (pending)">' + I.tt + '</a><a href="#" aria-label="YouTube (pending)">' + I.yt + '</a></div>' +
+        '<p class="ftr__biz">© ' + new Date().getFullYear() + ' Heavy Metal Pro Stock: “The Evil One” · Waterloo, WI<br><span class="muted">P.O. Box 42, Waterloo, WI 53594 · <a href="mailto:heavymetalevil72@gmail.com">heavymetalevil72@gmail.com</a> · <a href="tel:+19206504374">(920) 650-4374</a></span></p>' +
         '<nav class="ftr__legal" aria-label="Legal"><a href="policies.html?p=privacy">Privacy Policy</a><a href="policies.html?p=terms">Terms of Service</a><a href="policies.html?p=refund">Refund Policy</a><a href="policies.html?p=shipping">Shipping Policy</a><a href="policies.html?p=contact">Contact Information</a><a href="policies.html?p=accessibility">Accessibility</a><a href="policies.html?p=choices">Your Privacy Choices</a><a href="#" id="cookie-prefs">Cookie Preferences</a></nav>' +
       '</div></footer>' +
       '<div class="cookie" id="cookie" role="region" aria-label="Cookie consent" hidden><p class="h3">We use cookies</p><p>We use cookies to run the store, remember your cart and, if you allow it, to measure ads. You can change this anytime in Cookie Preferences. <a href="policies.html?p=privacy">Privacy Policy</a> · <a href="policies.html?p=choices">Your Privacy Choices</a></p><div class="cookie__prefs" id="cookie-prefs-panel" hidden><label class="tgl"><input type="checkbox" checked disabled><span><b>Necessary</b><br>Cart, checkout and security. Always on.</span></label><label class="tgl"><input type="checkbox" id="ck-an"><span><b>Analytics</b><br>Helps us see which pages work.</span></label><label class="tgl"><input type="checkbox" id="ck-mk"><span><b>Marketing</b><br>Facebook and Google ads.</span></label><label class="tgl"><input type="checkbox" id="ck-pf"><span><b>Preferences</b><br>Remembers your choices.</span></label></div><div class="btn-row"><button class="btn" type="button" data-cookie="accept">Accept all</button><button class="btn btn--ghost" type="button" data-cookie="decline">Decline</button><button class="btn btn--ghost" type="button" data-cookie="manage" id="ck-manage">Manage</button></div></div>';
@@ -247,7 +249,16 @@
   function show(el, focus) { hideAll(); last = document.activeElement; el.hidden = false; if (scrim) scrim.hidden = false; document.body.style.overflow = 'hidden'; open = el; if (focus) focus.focus(); }
   function hideAll() { ['mnav', 'search', 'drawer', 'qsheet'].forEach(function (id) { var e = $(id); if (e) e.hidden = true; }); if (scrim) scrim.hidden = true; document.body.style.overflow = ''; if (open && last && last.focus) last.focus(); open = null; }
   if (scrim) scrim.addEventListener('click', hideAll);
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') { hideAll(); closeMega(); } });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { hideAll(); closeMega(); return; }
+    /* aria-modal: el Tab se queda dentro del panel abierto */
+    if (e.key !== 'Tab' || !open) return;
+    var f = [].filter.call(open.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),textarea,select,summary,[tabindex]:not([tabindex="-1"])'), function (x) { return x.getClientRects().length && !x.closest('[hidden]') && !(x.closest('details:not([open])') && x.tagName !== 'SUMMARY' && !x.closest('summary')); });
+    if (!f.length) return;
+    var i = f.indexOf(document.activeElement);
+    if (e.shiftKey && (i <= 0)) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && (i === f.length - 1 || i < 0)) { e.preventDefault(); f[0].focus(); }
+  });
 
   /* mega menú: clic, foco o hover (funciona en tablet) */
   var trig = $('mega-trigger'), mega = $('mega'), hdr = $('hdr'), mt;
@@ -268,6 +279,7 @@
   }
 
   /* búsqueda predictiva sobre el catálogo */
+  function escH(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function recents() { try { return JSON.parse(localStorage.getItem('hm-recent') || '[]'); } catch (e) { return []; } }
   function renderSugg(q) {
     var ul = $('sugg'); if (!ul) return;
@@ -280,10 +292,10 @@
       words = CAT.filter(function (p) { return p.tag === 'best'; }).map(function (p) { return p.name.toLowerCase().replace(/ tee$| cap$/, ''); }).slice(0, 4);
       $('sugg-h').textContent = 'Trending';
     }
-    ul.innerHTML = words.map(function (w) { return '<li><a href="search.html?q=' + encodeURIComponent(w) + '">' + w + '</a></li>'; }).join('');
+    ul.innerHTML = words.map(function (w) { return '<li><a href="search.html?q=' + encodeURIComponent(w) + '">' + escH(w) + '</a></li>'; }).join('');
     var r = recents(), rw = $('recent-wrap');
     rw.hidden = !!q || !r.length;
-    $('recent').innerHTML = r.map(function (w) { return '<li><a href="search.html?q=' + encodeURIComponent(w) + '">' + w.replace(/[<>&"]/g, '') + '</a></li>'; }).join('');
+    $('recent').innerHTML = r.map(function (w) { return '<li><a href="search.html?q=' + encodeURIComponent(w) + '">' + escH(w) + '</a></li>'; }).join('');
   }
   function renderSearch(q) {
     q = (q || '').trim().toLowerCase(); renderSugg(q);
@@ -309,7 +321,8 @@
     var pct = Math.min(100, n * 30); $('tiers-fill').style.width = pct + '%';
     $('tiers-msg').innerHTML = pct >= 100 ? '<b>You unlocked free shipping and a free sticker.</b>' : pct >= 60 ? 'Free US shipping unlocked. <b>$XX</b> more for a <b>free sticker</b>' : 'You are <b>$XX</b> away from <b>free US shipping</b>';
     var hasTee = [].some.call($('lines').querySelectorAll('[data-cat]'), function (l) { return l.getAttribute('data-cat') === 'tees'; });
-    $('upgrade').hidden = !hasTee;
+    var hasCap = !!$('lines').querySelector('[data-id="crew-cap"]');
+    $('upgrade').hidden = !hasTee || hasCap;
   }
   function openCart() { show($('drawer'), $('cart-close')); }
   if ($('cart-open')) {
@@ -318,12 +331,13 @@
     $('checkout').addEventListener('click', function (e) { e.preventDefault(); this.textContent = 'Boceto: aquí abre el checkout de Shopify'; });
     setCount(0);
   }
-  window.hmAdd = function (name, variant, price) {
-    var p = CAT.filter(function (x) { return x.name === name; })[0] || CAT[0];
-    var li = document.createElement('li'); li.className = 'line'; li.setAttribute('data-cat', p.cat);
+  window.hmAdd = function (name, variant, price, qty) {
+    qty = Math.max(1, parseInt(qty, 10) || 1);
+    var p = CAT.filter(function (x) { return x.name === name; })[0] || { id: '', name: name, cat: 'tees', colors: [], sizes: [] };
+    var li = document.createElement('li'); li.className = 'line'; li.setAttribute('data-cat', p.cat); li.setAttribute('data-id', p.id);
     li.innerHTML = '<span class="thumb thumb--mock">' + mock(p) + '</span><div><p class="line__n">' + name + '</p><p class="line__v">' + (variant || '') + '</p>' +
-      '<div class="qty"><button type="button" data-q="-1" aria-label="Decrease quantity">−</button><span class="num" aria-live="polite">1</span><button type="button" data-q="1" aria-label="Increase quantity">+</button></div><button type="button" class="line__rm" data-rm>Remove</button></div><p class="num" style="margin:0">' + (price || '$XX') + '</p>';
-    $('lines').appendChild(li); setCount(count + 1); openCart();
+      '<div class="qty"><button type="button" data-q="-1" aria-label="Decrease quantity">−</button><span class="num" aria-live="polite">' + qty + '</span><button type="button" data-q="1" aria-label="Increase quantity">+</button></div><button type="button" class="line__rm" data-rm>Remove</button></div><p class="num" style="margin:0">' + (price || '$XX') + '</p>';
+    $('lines').appendChild(li); setCount(count + qty); openCart();
   };
   if ($('lines')) $('lines').addEventListener('click', function (e) {
     var li = e.target.closest('.line'); if (!li) return;
@@ -354,6 +368,8 @@
   var cf = $('coupon-form');
   if (cf) cf.addEventListener('submit', function (e) { e.preventDefault(); var v = $('coupon').value.trim().toUpperCase(); $('coupon-msg').textContent = v ? 'Boceto: aquí Shopify valida "' + v + '" y muestra el descuento en el subtotal.' : 'Enter a code.'; });
 
+  /* redes pendientes (Instagram, TikTok, YouTube): el link "#" no salta arriba */
+  [].forEach.call(document.querySelectorAll('.ftr__social a[href="#"]'), function (a) { a.addEventListener('click', function (e) { e.preventDefault(); }); });
   /* footer: una sola lista (Hook Alerts) */
   var ff = $('ftr-form');
   if (ff) ff.addEventListener('submit', function (e) {
@@ -384,6 +400,6 @@
       }
       ck.hidden = true; try { sessionStorage.setItem('hm-cookie', '1'); } catch (err) {}
     });
-    $('cookie-prefs').addEventListener('click', function (e) { e.preventDefault(); ck.hidden = false; });
+    $('cookie-prefs').addEventListener('click', function (e) { e.preventDefault(); ck.hidden = false; var fb = ck.querySelector('[data-cookie]'); if (fb) fb.focus(); });
   }
 })();
