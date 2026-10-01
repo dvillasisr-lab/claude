@@ -62,6 +62,7 @@
     root.style.setProperty('--edge', (tr.width - right) + 'px');
     rail.querySelectorAll('.fp__tick').forEach(function (t) { t.remove(); });
     [0, 1 / 3, 2 / 3, 1].forEach(function (f, i) {
+      if ((i === 1 || i === 2) && finish - startNose < 280) return;   /* pista corta (móvil): solo 0 y la meta */
       var t = document.createElement('span');
       t.className = 'fp__tick' + (i === 0 ? ' fp__tick--first' : i === 3 ? ' fp__tick--last' : '');
       t.style.left = (f * 100) + '%';
@@ -155,7 +156,7 @@
     if (visible && (state === 'run' || (state === 'done' && alive > 0))) raf = requestAnimationFrame(loop);
     else { raf = 0; last = 0; }
   }
-  function kick() { if (!raf && visible) { last = 0; raf = requestAnimationFrame(loop); } }
+  function kick() { if (!reduce && !raf && visible) { last = 0; raf = requestAnimationFrame(loop); } }
   function finish() {
     state = 'done'; root.classList.remove('is-running', 'is-pulling'); ctrl.textContent = 'Pull again';
     if (bg === 'storm' && !reduce) { root.classList.remove('is-strike'); void root.offsetWidth; root.classList.add('is-strike'); }
@@ -174,7 +175,7 @@
   });
 
   measure();
-  if (reduce) { state = 'done'; ctrl.hidden = true; paint(DUR, 0); }
+  if (reduce) { state = 'done'; ms = DUR; ctrl.hidden = true; paint(DUR, 0); }
   else restart();
   if ('IntersectionObserver' in window) new IntersectionObserver(function (e) { visible = e[0].isIntersecting; if (visible) kick(); }).observe(root);
   var rt; addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { measure(); paint(Math.min(ms, DUR), clock); }, 80); });

@@ -50,7 +50,7 @@
   function catHref(k) { return k === 'limited' ? 'limited.html' : 'shop.html?cat=' + k; }
   /* temporada: en Shopify es un ajuste global del tema (Personalizar > Ajustes del tema > Temporada) */
   var SEASON = window.HM_SEASON = 2026;
-  /* mockups planos de prenda mientras no hay fotos de producto (en Shopify: la foto real de Printly) */
+  /* mockups planos de prenda mientras no hay fotos de producto (en Shopify: la foto real de Printify) */
   var SHAPE = {
     tee: 'M34 18 18 26l-10 18 14 6 6-10v52h44V40l6 10 14-6-10-18-16-8c-2 6-8 10-16 10s-14-4-16-10Z',
     hood: 'M36 16c2-6 8-10 14-10s12 4 14 10l14 8 12 34-12 4-6-16v50H30V56l-6 16-12-4 12-34Z',

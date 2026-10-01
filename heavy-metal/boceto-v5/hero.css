@@ -108,7 +108,7 @@
 .fp__tick--first::before{left:0}
 .fp__tick--last{transform:translateX(calc(-100% - 10px))}  /* a la izquierda del poste: el poste nunca lo tapa */
 .fp__tick--last::before{left:auto;right:-10px}
-.fp__flag{position:absolute;left:0;bottom:var(--dirt);width:6px;height:calc(var(--righ) * 1.05);background:repeating-linear-gradient(180deg,var(--ink) 0 12px,var(--accent) 12px 24px);transform-origin:bottom}
+.fp__flag{position:absolute;left:0;bottom:var(--dirt);width:6px;box-shadow:0 0 0 1px var(--ink);height:calc(var(--righ) * 1.05);background:repeating-linear-gradient(180deg,var(--ink) 0 12px,var(--accent) 12px 24px);transform-origin:bottom}
 .fp__flag::after{content:"";position:absolute;left:6px;top:0;width:calc(var(--rigw) * .045);aspect-ratio:3/2;min-width:22px;
   background:conic-gradient(var(--ink) 25%,#fff 0 50%,var(--ink) 0 75%,#fff 0) 0 0/50% 50%;border:1px solid var(--ink);transform-origin:left center}
 .fp.is-full .fp__flag::after{animation:fpWave .5s ease-in-out infinite alternate}
@@ -156,7 +156,8 @@
   .fp__flag{height:calc(var(--righ) * 1.15)}
 }
 @media (max-width:600px){
-  .fp{--logo:min(80vw,400px)}
+  .fp{--logo:min(80vw,400px);--rigw:92vw}
+  .fp__sun{left:74%;top:46%}
   .fp__tag{font-size:30px}
   .fp__brand .btn-row{width:100%}
   .fp__brand .btn-row .btn{flex:1 1 140px}
@@ -166,3 +167,5 @@
 @media (prefers-reduced-motion:reduce){
   .fp-marquee__track{animation:none}
 }
+/* en celular el humo pasa sobre el texto: más transparente para que se lea */
+@media (max-width:760px){.fp__smoke{opacity:.45}}

@@ -1,7 +1,7 @@
-<title>Heavy Metal · The Evil One | Pro Stock Tractor Pulling Merch</title>
-<meta name="description" content="Merch from Heavy Metal, The Evil One: the only Cat V8 Pro Stock pulling tractor in the class, built in Waterloo, WI. Tees, hoodies and hats.">
-<meta property="og:title" content="Heavy Metal · The Evil One | Pro Stock Tractor Pulling Merch">
-<meta property="og:description" content="The only Cat V8 Pro Stock pulling tractor in the class, built in Waterloo, WI. Merch designed by the crew.">
+<title>Heavy Metal · “The Evil One” | Pro Stock Tractor Pulling Merch</title>
+<meta name="description" content="Merch from Heavy Metal, “The Evil One”: the only Cat V8 Pro Stock pulling tractor in the class, built in Waterloo, WI. Tees, hoodies and hats.">
+<meta property="og:title" content="Heavy Metal · “The Evil One” | Pro Stock Tractor Pulling Merch">
+<meta property="og:description" content="“The Evil One”: the only Cat V8 Pro Stock pulling tractor in the class, built in Waterloo, WI. Merch designed by the crew.">
 <meta property="og:image" content="img/hm-hero.webp">
 <meta name="theme-color" content="#F6F5F2">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,7 +16,7 @@
       "@type": ["SportsTeam", "Organization"],
       "@id": "#team",
       "name": "Heavy Metal",
-      "alternateName": "The Evil One",
+      "alternateName": "“The Evil One”",
       "legalName": "Heavy Metal Pro Stock",
       "sport": "Tractor pulling",
       "logo": "img/logo-ink.svg",
@@ -30,7 +30,7 @@
     {
       "@type": "WebSite",
       "@id": "#website",
-      "name": "Heavy Metal · The Evil One",
+      "name": "Heavy Metal · “The Evil One”",
       "alternateName": "Heavy Metal Pro Stock",
       "publisher": { "@id": "#team" },
       "inLanguage": "en-US"
@@ -88,7 +88,7 @@ html,body{overflow-x:clip}
 .fire__copy{display:grid;gap:14px;justify-items:start;max-width:480px}
 .fire__quote{font-size:var(--t-h1);line-height:1.12}
 .fire__sign{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h2);text-transform:uppercase;letter-spacing:.01em;color:var(--ink);display:inline-flex;align-items:center;gap:10px}
-.fire__sign::before{content:"";width:28px;height:3px;background:var(--accent)}
+.fire__bolt{width:22px;height:30px;flex:none;fill:var(--accent);stroke:var(--ink);stroke-width:1.5;stroke-linejoin:round;transform:rotate(8deg)}
 .fire__copy p.body{margin:0;font-size:var(--t-sm)}
 .vid{margin:0;display:grid;gap:8px;width:min(100%,calc((100svh - var(--header) - 2 * var(--sect) - 28px) * 16 / 9));justify-self:end}
 .vid__frame{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--night);isolation:isolate}
@@ -111,36 +111,60 @@ html,body{overflow-x:clip}
   .vid__play{width:60px;height:60px}
 }
 
-/* 4 · NEXT UP: una línea del calendario */
-.next{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg)}
-.next__in{display:flex;flex-wrap:wrap;align-items:center;gap:6px 20px;min-height:56px;padding-block:10px;font-size:var(--t-sm)}
-.next__in .label{color:var(--ink);display:inline-flex;align-items:center;gap:8px}
-.next__in .label::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 1px var(--ink)}
-.next__txt{margin:0;color:var(--soft)}
-.next__txt b{color:var(--ink);font-weight:700}
-.next__in .link{margin-left:auto;white-space:nowrap}
-@media (max-width:600px){.next__in .link{margin-left:0}}
-
-/* 5 · PARTNER: franja sobria de marca, 3 paquetes en texto, un botón */
-.ptn{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(24px,4vw,64px);align-items:end}
-.ptn__copy{display:grid;gap:12px;justify-items:start}
-.ptn__copy p{margin:0;color:var(--soft);font-size:var(--t-sm);max-width:44ch}
-.ptn__side{display:grid;gap:20px}
-.tiers-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;border-top:1px solid var(--ink)}
-.tiers-row div{display:grid;gap:4px;padding:14px 20px 0 0}
-.tiers-row div+div{padding-left:20px;border-left:1px solid var(--line)}
-.tiers-row dt{font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
-.tiers-row dd{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h1);line-height:1.1;color:var(--ink)}
-.ptn__foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px}
-.ptn__foot p{margin:0;font-size:var(--t-xs);color:var(--mute)}
-@media (max-width:860px){
-  .ptn{grid-template-columns:1fr;align-items:start}
+/* 4 · NEXT UP: franja amarilla con fecha, evento, contador de temporada y dos links */
+.nx{background:var(--accent);color:var(--ink);border-block:1px solid var(--ink)}
+.nx__in{display:grid;grid-template-columns:auto minmax(0,1.3fr) minmax(0,1.2fr) auto;gap:16px clamp(20px,3vw,48px);align-items:center;padding-block:clamp(18px,2.4vw,28px)}
+.nx__date{display:grid;place-items:center;align-content:center;width:84px;height:84px;background:var(--ink);color:var(--accent);text-align:center;line-height:1}
+.nx__date span{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--night-ink)}
+.nx__date b{font-family:var(--f-head);font-stretch:78%;font-size:32px;font-weight:800}
+.nx__ev{display:grid;gap:4px;min-width:0}
+.nx__kick{margin:0;font-size:var(--t-xs);font-weight:800;letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.nx__ev .nx__kick::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ink)}
+.nx__meta{margin:0;font-size:var(--t-sm);color:var(--ink)}
+.nx__season{display:grid;gap:6px;padding-left:clamp(16px,2vw,32px);border-left:1px solid rgba(28,27,25,.35)}
+.nx__stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0}
+.nx__stats div{display:grid;gap:0}
+.nx__stats dd{order:-1;margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:clamp(30px,3vw,40px);line-height:1}
+.nx__stats dt{font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.nx__stats dt small{display:block;font-size:11px;font-weight:500;letter-spacing:0;text-transform:none}
+.nx__go{display:grid;gap:10px;justify-items:center}
+.nx__go .link{color:var(--ink)}
+@media (max-width:1024px){
+  .nx__in{grid-template-columns:auto minmax(0,1fr)}
+  .nx__season{grid-column:1/-1;padding-left:0;border-left:0;border-top:1px solid rgba(28,27,25,.35);padding-top:12px}
+  .nx__go{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px}
 }
-@media (max-width:520px){
-  .tiers-row{grid-template-columns:1fr}
-  .tiers-row div,.tiers-row div+div{padding:10px 0;border-left:0;border-bottom:1px solid var(--line);grid-template-columns:minmax(0,1fr) auto;align-items:baseline}
-  .tiers-row dd{font-size:var(--t-h2)}
-  .ptn__foot .btn{width:100%}
+@media (max-width:480px){.nx__date{width:68px;height:68px}.nx__date b{font-size:26px}}
+
+/* 5 · PARTNER: qué recibe la marca + 3 paquetes con 2 beneficios + dos salidas claras */
+.ptn{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:24px clamp(24px,4vw,64px);align-items:start}
+.ptn__copy{display:grid;gap:12px;justify-items:start}
+.ptn__what{margin:0;font-size:var(--t-md);color:var(--text);max-width:40ch}
+.ptn__what b{color:var(--ink)}
+.ptn__reach{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.ptn__reach li{border:1px solid var(--line);padding:4px 10px;font-size:var(--t-xs);color:var(--soft)}
+.ptn__reach b{color:var(--ink);font-weight:800}
+.ptn__est{margin:0;font-size:11px;color:var(--mute)}
+.ptn__tiers{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--ink)}
+.ptn__tier{display:grid;gap:8px;align-content:start;padding:16px 20px 4px 0}
+.ptn__tier+.ptn__tier{padding-left:20px;border-left:1px solid var(--line)}
+.ptn__tier h3{margin:0;font-size:var(--t-xs);font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);display:flex;gap:8px;align-items:center}
+.ptn__price{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:var(--t-h1);line-height:1;color:var(--ink)}
+.ptn__tier ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:var(--t-sm);color:var(--soft)}
+.ptn__tier li{position:relative;padding-left:14px;line-height:1.4}
+.ptn__tier li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;background:var(--accent);box-shadow:0 0 0 1px var(--ink)}
+.ptn__go{grid-column:2;display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;padding-top:16px;border-top:1px solid var(--line)}
+.ptn__talk{margin:0;font-size:var(--t-sm);color:var(--soft)}
+.ptn__talk a{color:var(--ink);font-weight:700;text-underline-offset:3px;white-space:nowrap}
+.ptn__note{grid-column:1/-1;margin-top:0}
+@media (max-width:860px){
+  .ptn{grid-template-columns:1fr}
+  .ptn__go{grid-column:auto}
+}
+@media (max-width:600px){
+  .ptn__tiers{grid-template-columns:1fr}
+  .ptn__tier,.ptn__tier+.ptn__tier{padding:12px 0;border-left:0;border-bottom:1px solid var(--line)}
+  .ptn__go .btn{width:100%}
 }
 </style>
 <div data-hm-header data-current="home"></div>
@@ -241,12 +265,11 @@ html,body{overflow-x:clip}
   <section class="shop-home" aria-labelledby="drop-title">
     <div class="wrap">
       <div class="home-head">
-        <h2 class="h1" id="drop-title">The Evil One Drop</h2>
+        <h2 class="h1" id="drop-title">“The Evil One” Drop</h2>
         <a class="link" href="shop.html?cat=all">Shop all</a>
       </div>
       <nav id="home-cats" aria-label="Shop by category"></nav>
       <div class="pgrid" id="home-row" role="list" aria-label="New drop"></div>
-      <p class="note">Fila editable en Shopify (sección "featured collection"): colección New drop, máximo 4; si faltan, se completa con un best seller.</p>
     </div>
   </section>
 
@@ -266,7 +289,7 @@ html,body{overflow-x:clip}
       </div>
       <div class="dip">
         <figure>
-          <div class="frame"><img class="photo" src="img/hm-hero.webp" alt="The Evil One pulling down the track under a tall column of black smoke" loading="lazy" width="776" height="1400" style="object-position:50% 62%"></div>
+          <div class="frame"><img class="photo" src="img/hm-hero.webp" alt="“The Evil One” pulling down the track under a tall column of black smoke" loading="lazy" width="776" height="1400" style="object-position:50% 62%"></div>
           <figcaption>On the track</figcaption>
         </figure>
         <figure>
@@ -283,10 +306,9 @@ html,body{overflow-x:clip}
       <div class="fire__copy">
         <p class="label muted">Our Story · 2026</p>
         <h2 class="h1 fire__quote" id="fire-title">The night it first fired, lightning struck and the power went out.</h2>
-        <p class="fire__sign">We call it a sign.</p>
+        <p class="fire__sign"><svg class="fire__bolt" viewBox="0 0 24 32" aria-hidden="true"><path d="M15 0 3 18h8l-3 14L21 12h-8l4-12Z"/></svg>We call it a sign.</p>
         <p class="body">Twelve years from an idea in Tomah, WI to that night in the family shop in Waterloo. This is how it sounded.</p>
         <a class="link" href="story.html">Read our story</a>
-        <p class="note" style="margin-top:4px">Video de la dueña (cómo se escuchó). Ella lo sube en Shopify, sección "Video", con este póster; puede ser horizontal o vertical (si es vertical, el marco pasa a 4:5).</p>
       </div>
       <figure class="vid" id="fire-vid">
         <div class="vid__frame">
@@ -300,34 +322,46 @@ html,body{overflow-x:clip}
     </div>
   </section>
 
-  <!-- 4 · NEXT UP: una línea del calendario, sin fechas inventadas -->
-  <aside class="next" aria-label="Next up">
-    <div class="wrap next__in">
-      <span class="label">Next up</span>
-      <p class="next__txt"><b>2026 testing season.</b> Dates announced on Facebook first.</p>
-      <a class="link" href="schedule.html">See the schedule</a>
+  <!-- 4 · NEXT UP: franja visible. Próximo evento si hay fecha; si no, el último pull + contador de la temporada -->
+  <section class="nx" aria-labelledby="nx-title">
+    <div class="wrap nx__in">
+      <div class="nx__date" id="nx-date" aria-hidden="true"><span>Season</span><b class="num">2026</b></div>
+      <div class="nx__ev">
+        <p class="nx__kick" id="nx-kick">Last pull</p>
+        <h2 class="h1" id="nx-title">Green County Fall Nationals</h2>
+        <p class="nx__meta" id="nx-meta">Monroe, WI · Badger State Tractor Pullers · Pro Stock</p>
+      </div>
+      <div class="nx__season">
+        <p class="nx__kick"><span id="nx-yr" class="num">2026</span> season so far</p>
+        <dl class="nx__stats" id="nx-stats"></dl>
+      </div>
+      <div class="nx__go">
+        <a class="btn" href="schedule.html">See the schedule</a>
+        <a class="link" href="log.html">Read the Pit Log</a>
+      </div>
     </div>
-  </aside>
+  </section>
 
-  <!-- 5 · PARTNER: franja sobria, un solo botón -->
+  <!-- 5 · PARTNER: qué recibe la marca, 3 paquetes con 2 beneficios, dos salidas (paquetes o contacto directo) -->
   <section class="sect--white home-sect" aria-labelledby="ptn-title">
     <div class="wrap ptn">
       <div class="ptn__copy">
         <p class="label muted">Sponsorship</p>
-        <h2 class="h1" id="ptn-title">Partner with The Evil One</h2>
-        <p>Your brand on the tractor, the trailer and team gear, in front of 5,000+ fans across 20 pulls a season.</p>
+        <h2 class="h1" id="ptn-title">Partner with “The Evil One”</h2>
+        <p class="ptn__what">Your brand on the tractor, the trailer and team gear, in front of <b>100,000+ fans a season (est.)</b></p>
+        <ul class="ptn__reach">
+          <li><b class="num">20+</b> pulls a season</li>
+          <li><b class="num">5,000+</b> fans per pull</li>
+          <li><b class="num">10+</b> states</li>
+        </ul>
+        <p class="ptn__est">Estimates for the NTPA and PPL Badger State circuits, before streams and socials.</p>
       </div>
-      <div class="ptn__side">
-        <dl class="tiers-row">
-          <div><dt>Title Partner</dt><dd class="num">$25,000</dd></div>
-          <div><dt>Pit Partner</dt><dd class="num">$10,000</dd></div>
-          <div><dt>Crew Supporter</dt><dd class="num">$5,000</dd></div>
-        </dl>
-        <div class="ptn__foot">
-          <p>NTPA and PPL Badger State circuits</p>
-          <a class="btn" href="sponsors.html">See sponsor packages</a>
-        </div>
+      <ul class="ptn__tiers" id="ptn-tiers" aria-label="Sponsor packages"></ul>
+      <div class="ptn__go">
+        <a class="btn" href="sponsors.html">See packages</a>
+        <p class="ptn__talk"><span>Or talk to us directly:</span> <a href="mailto:heavymetalevil72@gmail.com">heavymetalevil72@gmail.com</a> <span aria-hidden="true">·</span> <a href="tel:+19206504374">(920) 650-4374</a></p>
       </div>
+      <p class="note ptn__note">Todo lo de la home se edita sin código: último pull/próximo evento = Contenido &gt; Metaobjetos &gt; Pull event; contadores = Metaobjetos &gt; Season stats; paquetes = Metaobjetos &gt; Sponsor tier (aquí salen los 2 primeros beneficios); fila de tienda = colección New drop (la 4ª tarjeta es la edición especial); video = sección Video.</p>
     </div>
   </section>
 </main>
@@ -335,15 +369,64 @@ html,body{overflow-x:clip}
 <script src="hm.js"></script>
 <script src="hero.js"></script>
 <script>
-/* Home: miniaturas de categoría y una fila de 4 productos (New drop + best seller para completar). */
+/* Home: miniaturas de categoría y una fila de 4: 3 del New drop + la edición especial (sin alargar la sección). */
 (function () {
   var cats = document.getElementById('home-cats'), row = document.getElementById('home-row');
   if (cats && window.hmCats) cats.innerHTML = window.hmCats('new').replace(' aria-label="Shop by category"', '');
   if (!row || !window.hmCard || !window.HM_CATALOG) return;
-  var all = window.HM_CATALOG;
-  var pick = all.filter(function (p) { return p.tag === 'new'; }).slice(0, 4);
-  all.forEach(function (p) { if (pick.length < 4 && p.tag === 'best' && pick.indexOf(p) < 0) pick.push(p); });
-  row.innerHTML = pick.map(function (p) { return window.hmCard(p).replace('<article class="card"', '<article class="card" role="listitem"'); }).join('');
+  var all = window.HM_CATALOG, ltd = all.filter(function (p) { return p.tag === 'limited'; })[0];
+  var pick = all.filter(function (p) { return p.tag === 'new'; }).slice(0, ltd ? 3 : 4);
+  all.forEach(function (p) { if (pick.length < (ltd ? 3 : 4) && p.tag === 'best' && pick.indexOf(p) < 0) pick.push(p); });
+  if (ltd) pick.push(ltd);
+  /* "The Evil One" siempre entre comillas, también en nombres de producto */
+  var q = function (h) { return h.replace(/(^|[^“])The Evil One(?!”)/g, '$1“The Evil One”'); };
+  row.innerHTML = pick.map(function (p) { return q(window.hmCard(p)).replace('<article class="card"', '<article class="card" role="listitem"'); }).join('');
+})();
+
+/* Next up: simula los metaobjetos "Pull event" (mismo formato que schedule.html) y "Season stats".
+   Si hay un evento con fecha futura, sale "Next up" con su fecha; si no, el último pull. */
+(function () {
+  var SEASON = window.HM_SEASON || new Date().getFullYear();
+  var EVENTS = [
+    { date: '', year: SEASON, event: 'Green County Fall Nationals', city: 'Monroe, WI', league: 'Badger State Tractor Pullers', cls: 'Pro Stock' }
+  ];
+  var SEASON_STATS = [
+    { season: SEASON, competitions: 2, exhibitions: 3, wins: 0 }
+  ];
+  var $ = function (id) { return document.getElementById(id); };
+  var today = new Date().toISOString().slice(0, 10);
+  var next = EVENTS.filter(function (e) { return e.date && e.date >= today; }).sort(function (a, b) { return a.date < b.date ? -1 : 1; })[0];
+  var last = EVENTS.filter(function (e) { return !e.date || e.date < today; }).sort(function (a, b) { return (b.date || b.year + '') < (a.date || a.year + '') ? -1 : 1; })[0];
+  var ev = next || last;
+  if (ev) {
+    $('nx-kick').textContent = next ? 'Next up' : 'Last pull';
+    $('nx-title').textContent = ev.event;
+    $('nx-meta').textContent = [ev.city, ev.league, ev.cls].filter(Boolean).join(' · ');
+    if (ev.date) {
+      var d = new Date(ev.date + 'T12:00:00');
+      $('nx-date').innerHTML = '<span>' + d.toLocaleString('en-US', { month: 'short' }) + '</span><b class="num">' + d.getDate() + '</b>';
+    } else $('nx-date').innerHTML = '<span>Season</span><b class="num">' + (ev.year || SEASON) + '</b>';
+  }
+  var st = SEASON_STATS.filter(function (r) { return r.season === SEASON; })[0];
+  $('nx-yr').textContent = SEASON;
+  if (st) $('nx-stats').innerHTML = [
+    ['Competitions', st.competitions, ''], ['Exhibitions', st.exhibitions, ''], ['Wins', st.wins, st.wins ? '' : 'First one is next']
+  ].map(function (f) { return '<div><dt>' + f[0] + (f[2] ? '<small>' + f[2] + '</small>' : '') + '</dt><dd class="num">' + f[1] + '</dd></div>'; }).join('');
+})();
+
+/* Partner: simula el metaobjeto "Sponsor tier" (mismo que sponsors.html); en la home salen los 2 primeros beneficios. */
+(function () {
+  var TIERS = [
+    { name: 'Title Partner', price: 25000, status: 'available', benefits: ['Your name in the team name all season', 'Biggest logo on the tractor itself'] },
+    { name: 'Pit Partner', price: 10000, status: 'available', featured: true, benefits: ['Logo on the team shirt sleeve', 'Logo on the trailer'] },
+    { name: 'Crew Supporter', price: 5000, status: 'available', benefits: ['Name on the trailer supporters board', 'Listed on this website'] }
+  ];
+  var ul = document.getElementById('ptn-tiers'); if (!ul) return;
+  ul.innerHTML = TIERS.filter(function (t) { return t.status !== 'hidden'; }).map(function (t) {
+    return '<li class="ptn__tier"><h3>' + t.name + (t.featured ? ' <span class="badge">Featured</span>' : '') + (t.status === 'soldout' ? ' <span class="badge badge--line">Sold out</span>' : '') + '</h3>' +
+      '<p class="ptn__price num">$' + t.price.toLocaleString('en-US') + '</p>' +
+      '<ul>' + t.benefits.slice(0, 2).map(function (b) { return '<li>' + b + '</li>'; }).join('') + '</ul></li>';
+  }).join('');
 })();
 /* First fire: el póster "se va la luz" una vez al entrar en pantalla; play avisa que el video está pendiente. */
 (function () {

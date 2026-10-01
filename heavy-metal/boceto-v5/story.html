@@ -371,7 +371,7 @@ html,body{overflow-x:clip}
       </div>
     </div>
     <div class="note st-ctl" id="season-ctl">
-      <span>En Shopify se edita en Contenido &gt; Metaobjetos &gt; Season stats (una entrada por año; el selector de año sale solo), o se calcula solo desde el Pit Log. Exhibiciones: puse 4, confirma si fueron 3 o 4. Prueba los contadores:</span>
+      <span>En Shopify se edita en Contenido &gt; Metaobjetos &gt; Season stats (una entrada por año; el selector de año sale solo), o se calcula solo desde el Pit Log. Puse 2 competencias y 3 exhibiciones (igual que el Pit Log); confirma si fueron 3 o 4. Prueba los contadores:</span>
       <span class="st-ctl__row" id="season-btns"></span>
     </div>
   </div>
@@ -491,7 +491,7 @@ html,body{overflow-x:clip}
   /* Metaobjeto "Season stats" (Contenido > Metaobjetos): una entrada por temporada.
      En el tema se lee la entrada de la temporada elegida; si no existe, se calcula desde el Pit Log. */
   var SEASON_STATS = [
-    { season: SEASON, competitions: 20, competitions_note: 'about, planned', exhibitions: 4, wins: 0, full_pulls: 0 }
+    { season: SEASON, competitions: 2, competitions_note: '', exhibitions: 3, wins: 0, full_pulls: 0 }
   ];
   var FIELDS = [
     ['competitions', 'Competitions', function (r) { return r.competitions_note || 'this season'; }],
