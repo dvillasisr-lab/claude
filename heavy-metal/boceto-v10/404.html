@@ -44,13 +44,13 @@ html,body{overflow-x:clip}
 @keyframes nfBolt{0%{opacity:0}5%{opacity:1}24%{opacity:1}30%{opacity:0}36%{opacity:.8}42%{opacity:0}100%{opacity:0}}
 
 /* contenido */
-.nf__top{position:relative;z-index:3;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:24px clamp(24px,4vw,72px);align-items:end;padding-block:clamp(20px,3.2vh,44px) 12px}
+.nf__top{position:relative;z-index:3;width:100%;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:24px clamp(24px,4vw,72px);align-items:end;align-self:center;padding-block:clamp(20px,3.2vh,44px) 12px}
 .nf__copy{display:grid;gap:12px;justify-items:start;min-width:0}
 .nf__k{margin:0;font-size:var(--t-xs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--nf-mute)}
 .nf__k b{color:var(--accent);font-weight:700}
 .nf__h1{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:800;text-transform:uppercase;line-height:.86;letter-spacing:.005em;color:var(--nf-ink);text-shadow:0 2px 18px rgba(0,0,0,.45)}
 .nf__h1 .a{display:block;font-size:clamp(26px,min(3.4vw,5.4vh),52px);letter-spacing:.03em;line-height:1}
-.nf__h1 .b{display:block;font-size:clamp(92px,min(14vw,21vh),232px);color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap}
+.nf__h1 .b{display:block;font-size:clamp(88px,min(14vw,19vh),232px);color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap}
 .nf__h1 .b small{font-size:.36em;margin-left:.08em;color:var(--nf-ink);letter-spacing:.04em}
 .nf__lede{margin:0;max-width:44ch;font-size:var(--t-md);color:var(--nf-soft);text-shadow:0 1px 2px rgba(0,0,0,.8)}
 .nf__lede b{color:var(--nf-ink)}
@@ -84,17 +84,17 @@ html,body{overflow-x:clip}
 .nf__tick::before{content:"";position:absolute;left:50%;top:-9px;width:2px;height:7px;background:#F7F3E8;opacity:.8}
 .nf__flag{position:absolute;bottom:var(--dirt);width:6px;height:calc(var(--righ) * 1.12);box-shadow:0 0 0 1px var(--ink);background:repeating-linear-gradient(180deg,var(--ink) 0 12px,var(--accent) 12px 24px)}
 .nf__flag::after{content:"";position:absolute;left:6px;top:0;width:clamp(22px,calc(var(--rigw) * .04),40px);aspect-ratio:3/2;background:conic-gradient(var(--ink) 25%,#fff 0 50%,var(--ink) 0 75%,#fff 0) 0 0/50% 50%;border:1px solid var(--ink);transform-origin:left center}
-.nf__flag span{position:absolute;right:12px;bottom:6px;font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--nf-ink);white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.9)}
+.nf__flag span{position:absolute;left:3px;bottom:calc(100% + 8px);transform:translateX(-50%);font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--nf-ink);white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.9)}
 .nf.is-full .nf__flag::after{animation:nfWave .5s ease-in-out infinite alternate}
 @keyframes nfWave{from{transform:skewY(-8deg) scaleX(.92)}to{transform:skewY(6deg) scaleX(1)}}
 .nf__rig{position:absolute;left:0;bottom:calc(var(--dirt) - var(--rigw) * .0104);width:var(--rigw);height:auto;aspect-ratio:2700/576;overflow:visible;transform:translate3d(var(--x,0px),0,0);transition:transform 1.3s cubic-bezier(.3,.6,.2,1);pointer-events:none}
 .nf__rig image{filter:drop-shadow(0 0 1.5px rgba(242,240,233,.5))}
 .nf.is-pulling .nf__shake{animation:nfShake .11s linear infinite}
 @keyframes nfShake{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.nf__rig.no-anim{transition:none}
+.nf__rig.no-anim,.nf__rail.no-anim{transition:none}
 
 /* lectura y "Pull again" (arriba a la izquierda de la pista) */
-.nf__read{position:absolute;left:var(--gutter);top:0;z-index:3;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;font-size:var(--t-xs)}
+.nf__read{position:absolute;left:max(var(--gutter),calc((100% - var(--maxw)) / 2 + var(--gutter)));right:var(--gutter);top:0;z-index:3;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;font-size:var(--t-xs)}
 .nf__dist{font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:22px;line-height:1;font-variant-numeric:tabular-nums;color:var(--nf-ink);text-shadow:0 1px 3px rgba(0,0,0,.8)}
 .nf__dist small{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--nf-mute);margin-right:6px}
 .nf__again{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border:1px solid var(--nf-line);border-radius:999px;background:var(--nf-panel);color:var(--nf-ink);font:inherit;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
@@ -105,13 +105,9 @@ html,body{overflow-x:clip}
 
 .nf-note{padding-block:6px 14px}
 
-@media (max-width:1100px){
-  .nf__top{grid-template-columns:minmax(0,1fr);align-items:start}
-  .nf__exits ul{grid-template-columns:repeat(4,minmax(0,1fr))}
-}
 @media (max-width:860px){
   .nf{--rigw:118vw;--dirt:30px}
-  .nf__exits ul{grid-template-columns:1fr 1fr}
+  .nf__top{grid-template-columns:minmax(0,1fr);align-items:start;gap:18px}
   .nf__go{min-height:58px;padding:10px 12px}
   .nf__track{height:calc(var(--righ) + var(--dirt) + 52px)}
 }
@@ -257,14 +253,14 @@ html,body{overflow-x:clip}
   function xOf(ft, g) { return ft / FULL * g.span; }
   function place(instant) {
     var g = geo(), rw = rig.getBoundingClientRect().width || 1;
-    if (instant) rig.classList.add('no-anim');
+    if (instant) { rig.classList.add('no-anim'); rail.classList.add('no-anim'); }
     rig.style.setProperty('--x', Math.round(xOf(dist, g) - rw * .996) + 'px');
     rail.style.setProperty('--railw', Math.round(xOf(dist, g) - rw * .58) > 0 ? Math.round(xOf(dist, g) - rw * .58) + 'px' : '0px');
     flag.style.left = Math.round(xOf(FULL, g)) + 'px';
     var step = g.w < 600 ? 200 : 100, h = '';
     for (var f = step; f < FULL - 20; f += step) h += '<span class="nf__tick" style="left:' + Math.round(xOf(f, g)) + 'px">' + f + ' FT</span>';
     ticks.innerHTML = h;
-    if (instant) { void rig.offsetWidth; rig.classList.remove('no-anim'); }
+    if (instant) { rig.getBoundingClientRect(); rail.getBoundingClientRect(); rig.classList.remove('no-anim'); rail.classList.remove('no-anim'); }
   }
 
   function setBtn() { btnT.textContent = dist >= FULL ? 'Reset to 404' : 'Pull again'; }

@@ -24,7 +24,7 @@ html,body{overflow-x:clip}
 .g-upd b{color:var(--ink);font-weight:600}
 
 .g-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;padding-block:16px 14px}
-.g-fgroup{display:flex;align-items:center;gap:6px;min-width:0}
+.g-fgroup{position:relative;display:flex;align-items:center;gap:6px;min-width:0}
 .g-fgroup>.label{color:var(--mute);margin-right:4px;flex:none}
 .chip{flex:none;min-height:36px;padding:0 14px;background:var(--surface);border:1px solid var(--line);border-radius:999px;font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:border-color .15s,background .15s}
 .chip:hover{border-color:var(--ink)}
@@ -38,6 +38,39 @@ html,body{overflow-x:clip}
 .g-strip__h .label{color:var(--mute)}
 .g-albums{list-style:none;margin:0;padding:2px 2px 6px;display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin}
 .g-albums li{flex:none;scroll-snap-align:start}
+/* v10 · muchos eventos: cabecera de la tira con contador, buscador de evento (combobox) y flechas */
+.g-strip__h{flex-wrap:wrap}
+.g-strip__l{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;min-width:0}
+.g-strip__r{display:flex;align-items:center;gap:8px;margin-left:auto;min-width:0}
+.g-scount{font-size:var(--t-xs);color:var(--mute);font-variant-numeric:tabular-nums;white-space:nowrap}
+.g-arw{flex:none;width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:var(--ink);cursor:pointer;padding:0}
+.g-arw:hover:not(:disabled){border-color:var(--ink)}
+.g-arw:disabled{opacity:.35;cursor:default}
+.g-arw svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
+.g-find{position:relative;width:clamp(220px,24vw,340px);min-width:0}
+.g-find svg.ic{position:absolute;left:12px;top:50%;width:14px;height:14px;transform:translateY(-50%);fill:none;stroke:var(--mute);stroke-width:2;pointer-events:none}
+.g-find .input{min-height:36px;padding-left:34px;border-color:var(--line);border-radius:999px;font-size:var(--t-xs)}
+.g-find .input:focus{border-color:var(--ink);outline:1px solid var(--ink)}
+.g-opts{position:absolute;right:0;top:calc(100% + 6px);z-index:40;width:max(100%,340px);max-width:calc(100vw - 2 * var(--gutter));max-height:min(380px,60vh);overflow-y:auto;margin:0;padding:4px 0;list-style:none;background:var(--surface);border:1px solid var(--ink);box-shadow:0 18px 40px -20px rgba(28,27,25,.45)}
+.g-opts__h{padding:6px 12px 4px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.g-opt{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:center;padding:6px 12px;cursor:pointer;color:var(--ink)}
+.g-opt[aria-selected="true"],.g-opt:hover{background:var(--bg)}
+.g-opt[aria-selected="true"]{box-shadow:inset 3px 0 0 var(--ink)}
+.g-opt__img{width:34px;height:44px;overflow:hidden;background:var(--tile)}
+.g-opt b{display:block;font-size:var(--t-sm);font-weight:700;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g-opt small{display:block;font-size:11px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g-opt mark{background:#FFE680;color:inherit}
+.g-opt--none{display:block;cursor:default;color:var(--soft);font-size:var(--t-xs)}
+.g-opt--none:hover{background:none}
+.g-status{margin:10px 0 0;font-size:var(--t-xs);color:var(--mute)}
+@media (max-width:760px){
+  .g-strip__r{width:100%;margin-left:0}
+  .g-find{flex:1;width:auto}
+  .g-opts{left:0;right:auto;width:100%}
+  .g-bar{gap:10px 20px}
+  .g-fgroup{max-width:100%;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .g-fgroup::-webkit-scrollbar{display:none}
+}
 .g-alb{display:grid;grid-template-columns:52px minmax(0,1fr);align-items:center;gap:10px;width:clamp(196px,15vw,250px);padding:6px 12px 6px 6px;background:var(--bg);border:1px solid var(--line);cursor:pointer;text-align:left;color:var(--ink);transition:border-color .15s,background .15s}
 .g-alb:hover{border-color:var(--ink)}
 .g-alb[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
@@ -47,6 +80,7 @@ html,body{overflow-x:clip}
 .g-alb__all{display:grid;grid-template-columns:1fr 1fr;gap:2px;width:52px;height:68px}
 .g-alb__all span{background:var(--tile);overflow:hidden}
 .g-alb b{display:block;font-family:var(--f-head);font-stretch:78%;font-size:var(--t-sm);text-transform:uppercase;letter-spacing:.02em;line-height:1.2;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.g-alb__k{font-style:normal;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
 .g-alb small{display:block;margin-top:2px;font-size:11px;letter-spacing:.04em;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* 3 · mosaico: filas = alto de una foto 3:4; el script coloca cada cuadro para que no queden huecos */
@@ -194,12 +228,29 @@ html,body{overflow-x:clip}
     </div>
     <div class="g-bar">
       <div class="g-fgroup" role="group" aria-labelledby="f-year-l"><span class="label" id="f-year-l">Season</span><span id="f-year" style="display:contents"></span></div>
-      <div class="g-fgroup" role="group" aria-labelledby="f-type-l"><span class="label" id="f-type-l">Show</span><span id="f-type" style="display:contents"></span></div>
+      <div class="g-fgroup" role="group" aria-labelledby="f-kind-l"><span class="label" id="f-kind-l">Event type</span><span id="f-kind" style="display:contents"></span></div>
+      <div class="g-fgroup" role="group" aria-labelledby="f-type-l"><span class="label" id="f-type-l">Media</span><span id="f-type" style="display:contents"></span></div>
     </div>
     <!-- 2 · tira de eventos: una portada por álbum, salta a ese evento -->
     <div class="g-strip">
-      <div class="g-strip__h"><h2 class="label" id="f-ev-l">Event</h2><span class="small muted" id="g-count" role="status" aria-live="polite"></span></div>
+      <!-- con muchos eventos: buscador (busca en todas las temporadas), flechas y contador de la tira -->
+      <div class="g-strip__h">
+        <div class="g-strip__l"><h2 class="label" id="f-ev-l">Events</h2><span class="g-scount" id="g-scount"></span></div>
+        <div class="g-strip__r">
+          <div class="g-find">
+            <label class="vh" for="g-find" id="g-find-l">Find an event (searches every season)</label>
+            <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+            <input class="input" id="g-find" type="search" placeholder="Find an event, town or year" autocomplete="off" spellcheck="false"
+              role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="g-opts" aria-describedby="g-find-hint">
+            <span class="vh" id="g-find-hint">Type to filter, use the up and down arrows to choose, Enter to open the event.</span>
+            <ul class="g-opts" id="g-opts" role="listbox" aria-labelledby="g-find-l" hidden></ul>
+          </div>
+          <button type="button" class="g-arw" id="g-sprev" aria-controls="g-albums" aria-label="Scroll events back"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button type="button" class="g-arw" id="g-snext" aria-controls="g-albums" aria-label="Scroll more events"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
       <ul class="g-albums" id="g-albums" aria-labelledby="f-ev-l"></ul>
+      <p class="g-status" id="g-count" role="status" aria-live="polite"></p>
     </div>
   </div>
 </section>
@@ -291,27 +342,27 @@ html,body{overflow-x:clip}
   var CAM = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-2h6l2 2h3v12H4Z M12 10a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" fill-rule="evenodd"/></svg>';
   var ZOOM = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>';
 
-  /* Metaobjeto "Album" (en el tema lo pinta Liquid). Campos: event, date (vacía = "[date pending]"), year, city, league,
+  /* Metaobjeto "Album" (en el tema lo pinta Liquid). Campos: event, kind (Competition, Exhibition o Test: lista de opciones), date (vacía = "[date pending]"), year, city, league,
      photos [{img, alt}] en el orden arrastrado, videos [{url, title, poster}], pull (link al Schedule), log (post del Pit Log).
      id = handle: Schedule y Pit Log ligan a gallery.html?event=<handle>. seq ordena los que aún no tienen fecha. demo = de muestra. */
   var GALLERY_UPDATED = '2026-10-01';
   var REAL = [
-    { id: 'monroe-' + SEASON, event: 'Green County Fall Nationals', year: SEASON, date: '', seq: 80, city: 'Monroe, WI', league: 'Badger State Tractor Pullers',
+    { id: 'monroe-' + SEASON, event: 'Green County Fall Nationals', year: SEASON, date: '', seq: 80, kind: 'Competition', city: 'Monroe, WI', league: 'Badger State Tractor Pullers',
       photos: [], videos: [{ url: 'https://www.youtube.com/watch?v=HfJ5FAJJ5Ac', title: 'Badger State Tractor Pullers ' + SEASON + ': Green County Fall Nationals, Monroe, WI', poster: 'hm-hero' }],
       pull: 'schedule.html', log: 'log.html?q=Monroe' },
-    { id: 'exhibition-3', event: 'Exhibition run', year: SEASON, date: '', seq: 70, city: '', league: '',
+    { id: 'exhibition-3', event: 'Exhibition run', year: SEASON, date: '', seq: 70, kind: 'Exhibition', city: '', league: '',
       photos: [{ img: 'hm-grandstand', alt: '“The Evil One” from the side in front of full grandstands' }], videos: [], pull: 'schedule.html', log: 'log.html?type=Exhibition' },
-    { id: 'exhibition-2', event: 'Exhibition run', year: SEASON, date: '', seq: 60, city: '', league: '',
+    { id: 'exhibition-2', event: 'Exhibition run', year: SEASON, date: '', seq: 60, kind: 'Exhibition', city: '', league: '',
       photos: [{ img: 'hm-front-white', alt: 'Front of the tractor on the track with white smoke' }], videos: [], pull: 'schedule.html', log: 'log.html?type=Exhibition' },
-    { id: 'exhibition-1', event: 'First exhibition', year: SEASON, date: '', seq: 50, city: '', league: '',
+    { id: 'exhibition-1', event: 'First exhibition', year: SEASON, date: '', seq: 50, kind: 'Exhibition', city: '', league: '',
       photos: [{ img: 'hm-rear', alt: 'The tractor from the rear three quarters on the track, grandstands behind' }], videos: [], pull: 'schedule.html', log: 'log.html?type=Exhibition' },
-    { id: 'first-pull-' + SEASON, event: 'First pull attempt', year: SEASON, date: '', seq: 40, city: '', league: '',
+    { id: 'first-pull-' + SEASON, event: 'First pull attempt', year: SEASON, date: '', seq: 40, kind: 'Competition', city: '', league: '',
       photos: [{ img: 'hm-front-smoke', alt: 'Front of the tractor with the driver in a gold helmet, smoke behind and the crew in team shirts' }], videos: [], pull: '', log: 'log.html?q=first%20pull' },
-    { id: 'test-day-' + SEASON, event: 'Test days', year: SEASON, date: '', seq: 30, city: 'Waterloo, WI', league: '', demo: true,
+    { id: 'test-day-' + SEASON, event: 'Test days', year: SEASON, date: '', seq: 30, kind: 'Test', city: 'Waterloo, WI', league: '', demo: true,
       photos: [{ img: 'hm-driver-crew', alt: 'Chris F. and the crew next to the rear tire' }, { img: 'hm-crew', alt: 'The crew talking next to the tractor on the grass' },
         { img: 'hm-driver', alt: 'Chris F. in the seat, front of the tractor' }, { img: 'hm-side', alt: 'The tractor in profile on the grass under a blue sky' }],
       videos: [], pull: '', log: 'log.html?type=Test' },
-    { id: 'engine-fires-lightning-strikes-' + SEASON, event: 'Engine fires, lightning strikes', year: SEASON, date: '', seq: 10, city: 'Waterloo, WI', league: '',
+    { id: 'engine-fires-lightning-strikes-' + SEASON, event: 'Engine fires, lightning strikes', year: SEASON, date: '', seq: 10, kind: 'Test', city: 'Waterloo, WI', league: '',
       photos: [{ img: 'hm-engine', alt: 'The Cat 3208 engine with its turbo in the shop' }], videos: [], pull: '', log: 'log.html?q=lightning' }
   ];
   var IMG = { 'hm-hero': [776, 1400], 'hm-driver': [788, 1400], 'hm-engine': [787, 1400] };
@@ -329,19 +380,21 @@ html,body{overflow-x:clip}
       var np = rnd() < .12 ? 0 : 1 + Math.floor(rnd() * 14), ph = [];
       for (var j = 0; j < np; j++) { var p = PICS[(i + j * 3) % PICS.length]; ph.push({ img: p[0], alt: p[1] + ', ' + place + ' (example ' + (j + 1) + ')' }); }
       var vids = np === 0 || rnd() < .3 ? [{ url: 'https://www.youtube.com/watch?v=HfJ5FAJJ5Ac', title: 'Example video, ' + place, poster: PICS[i % PICS.length][0] }] : [];
-      out.push({ id: 'x' + i, event: kind + place.split(',')[0], year: y, date: y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0'), seq: n - i, city: place,
+      out.push({ id: 'x' + i, event: kind + place.split(',')[0], year: y, date: y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0'), seq: n - i, kind: r < .5 ? 'Competition' : r < .8 ? 'Exhibition' : 'Test', city: place,
         league: r < .5 ? (rnd() < .5 ? 'NTPA' : 'Badger State Tractor Pullers') : '', demo: true, photos: ph, videos: vids, pull: r < .8 ? 'schedule.html' : '', log: 'log.html?q=' + encodeURIComponent(place.split(',')[0]) });
     }
     return out;
   }
 
   var TYPES = [['all', 'All'], ['photos', 'Photos'], ['videos', 'Videos']];
+  var KINDS = [['all', 'All'], ['Competition', 'Competition'], ['Exhibition', 'Exhibition'], ['Test', 'Test']];
   var url = new URLSearchParams(location.search);
-  var st = { year: url.get('year') === 'all' ? 'all' : (+url.get('year') || SEASON), type: url.get('type') || 'all', shown: PAGE, test: url.get('demo') === '40', event: url.get('event') || '' };
+  var st = { year: url.get('year') === 'all' ? 'all' : (+url.get('year') || SEASON), type: url.get('type') || 'all', shown: PAGE, test: url.get('demo') === '40', event: url.get('event') || '', kind: 'all' };
+  KINDS.forEach(function (k) { if (k[0] !== 'all' && k[0].toLowerCase() === String(url.get('kind') || '').toLowerCase()) st.kind = k[0]; });
   if (!TYPES.some(function (t) { return t[0] === st.type; })) st.type = 'all';
   var ALBUMS = st.test ? makeTest(40) : REAL.slice();
   function byEvent(id) { return ALBUMS.filter(function (a) { return a.id === id; })[0]; }
-  if (st.event) { var ev0 = byEvent(st.event); if (ev0) { st.year = ev0.year; st.type = 'all'; } }
+  if (st.event) { var ev0 = byEvent(st.event); if (ev0) { st.year = ev0.year; st.type = 'all'; if (st.kind !== ev0.kind) st.kind = 'all'; } }
 
   function longDate(iso, short) { var p = iso.split('-'); return new Date(+p[0], +p[1] - 1, +p[2] || 1).toLocaleDateString('en-US', { month: short ? 'short' : 'long', day: 'numeric', year: 'numeric' }); }
   function newest() { return ALBUMS.reduce(function (m, a) { return a.date && a.date > m ? a.date : m; }, '0000'); }
@@ -349,6 +402,8 @@ html,body{overflow-x:clip}
   function sorted(list) { return list.slice().sort(function (a, b) { return sortKey(b) - sortKey(a); }); }
   function years() { var y = [SEASON]; ALBUMS.forEach(function (a) { if (y.indexOf(a.year) < 0) y.push(a.year); }); return y.sort(function (a, b) { return b - a; }); }
   function inYear(a) { return st.year === 'all' || a.year === st.year; }
+  function inKind(a) { return st.kind === 'all' || a.kind === st.kind; }
+  function inPool(a) { return inYear(a) && inKind(a); }
   function sum(list, f) { return list.reduce(function (s, a) { return s + f(a); }, 0); }
   function plural(n, w) { return n + ' ' + w + (n === 1 ? '' : 's'); }
   function whenShort(a) { return a.date ? longDate(a.date, true) : String(a.year); }
@@ -374,7 +429,12 @@ html,body{overflow-x:clip}
     $('f-year').innerHTML = years().map(function (y) { return [y, String(y)]; }).concat([['all', 'All']]).map(function (y) {
       return '<button type="button" class="chip" data-year="' + y[0] + '" aria-pressed="' + (st.year === y[0]) + '">' + y[1] + '</button>';
     }).join('');
-    var pool = ALBUMS.filter(inYear);
+    var yp = ALBUMS.filter(inYear);
+    $('f-kind').innerHTML = KINDS.map(function (k) {
+      var n = k[0] === 'all' ? yp.length : yp.filter(function (a) { return a.kind === k[0]; }).length;
+      return '<button type="button" class="chip" data-kind="' + k[0] + '" aria-pressed="' + (st.kind === k[0]) + '">' + k[1] + '<span class="n">' + n + '</span><span class="vh"> ' + (n === 1 ? 'event' : 'events') + '</span></button>';
+    }).join('');
+    var pool = ALBUMS.filter(inPool);
     var cnt = { all: sum(pool, function (a) { return a.photos.length + a.videos.length; }), photos: sum(pool, function (a) { return a.photos.length; }), videos: sum(pool, function (a) { return a.videos.length; }) };
     $('f-type').innerHTML = TYPES.map(function (t) {
       return '<button type="button" class="chip" data-type="' + t[0] + '" aria-pressed="' + (st.type === t[0]) + '">' + (t[0] === 'videos' ? PLAY : t[0] === 'photos' ? CAM : '') + t[1] + '<span class="n">' + cnt[t[0]] + '</span></button>';
@@ -382,17 +442,81 @@ html,body{overflow-x:clip}
   }
   function cover(a) { return a.photos.length ? a.photos[0].img : a.videos.length ? a.videos[0].poster : 'hm-hero'; }
   function renderAlbums() {
-    var pool = sorted(ALBUMS.filter(inYear)), pics = [];
+    var pool = sorted(ALBUMS.filter(inPool)), pics = [];
     pool.forEach(function (a) { if (pics.length < 4) pics.push(cover(a)); });
     var all = '<li><button type="button" class="g-alb" data-ev="" aria-pressed="' + !st.event + '"><span class="g-alb__all" aria-hidden="true">' +
       pics.map(function (k) { return '<span><img class="photo" src="img/' + esc(k) + '.webp" alt="" loading="lazy"></span>'; }).join('') + '</span><span><b>All events</b><small>' + plural(pool.length, 'event') + '</small></span></button></li>';
     $('g-albums').innerHTML = all + pool.map(function (a) {
       return '<li><button type="button" class="g-alb" data-ev="' + esc(a.id) + '" aria-pressed="' + (st.event === a.id) + '"><span class="g-alb__img" aria-hidden="true"><img class="photo" src="img/' + esc(cover(a)) + '.webp" alt="" loading="lazy"></span>' +
-        '<span><b>' + esc(a.event) + '</b><small>' + esc(whenShort(a)) + ' · ' + esc(counts(a)) + '</small></span></button></li>';
+        '<span><b>' + esc(a.event) + '</b><small><i class="g-alb__k">' + esc(a.kind) + '</i> · ' + esc(whenShort(a)) + ' · ' + esc(counts(a)) + '</small></span></button></li>';
     }).join('');
     var on = $('g-albums').querySelector('[aria-pressed="true"]');
-    if (on) { var box = $('g-albums'), li = on.parentNode; box.scrollLeft = Math.max(0, li.offsetLeft - box.offsetLeft - 24); }
+    if (on) { var box = $('g-albums'), li = on.parentNode; box.scrollLeft = Math.max(0, li.getBoundingClientRect().left - box.getBoundingClientRect().left + box.scrollLeft - 24); }
+    stripState();
   }
+
+  /* ---------- tira: flechas y contador "1-6 of 40" ---------- */
+  function stripState() {
+    var box = $('g-albums'), lis = [].slice.call(box.children, 1), n = lis.length, max = box.scrollWidth - box.clientWidth;
+    $('g-sprev').disabled = box.scrollLeft <= 2;
+    $('g-snext').disabled = box.scrollLeft >= max - 2;
+    if (!n) { $('g-scount').textContent = 'No events'; return; }
+    var bl = box.getBoundingClientRect().left, br = bl + box.clientWidth, first = -1, last = -1;
+    lis.forEach(function (li, i) { var r = li.getBoundingClientRect(); if (r.left >= bl - 2 && r.right <= br + 2) { if (first < 0) first = i; last = i; } });
+    var tail = st.year === 'all' ? ' in all seasons' : ' in ' + st.year;
+    $('g-scount').textContent = (first < 0 || (first === 0 && last === n - 1)) ? plural(n, 'event') + tail : (first === last ? String(first + 1) : (first + 1) + '-' + (last + 1)) + ' of ' + plural(n, 'event') + tail;
+  }
+  var reduceM = matchMedia('(prefers-reduced-motion: reduce)');
+  function stripBy(dir) { var box = $('g-albums'); box.scrollBy({ left: dir * Math.max(200, box.clientWidth * .85), behavior: reduceM.matches ? 'auto' : 'smooth' }); }
+  $('g-sprev').addEventListener('click', function () { stripBy(-1); });
+  $('g-snext').addEventListener('click', function () { stripBy(1); });
+  var sraf = 0; $('g-albums').addEventListener('scroll', function () { cancelAnimationFrame(sraf); sraf = requestAnimationFrame(stripState); }, { passive: true });
+
+  /* ---------- buscador de evento (combobox): busca en todas las temporadas y tipos ---------- */
+  var find = $('g-find'), opts = $('g-opts'), hits = [], act = -1;
+  function norm(s) { return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+  function hay(a) { return norm([a.event, a.kind, a.city, a.league, a.year, a.date ? longDate(a.date) : ''].join(' ')); }
+  function mark(s, q) { var e = esc(s); if (!q) return e; var i = norm(s).indexOf(q); return i < 0 ? e : esc(s.slice(0, i)) + '<mark>' + esc(s.slice(i, i + q.length)) + '</mark>' + esc(s.slice(i + q.length)); }
+  function openFind() {
+    var q = norm(find.value.trim()), words = q.split(/\s+/).filter(Boolean);
+    hits = sorted(ALBUMS).filter(function (a) { var h = hay(a); return words.every(function (w) { return h.indexOf(w) > -1; }); });
+    act = hits.length && words.length ? 0 : -1;
+    var w0 = words[0] || '';
+    opts.innerHTML = '<li class="g-opts__h" role="presentation">' + (words.length ? hits.length + (hits.length === 1 ? ' match' : ' matches') : 'All ' + plural(hits.length, 'event') + ', newest first') + '</li>' +
+      (hits.length ? hits.map(function (a, i) {
+        return '<li class="g-opt" role="option" id="g-opt-' + i + '" data-k="' + i + '" aria-selected="' + (i === act) + '"><span class="g-opt__img" aria-hidden="true"><img class="photo" src="img/' + esc(cover(a)) + '.webp" alt="" loading="lazy"></span>' +
+          '<span><b>' + mark(a.event, w0) + '</b><small>' + esc([a.kind, whenShort(a), a.city].filter(Boolean).join(' · ')) + ' · ' + esc(counts(a) || 'no media yet') + '</small></span></li>';
+      }).join('') : '<li class="g-opt g-opt--none" role="option" aria-disabled="true" aria-selected="false">No events match “' + esc(find.value.trim()) + '”. Try a town, a year or “exhibition”.</li>');
+    opts.hidden = false; find.setAttribute('aria-expanded', 'true'); setAct(act);
+  }
+  function closeFind() { opts.hidden = true; find.setAttribute('aria-expanded', 'false'); find.removeAttribute('aria-activedescendant'); act = -1; }
+  function setAct(i) {
+    act = i;
+    [].forEach.call(opts.querySelectorAll('.g-opt[data-k]'), function (o) { o.setAttribute('aria-selected', String(+o.getAttribute('data-k') === i)); });
+    var o = i > -1 && $('g-opt-' + i);
+    if (o) { find.setAttribute('aria-activedescendant', o.id); var top = o.offsetTop, bot = top + o.offsetHeight; if (top < opts.scrollTop + 28) opts.scrollTop = top - 28; else if (bot > opts.scrollTop + opts.clientHeight) opts.scrollTop = bot - opts.clientHeight; }
+    else find.removeAttribute('aria-activedescendant');
+  }
+  function pick(i) {
+    var a = hits[i]; if (!a) return;
+    closeFind(); find.value = '';
+    goEvent(a.id);
+    $('g-count').textContent = 'Showing ' + a.event + ', ' + whenShort(a) + ' · ' + (counts(a) || 'no photos yet');
+  }
+  find.addEventListener('input', openFind);
+  find.addEventListener('focus', function () { if (opts.hidden) openFind(); });
+  find.addEventListener('click', function () { if (opts.hidden) openFind(); });
+  find.addEventListener('keydown', function (e) {
+    var n = hits.length;
+    if (e.key === 'ArrowDown') { e.preventDefault(); if (opts.hidden) openFind(); else if (n) setAct((act + 1) % n); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); if (opts.hidden) openFind(); else if (n) setAct(act <= 0 ? n - 1 : act - 1); }
+    else if (e.key === 'Enter') { e.preventDefault(); if (!opts.hidden && act > -1) pick(act); else if (!opts.hidden && n === 1) pick(0); }
+    else if (e.key === 'Escape') { if (!opts.hidden) { e.preventDefault(); closeFind(); } else if (find.value) { e.preventDefault(); find.value = ''; } }
+    else if (e.key === 'Tab') closeFind();
+  });
+  opts.addEventListener('mousedown', function (e) { e.preventDefault(); });
+  opts.addEventListener('click', function (e) { var o = e.target.closest('.g-opt[data-k]'); if (o) pick(+o.getAttribute('data-k')); });
+  document.addEventListener('click', function (e) { if (!opts.hidden && !e.target.closest('.g-find')) closeFind(); });
 
   /* ---------- mosaico ---------- */
   function colsFor(w) { return w < 600 ? 2 : w < 900 ? 3 : w < 1240 ? 4 : w < 1640 ? 5 : 6; }
@@ -487,8 +611,8 @@ html,body{overflow-x:clip}
 
   function renderWalls(focusFrom) {
     var ev = st.event ? byEvent(st.event) : null;
-    var pool = ALBUMS.filter(inYear);
-    var yl = st.year === 'all' ? 'all seasons' : String(st.year);
+    var pool = ALBUMS.filter(inPool);
+    var yl = (st.year === 'all' ? 'all seasons' : String(st.year)) + (st.kind === 'all' ? '' : ', ' + st.kind.toLowerCase());
     $('g-rest').innerHTML = ''; $('g-evhead').innerHTML = '';
     if (st.event && !ev) {
       $('g-count').textContent = 'Event not found';
@@ -522,7 +646,7 @@ html,body{overflow-x:clip}
     if (!items.length) {
       $('g-count').textContent = 'Nothing here yet';
       $('g-wall').innerHTML = ''; $('g-wall').className = 'g-wall';
-      $('g-evhead').innerHTML = '<div class="g-empty"><p class="h3">Nothing here yet</p><p>No ' + esc(st.type === 'all' ? 'photos or videos' : st.type) + ' for ' + esc(yl) + '. Try another season or show everything.</p><button type="button" class="btn btn--ghost btn--sm" data-year="all" data-type="all">Show everything</button></div>';
+      $('g-evhead').innerHTML = '<div class="g-empty"><p class="h3">Nothing here yet</p><p>No ' + esc(st.type === 'all' ? 'photos or videos' : st.type) + ' for ' + esc(yl) + '. Try another season or event type, or show everything.</p><button type="button" class="btn btn--ghost btn--sm" data-year="all" data-type="all" data-kind="all">Show everything</button></div>';
       $('g-more').innerHTML = ''; return;
     }
     $('g-count').textContent = plural(items.length, st.type === 'photos' ? 'photo' : st.type === 'videos' ? 'video' : 'item') + ' from ' + plural(nAlb, 'event') + ' · ' + yl;
@@ -539,16 +663,24 @@ html,body{overflow-x:clip}
   function writeURL() {
     var q = new URLSearchParams();
     if (st.event) q.set('event', st.event);
-    else { if (st.year !== SEASON) q.set('year', st.year); if (st.type !== 'all') q.set('type', st.type); }
+    else { if (st.year !== SEASON) q.set('year', st.year); if (st.kind !== 'all') q.set('kind', st.kind.toLowerCase()); if (st.type !== 'all') q.set('type', st.type); }
     if (st.test) q.set('demo', '40');
     try { history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : '')); } catch (e) {}
+  }
+  /* abre un evento (tira, buscador o links): su temporada queda elegida; si el tipo elegido no le toca, vuelve a All */
+  function goEvent(id) {
+    st.event = id || '';
+    var a = st.event && byEvent(st.event);
+    if (a) { st.type = 'all'; st.year = a.year; if (!inKind(a)) st.kind = 'all'; }
+    render();
+    if ($('g-albums').getBoundingClientRect().top < 60) { document.querySelector('.g-strip').scrollIntoView({ block: 'start' }); window.scrollBy(0, -70); }
   }
   function render() { st.shown = PAGE; renderTop(); renderFilters(); renderAlbums(); renderWalls(); writeURL(); }
   render();
 
   /* al cambiar el ancho (girar el celular) se vuelven a acomodar los cuadros */
   var rz = null, lastW = window.innerWidth;
-  window.addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(function () { if (window.innerWidth !== lastW) { lastW = window.innerWidth; renderWalls(); } }, 150); });
+  window.addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(function () { stripState(); if (window.innerWidth !== lastW) { lastW = window.innerWidth; renderWalls(); } }, 150); });
 
   document.addEventListener('click', function (e) {
     if (!e.target.closest('main')) return;
@@ -558,23 +690,22 @@ html,body{overflow-x:clip}
     var t = e.target.closest('.g-t[data-wall]'); if (t) { openFromTile(+t.getAttribute('data-wall'), +t.getAttribute('data-i'), t); return; }
     var evb = e.target.closest('[data-ev]');
     if (evb) {
-      st.event = evb.getAttribute('data-ev'); if (st.event) st.type = 'all';
-      render();
+      goEvent(evb.getAttribute('data-ev'));
       var on = document.querySelector('.g-alb[data-ev="' + st.event + '"]'); if (on) on.focus({ preventScroll: true });
-      if ($('g-albums').getBoundingClientRect().top < 60) { document.querySelector('.g-strip').scrollIntoView({ block: 'start' }); window.scrollBy(0, -70); }
       return;
     }
-    var b = e.target.closest('[data-year],[data-type]'); if (!b) return;
+    var b = e.target.closest('[data-year],[data-type],[data-kind]'); if (!b || !e.target.closest('.g-bar,.g-empty')) return;
     var sel = null; st.event = '';
     if (b.hasAttribute('data-year')) { var y = b.getAttribute('data-year'); st.year = y === 'all' ? 'all' : +y; sel = '[data-year="' + y + '"]'; }
     if (b.hasAttribute('data-type')) { st.type = b.getAttribute('data-type'); sel = '[data-type="' + st.type + '"]'; }
+    if (b.hasAttribute('data-kind')) { st.kind = b.getAttribute('data-kind'); sel = sel && b.hasAttribute('data-year') ? sel : '[data-kind="' + st.kind + '"]'; }
     render();
     var fb = (sel && document.querySelector('.g-bar ' + sel)) || document.querySelector('.g-bar .chip[aria-pressed="true"]');
     if (fb) fb.focus();
   });
 
   $('g-test').addEventListener('click', function () {
-    st.test = !st.test; ALBUMS = st.test ? makeTest(40) : REAL.slice(); st.year = SEASON; st.event = ''; st.type = 'all'; render();
+    st.test = !st.test; ALBUMS = st.test ? makeTest(40) : REAL.slice(); st.year = SEASON; st.event = ''; st.type = 'all'; st.kind = 'all'; closeFind(); render();
     this.textContent = st.test ? 'Volver a los álbumes reales' : 'Probar con 40 álbumes';
     this.setAttribute('aria-pressed', String(st.test));
   });

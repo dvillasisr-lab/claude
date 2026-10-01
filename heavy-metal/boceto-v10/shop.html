@@ -145,7 +145,7 @@ html,body{overflow-x:clip}
   <div class="wrap plp-soon" id="plp-soon" hidden></div>
 
   <div class="wrap plp-notes">
-    <p class="note">Categorías: cada fotito es una colección automática (Productos &gt; Colecciones &gt; Crear colección &gt; Automática, condición "Tipo de producto es igual a T-Shirt", o una etiqueta como <b>hats</b>). Printify llena el tipo al publicar, así que cada diseño nuevo cae solo en su categoría. La foto de la fotito es la imagen de la colección. Para agregar o quitar una: crea o borra la colección y ponla en el menú (Tienda online &gt; Navegación). Filtros de talla y color: app Search &amp; Discovery; orden Featured = orden manual de la colección.</p>
+    <p class="note">Categorías: cada fotito es una colección automática (Productos &gt; Colecciones &gt; Crear colección &gt; Automática, condición "Tipo de producto es igual a T-Shirt", o una etiqueta como <b>hats</b>). Printify llena el tipo al publicar, así que cada diseño nuevo cae solo en su categoría. La foto de la fotito es la imagen de la colección. Para agregar o quitar una: crea o borra la colección y ponla en el menú (Tienda online &gt; Navegación). Filtros de talla y color: app Search &amp; Discovery; orden Featured = orden manual de la colección. Mientras carga (y al cambiar filtros) sale un esqueleto gris; lo pinta el tema solo: <a id="plp-skel-link" href="shop.html?loading=slow">Ver esqueleto lento</a>.</p>
     <p class="note" id="plp-empty-note">Sin merch: si no hay productos activos, la tienda muestra "Coming soon" con aviso por email; al publicar el primero, vuelve sola a esta vista. <a id="plp-empty-link" href="shop.html?empty=1">Probar tienda vacía</a></p>
   </div>
 </main>
@@ -219,6 +219,7 @@ html,body{overflow-x:clip}
     if (st.sort !== 'featured') q.set('sort', st.sort);
     st.size.forEach(function (s) { q.append(P_SIZE, s); });
     st.color.forEach(function (c) { q.append(P_COLOR, c); });
+    if (SLOW) q.set('loading', 'slow');
     try { history.replaceState(null, '', location.pathname + '?' + q.toString()); } catch (e) {}
   }
 
@@ -274,6 +275,7 @@ html,body{overflow-x:clip}
       acc('category', 'Category', CATS[st.cat][0], cat);
   }
 
+  var SLOW = /[?&]loading=slow/.test(location.search), SKEL_MS = SLOW ? 3000 : 700, paintN = 0;
   var X = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>';
   function render(opts) {
     opts = opts || {};
@@ -283,17 +285,30 @@ html,body{overflow-x:clip}
     $('plp-crumbs').innerHTML = '<li><a href="index.html">Home</a></li>' + (st.cat === 'all' ? '<li aria-current="page">Shop all</li>' : '<li><a href="shop.html?cat=all">Shop</a></li><li aria-current="page">' + esc(c[0]) + '</li>');
     document.title = (st.cat === 'all' ? 'Tractor Pulling Shirts, Hoodies & Hats' : c[0] + ' · Tractor Pulling Merch') + ' · Heavy Metal Pro Stock: “The Evil One”';
     $('plp-count').textContent = n + (n === 1 ? ' product' : ' products') + (nFilters() ? ' of ' + total : '');
-    $('plp-grid').innerHTML = list.map(window.hmCard).join('');
-    /* edición especial: la etiqueta "Special edition" se queda aunque el estado sea Coming soon o Sold out */
-    [].forEach.call($('plp-grid').querySelectorAll('.card[data-tag="limited"]'), function (c) {
-      var b = c.querySelector('.card__badges');
-      if (!b) { b = document.createElement('div'); b.className = 'card__badges'; c.querySelector('.card__media').appendChild(b); }
-      if (!/Special edition/.test(b.textContent)) b.insertAdjacentHTML('beforeend', '<span class="badge badge--ink">Special edition</span>');
-    });
+    /* esqueleto fantasma: 8 tarjetas grises unos 700 ms antes del grid real (al abrir y al cambiar filtros u orden) */
+    var grid = $('plp-grid'), token = ++paintN;
+    function paint() {
+      if (token !== paintN) return;
+      grid.innerHTML = list.map(window.hmCard).join('');
+      grid.removeAttribute('aria-busy');
+      /* edición especial: la etiqueta "Special edition" se queda aunque el estado sea Coming soon o Sold out */
+      [].forEach.call(grid.querySelectorAll('.card[data-tag="limited"]'), function (c) {
+        var b = c.querySelector('.card__badges');
+        if (!b) { b = document.createElement('div'); b.className = 'card__badges'; c.querySelector('.card__media').appendChild(b); }
+        if (!/Special edition/.test(b.textContent)) b.insertAdjacentHTML('beforeend', '<span class="badge badge--ink">Special edition</span>');
+      });
+      grid.hidden = !n;
+      $('plp-empty').hidden = !!n;
+    }
+    if (opts.noSkel) paint();
+    else {
+      grid.innerHTML = window.hmSkeleton ? window.hmSkeleton(8) : '';
+      grid.setAttribute('aria-busy', 'true');
+      grid.hidden = false; $('plp-empty').hidden = true;
+      setTimeout(paint, SKEL_MS);
+    }
     /* Special edition: sus tarjetas ya llevan a limited.html (p.page en hm.js); arriba, un acceso directo a la página de la edición */
     $('plp-ltd').hidden = st.cat !== 'limited';
-    $('plp-grid').hidden = !n;
-    $('plp-empty').hidden = !!n;
     $('plp-seen').textContent = "You've seen " + n + ' of ' + n + (n === 1 ? ' product' : ' products');
     $('plp-n-size').textContent = st.size.length ? '(' + st.size.length + ')' : '';
     $('plp-n-color').textContent = st.color.length ? '(' + st.color.length + ')' : '';
@@ -335,6 +350,7 @@ html,body{overflow-x:clip}
     return;
   }
 
+  if (SLOW) { $('plp-skel-link').href = 'shop.html'; $('plp-skel-link').textContent = 'Ver a velocidad normal'; }
   $('plp-cats').innerHTML = window.hmCats ? window.hmCats(st.cat) : '';
   prune();
   render();
@@ -361,7 +377,7 @@ html,body{overflow-x:clip}
   var drawer = $('plp-drawer'), scrim = $('plp-scrim'), lastBtn = null;
   function openDrawer(key, btn) {
     lastBtn = btn; openAcc = {}; openAcc[key] = true;
-    render();
+    render({ noSkel: true });
     drawer.hidden = false; scrim.hidden = false; document.body.style.overflow = 'hidden';
     [].forEach.call(document.querySelectorAll('[data-plp-open]'), function (b) { b.setAttribute('aria-expanded', 'false'); });
     btn.setAttribute('aria-expanded', 'true');
