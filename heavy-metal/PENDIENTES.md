@@ -39,7 +39,7 @@ Lo que me vayas dando "para después" va aquí. No se trabaja hasta que digas.
 | 32 | Black Smoke Guarantee | Frase: "If this shirt ever stops being evil, we replace it." (se adapta: hoodie, cap, sticker...). Va en producto, FAQ y política de devoluciones (sección 7). Confirmar plazo (12 meses propuesto), qué cubre el proveedor (reimpresión por defecto suele ser solo 30 días; después el costo es nuestro) y revisión legal. | Por confirmar |
 
 ## Datos que faltan
-- Cifras de patrocinio: ¿5,000+ fans es por evento o por temporada? (el sitio usa "XX+" en frases de venta y estimados "est." en contadores).
+- Cifras de patrocinio: 5,000+ fans por pull (resuelto, ver tabla "Antes de pasar a Shopify" #4). States we pull in: 10+ (confirmado por la dueña). (el sitio usa "XX+" en frases de venta y estimados "est." en contadores).
 - Crew Pack: ¿dos playeras o playera + gorra?
 - Precios de la merch (y nombres y fotos reales).
 - Video del rayo (cómo se escuchó) y video del motor.
@@ -75,7 +75,7 @@ El boceto pasó la prueba completa: funcional, contenido, accesibilidad, velocid
 | 1 | Productos reales en Printify: nombres, diseños, mockups, tipo, colores, tallas y precios (hoy todo dice $XX) | Dueña |
 | 2 | Monto de envío gratis y escalones del carrito (que nunca cuadre justo, pendiente 27) y montos de Feed The Beast | Dueña |
 | 3 | Confirmar con Printify: envío en 5 días, "printed in USA", devoluciones, si ponen la nota en el paquete, inventario (sin conteo no salen solos "Sold out" ni "Almost gone!") y si funciona con el Crew Pack | Dueña con Printify |
-| 4 | Fans: ¿los 5,000+ son por pull o por temporada? (si es por temporada, el "100,000+" está mal en todo el sitio) | Dueña |
+| 4 | Fans: RESUELTO. Son 5,000+ por pull: así lo dice el tema en vivo de la dueña ("20 pulls per season" junto a "5,000+ fans in the stands") y cuadra con la industria (WTPA 50,000+ por temporada, Tomah 60,000 a 70,000 en un fin de semana). 100,000+ por temporada (est.) se queda. | Resuelto |
 | 5 | Exhibiciones: ¿3 o 4? Fecha, lugar, resultado y fotos de cada una, más Monroe y el día del primer pull (agosto 2026) | Dueña |
 | 6 | Black Smoke Guarantee: plazo y términos, revisión legal; nombre legal del negocio para las políticas | Dueña y abogado |
 | 7 | Contenido del Crew Pack y su descuento | Dueña |
