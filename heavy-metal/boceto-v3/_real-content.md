@@ -51,3 +51,14 @@ Copyright exacto pedido: "© 2026 Heavy Metal Pro Stock: The Evil One · Waterlo
 
 ## Calendario
 Sin fechas confirmadas (temporada de pruebas). Evento real pasado del video: Green County Fall Nationals, Monroe, WI (Badger State Tractor Pullers, 2026). Ligas: NTPA (stream en Full Pull Live), PPL Badger State.
+
+## Equipo real (del tema, página THE TEAM)
+- Chris F. · Owner, Driver & Crew Chief
+- Isela F. · Manager, Marketing & PR
+- Cindy F. · Operations & Accounting
+- Daniela V. · Social Media & Marketing
+- Pit Crew: Daniel, Jared F., Jim F., Tony B., Jeff L., John W., Brad S.
+- Mascotas del equipo: Cricket F. (blanca) y Turbo (negro)
+Sin fotos individuales: usar iniciales en círculo (como el tema) y placeholders.
+Hitos del tema: 2014 Idea is born (Tomah, WI) · Feb 2020 First bolt · 2026 Engine fires, lightning strikes · 2026 First pull attempt · TODAY: 2026 in testing.
+Envío real del tema: "Ships in 5 days · Printed to order in the USA" (confirmar con Printly antes de prometer "USA"). Trust del tema: Free US shipping over $[X] · Secure checkout (Cards, Apple Pay, Shop Pay) · Fuels the team.
