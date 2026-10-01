@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<!-- Hallmark · v25: long-read con el texto largo de la dueña; hero a sangre con foto y composición a todo el ancho; columna de lectura ~64ch -->
+<!-- Hallmark · v26: long-read con el texto largo de la dueña; hero a sangre (igual que v25); cuerpo tipo álbum familiar / reportaje de revista: papel crema, columna descentrada, fotos como copias impresas que salen a los márgenes, notas de año en el margen y cita grande con marcador amarillo -->
 <title>The Full Story · Heavy Metal Pro Stock: “The Evil One”</title>
 <meta name="description" content="The full story of Heavy Metal Pro Stock: “The Evil One”, in the team's own words: one idea in Tomah, Wisconsin in 2014, twelve years of late nights in a family shop in Waterloo, the night the engine fired and lightning struck, and a first pull in August 2026.">
 <script type="application/ld+json">
@@ -16,12 +16,13 @@
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Caveat:wght@500..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400&display=swap">
 <link rel="stylesheet" href="hm.css">
 <style>
-/* v25 · Long-read: hero a sangre con foto (titular a la izquierda, entrada a la derecha), columna de lectura de ~64ch, 3 fotos del ancho del texto. */
+/* v26 · Hero igual que v25. Cuerpo: papel crema con grano (solo degradados CSS), columna de lectura descentrada a la izquierda,
+   fotos como copias impresas (borde blanco, sombra suave, cinta) que cuelgan en los márgenes, años escritos a mano en el margen izquierdo. */
 html,body{overflow-x:clip}
-.fs{--read:17px;--col:64ch;background:var(--surface)}
+.fs{--read:18px;background:var(--surface)}
 
 /* barra de lectura */
 .fs-prog{position:fixed;left:0;right:0;top:0;height:calc(4px + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px);z-index:70;pointer-events:none}
@@ -31,7 +32,7 @@ html,body{overflow-x:clip}
 .fs-hero{position:relative;display:flex;align-items:flex-end;min-height:clamp(440px,64svh,660px);background:var(--night);color:var(--night-ink);overflow:hidden}
 .fs-hero__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 53%}
 .fs-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,18,17,.30) 0%,rgba(18,18,17,.10) 30%,rgba(18,18,17,.70) 66%,rgba(18,18,17,.94) 100%),linear-gradient(90deg,rgba(18,18,17,.45) 0%,rgba(18,18,17,0) 45%,rgba(18,18,17,.35) 100%)}
-.fs-hero .wrap{position:relative;z-index:1;width:100%;padding-block:clamp(56px,7vw,96px) clamp(28px,3.4vw,48px);display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px clamp(32px,5vw,88px);align-items:end}
+.fs-hero .wrap{position:relative;z-index:1;width:100%;padding-block:clamp(56px,7vw,96px) clamp(40px,4.4vw,60px);display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px clamp(32px,5vw,88px);align-items:end}
 .fs-kicker{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin:0 0 14px;font-size:var(--t-xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#E6E3DA}
 .fs-kicker .badge{font-size:11px}
 .fs-hero h1{font-family:var(--f-head);font-stretch:68%;font-weight:800;text-transform:uppercase;font-size:clamp(52px,7.4vw,128px);line-height:.86;letter-spacing:-.005em;margin:0;color:var(--night-ink);text-wrap:balance}
@@ -43,30 +44,98 @@ html,body{overflow-x:clip}
 .fs-meta b{color:var(--night-ink);font-weight:700}
 .fs-meta a{color:var(--night-ink);text-underline-offset:4px}
 
-/* columna de lectura */
-.fs-read{padding-block:clamp(36px,4vw,60px) clamp(56px,7vw,104px);padding-inline:var(--gutter)}
-#story-body,.fs-end{max-width:var(--col);margin-inline:auto;font-size:var(--read)}
-#story-body p{font-size:var(--read);line-height:1.65;color:var(--text);margin:0 0 1.05em}
-#story-body h2{font-family:var(--f-head);font-stretch:72%;font-weight:800;text-transform:uppercase;font-size:clamp(24px,1vw + 16px,28px);line-height:1.05;letter-spacing:.005em;color:var(--ink);margin:2.1em 0 .55em;text-wrap:balance}
+/* ── cuerpo: hoja de papel ─────────────────────────────────────────────── */
+.fs-read{
+  --paper:#F3EBDA; --paper-ink:#2B2620; --paper-mute:#6A5F50; --print:#FFFDF7;
+  --f-serif:'Source Serif 4','Iowan Old Style',Georgia,Charter,'Bitstream Charter','Times New Roman',serif;
+  --f-hand:'Caveat','Reenie Beanie','Bradley Hand','Segoe Print','Marker Felt','Comic Sans MS',cursive;
+  --film:sepia(.42) saturate(.78) contrast(.94) brightness(1.04) hue-rotate(-6deg);
+  /* columnas: margen izq (notas), texto, margen der (fotos) */
+  --lm:0px; --col:640px; --gap:40px; --rm:0px;
+  position:relative;overflow-x:clip;color:var(--paper-ink);
+  padding-block:clamp(48px,5vw,80px) clamp(64px,7vw,112px);padding-inline:var(--gutter);
+  background-color:var(--paper);
+  background-image:
+    radial-gradient(rgba(120,86,40,.07) .7px,transparent 1.3px),
+    radial-gradient(rgba(255,255,255,.45) .8px,transparent 1.4px),
+    radial-gradient(rgba(90,60,20,.05) 1px,transparent 1.6px),
+    radial-gradient(ellipse 70% 40% at 15% 8%,rgba(255,250,236,.75),transparent 70%),
+    radial-gradient(ellipse 60% 50% at 90% 60%,rgba(214,190,146,.22),transparent 70%),
+    linear-gradient(180deg,rgba(255,252,242,.4),rgba(226,210,178,.25));
+  background-size:5px 5px,7px 7px,13px 13px,100% 100%,100% 100%,100% 100%;
+  background-position:0 0,3px 2px,6px 9px,0 0,0 0,0 0;
+}
+/* borde de papel rasgado contra el hero */
+.fs-read::before{content:"";position:absolute;left:0;right:0;top:-13px;height:14px;background:var(--paper);clip-path:polygon(0% 100%, 0.0% 36%, 0.8% 62%, 1.5% 53%, 2.5% 15%, 3.7% 13%, 4.8% 16%, 5.5% 44%, 7.1% 20%, 8.0% 60%, 9.7% 56%, 10.8% 88%, 11.5% 79%, 12.4% 22%, 13.2% 35%, 14.7% 24%, 16.0% 61%, 17.1% 54%, 17.8% 15%, 18.6% 64%, 19.7% 35%, 21.0% 46%, 22.0% 74%, 23.4% 30%, 24.7% 52%, 26.4% 68%, 27.3% 88%, 28.1% 43%, 29.6% 22%, 30.7% 13%, 32.1% 71%, 33.4% 80%, 34.4% 66%, 35.7% 56%, 36.9% 77%, 38.6% 48%, 40.0% 15%, 41.4% 62%, 43.2% 76%, 44.2% 41%, 45.6% 12%, 46.7% 23%, 47.5% 15%, 49.0% 20%, 49.9% 41%, 51.5% 16%, 52.7% 54%, 54.3% 76%, 56.0% 32%, 57.1% 39%, 58.7% 87%, 59.5% 24%, 60.4% 29%, 61.6% 57%, 62.5% 10%, 63.6% 40%, 64.9% 86%, 66.3% 51%, 67.6% 64%, 68.3% 82%, 69.8% 80%, 71.4% 41%, 72.5% 18%, 73.8% 15%, 74.5% 27%, 75.3% 37%, 76.0% 10%, 76.8% 18%, 77.8% 12%, 79.4% 59%, 80.2% 30%, 81.2% 39%, 82.0% 78%, 83.8% 47%, 85.0% 17%, 85.7% 37%, 86.6% 76%, 87.4% 12%, 89.1% 52%, 89.9% 53%, 90.5% 52%, 92.3% 79%, 93.8% 31%, 94.8% 23%, 96.3% 53%, 97.9% 36%, 98.7% 75%, 100% 40%, 100% 100%)}
+.fs-sheet{max-width:1360px;margin-inline:auto}
+
+#story-body,.fs-end{width:min(100%,var(--col));margin-left:var(--lm);font-size:var(--read)}
+#story-body{display:flow-root}
+#story-body p{font-family:var(--f-serif);font-size:var(--read);line-height:1.7;color:var(--paper-ink);margin:0 0 1.1em;font-optical-sizing:auto}
+#story-body > p:first-of-type{font-size:calc(var(--read) * 1.3);line-height:1.45;font-style:italic;color:var(--ink)}
+#story-body h2{position:relative;display:flow-root;font-family:var(--f-head);font-stretch:70%;font-weight:800;text-transform:uppercase;font-size:clamp(26px,1.1vw + 17px,34px);line-height:1;letter-spacing:.005em;color:var(--ink);margin:2.3em 0 .6em;text-wrap:balance}
+#story-body h2::after{content:"";display:block;width:44px;height:4px;margin-top:12px;background:var(--accent);transform:rotate(-1.5deg)}
 #story-body > h2:first-child{margin-top:0}
 #story-body strong{color:var(--ink);font-weight:700}
-#story-body figure{margin:2.2em 0}
-#story-body figure img{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;background:var(--tile)}
-#story-body figcaption{margin:8px 0 0;font-size:var(--t-xs);line-height:1.45;color:var(--mute)}
-#story-body blockquote{margin:1.5em 0;padding:2px 0 2px 18px;border-left:3px solid var(--accent)}
-#story-body blockquote p{font-size:calc(var(--read) * 1.2);line-height:1.4;font-weight:700;color:var(--ink);margin:0}
-#story-body blockquote footer{margin-top:6px;font-size:var(--t-sm);color:var(--mute)}
-#story-body a{color:var(--ink);font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:4px}
+#story-body a{color:var(--ink);font-weight:700;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:4px}
 #story-body a:hover{text-decoration-color:var(--ink)}
 
+/* notas de año en el margen (escritas a mano, con marcador) */
+.fs-yr{display:block;width:max-content;margin:0 0 6px;font-family:var(--f-hand);font-weight:700;font-size:30px;line-height:1;letter-spacing:0;text-transform:none;color:#3B342B;padding:0 .2em;transform:rotate(-4deg);background:linear-gradient(transparent 55%,rgba(245,196,0,.75) 55%,rgba(245,196,0,.75) 88%,transparent 88%)}
+
+/* fotos como copias impresas */
+#story-body .pr{position:relative;margin:2.2em 0;padding:10px 10px 12px;background:var(--print);box-shadow:0 1px 2px rgba(60,40,10,.16),0 14px 28px -12px rgba(60,40,10,.42);transform:rotate(var(--r,0deg))}
+#story-body .pr img{display:block;width:100%;height:auto;aspect-ratio:var(--ar,4/5);object-fit:cover;background:#E4DACA;filter:var(--film);transition:filter .6s ease}
+#story-body .pr:hover img,#story-body .pr:focus-within img{filter:none}
+#story-body .pr figcaption{margin:9px 4px 0;font-family:var(--f-hand);font-weight:600;font-size:21px;line-height:1.1;color:#3B342B}
+/* cinta: arriba al centro o en dos esquinas */
+.pr--tape::before{content:"";position:absolute;z-index:1;top:-13px;left:50%;width:104px;height:28px;transform:translateX(-50%) rotate(-3deg);background:rgba(245,214,96,.62);box-shadow:0 1px 1px rgba(60,40,10,.10);-webkit-mask:linear-gradient(90deg,transparent 0 2px,#000 2px calc(100% - 2px),transparent calc(100% - 2px));mask:linear-gradient(90deg,transparent 0 2px,#000 2px calc(100% - 2px),transparent calc(100% - 2px))}
+.pr--corners::before,.pr--corners::after{content:"";position:absolute;z-index:1;width:84px;height:24px;background:rgba(236,224,190,.78);box-shadow:0 1px 1px rgba(60,40,10,.10)}
+.pr--corners::before{top:-6px;left:-26px;transform:rotate(-40deg)}
+.pr--corners::after{top:-6px;right:-26px;transform:rotate(40deg)}
+
+/* cita: un momento, a lo ancho de margen + columna, con marcador amarillo */
+#story-body blockquote{position:relative;margin:1.6em 0 1.4em;padding:0;transform:rotate(-1.2deg)}
+#story-body blockquote p{display:inline;font-family:var(--f-head);font-stretch:66%;font-weight:800;text-transform:uppercase;font-size:clamp(44px,5vw,80px);line-height:1.02;letter-spacing:-.005em;color:var(--ink);margin:0;padding:0 .08em;-webkit-box-decoration-break:clone;box-decoration-break:clone;background:linear-gradient(transparent 50%,var(--accent) 50%,var(--accent) 90%,transparent 90%)}
+#story-body blockquote footer{display:flex;align-items:center;gap:10px;margin-top:14px;font-family:var(--f-hand);font-weight:600;font-size:26px;line-height:1;color:#3B342B}
+#story-body blockquote footer::before{content:"";width:34px;height:2px;background:currentColor;transform:rotate(-6deg)}
+
 /* cierre */
-.fs-end .note{font-size:var(--t-xs)}
-.fs-end{margin-top:clamp(40px,5vw,64px);padding-top:clamp(24px,3vw,36px);border-top:2px solid var(--ink)}
-.fs-end__crew{margin:0;font-family:var(--f-head);font-stretch:74%;font-weight:800;text-transform:uppercase;font-size:clamp(24px,1.4vw + 16px,32px);line-height:1.1}
-.fs-end a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:6px}
+.fs-end{position:relative;margin-top:clamp(48px,5vw,72px);padding-top:clamp(26px,3vw,36px);border-top:2px solid var(--ink);clear:both}
+.fs-end .note{font-size:var(--t-xs);color:var(--paper-mute)}
+.fs-end__crew{margin:0;font-family:var(--f-head);font-stretch:70%;font-weight:800;text-transform:uppercase;font-size:clamp(28px,1.6vw + 18px,40px);line-height:1.05}
+.fs-end a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:4px;text-underline-offset:7px}
 .fs-end a:hover{text-decoration-color:var(--ink)}
-.fs-ctas{display:flex;flex-wrap:wrap;gap:10px 28px;margin:18px 0 0;font-size:var(--t-md);font-weight:700}
+.fs-ctas{display:flex;flex-wrap:wrap;gap:10px 28px;margin:20px 0 24px;font-size:var(--t-md);font-weight:700}
 .fs-ctas a{text-decoration-thickness:2px;text-underline-offset:5px}
+
+/* ── escritorio: columna descentrada, fotos y notas en los márgenes ───── */
+@media (min-width:900px){
+  .fs-read{--lm:150px;--col:580px;--gap:32px;
+    /* ancho real del margen derecho */
+    --rm:calc(min(100vw - 2 * var(--gutter) - 16px, 1360px) - var(--lm) - var(--col))}
+  .fs-yr{position:absolute;right:calc(100% + var(--gap));top:-4px;margin:0;font-size:32px}
+  /* fuera del texto, en el margen derecho */
+  #story-body .pr--out-r{float:right;clear:right;width:calc(var(--rm) - var(--gap) - 12px);margin:.4em calc(-1 * var(--rm) + 12px) 1.6em 0}
+  /* colgando: entra un poco en la columna y sale al margen derecho */
+  #story-body .pr--hang-r{float:right;clear:right;width:calc(var(--rm) + 150px);margin:.5em calc(-1 * var(--rm) + 20px) 1.4em 36px}
+  /* colgando a la izquierda */
+  #story-body .pr--hang-l,#story-body .pr--out-l{float:left;clear:left;width:calc(var(--lm) + 170px);margin:.5em 36px 1.4em calc(-1 * var(--lm))}
+  #story-body blockquote{margin:1.4em 0 1.6em calc(-1 * var(--lm))}
+}
+@media (min-width:900px) and (max-width:1199px){
+  .fs-read{--lm:170px}
+  .fs-yr{font-size:27px}
+  #story-body .pr--hang-r{width:calc(var(--rm) + 70px);margin-left:28px}
+  #story-body .pr--hang-l,#story-body .pr--out-l{width:calc(var(--lm) + 110px);margin-right:28px}
+}
+@media (min-width:1200px){
+  .fs-read{--lm:clamp(230px,20vw,300px);--col:640px;--gap:40px}
+  #story-body .pr--out-l{width:calc(var(--lm) - var(--gap) - 12px);margin:.4em 0 1.6em calc(-1 * var(--lm) + 4px)}
+  #story-body .pr--hang-l{width:calc(var(--lm) + 180px)}
+  #story-body blockquote{clear:both;margin:1.8em calc(-1 * var(--rm) + 40px) 1.8em calc(-1 * var(--lm) + 20px)}
+  #story-body blockquote p{font-size:clamp(56px,5.4vw,84px)}
+}
 
 @media (max-width:860px){
   .fs-hero{min-height:min(86svh,720px)}
@@ -75,8 +144,22 @@ html,body{overflow-x:clip}
   .fs-hero h1{font-size:clamp(48px,14vw,84px)}
   .fs-dek,.fs-meta{max-width:none}
 }
+@media (max-width:899px){
+  #story-body,.fs-end{margin-inline:auto}
+  #story-body .pr{margin:2em 4px}
+  #story-body .pr img{aspect-ratio:var(--ar-m,4/3)}
+  /* fotos chicas: mas angostas y alternadas, como recortes pegados */
+  #story-body .pr--out-r{width:78%;margin-left:auto}
+  #story-body .pr--out-l{width:78%}
+  #story-body .pr--out-r img,#story-body .pr--out-l img{aspect-ratio:var(--ar-m,1/1)}
+}
 @media (max-width:600px){
-  .fs{--read:16px}
+  .fs-read{--read:17px}
+  #story-body .pr{--r:var(--r-m,0deg)}
+  .fs-yr{font-size:28px}
+}
+@media (prefers-reduced-motion:reduce){
+  #story-body .pr img{transition:none}
 }
 </style>
 </head>
@@ -103,25 +186,31 @@ html,body{overflow-x:clip}
 </header>
 
 <div class="fs-read">
-<!-- AQUÍ VA EL TEXTO LARGO. Todo lo que está dentro de <article id="story-body"> es la historia: solo <p>, <h2>, <figure> y una <blockquote>.
+<div class="fs-sheet">
+<!-- AQUÍ VA EL TEXTO LARGO. Todo lo que está dentro de <article id="story-body"> es la historia: <p>, <h2>, <figure> y una <blockquote>.
+     Extras de diseño (no son texto de la dueña): <span class="fs-yr"> dentro de un h2 es la nota de año del margen;
+     en cada <figure class="pr ..."> la clase dice dónde cuelga la foto (pr--out-r margen derecho, pr--hang-r / pr--hang-l colgando) y --r su giro.
      El tiempo de lectura y la barra se calculan solos.
-     En Shopify: una página (Tienda online > Páginas) o un artículo de blog, pegado en el editor de texto enriquecido, con las fotos insertadas entre secciones. -->
+     En Shopify: una plantilla de página o de artículo propia (sección con estas clases); el texto se pega en el editor de texto enriquecido y las fotos se insertan entre secciones. -->
 <article id="story-body">
-  <h2>The Idea</h2>
+  <h2><span class="fs-yr" aria-hidden="true">2014</span>The Idea</h2>
   <p>It started in 2014, in Tomah, Wisconsin, with one idea.</p>
+  <figure class="pr pr--out-r pr--tape" style="--r:2.4deg;--ar:4/3;--r-m:1.2deg">
+    <img src="img/hm-side.webp" alt="“The Evil One” in profile on the grass under a blue sky" width="1050" height="1400" loading="lazy" style="object-position:50% 78%">
+    <figcaption>“The Evil One”, in profile</figcaption>
+  </figure>
   <p>Chris had spent more than 20 years in tractor pulling, and his whole life loving heavy metal. The loud, heavy, unapologetic kind of music you feel in your chest before you hear it. So when he decided to build his own pulling tractor, the name was never up for debate: Heavy Metal Pro Stock. A machine that would sound the way that music feels, and hit the track just as hard.</p>
   <p>That idea became a Pro Stock tractor. And that tractor became “The Evil One”.</p>
 
-  <h2>Twelve Years in the Making</h2>
+  <h2><span class="fs-yr" aria-hidden="true">Feb 2020</span>Twelve Years in the Making</h2>
+  <figure class="pr pr--hang-r pr--corners" style="--r:-1.6deg;--ar:4/5;--r-m:-1.2deg">
+    <img src="img/hm-engine.webp" alt="The Caterpillar 3208 V8 with its turbo and chrome piping, in the family shop" width="787" height="1400" loading="lazy" style="object-position:50% 42%">
+    <figcaption>The Cat 3208 in the shop, Waterloo, WI</figcaption>
+  </figure>
   <p>“The Evil One” wasn't built overnight. The idea was born in 2014. The first bolt went in at the family shop in Waterloo, Wisconsin, in February 2020. And it took until 2026 to hear it run.</p>
   <p>Twelve years of planning, building and rebuilding. Twelve years of parts, late nights in the shop and a vision that never went away. When almost everything on a tractor is built by hand, nothing about it is quick. And nothing about it is easy to give up on, either.</p>
 
-  <figure>
-    <img src="img/hm-engine.webp" alt="The Caterpillar 3208 V8 with its turbo and chrome piping, in the family shop" width="787" height="1400" loading="lazy" style="object-position:50% 42%">
-    <figcaption>The Caterpillar 3208 V8 in the family shop in Waterloo, WI.</figcaption>
-  </figure>
-
-  <h2>The Night the Lights Went Out</h2>
+  <h2><span class="fs-yr" aria-hidden="true">2026</span>The Night the Lights Went Out</h2>
   <p>In 2026, the moment finally came. Chris was in the shop at home, ready to hear the engine come to life for the very first time.</p>
   <p>He turned it over. And at that exact moment, lightning struck and the power went out.</p>
   <p>Some would call it a coincidence. We call it a sign. From that night on, there was no doubt about what we had built.</p>
@@ -130,33 +219,43 @@ html,body{overflow-x:clip}
     <footer>Chris, owner and driver</footer>
   </blockquote>
 
-  <h2>A Rough Start</h2>
+  <h2><span class="fs-yr" aria-hidden="true">Aug 2026</span>A Rough Start</h2>
   <p>The first pull, in August 2026, was supposed to be the big moment. It didn't go the way we wanted.</p>
+  <figure class="pr pr--hang-l pr--tape" style="--r:1.5deg;--r-m:1deg">
+    <img src="img/hm-rear.webp" alt="“The Evil One” from the rear three quarters on the track, grandstands behind it" width="1050" height="1400" loading="lazy" style="object-position:50% 60%">
+    <figcaption>Out on the track</figcaption>
+  </figure>
   <p>A small, unexpected issue came up, and we didn't finish the run. After everything that went into this tractor, it was a hard day. We won't sugarcoat it.</p>
   <p>But that day also became one of our proudest. Getting a tractor we built with our own hands onto a real track was already a win. The pull didn't finish that day. The story was just getting started.</p>
 
-  <figure>
-    <img src="img/hm-rear.webp" alt="“The Evil One” from the rear three quarters on the track, grandstands behind it" width="1050" height="1400" loading="lazy" style="object-position:50% 60%">
-    <figcaption>On a real track for the first time, August 2026.</figcaption>
-  </figure>
-
   <h2>Built by Family</h2>
+  <figure class="pr pr--hang-r pr--tape" style="--r:-1.2deg;--ar:4/5;--r-m:-1deg">
+    <img src="img/hm-crew.webp" alt="Chris in his fire suit with the crew beside “The Evil One” in the pits" width="1050" height="1400" loading="lazy" style="object-position:50% 64%">
+    <figcaption>Chris and the crew in the pits</figcaption>
+  </figure>
   <p>“The Evil One” calls Waterloo, Wisconsin home.</p>
   <p>Behind the tractor is a family that has believed in it since the very first day. Every hour in the shop, every road trip to a pull, every part fixed and fixed again happened because the whole family decided to make this thing live.</p>
+  <figure class="pr pr--out-l pr--corners" style="--r:-2.6deg;--r-m:-1.4deg">
+    <img src="img/hm-driver-crew.webp" alt="Chris and the crew next to the rear tire of “The Evil One”" width="1050" height="1400" loading="lazy" style="object-position:50% 40%">
+    <figcaption>Next to the rear tire</figcaption>
+  </figure>
   <p>This isn't a company project, and it isn't a showpiece. It's a family's tractor, built in a home shop and taken to the track because we love this sport.</p>
 
-  <figure>
-    <img src="img/hm-crew.webp" alt="Chris in his fire suit with the crew beside “The Evil One” in the pits" width="1050" height="1400" loading="lazy" style="object-position:50% 64%">
-    <figcaption>Chris and the crew in the pits, next to “The Evil One”.</figcaption>
-  </figure>
-
   <h2>The Driver</h2>
+  <figure class="pr pr--out-r pr--tape" style="--r:2.2deg;--r-m:1.2deg">
+    <img src="img/hm-driver.webp" alt="Chris in the driver's seat of “The Evil One”, gold helmet on" width="788" height="1400" loading="lazy" style="object-position:50% 30%">
+    <figcaption>Chris, in the seat</figcaption>
+  </figure>
   <p>Chris is the owner, the builder behind the idea and the one in the seat.</p>
   <p>He has been pulling for more than 20 years. Two decades on the track, and every one of them poured into this tractor: he dreamed it up, built it and now drives it.</p>
   <p>He's the heavy metal fan who gave it its name, the one who fired it up the night the lightning hit, and the one behind the wheel at every pull.</p>
 
   <h2>What Makes It Different</h2>
   <p>On a Pro Stock track you'll see plenty of powerful tractors. What sets “The Evil One” apart is under the hood.</p>
+  <figure class="pr pr--out-r pr--corners" style="--r:-2deg;--ar:4/5;--r-m:-1.2deg">
+    <img src="img/hm-front-smoke.webp" alt="“The Evil One” on the track, black smoke from the stack" width="1050" height="1400" loading="lazy" style="object-position:50% 55%">
+    <figcaption>Black smoke from the stack</figcaption>
+  </figure>
   <p>It runs a Caterpillar 3208 V8, reverse flow: a setup you won't find on any other tractor on the track. It gives “The Evil One” its own personality and its own sound.</p>
   <p>From the factory, the 3208 measures 636 cubic inches. Ours doesn't. We built it out to 680.</p>
   <p>And the engine is only the beginning. Ask us what's custom-built on this tractor and the answer is simple: everything.</p>
@@ -167,10 +266,18 @@ html,body{overflow-x:clip}
   <p><strong>Best results:</strong> still being written. “The Evil One” is just getting started.</p>
 
   <h2>The Season</h2>
+  <figure class="pr pr--out-l pr--tape" style="--r:1.8deg;--r-m:1deg">
+    <img src="img/hm-front-white.webp" alt="“The Evil One” head on, white smoke rolling over the track" width="1050" height="1400" loading="lazy" style="object-position:50% 70%">
+    <figcaption>Head on, in the smoke</figcaption>
+  </figure>
   <p>“The Evil One” is built to compete. Every time it hits the track, it's there to pull.</p>
   <p>We expect around 20 competitions a season on the NTPA and PPL Badger State circuits. That's where you'll find us. Follow us on Facebook and Instagram to know where we'll be next.</p>
 
   <h2>Sponsor “The Evil One”</h2>
+  <figure class="pr pr--out-r pr--corners" style="--r:2.2deg;--ar:4/3;--r-m:1.2deg">
+    <img src="img/hm-grandstand.webp" alt="“The Evil One” on the track in front of a full grandstand" width="1050" height="1400" loading="lazy" style="object-position:50% 55%">
+    <figcaption>In front of the grandstand</figcaption>
+  </figure>
   <p>Every pull draws thousands of fans. Across 20+ competitions a season, that's 100,000+ people (est.) watching “The Evil One”, and the names on it.</p>
   <p>We're looking for our first sponsors. The brands that join now won't be one more logo: they'll be part of the story from the very beginning.</p>
   <p>Your brand can ride on the tractor, the trailer and the team shirts, and show up on our website, our social media, our merch and in announcer mentions at every pull.</p>
@@ -184,9 +291,10 @@ html,body{overflow-x:clip}
     <a href="shop.html">Shop the merch →</a>
     <a href="story.html">Back to Our Story</a>
   </nav>
-  <p class="note">Este es el texto largo de la dueña (versión de octubre de 2026), ya corregido y usado tal cual: subtítulos (h2) por tema, 3 fotos del ancho del texto y una sola cita. En Shopify esta es una página (Tienda online &gt; Páginas) o un artículo de blog, editada en el editor de texto enriquecido. El tiempo de lectura se calcula solo.</p>
+  <p class="note">Este es el texto largo de la dueña (versión de octubre de 2026), ya corregido y usado tal cual: subtítulos (h2) por tema, fotos reales como copias impresas en los márgenes, notas de año (2014, febrero de 2020, 2026, agosto de 2026) y una sola cita. En Shopify esta es una página (Tienda online &gt; Páginas) o un artículo de blog, editada en el editor de texto enriquecido. El tiempo de lectura se calcula solo.</p>
   <p class="note">Correcciones: la marca siempre como Heavy Metal Pro Stock: “The Evil One”, primer tornillo en febrero de 2020 en Waterloo, primer pull en agosto de 2026 y la cita como "f#ck!ng". "No exhibitions" se cambió por "built to compete" porque ya hicieron 3 o 4 exhibiciones (por confirmar el número). Quité TikTok porque todavía no existe la cuenta. Los 100,000+ fans por temporada son una estimación tomada del dato de Sponsor.</p>
 </footer>
+</div>
 </div>
 
 </main>
