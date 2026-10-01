@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Lightning Night Tee · Special Edition · Heavy Metal Pro Stock: “The Evil One”</title>
-<meta name="description" content="Special edition from “The Evil One”: the Lightning Night Tee, a numbered run for the night the engine fired and lightning struck. Limited time, one run only.">
+<meta name="description" content="Special edition from Heavy Metal Pro Stock: “The Evil One”. The Lightning Night Tee, a limited run for the night the engine fired and lightning struck. Limited time and quantity.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -143,7 +143,7 @@ html,body{overflow-x:clip}
       <svg class="stage__bolt" viewBox="0 0 12 16" aria-hidden="true"><polygon points="8,0 1,9 5,9 3,16 11,6 7,6"/></svg>
       <span id="stage-mock"></span>
       <span class="stage__st"><span class="st-badge" id="st-badge-img" data-s="soon">Coming soon</span></span>
-      <span class="stage__plate"><span>Numbered run</span><b>No. 001 / <span id="run-plate">XX</span></b></span>
+      <span class="stage__plate"><span>Limited run</span><b id="ed-plate">Drop 01</b></span>
     </figure>
 
     <div class="buy">
@@ -152,7 +152,7 @@ html,body{overflow-x:clip}
         <h1 class="h1 buy__name" id="ed-name">Lightning Night Tee</h1>
         <p class="buy__price"><span class="num">$XX</span> · <span id="ed-color">Matte Black</span></p>
         <p class="buy__story" id="ed-story"></p>
-        <p class="label" style="color:var(--ink)">Numbered run of <span id="run-size" class="num">XX</span> · never reprinted</p>
+        <p class="label" style="color:var(--ink)">Limited run of <span id="run-size" class="num">XX</span> · for a limited time</p>
       </div>
 
       <div class="panel">
@@ -217,7 +217,7 @@ html,body{overflow-x:clip}
     <div class="sect-head"><h2 class="h2" id="past-t">Past editions</h2><p id="past-count" role="status" aria-live="polite"></p></div>
     <div class="yrs" role="group" aria-label="Filter by year" id="yrs"></div>
     <ul class="arch" id="arch"></ul>
-    <p class="note">En Shopify es la colección "Special edition". Cada producto tiene metacampos que llenas en el admin (Productos &gt; el producto &gt; Metacampos): Start date, End date, Run size y Story. La página cuenta sola, cambia Coming soon / Live sola y marca Sold out solo cuando el inventario llega a 0; al pasar la fecha de cierre pasa a "Past editions". Run size, fechas y precio son placeholder. La edición de ejemplo del archivo se borra. El número de cada playera va en la etiqueta o en una tarjeta impresa: Printify no numera solo.</p>
+    <p class="note">En Shopify es la colección "Special edition". Cada producto tiene metacampos que llenas en el admin (Productos &gt; el producto &gt; Metacampos): Start date, End date, Run size y Story. La página cuenta sola, cambia Coming soon / Live sola y marca Sold out solo cuando el inventario llega a 0; al pasar la fecha de cierre pasa a "Past editions". Run size, fechas y precio son placeholder. La edición de ejemplo del archivo se borra.</p>
   </div>
 </section>
 </main>
@@ -261,7 +261,7 @@ html,body{overflow-x:clip}
   $('ed-drop').textContent = ED.drop + ' · ' + ED.year;
   $('ed-color').textContent = P.colors[0] || 'One color';
   $('run-size').textContent = ED.runSize == null ? 'XX' : ED.runSize;
-  $('run-plate').textContent = ED.runSize == null ? 'XX' : ED.runSize;
+  $('ed-plate').textContent = ED.drop + ' · ' + ED.year;
   $('sizes').innerHTML = P.sizes.map(function (s, i) {
     return '<input type="radio" name="size" id="sz-' + i + '" value="' + s + '"><label class="size" for="sz-' + i + '">' + s + '</label>';
   }).join('');
@@ -320,6 +320,11 @@ html,body{overflow-x:clip}
   $('dctl').addEventListener('change', function (e) { if (e.target.name === 'dst') { override = e.target.value; apply(); } });
 
   /* talla elegida */
+  /* datos estructurados: Product con la marca registrada */
+  var ld = document.createElement('script'); ld.type = 'application/ld+json';
+  ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'Product', name: P.name, description: 'Special edition tee, limited run. Designed by the Heavy Metal Pro Stock crew in Waterloo, WI, printed to order.', sku: ED.id, category: 'Special edition', brand: { '@type': 'Brand', name: 'Heavy Metal Pro Stock: “The Evil One”' }, url: location.href.split('#')[0].split('?')[0], offers: { '@type': 'Offer', priceCurrency: 'USD', price: 'XX.XX', availability: 'https://schema.org/' + (realState(ED, new Date()) === 'live' ? 'InStock' : 'OutOfStock'), itemCondition: 'https://schema.org/NewCondition' } });
+  document.head.appendChild(ld);
+
   $('sizes').addEventListener('change', function (e) {
     $('size-v').textContent = e.target.value; $('opt-size').classList.remove('is-error'); $('size-msg').textContent = '';
   });

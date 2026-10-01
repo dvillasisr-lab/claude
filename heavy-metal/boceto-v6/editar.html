@@ -206,7 +206,7 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       <h1 class="h1" id="ed-title">Cómo editas todo (sin código)</h1>
       <p class="lede">Todo lo que cambia en la tienda (pulls, contadores, paquetes, bitácora, ediciones especiales, anuncios) se llena en formularios del admin de Shopify. Tú agregas, editas u ocultas; el tema lo pinta solo en cada página.</p>
       <div class="asks">
-        <div class="ask"><q>¿Cómo hago que todo lo dinámico se pueda editar fácil para agregar, borrar o editar?</q><p><b>Cada lista es un formulario.</b> Pulls, contadores, paquetes, lugares del logo y crew son entradas de <b>Metaobjetos</b>; la bitácora es un <b>blog</b>; anuncios y frases son <b>bloques</b> del editor. Abajo está el mapa completo.</p></div>
+        <div class="ask"><q>¿Cómo hago que todo lo dinámico se pueda editar fácil para agregar, borrar o editar?</q><p><b>Cada lista es un formulario.</b> Pulls, contadores, paquetes, lugares del logo y crew son entradas de <b>Metaobjetos</b>; productos, status y cupones salen del admin; la bitácora es un <b>blog</b>; anuncios y frases son <b>bloques</b> del editor. Abajo está el mapa completo.</p></div>
         <div class="ask"><q>¿Cómo tengo una sección en Editar tema con todos los 2026 que cada año se actualizan?</q><p><b>Es un solo ajuste:</b> Personalizar &gt; Ajustes del tema &gt; <b>Temporada</b>. Cambias el número una vez al año y todos los “2026” de la temporada cambian juntos. El copyright se pone solo con el año actual.</p></div>
         <div class="ask"><q>Last updated tal vez debería estar en más lados; necesito una sección para saber dónde están todos esos y nunca se me pase actualizarlo.</q><p><b>Ya está en una sola tabla</b> (sección 03): cada cosa que cambia, en qué página sale, dónde se edita, cada cuánto revisarla y un <b>semáforo</b> que te dice qué está vencido hoy.</p></div>
       </div>
@@ -238,14 +238,14 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
           <h3 class="h3">Textos y bloques: Personalizar</h3>
           <p class="path"><span>Tienda online</span><span>Temas</span><span>Personalizar</span></p>
           <p>Lo que ves en pantalla se edita ahí mismo. Cada anuncio, frase o pregunta es un bloque: agregas, arrastras, ocultas con el ojo.</p>
-          <ul><li>Ajustes del tema: Temporada, contacto, carrito</li><li>Anuncios, cinta, FAQ, Spotify</li></ul>
+          <ul><li>Ajustes del tema: Temporada, contacto, carrito</li><li>Anuncios, cinta, FAQ, Spotify, Spec sheet, Spec tee</li></ul>
         </article>
         <article class="door">
           <span class="door__n">3</span>
           <h3 class="h3">Tienda: Productos, Blog, Menús</h3>
           <p class="path"><span>Productos</span><span>Colecciones</span></p>
           <p>Prendas, colecciones y la Special edition. Del mismo menú lateral salen:</p>
-          <ul><li>Contenido &gt; Entradas de blog (Pit Log), Menús, Archivos</li><li>Configuración &gt; Políticas, cookies, envíos</li></ul>
+          <ul><li>Contenido &gt; Entradas de blog (Pit Log), Menús, Archivos</li><li>Descuentos (cupones) · Configuración &gt; Políticas, envíos</li></ul>
         </article>
       </div>
     </div>
@@ -321,7 +321,7 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       <p class="count" id="count" role="status" aria-live="polite"></p>
       <ul class="map" id="map"></ul>
       <p class="empty" id="map-empty" hidden>Nada coincide. Prueba otra palabra o elige “Todo”.</p>
-      <p class="note">Los tipos de metaobjeto (Pull event, Season stats, Sponsor tier, Logo placement, Decal zone, Crew member) y los metacampos de Special edition los dejamos creados al montar el tema. Tú solo llenas entradas; no tienes que tocar Configuración &gt; Datos personalizados.</p>
+      <p class="note">Los tipos de metaobjeto (Pull event, Season stats, Sponsor tier, Sponsor stats, Logo placement, Decal zone, Crew member), los metacampos de Special edition y las colecciones automáticas los dejamos creados al montar el tema. Tú solo llenas entradas; no tienes que tocar Configuración &gt; Datos personalizados.</p>
     </div>
   </section>
 
@@ -463,7 +463,7 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       p: [['Schedule', 'schedule.html'], ['Home', 'index.html'], ['Pit Log', 'log.html']] },
     { n: 'Season stats (contadores)', t: 'lista', q: 'Los números de la temporada: competencias, exhibiciones, wins y full pulls. Una entrada por año, así el historial queda y el filtro por año funciona.',
       w: [['Contenido', 'Metaobjetos', 'Season stats']],
-      a: 'Al arrancar la temporada: Agregar entrada con el año nuevo y todo en 0.', e: 'Después de cada pull súmale 1 al contador que toque y Guardar.', d: 'No borres años pasados. Desmarca Visible si no quieres mostrar uno.',
+      a: 'Al arrancar la temporada: Agregar entrada con el año nuevo y todo en 0.', e: 'Después de cada pull súmale 1 al contador que toque y Guardar. Un contador en 0 nunca sale como “0”: la tienda muestra “Coming soon”.', d: 'No borres años pasados. Desmarca Visible si no quieres mostrar uno.',
       p: [['Home', 'index.html'], ['Our Story', 'story.html'], ['Pit Log', 'log.html'], ['Sponsors', 'sponsors.html']] },
     { n: 'Pit Log (bitácora)', t: 'admin', q: 'Lo que pasó en cada pull, exhibición o día de pruebas: texto, distancia, qué se rompió, fotos. Es un blog de Shopify llamado Pit Log.',
       w: [['Contenido', 'Entradas de blog'], ['Blog: Pit Log']],
@@ -471,8 +471,8 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       p: [['Pit Log', 'log.html'], ['Home', 'index.html'], ['FAQ', 'faq.html']] },
     { n: 'Sponsor tiers (paquetes)', t: 'lista', q: 'Title Partner, Pit Partner y Crew Supporter: nombre, precio, beneficios, cuál va destacado, orden y la casilla Sold out.',
       w: [['Contenido', 'Metaobjetos', 'Sponsor tier']],
-      a: 'Agregar entrada para un paquete nuevo. El campo Orden decide su lugar.', e: 'Cambia precio o beneficios. Marca Sold out cuando ya no haya lugar: la tarjeta lo muestra sola.', d: 'Desmarca Visible para ocultarlo; Eliminar si ya no existe. Ojo: los precios del FAQ son texto, cámbialos también.',
-      p: [['Sponsors', 'sponsors.html'], ['FAQ', 'faq.html']] },
+      a: 'Agregar entrada para un paquete nuevo. El campo Orden decide su lugar.', e: 'Cambia precio o beneficios. Marca Sold out cuando ya no haya lugar: la tarjeta lo muestra sola.', d: 'Desmarca Visible para ocultarlo; Eliminar si ya no existe. El FAQ ya no repite precios: manda a Sponsors.',
+      p: [['Sponsors', 'sponsors.html']] },
     { n: 'Logo placements (dónde sale tu marca)', t: 'lista', q: 'Los lugares donde sale el logo de un patrocinador: team gear, tráiler y pits, este sitio, redes, el tractor y menciones del locutor. Cada uno con foto y los paquetes que lo incluyen.',
       w: [['Contenido', 'Metaobjetos', 'Logo placement']],
       a: 'Agregar entrada con nombre, descripción corta, foto (de Archivos) y paquetes.', e: 'Cambia la foto o los paquetes que lo incluyen.', d: 'Desmarca Visible o Eliminar.',
@@ -481,23 +481,51 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       w: [['Contenido', 'Metaobjetos', 'Decal zone']],
       a: 'Agregar entrada. Posición: x = % desde la izquierda, y = % desde arriba de la foto.', e: 'Mueve x y y hasta que el punto quede en su lugar; cambia el paquete si se vendió.', d: 'Desmarca Visible o Eliminar.',
       p: [['Sponsors', 'sponsors.html']] },
-    { n: 'Special edition', t: 'admin', q: 'Una prenda numerada para un momento de la temporada (hoy: Lightning Night Tee). Es un producto normal en la colección Special edition, más metacampos: Piezas totales, Lanzamiento, Historia y Edición cerrada.',
+    { n: 'Special edition', t: 'admin', q: 'Una prenda para un momento de la temporada (hoy: Lightning Night Tee), a la venta por tiempo limitado. No se numera. Es un producto normal en la colección Special edition, más metacampos: Start date, End date y Story.',
       w: [['Productos', 'Colecciones', 'Special edition'], ['Producto', 'Metacampos (al final de la ficha)']],
-      a: 'Crea la prenda en Printify y publícala. En Shopify agrégala a la colección Special edition y llena sus metacampos.', e: 'Historia, fecha o piezas: en los metacampos. Diseño y precio: en Printify.', d: 'Al agotarse marca Edición cerrada (sale Sold out). Para quitarla de la tienda: Estado Borrador.',
+      a: 'Crea la prenda en Printify y publícala. En Shopify ponle la etiqueta special-edition (entra sola a la colección) y llena Start date, End date y Story.', e: 'Historia y fechas: en los metacampos. Diseño y precio: en Printify.', d: 'Al pasar End date sale sola de la venta y pasa a “Past editions”. Para quitarla de la tienda: Estado Borrador.',
       p: [['Edición especial', 'limited.html'], ['Shop', 'shop.html?cat=limited'], ['Home', 'index.html']] },
-    { n: 'Productos y colecciones', t: 'admin', q: 'Todas las prendas (tees, hoodies, gorras, kids, stickers, bundles) y sus grupos: New drop, Tees, Sweatshirts, Hats, Kids, Stickers & gear, Bundles.',
-      w: [['Productos', 'Todos los productos'], ['Productos', 'Colecciones']],
-      a: 'Diseño, colores, tallas y precio se crean en Printify y se publican a Shopify. Luego: colección y etiqueta “new” si es nuevo.', e: 'Fotos, precio y tallas: en Printify y vuelve a publicar. Colección, etiquetas y orden: en Shopify.', d: 'Estado Borrador lo oculta sin borrarlo. Best sellers se arma solo con las ventas.',
+    { n: 'Productos (alta, fotos, precio)', t: 'admin', q: 'Todas las prendas: tees, hoodies, gorras, kids, stickers y bundles. Printify crea el producto con fotos, tallas, colores y precio, y lo publica a Shopify.',
+      w: [['Printify', 'My products', 'Publish'], ['Productos', 'Todos los productos']],
+      a: 'Diseño, colores, tallas y precio se crean en Printify y se publican a Shopify. Si es nuevo, etiqueta “new”.', e: 'Fotos, precio y tallas: en Printify y vuelve a publicar. Etiquetas y estado: en Shopify.', d: 'Estado Borrador lo oculta sin borrarlo. Best sellers se arma solo con las ventas.',
       p: [['Shop', 'shop.html'], ['Producto', 'product.html'], ['Home', 'index.html'], ['Search', 'search.html']] },
+    { n: 'Status por producto: Coming soon, Live, Sold out', t: 'admin', q: 'Live: precio y “Add to cart”. Coming soon: etiqueta gris “Coming soon”, tarjeta atenuada y botón “Notify me”. Sold out: etiqueta “Sold out”, tarjeta atenuada y botón “Sold out · Notify me”.',
+      w: [['Productos', 'el producto', 'Inventario'], ['Productos', 'el producto', 'Etiquetas: coming-soon']],
+      a: 'Coming soon: producto en Estado Activo, con la etiqueta coming-soon (o el metacampo Status = Coming soon) e inventario en 0 para que nadie lo compre antes.', e: 'Sold out sale solo cuando el inventario llega a 0. Para pasar de Coming soon a Live: quita la etiqueta y pon inventario. Con Printify el inventario no se cuenta (es sobre pedido): activa “Rastrear cantidad” solo en lo que quieras que se agote.', d: 'Live de nuevo: sube el inventario. “Notify me” guarda el correo con la etiqueta del producto; cuando sale, mándales un correo con Shopify Email a ese segmento.',
+      p: [['Shop', 'shop.html'], ['Producto', 'product.html'], ['Home', 'index.html']] },
+    { n: '“Almost gone!”', t: 'auto', q: 'La etiqueta roja “Almost gone!” en la tarjeta. Sale sola cuando quedan 5 piezas o menos.',
+      w: [['Automático'], ['Productos', 'el producto', 'Inventario']],
+      a: 'Nada que agregar: sale sola con inventario de 5 o menos.', e: 'Solo funciona en productos con “Rastrear cantidad” activo (la Special edition, por ejemplo). El número 5 es un ajuste del tema.', d: 'Se quita sola al reponer o al agotarse (pasa a Sold out).',
+      p: [['Shop', 'shop.html'], ['Home', 'index.html']] },
+    { n: 'Tienda vacía: “Coming soon”', t: 'auto', q: 'Si una colección no tiene productos activos (por ejemplo, antes del primer drop), la tienda muestra sola el bloque “Coming soon” con un campo “Notify me”, en lugar de un grid vacío.',
+      w: [['Automático']],
+      a: 'Nada: sale solo. Pruébalo abriendo la tienda con ?empty=1 al final del link.', e: 'El texto del bloque: Personalizar > Colección > Coming soon.', d: 'Desaparece solo en cuanto publicas el primer producto.',
+      p: [['Shop vacío', 'shop.html?empty=1'], ['Shop normal', 'shop.html?cat=all']] },
+    { n: 'Categorías desde Printify', t: 'auto', q: 'Tees, Sweatshirts, Hats, Kids, Stickers & gear: colecciones automáticas que se llenan solas con el Tipo de producto que manda Printify (T-Shirt, Hoodie, Hat...). New drop por etiqueta “new”, Special edition por “special-edition”, Best sellers ordenada por ventas.',
+      w: [['Productos', 'Colecciones', 'Crear colección', 'Automática']],
+      a: 'Crear colección > Automática > condición “Tipo de producto es igual a T-Shirt” (y así cada categoría). Una vez.', e: 'Producto nuevo de Printify: entra solo a su categoría. Si quedó mal, cambia su Tipo de producto.', d: 'Borra la colección o quítala del menú. Los productos no se borran.',
+      p: [['Shop', 'shop.html?cat=all'], ['Menú', 'index.html']] },
+    { n: 'Cupones (códigos de descuento)', t: 'admin', q: 'Códigos como CREW10. Sin app: el carrito ya tiene el campo “Discount code” y el checkout también.',
+      w: [['Descuentos', 'Crear descuento', 'Código de descuento']],
+      a: 'Elige tipo (porcentaje, monto fijo, envío gratis o compra X lleva Y), escribe el código, fechas y límites, y Guardar.', e: 'Cambia monto, fechas o límite de usos en el mismo descuento. Shopify también te da un link que lo aplica solo.', d: 'Desactivar o Eliminar en Descuentos. Pon fecha de fin para que se apague solo.',
+      p: [['Carrito (todas)', 'shop.html'], ['FAQ', 'faq.html']] },
     { n: 'Menús (renombrar “The Machine”)', t: 'admin', q: 'Los links del encabezado, del menú del celular y del footer.',
       w: [['Contenido', 'Menús', 'Main menu'], ['Contenido', 'Menús', 'Footer']],
       a: 'Agregar elemento del menú: nombre y link (página, colección o blog).', e: 'Clic en “The Machine”, cambia el Nombre y Guardar. El link no cambia. Arrastra para reordenar.', d: 'Eliminar el elemento. La página sigue existiendo, solo sale del menú.',
       p: [['Todas (header y footer)', 'index.html']] },
+    { n: 'Spec sheet (ficha técnica de The Machine)', t: 'tema', q: 'La ficha del tractor: motor, cilindrada, turbo, peso, llantas, carrocería, liga y su “Last updated”. Horsepower: Unknown. Una fila sin valor no sale.',
+      w: [['Personalizar', 'The Machine', 'Spec sheet']],
+      a: 'Agregar bloque Spec: nombre y valor.', e: 'Clic en la fila y cambia el valor. Cambia también la fecha “Last updated” de la sección.', d: 'Ojo para ocultar una fila; Eliminar bloque para quitarla.',
+      p: [['The Machine', 'machine.html']] },
+    { n: 'Quitar la playera de The Machine (Spec tee)', t: 'tema', q: 'La sección “The spec sheet, on a tee” con la Cat V8 Spec Tee al final de The Machine. Es un bloque de sección: se quita sin código.',
+      w: [['Personalizar', 'The Machine', 'Spec tee']],
+      a: 'Agregar sección Spec tee y elegir el producto.', e: 'Cambia el producto en el ajuste de la sección. Si la playera queda Sold out, la tarjeta cambia sola a “Notify me”.', d: 'El ojo la oculta; el bote la elimina. Si despublicas la playera, la sección no sale.',
+      p: [['The Machine', 'machine.html']] },
     { n: 'Anuncios rotativos (barra negra)', t: 'tema', q: 'Los mensajes que rotan arriba de todo: Testing season, envío gratis, printed to order.',
       w: [['Personalizar', 'Encabezado', 'Barra de anuncios']],
       a: 'Agregar bloque Anuncio: texto y link opcional.', e: 'Clic en el bloque y cambia el texto. Escribe [season] donde vaya el año.', d: 'Ojo para ocultar; Eliminar bloque para quitarlo.',
       p: [['Todas', 'index.html']] },
-    { n: 'Frases de la cinta amarilla', t: 'tema', q: 'La cinta que corre en la home: “Heavy Metal · Pro Stock · Wisconsin · Full pull or nothing”.',
+    { n: 'Frases de la cinta amarilla', t: 'tema', q: 'La cinta que corre en la home: “Full pull or nothing · This is f#cking evil · Pro Stock · Waterloo, WI”.',
       w: [['Personalizar', 'Inicio', 'Cinta']],
       a: 'Agregar bloque Frase y escríbela.', e: 'Clic en la frase y cambia el texto. Arrastra para el orden.', d: 'Ojo para ocultar una frase; Eliminar bloque para quitarla.',
       p: [['Home', 'index.html']] },
@@ -529,9 +557,9 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       w: [['Personalizar', 'Our Story', 'Walk-up song', 'Link de Spotify']],
       a: 'En Spotify: Compartir > Copiar enlace, y pégalo en el campo.', e: 'Pega otro link (canción o playlist) y Guardar.', d: 'Ojo para ocultar la sección.',
       p: [['Our Story', 'story.html'], ['FAQ', 'faq.html']] },
-    { n: 'Preguntas del FAQ', t: 'tema', q: 'Cada pregunta y respuesta del Help Center, agrupadas por tema.',
+    { n: 'Preguntas del FAQ', t: 'tema', q: 'Cada pregunta y respuesta del Help Center, agrupadas por tema, y la fecha “Last updated” de arriba.',
       w: [['Personalizar', 'FAQ', 'bloques Pregunta']],
-      a: 'Agregar bloque Pregunta dentro de su tema.', e: 'Clic en la pregunta y cambia el texto. Arrastra para el orden.', d: 'Ojo para ocultar; Eliminar bloque para quitarla.',
+      a: 'Agregar bloque Pregunta dentro de su tema.', e: 'Clic en la pregunta y cambia el texto. Arrastra para el orden. Cambia la fecha “Last updated” de la sección.', d: 'Ojo para ocultar; Eliminar bloque para quitarla.',
       p: [['FAQ', 'faq.html']] },
     { n: 'Envío gratis y barra del carrito', t: 'admin', q: 'El monto de envío gratis ($XX) y los escalones de la barra del carrito (envío gratis, sticker de regalo).',
       w: [['Configuración', 'Envío y entrega'], ['Personalizar', 'Ajustes del tema', 'Carrito']],
@@ -578,6 +606,7 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       ['Paquetes y precios', 'Sponsor tier: revisar precios y beneficios, quitar Sold out. Si cambian, corregir el FAQ.'],
       ['Logos de patrocinadores', 'Logo placement y Decal zone: agregar los nuevos, ocultar los que no renovaron.'],
       ['Políticas', 'Configuración > Políticas: revisar y cambiar la fecha “Last updated”.'],
+      ['Cupones de la temporada', 'Descuentos: apagar los del año pasado, crear los nuevos.'],
       ['Anuncios y cinta', 'Personalizar: revisar las frases de la barra negra y de la cinta amarilla.']
     ] },
     { k: 'pull', when: 'Cada fin de semana de pull', t: 'Después de cada pull', items: [
@@ -585,10 +614,11 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       ['Sumar al contador', 'Season stats: +1 competencia o exhibición, +1 win si ganó.'],
       ['Escribir en el Pit Log', 'Entrada de blog con lo que pasó y 2 o 3 fotos (súbelas a Archivos).'],
       ['Avisar el siguiente', 'Hook Alerts: correo con Shopify Email antes del próximo pull.'],
-      ['Special edition (si hubo momento)', 'Producto nuevo en la colección Special edition con sus metacampos.']
+      ['Special edition (si hubo momento)', 'Producto nuevo con etiqueta special-edition y sus metacampos.'],
+      ['Revisar Last updated', 'Sección 03 de esta página: lo que esté en rojo, actualízalo.']
     ] },
     { k: 'post', when: 'Octubre a diciembre', t: 'Al cerrar la temporada', items: [
-      ['Cerrar la Special edition', 'Marcar Edición cerrada si sigue abierta.'],
+      ['Cerrar la Special edition', 'Revisa que su End date ya pasó: sale sola de la venta.'],
       ['Resumen en el Pit Log', 'Una entrada con lo mejor y lo peor del año.'],
       ['Limpiar el calendario', 'Pulls sin fecha o cancelados: Estado Hidden.'],
       ['Revisar productos', 'Diseños que ya no van: Estado Borrador. Best sellers se acomoda solo.'],

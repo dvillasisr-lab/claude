@@ -157,7 +157,7 @@
       '<div class="announce" role="region" aria-label="Announcements"><p class="announce__msg" id="ann" aria-live="off">' + MSGS[0] + '</p><button class="announce__pause" type="button" id="ann-pause" aria-label="Pause announcements">' + I.pause + '</button></div>' +
       '<header class="hdr" id="hdr"><div class="wrap hdr__in">' +
         '<button class="icon-btn menu-btn" type="button" id="menu-open" aria-label="Open menu">' + I.menu + '</button>' +
-        '<a class="hdr__logo" href="index.html"><img src="img/logo-ink.svg" alt="Heavy Metal home" width="138" height="20"></a>' +
+        '<a class="hdr__logo" href="index.html"><img src="img/logo-ink.svg" alt="Heavy Metal Pro Stock home" width="138" height="20"></a>' +
         '<nav class="hdr__nav" aria-label="Main">' + nav + '</nav>' +
         '<div class="hdr__icons">' +
           '<button class="icon-btn" type="button" id="search-open" aria-label="Search">' + I.search + '</button>' +
@@ -173,7 +173,7 @@
       '</div></div>' +
       '</header>' +
       '<div class="mnav" id="mnav" hidden role="dialog" aria-modal="true" aria-label="Menu">' +
-        '<div class="mnav__top"><img src="img/logo-ink.svg" alt="Heavy Metal" height="18" style="height:18px;width:auto"><button class="icon-btn" type="button" id="menu-close" aria-label="Close menu">' + I.close + '</button></div>' +
+        '<div class="mnav__top"><img src="img/logo-ink.svg" alt="Heavy Metal Pro Stock" height="18" style="height:18px;width:auto"><button class="icon-btn" type="button" id="menu-close" aria-label="Close menu">' + I.close + '</button></div>' +
         '<div class="mnav__thumbs">' + CATS.map(function (c) { return '<a href="' + catHref(c[0]) + '">' + thumb(c[1], c[0]) + '<span>' + c[1] + '</span></a>'; }).join('') + '</div>' +
         PAGES.map(function (p) { return '<a class="mnav__link" href="' + p[1] + '">' + p[2] + I.arrow + '</a>'; }).join('') +
         '<div class="mnav__sub"><a href="account.html">Account</a><a href="contact.html">Contact</a><a href="faq.html">FAQ</a><a href="policies.html?p=shipping">Shipping &amp; returns</a><a href="https://www.facebook.com/heavymetalprostock/">Facebook</a></div>' +
