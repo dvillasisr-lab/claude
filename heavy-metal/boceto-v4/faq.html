@@ -593,7 +593,7 @@ mark{background:#FFF0A8;color:inherit;padding:0}
   /* guardar texto original para resaltar */
   items.forEach(function (d) {
     var s = d.querySelector('summary');
-    d._q = s.textContent; d._text = (s.textContent + ' ' + d.querySelector('.a').textContent).toLowerCase();
+    d._q = s.textContent; s.innerHTML = '<span class="q"></span>'; s.firstChild.textContent = d._q; d._text = (s.textContent + ' ' + d.querySelector('.a').textContent).toLowerCase();
   });
   function esc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 
@@ -601,7 +601,7 @@ mark{background:#FFF0A8;color:inherit;padding:0}
     var term = q.value.trim().toLowerCase(), words = term.split(/\s+/).filter(Boolean), shown = 0;
     $('hc-clear').hidden = !term;
     items.forEach(function (d) {
-      var s = d.querySelector('summary');
+      var s = d.querySelector('summary .q');
       var ok = words.every(function (w) { return d._text.indexOf(w) > -1; });
       d.hidden = !ok; if (ok) shown++;
       s.textContent = d._q;
