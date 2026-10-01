@@ -355,3 +355,4 @@ input[type=radio]:focus-visible,input[type=checkbox]:focus-visible{outline:2px s
 .soon__form{display:flex;gap:8px;width:min(420px,100%);margin-top:6px}
 .coupon{display:flex;gap:8px;margin-top:10px}
 .coupon .input{min-height:36px}
+.soon__form .btn{flex:none;white-space:nowrap}

@@ -336,6 +336,7 @@
   var qp = null;
   function quick(id) {
     var p = CAT.filter(function (x) { return x.id === id; })[0]; if (!p) return;
+    if (p.status !== 'live') { location.href = href(p) + '#notify'; return; }
     var color = p.colors[0] || '';
     if (!p.sizes.length) { window.hmAdd(p.name, color || 'One size', '$XX'); return; }
     qp = p; $('qs-name').textContent = p.name; $('qs-color').textContent = color || 'One color';
