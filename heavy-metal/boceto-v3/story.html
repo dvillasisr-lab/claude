@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 -->
+<title>Our Story · Heavy Metal, The Evil One</title>
+<meta name="description" content="Twelve years from an idea in Tomah, Wisconsin to a Pro Stock pulling tractor built by hand in Waterloo. Meet Chris F., the crew and The Evil One.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Story v3: más corta y personal. Cada bloque cabe en una pantalla de laptop. */
+html,body{overflow-x:clip}
+.st-photo{position:relative;overflow:hidden;background:var(--tile);margin:0}
+.st-photo img{position:absolute;inset:0}
+
+/* 1 · hero compacto */
+.st-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);gap:clamp(24px,5vw,72px);align-items:center}
+.st-hero__txt{display:grid;gap:14px;align-content:center;max-width:520px}
+.st-hero__txt .lede{max-width:44ch}
+.st-hero .st-photo{aspect-ratio:4/5;max-height:calc(100svh - var(--header) - var(--announce) - 2 * var(--sect) - 24px);min-height:320px;width:100%}
+.st-hero figcaption{position:absolute;left:8px;bottom:8px;background:rgba(255,255,255,.92);color:var(--ink);font-size:11px;font-weight:600;padding:4px 8px;letter-spacing:.02em}
+.st-meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:var(--t-xs);color:var(--mute);margin:0;padding:0;list-style:none}
+.st-meta b{color:var(--ink);font-weight:700}
+
+/* 2 · línea de tiempo en una fila */
+.st-tl{border-block:1px solid var(--line);background:var(--surface)}
+.st-tl ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.st-tl li{position:relative;padding:18px 16px 18px 0;display:grid;gap:4px;align-content:start}
+.st-tl li+li{padding-left:16px;border-left:1px solid var(--line)}
+.st-tl .yr{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h2);line-height:1;color:var(--ink);text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.st-tl .yr::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ink);flex:none}
+.st-tl .now .yr::before{background:var(--accent);box-shadow:0 0 0 2px var(--ink)}
+.st-tl .ev{font-size:var(--t-sm);font-weight:600;color:var(--ink);margin:0}
+.st-tl .pl{font-size:var(--t-xs);color:var(--mute);margin:0}
+@media (max-width:900px){
+  .st-tl .wrap{padding-inline:0}
+  .st-tl ol{display:flex;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin;padding-inline:var(--gutter);scroll-padding-inline:var(--gutter)}
+  .st-tl li{flex:0 0 172px;scroll-snap-align:start}
+}
+
+/* 3 · capítulos alternados */
+.st-chs{display:grid;gap:clamp(32px,4vw,56px)}
+.st-ch{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:center}
+.st-ch:nth-child(even){grid-template-columns:minmax(0,1fr) minmax(0,340px)}
+.st-ch:nth-child(even) .st-photo{order:2}
+.st-ch .st-photo{aspect-ratio:4/5;max-height:440px}
+.st-ch__txt{display:grid;gap:12px;max-width:60ch}
+.st-ch__txt p{margin:0;color:var(--soft)}
+.st-ch__n{font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;color:var(--mute);text-transform:uppercase;margin:0}
+.st-quote{margin:4px 0;padding:4px 0 4px 16px;border-left:4px solid var(--accent)}
+.st-quote p{font-family:var(--f-head);font-stretch:78%;font-weight:700;text-transform:uppercase;font-size:var(--t-h1);line-height:1.12;color:var(--ink)!important;text-wrap:balance}
+.st-quote footer{font-size:var(--t-xs);color:var(--mute);margin-top:6px;letter-spacing:.06em;text-transform:uppercase}
+.st-season{font-weight:600;color:var(--ink)!important}
+
+/* 4 · el equipo */
+.st-crew{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
+.st-chief{display:grid;gap:10px;justify-items:start;padding:20px;background:var(--bg);border:1px solid var(--line)}
+.st-chief .av{width:96px;height:96px;font-size:30px}
+.st-chief p{margin:0}
+.st-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px 16px}
+.st-m{display:grid;grid-template-columns:48px minmax(0,1fr);gap:10px;align-items:center}
+.av{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--surface);font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:16px;letter-spacing:.04em;flex:none}
+.av--paw-w{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.av--paw-b{background:var(--ink);color:var(--surface)}
+.av svg{width:22px;height:22px;fill:currentColor}
+.st-m__n{margin:0;font-weight:700;color:var(--ink);font-size:var(--t-sm);line-height:1.25}
+.st-m__r{margin:0;font-size:var(--t-xs);color:var(--mute);line-height:1.35}
+.st-grid .pet .st-m__r::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:6px;vertical-align:1px}
+.st-sub{grid-column:1/-1;margin:6px 0 -6px;font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);border-top:1px solid var(--line);padding-top:12px}
+.st-sub:first-child{margin-top:0}
+@media (max-width:1100px){.st-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:860px){.st-crew{grid-template-columns:1fr}.st-chief{grid-template-columns:72px minmax(0,1fr);align-items:center;column-gap:14px}.st-chief .av{width:72px;height:72px;font-size:22px;grid-row:span 3}}
+@media (max-width:560px){.st-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px}.st-m{grid-template-columns:40px minmax(0,1fr);gap:8px}.st-grid .av{width:40px;height:40px;font-size:14px}}
+
+/* 5 · hermanos */
+.st-bro{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px clamp(24px,4vw,56px);align-items:center}
+.st-bro p{margin:0}
+.st-bro__txt{display:grid;gap:8px;max-width:72ch}
+.st-song{display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 12px;align-items:center;padding:14px 18px;border:1px solid var(--night-ink);min-width:260px}
+.st-song svg{grid-row:span 2;width:28px;height:28px;fill:var(--accent)}
+.st-song b{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h2);text-transform:uppercase;line-height:1.1}
+.st-song span{font-size:var(--t-xs);letter-spacing:.06em;text-transform:uppercase;opacity:.8}
+@media (max-width:760px){.st-bro{grid-template-columns:1fr}.st-song{min-width:0}}
+
+/* 6 · CTA único */
+.st-cta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px 32px}
+.st-cta p{margin:0}
+
+@media (max-width:760px){
+  .st-hero{grid-template-columns:1fr}
+  .st-hero .st-photo{max-height:none;aspect-ratio:4/5;min-height:0;max-width:420px}
+  .st-ch,.st-ch:nth-child(even){grid-template-columns:1fr}
+  .st-ch:nth-child(even) .st-photo{order:0}
+  .st-ch .st-photo{aspect-ratio:3/2;max-height:none}
+}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="story"></div>
+<main id="main">
+
+<!-- 1 · hero -->
+<section class="sect" aria-labelledby="st-h1">
+  <div class="wrap st-hero">
+    <div class="st-hero__txt">
+      <p class="label muted">Heavy Metal · Waterloo, WI</p>
+      <h1 class="h-hero" id="st-h1">Our Story</h1>
+      <p class="lede">One idea in 2014. Twelve years of nights and weekends in a family shop. A Pro Stock tractor nicknamed The Evil One.</p>
+      <ul class="st-meta">
+        <li><b>Chris F.</b> Owner, driver &amp; crew chief</li>
+        <li><b>11</b> people and 2 mascots</li>
+      </ul>
+    </div>
+    <figure class="st-photo">
+      <img class="photo" src="img/hm-driver.webp" alt="Chris F. in the driver's seat of Heavy Metal, gold helmet on, at the start of a pull" width="788" height="1400" fetchpriority="high">
+      <figcaption>Chris in the seat</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 2 · línea de tiempo -->
+<section class="st-tl" aria-labelledby="tl-h">
+  <h2 class="vh" id="tl-h">Timeline</h2>
+  <div class="wrap">
+    <ol>
+      <li><span class="yr">2014</span><p class="ev">The idea is born</p><p class="pl">Tomah, WI</p></li>
+      <li><span class="yr">Feb 2020</span><p class="ev">First bolt</p><p class="pl">Family shop, Waterloo, WI</p></li>
+      <li><span class="yr">2026</span><p class="ev">Engine fires, lightning strikes</p><p class="pl">The shop goes dark</p></li>
+      <li><span class="yr">2026</span><p class="ev">First pull attempt</p><p class="pl">A real track, a short run</p></li>
+      <li class="now"><span class="yr">Today</span><p class="ev">Testing, chasing the first full pull</p><p class="pl">NTPA &amp; PPL Badger State</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 3 · capítulos -->
+<section class="sect" aria-label="The story in three chapters">
+  <div class="wrap st-chs">
+    <article class="st-ch" aria-labelledby="ch1-h">
+      <figure class="st-photo"><img class="photo" src="img/hm-crew.webp" alt="The crew talking next to Heavy Metal on the grass at a fairground" width="1050" height="1400" loading="lazy"></figure>
+      <div class="st-ch__txt">
+        <p class="st-ch__n">01 · 2014 to 2020</p>
+        <h2 class="h1" id="ch1-h">Twelve years in the making</h2>
+        <p>It started in Tomah, Wisconsin, with one idea. Chris had always been a heavy metal fan, so when he decided to build a pulling tractor, the name was never up for debate.</p>
+        <p>The first bolt went in in February 2020. Then came nights and weekends stolen from work and family, sketches redrawn more times than anyone can count, and a shop in Waterloo that the whole family turned into a second home. Building Heavy Metal was never a solo job.</p>
+      </div>
+    </article>
+
+    <article class="st-ch" aria-labelledby="ch2-h">
+      <figure class="st-photo"><img class="photo" src="img/hm-hero.webp" alt="Heavy Metal pulling down a dirt track under a tall column of black smoke" width="776" height="1400" loading="lazy" style="object-position:50% 30%"></figure>
+      <div class="st-ch__txt">
+        <p class="st-ch__n">02 · 2026</p>
+        <h2 class="h1" id="ch2-h">The night it fired</h2>
+        <p>In 2026 the moment came. Chris stood in the shop and turned the engine over for the first time.</p>
+        <blockquote class="st-quote">
+          <p>At that exact moment, lightning struck, and the power went out.</p>
+        </blockquote>
+        <p>Some would call it a coincidence. We call it a sign. From that night on, there was no doubt about what we had built.</p>
+        <p class="note">La cita de Chris con groserías ("This thing is f#cking evil") se dejó fuera hasta que la dueña la apruebe para esta página.</p>
+      </div>
+    </article>
+
+    <article class="st-ch" aria-labelledby="ch3-h">
+      <figure class="st-photo"><img class="photo" src="img/hm-rear.webp" alt="Heavy Metal from the rear three quarters on the track, grandstands full behind it" width="1050" height="1400" loading="lazy"></figure>
+      <div class="st-ch__txt">
+        <p class="st-ch__n">03 · 2026 to today</p>
+        <h2 class="h1" id="ch3-h">The first pull</h2>
+        <p>The first pull didn't go the way anyone hoped. A small, unexpected issue came up and the run ended before it should have. We won't sugarcoat it.</p>
+        <p>But getting Heavy Metal onto a real track at all, after twelve years of building it with our own hands, was already something to be proud of. The pull didn't finish that day. The story was just getting started.</p>
+        <p class="st-season">This season we're chasing our first full pull: about 20 competitions on the NTPA and PPL Badger State circuits. No exhibitions. Every time it hits the track, it's there to pull.</p>
+        <p><a class="link" href="machine.html">What's under the hood</a></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- 4 · el equipo -->
+<section class="sect sect--white" aria-labelledby="crew-h">
+  <div class="wrap">
+    <div class="sect-head">
+      <h2 class="h1" id="crew-h">The crew</h2>
+      <p class="small muted" style="margin:0">Family, friends and two mascots. Built in Wisconsin, built to pull.</p>
+    </div>
+    <div class="st-crew">
+      <div class="st-chief">
+        <span class="av" aria-hidden="true">CF</span>
+        <p class="h2">Chris F.</p>
+        <p class="small muted">Owner, Driver &amp; Crew Chief</p>
+        <p class="small" style="color:var(--soft)">Had the idea in 2014, turned the first bolt in 2020 and drives every pull.</p>
+      </div>
+      <ul class="st-grid" aria-label="Crew members">
+        <li class="st-sub">Team</li>
+        <li class="st-m"><span class="av" aria-hidden="true">IF</span><div><p class="st-m__n">Isela F.</p><p class="st-m__r">Manager, Marketing &amp; PR</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">CF</span><div><p class="st-m__n">Cindy F.</p><p class="st-m__r">Operations &amp; Accounting</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">DV</span><div><p class="st-m__n">Daniela V.</p><p class="st-m__r">Social Media &amp; Marketing</p></div></li>
+        <li class="st-m pet"><span class="av av--paw-w" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="16" rx="5" ry="4"/><circle cx="6" cy="10" r="2"/><circle cx="18" cy="10" r="2"/><circle cx="9.5" cy="6" r="2"/><circle cx="14.5" cy="6" r="2"/></svg></span><div><p class="st-m__n">Cricket F.</p><p class="st-m__r">Team mascot · white</p></div></li>
+        <li class="st-sub">Pit crew</li>
+        <li class="st-m"><span class="av" aria-hidden="true">D</span><div><p class="st-m__n">Daniel</p><p class="st-m__r">Pit Crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">JF</span><div><p class="st-m__n">Jared F.</p><p class="st-m__r">Pit Crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">JF</span><div><p class="st-m__n">Jim F.</p><p class="st-m__r">Pit Crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">TB</span><div><p class="st-m__n">Tony B.</p><p class="st-m__r">Pit Crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">JL</span><div><p class="st-m__n">Jeff L.</p><p class="st-m__r">Pit Crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">JW</span><div><p class="st-m__n">John W.</p><p class="st-m__r">Pit Crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">BS</span><div><p class="st-m__n">Brad S.</p><p class="st-m__r">Pit Crew</p></div></li>
+        <li class="st-m pet"><span class="av av--paw-b" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="16" rx="5" ry="4"/><circle cx="6" cy="10" r="2"/><circle cx="18" cy="10" r="2"/><circle cx="9.5" cy="6" r="2"/><circle cx="14.5" cy="6" r="2"/></svg></span><div><p class="st-m__n">Turbo</p><p class="st-m__r">Team mascot · black</p></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · hermanos de pista -->
+<section class="sect sect--night" aria-labelledby="bro-h" style="padding-block:clamp(32px,4vw,48px)">
+  <div class="wrap st-bro">
+    <div class="st-bro__txt">
+      <p class="label" style="opacity:.75">Friends on the circuit</p>
+      <h2 class="h2" id="bro-h">Tractor brothers</h2>
+      <p style="color:#CFCCC3">Heavy Metal has a little brother across the ocean: Diesel Ross, a Pro Stock tractor owned by Gert Stessens from Belgium. We met Gert at a pull in the Netherlands. Between the look of the two tractors and the friendship between Gert and Chris, they're considered tractor brothers.</p>
+    </div>
+    <p class="st-song">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l11-2v13" fill="none" stroke="currentColor" stroke-width="2" style="stroke:var(--accent)"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>
+      <span>Walk-up song</span>
+      <b>Fear of the Dark · Iron Maiden</b>
+    </p>
+  </div>
+</section>
+
+<!-- 6 · CTA único -->
+<section class="sect" aria-labelledby="cta-h" style="padding-block:clamp(32px,4vw,48px)">
+  <div class="wrap st-cta">
+    <div>
+      <h2 class="h2" id="cta-h">Wear the story</h2>
+      <p class="muted" style="margin-top:4px">Merch designed by the crew. Every order fuels the team.</p>
+    </div>
+    <a class="btn" href="shop.html?cat=new">Shop the drop</a>
+  </div>
+</section>
+
+</main>
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+</body>
+</html>

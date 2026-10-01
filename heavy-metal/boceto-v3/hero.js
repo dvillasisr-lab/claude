@@ -44,16 +44,17 @@
   function stop(done) { running = false; cancelAnimationFrame(raf); root.classList.remove('is-running'); ctrl.textContent = done ? 'Pull again' : 'Resume'; if (done) elapsed = 0; }
 
   measure();
-  if (reduce) { paint(1); ctrl.textContent = 'Pull again'; }
+  if (reduce) { paint(1); ctrl.hidden = true; }
   else start();
   ctrl.addEventListener('click', function () {
+    if (reduce) return;
     if (running) { stop(false); return; }
     if (ctrl.textContent === 'Pull again') elapsed = 0;
     start();
   });
   new IntersectionObserver(function (e) {
     visible = e[0].isIntersecting;
-    if (visible && running) { t0 = 0; raf = requestAnimationFrame(tick); }
+    if (visible && running) { cancelAnimationFrame(raf); t0 = 0; raf = requestAnimationFrame(tick); }
   }).observe(root);
   addEventListener('resize', function () { measure(); if (!running) paint(elapsed ? Math.min(1, elapsed / DUR) : 1); });
 })();
