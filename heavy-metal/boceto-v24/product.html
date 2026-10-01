@@ -28,6 +28,13 @@ html,body{overflow-x:clip}
   .buy{max-width:520px}
   .buy{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header) + 16px)}
 }
+@media (min-width:1200px){
+  /* pantalla ancha: la galería toma todo el ancho que sobra (sin hueco a la derecha); el alto sigue topado a una pantalla */
+  .pdp{grid-template-columns:minmax(0,1fr) minmax(0,520px)}
+  .pdp .pg__slide .ph{aspect-ratio:auto;height:clamp(440px,calc(100svh - 300px),760px)}
+  .pdp .pg__slide .ph--mock .mock{width:auto;height:72%;max-width:62%}
+  .pdp-skel .skel--img{aspect-ratio:auto;height:clamp(440px,calc(100svh - 300px),760px)}
+}
 
 /* galería v6: foto grande + flechas + contador, tira de miniaturas, swipe con puntos en móvil, lightbox con zoom.
    Aguanta 15 fotos o más: nunca se ven todas al mismo tiempo. */
@@ -176,11 +183,11 @@ html,body{overflow-x:clip}
 
 /* complete the look */
 .look{display:grid;gap:20px;align-items:center;grid-template-columns:minmax(0,1fr)}
-@media (min-width:760px){.look{grid-template-columns:minmax(0,420px) minmax(0,1fr)}}
+@media (min-width:760px){.look{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(24px,4vw,64px)}}
 .look__pics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
 .look__pics .ph__tag{display:none}
 .look__pics .ph{--ar:1/1}
-.look__info{display:grid;gap:10px;justify-items:start;max-width:420px}
+.look__info{display:grid;gap:10px;justify-items:start;max-width:520px}
 .look__list{list-style:none;margin:0;padding:0;width:100%;border-top:1px solid var(--line)}
 .look__list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:var(--t-xs)}
 .look__list li span:first-child{font-weight:600;letter-spacing:.04em;text-transform:uppercase}
