@@ -145,7 +145,7 @@ html,body{overflow-x:clip}
     { s: 'longsleeve', name: 'Long sleeves', mock: 'full-pull-ls', sub: 'Long sleeve tees · S to 3XL', cat: 'tees', rows: blank(ADULT), pend: true },
     { s: 'sweats', name: 'Hoodies & crewnecks', mock: '680-ci-hoodie', sub: 'Pullover hoodies and crewnecks · S to 3XL', cat: 'sweats', rows: blank(ADULT), pend: true },
     { s: 'kids', name: 'Kids', mock: 'little-evil-one-tee', sub: 'Youth tees and hoodies · YS to YXL', cat: 'kids', rows: blank(YOUTH) },
-    { s: 'hats', name: 'Hats', mock: 'crew-cap', sub: 'Crew Cap and Evil One Beanie · One size', cat: 'hats', hat: true }
+    { s: 'hats', name: 'Hats', mock: 'crew-cap', sub: 'Crew Cap and “The Evil One” Beanie · One size', cat: 'hats', hat: true }
   ];
   var NAMES = { measure: 'How to measure' };
   DOCS.forEach(function (d) { NAMES[d.s] = d.name; });
@@ -169,7 +169,7 @@ html,body{overflow-x:clip}
       return '<article class="sz-doc" data-s="hats" aria-labelledby="t-hats" hidden>' + head +
         '<p class="fit"><b>Fit</b><span>One size.' + PEND + '</span></p>' +
         '<div class="tbl-wrap"><table class="tbl"><caption class="vh">Hat sizes</caption><thead><tr><th scope="col">Style</th><th scope="col">Size</th><th scope="col">Fits head <span class="u" data-u></span></th></tr></thead><tbody>' +
-        '<tr><th scope="row">Crew Cap</th><td>One size</td><td data-v>XX to XX</td></tr><tr><th scope="row">Evil One Beanie</th><td>One size</td><td data-v>XX to XX</td></tr></tbody></table></div>' +
+        '<tr><th scope="row">Crew Cap</th><td>One size</td><td data-v>XX to XX</td></tr><tr><th scope="row">“The Evil One” Beanie</th><td>One size</td><td data-v>XX to XX</td></tr></tbody></table></div>' +
         '<p style="margin-top:10px">Head circumference measurements' + PEND + '. Measure around your head, just above the ears and eyebrows.</p>' + shop + '</article>';
     }
     return '<article class="sz-doc" data-s="' + d.s + '" aria-labelledby="t-' + d.s + '" hidden>' + head + FIT +

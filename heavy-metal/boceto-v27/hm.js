@@ -28,15 +28,15 @@
   var TEE = ['S', 'M', 'L', 'XL', '2XL', '3XL'];
   var CAT = window.HM_CATALOG = [
     /* status: 'live' (default) | 'soon' (Coming soon) | 'soldout'. left: unidades; 5 o menos = "Almost gone!" */
-    { id: 'evil-one-tee', name: 'Evil One Tee', sub: 'Front logo tee', cat: 'tees', colors: ['Matte Black', 'Smoke Gray'], sizes: TEE, sold: ['3XL'], tag: 'best', left: 4 },
+    { id: 'evil-one-tee', name: '“The Evil One” Tee', sub: 'Front logo tee', cat: 'tees', colors: ['Matte Black', 'Smoke Gray'], sizes: TEE, sold: ['3XL'], tag: 'best', left: 4 },
     { id: 'lightning-strike-tee', name: 'Lightning Strike Tee', sub: 'First fire graphic', cat: 'tees', colors: ['Matte Black'], sizes: TEE, tag: 'new' },
     { id: 'full-pull-ls', name: 'Full Pull or Nothing Long Sleeve', sub: 'Back print', cat: 'tees', colors: ['Matte Black', 'Bone'], sizes: TEE, status: 'soldout' },
     { id: 'cat-v8-spec-tee', name: 'Cat V8 Spec Tee', sub: 'Spec sheet print', cat: 'tees', colors: ['Smoke Gray'], sizes: TEE },
     { id: '680-ci-hoodie', name: '680 CI Hoodie', sub: 'Pullover hoodie', cat: 'sweats', colors: ['Matte Black', 'Smoke Gray'], sizes: TEE, tag: 'best' },
     { id: 'evil-one-crewneck', name: '“The Evil One” Crewneck', sub: 'Crewneck sweatshirt', cat: 'sweats', colors: ['Bone'], sizes: TEE, tag: 'new' },
     { id: 'crew-cap', name: 'Crew Cap', sub: 'Structured cap', cat: 'hats', colors: ['Black'], sizes: [], tag: 'best' },
-    { id: 'evil-one-beanie', name: 'Evil One Beanie', sub: 'Cuffed knit', cat: 'hats', colors: ['Black', 'Safety Yellow'], sizes: [], tag: 'new', status: 'soon' },
-    { id: 'little-evil-one-tee', name: 'Little Evil One Kids Tee', sub: 'Youth sizes', cat: 'kids', colors: ['Matte Black'], sizes: ['YS', 'YM', 'YL', 'YXL'] },
+    { id: 'evil-one-beanie', name: '“The Evil One” Beanie', sub: 'Cuffed knit', cat: 'hats', colors: ['Black', 'Safety Yellow'], sizes: [], tag: 'new', status: 'soon' },
+    { id: 'little-evil-one-tee', name: 'Little “Evil One” Kids Tee', sub: 'Youth sizes', cat: 'kids', colors: ['Matte Black'], sizes: ['YS', 'YM', 'YL', 'YXL'] },
     { id: 'kids-hoodie', name: 'Kids Hoodie', sub: 'Youth pullover', cat: 'kids', colors: ['Smoke Gray'], sizes: ['YS', 'YM', 'YL', 'YXL'] },
     { id: 'sticker-pack', name: 'Sticker Pack', sub: 'Die cut set', cat: 'gear', colors: [], sizes: [] },
     { id: 'hook-alert-koozie', name: 'Full Pull Koozie', sub: 'Keep it cold', cat: 'gear', colors: [], sizes: [] },
@@ -232,7 +232,7 @@
   var f = document.querySelector('[data-hm-footer]');
   if (f) {
     function acc(title, links) {
-      return '<details class="ftr__acc" open><summary><h2 class="ftr__h">' + title + '</h2></summary><ul class="ftr__list">' +
+      return '<details class="ftr__acc"' + (matchMedia('(max-width: 720px)').matches ? '' : ' open') + '><summary><h2 class="ftr__h">' + title + '</h2></summary><ul class="ftr__list">' +
         links.map(function (l) { return '<li><a href="' + l[1] + '">' + l[0] + '</a></li>'; }).join('') + '</ul></details>';
     }
     /* Patrocinadores: metaobjeto "Sponsor" (nombre, logo, paquete, forma del logo, link, activo, orden).
@@ -257,11 +257,13 @@
       var list = window.HM_SPONSORS();
       var items = list.length ? list.map(function (x) { return window.hmSpLogo(x); }).join('')
         : ['wide', 'circle', 'square', 'wide', 'circle', 'square'].map(function (s, i) { return '<a class="spl spl--open spl--' + s + (i === 0 ? ' spl--title' : '') + '" href="sponsors.html#packages"><span>Your logo here</span></a>'; }).join('');
-      el.innerHTML = '<div class="wrap spx__head"><h2 class="spx__h" id="spx-h">' + (list.length ? 'Backed by' : 'Your logo could be here') + (spDemo ? ' <i class="spx__ex">Ejemplos</i>' : '') + '</h2><a class="spx__cta" href="sponsors.html">' + (list.length ? 'Become a sponsor' : 'Sponsor “The Evil One”') + ' →</a></div>' +
+      el.innerHTML = '<div class="wrap spx__head"><h2 class="spx__h" id="spx-h">' + (list.length ? 'Backed by' : 'Your logo could be here') + (spDemo ? ' <i class="spx__ex">Ejemplos</i>' : '') + '</h2><div class="spx__tools"><button type="button" class="spx__pause" aria-pressed="false">Pause</button><a class="spx__cta" href="sponsors.html">' + (list.length ? 'Become a sponsor' : 'Sponsor “The Evil One”') + ' →</a></div></div>' +
         '<div class="spx__track" aria-label="Sponsors"><div class="spx__belt">' + items + items.replace(/<a /g, '<a tabindex="-1" aria-hidden="true" ') + '</div><div class="spx__belt" aria-hidden="true">' + (items + items).replace(/<a /g, '<a tabindex="-1" ') + '</div></div>' +
         '<div class="wrap"><p class="note">Patrocinadores: Contenido &gt; Metaobjetos &gt; Sponsor (nombre, logo, paquete, forma: redonda, cuadrada o rectangular, link, activo y orden). La franja se mueve sola, se pausa al pasar el mouse y respeta "reducir movimiento". El orden es por paquete: Title partner primero y más grande. <button type="button" class="linklike" data-spdemo="1">Ver con ejemplos</button> · <button type="button" class="linklike" data-spdemo="0">Ver vacío</button></p></div>';
     }
     document.addEventListener('click', function (e) {
+      var pz = e.target.closest('.spx__pause');
+      if (pz) { var on = pz.getAttribute('aria-pressed') !== 'true'; pz.setAttribute('aria-pressed', on ? 'true' : 'false'); pz.textContent = on ? 'Play' : 'Pause'; document.getElementById('spx').classList.toggle('is-paused', on); return; }
       var b = e.target.closest('[data-spdemo]'); if (!b) return;
       spDemo = b.getAttribute('data-spdemo') === '1'; try { sessionStorage.setItem('hm-sp-demo', spDemo ? '1' : '0'); } catch (er) {}
       renderSpx(); if (window.hmRenderTrusted) window.hmRenderTrusted();
@@ -327,6 +329,9 @@
     hdr.addEventListener('mouseleave', function () { mt = setTimeout(closeMega, 150); });
     mega.addEventListener('mouseenter', openMega);
     mega.addEventListener('focusout', function (e) { if (!mega.contains(e.relatedTarget) && e.relatedTarget !== trig) closeMega(); });
+    trig.addEventListener('focus', openMega);
+    trig.addEventListener('focusout', function (e) { if (!mega.contains(e.relatedTarget)) closeMega(); });
+    document.addEventListener('click', function (e) { if (!mega.hidden && !mega.contains(e.target) && !trig.contains(e.target)) closeMega(); });
   }
 
   /* menú móvil */
@@ -337,7 +342,9 @@
        En celular y tablet (sin hover) se abre con un toque y se cierra con la X, tocando afuera o con Esc. */
     if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
       var mo = $('menu-open'), mn = $('mnav'), mt2;
-      mo.addEventListener('mouseenter', function () { clearTimeout(mt2); if (mn.hidden) show(mn); });
+      var hi;
+      mo.addEventListener('mouseenter', function () { clearTimeout(mt2); hi = setTimeout(function () { if (mn.hidden) { show(mn); mn.style.pointerEvents = 'none'; setTimeout(function () { mn.style.pointerEvents = ''; }, 450); } }, 160); });
+      mo.addEventListener('mouseleave', function () { clearTimeout(hi); });
       mn.addEventListener('mouseenter', function () { clearTimeout(mt2); });
       mn.addEventListener('mouseleave', function () { mt2 = setTimeout(function () { if (!mn.hidden && !mn.contains(document.activeElement)) hideAll(); }, 300); });
     }
@@ -365,7 +372,7 @@
   function renderSearch(q) {
     q = (q || '').trim().toLowerCase(); renderSugg(q);
     var list = q ? CAT.filter(function (p) { return (p.name + ' ' + p.sub + ' ' + p.cat).toLowerCase().indexOf(q) > -1; }) : CAT.filter(function (p) { return p.tag === 'best'; });
-    $('search-h').textContent = q ? (list.length ? list.length + ' products for "' + q + '"' : 'No products for "' + q + '"') : 'Best sellers';
+    $('search-h').textContent = q ? (list.length ? list.length + (list.length === 1 ? ' product' : ' products') + ' for “' + q + '”' : 'No products for “' + q + '”') : 'Best sellers';
     $('search-res').innerHTML = list.slice(0, 4).map(window.hmCard).join('') || '<p class="muted" style="grid-column:1/-1;margin:0">Try "tee", "hoodie" or "kids". Or browse <a href="shop.html?cat=all">Shop all</a>.</p>';
     var all = $('search-all'); all.hidden = !q || !list.length; all.firstChild.href = 'search.html?q=' + encodeURIComponent(q);
   }
@@ -380,8 +387,10 @@
   function setCount(n) {
     count = n;
     var c = $('cart-count'); if (!c) return;
+    /* la propina no cuenta como producto; si ya no hay productos, se quita sola */
+    var lt = $('lines').querySelector('[data-id="beast-tip"]'); if (n === 0 && lt) lt.remove();
     c.textContent = n; c.setAttribute('data-n', n); $('drawer-count').textContent = n;
-    $('cart-open').setAttribute('aria-label', 'Cart, ' + n + ' items');
+    $('cart-open').setAttribute('aria-label', 'Cart, ' + n + (n === 1 ? ' item' : ' items'));
     $('cart-empty').hidden = n > 0; $('ship-bar').hidden = n === 0;
     var pct = Math.min(100, n * 30); $('tiers-fill').style.width = pct + '%';
     $('tiers-msg').innerHTML = pct >= 100 ? '<b>You unlocked free shipping and a free sticker.</b>' : pct >= 60 ? 'Free US shipping unlocked. <b>$XX</b> more for a <b>free sticker</b>' : 'You are <b>$XX</b> away from <b>free US shipping</b>';
@@ -404,10 +413,10 @@
   if ($('beast')) $('beast').addEventListener('click', function (e) {
     var b = e.target.closest('[data-tip]'); if (!b) return;
     var v = b.getAttribute('data-tip'), old = $('lines').querySelector('[data-id="beast-tip"]');
-    if (old) { var same = old.getAttribute('data-tip') === v; old.remove(); setCount(count - 1); if (same) return; }
+    if (old) { var same = old.getAttribute('data-tip') === v; old.remove(); setCount(count); if (same) return; }
     var li = document.createElement('li'); li.className = 'line'; li.setAttribute('data-cat', 'tip'); li.setAttribute('data-id', 'beast-tip'); li.setAttribute('data-tip', v);
     li.innerHTML = '<span class="thumb beast__can" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 7h10l3 3v10H6z"/><path d="M9 7V4h4v3M9 12l6 5M15 12l-6 5"/></svg></span><div><p class="line__n">Feed The Beast</p><p class="line__v">Fuel tip for the crew</p><button type="button" class="line__rm" data-rm>Remove</button></div><p class="num" style="margin:0">$' + v + '.00</p>';
-    $('lines').appendChild(li); setCount(count + 1);
+    $('lines').appendChild(li); setCount(count);
   });
   function openCart() { show($('drawer'), $('cart-close')); }
   if ($('cart-open')) {
@@ -427,8 +436,8 @@
   if ($('lines')) $('lines').addEventListener('click', function (e) {
     var li = e.target.closest('.line'); if (!li) return;
     var q = e.target.closest('[data-q]'), n = li.querySelector('.qty .num');
-    if (q) { var v = Math.max(1, +n.textContent + +q.getAttribute('data-q')); setCount(count + v - +n.textContent); n.textContent = v; }
-    if (e.target.closest('[data-rm]')) { setCount(count - +n.textContent); li.remove(); setCount(count); }
+    if (q && n) { var v = Math.max(1, +n.textContent + +q.getAttribute('data-q')); setCount(count + v - +n.textContent); n.textContent = v; }
+    if (e.target.closest('[data-rm]')) { li.remove(); setCount(n ? count - +n.textContent : count); }
   });
 
   /* selector rápido de talla: Add to cart en tarjetas nunca elige talla por el cliente */
@@ -539,18 +548,24 @@
   window.addEventListener('load', function () { hsScan(); setTimeout(hsScan, 1500); });
   if ('MutationObserver' in window) new MutationObserver(hsLater).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'open'] });
 
-  /* banner de cookies: se muestra una vez por visita del boceto */
+  /* banner de cookies: sale hasta que el cliente elige; Cookie Preferences lo vuelve a abrir */
   var ck = $('cookie');
   if (ck) {
-    var seen = false; try { seen = sessionStorage.getItem('hm-cookie') === '1'; } catch (e) {}
-    ck.hidden = seen;
+    /* la elección se guarda en este navegador (en Shopify lo hace el banner nativo); mismas claves que policies.html */
+    function ckLoad() { try { return JSON.parse(localStorage.getItem('hm-cookies') || 'null'); } catch (e) { return null; } }
+    function ckSave(v) { try { localStorage.setItem('hm-cookies', JSON.stringify(v)); } catch (e) {} }
+    var prev = ckLoad();
+    ck.hidden = !!prev;
+    if (prev) { $('ck-an').checked = !!prev.analytics; $('ck-mk').checked = !!prev.marketing; $('ck-pf').checked = !!prev.preferences; }
     ck.addEventListener('click', function (e) {
       var b = e.target.closest('[data-cookie]'); if (!b) return;
       if (b.getAttribute('data-cookie') === 'manage') {
         var pp = $('cookie-prefs-panel');
         if (pp.hidden) { pp.hidden = false; b.textContent = 'Save choices'; return; }
       }
-      ck.hidden = true; try { sessionStorage.setItem('hm-cookie', '1'); } catch (err) {}
+      var kind = b.getAttribute('data-cookie');
+      var v = kind === 'accept' ? { analytics: true, marketing: true, preferences: true } : kind === 'decline' ? { analytics: false, marketing: false, preferences: false } : { analytics: $('ck-an').checked, marketing: $('ck-mk').checked, preferences: $('ck-pf').checked };
+      ckSave(v); ck.hidden = true;
     });
     $('cookie-prefs').addEventListener('click', function (e) { e.preventDefault(); ck.hidden = false; var fb = ck.querySelector('[data-cookie]'); if (fb) fb.focus(); });
   }

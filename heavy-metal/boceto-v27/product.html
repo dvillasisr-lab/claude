@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Evil One Tee · Heavy Metal Pro Stock: “The Evil One”</title>
-<meta name="description" content="Evil One Tee from Heavy Metal Pro Stock: “The Evil One”, the pulling tractor from Waterloo, WI. Designed by the crew, printed to order, ships in 5 days.">
+<title>“The Evil One” Tee · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="“The Evil One” Tee from Heavy Metal Pro Stock: “The Evil One”, the pulling tractor from Waterloo, WI. Designed by the crew, printed to order, ships in 5 days.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -337,7 +337,7 @@ html,body{overflow-x:clip}
         <li><a href="index.html">Home</a></li>
         <li><a href="shop.html?cat=all">Shop</a></li>
         <li><a id="bc-cat" href="shop.html?cat=tees">Tees</a></li>
-        <li><span aria-current="page" id="bc-name">Evil One Tee</span></li>
+        <li><span aria-current="page" id="bc-name">“The Evil One” Tee</span></li>
       </ol>
     </nav>
 
@@ -375,7 +375,7 @@ html,body{overflow-x:clip}
       <section class="buy" aria-labelledby="p-name">
         <div class="buy__head">
           <div class="buy__badges" id="p-badges"></div>
-          <h1 class="buy__name" id="p-name">Evil One Tee</h1>
+          <h1 class="buy__name" id="p-name">“The Evil One” Tee</h1>
           <a class="buy__rv" id="p-rv" href="#reviews" hidden></a>
           <p class="buy__price"><span class="num" id="p-price">$XX</span><span class="buy__left" id="p-left" hidden></span></p>
           <p class="buy__desc" id="p-desc">Front logo tee. Designed by the crew in Waterloo, WI, and printed to order.</p>
@@ -471,7 +471,7 @@ html,body{overflow-x:clip}
         <h2 class="h2" id="look-t">Crew Pack Bundle</h2>
         <p class="small muted" style="margin:0">The tee and the cap, one price. You pick the tee size.</p>
         <ul class="look__list">
-          <li><span>Evil One Tee</span><span class="num">$XX</span></li>
+          <li><span>“The Evil One” Tee</span><span class="num">$XX</span></li>
           <li><span>Crew Cap</span><span class="num">$XX</span></li>
           <li><span>Bundle</span><span class="num"><b>$XX</b> · save $X</span></li>
         </ul>
@@ -580,7 +580,7 @@ html,body{overflow-x:clip}
 </dialog>
 
 <div class="satc" id="satc" aria-hidden="true">
-  <div class="satc__txt"><b id="satc-name">Evil One Tee</b><span id="satc-var">Matte Black · Select a size</span></div>
+  <div class="satc__txt"><b id="satc-name">“The Evil One” Tee</b><span id="satc-var">Matte Black · Select a size</span></div>
   <button class="btn" type="button" id="satc-btn" tabindex="-1">Select a size</button>
 </div>
 
@@ -623,7 +623,7 @@ html,body{overflow-x:clip}
   var STORY_BASE = 'Designed by the crew that built “The Evil One” by hand in Waterloo, WI. Everything on the tractor is custom-built, and so is every graphic.';
   var cname = CATNAME[p.cat] || 'Shop';
   /* Black Smoke Guarantee: la frase se adapta sola al tipo de producto */
-  var bn = /hoodie|sweat/i.test(p.name) ? 'this hoodie' : /tee|shirt/i.test(p.name) ? 'this shirt' : /cap|hat|beanie/i.test(p.name) ? 'this cap' : /sticker/i.test(p.name) ? 'this sticker' : /koozie/i.test(p.name) ? 'this koozie' : /pack|bundle/i.test(p.name) ? 'this pack' : 'it';
+  var bn = /hoodie/i.test(p.name) ? 'this hoodie' : /crewneck|sweat/i.test(p.name) ? 'this sweatshirt' : /long sleeve/i.test(p.name) ? 'this long sleeve' : /tee|shirt/i.test(p.name) ? 'this shirt' : /beanie/i.test(p.name) ? 'this beanie' : /cap|hat/i.test(p.name) ? 'this cap' : /sticker/i.test(p.name) ? 'this sticker' : /koozie/i.test(p.name) ? 'this koozie' : /pack|bundle/i.test(p.name) ? 'this pack' : 'it';
   if ($('bsg-noun')) $('bsg-noun').textContent = bn;
   var hasSizes = p.sizes.length > 0, hasColors = p.colors.length > 0;
   var sold = p.sold || [];
@@ -894,7 +894,7 @@ html,body{overflow-x:clip}
      p.rating y p.reviews (hm.js), armadas con los textos de abajo; cada una lleva la marca "Ejemplo" (se oculta con "Ocultar notas"). */
   var RV_TXT = [
     [5, 'Wore it to the pull', 'Wore it to my first pull of the season and got asked where I got it three times. Shipped when they said it would.', 'True to size'],
-    [5, 'Looks better in person', 'The “The Evil One” print is sharp and the colors match the photos. Already ordered a second one for my brother.', 'True to size'],
+    [5, 'Looks better in person', 'The front print is sharp and the colors match the photos. Already ordered a second one for my brother.', 'True to size'],
     [5, 'Backing the crew', 'Bought it to support the team. Held up great after a bunch of washes.', 'True to size'],
     [5, 'My new favorite', 'Comfortable, fits like I expected, and the print didn\'t crack in the wash. Wearing it to every pull.', 'True to size'],
     [5, 'Gift for my dad', 'My dad has been going to pulls for 30 years and loved it. Arrived in about a week.', 'True to size'],
