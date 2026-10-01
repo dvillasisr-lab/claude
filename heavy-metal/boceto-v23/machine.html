@@ -206,7 +206,7 @@ html,body{overflow-x:clip}
   .mx-tee{grid-template-columns:1fr}
   .mx-tee .card{max-width:260px}
   /* celular: datos clave en 2 columnas parejas */
-  .mx-keys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mx-keys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));justify-self:stretch}
   .mx-keys div{margin-right:0;padding:8px 12px 8px 0;border-right:0;border-bottom:1px solid var(--line)}
   .mx-keys div:nth-child(2n){padding-left:14px;border-left:1px solid var(--line)}
 }
