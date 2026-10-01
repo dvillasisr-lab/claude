@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gallery · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Photos and video of Heavy Metal Pro Stock: “The Evil One”, event by event. Pulls, exhibitions and test days, filtered by season and by photos or videos.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R5 V4 */
+/* Orden: 1 título y last updated · 2 álbumes por evento (filtros, hoja de contactos SKIMS, load more) · 3 CTA único (Facebook) · visor de fotos */
+html,body{overflow-x:clip}
+.ext{font-size:.85em;margin-left:2px;text-decoration:none;display:inline-block}
+
+/* 1 · título */
+.g-top{padding-block:28px 22px}
+.g-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 20px}
+.g-head p{margin:0;font-size:var(--t-sm);color:var(--soft);max-width:60ch}
+.g-upd{margin:10px 0 0;font-size:var(--t-xs);color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 14px}
+.g-upd b{color:var(--ink);font-weight:600}
+
+/* 2 · barra de filtros */
+.g-main{padding-block:0 clamp(32px,4vw,48px)}
+.g-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 28px;padding:12px 0;border-bottom:1px solid var(--line);background:var(--bg)}
+@media (min-width:761px){.g-bar{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header));z-index:40}}
+.g-fgroup{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.g-fgroup>.label{color:var(--mute);margin-right:4px}
+.chip{min-height:36px;padding:0 12px;background:var(--surface);border:1px solid var(--line);font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.chip .n{font-weight:600;opacity:.7;font-variant-numeric:tabular-nums}
+.chip svg{width:12px;height:12px;fill:currentColor}
+.g-sel{min-height:36px;width:auto;padding:0 32px 0 10px;font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+@media (max-width:760px){
+  .g-fgroup{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;width:100%;padding-bottom:2px}
+  .g-fgroup::-webkit-scrollbar{display:none}
+  .chip{flex:none}
+}
+.g-count{margin:12px 0 0;font-size:var(--t-xs);color:var(--mute)}
+
+/* álbum: ficha del evento a la izquierda, hoja de contactos (grid SKIMS, 4px) a la derecha */
+.g-list{list-style:none;margin:0;padding:0;display:grid}
+.g-album{display:grid;grid-template-columns:minmax(0,240px) minmax(0,1fr);gap:16px clamp(20px,2.4vw,40px);padding:24px 0;border-bottom:1px solid var(--line);scroll-margin-top:140px}
+.g-album:focus{outline:none}
+.g-album:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.g-info{display:grid;gap:6px;align-content:start}
+@media (min-width:761px){.g-info{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header) + 76px)}}
+.g-when{margin:0;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.g-when .pend{font-weight:600;color:var(--soft);letter-spacing:.02em;text-transform:none}
+.g-info .h3{font-size:var(--t-md)}
+.g-where{margin:0;font-size:var(--t-xs);color:var(--soft)}
+.g-tags{display:flex;flex-wrap:wrap;gap:4px}
+.t-test{background:var(--surface);border:1px solid var(--line);color:var(--soft)}
+.t-ex{background:#E9E6DC;color:var(--ink)}
+.t-comp{background:var(--ink);color:var(--surface)}
+.t-mile{background:var(--surface);border:1px solid var(--ink);color:var(--ink)}
+.t-demo{background:#FFF6CC;color:var(--ink);border:1px dashed #C9A400}
+.no-notes .t-demo{display:none}
+.g-n{margin:0;font-size:var(--t-xs);color:var(--mute);font-variant-numeric:tabular-nums}
+.g-links{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:2px}
+.g-links a{font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-underline-offset:3px;white-space:nowrap}
+
+.g-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+@media (max-width:1024px){.g-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){
+  .g-album{grid-template-columns:minmax(0,1fr);padding:20px 0}
+  .g-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:2px}
+}
+.g-tile{position:relative;display:block;width:100%;aspect-ratio:3/4;padding:0;border:0;background:var(--tile);overflow:hidden;cursor:zoom-in;text-decoration:none;color:var(--surface)}
+.g-tile .photo{transition:transform .35s ease}
+.g-tile:hover .photo{transform:scale(1.03)}
+.g-tile:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.g-tile--vid{cursor:pointer}
+.g-tile--vid::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,18,17,0) 45%,rgba(18,18,17,.75))}
+.g-play{position:absolute;left:50%;top:46%;z-index:2;width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;background:var(--accent);display:grid;place-items:center;box-shadow:0 8px 24px -8px rgba(0,0,0,.5);transition:transform .15s}
+.g-play svg{width:22px;height:22px;fill:var(--ink);margin-left:3px}
+.g-tile--vid:hover .g-play{transform:scale(1.08)}
+.g-vtxt{position:absolute;left:10px;right:10px;bottom:10px;z-index:2;display:grid;gap:2px;text-align:left}
+.g-vtxt b{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-sm);text-transform:uppercase;letter-spacing:.02em;line-height:1.2}
+.g-vtxt span{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.g-kind{position:absolute;left:8px;top:8px;z-index:2}
+.g-moreN{position:absolute;inset:0;z-index:2;display:grid;place-items:center;background:rgba(18,18,17,.62);font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:clamp(22px,2.4vw,30px);text-transform:uppercase;color:var(--night-ink)}
+.g-moreN small{display:block;font-family:var(--f-sans);font-stretch:100%;font-size:11px;letter-spacing:.08em;text-align:center}
+
+.g-empty{padding:28px 0;display:grid;gap:8px;justify-items:start;max-width:52ch}
+.g-empty p{margin:0;color:var(--soft)}
+.g-more{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:20px 0 0}
+.g-more p{margin:0;font-size:var(--t-xs);color:var(--mute)}
+.g-meter{width:120px;height:3px;background:var(--line)}
+.g-meter span{display:block;height:100%;background:var(--ink);width:0}
+.g-test{margin-left:4px;background:var(--ink);color:var(--accent);border:0;font:inherit;font-weight:700;padding:2px 8px;cursor:pointer}
+
+/* 3 · CTA único */
+.g-cta{padding-block:28px;border-top:1px solid var(--line)}
+.g-cta__in{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px 24px}
+.g-cta p{margin:0;font-size:var(--t-sm);color:var(--soft)}
+.g-cta .btn svg{width:16px;height:16px;fill:currentColor}
+
+/* visor de fotos (lightbox) */
+.lb{position:fixed;inset:0;z-index:95;background:rgba(14,14,13,.96);color:var(--night-ink);display:grid;grid-template-rows:auto minmax(0,1fr) auto;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+.lb__top{display:flex;align-items:center;gap:12px;height:56px;padding:0 8px 0 var(--gutter)}
+.lb__t{margin:0;flex:1;min-width:0;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb__n{margin:0;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;color:#CFCCC3;font-variant-numeric:tabular-nums;white-space:nowrap}
+.lb .icon-btn{color:var(--night-ink);width:44px;height:44px}
+.lb .icon-btn:focus-visible,.lb__arw:focus-visible{outline-color:var(--accent)}
+.lb__stage{position:relative;min-height:0;display:grid;place-items:center;padding:0 64px;touch-action:pan-y}
+.lb__img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.lb__arw{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:64px;display:grid;place-items:center;background:rgba(18,18,17,.6);border:1px solid #3A3936;color:var(--night-ink);font-size:30px;line-height:1;cursor:pointer}
+.lb__arw:hover{border-color:var(--night-ink)}
+.lb__arw--prev{left:8px}.lb__arw--next{right:8px}
+.lb__cap{margin:0;padding:12px var(--gutter) 16px;font-size:var(--t-xs);color:#CFCCC3;text-align:center;min-height:44px}
+.lb__cap b{color:var(--night-ink);font-weight:600}
+@media (max-width:760px){
+  .lb__stage{padding:0}
+  .lb__arw{top:auto;bottom:-52px;transform:none;width:44px;height:44px;font-size:24px}
+  .lb__cap{padding-inline:64px}
+}
+</style>
+</head>
+<body>
+<div data-hm-header data-current=""></div>
+
+<main id="main">
+
+<!-- 1 · título y fecha de actualización -->
+<section class="sect--white" aria-labelledby="g-title">
+  <div class="wrap g-top">
+    <div class="g-head">
+      <h1 class="h1" id="g-title">Gallery</h1>
+      <p>Photos and video of “The Evil One”, event by event. Tap a photo to see it big.</p>
+    </div>
+    <!-- last-updated: gallery -->
+    <p class="g-upd"><span>Last updated: <b id="g-updated"></b></span><span id="g-total"></span></p>
+  </div>
+</section>
+
+<!-- 2 · álbumes: una entrada del metaobjeto "Album" por evento. 4 por página con "Load more" -->
+<section class="g-main" aria-labelledby="albums-t">
+  <div class="wrap">
+    <h2 class="vh" id="albums-t">Albums</h2>
+    <div class="g-bar">
+      <div class="g-fgroup" role="group" aria-labelledby="f-year-l"><span class="label" id="f-year-l">Season</span><span id="f-year" style="display:contents"></span></div>
+      <div class="g-fgroup" role="group" aria-labelledby="f-type-l"><span class="label" id="f-type-l">Show</span><span id="f-type" style="display:contents"></span></div>
+    </div>
+    <p class="g-count" id="g-count" role="status" aria-live="polite"></p>
+    <ol class="g-list" id="g-list"></ol>
+    <div class="g-more" id="g-more"></div>
+    <p class="note">Cada álbum es una entrada de Contenido &gt; Metaobjetos &gt; Album (evento, fecha, liga, portada, fotos, links de YouTube, pull del Schedule y post del Pit Log); las fotos se suben en Contenido &gt; Archivos. Las fotos están repartidas igual que en el Pit Log y “Example” es de muestra: dinos de qué evento es cada foto y pásanos las de Monroe. “Last updated” es la fecha del álbum más nuevo, sola. <button type="button" class="g-test" id="g-test" aria-pressed="false">Probar con 40 álbumes</button></p>
+  </div>
+</section>
+
+<!-- 3 · CTA único -->
+<section class="sect--white g-cta" aria-labelledby="cta-t">
+  <div class="wrap g-cta__in">
+    <div>
+      <h2 class="h3" id="cta-t">Shot “The Evil One” at a pull?</h2>
+      <p>Tag it #HEAVYMETALPULLING on Facebook. The best ones end up here.</p>
+    </div>
+    <a class="btn" href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V9c0-.6.4-1 1-1Z"/></svg>Share on Facebook<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a>
+  </div>
+</section>
+
+</main>
+
+<!-- visor de fotos: flechas, teclado (← → Inicio Fin Esc), deslizar en el celular, contador -->
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-labelledby="lb-title" hidden>
+  <div class="lb__top">
+    <p class="lb__t" id="lb-title"></p>
+    <p class="lb__n" id="lb-n" aria-live="polite"></p>
+    <button class="icon-btn" type="button" id="lb-close" aria-label="Close photo viewer"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg></button>
+  </div>
+  <div class="lb__stage" id="lb-stage">
+    <img class="lb__img" id="lb-img" alt="">
+    <button class="lb__arw lb__arw--prev" type="button" id="lb-prev" aria-label="Previous photo">‹</button>
+    <button class="lb__arw lb__arw--next" type="button" id="lb-next" aria-label="Next photo">›</button>
+  </div>
+  <p class="lb__cap" id="lb-cap"></p>
+</div>
+
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var SEASON = window.HM_SEASON || new Date().getFullYear();
+  var PAGE = 4;        /* álbumes por página (en Shopify: paginate de metaobjects.album) */
+  var MAX_TILES = 8;   /* cuadros por álbum; si hay más, el último dice "+N" y abre el visor ahí */
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  var PLAY = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg>';
+  var CAM = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h3l2-2h6l2 2h3v12H4Z M12 10a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" fill-rule="evenodd"/></svg>';
+
+  /* Metaobjeto "Album" (en el tema lo pinta Liquid). Campos: event, date (vacía = "[date pending]"), year, city, league,
+     type (Competition | Exhibition | Test | Milestone), cover, photos [{img, alt}], videos [{url, title, poster}],
+     pull (link al pull del Schedule), log (link al post del Pit Log), updated. seq ordena los que aún no tienen fecha. demo = de muestra. */
+  var GALLERY_UPDATED = '2026-10-01';
+  var REAL = [
+    { id: 'monroe', event: 'Green County Fall Nationals', year: SEASON, date: '', seq: 80, city: 'Monroe, WI', league: 'Badger State Tractor Pullers', type: 'Competition',
+      photos: [], videos: [{ url: 'https://www.youtube.com/watch?v=HfJ5FAJJ5Ac', title: 'Badger State Tractor Pullers ' + SEASON + ': Green County Fall Nationals in Monroe, WI', poster: 'hm-hero' }],
+      pull: 'schedule.html', log: 'log.html?q=Monroe' },
+    { id: 'ex3', event: 'Exhibition run', year: SEASON, date: '', seq: 70, city: '[place pending]', league: '', type: 'Exhibition',
+      photos: [{ img: 'hm-grandstand', alt: '“The Evil One” from the side in front of full grandstands' }], videos: [], pull: 'schedule.html', log: 'log.html?type=Exhibition' },
+    { id: 'ex2', event: 'Exhibition run', year: SEASON, date: '', seq: 60, city: '[place pending]', league: '', type: 'Exhibition',
+      photos: [{ img: 'hm-front-white', alt: 'Front of the tractor on the track with white smoke' }], videos: [], pull: 'schedule.html', log: 'log.html?type=Exhibition' },
+    { id: 'ex1', event: 'First exhibition', year: SEASON, date: '', seq: 50, city: '[place pending]', league: '', type: 'Exhibition',
+      photos: [{ img: 'hm-rear', alt: 'The tractor from the rear three quarters on the track, grandstands behind' }], videos: [], pull: 'schedule.html', log: 'log.html?type=Exhibition' },
+    { id: 'first-pull', event: 'First pull attempt', year: SEASON, date: '', seq: 40, city: '[place pending]', league: '', type: 'Competition',
+      photos: [{ img: 'hm-front-smoke', alt: 'Front of the tractor with the driver in a gold helmet, smoke behind and the crew in team shirts' }], videos: [], pull: '', log: 'log.html?q=first%20pull' },
+    { id: 'tests', event: 'Test days', year: SEASON, date: '', seq: 30, city: 'Waterloo, WI', league: '', type: 'Test', demo: true,
+      photos: [{ img: 'hm-driver-crew', alt: 'Chris F. and the crew next to the rear tire' }, { img: 'hm-crew', alt: 'The crew talking next to the tractor on the grass' },
+        { img: 'hm-driver', alt: 'Chris F. in the seat, front of the tractor' }, { img: 'hm-side', alt: 'The tractor in profile on the grass under a blue sky' }],
+      videos: [], pull: '', log: 'log.html?type=Test' },
+    { id: 'fire', event: 'Engine fires, lightning strikes', year: SEASON, date: '', seq: 10, city: 'Waterloo, WI', league: '', type: 'Milestone',
+      photos: [{ img: 'hm-engine', alt: 'The Cat 3208 engine with its turbo in the shop' }], videos: [], pull: '', log: 'log.html?q=lightning' }
+  ];
+  var ALBUMS = REAL.slice();
+  var IMG = { 'hm-hero': [776, 1400], 'hm-driver': [788, 1400], 'hm-engine': [787, 1400] };
+  function dims(k) { return IMG[k] || [1050, 1400]; }
+
+  /* boceto: 40 álbumes de prueba con 1 a 14 fotos (botón en la nota o ?demo=40) */
+  function makeTest(n) {
+    var seed = 11; function rnd() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
+    var PICS = [['hm-hero', 'Pulling under black smoke'], ['hm-grandstand', 'In front of the grandstands'], ['hm-front-white', 'Front of the tractor with white smoke'], ['hm-rear', 'Rear three quarters on the track'], ['hm-crew', 'The crew next to the tractor'], ['hm-driver', 'Chris F. in the seat'], ['hm-engine', 'The Cat 3208 engine'], ['hm-side', 'Profile on the grass'], ['hm-front-smoke', 'Front of the tractor with smoke'], ['hm-driver-crew', 'Chris F. and the crew']];
+    var PLACES = ['Monroe, WI', 'Jefferson, WI', 'Elkhorn, WI', 'Fond du Lac, WI', 'Bowling Green, OH', 'Plymouth, WI', 'Sedalia, MO', 'Tomah, WI', 'Manchester, IA', 'Mt. Pleasant, MI'];
+    var out = [];
+    for (var i = 0; i < n; i++) {
+      var y = SEASON - Math.floor(i / (n / 4)), m = 4 + Math.floor(rnd() * 6), d = 1 + Math.floor(rnd() * 28), r = rnd(), place = PLACES[Math.floor(rnd() * PLACES.length)];
+      var type = r < .5 ? 'Competition' : r < .8 ? 'Exhibition' : 'Test';
+      var np = rnd() < .12 ? 0 : 1 + Math.floor(rnd() * 14), ph = [];
+      for (var j = 0; j < np; j++) { var p = PICS[(i + j * 3) % PICS.length]; ph.push({ img: p[0], alt: p[1] + ', ' + place + ' (example ' + (j + 1) + ')' }); }
+      var vids = np === 0 || rnd() < .3 ? [{ url: 'https://www.youtube.com/watch?v=HfJ5FAJJ5Ac', title: 'Example video, ' + place, poster: PICS[i % PICS.length][0] }] : [];
+      out.push({ id: 'x' + i, event: type === 'Test' ? 'Test day' : (type === 'Exhibition' ? 'Exhibition, ' : 'Pro Stock pull, ') + place, year: y,
+        date: y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0'), seq: n - i, city: place, league: type === 'Competition' ? (rnd() < .5 ? 'NTPA' : 'Badger State Tractor Pullers') : '',
+        type: type, demo: true, photos: ph, videos: vids, pull: type === 'Test' ? '' : 'schedule.html', log: 'log.html?q=' + encodeURIComponent(place.split(',')[0]) });
+    }
+    return out;
+  }
+
+  var TYPES = [['all', 'All'], ['photos', 'Photos'], ['videos', 'Videos']];
+  var TAGCLS = { Test: 't-test', Exhibition: 't-ex', Competition: 't-comp', Milestone: 't-mile' };
+  var url = new URLSearchParams(location.search);
+  var st = { year: url.get('year') === 'all' ? 'all' : (+url.get('year') || SEASON), type: url.get('type') || 'all', shown: PAGE, test: url.get('demo') === '40' };
+  if (!TYPES.some(function (t) { return t[0] === st.type; })) st.type = 'all';
+  if (st.test) ALBUMS = makeTest(40);
+
+  function newest() { return ALBUMS.reduce(function (m, a) { return a.date && a.date > m ? a.date : m; }, '0000'); }
+  function longDate(iso) { var p = iso.split('-'); return new Date(+p[0], +p[1] - 1, +p[2] || 1).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); }
+  function sortKey(a) { return a.year * 1e7 + (a.date ? +a.date.replace(/-/g, '').slice(4) : 0) * 1000 + a.seq; }
+  function years() { var y = [SEASON]; ALBUMS.forEach(function (a) { if (y.indexOf(a.year) < 0) y.push(a.year); }); return y.sort(function (a, b) { return b - a; }); }
+  function inYear(a) { return st.year === 'all' || a.year === st.year; }
+  function nP(a) { return st.type === 'videos' ? 0 : a.photos.length; }
+  function nV(a) { return st.type === 'photos' ? 0 : a.videos.length; }
+  function sum(list, f) { return list.reduce(function (s, a) { return s + f(a); }, 0); }
+  function plural(n, w) { return n + ' ' + w + (n === 1 ? '' : 's'); }
+  function filtered() { return ALBUMS.filter(inYear).filter(function (a) { return nP(a) + nV(a) > 0; }).sort(function (a, b) { return sortKey(b) - sortKey(a); }); }
+  function when(a) {
+    if (!a.date) return a.year + ' · <span class="pend">[date pending]</span>';
+    return esc(longDate(a.date));
+  }
+
+  function renderTop() {
+    $('g-updated').textContent = longDate(st.test ? newest() : GALLERY_UPDATED);
+    $('g-total').textContent = plural(ALBUMS.length, 'album') + ' · ' + plural(sum(ALBUMS, function (a) { return a.photos.length; }), 'photo') + ' · ' + plural(sum(ALBUMS, function (a) { return a.videos.length; }), 'video');
+  }
+
+  /* filtros: Season en botones si hay 4 temporadas o menos; con más, lista desplegable */
+  function renderFilters() {
+    var ys = years(), wrap = $('f-year'), hadSel = document.activeElement && document.activeElement.id === 'f-year-sel';
+    if (ys.length <= 4) {
+      wrap.innerHTML = ys.map(function (y) { return [y, String(y)]; }).concat([['all', 'All']]).map(function (y) {
+        return '<button type="button" class="chip" data-year="' + y[0] + '" aria-pressed="' + (st.year === y[0]) + '">' + y[1] + '</button>';
+      }).join('');
+    } else {
+      wrap.innerHTML = '<label class="vh" for="f-year-sel">Season</label><select class="input g-sel" id="f-year-sel">' +
+        ys.map(function (y) { return '<option value="' + y + '"' + (st.year === y ? ' selected' : '') + '>' + y + '</option>'; }).join('') +
+        '<option value="all"' + (st.year === 'all' ? ' selected' : '') + '>All seasons</option></select>';
+      if (hadSel) $('f-year-sel').focus();
+    }
+    var pool = ALBUMS.filter(inYear);
+    var cnt = { all: sum(pool, function (a) { return a.photos.length + a.videos.length; }), photos: sum(pool, function (a) { return a.photos.length; }), videos: sum(pool, function (a) { return a.videos.length; }) };
+    $('f-type').innerHTML = TYPES.map(function (t) {
+      return '<button type="button" class="chip" data-type="' + t[0] + '" aria-pressed="' + (st.type === t[0]) + '">' + (t[0] === 'videos' ? PLAY : t[0] === 'photos' ? CAM : '') + t[1] + '<span class="n">' + cnt[t[0]] + '</span></button>';
+    }).join('');
+  }
+
+  function photoTile(a, ai, j, more) {
+    var p = a.photos[j], d = dims(p.img);
+    var label = more ? 'Open all ' + a.photos.length + ' photos of ' + a.event + ', starting at photo ' + (j + 1) : 'Open photo ' + (j + 1) + ' of ' + a.photos.length + ': ' + p.alt;
+    return '<li><button type="button" class="g-tile" data-a="' + ai + '" data-i="' + j + '" aria-label="' + esc(label) + '"><img class="photo" src="img/' + esc(p.img) + '.webp" alt="" width="' + d[0] + '" height="' + d[1] + '" loading="lazy">' +
+      (more ? '<span class="g-moreN" aria-hidden="true"><span>+' + more + '<small>more</small></span></span>' : '') + '</button></li>';
+  }
+  function videoTile(a, v) {
+    var d = dims(v.poster);
+    return '<li><a class="g-tile g-tile--vid" href="' + esc(v.url) + '" target="_blank" rel="noopener"><img class="photo" src="img/' + esc(v.poster) + '.webp" alt="" width="' + d[0] + '" height="' + d[1] + '" loading="lazy">' +
+      '<span class="badge badge--ink g-kind" aria-hidden="true">Video</span><span class="g-play" aria-hidden="true">' + PLAY + '</span>' +
+      '<span class="g-vtxt"><b>' + esc(v.title) + '</b><span aria-hidden="true">Watch on YouTube ↗</span></span><span class="vh">: watch on YouTube (opens in a new tab)</span></a></li>';
+  }
+  function album(a) {
+    var ai = ALBUMS.indexOf(a), tiles = [];
+    if (nV(a)) a.videos.forEach(function (v) { tiles.push(videoTile(a, v)); });
+    if (nP(a)) {
+      var room = Math.max(1, MAX_TILES - tiles.length), cap = a.photos.length > room ? room - 1 : a.photos.length;
+      for (var j = 0; j < cap; j++) tiles.push(photoTile(a, ai, j));
+      if (a.photos.length > cap) tiles.push(photoTile(a, ai, cap, a.photos.length - cap));
+    }
+    var counts = [];
+    if (nP(a)) counts.push(plural(a.photos.length, 'photo'));
+    if (nV(a)) counts.push(plural(a.videos.length, 'video'));
+    var where = [a.city, a.league].filter(Boolean).map(esc).join(' · ');
+    var links = [];
+    if (a.pull) links.push('<a href="' + esc(a.pull) + '">Pull details<span class="vh"> for ' + esc(a.event) + '</span></a>');
+    if (a.log) links.push('<a href="' + esc(a.log) + '">Pit Log<span class="vh"> for ' + esc(a.event) + '</span></a>');
+    return '<li class="g-album" id="a-' + esc(a.id) + '" tabindex="-1" aria-labelledby="h-' + esc(a.id) + '">' +
+      '<div class="g-info"><p class="g-when">' + when(a) + '</p><h3 class="h3" id="h-' + esc(a.id) + '">' + esc(a.event) + '</h3>' + (where ? '<p class="g-where">' + where + '</p>' : '') +
+      '<div class="g-tags"><span class="badge ' + (TAGCLS[a.type] || '') + '">' + esc(a.type) + '</span>' + (a.demo ? '<span class="badge t-demo">Example</span>' : '') + '</div>' +
+      '<p class="g-n">' + counts.join(' · ') + '</p>' + (links.length ? '<div class="g-links">' + links.join('') + '</div>' : '') + '</div>' +
+      '<ul class="g-grid" aria-label="' + esc(a.event) + ': ' + counts.join(', ') + '">' + tiles.join('') + '</ul></li>';
+  }
+
+  function renderList(from) {
+    var list = filtered(), total = list.length, shown = Math.min(st.shown, total);
+    var yl = st.year === 'all' ? 'all seasons' : String(st.year), tl = st.type === 'all' ? 'photos and videos' : st.type;
+    $('g-count').textContent = (total ? 'Showing ' + shown + ' of ' + plural(total, 'album') : 'No albums') + ' · ' + yl + ' · ' + tl;
+    if (!total) {
+      $('g-list').innerHTML = '<li class="g-empty"><p class="h3">Nothing here yet</p><p>No ' + esc(st.type === 'all' ? 'albums' : st.type) + ' for ' + esc(yl) + '. Try another season or show everything.</p><button type="button" class="btn btn--ghost btn--sm" data-year="all" data-type="all">Show all seasons</button></li>';
+      $('g-more').innerHTML = ''; return;
+    }
+    if (from != null) {
+      /* Load more: agrega solo los nuevos y lleva el foco al primero */
+      $('g-list').insertAdjacentHTML('beforeend', list.slice(from, shown).map(album).join(''));
+      var first = $('a-' + list[from].id); if (first) first.focus();
+    } else {
+      $('g-list').innerHTML = list.slice(0, shown).map(album).join('');
+    }
+    var left = total - shown;
+    $('g-more').innerHTML = (total > PAGE ? '<span class="g-meter" aria-hidden="true"><span style="width:' + Math.round(shown / total * 100) + '%"></span></span>' : '') +
+      (left > 0 ? '<p>' + shown + ' of ' + plural(total, 'album') + '</p><button type="button" class="btn btn--ghost" id="g-load">Load more<span class="vh"> albums, ' + Math.min(PAGE, left) + ' of ' + left + ' left</span></button>'
+        : total > PAGE ? '<p>That is every album for ' + esc(yl) + '.</p><button type="button" class="btn btn--ghost btn--sm" id="g-top">Back to filters</button>' : '');
+  }
+
+  function writeURL() {
+    var q = new URLSearchParams();
+    if (st.year !== SEASON) q.set('year', st.year);
+    if (st.type !== 'all') q.set('type', st.type);
+    if (st.test) q.set('demo', '40');
+    try { history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : '')); } catch (e) {}
+  }
+  function render() { st.shown = PAGE; renderTop(); renderFilters(); renderList(); writeURL(); }
+  render();
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('main')) return;
+    if (e.target.closest('#g-load')) { var from = st.shown; st.shown += PAGE; renderList(from); return; }
+    if (e.target.closest('#g-top')) { document.querySelector('.g-bar').scrollIntoView({ block: 'start' }); window.scrollBy(0, -80); var c = document.querySelector('.g-bar .chip[aria-pressed="true"]') || $('f-year-sel'); if (c) c.focus({ preventScroll: true }); return; }
+    var t = e.target.closest('.g-tile[data-a]'); if (t) { openLB(+t.getAttribute('data-a'), +t.getAttribute('data-i'), t); return; }
+    var b = e.target.closest('[data-year],[data-type]'); if (!b) return;
+    var sel = null;
+    if (b.hasAttribute('data-year')) { var y = b.getAttribute('data-year'); st.year = y === 'all' ? 'all' : +y; sel = '[data-year="' + y + '"]'; }
+    if (b.hasAttribute('data-type')) { st.type = b.getAttribute('data-type'); sel = sel && !b.classList.contains('chip') ? null : '[data-type="' + st.type + '"]'; }
+    render();
+    var f = (sel && document.querySelector('.g-bar ' + sel)) || document.querySelector('.g-bar .chip[aria-pressed="true"]') || $('f-year-sel');
+    if (f) f.focus();
+  });
+  document.addEventListener('change', function (e) { if (e.target.id === 'f-year-sel') { st.year = e.target.value === 'all' ? 'all' : +e.target.value; render(); } });
+
+  $('g-test').addEventListener('click', function () {
+    st.test = !st.test; ALBUMS = st.test ? makeTest(40) : REAL.slice(); st.year = SEASON; st.type = 'all'; render();
+    this.textContent = st.test ? 'Volver a los álbumes reales' : 'Probar con 40 álbumes';
+    this.setAttribute('aria-pressed', String(st.test));
+  });
+  if (st.test) { $('g-test').textContent = 'Volver a los álbumes reales'; $('g-test').setAttribute('aria-pressed', 'true'); }
+
+  /* ---------- visor de fotos ---------- */
+  var lb = $('lb'), lbA = null, lbI = 0, lbFrom = null, reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function show() {
+    var a = lbA, p = a.photos[lbI], n = a.photos.length, img = $('lb-img');
+    img.src = 'img/' + p.img + '.webp'; img.alt = p.alt;
+    var d = dims(p.img); img.width = d[0]; img.height = d[1];
+    $('lb-title').textContent = a.event;
+    $('lb-n').textContent = (lbI + 1) + ' / ' + n;
+    $('lb-n').setAttribute('aria-label', 'Photo ' + (lbI + 1) + ' of ' + n);
+    $('lb-cap').innerHTML = '<b>' + esc(p.alt) + '</b><br>' + [a.date ? longDate(a.date) : a.year, a.city].filter(function (x) { return x && x !== '[place pending]'; }).map(esc).join(' · ');
+    $('lb-prev').hidden = $('lb-next').hidden = n < 2;
+    /* precarga la anterior y la siguiente */
+    [lbI - 1, lbI + 1].forEach(function (k) { var q = a.photos[(k + n) % n]; if (q) { var im = new Image(); im.src = 'img/' + q.img + '.webp'; } });
+  }
+  function openLB(ai, i, from) {
+    lbA = ALBUMS[ai]; if (!lbA || !lbA.photos.length) return;
+    lbI = Math.min(i, lbA.photos.length - 1); lbFrom = from;
+    lb.hidden = false; document.documentElement.style.overflow = 'hidden';
+    show(); $('lb-close').focus();
+  }
+  function closeLB() {
+    if (lb.hidden) return;
+    lb.hidden = true; document.documentElement.style.overflow = '';
+    if (lbFrom && document.contains(lbFrom)) lbFrom.focus();
+    lbFrom = null;
+  }
+  function go(d) { var n = lbA.photos.length; if (n < 2) return; lbI = (lbI + d + n) % n; show(); }
+  $('lb-close').addEventListener('click', closeLB);
+  $('lb-prev').addEventListener('click', function () { go(-1); });
+  $('lb-next').addEventListener('click', function () { go(1); });
+  /* clic en el fondo oscuro (fuera de la foto y los botones) cierra */
+  $('lb-stage').addEventListener('click', function (e) { if (e.target === this) closeLB(); });
+  document.addEventListener('keydown', function (e) {
+    if (lb.hidden) return;
+    if (e.key === 'Escape') { e.preventDefault(); closeLB(); return; }
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(1); return; }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); return; }
+    if (e.key === 'Home') { e.preventDefault(); lbI = 0; show(); return; }
+    if (e.key === 'End') { e.preventDefault(); lbI = lbA.photos.length - 1; show(); return; }
+    if (e.key === 'Tab') {
+      /* el foco se queda dentro del visor */
+      var f = [].filter.call(lb.querySelectorAll('button'), function (x) { return !x.hidden; });
+      var k = f.indexOf(document.activeElement);
+      if (e.shiftKey && k <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && (k === f.length - 1 || k < 0)) { e.preventDefault(); f[0].focus(); }
+    }
+  });
+  /* deslizar en el celular */
+  var x0 = null;
+  $('lb-stage').addEventListener('pointerdown', function (e) { x0 = e.clientX; });
+  $('lb-stage').addEventListener('pointerup', function (e) { if (x0 == null) return; var dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1); });
+  $('lb-stage').addEventListener('pointercancel', function () { x0 = null; });
+})();
+</script>
+</body>
+</html>
