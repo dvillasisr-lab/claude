@@ -1,8 +1,8 @@
 # Prompt maestro: sitio Shopify de Heavy Metal Pro Stock: “The Evil One”
 
-Versión del plan: **v6** (actualizado con todo el feedback de la dueña hasta el boceto v6).
+Versión del plan: **v7** (actualizado con todo el feedback de la dueña hasta el boceto v7).
 Copia lo que está dentro del bloque y úsalo con Claude o con cualquier equipo. Lo que aparece como `{{ }}` es un dato pendiente: nunca se inventa.
-El diseño aprobado vive en el boceto navegable (carpeta `heavy-metal/boceto-v6/`, publicado en el artifact del proyecto). Ese boceto manda sobre este texto cuando haya diferencias de detalle.
+El diseño aprobado vive en el boceto navegable (carpeta `heavy-metal/boceto-v7/`, publicado en el artifact del proyecto). Ese boceto manda sobre este texto cuando haya diferencias de detalle.
 
 ```text
 ROL
@@ -36,8 +36,8 @@ HECHOS REALES (usar tal cual)
   Facebook: https://www.facebook.com/heavymetalprostock/
 - Merch diseñado por el equipo, impreso bajo demanda con Printify (tracking automático).
   Envío "Printed to order, ships in 5 days" {{confirmar con Printify}}.
-- Frase de marca: "This is f#cking evil" (escrita así). Cinta amarilla de la home: máximo 3
-  frases ("HEAVY METAL PRO STOCK" · "FULL PULL OR NOTHING" · "THIS IS F#CKING EVIL").
+- Frase de marca: "This is f#cking evil" (escrita así). Cinta amarilla de la home, con
+  puntitos: "FULL PULL OR NOTHING" · "THIS IS F#CKING EVIL".
 
 DECISIONES YA TOMADAS (no reabrir)
 - Sin "Ride With The Evil One" (los fans no ponen su nombre en el tractor). Sin SMS.
@@ -45,8 +45,9 @@ DECISIONES YA TOMADAS (no reabrir)
 - Estilo de tienda tipo SKIMS / Kylie: escala de letra contenida, secciones que caben en
   pantalla, fotitos de categoría de 100 px, grid de 4 columnas, footer centrado con legales.
 - Logo a la izquierda. Una acción principal por sección. Una sola lista de correo: Hook Alerts.
-- Estamos en testing: un contador de wins en 0 dice "Coming soon". No prometer cifras en
-  frases de venta: "Your brand in front of XX+ fans across XX pulls a season" desde datos.
+- Estamos en testing: un contador de wins en 0 dice "Coming soon". Sin contador de full pulls.
+- Frase de venta calculada desde Sponsor stat: "Your brand in front of 100,000+ fans across
+  20+ pulls a season (est.)" (pulls por temporada × fans por pull).
 - La edición especial NO se numera.
 - Todo lo dinámico se edita sin código y muestra "Last updated".
 
@@ -61,6 +62,7 @@ OBJETIVOS
 
 MENÚ
 Shop · The Machine · Our Story · Schedule · Pit Log · Sponsors · [búsqueda, cuenta, carrito]
+Footer The team: también Gallery y Book the team.
 Footer: Help (Contact, Shipping, Returns, Size guide, Track my order, FAQ), Hook Alerts,
 The team (The Machine, Our Story, Schedule, Pit Log, Sponsors), redes, dirección y contacto,
 y legales: Privacy, Terms, Refund, Shipping, Contact Information, Accessibility, Your Privacy
@@ -69,8 +71,8 @@ Waterloo, WI".
 
 PÁGINAS (detalle en el boceto v6)
 1. Home: hero animado "Full Pull" (logo grande, tractor real + sled con operador y caja de
-   pesas, humo denso casi vertical, fondo tormenta con rayo al full pull, pull sim con RPM,
-   distancia, mph de simulación y sonido de motor sintetizado apagado por defecto) → cinta
+   pesas, humo denso casi vertical, fondo tormenta con rayo al full pull, pull sim sencillo:
+   tacómetro, distancia y estado; sin sonido; el tractor arranca desde "Shop the drop") → cinta
    amarilla → tienda (fotitos + 4 productos) → banda The Machine → el rayo (video) →
    Next pull + contadores → franja de patrocinio (una línea y un botón).
 2. Shop: fotitos de categoría, toolbar Sort/Size/Color/Category en panel lateral, tarjetas con
@@ -92,14 +94,16 @@ PÁGINAS (detalle en el boceto v6)
 9. Sponsors: paquetes editables (Title $25,000 · Pit $10,000 · Crew Supporter $5,000) con
    Available / Limited / Sold out / Hidden, stats estimados, lugares del logo con íconos,
    mapa de calcomanías estilo anatomía, FAQ, formulario.
-10. FAQ (Help Center con buscador), Size guide propia, Contact (formulario + ayuda rápida),
+10. Gallery: álbumes por evento (fotos y videos), filtros, visor, ?event=handle.
+    Book the team: apariciones y exhibiciones para promotores, con formulario.
+11. FAQ (Help Center con buscador), Size guide propia, Contact (formulario + ayuda rápida),
    Policies estilo SKIMS, Account (código de 6 dígitos y Sign in with Shop), Search, 404.
-11. "Cómo editas todo" (solo para la dueña): mapa de lo editable, ajuste de Temporada,
+12. "Cómo editas todo" (solo para la dueña): mapa de lo editable, ajuste de Temporada,
    tabla de Last updated con semáforo, calendario anual, íconos de prenda.
 
 CÓMO SE EDITA (Shopify, sin código)
 - Metaobjetos: Pull event, Season stats, Sponsor tier, Logo placement, Decal zone,
-  Crew member, Tractor part.
+  Crew member, Tractor part, Album.
 - Blog "Pit Log" con etiquetas Test / Exhibition / Competition / Win / Full pull /
   Milestone / Featured.
 - Colecciones automáticas por tipo de producto (Printify llena el tipo). Colección

@@ -98,7 +98,7 @@ html,body{overflow-x:clip}
 .g-cta .btn svg{width:16px;height:16px;fill:currentColor}
 
 /* visor de fotos (lightbox) */
-.lb{position:fixed;inset:0;z-index:95;background:rgba(14,14,13,.96);color:var(--night-ink);display:grid;grid-template-rows:auto minmax(0,1fr) auto;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+.lb{position:fixed;inset:0;z-index:95;background:var(--night);color:var(--night-ink);display:grid;grid-template-rows:auto minmax(0,1fr) auto;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
 .lb__top{display:flex;align-items:center;gap:12px;height:56px;padding:0 8px 0 var(--gutter)}
 .lb__t{margin:0;flex:1;min-width:0;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lb__n{margin:0;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;color:#CFCCC3;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -192,25 +192,26 @@ html,body{overflow-x:clip}
 
   /* Metaobjeto "Album" (en el tema lo pinta Liquid). Campos: event, date (vacía = "[date pending]"), year, city, league,
      type (Competition | Exhibition | Test | Milestone), cover, photos [{img, alt}], videos [{url, title, poster}],
-     pull (link al pull del Schedule), log (link al post del Pit Log), updated. seq ordena los que aún no tienen fecha. demo = de muestra. */
+     pull (link al pull del Schedule), log (link al post del Pit Log), updated.
+     id = handle del álbum: Schedule y Pit Log ligan a gallery.html?event=<handle> y la página muestra solo ese álbum. seq ordena los que aún no tienen fecha. demo = de muestra. */
   var GALLERY_UPDATED = '2026-10-01';
   var REAL = [
-    { id: 'monroe', event: 'Green County Fall Nationals', year: SEASON, date: '', seq: 80, city: 'Monroe, WI', league: 'Badger State Tractor Pullers', type: 'Competition',
+    { id: 'monroe-' + SEASON, event: 'Green County Fall Nationals', year: SEASON, date: '', seq: 80, city: 'Monroe, WI', league: 'Badger State Tractor Pullers', type: 'Competition',
       photos: [], videos: [{ url: 'https://www.youtube.com/watch?v=HfJ5FAJJ5Ac', title: 'Badger State Tractor Pullers ' + SEASON + ': Green County Fall Nationals in Monroe, WI', poster: 'hm-hero' }],
       pull: 'schedule.html', log: 'log.html?q=Monroe' },
-    { id: 'ex3', event: 'Exhibition run', year: SEASON, date: '', seq: 70, city: '[place pending]', league: '', type: 'Exhibition',
+    { id: 'exhibition-3', event: 'Exhibition run', year: SEASON, date: '', seq: 70, city: '[place pending]', league: '', type: 'Exhibition',
       photos: [{ img: 'hm-grandstand', alt: '“The Evil One” from the side in front of full grandstands' }], videos: [], pull: 'schedule.html', log: 'log.html?type=Exhibition' },
-    { id: 'ex2', event: 'Exhibition run', year: SEASON, date: '', seq: 60, city: '[place pending]', league: '', type: 'Exhibition',
+    { id: 'exhibition-2', event: 'Exhibition run', year: SEASON, date: '', seq: 60, city: '[place pending]', league: '', type: 'Exhibition',
       photos: [{ img: 'hm-front-white', alt: 'Front of the tractor on the track with white smoke' }], videos: [], pull: 'schedule.html', log: 'log.html?type=Exhibition' },
-    { id: 'ex1', event: 'First exhibition', year: SEASON, date: '', seq: 50, city: '[place pending]', league: '', type: 'Exhibition',
+    { id: 'exhibition-1', event: 'First exhibition', year: SEASON, date: '', seq: 50, city: '[place pending]', league: '', type: 'Exhibition',
       photos: [{ img: 'hm-rear', alt: 'The tractor from the rear three quarters on the track, grandstands behind' }], videos: [], pull: 'schedule.html', log: 'log.html?type=Exhibition' },
-    { id: 'first-pull', event: 'First pull attempt', year: SEASON, date: '', seq: 40, city: '[place pending]', league: '', type: 'Competition',
+    { id: 'first-pull-' + SEASON, event: 'First pull attempt', year: SEASON, date: '', seq: 40, city: '[place pending]', league: '', type: 'Competition',
       photos: [{ img: 'hm-front-smoke', alt: 'Front of the tractor with the driver in a gold helmet, smoke behind and the crew in team shirts' }], videos: [], pull: '', log: 'log.html?q=first%20pull' },
-    { id: 'tests', event: 'Test days', year: SEASON, date: '', seq: 30, city: 'Waterloo, WI', league: '', type: 'Test', demo: true,
+    { id: 'test-day-' + SEASON, event: 'Test days', year: SEASON, date: '', seq: 30, city: 'Waterloo, WI', league: '', type: 'Test', demo: true,
       photos: [{ img: 'hm-driver-crew', alt: 'Chris F. and the crew next to the rear tire' }, { img: 'hm-crew', alt: 'The crew talking next to the tractor on the grass' },
         { img: 'hm-driver', alt: 'Chris F. in the seat, front of the tractor' }, { img: 'hm-side', alt: 'The tractor in profile on the grass under a blue sky' }],
       videos: [], pull: '', log: 'log.html?type=Test' },
-    { id: 'fire', event: 'Engine fires, lightning strikes', year: SEASON, date: '', seq: 10, city: 'Waterloo, WI', league: '', type: 'Milestone',
+    { id: 'engine-fires-lightning-strikes-' + SEASON, event: 'Engine fires, lightning strikes', year: SEASON, date: '', seq: 10, city: 'Waterloo, WI', league: '', type: 'Milestone',
       photos: [{ img: 'hm-engine', alt: 'The Cat 3208 engine with its turbo in the shop' }], videos: [], pull: '', log: 'log.html?q=lightning' }
   ];
   var ALBUMS = REAL.slice();
@@ -239,9 +240,12 @@ html,body{overflow-x:clip}
   var TYPES = [['all', 'All'], ['photos', 'Photos'], ['videos', 'Videos']];
   var TAGCLS = { Test: 't-test', Exhibition: 't-ex', Competition: 't-comp', Milestone: 't-mile' };
   var url = new URLSearchParams(location.search);
-  var st = { year: url.get('year') === 'all' ? 'all' : (+url.get('year') || SEASON), type: url.get('type') || 'all', shown: PAGE, test: url.get('demo') === '40' };
+  var st = { year: url.get('year') === 'all' ? 'all' : (+url.get('year') || SEASON), type: url.get('type') || 'all', shown: PAGE, test: url.get('demo') === '40', event: url.get('event') || '' };
   if (!TYPES.some(function (t) { return t[0] === st.type; })) st.type = 'all';
   if (st.test) ALBUMS = makeTest(40);
+  /* ?event=<handle> (desde Schedule o Pit Log): solo ese álbum, con su temporada marcada */
+  function byEvent() { return ALBUMS.filter(function (a) { return a.id === st.event; })[0]; }
+  if (st.event) { var ev0 = byEvent(); st.type = 'all'; if (ev0) st.year = ev0.year; }
 
   function newest() { return ALBUMS.reduce(function (m, a) { return a.date && a.date > m ? a.date : m; }, '0000'); }
   function longDate(iso) { var p = iso.split('-'); return new Date(+p[0], +p[1] - 1, +p[2] || 1).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); }
@@ -252,7 +256,7 @@ html,body{overflow-x:clip}
   function nV(a) { return st.type === 'photos' ? 0 : a.videos.length; }
   function sum(list, f) { return list.reduce(function (s, a) { return s + f(a); }, 0); }
   function plural(n, w) { return n + ' ' + w + (n === 1 ? '' : 's'); }
-  function filtered() { return ALBUMS.filter(inYear).filter(function (a) { return nP(a) + nV(a) > 0; }).sort(function (a, b) { return sortKey(b) - sortKey(a); }); }
+  function filtered() { if (st.event) { var e = byEvent(); return e ? [e] : []; } return ALBUMS.filter(inYear).filter(function (a) { return nP(a) + nV(a) > 0; }).sort(function (a, b) { return sortKey(b) - sortKey(a); }); }
   function when(a) {
     if (!a.date) return a.year + ' · <span class="pend">[date pending]</span>';
     return esc(longDate(a.date));
@@ -320,7 +324,14 @@ html,body{overflow-x:clip}
   function renderList(from) {
     var list = filtered(), total = list.length, shown = Math.min(st.shown, total);
     var yl = st.year === 'all' ? 'all seasons' : String(st.year), tl = st.type === 'all' ? 'photos and videos' : st.type;
-    $('g-count').textContent = (total ? 'Showing ' + shown + ' of ' + plural(total, 'album') : 'No albums') + ' · ' + yl + ' · ' + tl;
+    if (st.event) {
+      var ev = byEvent();
+      $('g-count').innerHTML = ev ? 'Showing 1 album: ' + esc(ev.event) + ' · <button type="button" class="link" data-allalbums style="background:none;border:0;padding:0;cursor:pointer;text-decoration:underline">Show all albums</button>' : '';
+      if (!ev) {
+        $('g-list').innerHTML = '<li class="g-empty"><p class="h3">No photos from this event yet</p><p>The crew posts photos and video after each pull. Check back soon, or browse every album.</p><button type="button" class="btn btn--ghost btn--sm" data-allalbums>Show all albums</button></li>';
+        $('g-more').innerHTML = ''; return;
+      }
+    } else $('g-count').textContent = (total ? 'Showing ' + shown + ' of ' + plural(total, 'album') : 'No albums') + ' · ' + yl + ' · ' + tl;
     if (!total) {
       $('g-list').innerHTML = '<li class="g-empty"><p class="h3">Nothing here yet</p><p>No ' + esc(st.type === 'all' ? 'albums' : st.type) + ' for ' + esc(yl) + '. Try another season or show everything.</p><button type="button" class="btn btn--ghost btn--sm" data-year="all" data-type="all">Show all seasons</button></li>';
       $('g-more').innerHTML = ''; return;
@@ -343,6 +354,7 @@ html,body{overflow-x:clip}
     if (st.year !== SEASON) q.set('year', st.year);
     if (st.type !== 'all') q.set('type', st.type);
     if (st.test) q.set('demo', '40');
+    if (st.event) q.set('event', st.event);
     try { history.replaceState(null, '', location.pathname + (q.toString() ? '?' + q : '')); } catch (e) {}
   }
   function render() { st.shown = PAGE; renderTop(); renderFilters(); renderList(); writeURL(); }
@@ -352,19 +364,20 @@ html,body{overflow-x:clip}
     if (!e.target.closest('main')) return;
     if (e.target.closest('#g-load')) { var from = st.shown; st.shown += PAGE; renderList(from); return; }
     if (e.target.closest('#g-top')) { document.querySelector('.g-bar').scrollIntoView({ block: 'start' }); window.scrollBy(0, -80); var c = document.querySelector('.g-bar .chip[aria-pressed="true"]') || $('f-year-sel'); if (c) c.focus({ preventScroll: true }); return; }
+    if (e.target.closest('[data-allalbums]')) { st.event = ''; st.year = SEASON; render(); var c0 = document.querySelector('.g-bar .chip[aria-pressed="true"]'); if (c0) c0.focus(); return; }
     var t = e.target.closest('.g-tile[data-a]'); if (t) { openLB(+t.getAttribute('data-a'), +t.getAttribute('data-i'), t); return; }
     var b = e.target.closest('[data-year],[data-type]'); if (!b) return;
-    var sel = null;
+    var sel = null; st.event = '';
     if (b.hasAttribute('data-year')) { var y = b.getAttribute('data-year'); st.year = y === 'all' ? 'all' : +y; sel = '[data-year="' + y + '"]'; }
     if (b.hasAttribute('data-type')) { st.type = b.getAttribute('data-type'); sel = sel && !b.classList.contains('chip') ? null : '[data-type="' + st.type + '"]'; }
     render();
     var f = (sel && document.querySelector('.g-bar ' + sel)) || document.querySelector('.g-bar .chip[aria-pressed="true"]') || $('f-year-sel');
     if (f) f.focus();
   });
-  document.addEventListener('change', function (e) { if (e.target.id === 'f-year-sel') { st.year = e.target.value === 'all' ? 'all' : +e.target.value; render(); } });
+  document.addEventListener('change', function (e) { if (e.target.id === 'f-year-sel') { st.event = ''; st.year = e.target.value === 'all' ? 'all' : +e.target.value; render(); } });
 
   $('g-test').addEventListener('click', function () {
-    st.test = !st.test; ALBUMS = st.test ? makeTest(40) : REAL.slice(); st.year = SEASON; st.type = 'all'; render();
+    st.test = !st.test; ALBUMS = st.test ? makeTest(40) : REAL.slice(); st.year = SEASON; st.event = ''; st.type = 'all'; render();
     this.textContent = st.test ? 'Volver a los álbumes reales' : 'Probar con 40 álbumes';
     this.setAttribute('aria-pressed', String(st.test));
   });

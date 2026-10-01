@@ -492,7 +492,7 @@
   function linksOf(e) {
     var up = e.status === 'Upcoming', l = [];
     /* pull pasado (Done): liga a su evento en la Galería (gallery.html?event=handle) */
-    if (e.status === 'Done') l.push('<a href="gallery.html?event=' + encodeURIComponent(galleryOf(e)) + '">Photos &amp; video<span class="vh"> from ' + esc(e.event) + ' in the gallery</span></a>');
+    if (e.status === 'Done' && !e.sampleOnly) l.push('<a href="gallery.html?event=' + encodeURIComponent(galleryOf(e)) + '">Photos &amp; video<span class="vh"> from ' + esc(e.event) + ' in the gallery</span></a>');
     if (e.video) l.push(ext(e.video, isYT(e.video) ? 'YouTube video' : 'Video', ' of ' + e.event));
     if (e.website) l.push(ext(e.website, up ? 'Tickets and info' : 'Event site', ' for ' + e.event));
     return l;
