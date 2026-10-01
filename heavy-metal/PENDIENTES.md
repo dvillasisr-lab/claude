@@ -32,11 +32,11 @@ Lo que me vayas dando "para después" va aquí. No se trabaja hasta que digas.
 | 25 | Reseñas con Judge.me | Instalar la app (plan gratis), agregar el bloque de reseñas al tema, activar el correo que pide la reseña después de la entrega, definir moderación y quitar las reseñas de ejemplo. | En espera |
 | 26 | Apps de carrito | Evaluar UpCart, Rebuy o AfterSell (regalo al llegar a $XX, upsell después del pago) cuando haya ventas; hoy el carrito nativo basta. | En espera |
 | 27 | Envío gratis que nunca cuadre justo | Revisar el monto de envío gratis contra los precios para que el cliente quede a $1 o $2 y quiera completar; ahí entra "Feed The Beast". | En espera |
-| 28 | "Feed The Beast" (idea dbrand 1) | Propina opcional de $1 a $5 para el combustible, como add-on del carrito para completar el envío gratis. Legal: decir que es propina al equipo, no donativo ni deducible; sin presión. | En espera |
-| 29 | Correo de carrito abandonado (idea dbrand) | "You left gear in the pits..." en la automatización de Shopify Email (carrito abandonado). Va con la estrategia de email. | En espera |
-| 30 | Voz del tractor en primera persona (idea dbrand) | "The Evil One" narra correos, notas de empaque y redes y firma "The Evil One, Cat 3208, Waterloo WI". | En espera |
-| 31 | Estrategia de descuentos + página escondida (idea dbrand) | Easter egg /pages/3208 "You found the V8. Use code EVIL3208." junto con la estrategia de descuentos. | En espera |
-| 32 | Black Smoke Guarantee | Confirmar términos (1 año, print que se agrieta o despega) con lo que cubre el proveedor antes de publicar. | Por confirmar |
+| 28 | "Feed The Beast" (idea dbrand 1) | Propina opcional de $1 a $5 para el combustible, como add-on del carrito para completar el envío gratis. Legal: decir que es propina al equipo, no donativo ni deducible; sin presión. | En el boceto v20 (carrito); falta definir montos con #27 |
+| 29 | Correo de carrito abandonado (idea dbrand) | "You left gear in the pits..." en la automatización de Shopify Email (carrito abandonado). Va con la estrategia de email. | Vista previa en correos.html (v20); falta configurarlo en Shopify Email |
+| 30 | Voz del tractor en primera persona (idea dbrand) | "The Evil One" narra correos, notas de empaque y redes y firma "The Evil One, Cat 3208, Waterloo WI". | En el boceto v20: correos, nota de empaque, 404 y página 3208 |
+| 31 | Estrategia de descuentos + página escondida (idea dbrand) | Easter egg /pages/3208 "You found the V8. Use code EVIL3208." junto con la estrategia de descuentos. | Página 3208.html en el boceto v20; falta el % del descuento |
+| 32 | Black Smoke Guarantee | Confirmar términos (1 año, print que se agrieta o despega) con lo que cubre el proveedor antes de publicar. Se quitó de la página de producto (v20); sigue en FAQ y política de devoluciones. | Por confirmar |
 
 ## Datos que faltan
 - Cifras de patrocinio: ¿5,000+ fans es por evento o por temporada? (el sitio usa "XX+" en frases de venta y estimados "est." en contadores).
