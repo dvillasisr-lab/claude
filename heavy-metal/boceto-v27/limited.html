@@ -229,7 +229,7 @@ html,body{overflow-x:clip}
     <div class="sect-head"><h2 class="h2" id="past-t">Past editions</h2><p id="past-count" role="status" aria-live="polite"></p></div>
     <div class="yrs" role="group" aria-label="Filter by year" id="yrs"></div>
     <ul class="arch" id="arch"></ul>
-    <p class="note">En Shopify es la colección "Special edition". Cada producto tiene metacampos que llenas en el admin (Productos &gt; el producto &gt; Metacampos): Start date, End date, Run size y Story. La página cuenta sola, cambia Coming soon / Live sola y marca Sold out solo cuando el inventario llega a 0; al pasar la fecha de cierre pasa a "Past editions". Run size, fechas y precio son placeholder. La edición del archivo marcada <b>Example</b> es solo de muestra: con “Ocultar notas” (vista del cliente) no sale y el archivo dice “Nothing in the archive yet”. Con una o dos ediciones se ven como tarjeta ancha; desde tres, en cuadrícula.</p>
+    <p class="note">En Shopify es la colección “Special edition”. Cada producto tiene metacampos que llenas en el admin (Productos &gt; el producto &gt; Metacampos): Start date, End date, Run size y Story. La página cuenta sola, cambia Coming soon / Live sola y marca Sold out solo cuando el inventario llega a 0; al pasar la fecha de cierre pasa a “Past editions”. Run size, fechas y precio son placeholder. La edición del archivo marcada <b>Example</b> es solo de muestra: con “Ocultar notas” (vista del cliente) no sale y el archivo dice “Nothing in the archive yet”. Con una o dos ediciones se ven como tarjeta ancha; desde tres, en cuadrícula.</p>
   </div>
 </section>
 </main>
@@ -336,7 +336,7 @@ html,body{overflow-x:clip}
   /* talla elegida */
   /* datos estructurados: Product con la marca registrada */
   var ld = document.createElement('script'); ld.type = 'application/ld+json';
-  ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'Product', name: P.name, description: 'Special edition tee, limited run. Designed by the Heavy Metal Pro Stock: “The Evil One” crew in Waterloo, WI, printed to order.', sku: ED.id, category: 'Special edition', brand: { '@type': 'Brand', name: 'Heavy Metal Pro Stock: “The Evil One”' }, url: location.href.split('#')[0].split('?')[0], offers: { '@type': 'Offer', priceCurrency: 'USD', price: 'XX.XX', availability: 'https://schema.org/' + (realState(ED, new Date()) === 'live' ? 'InStock' : 'OutOfStock'), itemCondition: 'https://schema.org/NewCondition' } });
+  ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'Product', name: P.name, description: 'Special edition tee, limited run. Designed by the Heavy Metal Pro Stock: “The Evil One” crew in Waterloo, WI, printed when you order.', sku: ED.id, category: 'Special edition', brand: { '@type': 'Brand', name: 'Heavy Metal Pro Stock: “The Evil One”' }, url: location.href.split('#')[0].split('?')[0], offers: { '@type': 'Offer', priceCurrency: 'USD', price: 'XX.XX', availability: 'https://schema.org/' + (realState(ED, new Date()) === 'live' ? 'InStock' : 'OutOfStock'), itemCondition: 'https://schema.org/NewCondition' } });
   document.head.appendChild(ld);
 
   $('sizes').addEventListener('change', function (e) {
@@ -355,7 +355,7 @@ html,body{overflow-x:clip}
     var em = $('nt-email'), ok = em.value.trim() !== '' && em.checkValidity(), m = $('nt-msg');
     em.setAttribute('aria-invalid', ok ? 'false' : 'true');
     if (!ok) { m.className = 'notify__msg small is-err'; m.textContent = 'Enter a valid email so we can let you know.'; em.focus(); return; }
-    m.className = 'notify__msg small'; m.textContent = (override || realState(ED, new Date())) === 'sold' ? "You're on the list. We'll email you once, when the next special edition drops." : "You're on the list. We'll email you once, when it drops.";
+    m.className = 'notify__msg small'; m.textContent = (override || realState(ED, new Date())) === 'sold' ? "You’re on the list. We’ll email you once, when the next special edition drops." : "You’re on the list. We’ll email you once, when it drops.";
   });
 
   /* archivo: ediciones cerradas, filtro por año */

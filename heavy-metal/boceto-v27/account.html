@@ -190,7 +190,7 @@ html,body{overflow-x:clip}
           </ol>
           <p class="small muted">No email? Check spam, then <a href="contact.html?topic=order">message us</a>.</p>
         </div>
-        <p class="note">Rastreo: Printify no le escribe al cliente. Cuando envía, marca el pedido como enviado en Shopify con el número de guía, y Shopify manda su propio correo "Shipping confirmation" desde la tienda (se activa o desactiva en Configuración &gt; Notificaciones). Confírmalo con un pedido de prueba. El cliente también ve la guía en su página de estado del pedido o en Account &gt; Orders, sin crear cuenta.</p>
+        <p class="note">Rastreo: Printify no le escribe al cliente. Cuando envía, marca el pedido como enviado en Shopify con el número de guía, y Shopify manda su propio correo “Shipping confirmation” desde la tienda (se activa o desactiva en Configuración &gt; Notificaciones). Confírmalo con un pedido de prueba. El cliente también ve la guía en su página de estado del pedido o en Account &gt; Orders, sin crear cuenta.</p>
         <p class="note">Cuentas nativas de Shopify (Configuración &gt; Cuentas de clientes, sin app): entran con un código de 6 dígitos o con Shop, sin contraseñas. El switch de The Evil List depende de Shopify Email.</p>
       </div>
     </section>
@@ -302,6 +302,8 @@ html,body{overflow-x:clip}
       var k = e.key, n = null;
       if (k === 'ArrowRight' || k === 'ArrowDown') n = tabs[(i + 1) % tabs.length];
       if (k === 'ArrowLeft' || k === 'ArrowUp') n = tabs[(i - 1 + tabs.length) % tabs.length];
+      if (k === 'Home') n = tabs[0];
+      if (k === 'End') n = tabs[tabs.length - 1];
       if (n) { e.preventDefault(); sel(n); n.focus(); }
     });
   });
@@ -315,7 +317,7 @@ html,body{overflow-x:clip}
 
   /* detalle del pedido */
   var ORD = {
-    1002: { date: 'Sep 29, 2026', step: 1, note: 'Printing. Ships by Oct 6. Every item is printed to order. When it ships, we email you a tracking link and it shows up here.', lines: [['evil-one-tee', 'Matte Black / L', '$XX'], ['hook-alert-koozie', 'One size', '$XX']], track: '' },
+    1002: { date: 'Sep 29, 2026', step: 1, note: 'Printing. Ships by Oct 6. Every item is printed when you order it. When it ships, we email you a tracking link and it shows up here.', lines: [['evil-one-tee', 'Matte Black / L', '$XX'], ['hook-alert-koozie', 'One size', '$XX']], track: '' },
     1001: { date: 'Sep 15, 2026', step: 2, note: 'Shipped Sep 21. We emailed you the tracking link.', lines: [['680-ci-hoodie', 'Matte Black / XL', '$XX'], ['crew-cap', 'Black / One size', '$XX']], track: '9400 0000 0000 0000 0000 00' }
   };
   function prod(id) { return window.HM_CATALOG.filter(function (p) { return p.id === id; })[0]; }

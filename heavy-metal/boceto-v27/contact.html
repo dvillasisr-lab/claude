@@ -15,7 +15,6 @@
 .ct__head{display:grid;grid-template-columns:minmax(0,1fr);gap:6px 48px;align-items:end;padding-bottom:16px;margin-bottom:24px;border-bottom:1px solid var(--line)}
 .ct__head p{margin:0;color:var(--soft);font-size:var(--t-sm);max-width:60ch}
 .ct__in{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,400px);gap:32px clamp(32px,5vw,96px);align-items:start}
-@media (min-width:901px){.ct__head{grid-template-columns:minmax(0,1fr) minmax(280px,400px);column-gap:clamp(32px,5vw,96px)}}
 .ct-form textarea.input{min-height:180px}
 .reply{margin:0;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);font-size:var(--t-sm);color:var(--soft)}
 .reply b{display:block;color:var(--ink);font-size:var(--t-xs);letter-spacing:.08em;text-transform:uppercase}
@@ -28,6 +27,8 @@
 .ct-send{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
 .ct-send .small{margin:0;color:var(--mute)}
 .ct-status{margin:0;font-size:var(--t-sm);font-weight:600}
+.ct-err{margin:4px 0 0;font-size:var(--t-xs);font-weight:600;color:var(--alert)}
+.ct-err:empty{display:none}
 .ct-status:empty{display:none}
 .ct-status.is-err{color:var(--alert)}
 .ct-status.is-ok{color:var(--ink);background:var(--bg);border-left:3px solid var(--accent);padding:8px 10px}
@@ -81,10 +82,10 @@
               <option value="other">Something else</option>
             </select>
           </div>
-          <div class="field"><label for="c-name">Name</label><input class="input" id="c-name" name="name" type="text" required autocomplete="name" placeholder="e.g. Jake Miller"></div>
-          <div class="field"><label for="c-email">Email</label><input class="input" id="c-email" name="email" type="email" required autocomplete="email" spellcheck="false" placeholder="you@example.com"></div>
+          <div class="field"><label for="c-name">Name</label><input class="input" id="c-name" name="name" type="text" required autocomplete="name" placeholder="e.g. Jake Miller" aria-describedby="e-c-name"><p class="ct-err" id="e-c-name"></p></div>
+          <div class="field"><label for="c-email">Email</label><input class="input" id="c-email" name="email" type="email" required autocomplete="email" spellcheck="false" placeholder="you@example.com" aria-describedby="e-c-email"><p class="ct-err" id="e-c-email"></p></div>
           <div class="field full" id="c-order-f"><label for="c-order">Order number <span class="opt">(optional)</span></label><input class="input" id="c-order" name="order" type="text" autocomplete="off" placeholder="e.g. #1001"></div>
-          <div class="field full"><label for="c-msg">Message</label><textarea class="input" id="c-msg" name="message" required placeholder="How can we help?"></textarea></div>
+          <div class="field full"><label for="c-msg">Message</label><textarea class="input" id="c-msg" name="message" required placeholder="How can we help?" aria-describedby="e-c-msg"></textarea><p class="ct-err" id="e-c-msg"></p></div>
           <p class="consent full">We use your details only to answer your message. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
           <div class="full ct-send"><button class="btn" type="submit">Send message</button><p class="small">We reply within 2 business days</p></div>
           <p class="ct-status full" id="ct-status" role="status" aria-live="polite"></p>
@@ -129,8 +130,12 @@
   var form = $('ct-form'), st = $('ct-status');
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    /* mensaje junto a cada campo (ligado con aria-describedby) + resumen arriba del botón */
+    var MSG = { 'c-name': 'Add your name.', 'c-email': 'Enter a valid email, like name@example.com.', 'c-msg': 'Write your message.' };
     var bad = Array.prototype.filter.call(form.querySelectorAll('[required]'), function (i) {
-      var ok = i.value.trim() !== '' && i.checkValidity(); i.setAttribute('aria-invalid', ok ? 'false' : 'true'); return !ok;
+      var ok = i.value.trim() !== '' && i.checkValidity(); i.setAttribute('aria-invalid', ok ? 'false' : 'true');
+      var er = $('e-' + i.id); if (er) er.textContent = ok ? '' : MSG[i.id];
+      return !ok;
     });
     if (bad.length) { st.className = 'ct-status full is-err'; st.textContent = 'Please add your name, a valid email and a message.'; bad[0].focus(); return; }
     st.className = 'ct-status full is-ok';

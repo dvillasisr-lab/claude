@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Shop Pulling Merch · Heavy Metal Pro Stock: “The Evil One”</title>
-<meta name="description" content="Shop Heavy Metal Pro Stock: “The Evil One” merch: tractor pull tees, hoodies, hats, kids sizes and stickers from the crew in Waterloo, WI.">
+<meta name="description" content="Shop Heavy Metal Pro Stock: “The Evil One” merch: tractor pull tees, hoodies, hats, kids sizes and stickers, designed by the crew in Waterloo, WI.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -93,6 +93,9 @@ html,body{overflow-x:clip}
 .soon__form .input{min-width:0}
 .plp-notes{padding-bottom:var(--sect)}
 .no-notes .plp-notes{padding-bottom:0}
+/* migas ocultas a la vista: si el teclado entra, se muestran (sin foco invisible) */
+.plp-crumbs.vh:focus-within{position:static!important;width:auto;height:auto;clip:auto;overflow:visible;white-space:normal;font-size:var(--t-xs);margin-bottom:8px}
+.plp-crumbs ol{list-style:none;margin:0;padding:0;display:flex;gap:8px}
 /* nombres de producto en 2 líneas parejas, sin palabra sola */
 .pgrid .card__name{text-wrap:balance}
 /* fotitos: en pantalla ancha se reparten a todo el ancho (sin hueco a la derecha) */
@@ -115,7 +118,7 @@ html,body{overflow-x:clip}
     <nav class="plp-crumbs vh" aria-label="Breadcrumb"><ol id="plp-crumbs"><li><a href="index.html">Home</a></li><li aria-current="page">Shop all</li></ol></nav>
     <div class="plp-head__row">
       <h1 class="h1" id="plp-title">Shop all</h1>
-      <p class="plp-desc" id="plp-desc">Every tee, hoodie, hat and sticker from the crew behind “The Evil One”. Printed to order.</p>
+      <p class="plp-desc" id="plp-desc">Every tee, hoodie, hat and sticker from the crew behind “The Evil One”. Printed when you order.</p>
     </div>
     <div class="plp-cats" id="plp-cats"></div>
     <div class="plp-bar">
@@ -133,6 +136,7 @@ html,body{overflow-x:clip}
     <div class="plp-chips" id="plp-chips" aria-label="Active filters" role="group" hidden></div>
     <div class="plp-results">
       <a class="plp-ltd" id="plp-ltd" href="limited.html" hidden><span class="badge badge--ink">Special edition</span><span><b>Limited run · one moment of the season</b><span class="muted">Out for a short window and a set quantity. When it closes or sells out, it is gone.</span></span><span class="link" aria-hidden="true">View the edition</span></a>
+      <h2 class="vh" id="plp-grid-h">Products</h2>
       <div class="pgrid" id="plp-grid"></div>
       <div class="plp-empty" id="plp-empty" hidden>
         <h2 class="h2">Nothing matches these filters</h2>
@@ -149,8 +153,8 @@ html,body{overflow-x:clip}
   <div class="wrap plp-soon" id="plp-soon" hidden></div>
 
   <div class="wrap plp-notes">
-    <p class="note">Categorías: cada fotito es una colección automática (Productos &gt; Colecciones &gt; Crear colección &gt; Automática, condición "Tipo de producto es igual a T-Shirt", o una etiqueta como <b>hats</b>). Printify llena el tipo al publicar, así que cada diseño nuevo cae solo en su categoría. La foto de la fotito es la imagen de la colección. Para agregar o quitar una: crea o borra la colección y ponla en el menú (Tienda online &gt; Navegación). Filtros de talla y color: app Search &amp; Discovery; orden Featured = orden manual de la colección. Mientras carga (y al cambiar filtros) sale un esqueleto gris; lo pinta el tema solo: <a id="plp-skel-link" href="shop.html?loading=slow">Ver esqueleto lento</a>.</p>
-    <p class="note" id="plp-empty-note">Sin merch: si no hay productos activos, la tienda muestra "Coming soon" con aviso por email; al publicar el primero, vuelve sola a esta vista. <a id="plp-empty-link" href="shop.html?empty=1">Probar tienda vacía</a></p>
+    <p class="note">Categorías: cada fotito es una colección automática (Productos &gt; Colecciones &gt; Crear colección &gt; Automática, condición “Tipo de producto es igual a T-Shirt”, o una etiqueta como <b>hats</b>). Printify llena el tipo al publicar, así que cada diseño nuevo cae solo en su categoría. La foto de la fotito es la imagen de la colección. Para agregar o quitar una: crea o borra la colección y ponla en el menú (Tienda online &gt; Navegación). Filtros de talla y color: app Search &amp; Discovery; orden Featured = orden manual de la colección. Mientras carga (y al cambiar filtros) sale un esqueleto gris; lo pinta el tema solo: <a id="plp-skel-link" href="shop.html?loading=slow">Ver esqueleto lento</a>.</p>
+    <p class="note" id="plp-empty-note">Sin merch: si no hay productos activos, la tienda muestra “Coming soon” con aviso por email; al publicar el primero, vuelve sola a esta vista. <a id="plp-empty-link" href="shop.html?empty=1">Probar tienda vacía</a></p>
   </div>
 </main>
 
@@ -176,7 +180,7 @@ html,body{overflow-x:clip}
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
 
   var CATS = {
-    all: ['Shop all', 'Every tee, hoodie, hat and sticker from the crew behind “The Evil One”. Printed to order.'],
+    all: ['Shop all', 'Every tee, hoodie, hat and sticker from the crew behind “The Evil One”. Printed when you order.'],
     'new': ['New drop', 'The latest designs from the crew in Waterloo, WI.'],
     tees: ['Tees', 'Tractor pull tees and long sleeves with “The Evil One” front and back.'],
     sweats: ['Sweatshirts', 'Hoodies and crewnecks for cold nights at the track.'],
@@ -187,7 +191,7 @@ html,body{overflow-x:clip}
     limited: ['Special edition', 'Limited runs for a short window. When one sells out, it is gone.']
   };
   /* <title> por categoría: 50 a 60 caracteres con la marca completa */
-  var TITLES = { all: 'Shop Pulling Merch', 'new': 'New Drop: Pulling Merch', tees: 'Tractor Pull Tees', sweats: 'Hoodies & Crewnecks', hats: 'Caps & Beanies', kids: 'Kids Pulling Merch', gear: 'Stickers & Gear', bundles: 'Merch Bundles', limited: 'Special edition' };
+  var TITLES = { all: 'Shop Pulling Merch', 'new': 'New Pulling Merch', tees: 'Tractor Pull Tees', sweats: 'Hoodies & Crewnecks', hats: 'Caps & Beanies', kids: 'Kids Pulling Merch', gear: 'Stickers & Gear', bundles: 'Merch Bundles', limited: 'Special edition' };
   var SORTS = [['featured', 'Featured'], ['best', 'Best selling'], ['new', 'Newest'], ['price-asc', 'Price low to high'], ['price-desc', 'Price high to low'], ['az', 'A to Z']];
   var SIZE_ORDER = ['S', 'M', 'L', 'XL', '2XL', '3XL', 'YS', 'YM', 'YL', 'YXL', 'One size'];
   var COLOR_ORDER = ['Matte Black', 'Black', 'Smoke Gray', 'Bone', 'Safety Yellow'];

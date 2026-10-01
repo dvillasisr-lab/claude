@@ -261,6 +261,7 @@
         '<div class="spx__track" aria-label="Sponsors"><div class="spx__belt">' + items + items.replace(/<a /g, '<a tabindex="-1" aria-hidden="true" ') + '</div><div class="spx__belt" aria-hidden="true">' + (items + items).replace(/<a /g, '<a tabindex="-1" ') + '</div></div>' +
         '<div class="wrap"><p class="note">Patrocinadores: Contenido &gt; Metaobjetos &gt; Sponsor (nombre, logo, paquete, forma: redonda, cuadrada o rectangular, link, activo y orden). La franja se mueve sola, se pausa al pasar el mouse y respeta "reducir movimiento". El orden es por paquete: Title partner primero y más grande. <button type="button" class="linklike" data-spdemo="1">Ver con ejemplos</button> · <button type="button" class="linklike" data-spdemo="0">Ver vacío</button></p></div>';
     }
+    document.addEventListener('focusin', function (e) { var sx = document.getElementById('spx'); if (sx) sx.classList.toggle('is-focus', !!(e.target.closest && e.target.closest('.spx__track'))); });
     document.addEventListener('click', function (e) {
       var pz = e.target.closest('.spx__pause');
       if (pz) { var on = pz.getAttribute('aria-pressed') !== 'true'; pz.setAttribute('aria-pressed', on ? 'true' : 'false'); pz.textContent = on ? 'Play' : 'Pause'; document.getElementById('spx').classList.toggle('is-paused', on); return; }
@@ -273,10 +274,10 @@
       '<footer class="ftr"><div class="wrap">' +
         '<div class="ftr__cols">' +
           acc('Help', [['Contact us', 'contact.html'], ['Shipping', 'policies.html?p=shipping'], ['Returns &amp; exchanges', 'policies.html?p=refund'], ['Size guide', 'sizes.html'], ['Track my order', 'account.html'], ['FAQ', 'faq.html'], ['The Evil List', 'evil-list.html']]) +
-          (f.hasAttribute('data-no-news') ? '<div class="ftr__news"><h2 class="ftr__h">The Evil List</h2><p style="margin:0" class="muted">You are on the sign up page.</p></div>' : '') +
+          (f.hasAttribute('data-no-news') && /evil-list/.test(location.pathname) ? '<div class="ftr__news"><h2 class="ftr__h">The Evil List</h2><p style="margin:0" class="muted">You are on the sign up page.</p></div>' : '') +
           (f.hasAttribute('data-no-news') ? '' : '<div class="ftr__news"><h2 class="ftr__h">The Evil List</h2><p style="margin:0" class="muted">New drops and a heads up before every pull. One list, no spam. <a href="evil-list.html">What you get</a></p>' +
             '<form class="ftr__form" id="ftr-form" novalidate><label class="vh" for="ftr-email">Email</label><input class="input" id="ftr-email" type="email" required placeholder="Email address" autocomplete="email"><button type="submit" aria-label="Sign up">' + I.arrow + '</button></form>' +
-            '<p class="consent" id="ftr-msg">By signing up you agree to receive marketing emails. Unsubscribe anytime. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p></div>') +
+            '<p class="consent" id="ftr-msg" aria-live="polite">By signing up you agree to receive marketing emails. Unsubscribe anytime. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p></div>') +
           acc('The team', [['The Machine', 'machine.html'], ['Our Story', 'story.html'], ['The crew', 'story.html#crew'], ['Schedule', 'schedule.html'], ['Pit Log', 'log.html'], ['Gallery', 'gallery.html'], ['Sponsors', 'sponsors.html'], ['Book the team', 'book.html']]) +
         '</div>' +
         '<div class="ftr__social"><a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener" aria-label="Facebook (opens in a new tab)">' + I.fb + '</a><a href="#" aria-label="Instagram (pending)">' + I.ig + '</a></div>' +
@@ -486,7 +487,8 @@
   var ff = $('ftr-form');
   if (ff) ff.addEventListener('submit', function (e) {
     e.preventDefault(); var em = $('ftr-email');
-    if (!em.value || !em.checkValidity()) { $('ftr-msg').textContent = 'Enter a valid email to join The Evil List.'; em.focus(); return; }
+    if (!em.value || !em.checkValidity()) { $('ftr-msg').textContent = 'Enter a valid email to join The Evil List.'; em.setAttribute('aria-invalid', 'true'); em.setAttribute('aria-describedby', 'ftr-msg'); em.focus(); return; }
+    em.removeAttribute('aria-invalid');
     $('ftr-msg').textContent = "You're on the list. Check your inbox to confirm.";
   });
 
@@ -555,7 +557,7 @@
     function ckLoad() { try { return JSON.parse(localStorage.getItem('hm-cookies') || 'null'); } catch (e) { return null; } }
     function ckSave(v) { try { localStorage.setItem('hm-cookies', JSON.stringify(v)); } catch (e) {} }
     var prev = ckLoad();
-    ck.hidden = !!prev;
+    ck.hidden = !!prev; document.documentElement.classList.toggle('has-cookie', !prev);
     if (prev) { $('ck-an').checked = !!prev.analytics; $('ck-mk').checked = !!prev.marketing; $('ck-pf').checked = !!prev.preferences; }
     ck.addEventListener('click', function (e) {
       var b = e.target.closest('[data-cookie]'); if (!b) return;
@@ -565,7 +567,7 @@
       }
       var kind = b.getAttribute('data-cookie');
       var v = kind === 'accept' ? { analytics: true, marketing: true, preferences: true } : kind === 'decline' ? { analytics: false, marketing: false, preferences: false } : { analytics: $('ck-an').checked, marketing: $('ck-mk').checked, preferences: $('ck-pf').checked };
-      ckSave(v); ck.hidden = true;
+      ckSave(v); ck.hidden = true; document.documentElement.classList.remove('has-cookie');
     });
     $('cookie-prefs').addEventListener('click', function (e) { e.preventDefault(); ck.hidden = false; var fb = ck.querySelector('[data-cookie]'); if (fb) fb.focus(); });
   }

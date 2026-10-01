@@ -49,7 +49,7 @@ html,body{overflow-x:clip}
 .pl-wm .sect-head{align-items:center}
 .pl-wm .label{color:#B5B2AA}
 .pl-wm__grid{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(16px,2.4vw,32px);align-items:stretch}
-.pl-wins{border:1px dashed rgba(245,196,0,.6);padding:18px 20px;display:grid;align-content:start;gap:10px}
+.pl-wins{border:1px dashed rgba(245,196,0,.6);padding:18px 20px;display:grid;align-content:center;gap:10px}
 .pl-wins .pl-wins__big{font-family:var(--f-head);font-stretch:78%;font-weight:700;text-transform:uppercase;font-size:clamp(26px,2.6vw,36px);line-height:1.05;color:var(--night-ink);margin:0}
 .pl-wins__big .dots span{display:inline-block;color:var(--accent);animation:pl-blink 1.4s infinite}
 .pl-wins__big .dots span:nth-child(2){animation-delay:.2s}
@@ -117,7 +117,7 @@ html,body{overflow-x:clip}
   .chip{flex:none}
 }
 .pl-count{margin:0 0 4px;font-size:var(--t-xs);color:var(--mute)}
-.pl-list{list-style:none;margin:0;padding:0;display:grid;max-width:1080px}
+.pl-list{list-style:none;margin:0;padding:0;display:grid}
 .pl-entry{display:grid;grid-template-columns:132px minmax(0,1fr);gap:0 24px;scroll-margin-top:180px}
 .pl-when{position:relative;padding:18px 0 0;border-right:1px solid var(--line);padding-right:20px;text-align:right}
 .pl-when::after{content:"";position:absolute;right:-5px;top:24px;width:9px;height:9px;border-radius:50%;background:var(--bg);border:1.5px solid var(--ink)}
@@ -150,7 +150,7 @@ html,body{overflow-x:clip}
 .pl-links a{font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-underline-offset:3px;white-space:nowrap}
 .pl-empty{padding:28px 0;display:grid;gap:8px;justify-items:start;max-width:52ch}
 .pl-empty p{margin:0;color:var(--soft)}
-.pl-more{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:16px 0 0;max-width:1080px;padding-left:156px}
+.pl-more{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:16px 0 0;padding-left:156px}
 .pl-more p{margin:0;font-size:var(--t-xs);color:var(--mute)}
 .pl-meter{width:120px;height:3px;background:var(--line)}
 .pl-meter span{display:block;height:100%;background:var(--ink);width:0}
@@ -164,6 +164,28 @@ html,body{overflow-x:clip}
   .pl-card__body{padding:10px 12px 12px}
   .pl-list{border-left:1px solid var(--line)}
   .pl-more{padding-left:0}
+}
+/* v27: la bitácora usa todo el ancho. Desktop ancho: riel fijo a la derecha con buscador, filtros y leyenda;
+   dentro de cada tarjeta, los links van en su propia columna a la derecha */
+.pl-key{display:none}
+.pl-wins__go{justify-self:start;color:var(--night-ink);text-decoration-color:var(--accent);text-decoration-thickness:2px;margin-top:4px}
+@media (min-width:1180px){
+  .pl-layout{display:grid;grid-template-columns:minmax(0,1fr) clamp(280px,22vw,340px);grid-template-areas:"main rail";gap:0 clamp(28px,3vw,48px);align-items:start}
+  .pl-main{grid-area:main;min-width:0}
+  .pl-bar{grid-area:rail;position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header) + 16px);flex-direction:column;align-items:stretch;gap:16px;padding:16px 18px 18px;margin:8px 0 0;background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--ink)}
+  .pl-bar .pl-q{max-width:none;flex:none}
+  .pl-bar .pl-fgroup{gap:6px}
+  .pl-bar .pl-fgroup>.label{width:100%;margin:0 0 2px}
+  .pl-key{display:grid;gap:8px;list-style:none;margin:0;padding:12px 0 0;border-top:1px solid var(--line);font-size:var(--t-xs);color:var(--soft)}
+  .pl-key li{display:flex;align-items:center;gap:8px}
+  .pl-key a{color:var(--ink);font-weight:700;text-underline-offset:3px}
+  .pl-key__dot{width:9px;height:9px;border-radius:50%;background:var(--bg);border:1.5px solid var(--ink);flex:none}
+  .pl-key__dot.is-y{background:var(--accent)}
+  .pl-card{grid-template-columns:200px minmax(0,1fr);min-height:170px}
+  .pl-card__body{grid-template-columns:minmax(0,1fr) auto;column-gap:28px;padding:16px 22px 18px}
+  .pl-card__body>*{grid-column:1}
+  .pl-card__body .pl-links{grid-column:2;grid-row:1 / span 3;flex-direction:column;align-items:flex-end;align-self:start;gap:10px;margin:2px 0 0}
+  .pl-card p{max-width:70ch}
 }
 .pl-test{margin-left:4px;background:var(--ink);color:var(--accent);border:0;font:inherit;font-weight:700;padding:2px 8px;cursor:pointer}
 
@@ -267,6 +289,7 @@ html,body{overflow-x:clip}
 <section class="pl-log" aria-labelledby="log-t">
   <div class="wrap">
     <div class="sect-head"><h2 class="h2" id="log-t">The log</h2></div>
+    <div class="pl-layout">
     <div class="pl-bar" role="search" aria-label="Search and filter the log">
       <div class="pl-q">
         <label class="vh" for="pl-q">Search the log</label>
@@ -275,10 +298,18 @@ html,body{overflow-x:clip}
       </div>
       <div class="pl-fgroup" id="f-year-wrap" role="group" aria-labelledby="f-year-l"><span class="label" id="f-year-l">Season</span><span id="f-year" style="display:contents"></span></div>
       <div class="pl-fgroup pl-types" role="group" aria-labelledby="f-type-l"><span class="label" id="f-type-l">Type</span><span id="f-type" style="display:contents"></span></div>
+      <ul class="pl-key" aria-label="How to read the log">
+        <li><i class="pl-key__dot" aria-hidden="true"></i>Plain dot: a day in the log</li>
+        <li><i class="pl-key__dot is-y" aria-hidden="true"></i>Yellow dot: a win or a milestone</li>
+        <li><a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">New entries hit Facebook first<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a></li>
+      </ul>
     </div>
+    <div class="pl-main">
     <p class="pl-count" id="pl-count" role="status" aria-live="polite"></p>
     <ol class="pl-list" id="pl-list"></ol>
     <div class="pl-more" id="pl-more"></div>
+    </div>
+    </div>
     <p class="note">Las entradas con “Example” son de ejemplo: bórralas o cámbialas por las reales. Faltan fechas y lugares de las exhibiciones (¿3 o 4?), fecha del primer pull y resultado de Monroe (¿el primer pull fue Monroe? Si sí, van en una sola entrada). Las fotos con la marca “Foto por tipo” son entradas sin imagen destacada (ver abajo). “Photos &amp; video” lleva a esa fecha en la Galería. <button type="button" class="pl-test" id="pl-test" aria-pressed="false">Probar con 200 entradas</button></p>
   </div>
 </section>
@@ -390,7 +421,7 @@ html,body{overflow-x:clip}
     { id: 't2', year: SEASON, date: '', seq: 20, title: 'Test day', tags: ['Test'], demo: true,
       text: 'Example: a short note from the shop and, if there is one, a video.', img: '' },
     { id: 't1', year: SEASON, date: '', seq: 15, title: 'Test day', tags: ['Test'], demo: true,
-      text: 'Example: first laps in the yard after start up. Notes from the crew go here.', img: 'hm-driver', alt: 'The driver in the seat, front of the tractor' },
+      text: 'Example: first laps in the yard after startup. Notes from the crew go here.', img: 'hm-driver', alt: 'The driver in the seat, front of the tractor' },
     { id: 'fire', year: SEASON, date: '', seq: 10, title: 'Engine fires, lightning strikes', tags: ['Test', 'Milestone', 'Featured'],
       text: 'Chris fired the Cat 3208 for the first time. At that exact moment, lightning struck and the power went out. We call it a sign.', img: 'hm-engine', alt: 'The Cat 3208 engine with its turbo in the shop', link: ['story.html', 'Read the story'] },
     { id: 'bolt', year: 2020, date: '2020-02', seq: 5, title: 'First bolt', tags: ['Milestone', 'Featured'],
@@ -473,7 +504,7 @@ html,body{overflow-x:clip}
     if ($('pl-scope')) $('pl-scope').textContent = (st.year === 'all' ? 'All seasons' : st.year + (st.year === SEASON ? ' season so far' : ' season'));
     $('pl-updated').textContent = longDate(LOG_UPDATED);
     var n = live().length;
-    if ($('pl-total')) $('pl-total').textContent = n + (n === 1 ? ' entry' : ' entries');
+    if ($('pl-total')) $('pl-total').textContent = n + (n === 1 ? ' entry' : ' entries') + ', all seasons';
   }
 
   /* filtros: Season en botones si hay pocas temporadas; con más de 4 se vuelve lista desplegable */
@@ -523,7 +554,7 @@ html,body{overflow-x:clip}
     if (p.link && !story) links.push('<a href="' + p.link[0] + '">' + p.link[1] + '</a>');
     return '<li class="pl-entry' + (has(p, 'Win') ? ' is-win' : '') + (has(p, 'Milestone') ? ' is-mile' : '') + '" id="e-' + p.id + '"><div class="pl-when">' + when(p) + '</div>' +
       '<article class="pl-card" tabindex="-1" aria-labelledby="h-' + p.id + '"><div class="pl-card__pic">' + pic(p) + '</div><div class="pl-card__body"><div class="pl-tags">' + tags + '</div>' +
-      '<h3 class="h3" id="h-' + p.id + '">' + (story ? '<a href="' + p.link[0] + '">' + hl(p.title) + '<span class="arw" aria-hidden="true">→</span><span class="vh">: read the story</span></a>' : hl(p.title)) + '</h3><p>' + hl(p.text) + '</p>' + (links.length ? '<div class="pl-links">' + links.join('') + '</div>' : '') + '</div></article></li>';
+      '<h3 class="h3" id="h-' + p.id + '">' + (story ? '<a href="' + p.link[0] + '">' + hl(p.title) + '<span class="arw" aria-hidden="true">→</span></a>' : hl(p.title)) + '</h3><p>' + hl(p.text) + '</p>' + (links.length ? '<div class="pl-links">' + links.join('') + '</div>' : '') + '</div></article></li>';
   }
   function filtered() {
     return live().filter(inYear).filter(function (p) { return st.type === 'all' || has(p, st.type); }).filter(matchQ).sort(function (a, b) { return sortKey(b) - sortKey(a); });
@@ -562,7 +593,7 @@ html,body{overflow-x:clip}
   function renderWM() {
     var wins = live().filter(function (p) { return has(p, 'Win'); }).sort(function (a, b) { return sortKey(b) - sortKey(a); });
     if (!wins.length) {
-      $('pl-wins').innerHTML = TROPHY + '<p class="label">Wins</p><p class="pl-wins__big">Coming soon<span class="dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span></p><p>Still chasing the first one. The day it happens, it goes up here first.</p>';
+      $('pl-wins').innerHTML = TROPHY + '<p class="label">Wins</p><p class="pl-wins__big">Coming soon<span class="dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span></p><p>Still chasing the first one. The day it happens, it goes up here first.</p><a class="link pl-wins__go" href="evil-list.html">Hear it first on The Evil List<span aria-hidden="true"> →</span></a>';
     } else {
       var w = wins[0];
       $('pl-wins').innerHTML = TROPHY + '<p class="label">Wins · all seasons</p><p class="pl-wins__big">' + wins.length + (wins.length === 1 ? ' win' : ' wins') + '</p><p>Latest: ' + esc(w.title) + ', ' + (w.date ? longDate(w.date.length === 7 ? w.date + '-01' : w.date) : w.year) + '.</p><button type="button" class="btn btn--light btn--sm" data-type="Win" data-year="all" data-go>See every win</button>';

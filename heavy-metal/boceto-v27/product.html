@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>“The Evil One” Tee · Heavy Metal Pro Stock: “The Evil One”</title>
-<meta name="description" content="“The Evil One” Tee from Heavy Metal Pro Stock: “The Evil One”, the pulling tractor from Waterloo, WI. Designed by the crew, printed when you order, ships in 5 days.">
+<meta name="description" content="“The Evil One” Tee from Heavy Metal Pro Stock: “The Evil One”, the pulling tractor from Waterloo, WI. Front logo tee. Designed by the crew. Ships in 5 days.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -68,7 +68,7 @@ html,body{overflow-x:clip}
   .pg .note{margin-inline:var(--gutter)}
   .pg__arw{width:36px;height:36px;font-size:22px}
   .pg__dots{display:flex;flex-wrap:wrap;justify-content:center;padding:0 var(--gutter)}
-  .pg__dots button{width:16px;height:24px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center}
+  .pg__dots button{width:24px;height:24px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center}
   .pg__dots button::before{content:"";width:6px;height:6px;border-radius:50%;background:#B6B1AD}
   .pg__dots button[aria-current="true"]::before{background:var(--ink)}
 }
@@ -260,7 +260,9 @@ html,body{overflow-x:clip}
 /* reseñas de ejemplo: la etiqueta "Example review" se ve siempre (también al ocultar notas) y nunca dicen "Verified buyer" */
 .rv__demo{margin:0 0 16px;font-size:var(--t-xs);color:var(--soft);max-width:72ch}
 .rv__demo b{color:var(--ink)}
-@media (min-width:1200px){.rv__list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(32px,3vw,56px)}.rvi__txt{max-width:none}}
+@media (min-width:1200px){.rv__list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(32px,3vw,56px);align-items:start}.rvi__txt{max-width:none}}
+/* CTAs de texto subrayado (una sola acción principal por página: Add to cart) */
+button.link{background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;color:var(--ink)}
 @media (max-width:600px){.rv__chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter)}.rv__chips::-webkit-scrollbar{display:none}.rv__chip{flex:none}}
 .rvi__t{margin:0;font-size:var(--t-sm);font-weight:700;color:var(--ink)}
 .rvi__txt{margin:0;font-size:var(--t-sm);color:var(--text);max-width:65ch}
@@ -386,7 +388,7 @@ html,body{overflow-x:clip}
           <h1 class="buy__name" id="p-name">“The Evil One” Tee</h1>
           <a class="buy__rv" id="p-rv" href="#reviews" hidden></a>
           <p class="buy__price"><span class="num" id="p-price">$XX</span><span class="buy__left" id="p-left" hidden></span></p>
-          <p class="buy__desc" id="p-desc">Front logo tee. Designed by the crew in Waterloo, WI, and printed to order.</p>
+          <p class="buy__desc" id="p-desc">Front logo tee. Designed by the crew in Waterloo, WI, and printed when you order.</p>
         </div>
 
         <fieldset class="opt" id="color-set">
@@ -444,7 +446,7 @@ html,body{overflow-x:clip}
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg><span><b>Printed to order · ships in 5 days.</b> Free US shipping over $XX.</span></li>
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/></svg><span><b>The Black Smoke Guarantee:</b> if <span id="bsg-noun">this shirt</span> ever stops being evil, we replace it. <a href="policies.html?p=refund#bsg">Details</a><br>No returns for size, so check the <a href="sizes.html">size guide</a>.</span></li>
         </ul>
-        <p class="note">Galería: las fotos del producto en Shopify (Printify sube un mockup por vista y color; agrega fotos reales y ordénalas arrastrando). El cliente ve solo las fotos reales (aquí, las vistas del mockup). Prueba con más o menos fotos (los espacios grises son solo de prueba): <a href="product.html?imgs=15">15 fotos</a> · <a href="product.html?p=crew-cap&amp;imgs=3">3 fotos</a> · <a href="product.html?imgs=1">1 foto</a>. Estado (Productos &gt; el producto): Live = activo con inventario; Coming soon = etiqueta <b>coming-soon</b>; Sold out = inventario en 0 con "Seguir vendiendo" apagado; "Almost gone!" sale solo con 5 o menos. Shop Pay lo pinta Shopify y va directo al checkout. "Notify me" guarda el email como suscriptor con etiqueta; el aviso automático de reposición necesita una app (las hay con plan gratis). Prueba: <a href="product.html?p=evil-one-beanie#notify">Coming soon</a> · <a href="product.html?p=full-pull-ls#notify">Sold out</a> · <a href="product.html?p=evil-one-tee">Only 4 left</a>. Confirmar con Printify devoluciones, 5 días y "printed in the USA".</p>
+        <p class="note">Galería: las fotos del producto en Shopify (Printify sube un mockup por vista y color; agrega fotos reales y ordénalas arrastrando). El cliente ve solo las fotos reales (aquí, las vistas del mockup). Prueba con más o menos fotos (los espacios grises son solo de prueba): <a href="product.html?imgs=15">15 fotos</a> · <a href="product.html?p=crew-cap&amp;imgs=3">3 fotos</a> · <a href="product.html?imgs=1">1 foto</a>. Estado (Productos &gt; el producto): Live = activo con inventario; Coming soon = etiqueta <b>coming-soon</b>; Sold out = inventario en 0 con “Seguir vendiendo” apagado; “Almost gone!” sale solo con 5 o menos. Shop Pay lo pinta Shopify y va directo al checkout. “Notify me” guarda el email como suscriptor con etiqueta; el aviso automático de reposición necesita una app (las hay con plan gratis). Prueba: <a href="product.html?p=evil-one-beanie#notify">Coming soon</a> · <a href="product.html?p=full-pull-ls#notify">Sold out</a> · <a href="product.html?p=evil-one-tee">Only 4 left</a>. Confirmar con Printify devoluciones, 5 días y “printed in the USA”.</p>
 
         <div class="acc">
           <details>
@@ -459,7 +461,7 @@ html,body{overflow-x:clip}
             <summary>Shipping &amp; returns</summary>
             <div class="acc__body">
               <p>Every piece is printed when you order it and ships in 5 days. Free US shipping on orders over $XX. Taxes and shipping are calculated at checkout.</p>
-              <p>Misprints and defects are replaced free: send a photo within 30 days of delivery. Printed-to-order items can't be returned or exchanged for size, so check the size guide first.</p>
+              <p>Misprints and defects are replaced free: send a photo within 30 days of delivery. Printed-to-order items can’t be returned or exchanged for size, so check the size guide first.</p>
               <p><a href="policies.html?p=shipping">Shipping Policy</a> · <a href="policies.html?p=refund">Refund Policy</a></p>
             </div>
           </details>
@@ -549,7 +551,7 @@ html,body{overflow-x:clip}
         <button class="btn" type="button" id="rv-first" aria-controls="rf">Write a review</button>
       </div>
 
-      <p class="note">Reseñas: en Shopify las pone una app; recomendada <b>Judge.me</b> (plan gratis: reseñas con foto, correo automático pidiendo reseña después de la entrega, moderación y estrellas en Google). Se instala en Apps, se agrega el bloque "Reviews" en el tema (Personalizar &gt; Producto) y se activa el correo de solicitud. Las reseñas de aquí son <b>de ejemplo</b>, no de clientes reales; las de verdad llegan solas al conectar la app. Ver <a href="product.html?p=cat-v8-spec-tee#reviews">producto sin reseñas</a> · <a href="product.html?p=evil-one-tee#reviews">con reseñas</a>.</p>
+      <p class="note">Reseñas: en Shopify las pone una app; recomendada <b>Judge.me</b> (plan gratis: reseñas con foto, correo automático pidiendo reseña después de la entrega, moderación y estrellas en Google). Se instala en Apps, se agrega el bloque “Reviews” en el tema (Personalizar &gt; Producto) y se activa el correo de solicitud. Las reseñas de aquí son <b>de ejemplo</b>, no de clientes reales; las de verdad llegan solas al conectar la app. Ver <a href="product.html?p=cat-v8-spec-tee#reviews">producto sin reseñas</a> · <a href="product.html?p=evil-one-tee#reviews">con reseñas</a>.</p>
     </div>
   </section>
 
@@ -622,9 +624,9 @@ html,body{overflow-x:clip}
   var STORY = {
     'evil-one-tee': ['Chris came up with the idea in 2014 in Tomah, WI. He was a heavy metal fan, so the name was never up for discussion. The nickname stuck: “The Evil One”.'],
     'lightning-strike-tee': ['In 2026 Chris fired the engine for the first time. At that exact moment, lightning struck, and the power went out.', 'Some would call it a coincidence. We call it a sign. This graphic is that night.'],
-    'full-pull-ls': ['A full pull is dragging the sled all the way to the end of the track. This season the goal is simple: our first one, on the NTPA and PPL Badger State circuits.', 'We\'ve run a few exhibitions while testing; in competition, every pass is to pull.'],
+    'full-pull-ls': ['A full pull is dragging the sled all the way to the end of the track. This season the goal is simple: our first one, on the NTPA and PPL Badger State circuits.', 'We’ve run a few exhibitions while testing; in competition, every pass is to pull.'],
     'cat-v8-spec-tee': ['The real spec sheet: CAT 3208 V8, reverse flow, 680 CU IN, single large turbo, 10,000 LB, Challenger 1015 body. Horsepower: Unknown.'],
-    '680-ci-hoodie': ['The Cat 3208 V8 started at 636 cubic inches. The crew took it to 680, a setup you won\'t find on any other tractor on the track.', 'Nothing about it is off the shelf, and nothing about it was quick.'],
+    '680-ci-hoodie': ['The Cat 3208 V8 started at 636 cubic inches. The crew took it to 680, a setup you won’t find on any other tractor on the track.', 'Nothing about it is off the shelf, and nothing about it was quick.'],
     'evil-one-crewneck': ['The first bolt went in in February 2020, in the family shop in Waterloo, WI. Nights and weekends stolen from work and family built the rest.'],
     'crew-cap': ['The cap the pit crew wears on pull day: Daniel, Jared, Jim, Tony, Jeff, John and Brad, with Chris F. in the seat.'],
     'little-evil-one-tee': ['The whole family made the shop a second home while the tractor came together. This one is for the next generation of pullers.']
@@ -638,13 +640,17 @@ html,body{overflow-x:clip}
   var sold = p.sold || [];
 
   /* cabecera, SEO y breadcrumb */
-  document.title = p.name + ' · Heavy Metal Pro Stock: “The Evil One”';
-  var md = document.querySelector('meta[name="description"]');
-  md.setAttribute('content', p.name + ' (' + p.sub.toLowerCase() + ') from Heavy Metal Pro Stock: “The Evil One”, the pulling tractor from Waterloo, WI. Designed by the crew, printed when you order.');
+  /* SEO: título de 50 a 60 caracteres y descripción de 140 a 160 (en Shopify: campos "SEO title" y "SEO description" de cada producto) */
+  var BRAND = 'Heavy Metal Pro Stock: “The Evil One”';
+  var SEO_T = { 'crew-cap': 'Structured Crew Cap', 'evil-one-beanie': 'Cuffed Knit Beanie', 'evil-one-crewneck': 'Crewneck Sweatshirt', 'full-pull-ls': 'Full Pull Longsleeve', 'little-evil-one-tee': 'Kids Pulling Tee' };
+  document.title = (SEO_T[p.id] || p.name) + ' · ' + BRAND;
+  var md = document.querySelector('meta[name="description"]'), mdt = p.name + ' from ' + BRAND + ', the pulling tractor from Waterloo, WI.';
+  [' ' + p.sub + '.', ' Designed by the crew.', ' Printed when you order.', ' Ships in 5 days.'].forEach(function (x) { if ((mdt + x).length <= 160) mdt += x; });
+  md.setAttribute('content', mdt);
   $('bc-cat').textContent = cname; $('bc-cat').href = p.cat === 'limited' ? 'limited.html' : 'shop.html?cat=' + p.cat;
   $('bc-name').textContent = p.name;
   $('p-name').textContent = p.name; $('satc-name').textContent = p.name;
-  $('p-desc').textContent = p.sub + '. Designed by the crew in Waterloo, WI, and printed to order.';
+  $('p-desc').textContent = p.sub + '. Designed by the crew in Waterloo, WI, and printed when you order.';
   /* estado: p.status del catálogo ('live' | 'soon' | 'soldout') y p.left (5 o menos = "Almost gone!") */
   var status = p.status === 'soon' || p.status === 'soldout' ? p.status : 'live', live = status === 'live';
   var low = live && p.left && p.left <= 5;
@@ -772,7 +778,7 @@ html,body{overflow-x:clip}
     if (!ok) { m.className = 'nbox__msg small is-err'; m.textContent = 'Enter a valid email so we can let you know.'; em.focus(); return; }
     $('notify-form').hidden = true;
     m.className = 'nbox__msg small';
-    m.textContent = status === 'soon' ? "You're on the list. We'll email you once, when it drops." : "You're on the list. We'll email you once, if it comes back.";
+    m.textContent = status === 'soon' ? "You’re on the list. We’ll email you once, when it drops." : "You’re on the list. We’ll email you once, if it comes back.";
   });
 
   /* acordeones */
@@ -791,7 +797,7 @@ html,body{overflow-x:clip}
   var rows = isKids ? ['YS', 'YM', 'YL', 'YXL'] : ['S', 'M', 'L', 'XL', '2XL', '3XL'];
   $('sg-t').textContent = 'Size guide · ' + (hasSizes ? p.name : 'Tees and sweatshirts');
   $('sg-body').innerHTML = (hasSizes ? '' : '<p>' + p.name + ' is one size. Here is the guide for tees and sweatshirts.</p>') +
-    '<p>Measured flat, in inches. Regular fit. Printed-to-order items can\'t be returned for size, so compare with a shirt you own.</p>' +
+    '<p>Measured flat, in inches. Regular fit. Printed-to-order items can’t be returned for size, so compare with a shirt you own.</p>' +
     '<div class="tbl-wrap"><table class="tbl"><caption class="vh">Measurements in inches</caption><thead><tr><th scope="col">Size</th><th scope="col">Chest width</th><th scope="col">Body length</th><th scope="col">Sleeve</th></tr></thead><tbody>' +
     rows.map(function (r) { return '<tr><th scope="row">' + r + '</th><td>XX</td><td>XX</td><td>XX</td></tr>'; }).join('') +
     '</tbody></table></div><p>Chest: armpit to armpit. Length: top of shoulder to hem.</p>' +
@@ -919,15 +925,15 @@ html,body{overflow-x:clip}
     [5, 'Wore it to the pull', 'Wore it to my first pull of the season and got asked where I got it three times. Shipped when they said it would.', 'True to size'],
     [5, 'Looks better in person', 'The front print is sharp and the colors match the photos. Already ordered a second one for my brother.', 'True to size'],
     [5, 'Backing the crew', 'Bought it to support the team. Held up great after a bunch of washes.', 'True to size'],
-    [5, 'My new favorite', 'Comfortable, fits like I expected, and the print didn\'t crack in the wash. Wearing it to every pull.', 'True to size'],
+    [5, 'My new favorite', 'Comfortable, fits like I expected, and the print didn’t crack in the wash. Wearing it to every pull.', 'True to size'],
     [5, 'Gift for my dad', 'My dad has been going to pulls for 30 years and loved it. Arrived in about a week.', 'True to size'],
     [5, 'Exactly as pictured', 'What you see is what you get. Clean, centered print.', 'True to size'],
     [5, 'Pit crew approved', 'Wore it all weekend in the pits and it still looks new.', 'Runs large'],
     [5, 'Fast shipping', 'Ordered on a Monday and had it the next week. Great design.', 'True to size'],
-    [4, 'Great, runs a little big', 'Love the design. I usually wear a large and it\'s a bit roomy, so I\'d size down next time.', 'Runs large'],
-    [4, 'Worth the wait', 'Took a few extra days since it\'s printed to order, but it was worth it.', 'True to size'],
+    [4, 'Great, runs a little big', 'Love the design. I usually wear a large and it’s a bit roomy, so I’d size down next time.', 'Runs large'],
+    [4, 'Worth the wait', 'Took a few extra days since it’s printed when you order, but it was worth it.', 'True to size'],
     [4, 'Solid', 'Good fit and a cool design. Wish there were more color options.', 'True to size'],
-    [3, 'Runs small for me', 'The design is great but it\'s snug in the chest. Size up if you\'re between sizes.', 'Runs small'],
+    [3, 'Runs small for me', 'The design is great but it’s snug in the chest. Size up if you’re between sizes.', 'Runs small'],
     [3, 'Good, slow shipping', 'Print looks good. Shipping took longer than I hoped.', 'True to size']
   ];
   var RV_NAMES = ['Jake M.', 'Brittany S.', 'Cody R.', 'Tom H.', 'Kayla W.', 'Dustin P.', 'Megan L.', 'Travis K.', 'Amber J.', 'Wyatt B.', 'Lisa G.', 'Hunter D.', 'Kyle N.', 'Sarah T.', 'Brandon F.', 'Emily C.', 'Josh V.', 'Ashley R.', 'Nate O.', 'Rachel E.', 'Logan A.', 'Mandy Z.', 'Chad Y.'];
@@ -1145,7 +1151,7 @@ html,body{overflow-x:clip}
   var base = location.href.split('#')[0].split('?')[0];
   var url = base + '?p=' + p.id;
   var ld = [{
-    '@context': 'https://schema.org', '@type': 'Product', name: p.name, description: p.sub + '. Designed by the Heavy Metal Pro Stock: “The Evil One” crew in Waterloo, WI, printed to order.',
+    '@context': 'https://schema.org', '@type': 'Product', name: p.name, description: p.sub + '. Designed by the Heavy Metal Pro Stock: “The Evil One” crew in Waterloo, WI, printed when you order.',
     sku: p.id, brand: { '@type': 'Brand', name: 'Heavy Metal Pro Stock: “The Evil One”' }, category: cname, url: url,
     offers: { '@type': 'Offer', url: url, priceCurrency: 'USD', price: 'XX.XX', availability: live ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock', itemCondition: 'https://schema.org/NewCondition' }
   }, {
