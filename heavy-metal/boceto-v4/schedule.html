@@ -4,65 +4,64 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Schedule 2026 · Heavy Metal Pro Stock: The Evil One</title>
-<meta name="description" content="Where The Evil One pulls in 2026: upcoming NTPA and PPL Badger State dates, past results and videos, how to watch, and Hook Alerts before every pull.">
+<meta name="description" content="Where The Evil One pulls in 2026: upcoming and past pulls, where to watch NTPA and Badger State / PPL, tips for your first pull, and Hook Alerts by email.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
-<!-- En Shopify este bloque lo genera la sección a partir de cada entrada del metaobjeto pull_event. -->
+<!-- En Shopify este bloque lo genera la sección a partir de cada entrada del metaobjeto pull_event (Status distinto de Hidden). -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SportsEvent",
   "name": "Green County Fall Nationals",
-  "description": "Badger State Tractor Pullers 2026: Green County Fall Nationals in Monroe, WI. The Evil One ran in Pro Stock; the run ended early.",
+  "description": "Badger State Tractor Pullers 2026: Green County Fall Nationals in Monroe, WI. The Evil One ran in Pro Stock.",
   "startDate": "2026",
   "eventStatus": "https://schema.org/EventScheduled",
   "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
   "sport": "Tractor pulling",
-  "location": {"@type": "Place", "name": "Green County Fall Nationals", "address": {"@type": "PostalAddress", "addressLocality": "Monroe", "addressRegion": "WI", "addressCountry": "US"}},
-  "organizer": {"@type": "Organization", "name": "Badger State Tractor Pullers"},
+  "url": "https://greencountyfair.net/",
+  "location": {"@type": "Place", "name": "Green County Fair", "url": "https://greencountyfair.net/", "address": {"@type": "PostalAddress", "addressLocality": "Monroe", "addressRegion": "WI", "addressCountry": "US"}},
+  "organizer": {"@type": "Organization", "name": "Badger State Tractor Pullers", "url": "https://bstponline.com/"},
   "competitor": {"@type": "SportsTeam", "name": "Heavy Metal Pro Stock: The Evil One", "sport": "Tractor pulling", "url": "https://www.facebook.com/heavymetalprostock/"},
   "subjectOf": {"@type": "VideoObject", "name": "Badger State Tractor Pullers 2026: Green County Fall Nationals in Monroe, WI", "url": "https://www.youtube.com/watch?v=HfJ5FAJJ5Ac", "thumbnailUrl": "img/hm-hero.webp", "uploadDate": "2026"}
 }
 </script>
 <style>
-/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V4 */
-/* 1 · bloque superior: título, estado y Hook Alerts en una sola franja */
-.sc-top{padding-block:28px 32px}
-.sc-top__in{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(20px,3vw,48px);align-items:start}
-.sc-status{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 20px;margin:18px 0 0}
-.sc-status .spec dd{font-size:var(--t-h2)}
-.sc-status .spec dd.tba{color:var(--mute)}
-.sc-top__line{margin:12px 0 0;color:var(--soft);max-width:44ch}
-.sc-alerts{background:var(--bg);border:1px solid var(--line);padding:18px clamp(16px,2vw,24px);display:grid;gap:12px}
-.sc-alerts__head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px}
-.sc-alerts__head p{margin:0;font-size:var(--t-xs);color:var(--mute)}
-.sc-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:10px;align-items:end}
-.sc-check{display:flex;gap:8px;align-items:center;font-size:var(--t-sm);min-height:28px;cursor:pointer}
-.sc-check input{width:18px;height:18px;margin:0;accent-color:var(--ink)}
-.field .opt{font-weight:400;text-transform:none;letter-spacing:0;color:var(--mute)}
-.input[aria-invalid="true"]{border-color:var(--alert);outline:1px solid var(--alert)}
-.sc-msg{margin:0;font-size:var(--t-xs);font-weight:600;min-height:1.5em}
-.sc-msg.is-err{color:var(--alert)}
-.sc-msg.is-ok{color:var(--ink)}
-@media (max-width:900px){.sc-top__in{grid-template-columns:1fr}.sc-row{grid-template-columns:1fr 1fr}.sc-row .btn{grid-column:1/-1}}
-@media (max-width:480px){.sc-row{grid-template-columns:1fr}}
+/* Hallmark · pre-emit critique: P4 H5 E4 S5 R5 V4 */
+/* Una sola columna de lectura: 1 título y estado · 2 tabla de pulls · 3 dónde verlo · 4 primera vez · 5 Hook Alerts · (dueña) */
+.ext{font-size:.85em;margin-left:2px;text-decoration:none;display:inline-block}
+.sc-num{display:inline-grid;place-items:center;width:20px;height:20px;background:var(--ink);color:var(--surface);font-size:11px;font-weight:700;margin-right:8px;vertical-align:2px}
+.sc-h{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 14px;margin-bottom:14px}
+.sc-h p{margin:0;font-size:var(--t-xs);color:var(--mute)}
 
-/* 2 · tabla de jaladas (tabs Upcoming | Past) */
-.sc-tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin-bottom:0}
+/* 1 · título + estado en una línea */
+.sc-top{padding-block:28px 0}
+.sc-top__row{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 20px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.sc-status{margin:0;font-size:var(--t-sm);color:var(--soft);display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.sc-status a{color:var(--ink);font-weight:600;text-underline-offset:3px}
+
+/* 2 · pulls (protagonista) */
+.sc-pulls{padding-block:22px clamp(32px,4vw,44px)}
+.sc-sect{padding-block:clamp(32px,4vw,44px)}
+.sc-tabs{display:flex;border-bottom:1px solid var(--line)}
 .sc-tab{min-height:44px;padding:0 18px;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);cursor:pointer}
+.sc-tab:first-child{padding-left:0}
 .sc-tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
 .sc-tab .n{font-weight:600;color:var(--mute);margin-left:4px}
 .sc-table-wrap{overflow-x:auto}
 .sc-table{width:100%;border-collapse:collapse;font-size:var(--t-sm)}
-.sc-table th{text-align:left;font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding:12px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
-.sc-table td{padding:14px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.sc-table th{text-align:left;font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+.sc-table td{padding:14px 12px;border-bottom:1px solid var(--line);vertical-align:top}
 .sc-table th:first-child,.sc-table td:first-child{padding-left:0}
 .sc-table td b{display:block;color:var(--ink);font-family:var(--f-head);font-stretch:78%;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.02em;line-height:1.2}
 .sc-table .sub{display:block;font-size:var(--t-xs);color:var(--mute)}
-.sc-empty td{padding-block:22px;color:var(--soft)}
+.sc-table .links{display:flex;flex-wrap:wrap;gap:4px 14px}
+.sc-table .links a{font-weight:600;text-underline-offset:3px;white-space:nowrap}
+.sc-empty td{padding-block:20px;color:var(--soft)}
 .sc-empty td b{margin-bottom:4px}
-.sc-ics{min-height:36px;padding:0 12px}
+.sc-empty a{color:var(--ink);font-weight:600}
+.sc-golast{background:none;border:0;padding:0;font:inherit;font-weight:600;color:var(--ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.sc-ics{min-height:34px;padding:0 12px}
 .dash{color:var(--mute)}
 @media (max-width:760px){
   .sc-table thead{display:none}
@@ -70,45 +69,68 @@
   .sc-table tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 16px;padding:16px 0;border-bottom:1px solid var(--line)}
   .sc-table td{padding:0;border:0}
   .sc-table td[data-label]::before{content:attr(data-label);display:block;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:2px}
-  .sc-table td.wide{grid-column:1/-1}
+  .sc-table td.wide{grid-column:1/-1;order:-1}
   .sc-empty td{grid-column:1/-1}
 }
 
-/* 3 · cómo verla + primera vez + foto */
-.sc-guide{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,5fr) minmax(0,3fr);gap:clamp(20px,3vw,40px);align-items:start}
-.sc-list{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:0}
-.sc-list li{padding:12px 0;border-top:1px solid var(--line);display:grid;gap:2px}
-.sc-list li p{margin:0;color:var(--soft);font-size:var(--t-sm)}
-.sc-list .h3{font-size:var(--t-sm)}
-.sc-tips{list-style:none;margin:14px 0 0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 20px;counter-reset:tip}
-.sc-tips li{border-top:1px solid var(--ink);padding-top:10px;counter-increment:tip}
-.sc-tips li::before{content:"0" counter(tip);display:block;font-size:var(--t-xs);font-weight:700;color:var(--mute);margin-bottom:4px}
+/* 3 · dónde verlo: una tarjeta por liga */
+.sc-watch{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.wcard{background:var(--surface);border:1px solid var(--line);padding:16px 18px 6px;display:grid;align-content:start;gap:4px}
+.wcard p{margin:0 0 6px;font-size:var(--t-xs);color:var(--mute)}
+.wlist{list-style:none;margin:0;padding:0}
+.wlist li{border-top:1px solid var(--line);padding:9px 0;display:grid;gap:1px}
+.wlist a{font-size:var(--t-sm);font-weight:700;color:var(--ink);text-underline-offset:3px}
+.wlist span{font-size:var(--t-xs);color:var(--mute)}
+.wtag{display:inline-block;margin-left:6px;vertical-align:1px}
+.sc-inperson{margin:12px 0 0;font-size:var(--t-xs);color:var(--soft)}
+@media (max-width:1024px){.sc-watch{grid-template-columns:repeat(2,minmax(0,1fr))}.wcard--hm{grid-column:1/-1}}
+@media (max-width:640px){.sc-watch{grid-template-columns:1fr}}
+
+/* 4 · primera vez */
+.sc-tips{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 20px;counter-reset:tip}
+.sc-tips li{border-top:2px solid var(--ink);padding-top:10px;counter-increment:tip}
+.sc-tips li::before{content:"0" counter(tip);display:block;font-size:var(--t-xs);font-weight:700;color:var(--mute);margin-bottom:2px}
 .sc-tips p{margin:4px 0 0;color:var(--soft);font-size:var(--t-sm)}
-.sc-photo{margin:0;display:grid;gap:6px}
-.sc-photo__box{aspect-ratio:3/4;overflow:hidden;background:var(--tile);max-height:420px}
-.sc-photo figcaption{font-size:var(--t-xs);color:var(--mute)}
-@media (max-width:1024px){.sc-guide{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.sc-photo{grid-column:1/-1;grid-template-columns:200px minmax(0,1fr);align-items:end}}
-@media (max-width:760px){.sc-guide{grid-template-columns:1fr}.sc-photo{grid-template-columns:120px minmax(0,1fr)}}
+@media (max-width:900px){.sc-tips{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:480px){.sc-tips{grid-template-columns:1fr}}
 
-/* 4 · cómo se actualiza (para la dueña) */
-.sc-how{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(20px,3vw,48px);align-items:start}
-.sc-steps{margin:14px 0 0;padding-left:1.2em;display:grid;gap:6px;color:var(--soft);font-size:var(--t-sm)}
-.sc-steps b{color:var(--ink)}
-.adm{margin:0;border:1px solid var(--line);background:var(--surface)}
-.adm__bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);font-size:var(--t-xs);color:var(--mute)}
+/* 5 · Hook Alerts (solo email): única banda oscura */
+.sc-alerts{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(20px,3vw,48px);align-items:center}
+.sc-alerts .lede{color:#CFCCC3;margin-top:6px}
+.sc-form{display:grid;gap:8px}
+.sc-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:end}
+.sc-form .field label{color:#CFCCC3}
+.sc-form .consent{color:#B5B2AA}
+.sc-form .consent a{color:var(--night-ink)}
+.input[aria-invalid="true"]{border-color:var(--alert);outline:2px solid var(--alert)}
+.sc-msg{margin:0;font-size:var(--t-xs);font-weight:600;min-height:1.5em;color:var(--night-ink)}
+.sc-msg.is-err{color:#FFB4A8}
+@media (max-width:860px){.sc-alerts{grid-template-columns:1fr}}
+@media (max-width:420px){.sc-row{grid-template-columns:1fr}}
+
+/* Dueña: nota + mock chico. Se esconde con "Ocultar notas" igual que las .note */
+.no-notes .sc-owner{display:none!important}
+.sc-owner{padding-block:32px 40px;border-top:3px dashed var(--accent)}
+.sc-owner .note{margin:0 0 12px}
+.adm{margin:0;border:1px solid var(--line);background:var(--surface);max-width:880px}
+.adm__bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);font-size:11px;color:var(--mute)}
 .adm__bar b{color:var(--ink)}
-.adm__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 12px;padding:14px}
-.adm__grid .field label{font-size:11px}
-.adm__grid .input{min-height:38px;font-size:var(--t-xs)}
-.adm__grid .full{grid-column:span 2}
-.adm__foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:10px 14px;border-top:1px solid var(--line);background:var(--bg)}
-.adm__foot p{margin:0;font-size:var(--t-xs);color:var(--mute)}
-.adm__foot .btn{min-height:36px}
-.adm-prev{padding:0 14px 14px}
+.adm__only{background:var(--accent);color:var(--ink);font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px}
+.adm__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 10px;padding:12px}
+.adm__grid .field{gap:3px}
+.adm__grid .field label{font-size:10px}
+.adm__grid .input{min-height:34px;font-size:var(--t-xs);padding:0 8px}
+.adm__grid .span2{grid-column:span 2}
+.adm__grid .hint{font-size:10px;color:var(--mute);line-height:1.3}
+.adm__foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 12px;border-top:1px solid var(--line);background:var(--bg)}
+.adm__foot .grow{flex:1}
+.adm__del{background:none;border:1px solid var(--alert);color:var(--alert);min-height:34px;padding:0 12px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.adm__del:hover{background:var(--alert);color:var(--surface)}
+.adm__msg{margin:0;padding:0 12px 10px;font-size:var(--t-xs);color:var(--soft)}
+.adm__msg:empty{display:none}
+.adm-prev{padding:0 12px 12px}
 .adm-prev .sc-table{font-size:var(--t-xs)}
-@media (max-width:900px){.sc-how{grid-template-columns:1fr}}
-@media (max-width:600px){.adm__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.adm__grid .full{grid-column:1/-1}}
+@media (max-width:760px){.adm__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -116,106 +138,120 @@
 
 <main id="main">
 
-<!-- 1 · Título, estado y Hook Alerts: todo arriba del pliegue -->
-<section class="sect--white sc-top" aria-labelledby="sc-title">
-  <div class="wrap sc-top__in">
-    <div>
-      <p class="label muted">NTPA · PPL Badger State · Pro Stock</p>
-      <h1 class="h1" id="sc-title" style="margin-top:6px">Schedule 2026</h1>
-      <dl class="sc-status">
-        <div class="spec"><dt>Status</dt><dd>Testing season</dd></div>
-        <div class="spec"><dt>Next pull</dt><dd class="tba">TBA</dd></div>
-      </dl>
-      <p class="sc-top__line">Dates go up as soon as the leagues confirm them. Get a heads up before every pull.</p>
+<!-- 1 · Título y estado de la temporada en una línea · 2 · tabla de pulls -->
+<section class="sect--white" aria-labelledby="sc-title">
+  <div class="wrap sc-top">
+    <div class="sc-top__row">
+      <h1 class="h1" id="sc-title">Schedule 2026</h1>
+      <p class="sc-status"><span class="badge">Testing</span> 2026 testing season. Dates go up here and on <a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a> first.</p>
     </div>
-
-    <form class="sc-alerts" id="alerts" novalidate aria-labelledby="alerts-t">
-      <div class="sc-alerts__head"><h2 class="h3" id="alerts-t">Hook Alerts</h2><p>One list: pull days and new drops.</p></div>
-      <div class="sc-row">
-        <div class="field"><label for="al-email">Email</label><input class="input" id="al-email" name="email" type="email" required autocomplete="email" spellcheck="false" placeholder="you@example.com" aria-describedby="al-msg"></div>
-        <div class="field"><label for="al-phone">Mobile <span class="opt" id="al-phone-opt">(only for SMS)</span></label><input class="input" id="al-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(608) 555-0123" aria-describedby="al-msg"></div>
-        <button class="btn" type="submit">Get Hook Alerts</button>
-      </div>
-      <label class="sc-check" for="al-sms"><input type="checkbox" id="al-sms" name="sms"> Also text me before each pull</label>
-      <p class="consent" id="al-consent">By signing up you agree to receive marketing emails from Heavy Metal Pro Stock. If you check the SMS box, you also agree to receive recurring automated marketing text messages from Heavy Metal Pro Stock (The Evil One) at the number provided, about 1 per pull. Consent is not a condition of any purchase. Msg frequency varies. Msg &amp; data rates may apply. Reply STOP to cancel, HELP for help. Unsubscribe from email anytime. See our <a href="policies.html?p=sms">SMS Terms</a> and <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
-      <p class="sc-msg" id="al-msg" role="status" aria-live="polite"></p>
-    </form>
   </div>
-</section>
-
-<!-- 2 · Jaladas: tabla (desktop) / lista (móvil). En Shopify sale del metaobjeto pull_event -->
-<section class="sect" aria-labelledby="pulls-t" style="padding-top:36px">
-  <div class="wrap">
-    <div class="sect-head" style="margin-bottom:8px"><h2 class="h2" id="pulls-t">Pulls</h2><p class="small muted" style="margin:0">All times Central. Dates set by NTPA and PPL Badger State.</p></div>
-    <div class="sc-tabs" role="tablist" aria-label="Pulls">
+  <div class="wrap sc-pulls">
+    <div class="sc-h"><h2 class="h2" id="pulls-t"><span class="sc-num" aria-hidden="true">1</span>Pulls</h2><p>Pro Stock · NTPA and Badger State / PPL · All times Central</p></div>
+    <div class="sc-tabs" role="tablist" aria-labelledby="pulls-t">
       <button class="sc-tab" type="button" role="tab" id="tab-up" aria-controls="panel-up" aria-selected="true">Upcoming<span class="n" id="n-up"></span></button>
       <button class="sc-tab" type="button" role="tab" id="tab-past" aria-controls="panel-past" aria-selected="false" tabindex="-1">Past<span class="n" id="n-past"></span></button>
     </div>
     <div role="tabpanel" id="panel-up" aria-labelledby="tab-up" class="sc-table-wrap" tabindex="0"></div>
     <div role="tabpanel" id="panel-past" aria-labelledby="tab-past" class="sc-table-wrap" tabindex="0" hidden></div>
-    <p class="note">Monroe, WI: confirmar con la dueña la fecha exacta, el resultado ("ended early") y que el video es de The Evil One antes de publicar.</p>
+    <p class="note">Monroe, WI: falta la fecha exacta y el resultado (placeholder). Confirmar también que el video es de The Evil One.</p>
   </div>
 </section>
 
-<!-- 3 · Cómo verla y primera vez en una jalada -->
-<section class="sect sect--white" aria-labelledby="watch-t">
-  <div class="wrap sc-guide">
-    <div>
-      <h2 class="h2" id="watch-t">How to watch</h2>
-      <ul class="sc-list">
-        <li><span class="h3">NTPA pulls</span><p>Streamed live on Full Pull Live.</p></li>
-        <li><span class="h3">PPL pulls</span><p>On Pro Pulling TV and MAVTV, as each league announces.</p></li>
-        <li><span class="h3">In person</span><p>Tickets are sold by each fair or venue. We link them in the table when they go on sale.</p></li>
-        <li><span class="h3">Replays</span><p>Our runs go up on <a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook</a> and <a href="https://www.youtube.com/watch?v=HfJ5FAJJ5Ac" target="_blank" rel="noopener">YouTube</a>.</p></li>
-      </ul>
+<!-- 3 · Dónde verlo: una tarjeta por liga, links oficiales -->
+<section class="sect sc-sect" aria-labelledby="watch-t">
+  <div class="wrap">
+    <div class="sc-h"><h2 class="h2" id="watch-t"><span class="sc-num" aria-hidden="true">2</span>Where to watch</h2><p>Each league posts its own dates and streams. All links open in a new tab.</p></div>
+    <div class="sc-watch">
+      <article class="wcard" aria-labelledby="w-ntpa">
+        <h3 class="h3" id="w-ntpa">NTPA</h3>
+        <p>National Tractor Pullers Association</p>
+        <ul class="wlist">
+          <li><a href="https://ntpapull.com/" target="_blank" rel="noopener">ntpapull.com<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Official site, rules and results</span></li>
+          <li><a href="https://ntpapull.com/pullresults/Schedule/NTPA_ScheduleDynamic.php" target="_blank" rel="noopener">2026 NTPA calendar<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Every NTPA pull this season</span></li>
+          <li><a href="https://fullpull.live/" target="_blank" rel="noopener">Full Pull LIVE<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Official live stream <span class="badge badge--line wtag">Paid</span> · also the Full Pull app on iOS and Android</span></li>
+        </ul>
+      </article>
+      <article class="wcard" aria-labelledby="w-bst">
+        <h3 class="h3" id="w-bst">Badger State / PPL</h3>
+        <p>Badger State Tractor Pullers is a PPL member. PPL is now the IHRA Pro Pulling Series.</p>
+        <ul class="wlist">
+          <li><a href="https://bstponline.com/" target="_blank" rel="noopener">bstponline.com<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Badger State Tractor Pullers, Wisconsin</span></li>
+          <li><a href="https://bstponline.com/events/" target="_blank" rel="noopener">Badger State events<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Dates and places for this season</span></li>
+          <li><a href="https://www.facebook.com/badgerstatetractors/" target="_blank" rel="noopener">Badger State on Facebook<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Day-of updates and weather calls</span></li>
+          <li><a href="https://www.ihra.com/pulling" target="_blank" rel="noopener">IHRA Pro Pulling live<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>2026 Pro Pulling broadcasts <span class="badge wtag">Free</span></span></li>
+          <li><a href="https://www.youtube.com/@ProPullingTV" target="_blank" rel="noopener">ProPullingTV on YouTube<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Streams and replays <span class="badge wtag">Free</span></span></li>
+        </ul>
+      </article>
+      <article class="wcard wcard--hm" aria-labelledby="w-hm">
+        <h3 class="h3" id="w-hm">Heavy Metal</h3>
+        <p>The Evil One's own channel</p>
+        <ul class="wlist">
+          <li><a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Heavy Metal on Facebook<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>New dates first, pit photos and our runs</span></li>
+          <li><a href="https://www.youtube.com/watch?v=HfJ5FAJJ5Ac" target="_blank" rel="noopener">Monroe, WI run on YouTube<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Green County Fall Nationals, 2026</span></li>
+        </ul>
+      </article>
     </div>
-    <div>
-      <h2 class="h2">First time at a pull?</h2>
-      <ol class="sc-tips">
-        <li><span class="h3">What is Pro Stock</span><p>A diesel class with limits on engine size and turbo. The Evil One runs a Cat 3208 V8 at 680 CI and 10,000 lb.</p></li>
-        <li><span class="h3">What is a full pull</span><p>The sled gets harder to drag the farther it goes. Reach the end of the track and it's a full pull.</p></li>
-        <li><span class="h3">Arrive early</span><p>The grandstands fill up before the first class. Come early for a good seat and a look at the pits.</p></li>
-        <li><span class="h3">Bring ear protection</span><p>Pro Stock tractors are loud. Ear plugs or muffs for everyone, kids first.</p></li>
-      </ol>
-    </div>
-    <figure class="sc-photo">
-      <div class="sc-photo__box"><img class="photo" src="img/hm-grandstand.webp" alt="The Evil One rolling past a full grandstand on a dirt track" loading="lazy" width="1050" height="1400" style="object-position:50% 70%"></div>
-      <figcaption>The Evil One in front of the stands, 2026.</figcaption>
-    </figure>
+    <p class="sc-inperson"><b>In person:</b> tickets are sold by each fair or venue. We add the ticket link to the pull in the table as soon as it goes on sale.</p>
   </div>
 </section>
 
-<!-- 4 · Para la dueña: cómo se actualiza sin código (no va en el sitio en vivo) -->
-<section class="sect" aria-labelledby="how-t">
-  <div class="wrap sc-how">
+<!-- 4 · Primera vez en un pull -->
+<section class="sect sect--white sc-sect" aria-labelledby="tips-t">
+  <div class="wrap">
+    <div class="sc-h"><h2 class="h2" id="tips-t"><span class="sc-num" aria-hidden="true">3</span>First time at a pull?</h2></div>
+    <ol class="sc-tips">
+      <li><span class="h3">What is Pro Stock</span><p>A diesel class with limits on engine and turbo. The Evil One runs a Cat 3208 V8, 680 CI, at 10,000 lb.</p></li>
+      <li><span class="h3">What is a full pull</span><p>The sled gets harder to drag the farther it goes. Reach the end of the track and it's a full pull.</p></li>
+      <li><span class="h3">Arrive early</span><p>Grandstands fill before the first class. Come early for a good seat and a look at the pits.</p></li>
+      <li><span class="h3">Bring ear protection</span><p>Pro Stock tractors are loud. Ear plugs or muffs for everyone, kids first.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 5 · Hook Alerts: solo email, la única acción de la página -->
+<section class="sect sect--night sc-sect" aria-labelledby="alerts-t">
+  <div class="wrap sc-alerts">
     <div>
-      <p class="label muted">Para la dueña</p>
-      <h2 class="h2" id="how-t" style="margin-top:6px">Cómo se actualiza</h2>
-      <p class="note">Cada jalada es una entrada del metaobjeto "Pull event" de Shopify. Se agrega una fila en Content &gt; Metaobjects, sin código: la tabla, las pestañas Upcoming y Past, el botón de calendario y el marcado de Google (SportsEvent) se actualizan solos.</p>
-      <ol class="sc-steps">
-        <li>Shopify admin: <b>Content &gt; Metaobjects &gt; Pull event</b>.</li>
-        <li><b>Add entry</b> y llena los campos (fecha, evento, ciudad, liga...).</li>
-        <li>Status <b>Upcoming</b> la pone en la pestaña de próximas; al terminar cámbiala a <b>Done</b> y pega el resultado y el video.</li>
-        <li><b>Save</b>. Listo, ya está en el sitio.</li>
-      </ol>
+      <h2 class="h2" id="alerts-t"><span class="sc-num" aria-hidden="true" style="background:var(--accent);color:var(--ink)">4</span>Hook Alerts</h2>
+      <p class="lede">One email before every pull, plus new drops. Nothing else.</p>
     </div>
+    <form class="sc-form" id="alerts" novalidate aria-labelledby="alerts-t">
+      <div class="sc-row">
+        <div class="field"><label for="al-email">Email</label><input class="input" id="al-email" name="email" type="email" required autocomplete="email" spellcheck="false" placeholder="you@example.com" aria-describedby="al-msg al-consent"></div>
+        <button class="btn btn--light" type="submit">Get Hook Alerts</button>
+      </div>
+      <p class="consent" id="al-consent">Email only. By signing up you agree to receive marketing emails from Heavy Metal Pro Stock. Unsubscribe anytime. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
+      <p class="sc-msg" id="al-msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<!-- Solo para la dueña: cómo se actualiza sin código. No se ve en el sitio real. -->
+<section class="sc-owner" aria-labelledby="own-t">
+  <div class="wrap">
+    <h2 class="label" id="own-t" style="margin-bottom:8px">Solo para la dueña · no se ve en el sitio</h2>
+    <p class="note">Cada pull es una entrada del metaobjeto "Pull event" en Contenido &gt; Metaobjetos, sin código. Llenas los campos y guardas: la tabla, las pestañas, el .ics y Google se actualizan solos. Para quitar uno: botón Delete en la entrada, o Status "Hidden" si quieres guardarlo sin mostrarlo.</p>
     <figure class="adm" aria-labelledby="adm-cap">
-      <figcaption class="adm__bar" id="adm-cap"><span>Content &gt; Metaobjects &gt; <b>Pull event</b> &gt; Add entry</span><span>Ejemplo del formulario</span></figcaption>
+      <figcaption class="adm__bar" id="adm-cap"><span>Contenido &gt; Metaobjetos &gt; <b>Pull event</b> &gt; Green County Fall Nationals</span><span class="adm__only">Solo para la dueña</span></figcaption>
       <form id="adm-form" novalidate>
         <div class="adm__grid">
           <div class="field"><label for="adm-date">Date</label><input class="input" id="adm-date" type="date"></div>
-          <div class="field full"><label for="adm-event">Event</label><input class="input" id="adm-event" type="text" placeholder="e.g. County Fair Pull"></div>
-          <div class="field"><label for="adm-city">City</label><input class="input" id="adm-city" type="text" placeholder="e.g. Monroe, WI"></div>
-          <div class="field"><label for="adm-league">League</label><select class="input" id="adm-league"><option>NTPA</option><option>PPL Badger State</option><option>Badger State Tractor Pullers</option><option>Other</option></select></div>
-          <div class="field"><label for="adm-class">Class</label><input class="input" id="adm-class" type="text" value="Pro Stock"></div>
-          <div class="field"><label for="adm-tix">Tickets URL</label><input class="input" id="adm-tix" type="url" placeholder="https://"></div>
-          <div class="field"><label for="adm-stream">Stream URL</label><input class="input" id="adm-stream" type="url" placeholder="https://"></div>
-          <div class="field"><label for="adm-status">Status</label><select class="input" id="adm-status"><option>Upcoming</option><option>Done</option><option>Cancelled</option></select></div>
-          <div class="field"><label for="adm-result">Result</label><input class="input" id="adm-result" type="text" placeholder="e.g. 312 ft, Full pull, Ended early"></div>
-          <div class="field full"><label for="adm-video">Video URL</label><input class="input" id="adm-video" type="url" placeholder="https://www.youtube.com/..."></div>
+          <div class="field span2"><label for="adm-event">Event</label><input class="input" id="adm-event" type="text" value="Green County Fall Nationals"></div>
+          <div class="field"><label for="adm-city">City</label><input class="input" id="adm-city" type="text" value="Monroe, WI"></div>
+          <div class="field"><label for="adm-league">League</label><select class="input" id="adm-league"><option>NTPA</option><option selected>Badger State Tractor Pullers</option><option>IHRA Pro Pulling (PPL)</option><option>Other</option></select></div>
+          <div class="field"><label for="adm-status">Status</label><select class="input" id="adm-status" aria-describedby="adm-st-hint"><option>Upcoming</option><option selected>Done</option><option>Cancelled</option><option>Hidden</option></select><span class="hint" id="adm-st-hint">Hidden: se guarda pero no sale en el sitio</span></div>
+          <div class="field span2"><label for="adm-result">Result</label><input class="input" id="adm-result" type="text" placeholder="e.g. 312 ft, Full pull"></div>
+          <div class="field span2"><label for="adm-video">Video URL</label><input class="input" id="adm-video" type="url" value="https://www.youtube.com/watch?v=HfJ5FAJJ5Ac"></div>
+          <div class="field span2"><label for="adm-site">Event website / tickets</label><input class="input" id="adm-site" type="url" value="https://greencountyfair.net/"></div>
         </div>
-        <div class="adm__foot"><p>Vista previa: así se verá la fila en la tabla.</p><button class="btn btn--ghost" type="submit">Preview row</button></div>
+        <div class="adm__foot">
+          <button class="adm__del" type="button" id="adm-del">Delete</button>
+          <span class="grow"></span>
+          <button class="btn btn--ghost btn--sm" type="submit">Save y ver la fila</button>
+        </div>
       </form>
+      <p class="adm__msg" id="adm-msg" role="status" aria-live="polite"></p>
       <div class="adm-prev sc-table-wrap" id="adm-prev" aria-live="polite" hidden></div>
     </figure>
   </div>
@@ -229,13 +265,14 @@
 (function () {
   var $ = function (id) { return document.getElementById(id); };
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function ext(href, label, extra) { return '<a href="' + esc(href) + '" target="_blank" rel="noopener">' + label + '<span class="ext" aria-hidden="true">↗</span><span class="vh">' + (extra || '') + ' (opens in a new tab)</span></a>'; }
 
-  /* Entradas del metaobjeto pull_event (en Shopify las pinta Liquid). Solo datos reales. */
+  /* Entradas del metaobjeto pull_event (en Shopify las pinta Liquid). Solo datos reales; lo que falta es placeholder. */
   var EVENTS = [
-    { date: '', dateLabel: '2026', dateNote: 'Date to confirm', event: 'Green County Fall Nationals', city: 'Monroe, WI', league: 'Badger State Tractor Pullers', cls: 'Pro Stock', tickets: '', stream: '', result: 'Ended early', video: 'https://www.youtube.com/watch?v=HfJ5FAJJ5Ac', status: 'Done' }
+    { date: '', dateLabel: '2026', dateNote: 'Exact date pending', event: 'Green County Fall Nationals', city: 'Monroe, WI', league: 'Badger State Tractor Pullers', cls: 'Pro Stock', site: 'https://greencountyfair.net/', stream: '', result: '', resultPending: true, video: 'https://www.youtube.com/watch?v=HfJ5FAJJ5Ac', status: 'Done' }
   ];
 
-  var HEAD = '<thead><tr><th scope="col">Date</th><th scope="col">Event</th><th scope="col">City</th><th scope="col">League</th><th scope="col">Class</th><th scope="col">Watch</th><th scope="col">Result</th><th scope="col">Add to calendar</th></tr></thead>';
+  var HEAD = '<thead><tr><th scope="col">Date</th><th scope="col">Event</th><th scope="col">League</th><th scope="col">Class</th><th scope="col">Links</th><th scope="col">Result</th><th scope="col">Calendar</th></tr></thead>';
 
   function fmtDate(iso) {
     if (!iso) return '';
@@ -244,32 +281,37 @@
   }
   function row(e, i) {
     var up = e.status === 'Upcoming';
-    var watch = [];
-    if (e.stream) watch.push('<a href="' + esc(e.stream) + '" target="_blank" rel="noopener">Stream</a>');
-    if (e.tickets) watch.push('<a href="' + esc(e.tickets) + '" target="_blank" rel="noopener">Tickets</a>');
-    if (e.video) watch.push('<a href="' + esc(e.video) + '" target="_blank" rel="noopener">Video<span class="vh"> of ' + esc(e.event) + ' (opens YouTube)</span></a>');
-    var cal = up && e.date ? '<button class="btn btn--ghost sc-ics" type="button" data-ics="' + i + '">.ics<span class="vh"> add ' + esc(e.event) + ' to calendar</span></button>' : '<span class="dash" aria-label="Not applicable">-</span>';
+    var links = [];
+    if (e.stream) links.push(ext(e.stream, 'Stream', ' ' + e.event));
+    if (e.video) links.push(ext(e.video, 'Video', ' of ' + e.event + ' on YouTube'));
+    if (e.site) links.push(ext(e.site, up ? 'Tickets' : 'Fair site', ' for ' + e.event));
+    var res = e.status === 'Cancelled' ? '<span class="badge badge--ink">Cancelled</span>'
+      : e.result ? '<span class="badge badge--line">' + esc(e.result) + '</span>'
+      : e.resultPending ? '<span class="badge badge--line">Result pending</span>' : '<span class="dash">-</span>';
+    var cal = up && e.date ? '<button class="btn btn--ghost sc-ics" type="button" data-ics="' + i + '">.ics<span class="vh"> add ' + esc(e.event) + ' to your calendar</span></button>' : '<span class="dash">-</span>';
     return '<tr>' +
       '<td data-label="Date"><span class="num">' + esc(e.date ? fmtDate(e.date) : e.dateLabel) + '</span>' + (e.dateNote ? '<span class="sub">' + esc(e.dateNote) + '</span>' : '') + '</td>' +
-      '<td data-label="Event" class="wide"><b>' + esc(e.event || 'Untitled pull') + '</b></td>' +
-      '<td data-label="City">' + esc(e.city) + '</td>' +
+      '<td data-label="Event" class="wide"><b>' + esc(e.event || 'Untitled pull') + '</b><span class="sub">' + esc(e.city) + '</span></td>' +
       '<td data-label="League">' + esc(e.league) + '</td>' +
       '<td data-label="Class">' + esc(e.cls) + '</td>' +
-      '<td data-label="Watch">' + (watch.join(' · ') || '<span class="dash">TBA</span>') + '</td>' +
-      '<td data-label="Result">' + (e.result ? '<span class="badge badge--line">' + esc(e.result) + '</span>' : '<span class="dash">-</span>') + '</td>' +
-      '<td data-label="Add to calendar">' + cal + '</td></tr>';
+      '<td data-label="Links">' + (links.length ? '<span class="links">' + links.join('') + '</span>' : '<span class="dash">TBA</span>') + '</td>' +
+      '<td data-label="Result">' + res + '</td>' +
+      '<td data-label="Calendar">' + cal + '</td></tr>';
   }
   function table(list, emptyHtml, pool) {
-    var body = list.length ? list.map(function (e) { return row(e, pool.indexOf(e)); }).join('') : emptyHtml;
-    return '<table class="sc-table">' + HEAD + '<tbody>' + body + '</tbody></table>';
+    if (!list.length) return '<table class="sc-table"><tbody>' + emptyHtml + '</tbody></table>';
+    return '<table class="sc-table">' + HEAD + '<tbody>' + list.map(function (e) { return row(e, pool.indexOf(e)); }).join('') + '</tbody></table>';
   }
-  var EMPTY_UP = '<tr class="sc-empty"><td colspan="8"><b>Dates coming soon</b>We are in testing season. The first 2026 dates go here once the leagues confirm them. <a href="#alerts">Get Hook Alerts</a> and we will tell you first.</td></tr>';
+  var lastPast = EVENTS.filter(function (e) { return e.status === 'Done'; })[0];
+  var LAST = lastPast ? '<span class="sub" style="margin-top:6px">Last pull: ' + esc(lastPast.event) + ', ' + esc(lastPast.city) + '. <button type="button" class="sc-golast">See Past</button></span>' : '';
+  var EMPTY_UP = '<tr class="sc-empty"><td colspan="7"><b>Dates coming soon</b>We are in testing season. New 2026 dates go here and on ' + ext('https://www.facebook.com/heavymetalprostock/', 'Facebook') + ' first. <a href="#alerts">Get Hook Alerts</a> to hear before every pull.' + LAST + '</td></tr>';
 
   function render() {
-    var up = EVENTS.filter(function (e) { return e.status === 'Upcoming'; });
-    var past = EVENTS.filter(function (e) { return e.status !== 'Upcoming'; });
+    var live = EVENTS.filter(function (e) { return e.status !== 'Hidden'; });
+    var up = live.filter(function (e) { return e.status === 'Upcoming'; });
+    var past = live.filter(function (e) { return e.status !== 'Upcoming'; });
     $('panel-up').innerHTML = table(up, EMPTY_UP, EVENTS);
-    $('panel-past').innerHTML = table(past, '<tr class="sc-empty"><td colspan="8">No past pulls yet.</td></tr>', EVENTS);
+    $('panel-past').innerHTML = table(past, '<tr class="sc-empty"><td colspan="7">No past pulls yet.</td></tr>', EVENTS);
     $('n-up').textContent = '(' + up.length + ')';
     $('n-past').textContent = '(' + past.length + ')';
   }
@@ -286,6 +328,7 @@
     });
     if (focus) t.focus();
   }
+  document.addEventListener('click', function (ev) { if (ev.target.closest('.sc-golast')) select(tabs[1], true); });
   tabs.forEach(function (t, i) {
     t.addEventListener('click', function () { select(t); });
     t.addEventListener('keydown', function (e) {
@@ -294,12 +337,12 @@
     });
   });
 
-  /* .ics por evento (en Shopify: misma lógica, datos del metaobjeto) */
+  /* .ics por pull próximo (en Shopify: misma lógica, datos del metaobjeto) */
   function ics(e) {
     var d = e.date.replace(/-/g, '');
     var next = new Date(e.date + 'T12:00:00'); next.setDate(next.getDate() + 1);
     var d2 = next.toISOString().slice(0, 10).replace(/-/g, '');
-    var desc = 'The Evil One · ' + e.cls + ' · ' + e.league + (e.stream ? '\\nStream: ' + e.stream : '') + (e.tickets ? '\\nTickets: ' + e.tickets : '');
+    var desc = 'The Evil One · ' + e.cls + ' · ' + e.league + (e.stream ? '\\nStream: ' + e.stream : '') + (e.site ? '\\nInfo: ' + e.site : '');
     return ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Heavy Metal Pro Stock//Schedule//EN', 'BEGIN:VEVENT',
       'UID:' + d + '-' + (e.event || 'pull').replace(/\W+/g, '-').toLowerCase() + '@heavymetalprostock',
       'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z',
@@ -320,40 +363,34 @@
     if (e) download(e);
   });
 
-  /* Hook Alerts: email obligatorio; teléfono obligatorio solo si marca SMS */
-  var form = $('alerts'), em = $('al-email'), ph = $('al-phone'), sms = $('al-sms'), msg = $('al-msg');
-  sms.addEventListener('change', function () {
-    ph.required = sms.checked;
-    $('al-phone-opt').textContent = sms.checked ? '(required for SMS)' : '(only for SMS)';
-    if (!sms.checked) ph.setAttribute('aria-invalid', 'false');
-  });
-  form.addEventListener('submit', function (e) {
+  /* Hook Alerts: solo email */
+  var em = $('al-email'), msg = $('al-msg');
+  $('alerts').addEventListener('submit', function (e) {
     e.preventDefault();
-    var bad = null;
-    var emOk = em.value.trim() !== '' && em.checkValidity();
-    em.setAttribute('aria-invalid', emOk ? 'false' : 'true');
-    if (!emOk) bad = [em, 'Enter a valid email to get Hook Alerts.'];
-    var digits = ph.value.replace(/\D/g, '');
-    var phOk = !sms.checked || digits.length >= 10;
-    ph.setAttribute('aria-invalid', phOk ? 'false' : 'true');
-    if (!bad && !phOk) bad = [ph, 'Add a 10 digit mobile number to get texts, or uncheck SMS.'];
-    if (bad) { msg.className = 'sc-msg is-err'; msg.textContent = bad[1]; bad[0].focus(); return; }
-    msg.className = 'sc-msg is-ok';
-    msg.textContent = sms.checked ? "You're on the list. Check your inbox to confirm, and reply Y to our text to confirm SMS." : "You're on the list. Check your inbox to confirm.";
+    var ok = em.value.trim() !== '' && em.checkValidity();
+    em.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    if (!ok) { msg.className = 'sc-msg is-err'; msg.textContent = 'Enter a valid email to get Hook Alerts.'; em.focus(); return; }
+    msg.className = 'sc-msg'; msg.textContent = "You're on the list. Check your inbox to confirm.";
   });
 
-  /* Mock del admin: vista previa de la fila */
+  /* Mock del admin: guardar muestra la fila; Delete explica qué pasa */
+  var amsg = $('adm-msg'), box = $('adm-prev');
   $('adm-form').addEventListener('submit', function (e) {
     e.preventDefault();
+    var st = $('adm-status').value;
     preview = {
       date: $('adm-date').value, dateLabel: 'Date TBA', event: $('adm-event').value.trim() || 'County Fair Pull', city: $('adm-city').value.trim() || 'City, WI',
-      league: $('adm-league').value, cls: $('adm-class').value.trim() || 'Pro Stock', tickets: $('adm-tix').value.trim(), stream: $('adm-stream').value.trim(),
-      result: $('adm-result').value.trim(), video: $('adm-video').value.trim(), status: $('adm-status').value
+      league: $('adm-league').value, cls: 'Pro Stock', site: $('adm-site').value.trim(), stream: '',
+      result: $('adm-result').value.trim(), resultPending: st === 'Done', video: $('adm-video').value.trim(), status: st
     };
-    var html = row(preview, 0).replace('data-ics="0"', 'data-ics="preview"');
-    var box = $('adm-prev');
-    box.innerHTML = '<p class="label muted" style="margin:0 0 4px">Preview · ' + (preview.status === 'Upcoming' ? 'Upcoming tab' : 'Past tab') + '</p><table class="sc-table">' + HEAD + '<tbody>' + html + '</tbody></table>';
+    if (st === 'Hidden') { box.hidden = true; amsg.textContent = 'Guardado con Status Hidden: la entrada sigue en el admin pero no sale en el sitio.'; return; }
+    amsg.textContent = 'Guardado. Así se ve en la pestaña ' + (st === 'Upcoming' ? 'Upcoming' : 'Past') + ':';
+    box.innerHTML = '<table class="sc-table">' + HEAD + '<tbody>' + row(preview, 0).replace('data-ics="0"', 'data-ics="preview"') + '</tbody></table>';
     box.hidden = false;
+  });
+  $('adm-del').addEventListener('click', function () {
+    box.hidden = true;
+    amsg.textContent = 'En Shopify, Delete borra la entrada para siempre y el pull desaparece del sitio. Si solo quieres esconderlo, usa Status: Hidden.';
   });
 })();
 </script>

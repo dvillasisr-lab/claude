@@ -33,8 +33,50 @@
 .sp-ben li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;background:var(--ink)}
 .sp-tier--main .btn{background:var(--accent);border-color:var(--accent);color:var(--ink)}
 .sp-tier--main .btn:hover{background:var(--surface);border-color:var(--surface)}
-.sp-fan{margin:12px 0 0;font-size:var(--t-sm);color:var(--soft)}
+.sp-tiers{grid-template-columns:repeat(var(--n,3),minmax(0,1fr))}
+.sp-tier__badges{display:flex;flex-wrap:wrap;gap:4px;justify-content:end}
+/* Limited: aviso de cupo */
+.sp-left{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.sp-tier--main .sp-left{box-shadow:none}
+/* Sold out: tarjeta atenuada, sin perder contraste de lectura */
+.sp-tier--out{background:transparent;border-style:dashed;border-color:#C9C6BE}
+.sp-tier--out .h3,.sp-tier--out .sp-price{color:var(--mute)}
+.sp-tier--out .sp-ben{border-top-style:dashed}
+.sp-tier--out .sp-ben li{color:var(--mute)}
+.sp-tier--out .sp-ben li::before{background:#BDBAB2}
+.sp-out{background:transparent;box-shadow:inset 0 0 0 1px var(--mute);color:var(--soft)}
+.sp-wait{margin:0;font-size:var(--t-xs);color:var(--mute)}
+/* Control de boceto (dentro de la nota): no es parte del sitio */
+.sp-owner{max-width:none;margin-top:12px;display:block}
+.sp-seg{display:inline-flex;flex-wrap:wrap;gap:4px;margin:4px 0 0 4px;vertical-align:middle}
+.sp-seg button{font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 9px;min-height:28px;border:1px dashed var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.sp-seg button[aria-pressed="true"]{background:var(--ink);color:var(--accent);border-style:solid}
+.sp-adm{margin-top:6px}
+.sp-adm summary{cursor:pointer;font-weight:700;text-decoration:underline;text-underline-offset:2px;width:max-content;max-width:100%}
+.adm{margin-top:8px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:10px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:12px;letter-spacing:0;text-transform:none;color:#303030}
+.adm__card{background:#fff;border:1px solid #E3E3E3;border-radius:10px;padding:10px 12px;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.adm__crumb{margin:0 0 8px;color:#616161}
+.adm__crumb b{color:#303030}
+.adm__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px;margin:0}
+.adm__grid div{display:grid;gap:2px;min-width:0}
+.adm__grid .w{grid-column:1/-1}
+.adm__grid dt{color:#616161}
+.adm__grid dd{margin:0;border:1px solid #8A8A8A;border-radius:6px;padding:3px 7px;background:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adm__grid dd.sel::after{content:" \25BE";color:#616161;float:right}
+.adm__grid dd.tog{border:0;padding:3px 0}
+.adm__grid dd.tog i{display:inline-block;width:26px;height:14px;border-radius:7px;background:#303030;vertical-align:-3px;margin-right:6px;position:relative}
+.adm__grid dd.tog i::after{content:"";position:absolute;right:2px;top:2px;width:10px;height:10px;border-radius:50%;background:#fff}
+.adm__grid dd.tog.off i{background:#B5B5B5}
+.adm__grid dd.tog.off i::after{right:auto;left:2px}
+.adm__bar{display:flex;justify-content:space-between;gap:8px;margin-top:8px}
+.adm__bar span{border-radius:8px;padding:4px 10px;font-weight:600}
+.adm__del{color:#8E1F0B;background:#FEE9E8}
+.adm__save{background:#303030;color:#fff}
+.adm__how{margin:0;padding-left:16px;display:grid;gap:4px}
+.adm__how li{line-height:1.4}
+@media (max-width:760px){.adm{grid-template-columns:1fr}}
 @media (max-width:1024px){.sp-top__in{grid-template-columns:minmax(0,1fr)}.sp-photo{aspect-ratio:16/7;min-height:0}}
+@media (min-width:861px) and (max-width:1024px){.sp-photo{display:none}}
 @media (max-width:860px){.sp-tiers{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(260px,84%);overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:thin}.sp-tier{scroll-snap-align:start}.sp-hint{display:block}}
 @media (max-width:480px){.sp-photo{aspect-ratio:16/6}}
 .sp-hint{display:none;margin:8px 0 0;font-size:var(--t-xs);color:var(--mute)}
@@ -107,6 +149,10 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
 .sp-status.is-err{color:var(--alert)}
 .sp-status.is-ok{color:var(--ink);background:var(--bg);border-left:3px solid var(--accent);padding:8px 10px}
 .sp-status:empty{padding:0;border:0}
+.sp-next{margin:0;padding:10px 12px;background:var(--bg);border-left:3px solid var(--accent);font-size:var(--t-sm);color:var(--ink)}
+.sp-next b{display:block;font-size:var(--t-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.sp-mail{margin:4px 0 14px;font-style:normal;font-size:var(--t-sm);color:var(--soft)}
+.sp-mail b{color:var(--ink);font-weight:600}
 @media (max-width:900px){.sp-end{grid-template-columns:1fr}}
 @media (max-width:480px){.sp-form{grid-template-columns:1fr}}
 </style>
@@ -118,8 +164,8 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
     {"@type": "Question", "name": "Which package fits my business?", "acceptedAnswer": {"@type": "Answer", "text": "Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. If you are not sure, pick Not sure in the form and we will help."}},
     {"@type": "Question", "name": "Where does The Evil One pull?", "acceptedAnswer": {"@type": "Answer", "text": "About 20 pulls per season on the NTPA and PPL Badger State circuits, in 10 states. No exhibitions: every time it hits the track, it is there to pull."}},
     {"@type": "Question", "name": "How long does a package run?", "acceptedAnswer": {"@type": "Answer", "text": "Packages are built around the pulling season. We confirm the exact dates and terms in writing with you before anything goes on the tractor."}},
-    {"@type": "Question", "name": "I am a fan, not a business. Can I still be on the tractor?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Ride With The Evil One puts your name on the tractor for the season."}},
-    {"@type": "Question", "name": "What happens after I send the form?", "acceptedAnswer": {"@type": "Answer", "text": "We reply within 2 business days to talk about your goals and the package that fits."}}
+    {"@type": "Question", "name": "What if the package I want is sold out?", "acceptedAnswer": {"@type": "Answer", "text": "Join the waitlist from that package. We will contact you if a spot opens up."}},
+    {"@type": "Question", "name": "What happens after I send the form?", "acceptedAnswer": {"@type": "Answer", "text": "We will email you our sponsor kit within 2 business days."}}
   ]
 }
 </script>
@@ -141,47 +187,42 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
         </div>
         <a class="link" href="#contact" style="text-decoration:underline">Not sure? Ask us</a>
       </div>
-      <ul class="sp-tiers" aria-label="Sponsorship packages" tabindex="0">
-        <li class="sp-tier">
-          <div class="sp-tier__top"><h2 class="h3">Title Partner</h2></div>
-          <p class="sp-price num">$25,000<small>All season</small></p>
-          <ul class="sp-ben">
-            <li>Your name in the team name all season</li>
-            <li>Biggest logo on the tractor itself</li>
-            <li>Top logo on all team gear and the trailer</li>
-            <li>Top billing on the website and every social post</li>
-            <li>Announcer shout-out at every pull</li>
-            <li>VIP pit passes at every pull</li>
-          </ul>
-          <a class="btn btn--ghost btn--block" href="#contact" data-pkg="title">Request this package</a>
-        </li>
-        <li class="sp-tier sp-tier--main">
-          <div class="sp-tier__top"><h2 class="h3">Pit Partner</h2><span class="badge">Featured</span></div>
-          <p class="sp-price num">$10,000<small>Season package</small></p>
-          <ul class="sp-ben">
-            <li>Logo on the team shirt sleeve</li>
-            <li>Logo on the trailer</li>
-            <li>Logo and link on this website</li>
-            <li>Monthly social shout-outs</li>
-            <li>Announcer mention at select pulls</li>
-            <li>Pit passes at select pulls</li>
-          </ul>
-          <a class="btn btn--block" href="#contact" data-pkg="pit">Request this package</a>
-        </li>
-        <li class="sp-tier">
-          <div class="sp-tier__top"><h2 class="h3">Crew Supporter</h2></div>
-          <p class="sp-price num">$5,000<small>Built for local shops and fans</small></p>
-          <ul class="sp-ben">
-            <li>Name on the trailer supporters board</li>
-            <li>Listed on this website</li>
-            <li>Thank-you post on our socials</li>
-            <li>Heavy Metal sponsor decal for your shop</li>
-          </ul>
-          <a class="btn btn--ghost btn--block" href="#contact" data-pkg="crew">Request this package</a>
-        </li>
-      </ul>
-      <p class="sp-hint" aria-hidden="true">Swipe to see all 3 packages</p>
-      <p class="sp-fan">A fan, not a business? <a href="ride.html">Put your name on the tractor with Ride With The Evil One</a>.</p>
+      <!-- En Shopify: un bloque Liquid recorre las entradas del metaobjeto "Sponsor tier". Aquí: array TIERS al final. -->
+      <ul class="sp-tiers" id="sp-tiers" aria-label="Sponsorship packages" tabindex="0"></ul>
+      <p class="sp-hint" id="sp-hint" aria-hidden="true">Swipe to see all 3 packages</p>
+      <div class="note sp-owner" id="sp-owner">Esto no sale en el sitio. Prueba cómo se ve Pit Partner:
+        <span class="sp-seg" role="group" aria-label="Estado de Pit Partner, solo boceto">
+          <button type="button" data-st="available" aria-pressed="true">Available</button>
+          <button type="button" data-st="limited" aria-pressed="false">Limited</button>
+          <button type="button" data-st="soldout" aria-pressed="false">Sold out</button>
+          <button type="button" data-st="hidden" aria-pressed="false">Hidden</button>
+        </span>
+        <details class="sp-adm">
+          <summary>Así lo editas en Shopify</summary>
+          <div class="adm">
+            <div class="adm__card">
+              <p class="adm__crumb">Contenido › Metaobjetos › Sponsor tier › <b id="adm-name">Pit Partner</b></p>
+              <dl class="adm__grid">
+                <div><dt>Name</dt><dd id="adm-n">Pit Partner</dd></div>
+                <div><dt>Price</dt><dd id="adm-p">$10,000</dd></div>
+                <div><dt>Status</dt><dd class="sel" id="adm-s">Available</dd></div>
+                <div><dt>Spots left</dt><dd id="adm-l">(vacío)</dd></div>
+                <div><dt>Featured</dt><dd class="tog" id="adm-f"><i></i>Sí</dd></div>
+                <div><dt>Tagline</dt><dd id="adm-t">Season package</dd></div>
+                <div class="w"><dt>Benefits (una línea cada uno)</dt><dd id="adm-b">Logo on the team shirt sleeve · Logo on the trailer · …</dd></div>
+              </dl>
+              <div class="adm__bar"><span class="adm__del">Eliminar entrada</span><span class="adm__save">Guardar</span></div>
+            </div>
+            <ol class="adm__how">
+              <li><b>Precio o beneficios:</b> cambia el campo y Guardar. La página se actualiza sola.</li>
+              <li><b>Lleno:</b> Status = Sold out. Sale atenuado y el botón pasa a "Join the waitlist".</li>
+              <li><b>Quedan pocos:</b> Status = Limited y escribe Spots left (1 = "1 spot left").</li>
+              <li><b>Esconder sin borrar:</b> Status = Hidden (lo guardas para la próxima temporada).</li>
+              <li><b>Borrar para siempre:</b> Eliminar entrada. <b>Nuevo:</b> Agregar entrada.</li>
+            </ol>
+          </div>
+        </details>
+      </div>
     </div>
   </div>
 </section>
@@ -207,7 +248,6 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
       <div class="spec"><dt>States we pull in</dt><dd class="num">10</dd></div>
       <div class="spec"><dt>Social media</dt><dd class="new">New</dd></div>
     </dl>
-    <p class="note">Cifras tomadas del tema actual (puestas por la dueña). Confirmar antes de publicar: 20 jaladas, 5,000+ fans por evento o por temporada, 10 estados. Redes: "New" hasta tener seguidores reales.</p>
   </div>
 </section>
 
@@ -280,30 +320,25 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
       <details><summary>Which package fits my business?</summary><p>Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. Not sure? Pick "Not sure" in the form and we'll help.</p></details>
       <details><summary>Where does The Evil One pull?</summary><p>About 20 pulls per season on the NTPA and PPL Badger State circuits, in 10 states. No exhibitions: every time it hits the track, it's there to pull. Dates go up on the <a href="schedule.html">Schedule</a>.</p></details>
       <details><summary>How long does a package run?</summary><p>Packages are built around the pulling season. We confirm the exact dates and terms in writing with you before anything goes on the tractor.</p></details>
-      <details><summary>I'm a fan, not a business. Can I be on the tractor?</summary><p>Yes. <a href="ride.html">Ride With The Evil One</a> puts your name on the tractor for the season.</p></details>
-      <details><summary>What happens after I send the form?</summary><p>We reply within 2 business days to talk about your goals and the package that fits.</p></details>
+      <details><summary>What if the package I want is sold out?</summary><p>Hit "Join the waitlist" on that package. We'll contact you if a spot opens up.</p></details>
+      <details><summary>What happens after I send the form?</summary><p>We'll email you our sponsor kit within 2 business days.</p></details>
     </div>
 
     <div id="contact">
       <h2 class="h2" id="form-t">Request a package</h2>
-      <p class="small muted" style="margin:4px 0 14px">We reply within 2 business days.</p>
+      <address class="sp-mail">Prefer mail? <b>Heavy Metal Pro Stock</b>, P.O. Box 42, Waterloo, WI 53594</address>
       <form class="sp-form" id="sp-form" novalidate aria-labelledby="form-t">
         <div class="field"><label for="f-company">Company</label><input class="input" id="f-company" name="company" type="text" required autocomplete="organization" placeholder="e.g. Waterloo Ag Supply"></div>
         <div class="field"><label for="f-name">Your name</label><input class="input" id="f-name" name="name" type="text" required autocomplete="name" placeholder="e.g. Jake Miller"></div>
         <div class="field"><label for="f-email">Email</label><input class="input" id="f-email" name="email" type="email" required autocomplete="email" spellcheck="false" placeholder="you@company.com"></div>
         <div class="field"><label for="f-phone">Phone <span class="opt">(optional)</span></label><input class="input" id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(608) 555-0123"></div>
         <div class="field full"><label for="f-pkg">Package</label>
-          <select class="input" id="f-pkg" name="package">
-            <option value="title">Title Partner · $25,000</option>
-            <option value="pit" selected>Pit Partner · $10,000</option>
-            <option value="crew">Crew Supporter · $5,000</option>
-            <option value="ride">Ride With The Evil One (fans)</option>
-            <option value="unsure">Not sure yet</option>
-          </select>
+          <select class="input" id="f-pkg" name="package"></select>
         </div>
         <div class="field full"><label for="f-msg">Message <span class="opt">(optional)</span></label><textarea class="input" id="f-msg" name="message" placeholder="Tell us about your business and what you'd like to get out of it..."></textarea></div>
+        <p class="sp-next full"><b>What you get</b>We'll email you our sponsor kit within 2 business days.</p>
         <p class="consent full">We use your details only to reply about sponsorship. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
-        <div class="full"><button class="btn" type="submit">Send request</button></div>
+        <div class="full"><button class="btn" type="submit" id="f-submit">Send request</button></div>
         <p class="sp-status full" id="sp-status" role="status" aria-live="polite"></p>
       </form>
     </div>
@@ -340,18 +375,83 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
   }
   addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-  /* Botones de paquete: eligen el paquete en el formulario */
-  document.querySelectorAll('[data-pkg]').forEach(function (a) {
-    a.addEventListener('click', function (e) {
-      e.preventDefault();
-      $('f-pkg').value = a.getAttribute('data-pkg');
-      $('contact').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
-      setTimeout(function () { $('f-company').focus({ preventScroll: true }); }, reduce ? 0 : 450);
-    });
+  /* Paquetes: simulan las entradas del metaobjeto "Sponsor tier".
+     status: available | limited | soldout | hidden. spots_left solo cuenta con limited. */
+  var SEASON = 2026;
+  var TIERS = [
+    { handle: 'title', name: 'Title Partner', price: 25000, tagline: 'All season', featured: false, status: 'available', spots_left: null,
+      benefits: ['Your name in the team name all season', 'Biggest logo on the tractor itself', 'Top logo on all team gear and the trailer', 'Top billing on the website and every social post', 'Announcer shout-out at every pull', 'VIP pit passes at every pull'] },
+    { handle: 'pit', name: 'Pit Partner', price: 10000, tagline: 'Season package', featured: true, status: 'available', spots_left: null,
+      benefits: ['Logo on the team shirt sleeve', 'Logo on the trailer', 'Logo and link on this website', 'Monthly social shout-outs', 'Announcer mention at select pulls', 'Pit passes at select pulls'] },
+    { handle: 'crew', name: 'Crew Supporter', price: 5000, tagline: 'Built for local shops and fans', featured: false, status: 'available', spots_left: null,
+      benefits: ['Name on the trailer supporters board', 'Listed on this website', 'Thank-you post on our socials', 'Heavy Metal sponsor decal for your shop'] }
+  ];
+  var money = function (n) { return '$' + n.toLocaleString('en-US'); };
+  var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var byHandle = function (h) { for (var i = 0; i < TIERS.length; i++) if (TIERS[i].handle === h) return TIERS[i]; return null; };
+
+  function tierHTML(t) {
+    var out = t.status === 'soldout', main = t.featured && !out, badges = '';
+    if (out) badges = '<span class="badge sp-out">Sold out for ' + SEASON + '</span>';
+    else {
+      if (t.featured) badges += '<span class="badge">Featured</span>';
+      if (t.status === 'limited' && t.spots_left) badges += '<span class="badge sp-left">' + t.spots_left + (t.spots_left === 1 ? ' spot' : ' spots') + ' left</span>';
+    }
+    return '<li class="sp-tier' + (main ? ' sp-tier--main' : '') + (out ? ' sp-tier--out' : '') + '">' +
+      '<div class="sp-tier__top"><h2 class="h3">' + esc(t.name) + '</h2>' + (badges ? '<span class="sp-tier__badges">' + badges + '</span>' : '') + '</div>' +
+      '<p class="sp-price num">' + money(t.price) + '<small>' + esc(t.tagline || '') + '</small></p>' +
+      '<ul class="sp-ben">' + t.benefits.map(function (b) { return '<li>' + esc(b) + '</li>'; }).join('') + '</ul>' +
+      (out
+        ? '<div style="display:grid;gap:6px"><a class="btn btn--ghost btn--block" href="#contact" data-pkg="' + t.handle + '">Join the waitlist</a><p class="sp-wait">We\'ll contact you if a spot opens up.</p></div>'
+        : '<a class="btn' + (main ? '' : ' btn--ghost') + ' btn--block" href="#contact" data-pkg="' + t.handle + '">Request this package</a>') +
+      '</li>';
+  }
+  function render() {
+    var vis = TIERS.filter(function (t) { return t.status !== 'hidden'; });
+    var ul = $('sp-tiers');
+    ul.style.setProperty('--n', vis.length);
+    ul.innerHTML = vis.map(tierHTML).join('');
+    $('sp-hint').textContent = 'Swipe to see all ' + vis.length + ' packages';
+    /* opciones del formulario, desde los mismos datos */
+    var sel = $('f-pkg'), keep = sel.value || 'pit';
+    sel.innerHTML = vis.map(function (t) {
+      return '<option value="' + t.handle + '">' + esc(t.name) + ' · ' + (t.status === 'soldout' ? 'Waitlist (sold out for ' + SEASON + ')' : money(t.price)) + '</option>';
+    }).join('') + '<option value="unsure">Not sure yet</option>';
+    sel.value = byHandle(keep) && byHandle(keep).status !== 'hidden' ? keep : 'unsure';
+    syncForm();
+  }
+  function syncForm() {
+    var t = byHandle($('f-pkg').value), wait = !!(t && t.status === 'soldout');
+    $('form-t').textContent = wait ? 'Join the waitlist' : 'Request a package';
+    $('f-submit').textContent = wait ? 'Join the waitlist' : 'Send request';
+  }
+  $('f-pkg').addEventListener('change', syncForm);
+
+  /* Botones de paquete (delegado): eligen el paquete en el formulario */
+  $('sp-tiers').addEventListener('click', function (e) {
+    var a = e.target.closest('[data-pkg]'); if (!a) return;
+    e.preventDefault();
+    $('f-pkg').value = a.getAttribute('data-pkg'); syncForm();
+    $('contact').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    setTimeout(function () { $('f-company').focus({ preventScroll: true }); }, reduce ? 0 : 450);
   });
-  document.querySelectorAll('a[href="#contact"]:not([data-pkg]):not(.sp-tabs a):not(#zp-cta)').forEach(function (a) {
+  document.querySelectorAll('a[href="#contact"]:not(.sp-tabs a):not(#zp-cta)').forEach(function (a) {
     a.addEventListener('click', function (e) { e.preventDefault(); $('contact').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); });
   });
+
+  /* Control SOLO de boceto: cambia el estado de Pit Partner y el mock del admin */
+  var ST_LABEL = { available: 'Available', limited: 'Limited', soldout: 'Sold out', hidden: 'Hidden' };
+  function demo(st) {
+    var t = byHandle('pit');
+    t.status = st; t.spots_left = st === 'limited' ? 1 : null;
+    document.querySelectorAll('.sp-seg button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-st') === st ? 'true' : 'false'); });
+    $('adm-n').textContent = t.name; $('adm-p').textContent = money(t.price); $('adm-t').textContent = t.tagline;
+    $('adm-s').textContent = ST_LABEL[st]; $('adm-l').textContent = t.spots_left ? String(t.spots_left) : '(vacío)';
+    $('adm-b').textContent = t.benefits.slice(0, 2).join(' · ') + ' · +' + (t.benefits.length - 2) + ' más';
+    render();
+  }
+  document.querySelectorAll('.sp-seg button').forEach(function (b) { b.addEventListener('click', function () { demo(b.getAttribute('data-st')); }); });
+  demo('available');
 
   /* Mapa de calcomanías: datos del metaobjeto decal_zone (paquete y tamaño por confirmar) */
   var ZONES = {
@@ -374,7 +474,7 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
   $('zp-cta').addEventListener('click', function (e) {
     e.preventDefault();
     var m = $('f-msg'); if (!m.value) m.value = 'I\'m interested in the ' + this.getAttribute('data-zone-name') + ' zone.';
-    if (/Hood|Engine/.test(this.getAttribute('data-zone-name'))) $('f-pkg').value = 'title';
+    if (/Hood|Engine/.test(this.getAttribute('data-zone-name'))) { $('f-pkg').value = 'title'; if (!$('f-pkg').value) $('f-pkg').value = 'unsure'; syncForm(); }
     $('contact').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
   });
 
@@ -387,8 +487,9 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
     });
     if (bad.length) { st.className = 'sp-status full is-err'; st.textContent = 'Please add your company, your name and a valid email.'; bad[0].focus(); return; }
     var pkg = $('f-pkg'); var label = pkg.options[pkg.selectedIndex].text.split(' · ')[0];
+    var tw = byHandle(pkg.value), wait = !!(tw && tw.status === 'soldout');
     st.className = 'sp-status full is-ok';
-    st.textContent = 'Thanks, ' + $('f-name').value.trim().split(' ')[0] + '. Your request for ' + label + ' is in. We\'ll reply to ' + $('f-email').value.trim() + ' within 2 business days.';
+    st.textContent = 'Thanks, ' + $('f-name').value.trim().split(' ')[0] + '. ' + (wait ? 'You\'re on the waitlist for ' + label + '.' : (pkg.value === 'unsure' ? 'Your request is in.' : 'Your request for ' + label + ' is in.')) + ' We\'ll email your sponsor kit to ' + $('f-email').value.trim() + ' within 2 business days.';
     form.querySelector('button[type="submit"]').disabled = true;
   });
 })();

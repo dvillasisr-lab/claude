@@ -67,6 +67,7 @@ mark{background:var(--accent);color:var(--ink);padding:0 1px}
       <ul class="srp-tips"><li>Check the spelling.</li><li>Try one word, like "tee" or "hat".</li><li>Search the category instead of the design name.</li></ul>
       <p class="label muted" style="margin-top:8px">Popular searches</p>
       <ul class="srp-pop"><li><a href="search.html?q=tee">tee</a></li><li><a href="search.html?q=hoodie">hoodie</a></li><li><a href="search.html?q=hat">hat</a></li><li><a href="search.html?q=kids">kids</a></li><li><a href="search.html?q=evil%20one">evil one</a></li><li><a href="search.html?q=sticker">sticker</a></li></ul>
+      <p class="note">Las búsquedas populares las escribe la dueña en el editor del tema; Shopify no las arma solo.</p>
     </div>
   </section>
 
@@ -88,7 +89,7 @@ mark{background:var(--accent);color:var(--ink);padding:0 1px}
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
-  var LABEL = { tees: 'tees tee shirt t-shirt long sleeve', sweats: 'sweatshirts sweatshirt hoodie crewneck sweater', hats: 'hats hat cap caps beanie', kids: 'kids kid youth children', gear: 'stickers sticker gear koozie decal', bundles: 'bundles bundle set pack', ride: 'ride name tractor sponsor' };
+  var LABEL = { tees: 'tees tee shirt t-shirt long sleeve', sweats: 'sweatshirts sweatshirt hoodie crewneck sweater', hats: 'hats hat cap caps beanie', kids: 'kids kid youth children', gear: 'stickers sticker gear koozie decal', bundles: 'bundles bundle set pack' };
   /* sinónimos simples (Search & Discovery los maneja en Shopify) */
   var SYN = { shirt: 'tee', tshirt: 'tee', sweater: 'sweatshirt', hoody: 'hoodie', cap: 'hat', youth: 'kids' };
   var PAGES = [
@@ -96,11 +97,13 @@ mark{background:var(--accent);color:var(--ink);padding:0 1px}
     ['Our Story', 'story.html', 'From a 2014 idea in Tomah, WI to the first pull in 2026.', 'story history chris team crew family lightning first pull evil one waterloo tomah'],
     ['Schedule', 'schedule.html', 'Testing season 2026 on the NTPA and PPL Badger State circuits. Get Hook Alerts.', 'schedule pulls events dates calendar ntpa ppl badger state hook alerts monroe'],
     ['Sponsors', 'sponsors.html', 'Title Partner, Pit Partner and Crew Supporter packages.', 'sponsors sponsor sponsorship partner title pit crew supporter media kit brand'],
+    ['FAQ', 'faq.html', 'Answers about orders, shipping, sizes and the team.', 'faq questions answers help orders shipping returns sizing team'],
+    ['Size guide', 'sizes.html', 'Measurements for tees, sweatshirts and kids sizes.', 'size sizes sizing guide fit chart measurements tee hoodie kids youth'],
     ['Shipping Policy', 'policies.html?p=shipping', 'Printed to order, ships in 5 days.', 'shipping ship delivery policy policies orders'],
     ['Refund Policy', 'policies.html?p=refund', 'Returns and exchanges.', 'refund returns return exchange exchanges policy policies'],
     ['Privacy Policy', 'policies.html?p=privacy', 'What we collect and why.', 'privacy data cookies policy policies'],
     ['Terms of Service', 'policies.html?p=terms', 'The terms for using this store.', 'terms service conditions policy policies'],
-    ['SMS Terms', 'policies.html?p=sms', 'Hook Alerts by text message.', 'sms text messages hook alerts terms policy policies'],
+    ['Cookie Preferences', 'policies.html?p=cookies', 'Choose which cookies we can use on this browser.', 'cookies cookie preferences consent gpc privacy policy policies'],
     ['Contact', 'contact.html', 'Questions about merch or sponsorship? We answer within 2 business days.', 'contact email help question support']
   ];
 

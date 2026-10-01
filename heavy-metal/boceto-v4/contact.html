@@ -4,51 +4,54 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Contact · Heavy Metal Pro Stock: The Evil One</title>
-<meta name="description" content="Questions about merch, an order, sponsorship or Ride With The Evil One? Send the Heavy Metal Pro Stock team a message. We reply within 2 business days.">
+<meta name="description" content="Questions about an order, returns, sponsorship or press? Send the Heavy Metal Pro Stock team a message. We reply within 2 business days.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
 <style>
-/* Hallmark · pre-emit critique: P4 H4 E4 S4 R5 V4 */
-.ct{padding-block:28px var(--sect)}
-.ct__head{margin-bottom:20px}
-.ct__head p{margin:6px 0 0;color:var(--soft);max-width:60ch}
-.ct__in{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,4fr);gap:clamp(20px,3vw,48px);align-items:start}
+/* Contact v4: bloque compacto y centrado (patrón SKIMS). Formulario de 640px + columna de ayuda de 300px; nada se estira a 1920. */
+.ct{padding-block:32px var(--sect)}
+.ct__box{max-width:1000px;margin-inline:auto}
+.ct__head{padding-bottom:16px;margin-bottom:24px;border-bottom:1px solid var(--line)}
+.ct__head p{margin:6px 0 0;color:var(--soft);font-size:var(--t-sm);max-width:60ch}
+.ct__in{display:grid;grid-template-columns:minmax(0,640px) minmax(0,300px);justify-content:space-between;gap:32px 48px;align-items:start}
+
 .ct-form{background:var(--surface);border:1px solid var(--line);padding:clamp(16px,2vw,24px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px}
 .ct-form .full{grid-column:1/-1}
-.ct-form textarea.input{min-height:120px;padding-block:10px;resize:vertical}
+.ct-form textarea.input{min-height:132px;padding-block:10px;resize:vertical}
 .field .opt{font-weight:400;text-transform:none;letter-spacing:0;color:var(--mute)}
 .input[aria-invalid="true"]{border-color:var(--alert);outline:1px solid var(--alert)}
-.ct-status{margin:0;font-size:var(--t-sm);font-weight:600;min-height:1.5em}
+.ct-send{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
+.ct-send .small{margin:0;color:var(--mute)}
+.ct-status{margin:0;font-size:var(--t-sm);font-weight:600}
+.ct-status:empty{display:none}
 .ct-status.is-err{color:var(--alert)}
 .ct-status.is-ok{color:var(--ink);background:var(--bg);border-left:3px solid var(--accent);padding:8px 10px}
-.ct-side{display:grid;gap:0}
-.ct-side dl{margin:0;display:grid;gap:0}
-.ct-side .row{display:grid;gap:2px;padding:12px 0;border-top:1px solid var(--line)}
-.ct-side dt{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
-.ct-side dd{margin:0;color:var(--ink);font-size:var(--t-sm)}
-.ct-side .pending{color:var(--mute)}
-.ct-links{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 16px}
-.ct-links a{font-size:var(--t-sm);text-underline-offset:3px}
-@media (max-width:900px){.ct__in{grid-template-columns:1fr}}
-@media (max-width:480px){.ct-form{grid-template-columns:1fr}}
 
-.faq{max-width:860px}
-.faq details{border-top:1px solid var(--line)}
-.faq details:last-child{border-bottom:1px solid var(--line)}
-.faq summary{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:48px;cursor:pointer;font-weight:600;font-size:var(--t-sm);list-style:none;color:var(--ink)}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";font-size:18px;flex:none}
-.faq details[open] summary::after{content:"\2212"}
-.faq details p{margin:0 0 14px;color:var(--soft);font-size:var(--t-sm);max-width:65ch}
-#faq{scroll-margin-top:calc(var(--header) + 16px)}
+.ct-side{display:grid;gap:24px}
+.ct-side h2{font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:0 0 6px;font-family:var(--f-sans)}
+.help{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.help a{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:44px;border-bottom:1px solid var(--line);font-size:var(--t-sm);font-weight:600;color:var(--ink);text-decoration:none}
+.help a::after{content:"\203A";font-size:18px;font-weight:400;color:var(--mute)}
+.help a:hover{text-decoration:underline;text-underline-offset:3px}
+.info{margin:0;border-top:1px solid var(--line)}
+.info div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:8px;padding:10px 0;border-bottom:1px solid var(--line);font-size:var(--t-sm)}
+.info dt{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding-top:2px}
+.info dd{margin:0;color:var(--ink)}
+.info a{text-underline-offset:3px}
+.pend{background:var(--tile);padding:0 4px;font-weight:600}
+.ct-side .note{margin:0}
+
+@media (max-width:900px){.ct__in{grid-template-columns:minmax(0,1fr)}.ct-side{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}}
+@media (max-width:600px){.ct-side{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:480px){.ct-form{grid-template-columns:minmax(0,1fr)}}
 </style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "ContactPage",
   "name": "Contact Heavy Metal Pro Stock",
-  "about": {"@type": "SportsTeam", "name": "Heavy Metal Pro Stock: The Evil One", "sport": "Tractor pulling", "location": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "Waterloo", "addressRegion": "WI", "addressCountry": "US"}}, "sameAs": ["https://www.facebook.com/heavymetalprostock/"]}
+  "about": {"@type": "SportsTeam", "name": "Heavy Metal Pro Stock: The Evil One", "sport": "Tractor pulling", "address": {"@type": "PostalAddress", "postOfficeBoxNumber": "42", "addressLocality": "Waterloo", "addressRegion": "WI", "postalCode": "53594", "addressCountry": "US"}, "sameAs": ["https://www.facebook.com/heavymetalprostock/"]}
 }
 </script>
 </head>
@@ -56,59 +59,58 @@
 <div data-hm-header data-current="contact"></div>
 
 <main id="main">
-<section class="ct sect--white" aria-labelledby="ct-title">
+<section class="ct" aria-labelledby="ct-title">
   <div class="wrap">
-    <div class="ct__head">
-      <h1 class="h1" id="ct-title">Contact</h1>
-      <p>Questions about merch or sponsorship? Send us a message and we'll get back to you within 2 business days.</p>
-    </div>
-    <div class="ct__in">
-      <!-- En Shopify: {% form 'contact' %} nativo; el tema va en contact[topic] -->
-      <form class="ct-form" id="ct-form" novalidate aria-label="Send us a message">
-        <div class="field full"><label for="c-topic">Topic</label>
-          <select class="input" id="c-topic" name="topic">
-            <option value="order">Order</option>
-            <option value="sponsorship">Sponsorship</option>
-            <option value="ride">Ride With The Evil One</option>
-            <option value="press">Press</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <div class="field"><label for="c-name">Name</label><input class="input" id="c-name" name="name" type="text" required autocomplete="name" placeholder="e.g. Jake Miller"></div>
-        <div class="field"><label for="c-email">Email</label><input class="input" id="c-email" name="email" type="email" required autocomplete="email" spellcheck="false" placeholder="you@example.com"></div>
-        <div class="field full" id="c-order-f"><label for="c-order">Order number <span class="opt">(optional)</span></label><input class="input" id="c-order" name="order" type="text" inputmode="numeric" autocomplete="off" placeholder="e.g. #1001"></div>
-        <div class="field full"><label for="c-msg">Message</label><textarea class="input" id="c-msg" name="message" required placeholder="How can we help?"></textarea></div>
-        <p class="consent full">We use your details only to answer your message. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
-        <div class="full"><button class="btn" type="submit">Send message</button></div>
-        <p class="ct-status full" id="ct-status" role="status" aria-live="polite"></p>
-      </form>
+    <div class="ct__box">
+      <header class="ct__head">
+        <h1 class="h1" id="ct-title">Contact us</h1>
+        <p>Questions about an order, merch or sponsorship? Send us a message and we'll get back to you within 2 business days.</p>
+      </header>
 
-      <aside class="ct-side" aria-label="Contact details">
-        <dl>
-          <div class="row"><dt>Email</dt><dd class="pending">[email pending]</dd></div>
-          <div class="row"><dt>Based in</dt><dd>Waterloo, WI</dd></div>
-          <div class="row"><dt>Follow</dt><dd><a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook · heavymetalprostock</a></dd></div>
-          <div class="row"><dt>Reply time</dt><dd>Within 2 business days</dd></div>
-          <div class="row"><dt>Help</dt><dd><ul class="ct-links"><li><a href="policies.html?p=shipping">Shipping</a></li><li><a href="policies.html?p=refund">Returns</a></li><li><a href="product.html?p=evil-one-tee">Size guide</a></li></ul></dd></div>
-        </dl>
-        <p class="note">Correo pendiente: la dueña debe darnos el email público (no usar el de la cuenta de Shopify sin permiso). Hasta entonces el formulario es el único canal.</p>
-      </aside>
-    </div>
-  </div>
-</section>
+      <div class="ct__in">
+        <!-- En Shopify: {% form 'contact' %} nativo; el tema va en contact[topic] -->
+        <form class="ct-form" id="ct-form" novalidate aria-labelledby="ct-title">
+          <div class="field full"><label for="c-topic">Topic</label>
+            <select class="input" id="c-topic" name="topic">
+              <option value="order">Order help</option>
+              <option value="returns">Returns &amp; exchanges</option>
+              <option value="sponsorship">Sponsorship</option>
+              <option value="press">Press &amp; media</option>
+              <option value="other">Something else</option>
+            </select>
+          </div>
+          <div class="field"><label for="c-name">Name</label><input class="input" id="c-name" name="name" type="text" required autocomplete="name" placeholder="e.g. Jake Miller"></div>
+          <div class="field"><label for="c-email">Email</label><input class="input" id="c-email" name="email" type="email" required autocomplete="email" spellcheck="false" placeholder="you@example.com"></div>
+          <div class="field full" id="c-order-f"><label for="c-order">Order number <span class="opt">(optional)</span></label><input class="input" id="c-order" name="order" type="text" autocomplete="off" placeholder="e.g. #1001"></div>
+          <div class="field full"><label for="c-msg">Message</label><textarea class="input" id="c-msg" name="message" required placeholder="How can we help?"></textarea></div>
+          <p class="consent full">We use your details only to answer your message. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
+          <div class="full ct-send"><button class="btn" type="submit">Send message</button><p class="small">Reply within 2 business days</p></div>
+          <p class="ct-status full" id="ct-status" role="status" aria-live="polite"></p>
+        </form>
 
-<section class="sect" aria-labelledby="faq-t">
-  <div class="wrap">
-    <div class="faq" id="faq">
-      <h2 class="h2" id="faq-t" style="margin-bottom:12px">FAQ</h2>
-      <details><summary>How long does shipping take?</summary><p>Every item is printed to order and ships in 5 days. Transit time depends on your address and the shipping method you pick at checkout. See the <a href="policies.html?p=shipping">Shipping Policy</a>.</p></details>
-      <details><summary>Can I return or exchange something?</summary><p>Misprints and defects are replaced free: send us your order number and a photo within XX days. Because everything is printed to order, we can't take returns for size, so please check the size guide first. Full rules in the <a href="policies.html?p=refund">Refund Policy</a>.</p></details>
-      <details><summary>How do the sizes run?</summary><p>Each product page has a size guide with measurements. Adult tees run S to 3XL and kids run YS to YXL.</p></details>
-      <details><summary>What is Ride With The Evil One?</summary><p>Your name on the tractor for the season. You type the name at checkout and we confirm it before it goes on. Nothing ships. See <a href="ride.html">Ride With The Evil One</a>.</p></details>
-      <details><summary>How do I sponsor the team?</summary><p>There are three packages: Title Partner ($25,000), Pit Partner ($10,000) and Crew Supporter ($5,000). See what each includes on <a href="sponsors.html">Sponsors</a>, or pick "Sponsorship" above.</p></details>
-      <details><summary>Where can I see it pull?</summary><p>The Evil One runs Pro Stock on the NTPA and PPL Badger State circuits. 2026 dates are coming soon on the <a href="schedule.html">Schedule</a>, where you can also get Hook Alerts.</p></details>
+        <aside class="ct-side" aria-label="Help and contact details">
+          <nav aria-labelledby="qh-t">
+            <h2 id="qh-t">Quick help</h2>
+            <ul class="help">
+              <li><a href="faq.html">FAQ</a></li>
+              <li><a href="policies.html?p=shipping">Shipping</a></li>
+              <li><a href="policies.html?p=refund">Returns &amp; exchanges</a></li>
+              <li><a href="sizes.html">Size guide</a></li>
+              <li><a href="account.html">Track my order</a></li>
+            </ul>
+          </nav>
+          <div>
+            <h2 id="det-t">Reach the team</h2>
+            <dl class="info" aria-labelledby="det-t">
+              <div><dt>Mail</dt><dd>Heavy Metal Pro Stock<br>P.O. Box 42<br>Waterloo, WI 53594</dd></div>
+              <div><dt>Email</dt><dd><span class="pend">[pending]</span></dd></div>
+              <div><dt>Follow</dt><dd><a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook<span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span></a></dd></div>
+            </dl>
+          </div>
+          <p class="note">Falta el correo público (no usar el de la cuenta de Shopify sin permiso). Mientras tanto el formulario es el único canal.</p>
+        </aside>
+      </div>
     </div>
-    <p class="note">Regla de devoluciones de ejemplo (defectos y errores de impresión sí; cambios por talla no; plazo XX días): confirmar con la dueña y con el proveedor de impresión antes de publicar.</p>
   </div>
 </section>
 </main>
@@ -121,7 +123,7 @@
   /* tema por URL: contact.html?topic=sponsorship */
   var t = new URLSearchParams(location.search).get('topic');
   if (t && $('c-topic').querySelector('option[value="' + t + '"]')) $('c-topic').value = t;
-  function syncOrder() { $('c-order-f').hidden = $('c-topic').value !== 'order'; }
+  function syncOrder() { var v = $('c-topic').value; $('c-order-f').hidden = v !== 'order' && v !== 'returns'; }
   $('c-topic').addEventListener('change', syncOrder); syncOrder();
 
   var form = $('ct-form'), st = $('ct-status');

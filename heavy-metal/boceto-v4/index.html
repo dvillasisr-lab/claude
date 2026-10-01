@@ -39,19 +39,27 @@
 }
 </script>
 <style>
-/* Home v3: hero Full Pull → Shop (categorías + 1 fila) → The Machine (única banda oscura) → Our Story → Get involved.
-   Cada sección cabe en una pantalla de laptop; sin espacio entre secciones. Solo variables de hm.css. */
+/* Home v4: hero Full Pull → Shop (categorías + 1 fila) → The Machine (única banda oscura) → First fire (video) → Next up → Partner.
+   Cada sección cabe en una pantalla de laptop; una acción por bloque. Solo variables de hm.css. */
 html,body{overflow-x:clip}
 .home-sect{padding-block:var(--sect)}
 .home-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px;margin-bottom:16px}
 .home-head .link{white-space:nowrap}
+.ext::after{content:" \2197"}
+
+/* 0 · HERO: en pantallas anchas la pista se alinea con la columna de contenido (no con el borde de la ventana) */
+@media (min-width:861px){
+  .fp{--edge:max(var(--gutter), calc((100% - var(--maxw)) / 2 + var(--gutter)))}
+  .fp__rail{left:var(--edge);right:calc(var(--edge) + 40px)}
+  .fp__flag{right:calc(var(--edge) + 40px)}
+}
 
 /* 1 · SHOP: cabe en 100svh menos el header */
 .shop-home{background:var(--bg);padding-block:clamp(32px,4vw,48px)}
 .shop-home .cats{margin-bottom:20px}
 .shop-home .pgrid{grid-template-columns:repeat(4,minmax(0,1fr))}
 @media (min-width:761px){.shop-home .card__media .ph{--ar:5/6}}
-@media (max-height:820px) and (min-width:761px){.shop-home .card__media .ph{--ar:1/1}}
+@media (max-height:940px) and (min-width:761px){.shop-home .card__media .ph{--ar:1/1}}
 .shop-home .note{margin-top:10px}
 @media (max-width:760px){
   .shop-home .pgrid{display:flex;gap:4px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:var(--gutter);
@@ -69,6 +77,7 @@ html,body{overflow-x:clip}
 .mach__specs div{display:grid;gap:2px}
 .mach__specs dt{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#A9A59B}
 .mach__specs dd{margin:0;font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h2);font-weight:700;text-transform:uppercase;line-height:1.15;color:var(--night-ink);white-space:nowrap}
+.mach__specs .unk{color:var(--accent)}
 .mach__copy .link{color:var(--night-ink)}
 .dip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;margin:0;justify-self:end;width:min(100%,calc((100svh - var(--header) - 2 * var(--sect) - 28px) * 1.5 + 4px))}
 .dip figure{margin:0;display:grid;gap:8px}
@@ -81,37 +90,64 @@ html,body{overflow-x:clip}
   .mach__specs dd{font-size:var(--t-md);white-space:normal}
 }
 
-/* 3 · OUR STORY: foto real + 3 líneas */
-.story{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center}
-.story__photo{width:clamp(220px,26vw,360px);aspect-ratio:3/4;max-height:calc(100svh - var(--header) - 2 * var(--sect));overflow:hidden;background:var(--tile)}
-.story__copy{display:grid;gap:16px;justify-items:start;max-width:560px}
-.tl{list-style:none;margin:0;padding:0;display:grid;border-top:1px solid var(--line);width:100%}
-.tl li{display:grid;grid-template-columns:96px minmax(0,1fr);gap:16px;padding-block:12px;border-bottom:1px solid var(--line);font-size:var(--t-sm);color:var(--soft)}
-.tl b{white-space:nowrap;font-family:var(--f-head);font-stretch:78%;font-size:var(--t-md);font-weight:700;text-transform:uppercase;color:var(--ink);letter-spacing:.02em}
-@media (max-width:760px){
-  .story{grid-template-columns:1fr}
-  .story__photo{width:100%;aspect-ratio:4/3;max-height:none}
-  .story__photo img{object-position:50% 55%}
-  .tl li{grid-template-columns:80px minmax(0,1fr);gap:12px}
+/* 3 · FIRST FIRE: la historia en un momento (el rayo) + póster del video de la dueña */
+.fire{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);align-items:center}
+.fire__copy{display:grid;gap:14px;justify-items:start;max-width:480px}
+.fire__quote{font-size:var(--t-h1);line-height:1.12}
+.fire__sign{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h2);text-transform:uppercase;letter-spacing:.01em;color:var(--ink);display:inline-flex;align-items:center;gap:10px}
+.fire__sign::before{content:"";width:28px;height:3px;background:var(--accent)}
+.fire__copy p.body{margin:0;font-size:var(--t-sm)}
+.vid{margin:0;display:grid;gap:8px;width:min(100%,calc((100svh - var(--header) - 2 * var(--sect) - 28px) * 16 / 9));justify-self:end}
+.vid__frame{position:relative;aspect-ratio:16/9;overflow:hidden;background:var(--night);isolation:isolate}
+.vid__frame img{filter:brightness(.42) contrast(1.1) grayscale(.25)}
+.vid__frame::after{content:"";position:absolute;inset:0;background:var(--surface);opacity:0;pointer-events:none;mix-blend-mode:overlay}
+.vid.is-lit .vid__frame::after{animation:fireFlash 1.6s steps(1,end) 1}
+.vid.is-lit .vid__frame img{animation:fireDim 1.6s steps(1,end) 1}
+@keyframes fireFlash{0%{opacity:0}8%{opacity:.9}12%{opacity:0}18%{opacity:.7}22%{opacity:0}100%{opacity:0}}
+@keyframes fireDim{0%{filter:brightness(.42) contrast(1.1) grayscale(.25)}8%{filter:brightness(1.4) contrast(1.2) grayscale(.6)}22%{filter:brightness(1.1) grayscale(.6)}26%{filter:brightness(.08)}70%{filter:brightness(.08)}100%{filter:brightness(.42) contrast(1.1) grayscale(.25)}}
+.vid__play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:72px;height:72px;border-radius:50%;border:0;background:var(--accent);color:var(--ink);cursor:pointer;transition:transform .15s}
+.vid__play:hover{transform:translate(-50%,-50%) scale(1.06)}
+.vid__play svg{width:24px;height:24px;margin-left:4px;fill:currentColor}
+.vid__play:focus-visible{outline:2px solid var(--surface);outline-offset:4px}
+.vid__meta{position:absolute;left:12px;right:12px;bottom:10px;display:flex;justify-content:space-between;gap:12px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--night-ink)}
+.vid__msg{position:absolute;left:50%;top:calc(50% + 48px);transform:translateX(-50%);margin:0;font-size:var(--t-xs);color:var(--night-ink);white-space:nowrap}
+.vid figcaption{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+@media (max-width:860px){
+  .fire{grid-template-columns:1fr}
+  .vid{width:100%;justify-self:stretch;order:-1}
+  .vid__play{width:60px;height:60px}
 }
 
-/* 4 · GET INVOLVED: dos tarjetas compactas (~280px) */
-.inv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
-.inv__card{position:relative;display:grid;grid-template-columns:210px minmax(0,1fr);height:280px;background:var(--bg);border:1px solid var(--line)}
-.inv__card:hover{border-color:var(--ink)}
-.inv__card:focus-within{outline:2px solid var(--ink);outline-offset:2px}
-.inv__media{overflow:hidden;background:var(--tile)}
-.inv__body{display:grid;align-content:center;gap:10px;justify-items:start;padding:20px clamp(16px,2vw,28px)}
-.inv__body p{margin:0;font-size:var(--t-sm);color:var(--soft)}
-.inv__price{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h2);font-weight:700;color:var(--ink);text-transform:uppercase}
-.inv__card .link{text-decoration:underline}
-.inv__card .link::after{content:"";position:absolute;inset:0}
-.inv__card .link:focus-visible{outline:none}
-@media (max-width:1024px){.inv__card{grid-template-columns:150px minmax(0,1fr)}}
-@media (max-width:760px){
-  .inv{grid-template-columns:1fr}
-  .inv__card{grid-template-columns:120px minmax(0,1fr);height:auto;min-height:180px}
-  .inv__body{padding:16px}
+/* 4 · NEXT UP: una línea del calendario */
+.next{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg)}
+.next__in{display:flex;flex-wrap:wrap;align-items:center;gap:6px 20px;min-height:56px;padding-block:10px;font-size:var(--t-sm)}
+.next__in .label{color:var(--ink);display:inline-flex;align-items:center;gap:8px}
+.next__in .label::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 1px var(--ink)}
+.next__txt{margin:0;color:var(--soft)}
+.next__txt b{color:var(--ink);font-weight:700}
+.next__in .link{margin-left:auto;white-space:nowrap}
+@media (max-width:600px){.next__in .link{margin-left:0}}
+
+/* 5 · PARTNER: franja sobria de marca, 3 paquetes en texto, un botón */
+.ptn{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(24px,4vw,64px);align-items:end}
+.ptn__copy{display:grid;gap:12px;justify-items:start}
+.ptn__copy p{margin:0;color:var(--soft);font-size:var(--t-sm);max-width:44ch}
+.ptn__side{display:grid;gap:20px}
+.tiers-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;border-top:1px solid var(--ink)}
+.tiers-row div{display:grid;gap:4px;padding:14px 20px 0 0}
+.tiers-row div+div{padding-left:20px;border-left:1px solid var(--line)}
+.tiers-row dt{font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.tiers-row dd{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h1);line-height:1.1;color:var(--ink)}
+.ptn__foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px}
+.ptn__foot p{margin:0;font-size:var(--t-xs);color:var(--mute)}
+@media (max-width:860px){
+  .ptn{grid-template-columns:1fr;align-items:start}
+}
+@media (max-width:520px){
+  .tiers-row{grid-template-columns:1fr}
+  .tiers-row div,.tiers-row div+div{padding:10px 0;border-left:0;border-bottom:1px solid var(--line);grid-template-columns:minmax(0,1fr) auto;align-items:baseline}
+  .tiers-row dd{font-size:var(--t-h2)}
+  .ptn__foot .btn{width:100%}
 }
 </style>
 <div data-hm-header data-current="home"></div>
@@ -183,7 +219,7 @@ html,body{overflow-x:clip}
         <dl class="mach__specs">
           <div><dt>Engine</dt><dd>Cat 3208 V8</dd></div>
           <div><dt>Displacement</dt><dd class="num">636 to 680 ci</dd></div>
-          <div><dt>Horsepower</dt><dd><span class="classified">Classified</span></dd></div>
+          <div><dt>Horsepower</dt><dd class="unk">Unknown</dd></div>
         </dl>
         <a class="link" href="machine.html">Meet the machine</a>
       </div>
@@ -200,48 +236,56 @@ html,body{overflow-x:clip}
     </div>
   </section>
 
-  <!-- 3 · OUR STORY: teaser claro -->
-  <section class="home-sect" aria-labelledby="story-title">
-    <div class="wrap story">
-      <div class="story__photo"><img class="photo" src="img/hm-crew.webp" alt="The Heavy Metal crew talking next to the tractor on the grass" loading="lazy" width="1050" height="1400"></div>
-      <div class="story__copy">
-        <p class="label muted">Our Story</p>
-        <h2 class="h1" id="story-title">Twelve years in the making</h2>
-        <ol class="tl">
-          <li><b>2014</b><span>In Tomah, WI, Chris decides to build a pulling tractor. The name was never up for debate.</span></li>
-          <li><b>Feb 2020</b><span>First bolt, in the family shop in Waterloo, WI. Nights and weekends from then on.</span></li>
-          <li><b>2026</b><span>The engine fires for the first time. Lightning strikes and the power goes out. We call it a sign.</span></li>
-        </ol>
+  <!-- 3 · FIRST FIRE: la historia contada en un momento, con el video de la dueña -->
+  <section class="home-sect" aria-labelledby="fire-title">
+    <div class="wrap fire">
+      <div class="fire__copy">
+        <p class="label muted">Our Story · 2026</p>
+        <h2 class="h1 fire__quote" id="fire-title">The night it first fired, lightning struck and the power went out.</h2>
+        <p class="fire__sign">We call it a sign.</p>
+        <p class="body">Twelve years from an idea in Tomah, WI to that night in the family shop in Waterloo. This is how it sounded.</p>
         <a class="link" href="story.html">Read our story</a>
       </div>
+      <figure class="vid" id="fire-vid">
+        <div class="vid__frame">
+          <img class="photo" src="img/hm-driver.webp" alt="" loading="lazy" width="1050" height="1400" style="object-position:50% 38%">
+          <button class="vid__play" type="button" id="fire-play" aria-describedby="fire-cap"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg><span class="vh">Play video: the first fire</span></button>
+          <p class="vid__msg" id="fire-msg" aria-live="polite" hidden>Video coming soon</p>
+          <div class="vid__meta" aria-hidden="true"><span>First fire</span><span class="num">0:XX</span></div>
+        </div>
+        <figcaption id="fire-cap">Engine fires for the first time · Waterloo, WI</figcaption>
+      </figure>
     </div>
+    <div class="wrap"><p class="note">Video de la dueña (cómo se escuchó). Ella lo sube en Shopify, sección "Video", con este póster; puede ser horizontal o vertical (si es vertical, el marco pasa a 4:5).</p></div>
   </section>
 
-  <!-- 4 · GET INVOLVED: dos tarjetas chicas -->
-  <section class="sect--white home-sect" aria-labelledby="inv-title">
-    <div class="wrap">
-      <div class="home-head"><h2 class="h2" id="inv-title">Get involved</h2></div>
-      <div class="inv">
-        <article class="inv__card">
-          <div class="inv__media"><img class="photo" src="img/hm-front-smoke.webp" alt="Front of the tractor with the driver in a gold helmet and smoke behind" loading="lazy" width="1050" height="1400" style="object-position:40% 60%"></div>
-          <div class="inv__body">
-            <p class="label muted">For fans</p>
-            <h3 class="h2">Ride With The Evil One</h3>
-            <p>Put your name on the tractor.</p>
-            <span class="inv__price num">$XX</span>
-            <a class="link" href="ride.html">Add your name</a>
-          </div>
-        </article>
-        <article class="inv__card">
-          <div class="inv__media"><img class="photo" src="img/hm-grandstand.webp" alt="The tractor on the track in front of full grandstands" loading="lazy" width="1050" height="1400" style="object-position:80% 75%"></div>
-          <div class="inv__body">
-            <p class="label muted">For brands</p>
-            <h3 class="h2">Sponsor the Evil One</h3>
-            <p>Your logo on the tractor, the trailer and team gear.</p>
-            <span class="inv__price">From $5,000</span>
-            <a class="link" href="sponsors.html">See sponsor packages</a>
-          </div>
-        </article>
+  <!-- 4 · NEXT UP: una línea del calendario, sin fechas inventadas -->
+  <aside class="next" aria-label="Next up">
+    <div class="wrap next__in">
+      <span class="label">Next up</span>
+      <p class="next__txt"><b>2026 testing season.</b> Dates announced on Facebook first.</p>
+      <a class="link" href="schedule.html">See the schedule</a>
+    </div>
+  </aside>
+
+  <!-- 5 · PARTNER: franja sobria, un solo botón -->
+  <section class="sect--white home-sect" aria-labelledby="ptn-title">
+    <div class="wrap ptn">
+      <div class="ptn__copy">
+        <p class="label muted">Sponsorship</p>
+        <h2 class="h1" id="ptn-title">Partner with The Evil One</h2>
+        <p>Your brand on the tractor, the trailer and team gear, in front of 5,000+ fans across 20 pulls a season.</p>
+      </div>
+      <div class="ptn__side">
+        <dl class="tiers-row">
+          <div><dt>Title Partner</dt><dd class="num">$25,000</dd></div>
+          <div><dt>Pit Partner</dt><dd class="num">$10,000</dd></div>
+          <div><dt>Crew Supporter</dt><dd class="num">$5,000</dd></div>
+        </dl>
+        <div class="ptn__foot">
+          <p>One season · NTPA and PPL Badger State</p>
+          <a class="btn" href="sponsors.html">See sponsor packages</a>
+        </div>
       </div>
     </div>
   </section>
@@ -259,5 +303,15 @@ html,body{overflow-x:clip}
   var pick = all.filter(function (p) { return p.tag === 'new'; }).slice(0, 4);
   all.forEach(function (p) { if (pick.length < 4 && p.tag === 'best' && pick.indexOf(p) < 0) pick.push(p); });
   row.innerHTML = pick.map(function (p) { return window.hmCard(p).replace('<article class="card"', '<article class="card" role="listitem"'); }).join('');
+})();
+/* First fire: el póster "se va la luz" una vez al entrar en pantalla; play avisa que el video está pendiente. */
+(function () {
+  var v = document.getElementById('fire-vid'), b = document.getElementById('fire-play'), m = document.getElementById('fire-msg');
+  if (!v) return;
+  if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var io = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { v.classList.add('is-lit'); io.disconnect(); } }, { threshold: .6 });
+    io.observe(v);
+  }
+  b.addEventListener('click', function () { v.classList.remove('is-lit'); void v.offsetWidth; v.classList.add('is-lit'); m.hidden = false; });
 })();
 </script>

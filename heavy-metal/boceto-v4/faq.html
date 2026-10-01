@@ -1,0 +1,652 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Help Center · Heavy Metal Pro Stock: The Evil One</title>
+<meta name="description" content="Answers about orders, shipping, returns, sizing, payments, your account, Hook Alerts, sponsorship and the Heavy Metal Pro Stock tractor.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Help Center: banner corto con buscador, lista lateral de categorías (igual que policies.html) y acordeones */
+html,body{overflow-x:clip}
+.hc-banner{background:var(--surface);border-bottom:1px solid var(--line)}
+.hc-banner .wrap{padding-block:28px 24px;display:grid;gap:8px}
+.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px;font-size:var(--t-xs);color:var(--mute)}
+.crumbs li+li::before{content:"/";margin-right:4px}
+.crumbs a{color:var(--soft);text-underline-offset:3px}
+.crumbs [aria-current]{color:var(--ink);font-weight:600}
+.hc-banner .lede{font-size:var(--t-sm)}
+.hc-search{position:relative;max-width:560px;margin-top:8px}
+.hc-search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;fill:none;stroke:var(--mute);stroke-width:2;pointer-events:none}
+.hc-search .input{padding-left:40px;padding-right:44px;min-height:48px;font-size:var(--t-md)}
+.hc-search .input::-webkit-search-cancel-button{display:none}
+.hc-clear{position:absolute;right:2px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;background:none;cursor:pointer;display:grid;place-items:center}
+.hc-clear svg{position:static;transform:none;stroke:var(--ink)}
+.hc-count{margin:0;font-size:var(--t-xs);color:var(--mute);min-height:1.5em}
+
+.hc{display:grid;grid-template-columns:240px minmax(0,880px);gap:clamp(32px,6vw,120px);padding-block:32px var(--sect);align-items:start}
+.hc-nav ul{list-style:none;margin:0;padding:0;display:grid}
+.hc-nav a{display:inline-block;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.03em;line-height:34px;text-decoration:none;color:var(--soft);white-space:nowrap}
+.hc-nav a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:6px}
+.hc-nav a[aria-current="true"]{color:var(--ink);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+.hc-nav a .n{font-family:var(--f-sans);font-stretch:100%;font-size:11px;font-weight:600;color:var(--mute);margin-left:6px;letter-spacing:0}
+@media (min-width:861px){.hc-nav{position:sticky;top:calc(var(--header) + 24px)}}
+
+.hc-body{min-width:0}
+.hc-body .note{margin:0 0 16px}
+.cat{scroll-margin-top:calc(var(--header) + 16px);margin-bottom:28px}
+.cat>h2{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h3);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin:0 0 4px}
+.qa{border-top:1px solid var(--line)}
+.cat .qa:last-of-type{border-bottom:1px solid var(--line)}
+.qa summary{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:48px;padding-block:10px;cursor:pointer;font-weight:600;font-size:var(--t-sm);list-style:none;color:var(--ink)}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary::after{content:"+";font-size:20px;font-weight:400;flex:none;width:20px;text-align:center}
+.qa[open] summary::after{content:"\2212"}
+.qa summary:hover{text-decoration:underline;text-underline-offset:3px}
+.qa .a{padding:0 36px 14px 0;font-size:var(--t-sm);line-height:1.6;color:var(--soft);max-width:70ch}
+.qa .a p{margin:0 0 8px}
+.qa .a p:last-child{margin:0}
+.qa .a ul{margin:0 0 8px;padding-left:18px}
+.qa .a a{color:var(--ink);text-underline-offset:3px}
+.qa .a b{color:var(--ink)}
+.pend{background:var(--tile);padding:0 4px;font-weight:600;color:var(--ink)}
+mark{background:#FFF0A8;color:inherit;padding:0}
+.hc-empty{padding:20px;background:var(--surface);border:1px solid var(--line);font-size:var(--t-sm)}
+.hc-empty p{margin:0 0 8px}
+
+.still{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 24px;background:var(--surface);border:1px solid var(--line);padding:20px clamp(16px,2vw,24px);margin-top:8px}
+.still p{margin:4px 0 0;font-size:var(--t-sm);color:var(--soft)}
+
+@media (max-width:860px){
+  .hc{grid-template-columns:minmax(0,1fr);gap:20px;padding-top:0}
+  .hc-nav{position:sticky;top:var(--header);z-index:5;background:var(--bg);margin-inline:calc(var(--gutter) * -1);border-bottom:1px solid var(--line)}
+  .hc-nav ul{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:10px var(--gutter)}
+  .hc-nav ul::-webkit-scrollbar{display:none}
+  .hc-nav li{flex:none}
+  .hc-nav a{font-size:var(--t-xs);line-height:1;padding:9px 12px;border:1px solid var(--line);background:var(--surface)}
+  .hc-nav a[aria-current="true"]{border-color:var(--ink)}
+  .cat{scroll-margin-top:calc(var(--header) + 72px)}
+  .qa .a{padding-right:0}
+}
+</style>
+<script type="application/ld+json" id="faq-ld">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "Do I need an account to order?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "No. You can check out as a guest. If you later sign in with the same email, your past orders show up in your account."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Where is my order confirmation?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "We email it right after checkout. If you can't find it, check your spam or promotions folder, then sign in to your account to see the order. Still nothing? Message us with the email you used."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Can I change or cancel my order?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Every item is printed to order, so message us as soon as possible with your order number: pick \"Order help\" on the contact form. Once an order goes to print we can't change it. The window to make changes is [pending]."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "I entered the wrong shipping address. What now?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Message us right away with your order number and the correct address. If the order hasn't shipped, we update it. If it already shipped, we'll work with the carrier, but we can't promise a reroute."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How long does shipping take?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Printed to order, ships in 5 days. Transit time depends on your address and the method you choose at checkout. Details in the Shipping Policy."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How much is shipping?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Shipping is calculated at checkout. US orders over $XX ship free."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Do you ship outside the US?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Not right now. We ship to US addresses only."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I track my order?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "When your order ships we email you a tracking link. You can also sign in to your account and open the order."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "My tracking hasn't updated. Is something wrong?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "A label is often created before the carrier scans the package, so tracking can sit still for a bit. If it hasn't moved in [X] business days, message us with your order number."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "My package says delivered, but I don't have it.",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Check around your door, mailbox and with neighbors, and give it one more day: carriers sometimes mark a package delivered early. If it still hasn't shown up, message us with your order number and we'll help sort it out with the carrier."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Will all my items arrive together?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Not always. Items may ship in separate packages [pending]. Each package gets its own tracking email."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Can I return or exchange an item?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Everything is printed to order, so returns work differently than a regular store. What's covered, and for how long, is in the Refund Policy."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "My item arrived damaged or misprinted.",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Sorry about that. Send us your order number and a photo of the problem: pick \"Returns & exchanges\" on the contact form. Next steps follow the Refund Policy."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "I ordered the wrong size.",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Check the Refund Policy for what we can do. Next time, compare the Size guide with a shirt you own before ordering."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I start a return or exchange?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Message us with your order number on the contact form. Please don't mail anything back before we reply."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do the sizes run?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Unisex fit. Between sizes? Size up for a relaxed fit. Measurements for every style are in the Size guide."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What sizes do you carry?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Adult tees, long sleeves, hoodies and crewnecks come in S to 3XL. Kids styles come in YS to YXL. Caps and beanies are one size."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I measure myself?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "The easiest way is to lay a shirt you like flat and measure it. The Size guide shows where to measure chest, length and sleeve."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Will it shrink?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Cotton can shrink a little in a hot wash or dryer. Wash cold and hang dry to keep the fit. Fabric details are [pending] from our print partner."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I wash printed merch?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Turn it inside out and wash cold. Hang dry. Don't iron over the print and skip bleach. That keeps the print sharp for more seasons."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What are the shirts made of?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Fabric and weight come from our print partner and are listed on each product page: XX% cotton, XX oz [pending]."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Who prints the merch?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Our print partner prints every item when you order it. That's why nothing sits in a warehouse and why orders take a few days to ship."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "The color looks different from the picture.",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Screens show color differently, so the printed item can look slightly different. If it looks clearly wrong, send us a photo."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "A size is sold out. Will it come back?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Leave your email on the product page under the sold out size and we'll email you when it's back."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What payment methods do you accept?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Shop Pay, Apple Pay, Google Pay, PayPal and major credit and debit cards, including Visa and Mastercard."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Is checkout secure?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Yes. Checkout runs on Shopify. Payments are processed by Shopify and its payment partners, and we never see or store your full card number."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Do you charge sales tax?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Sales tax depends on your address and is calculated at checkout. Prices are in US dollars."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How does sign in work? There's no password.",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Right, no password to remember. Enter your email on the Account page, we email you a 6 digit code, and you type it in to sign in."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "I didn't get my sign in code.",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Give it a minute and check spam or promotions. Make sure the email is spelled right, then request a new code and use the newest one."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "I checked out as a guest. Can I see my orders?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Yes. Sign in with the same email you used at checkout and your past orders show up."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I update my saved address?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Sign in, open Addresses in your account and edit or add one. For an order already placed, see \"I entered the wrong shipping address\" above."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I delete my account or data?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Send a request through the contact form. How we handle it is in the Privacy Policy."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What are Hook Alerts?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Our one email list: new merch drops and a heads up before every pull. No spam."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I sign up?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Enter your email in the Hook Alerts box at the bottom of any page or on the Schedule. Hook Alerts are email only."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I unsubscribe?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Use the unsubscribe link at the bottom of any Hook Alerts email, or turn it off in your account."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How do I sponsor the team?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "There are three packages: Title Partner ($25,000), Pit Partner ($10,000) and Crew Supporter ($5,000). See what each includes on Sponsors, or pick \"Sponsorship\" on the contact form."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Where would my brand show up?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Depending on the package: team gear, the trailer and pit area, this website, our social media, on the tractor and in announcer mentions."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "I run a small local shop. Is there a smaller option?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Crew Supporter is built for local shops and fans: your name on the trailer supporters board, a listing on this website, a thank you post on our socials and a Heavy Metal sponsor decal for your shop."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Where can I see The Evil One pull?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "We run Pro Stock on the NTPA and PPL Badger State circuits, about 20 competitions this season. 2026 dates are on the Schedule as they're confirmed."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Can I watch online?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "NTPA pulls stream on Full Pull LIVE, the official paid stream. PPL is now the IHRA Pro Pulling Series, with free 2026 streams at IHRA Pulling."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Does the tractor do exhibitions?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "No. Every time it hits the track, it's there to pull."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "How much horsepower does it make?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Unknown."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What engine does it run?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "A CAT 3208 V8, reverse flow, taken from 636 to 680 cubic inches, with a single large turbo. Full specs on The Machine."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Who drives it?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Chris F., owner, driver and crew chief. Meet the whole crew in our story."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What's the walk-up song?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Fear of the Dark, Iron Maiden."
+   }
+  }
+ ]
+}
+</script>
+</head>
+<body>
+<div data-hm-header data-current=""></div>
+<main id="main">
+  <section class="hc-banner">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">Help Center</li></ol></nav>
+      <h1 class="h1">Help Center</h1>
+      <p class="lede">Orders, shipping, sizing and the tractor. Search or pick a topic.</p>
+      <form class="hc-search" role="search" id="hc-form">
+        <label class="vh" for="hc-q">Search the Help Center</label>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input class="input" id="hc-q" type="search" placeholder="Search questions, e.g. tracking" autocomplete="off" spellcheck="false" aria-describedby="hc-count">
+        <button class="hc-clear" type="button" id="hc-clear" aria-label="Clear search" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </form>
+      <p class="hc-count" id="hc-count" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <div class="wrap hc">
+    <nav class="hc-nav" aria-label="Help topics">
+      <ul id="hc-list">
+        <li><a href="#orders">Orders</a></li>
+        <li><a href="#shipping">Shipping</a></li>
+        <li><a href="#returns">Returns &amp; exchanges</a></li>
+        <li><a href="#sizing">Sizing &amp; fit</a></li>
+        <li><a href="#care">Products &amp; care</a></li>
+        <li><a href="#payments">Payments</a></li>
+        <li><a href="#account">Account</a></li>
+        <li><a href="#alerts">Hook Alerts</a></li>
+        <li><a href="#sponsors">Sponsors</a></li>
+        <li><a href="#tractor">The tractor &amp; events</a></li>
+      </ul>
+    </nav>
+
+    <div class="hc-body" id="hc-body">
+      <p class="note">Todo lo que depende de Printly (cambios, cancelaciones, envíos separados, material) está marcado [pending]; confirmar antes de publicar. Devoluciones solo remiten a la Refund Policy.</p>
+
+      <section class="cat" id="orders" aria-labelledby="h-orders">
+        <h2 id="h-orders">Orders</h2>
+        <details class="qa"><summary>Do I need an account to order?</summary><div class="a"><p>No. You can check out as a guest. If you later sign in with the same email, your past orders show up in <a href="account.html">your account</a>.</p></div></details>
+        <details class="qa"><summary>Where is my order confirmation?</summary><div class="a"><p>We email it right after checkout. If you can't find it, check your spam or promotions folder, then sign in to <a href="account.html">your account</a> to see the order. Still nothing? <a href="contact.html?topic=order">Message us</a> with the email you used.</p></div></details>
+        <details class="qa"><summary>Can I change or cancel my order?</summary><div class="a"><p>Every item is printed to order, so message us as soon as possible with your order number: pick "Order help" on the <a href="contact.html?topic=order">contact form</a>. Once an order goes to print we can't change it. The window to make changes is <span class="pend">[pending]</span>.</p></div></details>
+        <details class="qa"><summary>I entered the wrong shipping address. What now?</summary><div class="a"><p>Message us right away with your order number and the correct address. If the order hasn't shipped, we update it. If it already shipped, we'll work with the carrier, but we can't promise a reroute.</p></div></details>
+      </section>
+
+      <section class="cat" id="shipping" aria-labelledby="h-shipping">
+        <h2 id="h-shipping">Shipping</h2>
+        <details class="qa"><summary>How long does shipping take?</summary><div class="a"><p>Printed to order, ships in 5 days. Transit time depends on your address and the method you choose at checkout. Details in the <a href="policies.html?p=shipping">Shipping Policy</a>.</p></div></details>
+        <details class="qa"><summary>How much is shipping?</summary><div class="a"><p>Shipping is calculated at checkout. US orders over <span class="pend">$XX</span> ship free.</p></div></details>
+        <details class="qa"><summary>Do you ship outside the US?</summary><div class="a"><p>Not right now. We ship to US addresses only.</p></div></details>
+        <details class="qa"><summary>How do I track my order?</summary><div class="a"><p>When your order ships we email you a tracking link. You can also sign in to <a href="account.html">your account</a> and open the order.</p></div></details>
+        <details class="qa"><summary>My tracking hasn't updated. Is something wrong?</summary><div class="a"><p>A label is often created before the carrier scans the package, so tracking can sit still for a bit. If it hasn't moved in <span class="pend">[X]</span> business days, <a href="contact.html?topic=order">message us</a> with your order number.</p></div></details>
+        <details class="qa"><summary>My package says delivered, but I don't have it.</summary><div class="a"><p>Check around your door, mailbox and with neighbors, and give it one more day: carriers sometimes mark a package delivered early. If it still hasn't shown up, <a href="contact.html?topic=order">message us</a> with your order number and we'll help sort it out with the carrier.</p></div></details>
+        <details class="qa"><summary>Will all my items arrive together?</summary><div class="a"><p>Not always. Items may ship in separate packages <span class="pend">[pending]</span>. Each package gets its own tracking email.</p></div></details>
+      </section>
+
+      <section class="cat" id="returns" aria-labelledby="h-returns">
+        <h2 id="h-returns">Returns &amp; exchanges</h2>
+        <details class="qa"><summary>Can I return or exchange an item?</summary><div class="a"><p>Everything is printed to order, so returns work differently than a regular store. What's covered, and for how long, is in the <a href="policies.html?p=refund">Refund Policy</a>.</p></div></details>
+        <details class="qa"><summary>My item arrived damaged or misprinted.</summary><div class="a"><p>Sorry about that. Send us your order number and a photo of the problem: pick "Returns &amp; exchanges" on the <a href="contact.html?topic=returns">contact form</a>. Next steps follow the <a href="policies.html?p=refund">Refund Policy</a>.</p></div></details>
+        <details class="qa"><summary>I ordered the wrong size.</summary><div class="a"><p>Check the <a href="policies.html?p=refund">Refund Policy</a> for what we can do. Next time, compare the <a href="sizes.html">Size guide</a> with a shirt you own before ordering.</p></div></details>
+        <details class="qa"><summary>How do I start a return or exchange?</summary><div class="a"><p>Message us with your order number on the <a href="contact.html?topic=returns">contact form</a>. Please don't mail anything back before we reply.</p></div></details>
+      </section>
+
+      <section class="cat" id="sizing" aria-labelledby="h-sizing">
+        <h2 id="h-sizing">Sizing &amp; fit</h2>
+        <details class="qa"><summary>How do the sizes run?</summary><div class="a"><p>Unisex fit. Between sizes? Size up for a relaxed fit. Measurements for every style are in the <a href="sizes.html">Size guide</a>.</p></div></details>
+        <details class="qa"><summary>What sizes do you carry?</summary><div class="a"><p>Adult tees, long sleeves, hoodies and crewnecks come in S to 3XL. Kids styles come in YS to YXL. Caps and beanies are one size.</p></div></details>
+        <details class="qa"><summary>How do I measure myself?</summary><div class="a"><p>The easiest way is to lay a shirt you like flat and measure it. The <a href="sizes.html">Size guide</a> shows where to measure chest, length and sleeve.</p></div></details>
+        <details class="qa"><summary>Will it shrink?</summary><div class="a"><p>Cotton can shrink a little in a hot wash or dryer. Wash cold and hang dry to keep the fit. Fabric details are <span class="pend">[pending]</span> from our print partner.</p></div></details>
+      </section>
+
+      <section class="cat" id="care" aria-labelledby="h-care">
+        <h2 id="h-care">Products &amp; care</h2>
+        <details class="qa"><summary>How do I wash printed merch?</summary><div class="a"><ul><li>Turn it inside out and wash cold.</li><li>Hang dry.</li><li>Don't iron over the print and skip bleach.</li></ul><p>That keeps the print sharp for more seasons.</p></div></details>
+        <details class="qa"><summary>What are the shirts made of?</summary><div class="a"><p>Fabric and weight come from our print partner and are listed on each product page: <span class="pend">XX% cotton, XX oz [pending]</span>.</p></div></details>
+        <details class="qa"><summary>Who prints the merch?</summary><div class="a"><p>Our print partner prints every item when you order it. That's why nothing sits in a warehouse and why orders take a few days to ship.</p></div></details>
+        <details class="qa"><summary>The color looks different from the picture.</summary><div class="a"><p>Screens show color differently, so the printed item can look slightly different. If it looks clearly wrong, <a href="contact.html?topic=returns">send us a photo</a>.</p></div></details>
+        <details class="qa"><summary>A size is sold out. Will it come back?</summary><div class="a"><p>Leave your email on the product page under the sold out size and we'll email you when it's back.</p></div></details>
+      </section>
+
+      <section class="cat" id="payments" aria-labelledby="h-payments">
+        <h2 id="h-payments">Payments</h2>
+        <details class="qa"><summary>What payment methods do you accept?</summary><div class="a"><p>Shop Pay, Apple Pay, Google Pay, PayPal and major credit and debit cards, including Visa and Mastercard.</p></div></details>
+        <details class="qa"><summary>Is checkout secure?</summary><div class="a"><p>Yes. Checkout runs on Shopify. Payments are processed by Shopify and its payment partners, and we never see or store your full card number.</p></div></details>
+        <details class="qa"><summary>Do you charge sales tax?</summary><div class="a"><p>Sales tax depends on your address and is calculated at checkout. Prices are in US dollars.</p></div></details>
+      </section>
+
+      <section class="cat" id="account" aria-labelledby="h-account">
+        <h2 id="h-account">Account</h2>
+        <details class="qa"><summary>How does sign in work? There's no password.</summary><div class="a"><p>Right, no password to remember. Enter your email on the <a href="account.html">Account</a> page, we email you a 6 digit code, and you type it in to sign in.</p></div></details>
+        <details class="qa"><summary>I didn't get my sign in code.</summary><div class="a"><p>Give it a minute and check spam or promotions. Make sure the email is spelled right, then request a new code and use the newest one.</p></div></details>
+        <details class="qa"><summary>I checked out as a guest. Can I see my orders?</summary><div class="a"><p>Yes. Sign in with the same email you used at checkout and your past orders show up.</p></div></details>
+        <details class="qa"><summary>How do I update my saved address?</summary><div class="a"><p>Sign in, open <b>Addresses</b> in <a href="account.html">your account</a> and edit or add one. For an order already placed, see "I entered the wrong shipping address" above.</p></div></details>
+        <details class="qa"><summary>How do I delete my account or data?</summary><div class="a"><p>Send a request through the <a href="contact.html?topic=other">contact form</a>. How we handle it is in the <a href="policies.html?p=privacy">Privacy Policy</a>.</p></div></details>
+      </section>
+
+      <section class="cat" id="alerts" aria-labelledby="h-alerts">
+        <h2 id="h-alerts">Hook Alerts</h2>
+        <details class="qa"><summary>What are Hook Alerts?</summary><div class="a"><p>Our one email list: new merch drops and a heads up before every pull. No spam.</p></div></details>
+        <details class="qa"><summary>How do I sign up?</summary><div class="a"><p>Enter your email in the Hook Alerts box at the bottom of any page or on the <a href="schedule.html">Schedule</a>. Hook Alerts are email only.</p></div></details>
+        <details class="qa"><summary>How do I unsubscribe?</summary><div class="a"><p>Use the unsubscribe link at the bottom of any Hook Alerts email, or turn it off in <a href="account.html">your account</a>.</p></div></details>
+      </section>
+
+      <section class="cat" id="sponsors" aria-labelledby="h-sponsors">
+        <h2 id="h-sponsors">Sponsors</h2>
+        <details class="qa"><summary>How do I sponsor the team?</summary><div class="a"><p>There are three packages: Title Partner ($25,000), Pit Partner ($10,000) and Crew Supporter ($5,000). See what each includes on <a href="sponsors.html">Sponsors</a>, or pick "Sponsorship" on the <a href="contact.html?topic=sponsorship">contact form</a>.</p></div></details>
+        <details class="qa"><summary>Where would my brand show up?</summary><div class="a"><p>Depending on the package: team gear, the trailer and pit area, this website, our social media, on the tractor and in announcer mentions.</p></div></details>
+        <details class="qa"><summary>I run a small local shop. Is there a smaller option?</summary><div class="a"><p>Crew Supporter is built for local shops and fans: your name on the trailer supporters board, a listing on this website, a thank you post on our socials and a Heavy Metal sponsor decal for your shop.</p></div></details>
+      </section>
+
+      <section class="cat" id="tractor" aria-labelledby="h-tractor">
+        <h2 id="h-tractor">The tractor &amp; events</h2>
+        <details class="qa"><summary>Where can I see The Evil One pull?</summary><div class="a"><p>We run Pro Stock on the NTPA and PPL Badger State circuits, about 20 competitions this season. 2026 dates are on the <a href="schedule.html">Schedule</a> as they're confirmed.</p></div></details>
+        <details class="qa"><summary>Can I watch online?</summary><div class="a"><p>NTPA pulls stream on <a href="https://fullpull.live/" target="_blank" rel="noopener">Full Pull LIVE<span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span></a>, the official paid stream. PPL is now the IHRA Pro Pulling Series, with free 2026 streams at <a href="https://www.ihra.com/pulling" target="_blank" rel="noopener">IHRA Pulling<span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span></a>.</p></div></details>
+        <details class="qa"><summary>Does the tractor do exhibitions?</summary><div class="a"><p>No. Every time it hits the track, it's there to pull.</p></div></details>
+        <details class="qa"><summary>How much horsepower does it make?</summary><div class="a"><p>Unknown.</p></div></details>
+        <details class="qa"><summary>What engine does it run?</summary><div class="a"><p>A CAT 3208 V8, reverse flow, taken from 636 to 680 cubic inches, with a single large turbo. Full specs on <a href="machine.html">The Machine</a>.</p></div></details>
+        <details class="qa"><summary>Who drives it?</summary><div class="a"><p>Chris F., owner, driver and crew chief. Meet the whole crew in <a href="story.html">our story</a>.</p></div></details>
+        <details class="qa"><summary>What's the walk-up song?</summary><div class="a"><p>Fear of the Dark, Iron Maiden.</p></div></details>
+      </section>
+
+      <div class="hc-empty" id="hc-empty" hidden>
+        <p><b>No answers match "<span id="hc-term"></span>".</b></p>
+        <p>Try a shorter word, or <a href="contact.html">send us a message</a>.</p>
+      </div>
+
+      <aside class="still" aria-labelledby="still-t">
+        <div><h2 class="h2" id="still-t">Still need help?</h2><p>Send us a message and we'll get back to you within 2 business days.</p></div>
+        <a class="btn" href="contact.html">Contact us</a>
+      </aside>
+    </div>
+  </div>
+</main>
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var cats = [].slice.call(document.querySelectorAll('.cat'));
+  var items = [].slice.call(document.querySelectorAll('.qa'));
+  var links = [].slice.call(document.querySelectorAll('#hc-list a'));
+  var q = $('hc-q'), list = $('hc-list');
+
+  /* conteo por categoría en la lista lateral */
+  links.forEach(function (a) {
+    var c = $(a.getAttribute('href').slice(1));
+    a.insertAdjacentHTML('beforeend', '<span class="n" aria-hidden="true">' + c.querySelectorAll('.qa').length + '</span>');
+  });
+
+  /* guardar texto original para resaltar */
+  items.forEach(function (d) {
+    var s = d.querySelector('summary');
+    d._q = s.textContent; d._text = (s.textContent + ' ' + d.querySelector('.a').textContent).toLowerCase();
+  });
+  function esc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+  function filter() {
+    var term = q.value.trim().toLowerCase(), words = term.split(/\s+/).filter(Boolean), shown = 0;
+    $('hc-clear').hidden = !term;
+    items.forEach(function (d) {
+      var s = d.querySelector('summary');
+      var ok = words.every(function (w) { return d._text.indexOf(w) > -1; });
+      d.hidden = !ok; if (ok) shown++;
+      s.textContent = d._q;
+      if (ok && words.length) {
+        var re = new RegExp('(' + words.map(esc).join('|') + ')', 'gi');
+        s.innerHTML = d._q.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(re, '<mark>$1</mark>');
+      }
+    });
+    var few = words.length && shown <= 4;
+    items.forEach(function (d) { if (words.length) d.open = few && !d.hidden; });
+    cats.forEach(function (c) { c.hidden = !c.querySelector('.qa:not([hidden])'); });
+    links.forEach(function (a) { a.parentNode.hidden = $(a.getAttribute('href').slice(1)).hidden; });
+    $('hc-empty').hidden = shown > 0; $('hc-term').textContent = q.value.trim();
+    $('hc-count').textContent = words.length ? (shown === 1 ? '1 answer' : shown + ' answers') + ' for "' + q.value.trim() + '"' : '';
+    spy();
+  }
+  q.addEventListener('input', filter);
+  $('hc-form').addEventListener('submit', function (e) { e.preventDefault(); var f = document.querySelector('.qa:not([hidden]) summary'); if (f) f.focus(); });
+  $('hc-clear').addEventListener('click', function () { q.value = ''; items.forEach(function (d) { d.open = false; }); filter(); q.focus(); });
+
+  /* categoría actual en la lista lateral */
+  function spy() {
+    var off = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header'), 10) + (innerWidth <= 860 ? 90 : 40);
+    var cur = null;
+    cats.forEach(function (c) { if (!c.hidden && c.getBoundingClientRect().top <= off) cur = c.id; });
+    if (!cur) { var f = cats.filter(function (c) { return !c.hidden; })[0]; cur = f && f.id; }
+    links.forEach(function (a) {
+      var on = a.getAttribute('href') === '#' + cur;
+      if (on) { if (a.getAttribute('aria-current') !== 'true') { a.setAttribute('aria-current', 'true'); if (list.scrollWidth > list.clientWidth) list.scrollLeft = a.parentNode.offsetLeft - 16; } }
+      else a.removeAttribute('aria-current');
+    });
+  }
+  var tick = false;
+  addEventListener('scroll', function () { if (!tick) { tick = true; requestAnimationFrame(function () { tick = false; spy(); }); } }, { passive: true });
+  links.forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var c = $(a.getAttribute('href').slice(1));
+      c.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      history.replaceState(null, '', '#' + c.id);
+      var s = c.querySelector('.qa:not([hidden]) summary'); if (s) s.focus({ preventScroll: true });
+    });
+  });
+  spy();
+})();
+</script>
+</body>
+</html>

@@ -64,7 +64,7 @@ html,body{overflow-x:clip}
 .plp-acc fieldset{border:0;margin:0;padding:0}
 .plp-opts{display:grid;gap:0}
 .plp-opt{display:flex;align-items:center;gap:12px;min-height:44px;font-size:var(--t-sm);cursor:pointer}
-.plp-opt input{width:18px;height:18px;margin:0;accent-color:var(--ink);flex:none}
+.plp-opt input{flex:none}
 .plp-opt__n{margin-left:auto;font-size:var(--t-xs);color:var(--mute)}
 .plp-opt.is-off{color:var(--mute);cursor:default}
 .plp-sizes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
@@ -124,7 +124,6 @@ html,body{overflow-x:clip}
       </div>
       <div class="plp-foot">
         <p class="small muted num" id="plp-seen">You've seen 14 of 14 products</p>
-        <p class="note">Los filtros (talla, color, categoría) salen de la app Shopify Search &amp; Discovery y ya escriben su estado en la URL (filter.v.option.size). "Featured" es el orden manual que la dueña arrastra en cada colección. Los precios están en $XX, por eso ordenar por precio no cambia nada en el boceto.</p>
       </div>
     </div>
   </div>
@@ -159,8 +158,7 @@ html,body{overflow-x:clip}
     hats: ['Hats', 'Caps and beanies for the pits and the grandstand.'],
     kids: ['Kids', 'Youth sizes for the next generation of pullers.'],
     gear: ['Stickers & gear', 'Stickers, koozies and the small stuff for the truck and the cooler.'],
-    bundles: ['Bundles', 'Sets that pair a tee with a cap. Every piece keeps its own size.'],
-    ride: ['Ride with us', 'Put your name on The Evil One for the 2026 season.']
+    bundles: ['Bundles', 'Sets that pair a tee with a cap. Every piece keeps its own size.']
   };
   var SORTS = [['featured', 'Featured'], ['best', 'Best selling'], ['new', 'Newest'], ['price-asc', 'Price low to high'], ['price-desc', 'Price high to low'], ['az', 'A to Z']];
   var SIZE_ORDER = ['S', 'M', 'L', 'XL', '2XL', '3XL', 'YS', 'YM', 'YL', 'YXL', 'One size'];
@@ -233,7 +231,8 @@ html,body{overflow-x:clip}
   function drawerHTML() {
     var sort = '<fieldset><legend class="vh">Sort by</legend><div class="plp-opts">' + SORTS.map(function (s, i) {
       return '<label class="plp-opt" for="plp-sort-' + i + '"><input type="radio" name="plp-sort" id="plp-sort-' + i + '" value="' + s[0] + '"' + (st.sort === s[0] ? ' checked' : '') + '>' + s[1] + '</label>';
-    }).join('') + '</div></fieldset>';
+    }).join('') + '</div></fieldset>' +
+      '<p class="note">Cómo se llena en Shopify: Featured = orden manual de la colección; Best selling = ventas reales; Newest = fecha de publicación; Price y A to Z son automáticos. Los filtros (talla, color, tipo de producto) salen de la app Search &amp; Discovery.</p>';
     var so = sizeOpts();
     var size = '<fieldset><legend class="vh">Size</legend><div class="plp-sizes">' + so.map(function (o, i) {
       var on = st.size.indexOf(o[0]) > -1, off = !o[1] && !on;
