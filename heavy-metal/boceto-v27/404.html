@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Page not found · Heavy Metal Pro Stock: “The Evil One”</title>
-<meta name="description" content="This page isn't on the track. Search the Heavy Metal Pro Stock: “The Evil One” store, see the schedule or read the story.">
+<meta name="description" content="This page isn’t on the track. Search the Heavy Metal Pro Stock: “The Evil One” store, check the pull schedule, read our story or go back to the drop.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
@@ -142,7 +142,7 @@ html,body{overflow-x:clip}
       <div class="nf__copy">
         <p class="nf__k"><b>Error 404</b> · Page not found</p>
         <h1 class="nf__h1" id="nf-title"><span class="a">Pull ended at</span> <span class="b">404<small>ft</small></span></h1>
-        <p class="nf__lede"><b>This pull ended early.</b> The page you want isn't on the track: it moved, or it never made the run.</p>
+        <p class="nf__lede"><b>This pull ended early.</b> The page you want isn’t on the track: it moved, or it never made the run.</p>
         <p class="nf__evil"><span>“The Evil One” says</span>You pulled off the track. Happens to the best of us. I once took out a fence post.</p>
       </div>
 
@@ -245,7 +245,7 @@ html,body{overflow-x:clip}
       </svg>
     </div>
   </section>
-  <div class="wrap nf-note"><p class="note">Plantilla 404 del tema. El buscador usa la búsqueda de la tienda; las 4 salidas y los textos se cambian en el editor de temas. "Pull again" es solo un guiño: avanza unos pies y no carga nada. La línea de “The Evil One” es la voz del tractor; el “Psst... 3208” lleva a la página escondida del código.</p></div>
+  <div class="wrap nf-note"><p class="note">Plantilla 404 del tema. El buscador usa la búsqueda de la tienda; las 4 salidas y los textos se cambian en el editor de temas. “Pull again” es solo un guiño: avanza unos pies y no carga nada. La línea de “The Evil One” es la voz del tractor; el “Psst... 3208” lleva a la página escondida del código.</p></div>
 </main>
 <div data-hm-footer></div>
 <script src="hm.js"></script>
@@ -287,7 +287,7 @@ html,body{overflow-x:clip}
       if (pulls >= 3) n = FULL - dist;                        /* el cuarto jalón siempre llega a la bandera */
       dist += n; pulls++;
       if (dist >= FULL) {
-        msg.textContent = 'Full pull! This thing is f#ck!ng evil. The page still isn\'t here, but the shop is open.';
+        msg.textContent = 'Full pull! This thing is f#ck!ng evil. The page still isn’t here, but the shop is open.';
         if (!still) { nf.classList.remove('is-strike'); void nf.offsetWidth; nf.classList.add('is-strike'); }
         nf.classList.add('is-full');
       } else msg.textContent = LINES[(pulls - 1) % LINES.length].replace('{n}', n);

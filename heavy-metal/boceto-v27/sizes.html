@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Size Guide · Heavy Metal Pro Stock: “The Evil One”</title>
-<meta name="description" content="Size charts for Heavy Metal Pro Stock: “The Evil One” tees, long sleeves, hoodies, crewnecks, kids styles and hats, in inches or centimeters, plus how to measure.">
+<title>Size Charts &amp; Fit Guide · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Size charts for Heavy Metal Pro Stock: “The Evil One” tees, long sleeves, hoodies, crewnecks, kids styles and hats, in inches or cm, plus how to measure.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
 <style>
-/* Size Guide: mismo patrón que policies.html (banner corto, lista lateral, texto de 880px) */
+/* Size guide: mismo patrón que policies.html (banner corto, lista lateral, texto de 880px) */
 html,body{overflow-x:clip}
 .sz-banner{background:var(--surface);border-bottom:1px solid var(--line)}
 .sz-banner .wrap{padding-block:28px 20px;display:grid;gap:8px}
@@ -73,6 +73,8 @@ html,body{overflow-x:clip}
 .m-txt{font:700 9px var(--f-sans);fill:var(--alert);letter-spacing:.04em}
 
 @media (max-width:1100px){.chart,.how-wrap{grid-template-columns:minmax(0,1fr)}.fig{max-width:300px}}
+/* el control in/cm termina en el mismo borde que la tabla (la figura va a la derecha desde 1101px) */
+@media (min-width:1101px){.sz-doc .tools:has(+ .chart){margin-right:244px}}
 @media (max-width:860px){
   .sz{grid-template-columns:minmax(0,1fr);gap:20px;padding-top:0}
   .sz-nav{position:sticky;top:var(--header);z-index:5;background:var(--bg);margin-inline:calc(var(--gutter) * -1);border-bottom:1px solid var(--line)}
@@ -89,8 +91,8 @@ html,body{overflow-x:clip}
 <main id="main">
   <section class="sz-banner">
     <div class="wrap">
-      <h1 class="h1">Size Guide</h1>
-      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="sizes.html?s=tees">Size Guide</a></li><li aria-current="page" id="crumb-cur">Tees</li></ol></nav>
+      <h1 class="h1">Size guide</h1>
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="sizes.html?s=tees">Size guide</a></li><li aria-current="page" id="crumb-cur">Tees</li></ol></nav>
     </div>
   </section>
 
@@ -122,7 +124,7 @@ html,body{overflow-x:clip}
               <li><span class="k">C</span><span><b>Sleeve.</b> From the shoulder seam to the end of the cuff.</span></li>
               <li><span class="k">2</span><span><b>Compare.</b> Find the size in the chart closest to your numbers. Between sizes? Size up for a relaxed fit.</span></li>
             </ol>
-            <p>Hats: measure around your head, just above the ears and eyebrows. Printed-to-order items can't be returned for size, so it's worth the two minutes. See the <a href="policies.html?p=refund">Refund Policy</a>.</p>
+            <p>Hats: measure around your head, just above the ears and eyebrows. Printed-to-order items can’t be returned for size, so it’s worth the two minutes. See the <a href="policies.html?p=refund">Refund Policy</a>.</p>
           </div>
           <figure class="fig" data-fig></figure>
         </div>
@@ -148,6 +150,8 @@ html,body{overflow-x:clip}
     { s: 'hats', name: 'Hats', mock: 'crew-cap', sub: 'Crew Cap and “The Evil One” Beanie · One size', cat: 'hats', hat: true }
   ];
   var NAMES = { measure: 'How to measure' };
+  /* <title> por pestaña: 50 a 60 caracteres con la marca completa */
+  var TITLES = { tees: 'Tee Size Chart', longsleeve: 'Long Sleeve Size Chart', sweats: 'Hoodie Size Chart', kids: 'Kids Size Chart', hats: 'Hat Size Guide', measure: 'How to Measure a Shirt' };
   DOCS.forEach(function (d) { NAMES[d.s] = d.name; });
   var P = {}; (window.HM_CATALOG || []).forEach(function (p) { P[p.id] = p; });
 
@@ -178,7 +182,7 @@ html,body{overflow-x:clip}
       COLS.map(function (c) { return '<th scope="col">' + c + ' <span class="u" data-u></span></th>'; }).join('') + '</tr></thead><tbody>' +
       d.rows.map(function (r) { return '<tr><th scope="row">' + r[0] + '</th>' + r.slice(1).map(function (v) { return '<td data-v data-in="' + (v == null ? '' : v) + '">XX</td>'; }).join('') + '</tr>'; }).join('') +
       '</tbody></table></div><figure class="fig" data-fig></figure></div>' +
-      '<p>Chest: armpit to armpit. Length: top of shoulder to hem. Printed-to-order items can\'t be returned for size, so compare with a shirt you own.</p>' + shop + '</article>';
+      '<p>Chest: armpit to armpit. Length: top of shoulder to hem. Printed-to-order items can’t be returned for size, so compare with a shirt you own.</p>' + shop + '</article>';
   }).join('');
   document.querySelectorAll('[data-fig]').forEach(function (f, i) { f.innerHTML = FIG.replace(/fig-t/g, 'fig-t' + i); });
 
@@ -214,7 +218,7 @@ html,body{overflow-x:clip}
       if (on && list.scrollWidth > list.clientWidth) list.scrollLeft = a.parentNode.offsetLeft - 16;
     });
     $('crumb-cur').textContent = NAMES[s];
-    document.title = NAMES[s] + ' · Size Guide · Heavy Metal Pro Stock: “The Evil One”';
+    document.title = (TITLES[s] || 'Size Charts & Fit Guide') + ' · Heavy Metal Pro Stock: “The Evil One”';
     if (fromClick) {
       history.replaceState(null, '', 'sizes.html?s=' + s);
       var nav = document.querySelector('.sz-nav');

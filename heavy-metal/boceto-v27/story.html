@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- Hallmark · v6: capítulos compactos en 3 columnas, playlist con el embed de Spotify, stats con "Last updated" -->
-<title>Our Story · Heavy Metal Pro Stock: “The Evil One”</title>
-<meta name="description" content="Heavy Metal Pro Stock: “The Evil One” went from one idea in Tomah, Wisconsin to a Pro Stock pulling tractor built by a family in Waterloo. The first bolt, the night lightning struck, the first pull and the crew behind it, led by a driver with 20+ years in the sport.">
+<title>Our Story &amp; Crew · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="How Heavy Metal Pro Stock: “The Evil One” went from a 2014 idea in Tomah, WI to a family-built Pro Stock tractor in Waterloo, and the crew behind it.">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "AboutPage",
-  "name": "Our Story · Heavy Metal Pro Stock: “The Evil One”",
+  "name": "Our Story & Crew · Heavy Metal Pro Stock: “The Evil One”",
   "about": {
     "@type": "SportsTeam",
     "name": "Heavy Metal Pro Stock: “The Evil One”",
@@ -19,13 +19,13 @@
     "foundingLocation": "Tomah, WI",
     "description": "A family-built Pro Stock pulling tractor from Waterloo, Wisconsin, powered by a Cat 3208 V8 in reverse flow.",
     "coach": { "@type": "Person", "name": "Chris F.", "jobTitle": "Owner, Driver & Crew Chief" },
-    "address": { "@type": "PostalAddress", "postOfficeBoxNumber": "42", "addressLocality": "Waterloo", "addressRegion": "WI", "postalCode": "53594", "addressCountry": "US" },
+    "address": { "@type": "PostalAddress", "addressLocality": "Waterloo", "addressRegion": "WI", "postalCode": "53594", "addressCountry": "US" },
     "sameAs": ["https://www.facebook.com/heavymetalprostock/"]
   }
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Source+Serif+4:opsz,wght@8..60,400..600&display=swap">
 <link rel="stylesheet" href="hm.css">
 <style>
 /* Story v4: hero compacto, capítulos con foto alternada, el rayo como clímax, hermanos + canción con peso propio. */
@@ -82,25 +82,27 @@ html,body{overflow-x:clip}
 .st-ch .link{white-space:nowrap;margin-left:2px}
 .st-ch:target .st-photo,.st-ch.is-hit .st-photo{outline:3px solid var(--accent);outline-offset:3px}
 
-/* 3b · entrada a la historia completa: banda grande con foto, no un link chico */
+/* 3b · entrada a la historia completa: tarjeta de papel crema (mismo look que the-full-story), clara para no pegar dos bandas oscuras */
 .st-read{padding-block:0 clamp(32px,4vw,52px)}
-.st-read__card{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);background:var(--ink);color:var(--night-ink);text-decoration:none;overflow:hidden;min-height:clamp(300px,34vw,440px)}
-.st-read__card .st-photo{min-height:240px;background:#1E1E1C}
-.st-read__card .st-photo img{transition:transform .6s ease}
-.st-read__txt{display:grid;align-content:center;gap:14px;padding:clamp(24px,4vw,56px)}
+.st-read__card{--paper:#F3EBDA;--paper-ink:#2B2620;--paper-mute:#6A5F50;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(20px,3vw,48px);align-items:center;padding:clamp(18px,2.6vw,40px);color:var(--paper-ink);text-decoration:none;border:1px solid #E2D5BC;min-height:clamp(300px,34vw,440px);
+  background-color:var(--paper);
+  background-image:radial-gradient(rgba(120,86,40,.07) .7px,transparent 1.3px),radial-gradient(rgba(255,255,255,.45) .8px,transparent 1.4px),radial-gradient(ellipse 70% 50% at 12% 10%,rgba(255,250,236,.75),transparent 70%),radial-gradient(ellipse 60% 60% at 92% 80%,rgba(214,190,146,.25),transparent 70%);
+  background-size:5px 5px,7px 7px,100% 100%,100% 100%;background-position:0 0,3px 2px,0 0,0 0}
+.st-read__card .st-photo{align-self:stretch;min-height:260px;background:#FFFDF7;padding:10px 10px 12px;box-shadow:0 1px 2px rgba(60,40,10,.16),0 14px 28px -12px rgba(60,40,10,.42);transform:rotate(-1.4deg)}
+.st-read__card .st-photo img{inset:10px 10px 12px;width:calc(100% - 20px);height:calc(100% - 22px);filter:sepia(.42) saturate(.78) contrast(.94) brightness(1.04) hue-rotate(-6deg);transition:filter .6s ease}
+.st-read__txt{display:grid;align-content:center;gap:14px;min-width:0}
 .st-read__txt p{margin:0}
-.st-read__k{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:var(--t-xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#A8A59A}
-.st-read__h{font-family:var(--f-head);font-stretch:66%;font-weight:800;text-transform:uppercase;font-size:clamp(40px,5.6vw,84px);line-height:.9;color:var(--night-ink);text-wrap:balance}
-.st-read__h em{font-style:normal;color:var(--accent)}
-.st-read__d{font-size:clamp(16px,1.2vw,19px);line-height:1.5;color:#CFCCC3;max-width:46ch}
-.st-read__go{display:inline-flex;align-items:center;gap:12px;justify-self:start;font-family:var(--f-head);font-stretch:72%;font-weight:800;text-transform:uppercase;font-size:clamp(22px,2vw,30px);line-height:1.1;color:var(--night-ink);text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:3px;text-underline-offset:7px}
-.st-read__go span{font-family:var(--f-sans);font-stretch:100%;font-size:.8em;color:var(--accent)}
-.st-read__card:hover .st-read__go{text-decoration-color:var(--night-ink)}
-.st-read__card:hover .st-photo img{transform:scale(1.03)}
-.st-read__card:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-@media (prefers-reduced-motion:reduce){.st-read__card .st-photo img{transition:none}.st-read__card:hover .st-photo img{transform:none}}
-@media (max-width:760px){.st-read__card{grid-template-columns:1fr}.st-read__card .st-photo{aspect-ratio:16/10;min-height:0}}
-.st-hero__more{font-weight:700;color:var(--ink);text-underline-offset:4px;text-decoration-thickness:2px;text-decoration-color:var(--accent)}
+.st-read__k{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:var(--t-xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-mute)}
+.st-read__h{font-family:var(--f-head);font-stretch:66%;font-weight:800;text-transform:uppercase;font-size:clamp(40px,5.6vw,84px);line-height:.92;color:var(--ink);text-wrap:balance}
+.st-read__h em{font-style:normal;padding:0 .06em;-webkit-box-decoration-break:clone;box-decoration-break:clone;background:linear-gradient(transparent 52%,var(--accent) 52%,var(--accent) 90%,transparent 90%)}
+.st-read__d{font-family:'Source Serif 4','Iowan Old Style',Georgia,Charter,'Times New Roman',serif;font-size:clamp(17px,1.2vw,20px);line-height:1.55;color:var(--paper-ink);max-width:46ch}
+.st-read__go{font-family:var(--f-head);font-stretch:72%;font-weight:800;text-transform:uppercase;font-size:clamp(22px,2vw,30px);line-height:1.25;color:var(--ink);text-decoration:underline;text-decoration-color:var(--ink);text-decoration-thickness:3px;text-underline-offset:6px;text-wrap:balance}
+.st-read__card:hover .st-read__go{text-decoration-color:var(--paper-mute)}
+.st-read__card:hover .st-photo img{filter:none}
+.st-read__card:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.st-read__card .st-photo img{transition:none}}
+@media (max-width:760px){.st-read__card{grid-template-columns:1fr}.st-read__card .st-photo{aspect-ratio:16/10;min-height:0;transform:rotate(-1deg)}}
+.st-hero__more{font-weight:700;color:var(--ink);white-space:nowrap;text-underline-offset:4px;text-decoration-thickness:2px;text-decoration-color:var(--ink)}
 
 /* 4 · EL RAYO: la única banda oscura, clímax de la página */
 .st-bolt{position:relative;overflow:hidden;scroll-margin-top:var(--header)}
@@ -140,13 +142,13 @@ html,body{overflow-x:clip}
 .st-vid__msg{color:var(--accent);font-weight:700}
 
 /* 5 · primer pull + esta temporada */
-.st-pull{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:center;max-width:1120px;margin-inline:auto}
-.st-pull .st-photo{aspect-ratio:4/5}
+.st-pull{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(20px,4vw,56px);align-items:center}
+.st-pull .st-photo{aspect-ratio:3/2}
 .st-pull__txt{display:grid;gap:12px;max-width:62ch}
 .st-pull__txt p{margin:0;color:var(--soft)}
 .st-quote{margin:2px 0;padding:2px 0 2px 16px;border-left:4px solid var(--accent)}
 .st-quote p{font-family:var(--f-head);font-stretch:78%;font-weight:700;text-transform:uppercase;font-size:var(--t-h1);line-height:1.12;color:var(--ink)!important;margin:0}
-.st-season{margin-top:clamp(24px,3vw,36px);max-width:1120px;margin-inline:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.4fr);gap:14px 32px;align-items:center;padding:18px 24px;background:var(--accent);color:var(--ink)}
+.st-season{margin-top:clamp(24px,3vw,36px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.4fr);gap:14px 32px;align-items:center;padding:18px 24px;background:var(--accent);color:var(--ink)}
 .st-season p{margin:0}
 .st-season__h{display:grid;gap:6px}
 .st-season__yr{display:flex;align-items:center;gap:6px;opacity:.85}
@@ -161,7 +163,7 @@ html,body{overflow-x:clip}
 .st-season__foot .link{color:var(--ink)}
 .st-season dd .st-soon{display:block;font-size:var(--t-h2);line-height:1.1;padding-top:4px}
 .st-upd{margin:0;opacity:.8;font-weight:600}
-.st-ctl{max-width:1120px;margin:10px auto 0}
+.st-ctl{margin:10px 0 0}
 .st-ctl__row{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:6px}
 .st-ctl__row span{display:inline-flex;align-items:center;gap:4px;font-weight:600}
 .st-ctl__row button{width:26px;height:26px;border:1px solid var(--ink);background:var(--surface);color:var(--ink);font-weight:700;line-height:1;cursor:pointer;padding:0}
@@ -205,7 +207,8 @@ html,body{overflow-x:clip}
 /* diseño del embed de Spotify (352px como el real); en el sitio lo reemplaza el iframe */
 .st-spot{height:352px;border-radius:12px;overflow:hidden;background:#2A2A26}
 .st-spot__mock{position:relative;height:100%;display:flex;flex-direction:column;gap:12px;padding:16px;background:linear-gradient(180deg,#4A4320 0%,#2A2A26 46%)}
-.st-spot__lbl{justify-self:start;margin-bottom:4px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);background:var(--accent);padding:2px 6px}
+.st-spot__sk{display:block;height:9px;border-radius:5px;background:rgba(255,255,255,.14)}
+.st-spot__sk+.st-spot__sk{height:7px;margin-top:6px;background:rgba(255,255,255,.08)}
 .st-spot__top{display:grid;grid-template-columns:112px minmax(0,1fr) 24px;gap:14px;align-items:end}
 .st-spot__cover{aspect-ratio:1/1;background:#121211;border-radius:6px;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.4)}
 .st-spot__cover svg{width:30%;height:auto;filter:drop-shadow(0 0 10px rgba(245,196,0,.6))}
@@ -251,7 +254,7 @@ html,body{overflow-x:clip}
 .st-sub:first-child{margin-top:0}
 
 /* 8 · CTA único */
-.st-cta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px 32px}
+.st-cta{display:flex;flex-wrap:wrap;justify-content:flex-start;align-items:center;gap:16px clamp(32px,6vw,96px)}
 .st-cta__l{display:flex;align-items:center;gap:16px}
 .st-cta__l svg{width:22px;height:auto;flex:none}
 .st-cta p{margin:0}
@@ -259,6 +262,7 @@ html,body{overflow-x:clip}
 /* responsive */
 @media (max-width:1200px){.st-hero__pics .st-photo:nth-child(2){display:none}}
 @media (max-width:1100px){.st-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:1200px){.st-pull{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.st-pull .st-photo{aspect-ratio:4/5}}
 @media (max-width:1000px){
   .st-bolt .wrap{grid-template-columns:1fr}
   .st-bolt__txt{max-width:640px}
@@ -326,7 +330,7 @@ html,body{overflow-x:clip}
     </div>
     <div class="st-hero__pics">
       <figure class="st-photo">
-        <img class="photo" style="object-position:50% 40%" src="img/hm-driver.webp" alt="Chris F. in the driver's seat of “The Evil One”, gold helmet on" width="788" height="1400" fetchpriority="high">
+        <img class="photo" style="object-position:50% 40%" src="img/hm-driver.webp" alt="Chris F. in the driver’s seat of “The Evil One”, gold helmet on" width="788" height="1400" fetchpriority="high">
         <figcaption class="st-tag">Chris in the seat</figcaption>
       </figure>
       <figure class="st-photo" aria-hidden="true">
@@ -373,7 +377,7 @@ html,body{overflow-x:clip}
         <figure class="st-photo"><img class="photo" src="img/hm-engine.webp" alt="The Cat 3208 V8 with its turbo, in the Waterloo shop" width="787" height="1400" loading="lazy" style="object-position:50% 45%"><figcaption class="st-tag">Cat 3208 · 680 ci</figcaption></figure>
         <p class="st-eyebrow"><b>03</b>The shop · Waterloo, WI</p>
         <h3 class="h2" id="ch3-h">Nothing off the shelf</h3>
-        <p>A Cat 3208 V8 in reverse flow, a setup you won't find on any other tractor on the track. 636 cubic inches stock, built out to 680. Nothing about it was quick. <a class="link" href="machine.html">Full spec sheet</a></p>
+        <p>A Cat 3208 V8 in reverse flow, a setup you won’t find on any other tractor on the track. 636 cubic inches stock, built out to 680. Nothing about it was quick. <a class="link" href="machine.html">Full spec sheet</a></p>
       </article>
     </div>
   </div>
@@ -385,10 +389,10 @@ html,body{overflow-x:clip}
     <a class="st-read__card" href="the-full-story.html">
       <figure class="st-photo"><img class="photo" src="img/hm-driver-crew.webp" alt="" width="1050" height="1400" loading="lazy" style="object-position:50% 30%"></figure>
       <div class="st-read__txt">
-        <p class="st-read__k"><span class="badge">Long read</span><span>In our own words · 7 chapters</span></p>
+        <p class="st-read__k"><span class="badge">Long read</span><span>In our own words</span></p>
         <h2 class="st-read__h" id="read-h">Twelve years <em>in the making</em></h2>
         <p class="st-read__d">The sketches, the nights and weekends, the family shop, and the night the engine fired and lightning struck. The whole story, the way we tell it.</p>
-        <p class="st-read__go">Read the full story <span aria-hidden="true">· 3 min read →</span></p>
+        <p class="st-read__go">Read the full story&nbsp;<span aria-hidden="true">→</span></p>
       </div>
     </a>
   </div>
@@ -434,17 +438,17 @@ html,body{overflow-x:clip}
       <figure class="st-photo"><img class="photo" src="img/hm-rear.webp" alt="“The Evil One” from the rear three quarters on the track, grandstands full behind it" width="1050" height="1400" loading="lazy"><figcaption class="st-tag">First pull attempt</figcaption></figure>
       <div class="st-pull__txt">
         <p class="st-eyebrow"><b>05</b>2026 · First pull</p>
-        <h2 class="h1" id="pull-h">The pull didn't finish that day</h2>
-        <p>The first pull didn't go the way anyone hoped. A small, unexpected issue came up and the run ended before it should have. It was a disappointing day.</p>
-        <blockquote class="st-quote"><p>We won't sugarcoat it.</p></blockquote>
-        <p>But getting the tractor onto a real track at all, after twelve years of building it with our own hands, was already something to be proud of. <b style="color:var(--ink)">The story was just getting started.</b></p>
+        <h2 class="h1" id="pull-h">The pull didn’t finish that day</h2>
+        <p>The first pull didn’t go the way anyone hoped. A small, unexpected issue came up and the run ended before it should have. It was a disappointing day.</p>
+        <blockquote class="st-quote"><p>We won’t sugarcoat it.</p></blockquote>
+        <p>But getting the tractor onto a real track at all, twelve years after the idea and six years of building it with our own hands, was already something to be proud of. <b style="color:var(--ink)">The story was just getting started.</b></p>
       </div>
     </article>
 
     <div class="st-season" id="season" aria-labelledby="season-h">
       <div class="st-season__h">
         <p class="label st-season__yr"><span>Today ·</span> <label class="vh" for="season-yr">Season</label><select id="season-yr"></select> <span>season</span></p>
-        <h3 class="h2" id="season-h">Chasing our first win</h3>
+        <h2 class="h2" id="season-h">Chasing our first win</h2>
       </div>
       <dl id="season-stats" aria-live="polite"></dl>
       <div class="st-season__foot">
@@ -455,7 +459,7 @@ html,body{overflow-x:clip}
       </div>
     </div>
     <div class="note st-ctl" id="season-ctl">
-      <span>En Shopify se edita en Contenido &gt; Metaobjetos &gt; Season stats (una entrada por año; el selector de año sale solo), o se calcula solo desde el Pit Log. Puse 2 competencias y 3 exhibiciones (igual que el Pit Log); confirma si fueron 3 o 4. Wins en 0 se ve "Coming soon" (igual que en el Pit Log y el Schedule). Prueba los contadores:</span>
+      <span>En Shopify se edita en Contenido &gt; Metaobjetos &gt; Season stats (una entrada por año; el selector de año sale solo), o se calcula solo desde el Pit Log. Puse 2 competencias y 3 exhibiciones (igual que el Pit Log); confirma si fueron 3 o 4. Wins en 0 se ve “Coming soon” (igual que en el Pit Log y el Schedule). Prueba los contadores:</span>
       <span class="st-ctl__row" id="season-btns"></span>
     </div>
   </div>
@@ -469,7 +473,7 @@ html,body{overflow-x:clip}
       <div class="st-bros">
         <figure class="st-photo"><img class="photo" src="img/hm-front-white.webp" alt="“The Evil One” on the track in white smoke" width="1050" height="1400" loading="lazy" style="object-position:50% 55%"><figcaption class="st-tag">“The Evil One”</figcaption></figure>
         <span class="st-bros__amp" aria-hidden="true">+</span>
-        <div class="ph ph--dark" role="img" aria-label="Photo of Diesel Ross coming soon"><span class="ph__tag"><b>Diesel Ross</b>Photo soon</span></div>
+        <div class="ph" role="img" aria-label="Photo of Diesel Ross coming soon"><span class="ph__tag"><b>Diesel Ross</b>Photo soon</span></div>
       </div>
       <h2 class="h1" id="bro-h">Tractor brothers</h2>
       <p class="lede">“The Evil One” has a brother across the ocean: <b style="color:var(--ink)">Diesel Ross</b>, a Pro Stock tractor in Europe owned by Gert Stessens from Belgium.</p>
@@ -505,11 +509,10 @@ html,body{overflow-x:clip}
           <small>What plays in the trailer and the pit · Last updated: <time id="pl-upd"></time></small>
         </div>
         <div class="st-spot" id="pl-player">
-          <div class="st-spot__mock" role="img" aria-label="Spotify player: The pit playlist by Heavy Metal Pro Stock: “The Evil One”. It loads on the live site.">
+          <div class="st-spot__mock" role="img" aria-label="Spotify player: The pit playlist by Heavy Metal Pro Stock: “The Evil One”">
             <div class="st-spot__top">
               <div class="st-spot__cover"><svg viewBox="0 0 140 280" aria-hidden="true"><polygon class="bolt" points="88,0 20,150 58,150 30,280 122,105 78,105"/></svg></div>
               <div class="st-spot__meta">
-                <span class="st-spot__lbl">Spotify player</span>
                 <b>The Pit Playlist</b>
                 <span>Heavy Metal Pro Stock: “The Evil One”</span>
                 <span class="st-spot__btns"><i class="st-spot__save">Save on Spotify</i><i class="st-spot__play"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg></i></span>
@@ -520,7 +523,7 @@ html,body{overflow-x:clip}
           </div>
         </div>
       </div>
-      <p class="note">Playlist: créala en Spotify, copia su link (Compartir &gt; Copiar enlace) y pégalo en el campo "Playlist link" de esta sección. El sitio muestra el reproductor oficial de Spotify (embed); lo que agregues o quites en Spotify se ve solo, sin tocar Shopify. Aquí el visor bloquea el reproductor, por eso ves el diseño. Video del rayo: Contenido &gt; Archivos o link de YouTube; pon la duración real en "0:XX".</p>
+      <p class="note">Playlist: créala en Spotify, copia su link (Compartir &gt; Copiar enlace) y pégalo en el campo “Playlist link” de esta sección. El sitio muestra el reproductor oficial de Spotify (embed); lo que agregues o quites en Spotify se ve solo, sin tocar Shopify. Aquí el visor bloquea el reproductor, por eso ves el diseño: solo la primera canción es real (Fear of the Dark) y las barras grises son de relleno; en el sitio salen todas las canciones de la playlist, sincronizadas desde Spotify (lo que agregas o quitas allá aparece o se va aquí, sin editar nada en Shopify). Video del rayo: Contenido &gt; Archivos o link de YouTube; pon la duración real en “0:XX”.</p>
     </article>
   </div>
 </section>
@@ -547,13 +550,13 @@ html,body{overflow-x:clip}
         <li class="st-m"><span class="av" aria-hidden="true">DV</span><div><p class="st-m__n">Daniela V.</p><p class="st-m__r">Social Media &amp; Marketing</p></div></li>
         <li class="st-m pet"><span class="av av--paw-w" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="16" rx="5" ry="4"/><circle cx="6" cy="10" r="2"/><circle cx="18" cy="10" r="2"/><circle cx="9.5" cy="6" r="2"/><circle cx="14.5" cy="6" r="2"/></svg></span><div><p class="st-m__n">Cricket F.</p><p class="st-m__r">Team mascot · white</p></div></li>
         <li class="st-sub">Pit crew</li>
-        <li class="st-m"><span class="av" aria-hidden="true">D</span><div><p class="st-m__n">Daniel</p><p class="st-m__r">Pit Crew</p></div></li>
-        <li class="st-m"><span class="av" aria-hidden="true">JF</span><div><p class="st-m__n">Jared F.</p><p class="st-m__r">Pit Crew</p></div></li>
-        <li class="st-m"><span class="av" aria-hidden="true">JF</span><div><p class="st-m__n">Jim F.</p><p class="st-m__r">Pit Crew</p></div></li>
-        <li class="st-m"><span class="av" aria-hidden="true">TB</span><div><p class="st-m__n">Tony B.</p><p class="st-m__r">Pit Crew</p></div></li>
-        <li class="st-m"><span class="av" aria-hidden="true">JL</span><div><p class="st-m__n">Jeff L.</p><p class="st-m__r">Pit Crew</p></div></li>
-        <li class="st-m"><span class="av" aria-hidden="true">JW</span><div><p class="st-m__n">John W.</p><p class="st-m__r">Pit Crew</p></div></li>
-        <li class="st-m"><span class="av" aria-hidden="true">BS</span><div><p class="st-m__n">Brad S.</p><p class="st-m__r">Pit Crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">D</span><div><p class="st-m__n">Daniel</p><p class="st-m__r">Pit crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">JF</span><div><p class="st-m__n">Jared F.</p><p class="st-m__r">Pit crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">JF</span><div><p class="st-m__n">Jim F.</p><p class="st-m__r">Pit crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">TB</span><div><p class="st-m__n">Tony B.</p><p class="st-m__r">Pit crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">JL</span><div><p class="st-m__n">Jeff L.</p><p class="st-m__r">Pit crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">JW</span><div><p class="st-m__n">John W.</p><p class="st-m__r">Pit crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">BS</span><div><p class="st-m__n">Brad S.</p><p class="st-m__r">Pit crew</p></div></li>
         <li class="st-m pet"><span class="av" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="16" rx="5" ry="4"/><circle cx="6" cy="10" r="2"/><circle cx="18" cy="10" r="2"/><circle cx="9.5" cy="6" r="2"/><circle cx="14.5" cy="6" r="2"/></svg></span><div><p class="st-m__n">Turbo</p><p class="st-m__r">Team mascot · black</p></div></li>
       </ul>
     </div>
@@ -592,7 +595,7 @@ html,body{overflow-x:clip}
   var FIELDS = [
     ['competitions', 'Competitions', function (r) { return r.competitions_note || 'this season'; }],
     ['exhibitions', 'Exhibitions', function () { return 'so far'; }],
-    ['wins', 'Wins', function (r) { return r.wins ? 'this season' : 'we are in testing'; }]
+    ['wins', 'Wins', function (r) { return r.wins ? 'this season' : 'chasing the first one'; }]
   ];
   function val(k, v) {
     /* testing: wins en 0 dice "Coming soon", igual que en el Pit Log y el Schedule */
@@ -636,15 +639,14 @@ html,body{overflow-x:clip}
   var PLAYLIST = { url: '', updated: '2026-09-28' };
   var plUpd = document.getElementById('pl-upd');
   plUpd.setAttribute('datetime', PLAYLIST.updated); plUpd.textContent = fmtDay(PLAYLIST.updated);
+  /* boceto: solo la primera canción es real; las demás filas son de relleno (barras grises, como el embed mientras carga) */
   var MOCK_ROWS = [
     { t: 'Fear of the Dark', a: 'Iron Maiden', d: '7:18', real: true },
-    { t: 'Synced from Spotify', a: 'Every song you add shows up here' },
-    { t: 'Synced from Spotify', a: 'Remove a song there, it leaves here' },
-    { t: 'Synced from Spotify', a: 'No edits in Shopify' },
-    { t: 'Synced from Spotify', a: 'Artist' }
+    { w: 62 }, { w: 48 }, { w: 70 }
   ];
   document.getElementById('pl-rows').innerHTML = MOCK_ROWS.map(function (r, i) {
-    return '<li' + (r.real ? ' class="is-real"' : '') + '><span class="st-spot__n">' + (i + 1) + '</span><span class="st-spot__t"><b>' + r.t + '</b><span>' + r.a + '</span></span><span class="st-spot__d">' + (r.d || '') + '</span></li>';
+    var t = r.real ? '<b>' + r.t + '</b><span>' + r.a + '</span>' : '<i class="st-spot__sk" style="width:' + r.w + '%"></i><i class="st-spot__sk" style="width:' + (r.w - 22) + '%"></i>';
+    return '<li' + (r.real ? ' class="is-real"' : '') + '><span class="st-spot__n">' + (i + 1) + '</span><span class="st-spot__t">' + t + '</span><span class="st-spot__d">' + (r.d || '') + '</span></li>';
   }).join('');
   var pm = /playlist\/([A-Za-z0-9]+)/.exec(PLAYLIST.url);
   if (pm) {

@@ -55,21 +55,23 @@
   var NS = 'http://www.w3.org/2000/svg';
 
   /* rig en unidades del viewBox (2700 x 576): trompa del tractor, chimenea, recorrido de la caja, apoyo del wheelie, radio de las ruedas del sled */
-  var U = { w: 2700, nose: 2680, rear: 1602, stackX: 2115, stackY: 38, boxTravel: 720, px: 1780, py: 548, wheelR: 84, sledTop: 159 };
+  var U = { w: 2700, nose: 2680, rear: 1602, stackX: 2115, stackY: 38, boxTravel: 720, px: 1780, py: 548, wheelR: 84, sledTop: 159, cabTop: 22 };
 
   /* ---------- medidas (solo al cargar y en resize) ---------- */
   var G = {}, GAP = 24;
   var tele = $('.fp__tele'), btnRow = $('.fp__brand .btn-row');
   function measure() {
     var narrow = matchMedia('(max-width:860px)').matches;
-    /* escritorio: la pista sube detrás del texto lo más posible, pero el sled (cabina, escalera, operador) siempre pasa
-       por DEBAJO de los botones. El tractor sí pasa detrás del texto. */
+    /* escritorio: la pista sube detrás del texto lo más posible, pero el rig completo (sled Y tractor: arco de seguridad
+       y chimenea, U.cabTop) siempre pasa por DEBAJO de los botones (v27: antes solo el sled y el tractor tapaba
+       "Shop the drop / Meet the machine" los primeros ~2 s en 1024-1920). Margen = 10px + el wheelie (~8 unidades del
+       viewBox en el arco) + el temblor del motor (5px). El logo no cambia: la pista baja lo que haga falta. */
     if (narrow) { root.style.removeProperty('--tuck'); flag.style.height = ''; }
     else {
       root.style.setProperty('--tuck', '0px');
       var tr0 = track.getBoundingClientRect(), b0 = btnRow.getBoundingClientRect(), tp0 = top.getBoundingClientRect();
       var dirtH = track.querySelector('.fp__dirt').getBoundingClientRect().height, s0 = rig.getBoundingClientRect().width / U.w;
-      var dirtTop0 = tr0.bottom - dirtH, want = b0.bottom + 12 + (U.py - U.sledTop) * s0;
+      var dirtTop0 = tr0.bottom - dirtH, want = b0.bottom + 10 + 5 + (U.py - U.cabTop + 8) * s0;
       root.style.setProperty('--tuck', Math.max(0, Math.round(dirtTop0 - want)) + 'px');
     }
     var tr = track.getBoundingClientRect(), rr = root.getBoundingClientRect(), tp = top.getBoundingClientRect(), cs = getComputedStyle(top);
@@ -80,6 +82,10 @@
     right = narrow ? tr.width - (brand.getBoundingClientRect().left - tr.left) : tp.right - tr.left - parseFloat(cs.paddingRight);
     var flagW = flag.getBoundingClientRect().width + Math.max(22, rigW * .04);
     var noseOff = U.nose * scale, finish = right - flagW;   /* v14: igual que v12 (sin corrimiento) */
+    /* v27: el ícono de Pull again (44px) va a la derecha del poste y debe quedar adentro de la pantalla con 8px de margen.
+       En 360/390 no cabía (se salía ~18px): la meta se recorre a la izquierda solo lo necesario. En escritorio no cambia. */
+    var poleW = flag.getBoundingClientRect().width || 6, CTRL = 44, M = 8;
+    finish = Math.min(finish, tr.width - (M + CTRL + 8 + poleW + 4));
     /* v10: 0 FT = borde izquierdo del logo (left). En el frame 0 la llanta trasera del tractor está en 0 FT (tractor completo
        a la vista, sled a la izquierda en el margen); en el full pull la trompa llega a la bandera. */
     var zero = left, startNose = zero + (U.nose - U.rear) * scale;
@@ -93,7 +99,7 @@
     root.style.setProperty('--edge', (tr.width - right) + 'px');
     /* v15: Pause / Pull again al lado derecho del poste, en lo gris justo arriba de la tierra */
     var rr2 = root.getBoundingClientRect(), dirtH = track.querySelector('.fp__dirt').getBoundingClientRect().height;
-    var cx = tr.left - rr2.left + finish + 4 + flag.getBoundingClientRect().width + 8, avail = rr2.width - cx - 6;
+    var cx = Math.min(tr.left - rr2.left + finish + 4 + poleW + 8, rr2.width - M - CTRL), avail = rr2.width - cx - M;
     ctrl.style.left = cx + 'px'; ctrl.style.right = 'auto'; ctrl.style.bottom = (rr2.bottom - tr.bottom + dirtH + 4) + 'px';
     ctrl.style.maxWidth = Math.max(44, avail) + 'px'; ctrl.classList.remove('is-stack'); ctrl.classList.add('is-icon');   /* v16: solo la flecha, sin texto */
     rail.querySelectorAll('.fp__tick').forEach(function (t) { t.remove(); });

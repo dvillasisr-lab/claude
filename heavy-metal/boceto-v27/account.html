@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Account · Heavy Metal Pro Stock: “The Evil One”</title>
-<meta name="description" content="Track your Heavy Metal Pro Stock: “The Evil One” order, with or without an account. Sign in with a one time code to see orders, addresses and The Evil List.">
+<title>Your Account · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Track your Heavy Metal Pro Stock: “The Evil One” order, with or without an account. Sign in with a one-time code to see orders, addresses and The Evil List.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -24,9 +24,9 @@ html,body{overflow-x:clip}
 .seg input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
 .seg label:has(input:checked){background:var(--ink);color:var(--surface)}
 .seg label:has(input:focus-visible){outline:2px solid var(--ink);outline-offset:2px}
-.seg-wrap{display:grid;gap:4px;justify-items:start}
-.seg-wrap .small{color:var(--mute)}
-@media (max-width:560px){.seg-wrap{justify-items:stretch}.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.seg label{justify-content:center;text-align:center;white-space:normal;min-height:44px;padding:4px 6px;line-height:1.2;font-size:11px;letter-spacing:.04em}}
+.acc-preview{max-width:none;margin:16px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.acc-preview .seg{background:var(--surface)}
+@media (max-width:560px){.acc-preview .seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));width:100%}.seg label{justify-content:center;text-align:center;white-space:normal;min-height:44px;padding:4px 6px;line-height:1.2;font-size:11px;letter-spacing:.04em}}
 
 .acc{padding-block:32px var(--sect)}
 /* sesión cerrada */
@@ -132,17 +132,20 @@ html,body{overflow-x:clip}
         <h1 class="h1">Account</h1>
         <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">Account</li></ol></nav>
       </div>
-      <div class="seg-wrap">
-        <fieldset class="seg">
-          <legend>Preview state</legend>
-          <label><input type="radio" name="view" value="out" checked>Signed out</label>
-          <label><input type="radio" name="view" value="code">Code sent</label>
-          <label><input type="radio" name="view" value="in">Signed in (example)</label>
-        </fieldset>
-        <span class="small">Boceto: preview only</span>
-      </div>
     </div>
   </section>
+
+  <!-- control solo del boceto: vive dentro de .note, así que "Ocultar notas" lo quita y el cliente nunca lo ve -->
+  <div class="wrap">
+    <div class="note acc-preview">Vista previa de la cuenta (solo boceto; en Shopify no existe este control):
+      <fieldset class="seg">
+        <legend>Estado de la vista previa</legend>
+        <label><input type="radio" name="view" value="out" checked>Sesión cerrada</label>
+        <label><input type="radio" name="view" value="code">Código enviado</label>
+        <label><input type="radio" name="view" value="in">Sesión iniciada (ejemplo)</label>
+      </fieldset>
+    </div>
+  </div>
 
   <div class="wrap acc">
     <!-- SESIÓN CERRADA -->
@@ -240,7 +243,7 @@ html,body{overflow-x:clip}
               <div class="pref">
                 <label for="hk-email">Email</label>
                 <span class="switch"><input type="checkbox" id="hk-email" role="switch" checked aria-describedby="hk-email-d"><span aria-hidden="true"></span></span>
-                <p id="hk-email-d">New drops and a heads up before every pull, sent to jane@example.com. Every email has an unsubscribe link.</p>
+                <p id="hk-email-d">New drops and a heads-up before every pull, sent to jane@example.com. Every email has an unsubscribe link.</p>
               </div>
             </div>
             <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center"><button class="btn btn--ghost" type="button" id="hk-save">Save</button><p class="status" id="hk-status" role="status" aria-live="polite"></p></div>
@@ -286,7 +289,7 @@ html,body{overflow-x:clip}
   });
   $('si-back').addEventListener('click', function () { view('out'); $('si-email').focus(); });
   $('si-resend').addEventListener('click', function () { $('code-err').textContent = 'Boceto: Shopify sends a new code and the old one stops working.'; });
-  $('shop-btn').addEventListener('click', function () { this.innerHTML = 'Boceto: here Shop opens its sign in'; });
+  $('shop-btn').addEventListener('click', function () { this.innerHTML = 'Boceto: here Shop opens its sign-in'; });
 
   /* pestañas */
   var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));

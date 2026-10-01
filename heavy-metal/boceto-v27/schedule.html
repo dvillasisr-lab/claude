@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Schedule · Heavy Metal Pro Stock: “The Evil One”</title>
-<meta name="description" content="Where “The Evil One” pulls: upcoming pulls, past results with distance and video, competitions and exhibitions by season, a calendar view, where to watch NTPA and Badger State / PPL, and The Evil List by email.">
+<title>Pull Schedule 2026 · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Where “The Evil One” pulls next: upcoming pulls, past results and a calendar of competitions and exhibitions, plus where to watch NTPA and PPL Badger State.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -78,7 +78,6 @@
 .sc-table th:first-child,.sc-table td:first-child{padding-left:0}
 .sc-table td b{display:block;color:var(--ink);font-family:var(--f-head);font-stretch:78%;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.02em;line-height:1.2}
 .sub{display:block;font-size:var(--t-xs);color:var(--mute)}
-.sub--yt{color:var(--soft);font-weight:600}
 .links{display:flex;flex-wrap:wrap;gap:4px 14px}
 .links a{font-weight:600;text-underline-offset:3px;white-space:nowrap}
 .res{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
@@ -94,7 +93,9 @@
 .tb{white-space:nowrap}
 /* marca solo para la dueña (se esconde con "Ocultar notas") */
 .own-tag{display:inline-block;margin-left:6px;padding:0 5px;border:1px dashed var(--ink);background:#FFF6CC;color:var(--ink);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;vertical-align:2px;font-family:var(--f-sans);font-stretch:100%}
-.no-notes .own-tag{display:none}
+/* los ejemplos siempre se marcan (también con "Ocultar notas"): nunca deben pasar por datos reales */
+.sc-table tr.is-example td{background:repeating-linear-gradient(135deg,transparent 0 10px,rgba(245,196,0,.07) 10px 20px)}
+.ex-date{font-style:italic}
 @media (max-width:760px){
   .sc-table thead{display:none}
   .sc-table,.sc-table tbody,.sc-table tr,.sc-table td{display:block;width:100%}
@@ -221,6 +222,18 @@
 .wlist a:hover{text-decoration-color:var(--ink)}
 .wtag{color:var(--ink)!important;border-color:var(--ink)!important}
 .wtag.badge:not(.badge--line){background:var(--accent)!important;border-color:var(--accent)!important}
+/* v27: links en tinta (el subrayado amarillo casi no se ve sobre claro). Desktop: NTPA arriba de nuestros canales, PPL a dos columnas, sin tarjetas medio vacías */
+.wlist a{text-decoration-color:var(--ink);text-decoration-thickness:1px}
+.wlist a:hover{text-decoration-thickness:2px}
+@media (min-width:1025px){
+  .sc-watch{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:"ntpa ppl ppl" "hm ppl ppl"}
+  .sc-watch > :nth-child(1){grid-area:ntpa}
+  .sc-watch > :nth-child(2){grid-area:ppl}
+  .sc-watch > :nth-child(3){grid-area:hm}
+  .sc-watch > :nth-child(2) .wlist{columns:2;column-gap:32px}
+  .sc-watch > :nth-child(2) .wlist li{break-inside:avoid}
+}
+.sc-tips .h3{text-wrap:balance}
 
 /* 3 · primera vez */
 .sc-tips{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px 20px;counter-reset:tip}
@@ -280,7 +293,7 @@
 <section class="sect--white" aria-labelledby="sc-title">
   <div class="wrap sc-top">
     <h1 class="h1" id="sc-title">Schedule <span id="h1-year" class="num">2026</span></h1>
-    <p class="sc-sub"><span id="st-year" class="num">2026</span> testing season. Pro Stock, NTPA and Badger State / PPL, all times Central. New dates on <a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a> first.</p>
+    <p class="sc-sub"><span id="st-year" class="num">2026</span> testing season. Pro Stock, NTPA and PPL Badger State, all times Central. New dates on <a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a> first.</p>
   </div>
 
   <!-- Pulls: una sola barra (vista List o Calendar, temporada, Upcoming / Past) -->
@@ -338,7 +351,7 @@
     <!-- last-updated: schedule -->
     <p class="sc-upd">Updated <time class="upd num" datetime=""></time></p>
 
-    <p class="note">Monroe es el pull del video de YouTube (Green County Fall Nationals, Badger State): confírmanos fecha y resultado. Todo lo marcado “Ejemplo” lleva fechas inventadas solo para que veas cómo se llena el calendario; existe únicamente en el boceto y se quita solo en cuanto guardas un pull con fecha real de la temporada. Pásanos fecha, lugar y resultado de las 3 o 4 exhibiciones.</p>
+    <p class="note">Monroe es el pull del video de YouTube (Green County Fall Nationals, Badger State): confírmanos fecha y resultado. Todo lo marcado “Example” (con rayado amarillo) lleva fechas inventadas solo para que veas cómo se llena el calendario; existe únicamente en el boceto y se quita solo en cuanto guardas un pull con fecha real de la temporada. Pásanos fecha, lugar y resultado de las 3 o 4 exhibiciones. El primer pull (agosto 2026, del Pit Log y The full story) ya sale en Past results: falta el día, el lugar y la liga.</p>
   </div>
 </section>
 
@@ -357,7 +370,7 @@
         </ul>
       </article>
       <article class="wcard" aria-labelledby="w-bst">
-        <h3 class="h3" id="w-bst">Badger State / PPL</h3>
+        <h3 class="h3" id="w-bst">PPL Badger State</h3>
         <p>Badger State Tractor Pullers is a PPL member. PPL is now the IHRA Pro Pulling Series.</p>
         <ul class="wlist">
           <li><a href="https://bstponline.com/" target="_blank" rel="noopener">bstponline.com<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Badger State Tractor Pullers, Wisconsin</span></li>
@@ -385,7 +398,7 @@
     <div class="sc-h"><h2 class="h2" id="tips-t">First time at a pull?</h2></div>
     <ol class="sc-tips">
       <li><span class="h3">What is Pro Stock</span><p>A diesel class with limits on engine and turbo. “The Evil One” runs a Cat 3208 V8, 680 CI, at 10,000 lb.</p></li>
-      <li><span class="h3">What is a full pull</span><p>The sled gets harder to drag the farther it goes. Reach the end of the track and it's a full pull.</p></li>
+      <li><span class="h3">What is a full pull</span><p>The sled gets harder to drag the farther it goes. Reach the end of the track and it’s a full pull.</p></li>
       <li><span class="h3">Competition or exhibition</span><p>A competition counts for the class standings. An exhibition is a run for the crowd, no points on the line.</p></li>
       <li><span class="h3">Arrive early</span><p>Grandstands fill before the first class. Come early for a good seat and a look at the pits.</p></li>
       <li><span class="h3">Bring ear protection</span><p>Pro Stock tractors are loud. Ear plugs or muffs for everyone, kids first.</p></li>
@@ -472,6 +485,7 @@
      (sábados del mes pasado y el próximo sábado) para que el calendario se vea lleno. */
   var EVENTS = [
     { date: '', event: 'Green County Fall Nationals', short: 'Monroe', city: 'Monroe, WI', league: 'Badger State Tractor Pullers', type: 'Competition', status: 'Done', result: '', distance: '', video: 'https://www.youtube.com/watch?v=HfJ5FAJJ5Ac', website: 'https://greencountyfair.net/', gallery: 'monroe-' + SEASON },
+    { date: '', month: '2026-08', event: 'First pull attempt', short: 'First', city: '[pending]', league: '[pending]', type: 'Competition', status: 'Done', result: 'Ended early, minor issue', distance: '', video: '', website: '', gallery: 'first-pull-' + SEASON },
     { date: '', event: 'Exhibition run', short: 'Exhib.', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 0, gallery: 'exhibition-1' },
     { date: '', event: 'Exhibition run', short: 'Exhib.', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 1, gallery: 'exhibition-2' },
     { date: '', event: 'Exhibition run', short: 'Exhib.', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 2, gallery: 'exhibition-3' },
@@ -518,13 +532,15 @@
   function shortOf(e) { return e.short || (e.event || 'Pull').split(/\s+/)[0]; }
   function typeBadge(e) { return '<span class="badge tb' + (isExh(e) ? '' : ' badge--ink') + '">' + esc(e.type || 'Competition') + '</span>'; }
   function typeTag(e) { return '<span class="tt">' + esc(e.type || 'Competition') + '</span>'; }
-  function ownTags(e) { return e.example ? '<span class="own-tag">Ejemplo</span>' : ''; }
-  function dateText(e) { return e.date ? fmtDate(e.date) : '[date pending]'; }
+  function ownTags(e) { return e.example ? '<span class="own-tag">Example</span>' : ''; }
+  /* month: mes conocido sin día (p. ej. el primer pull, agosto 2026) */
+  function dateText(e) { return e.date ? fmtDate(e.date) : e.month ? MONTHS[+e.month.slice(5, 7) - 1] + ' ' + e.month.slice(0, 4) : 'Date pending'; }
+  function dateSub(e) { return e.example && e.date ? '<span class="sub ex-date">Sample date</span>' : !e.date && e.month ? '<span class="sub">Day pending</span>' : ''; }
   function linksOf(e) {
     var up = e.status === 'Upcoming', l = [];
     /* pull pasado (Done): liga a su evento en la Galería (gallery.html?event=handle) */
     if (e.status === 'Done' && !e.sampleOnly) l.push('<a href="gallery.html?event=' + encodeURIComponent(galleryOf(e)) + '">Photos &amp; video<span class="vh"> from ' + esc(e.event) + ' in the gallery</span></a>');
-    if (e.video) l.push(ext(e.video, isYT(e.video) ? 'YouTube video' : 'Video', ' of ' + e.event));
+    if (e.video) l.push(ext(e.video, 'Video of the run', ' of ' + e.event));
     if (e.website) l.push(ext(e.website, up ? 'Tickets and info' : 'Event site', ' for ' + e.event));
     return l;
   }
@@ -538,8 +554,7 @@
     return '<span class="res">' + p.join('') + '</span>';
   }
   function eventCell(e) {
-    return '<b>' + esc(e.event || 'Untitled pull') + ownTags(e) + '</b><span class="sub">' + esc(e.city) + '</span>' +
-      (isYT(e.video) && e.status === 'Done' ? '<span class="sub sub--yt">The run in our YouTube video</span>' : '');
+    return '<b>' + esc(e.event || 'Untitled pull') + ownTags(e) + '</b><span class="sub">' + esc(e.city) + '</span>';
   }
   function icsBtn(e, k) { return '<button class="sc-linkbtn sc-ics" type="button" data-ics="' + k + '">Add to calendar<span class="vh">: ' + esc(e.event) + '</span></button>'; }
 
@@ -547,7 +562,7 @@
   var HEAD_PAST = '<thead><tr><th scope="col">Date</th><th scope="col">Event</th><th scope="col">Type</th><th scope="col">League</th><th scope="col">Result</th><th scope="col">Video, photos</th></tr></thead>';
   function rowUp(e, k) {
     var l = linksOf(e);
-    return '<tr><td data-label="Date"><span class="num">' + esc(dateText(e)) + '</span></td>' +
+    return '<tr' + (e.example ? ' class="is-example"' : '') + '><td data-label="Date"><span class="num">' + esc(dateText(e)) + '</span>' + dateSub(e) + '</td>' +
       '<td data-label="Event" class="wide">' + eventCell(e) + '</td>' +
       '<td data-label="Type">' + typeTag(e) + '</td>' +
       '<td data-label="League">' + esc(e.league) + '</td>' +
@@ -556,7 +571,7 @@
   }
   function rowPast(e) {
     var l = linksOf(e);
-    return '<tr><td data-label="Date"><span class="num">' + esc(dateText(e)) + '</span>' + (e.date ? '' : '<span class="sub">Season ' + yearOf(e) + '</span>') + '</td>' +
+    return '<tr' + (e.example ? ' class="is-example"' : '') + '><td data-label="Date"><span class="num">' + esc(dateText(e)) + '</span>' + (dateSub(e) || (e.date ? '' : '<span class="sub">Season ' + yearOf(e) + '</span>')) + '</td>' +
       '<td data-label="Event" class="wide">' + eventCell(e) + '</td>' +
       '<td data-label="Type">' + typeTag(e) + '</td>' +
       '<td data-label="League">' + esc(e.league) + '</td>' +
@@ -623,7 +638,7 @@
       : '<table class="sc-table"><tbody><tr class="sc-empty"><td colspan="6"><b>' + (cur ? 'Dates coming soon' : 'No upcoming pulls in ' + S.year) + '</b>' +
         (cur ? 'New ' + SEASON + ' dates go here and on ' + ext('https://www.facebook.com/heavymetalprostock/', 'Facebook') + ' first. <a href="#alerts">Join The Evil List</a> to hear before every pull.' : '') +
         (past.length ? '<span class="sub" style="margin-top:6px">' + past.length + ' past pull' + (past.length > 1 ? 's' : '') + ' in ' + S.year + '. <button type="button" class="sc-linkbtn" data-go="past">See past results</button></span>' : '') + '</td></tr></tbody></table>';
-    var done = past.filter(function (e) { return e.status === 'Done'; });
+    var done = past.filter(function (e) { return e.status === 'Done' && !e.sampleOnly; });
     var nC = done.filter(function (e) { return !isExh(e); }).length;
     var nE = done.filter(isExh).length;
     var nW = done.filter(isWin).length;
@@ -636,7 +651,7 @@
   }
 
   /* calendario: mes con días marcados (botones con aria-label), chip por pull, detalle en el panel */
-  function evLabel(e) { return esc(e.event) + ', ' + esc(e.type) + (e.status === 'Upcoming' ? ', upcoming' : e.status === 'Cancelled' ? ', cancelled' : '') + (e.example ? ' (ejemplo)' : ''); }
+  function evLabel(e) { return esc(e.event) + ', ' + esc(e.type) + (e.status === 'Upcoming' ? ', upcoming' : e.status === 'Cancelled' ? ', cancelled' : '') + (e.example ? ' (example)' : ''); }
   function chip(e) {
     return '<span class="ev ' + (isExh(e) ? 'ev--e' : 'ev--c') + (e.status === 'Upcoming' ? ' ev--up' : '') + (e.status === 'Cancelled' ? ' ev--x' : '') + '" aria-hidden="true">' +
       esc(shortOf(e)) + (e.status === 'Upcoming' ? '<small>Upcoming</small>' : e.status === 'Cancelled' ? '<small>Cancelled</small>' : shortOf(e) === e.type ? '' : '<small>' + esc(e.type) + '</small>') + '</span>';
@@ -665,7 +680,7 @@
         var lab = fmtDate(k, true) + ': ' + list.length + ' pull' + (list.length > 1 ? 's' : '') + ', ' + list.map(evLabel).join('; ') + (k === todayK ? ' (today)' : '');
         var ex = list.some(function (e) { return e.example; });
         h += '<button type="button" class="day" data-day="' + k + '" aria-label="' + lab + '" aria-pressed="' + (on ? 'true' : 'false') + '"><span class="day__top"><span class="d" aria-hidden="true">' + d + '</span>' +
-          (ex ? '<span class="own-tag" aria-hidden="true"><span class="l">Ejemplo</span><span class="s">Ej.</span></span>' : '') + '</span>' +
+          (ex ? '<span class="own-tag" aria-hidden="true"><span class="l">Example</span><span class="s">e.g.</span></span>' : '') + '</span>' +
           list.map(chip).join('') + '</button>';
       } else {
         h += '<span class="d"' + (k === todayK ? ' aria-label="' + d + ', today"' : '') + '>' + d + '</span>';
@@ -682,15 +697,14 @@
     var l = linksOf(e), up = e.status === 'Upcoming';
     return '<article class="pd"><div class="pd__top">' + typeBadge(e) + (up ? '<span class="badge badge--line">Upcoming</span>' : '') + ownTags(e) + '</div>' +
       '<h4 class="h3">' + esc(e.event) + '</h4>' +
-      '<dl><dt>Date</dt><dd class="num">' + esc(e.date ? fmtDate(e.date, true) : '[date pending]') + '</dd>' +
+      '<dl><dt>Date</dt><dd class="num">' + esc(e.date ? fmtDate(e.date, true) + (e.example ? ' (sample date)' : '') : dateText(e)) + '</dd>' +
       '<dt>Place</dt><dd>' + esc(e.city) + '</dd><dt>League</dt><dd>' + esc(e.league) + '</dd>' +
       (up ? '' : '<dt>Result</dt><dd>' + resultHtml(e) + '</dd>') +
       (l.length ? '<dt>Links</dt><dd><span class="links">' + l.join('') + '</span></dd>' : '') + '</dl>' +
-      (isYT(e.video) && !up ? '<p class="sub sub--yt" style="margin:0">The run in our YouTube video.</p>' : '') +
       (up && e.date ? '<div>' + icsBtn(e, idx) + '</div>' : '') + '</article>';
   }
   function sideItem(e, attr) {
-    var dt = e.date ? dObj(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'TBA';
+    var dt = e.date ? dObj(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : e.month ? MONTHS[+e.month.slice(5, 7) - 1].slice(0, 3) : 'TBA';
     return '<li><button type="button" class="side-item" ' + attr + '><span class="side-dt num">' + esc(dt) + '</span><span><span class="side-n">' + esc(e.event) + ownTags(e) + '</span><span class="sub">' + esc(e.type) + (e.status === 'Upcoming' ? ' · Upcoming' : '') + ' · ' + esc(e.city) + '</span></span></button></li>';
   }
   function renderSide(map) {
@@ -781,7 +795,7 @@
     var next = dObj(e.date); next.setDate(next.getDate() + 1);
     var d2 = isoOf(next).replace(/-/g, '');
     var desc = icsTxt('“The Evil One” · Pro Stock · ' + e.type + ' · ' + e.league) + (e.website ? '\\n' + icsTxt('Info: ' + e.website) : '');
-    return ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Heavy Metal Pro Stock//Schedule//EN', 'BEGIN:VEVENT',
+    return ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Heavy Metal Pro Stock The Evil One//Schedule//EN', 'BEGIN:VEVENT',
       'UID:' + d + '-' + (e.event || 'pull').replace(/\W+/g, '-').toLowerCase() + '@heavymetalprostock',
       'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z',
       'DTSTART;VALUE=DATE:' + d, 'DTEND;VALUE=DATE:' + d2,
@@ -825,7 +839,7 @@
     applySamples(); fillYears();
     if (e.status !== 'Hidden') { S.year = yearOf(e); $('year').value = S.year; S.month = e.date ? +e.date.slice(5, 7) - 1 : bestMonth(); }
     S.sel = e.date && e.status !== 'Hidden' ? { day: e.date } : null; pickTab(); render();
-    var gone = had && !samplesOn ? ' Los “Ejemplo” se quitaron porque la temporada ya tiene un pull con fecha real.' : '';
+    var gone = had && !samplesOn ? ' Los “Example” se quitaron porque la temporada ya tiene un pull con fecha real.' : '';
     if (e.status === 'Hidden') { box.hidden = true; amsg.textContent = 'Guardado con Status Hidden: la entrada sigue en el admin pero ya no sale arriba.' + gone; return; }
     amsg.innerHTML = 'Guardado. Ya cambió arriba: lista, calendario, contadores y filtro de año.' + gone +
       (e.date ? ' <button type="button" class="sc-linkbtn" id="adm-see">Verlo en el calendario</button>' : ' Sin fecha sale en la lista como “date pending”.') +

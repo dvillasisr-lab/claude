@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Lightning Night Tee · Special Edition · Heavy Metal Pro Stock: “The Evil One”</title>
-<meta name="description" content="Special edition from Heavy Metal Pro Stock: “The Evil One”. The Lightning Night Tee, a limited run for the night the engine fired and lightning struck. Limited time and quantity.">
+<title>Lightning Night Tee · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Lightning Night Tee, a special edition from Heavy Metal Pro Stock: “The Evil One” for the night the engine fired and lightning struck. Limited run.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -66,6 +66,8 @@ html,body{overflow-x:clip}
 .bar{height:6px;background:var(--line);position:relative;overflow:hidden}
 .bar span{position:absolute;left:0;top:0;bottom:0;width:var(--fill,0%);background:var(--ink);transition:width .4s}
 .bar.is-low span{background:var(--alert)}
+/* antes del lanzamiento: rayado suave (todavía no se vende nada), no una barra negra llena que se lee como "agotado" */
+.bar.is-soon span{background:repeating-linear-gradient(135deg,#B9B6AF 0 4px,transparent 4px 8px)}
 
 /* talla */
 .opt{border:0;margin:0;padding:0;min-width:0}
@@ -127,6 +129,14 @@ html,body{overflow-x:clip}
 .no-notes .t-demo{display:none}
 .arch__empty{grid-column:1/-1;padding:20px 0;display:grid;gap:6px;max-width:52ch}
 .arch__empty p{margin:0;color:var(--soft)}
+/* con 1 o 2 ediciones: tarjeta ancha (foto a la izquierda, texto al lado) en vez de una columnita de 4 */
+.arch.is-wide{grid-template-columns:minmax(0,1fr);row-gap:16px}
+.arch.is-wide .ed{grid-template-columns:minmax(0,280px) minmax(0,1fr);gap:clamp(16px,3vw,48px);align-items:center;background:var(--bg);padding:clamp(12px,1.6vw,20px)}
+.arch.is-wide .ed__txt{gap:8px;padding:0;max-width:60ch}
+.arch.is-wide .ed__txt .card__name{font-size:var(--t-h2);line-height:1.15}
+.arch.is-wide .ed__story{font-size:var(--t-sm);color:var(--soft)}
+@media (min-width:1200px){.arch.is-wide.is-two{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:16px}}
+@media (max-width:600px){.arch.is-wide .ed{grid-template-columns:minmax(0,120px) minmax(0,1fr);align-items:start}}
 </style>
 </head>
 <body>
@@ -219,7 +229,7 @@ html,body{overflow-x:clip}
     <div class="sect-head"><h2 class="h2" id="past-t">Past editions</h2><p id="past-count" role="status" aria-live="polite"></p></div>
     <div class="yrs" role="group" aria-label="Filter by year" id="yrs"></div>
     <ul class="arch" id="arch"></ul>
-    <p class="note">En Shopify es la colección "Special edition". Cada producto tiene metacampos que llenas en el admin (Productos &gt; el producto &gt; Metacampos): Start date, End date, Run size y Story. La página cuenta sola, cambia Coming soon / Live sola y marca Sold out solo cuando el inventario llega a 0; al pasar la fecha de cierre pasa a "Past editions". Run size, fechas y precio son placeholder. La edición de ejemplo del archivo se borra.</p>
+    <p class="note">En Shopify es la colección "Special edition". Cada producto tiene metacampos que llenas en el admin (Productos &gt; el producto &gt; Metacampos): Start date, End date, Run size y Story. La página cuenta sola, cambia Coming soon / Live sola y marca Sold out solo cuando el inventario llega a 0; al pasar la fecha de cierre pasa a "Past editions". Run size, fechas y precio son placeholder. La edición del archivo marcada <b>Example</b> es solo de muestra: con “Ocultar notas” (vista del cliente) no sale y el archivo dice “Nothing in the archive yet”. Con una o dos ediciones se ven como tarjeta ancha; desde tres, en cuadrícula.</p>
   </div>
 </section>
 </main>
@@ -243,7 +253,7 @@ html,body{overflow-x:clip}
       start: SEASON + '-10-17T19:00:00-05:00', end: SEASON + '-10-31T23:59:00-05:00',
       runSize: null, left: null,
       story: 'For the night Chris fired the engine for the first time. <q>At that exact moment, lightning struck, and the power went out.</q> We call it a sign. This tee is for that night.' },
-    { id: 'example-edition', year: SEASON, demo: true, name: 'Edition name', sub: 'Example archive entry',
+    { id: 'example-edition', year: SEASON, demo: true, name: 'Example edition', sub: 'Example entry: each closed edition keeps its name, season, run size and story here.',
       start: SEASON + '-06-01T19:00:00-05:00', end: SEASON + '-06-15T23:59:00-05:00', runSize: null, left: 0 }
   ];
   var ED = EDITIONS[0], P = prod(ED.id) || { name: 'Lightning Night Tee', colors: ['Matte Black'], sizes: ['S', 'M', 'L', 'XL', '2XL', '3XL'], cat: 'limited' };
@@ -305,6 +315,7 @@ html,body{overflow-x:clip}
     $('units-l').textContent = s === 'soon' ? 'Full run at launch' : 'Units left';
     $('bar').style.setProperty('--fill', fill + '%');
     $('bar').classList.toggle('is-low', s === 'live' && fill <= 20);
+    $('bar').classList.toggle('is-soon', s === 'soon');
     /* talla, botón y notify */
     var on = s === 'live';
     [].forEach.call(document.querySelectorAll('#sizes input'), function (i) { i.disabled = !on; if (!on) i.checked = false; });
@@ -349,25 +360,36 @@ html,body{overflow-x:clip}
 
   /* archivo: ediciones cerradas, filtro por año */
   var now = new Date();
-  var past = EDITIONS.filter(function (e) { return e !== ED && realState(e, now) === 'sold'; });
-  var years = [SEASON]; past.forEach(function (e) { if (years.indexOf(e.year) < 0) years.push(e.year); }); years.sort(function (a, b) { return b - a; });
-  var yr = SEASON;
+  /* la edición de ejemplo solo se ve con las notas del boceto; con "Ocultar notas" (vista del cliente) el archivo sale vacío, como está hoy */
+  var ALL_PAST = EDITIONS.filter(function (e) { return e !== ED && realState(e, now) === 'sold'; }), past = [], years = [], yr = SEASON;
+  function pickPast() {
+    var cust = document.documentElement.classList.contains('no-notes');
+    past = ALL_PAST.filter(function (e) { return !(cust && e.demo); });
+    years = [SEASON]; past.forEach(function (e) { if (years.indexOf(e.year) < 0) years.push(e.year); }); years.sort(function (a, b) { return b - a; });
+    if (yr !== 'all' && years.indexOf(yr) < 0) yr = SEASON;
+  }
   function card(e) {
     var p = prod(e.id) || { name: e.name, sub: e.sub, colors: ['Smoke Gray'], cat: 'tees', sizes: [] };
     return '<li class="ed"><div class="ed__media"><span class="ph ph--mock">' + (window.hmMock ? window.hmMock(p) : '') + '</span><span class="badge badge--ink">Sold out</span></div>' +
-      '<div class="ed__txt"><h3 class="card__name">' + esc(p.name) + (e.demo ? ' <span class="badge t-demo">Example</span>' : '') + '</h3><p>' + e.year + ' season · Run of ' + (e.runSize == null ? 'XX' : e.runSize) + '</p><p>' + esc(p.sub || '') + '</p></div></li>';
+      '<div class="ed__txt"><h3 class="card__name">' + esc(p.name) + (e.demo ? ' <span class="badge t-demo">Example</span>' : '') + '</h3><p>' + e.year + ' season · Run of ' + (e.runSize == null ? 'XX' : e.runSize) + '</p><p class="ed__story">' + (e.story ? e.story : esc(p.sub || '')) + '</p></div></li>';
   }
   function renderPast() {
+    pickPast();
     var list = past.filter(function (e) { return yr === 'all' || e.year === yr; });
+    $('yrs').hidden = !past.length;
+    $('arch').classList.toggle('is-wide', list.length > 0 && list.length <= 2);
+    $('arch').classList.toggle('is-two', list.length === 2);
     $('yrs').innerHTML = years.map(function (y) { return [y, String(y)]; }).concat([['all', 'All']]).map(function (y) {
       var n = y[0] === 'all' ? past.length : past.filter(function (e) { return e.year === y[0]; }).length;
       return '<button type="button" class="chip" data-y="' + y[0] + '" aria-pressed="' + (yr === y[0]) + '">' + y[1] + '<span class="n">' + n + '</span></button>';
     }).join('');
-    $('past-count').textContent = list.length + (list.length === 1 ? ' edition' : ' editions') + ' · ' + (yr === 'all' ? 'all years' : yr);
+    $('past-count').textContent = past.length ? list.length + (list.length === 1 ? ' edition' : ' editions') + ' · ' + (yr === 'all' ? 'all years' : yr) : '';
     $('arch').innerHTML = list.length ? list.map(card).join('') :
       '<li class="arch__empty"><p class="h3">Nothing in the archive yet</p><p>When a special edition closes or sells out, it moves here so you can see every run “The Evil One” has done.</p></li>';
   }
   renderPast();
+  /* al mostrar u ocultar las notas del boceto, el archivo se vuelve a pintar */
+  new MutationObserver(renderPast).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
   $('yrs').addEventListener('click', function (e) {
     var b = e.target.closest('[data-y]'); if (!b) return;
     var v = b.getAttribute('data-y'); yr = v === 'all' ? 'all' : +v; renderPast();

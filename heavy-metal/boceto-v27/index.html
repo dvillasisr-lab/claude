@@ -137,7 +137,7 @@ html,body{overflow-x:clip}
 .nx__stats dd{order:-1;margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:clamp(30px,3vw,40px);line-height:1}
 .nx__stats dt{font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 .nx__stats dt small{display:block;font-size:11px;font-weight:500;letter-spacing:0;text-transform:none}
-.nx__go{display:grid;gap:10px;justify-items:center}
+.nx__go{display:grid;gap:12px;justify-items:start}
 .nx__go .link{color:var(--ink)}
 @media (max-width:1024px){
   .nx__in{grid-template-columns:auto minmax(0,1fr)}
@@ -152,18 +152,24 @@ html,body{overflow-x:clip}
 .nx__upd{margin:0;font-size:11px;color:var(--ink);opacity:.8}
 .nx .note{grid-column:1/-1;margin:0}
 
-/* 5 · SPONSORSHIP: una línea y un botón (los paquetes y el form viven en sponsors.html) */
+/* 5 · SPONSORSHIP (v27): a todo el ancho = pitch a la izquierda, alcance (datos) al centro, un botón a la derecha.
+   La franja "Your logo could be here" de hm.js viene justo después con los lugares para logos: esta banda no repite
+   esa invitación, da lo que la franja no tiene (cómo funciona, números y paquetes). */
 .sp{background:var(--surface);border-bottom:1px solid var(--line)}
-.sp__in{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:16px 32px;padding-block:clamp(28px,3.4vw,44px)}
-.sp__copy{display:grid;gap:6px;min-width:0;max-width:62ch}
-.sp__line{margin:0;font-size:var(--t-md);color:var(--soft)}
-.sp__line b{color:var(--ink);font-weight:800}
+.sp__in{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) auto;align-items:center;gap:20px clamp(24px,3.5vw,56px);padding-block:clamp(28px,3.4vw,44px)}
+.sp__copy{display:grid;gap:6px;min-width:0;max-width:52ch}
+.sp__line{margin:0;font-size:var(--t-sm);color:var(--soft)}
+.sp__stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 24px;margin:0;padding-left:clamp(16px,2.4vw,40px);border-left:1px solid var(--line)}
+.sp__stats div{display:grid;gap:2px}
+.sp__stats dd{order:-1;margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:clamp(30px,3vw,44px);line-height:1}
+.sp__stats dt{font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--soft)}
 .sp .note{grid-column:1/-1;margin:0}
 /* link secundario discreto a book.html, debajo del botón (no compite con él) */
 .sp__cta{display:grid;justify-items:center;gap:10px}
 .sp__alt{font-size:var(--t-sm);font-weight:600;color:var(--soft);text-decoration:underline;text-underline-offset:3px;padding:4px 2px}
 .sp__alt:hover{color:var(--ink)}
-@media (max-width:600px){.sp__in{grid-template-columns:1fr;align-items:start}.sp__cta{justify-items:stretch}.sp__in .btn{width:100%}.sp__alt{justify-self:center}}
+@media (max-width:1024px){.sp__in{grid-template-columns:minmax(0,1fr) auto}.sp__stats{grid-column:1/-1;grid-row:2;padding-left:0;border-left:0;border-top:1px solid var(--line);padding-top:14px;max-width:520px}}
+@media (max-width:600px){.sp__in{grid-template-columns:1fr;align-items:start}.sp__stats{grid-row:auto}.sp__cta{justify-items:stretch}.sp__in .btn{width:100%}.sp__alt{justify-self:center}}
 </style>
 <div data-hm-header data-current="home"></div>
 <main id="main">
@@ -351,14 +357,15 @@ html,body{overflow-x:clip}
     </div>
   </section>
 
-  <!-- 4 · NEXT PULL: el próximo pull con fecha; si no hay, "Next pull: date TBA" + Facebook. Contador de la temporada. -->
+  <!-- 4 · NEXT PULL: el próximo pull con fecha; si no hay, "Next pull: dates coming soon" + Facebook (mismas palabras que el
+       estado vacío de schedule.html: "Dates coming soon" / "New 2026 dates go here and on Facebook first"). Contador de la temporada. -->
   <section class="nx" aria-labelledby="nx-title">
     <div class="wrap nx__in">
       <div class="nx__date" id="nx-date" aria-hidden="true"><span>Date</span><b>TBA</b></div>
       <div class="nx__ev">
         <p class="nx__kick" id="nx-kick">Next pull</p>
-        <h2 class="h1" id="nx-title">Next pull: date TBA</h2>
-        <p class="nx__meta" id="nx-meta">New dates hit <a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook first<span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span></a></p>
+        <h2 class="h1" id="nx-title">Next pull: dates coming soon</h2>
+        <p class="nx__meta" id="nx-meta">New <span id="nx-yr2">2026</span> dates go on the schedule and on <a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook first<span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span></a></p>
       </div>
       <div class="nx__season">
         <p class="nx__kick"><span id="nx-yr" class="num">2026</span> season so far</p>
@@ -367,23 +374,28 @@ html,body{overflow-x:clip}
         <p class="nx__upd" id="nx-upd"></p>
       </div>
       <div class="nx__go">
-        <a class="btn" href="schedule.html">See the schedule</a>
+        <a class="link" href="schedule.html">See the schedule</a>
         <a class="link" href="log.html">Read the Pit Log</a>
       </div>
-      <p class="note">Próximo pull = Contenido &gt; Metaobjetos &gt; Pull event (sale el primero con fecha futura; sin fecha sale “date TBA”; prueba con <a href="index.html?next=1">?next=1</a>). Contadores = Metaobjetos &gt; Season stats (wins en 0 = “Coming soon”).</p>
+      <p class="note">Próximo pull = Contenido &gt; Metaobjetos &gt; Pull event (sale el primero con fecha futura; sin fecha sale “dates coming soon”, como el estado vacío de Schedule; la fila “Season finale pull” de Schedule es un Ejemplo; prueba con <a href="index.html?next=1">?next=1</a>). Contadores = Metaobjetos &gt; Season stats (wins en 0 = “Coming soon”).</p>
     </div>
   </section>
 
-  <!-- 5 · SPONSORSHIP: una línea con alcance (desde datos) y un botón. Paquetes y contacto viven en sponsors.html -->
+  <!-- 5 · SPONSORSHIP: pitch + alcance (desde datos) + un botón. Paquetes y contacto viven en sponsors.html.
+       La franja "Your logo could be here" (hm.js, antes del footer) muestra los lugares para logos: aquí no se repite. -->
   <section class="sp" aria-labelledby="sp-title">
     <div class="wrap sp__in">
       <div class="sp__copy">
         <p class="label muted">Sponsorship</p>
         <h2 class="h1" id="sp-title">Partner with “The Evil One”</h2>
-        <p class="sp__line" id="sp-line">Your brand in front of <b>100,000+ fans</b> across <b>20+ pulls</b> a season (est.)</p>
+        <p class="sp__line">Pick a package, then pick your spot on the tractor. The sponsor info kit (packages, decal map, real photos) is free and comes within 2 business days.</p>
       </div>
+      <dl class="sp__stats" id="sp-stats">
+        <div><dt>Fans a season (est.)</dt><dd class="num" id="sp-fans">100,000+</dd></div>
+        <div><dt>Pulls a season</dt><dd class="num" id="sp-pulls">20+</dd></div>
+      </dl>
       <div class="sp__cta"><a class="btn" href="sponsors.html">See sponsor packages</a><a class="sp__alt" href="book.html">Book the team for your event<span aria-hidden="true"> →</span></a></div>
-      <p class="note">Frase de venta = Metaobjetos &gt; Sponsor stat (pulls por temporada × fans por pull, los mismos de Sponsors; vacíos = “XX”). Frases de la cinta amarilla = bloques de texto de la sección HM Hero.</p>
+      <p class="note">Alcance = Metaobjetos &gt; Sponsor stat (pulls por temporada × fans por pull, los mismos de Sponsors; vacíos = “XX”). La franja de logos que sigue la pone hm.js. Frases de la cinta amarilla = bloques de texto de la sección HM Hero.</p>
     </div>
   </section>
 </main>
@@ -417,7 +429,7 @@ html,body{overflow-x:clip}
 })();
 
 /* Next pull + contadores: simula los metaobjetos "Pull event" (mismo formato que schedule.html) y "Season stats".
-   Sale el primer pull con fecha futura; si no hay, "Next pull: date TBA" y el link a Facebook.
+   Sale el primer pull con fecha futura; si no hay, "Next pull: dates coming soon" y el link a Facebook (como schedule.html).
    Boceto: ?next=1 agrega un pull de ejemplo con fecha para ver ese estado. */
 (function () {
   var SEASON = window.HM_SEASON || new Date().getFullYear();
@@ -434,11 +446,11 @@ html,body{overflow-x:clip}
   /* frase de venta: los mismos valores que Sponsors (Metaobjetos > Sponsor stat). fans = pulls × fans por pull; vacíos = "XX" */
   var PITCH = { pulls: 20, fansPerPull: 5000 };
   var $ = function (id) { return document.getElementById(id); };
-  var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var today = new Date().toISOString().slice(0, 10);
   var next = EVENTS.filter(function (e) { return e.date && e.date >= today && e.status !== 'Hidden' && e.status !== 'Cancelled'; })
     .sort(function (a, b) { return a.date < b.date ? -1 : 1; })[0];
-  $('nx-kick').hidden = !next;   /* sin fecha, el título ya dice "Next pull: date TBA" */
+  $('nx-kick').hidden = !next;   /* sin fecha, el título ya dice "Next pull: dates coming soon" */
+  $('nx-yr2').textContent = SEASON;
   if (next) {
     var d = new Date(next.date + 'T12:00:00');
     $('nx-date').innerHTML = '<span>' + d.toLocaleString('en-US', { month: 'short' }) + '</span><b class="num">' + d.getDate() + '</b>';
@@ -457,7 +469,8 @@ html,body{overflow-x:clip}
     if (st.updated) $('nx-upd').textContent = 'Last updated: ' + new Date(st.updated + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   }
   var fans = PITCH.pulls && PITCH.fansPerPull ? PITCH.pulls * PITCH.fansPerPull : 0;
-  $('sp-line').innerHTML = 'Your brand in front of <b>' + (fans ? esc(fans.toLocaleString('en-US')) : 'XX') + '+ fans</b> across <b>' + (PITCH.pulls ? esc(PITCH.pulls) : 'XX') + '+ pulls</b> a season (est.)';
+  $('sp-fans').textContent = (fans ? fans.toLocaleString('en-US') : 'XX') + '+';
+  $('sp-pulls').textContent = (PITCH.pulls ? PITCH.pulls : 'XX') + '+';
 })();
 
 /* First fire: el póster "se va la luz" una vez al entrar en pantalla; play avisa que el video está pendiente. */

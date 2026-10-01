@@ -182,3 +182,6 @@
 @media (max-width:600px){.fp__brand .btn-row{width:auto;gap:22px}.fp__brand .btn-row .btn{font-size:12px}}
 .fp__ctrl.is-icon span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 .fp__ctrl.is-icon .fp__ctrl-ico{width:20px;height:20px}
+/* v27: en celular y tablet el tacómetro mide 58-76px y el texto "RPM" quedaba de ~5-7px (ilegible): se simplifica a
+   solo la aguja. En escritorio (124px) el texto mide ~11px y se queda. */
+@media (max-width:860px){.fp__tach text{display:none}}

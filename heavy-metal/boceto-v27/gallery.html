@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Gallery · Heavy Metal Pro Stock: “The Evil One”</title>
+<title>Photo Gallery · Heavy Metal Pro Stock: “The Evil One”</title>
 <meta name="description" content="Photos and video of Heavy Metal Pro Stock: “The Evil One”, event by event. Pulls, exhibitions and test days, filtered by season, event and photos or videos.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
@@ -38,7 +38,7 @@ html,body{overflow-x:clip}
 .g-chip:hover{border-color:var(--ink)}
 .g-chip svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none}
 .g-chips__clear{background:none;border:0;font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:32px;padding:0 4px;color:var(--ink)}
-.g-upd{margin:18px 0 0;font-size:11px;color:var(--mute);text-align:center}
+.g-upd{margin:12px 0 0;font-size:11px;color:var(--mute);text-align:center}
 
 /* panel lateral (mismo que Shop): Season, Event type y Event (buscador + lista con miniatura) */
 .g-scrim{position:fixed;inset:0;z-index:79;background:rgba(28,27,25,.4)}
@@ -134,7 +134,7 @@ html,body{overflow-x:clip}
 .g-meter span{display:block;height:100%;background:var(--ink)}
 
 /* 4 · CTA */
-.g-cta{margin-top:clamp(28px,3vw,44px);padding-block:22px;background:var(--surface);border-top:1px solid var(--line)}
+.g-cta{margin-top:clamp(20px,2vw,28px);padding-block:22px;background:var(--surface);border-top:1px solid var(--line)}
 .g-cta__in{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px 24px}
 .g-cta p{margin:2px 0 0;font-size:var(--t-sm);color:var(--soft)}
 .g-cta .btn svg{width:16px;height:16px;fill:currentColor}
@@ -143,7 +143,7 @@ html,body{overflow-x:clip}
 .g-how{padding-block:24px 36px}
 .g-how__box{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:20px clamp(20px,3vw,48px);background:#FFF6CC;border-left:3px solid var(--accent);padding:18px clamp(16px,2vw,28px);font-size:var(--t-xs);color:var(--ink)}
 @media (max-width:860px){.g-how__box{grid-template-columns:minmax(0,1fr)}}
-.g-how h2{font-family:var(--f-sans);font-size:var(--t-sm);font-weight:700;text-transform:none;letter-spacing:0;margin:0 0 8px}
+.g-how .g-how__t{font-family:var(--f-sans);font-size:var(--t-sm);font-weight:700;text-transform:none;letter-spacing:0;margin:0 0 8px}
 .g-how ol{margin:0;padding-left:18px;display:grid;gap:6px;line-height:1.5}
 .g-how p{margin:10px 0 0;line-height:1.5}
 .g-test{background:var(--ink);color:var(--accent);border:0;font:inherit;font-weight:700;padding:2px 8px;cursor:pointer}
@@ -257,7 +257,7 @@ html,body{overflow-x:clip}
   <div class="gw">
     <div class="g-how__box">
       <div>
-        <h2 id="how-t">Nota de boceto · Cómo agrego y edito fotos</h2>
+        <p class="g-how__t" id="how-t">Nota de boceto · Cómo agrego y edito fotos</p>
         <ol>
           <li><b>Cada evento es un álbum</b> en Shopify: Contenido &gt; Metaobjetos &gt; Album. Tiene nombre del evento, fecha, liga, link al pull, fotos y videos.</li>
           <li><b>Agregar fotos:</b> Contenido &gt; Archivos &gt; Subir. Luego abre el álbum, “Agregar fotos” y elígelas (varias a la vez). Guardar.</li>
@@ -605,8 +605,8 @@ html,body{overflow-x:clip}
         (few ? '<img class="bg" src="img/' + esc(v.poster) + '.webp" alt="" aria-hidden="true">' : '') +
         '<img class="photo" src="img/' + esc(v.poster) + '.webp" alt="" width="' + d[0] + '" height="' + d[1] + '" loading="lazy">' +
         '<span class="badge g-kind" aria-hidden="true">Video</span><span class="g-play" aria-hidden="true">' + PLAY + '</span>' +
-        '<span class="g-cap" aria-hidden="true"><b>' + esc(a.event) + '</b><span>' + esc([whenShort(a), a.city].filter(Boolean).join(' · ')) + ' · Watch on YouTube ↗</span></span>' +
-        '<span class="vh">' + esc(v.title) + ': watch on YouTube (opens in a new tab)</span></a></li>';
+        '<span class="g-cap" aria-hidden="true"><b>' + esc(a.event) + '</b><span>' + esc([whenShort(a), a.city].filter(Boolean).join(' · ')) + ' · Watch the run ↗</span></span>' +
+        '<span class="vh">' + esc(v.title) + ': watch the video (opens in a new tab)</span></a></li>';
     }
     var p = it.p, dd = dims(p.img);
     return '<li data-i="' + i + '"><button type="button" class="g-t" data-wall="' + wall + '" data-i="' + i + '" aria-label="' + esc('Open photo: ' + p.alt + '. ' + a.event + ', ' + whenShort(a)) + '">' +

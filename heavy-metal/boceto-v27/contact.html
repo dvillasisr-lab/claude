@@ -3,22 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Contact · Heavy Metal Pro Stock: “The Evil One”</title>
+<title>Contact the Team · Heavy Metal Pro Stock: “The Evil One”</title>
 <meta name="description" content="Questions about an order, returns, sponsorship or press? Send the Heavy Metal Pro Stock: “The Evil One” team a message. We reply within 2 business days.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
 <style>
-/* Contact v4: bloque compacto y centrado (patrón SKIMS). Formulario de 640px + columna de ayuda de 300px; nada se estira a 1920. */
+/* Contact v5: mismo contenedor que el resto del sitio (.wrap de 1440 con el margen normal, alineado con el logo).
+   Formulario ancho a la izquierda + columna de ayuda a la derecha; los dos llenan el ancho. */
 .ct{padding-block:32px var(--sect)}
-.ct__box{max-width:1000px;margin-inline:auto}
-.ct__head{padding-bottom:16px;margin-bottom:24px;border-bottom:1px solid var(--line)}
-.ct__head p{margin:6px 0 0;color:var(--soft);font-size:var(--t-sm);max-width:60ch}
-.ct__in{display:grid;grid-template-columns:minmax(0,640px) minmax(0,300px);justify-content:space-between;gap:32px 48px;align-items:start}
+.ct__head{display:grid;grid-template-columns:minmax(0,1fr);gap:6px 48px;align-items:end;padding-bottom:16px;margin-bottom:24px;border-bottom:1px solid var(--line)}
+.ct__head p{margin:0;color:var(--soft);font-size:var(--t-sm);max-width:60ch}
+.ct__in{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,400px);gap:32px clamp(32px,5vw,96px);align-items:start}
+@media (min-width:901px){.ct__head{grid-template-columns:minmax(0,1fr) minmax(280px,400px);column-gap:clamp(32px,5vw,96px)}}
+.ct-form textarea.input{min-height:180px}
+.reply{margin:0;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent);font-size:var(--t-sm);color:var(--soft)}
+.reply b{display:block;color:var(--ink);font-size:var(--t-xs);letter-spacing:.08em;text-transform:uppercase}
 
 .ct-form{background:var(--surface);border:1px solid var(--line);padding:clamp(16px,2vw,24px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px}
 .ct-form .full{grid-column:1/-1}
-.ct-form textarea.input{min-height:132px;padding-block:10px;resize:vertical}
+.ct-form textarea.input{padding-block:10px;resize:vertical}
 .field .opt{font-weight:400;text-transform:none;letter-spacing:0;color:var(--mute)}
 .input[aria-invalid="true"]{border-color:var(--alert);outline:1px solid var(--alert)}
 .ct-send{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
@@ -50,7 +54,7 @@
   "@context": "https://schema.org",
   "@type": "ContactPage",
   "name": "Contact Heavy Metal Pro Stock: “The Evil One”",
-  "about": {"@type": "SportsTeam", "name": "Heavy Metal Pro Stock: “The Evil One”", "sport": "Tractor pulling", "address": {"@type": "PostalAddress", "postOfficeBoxNumber": "42", "addressLocality": "Waterloo", "addressRegion": "WI", "postalCode": "53594", "addressCountry": "US"}, "sameAs": ["https://www.facebook.com/heavymetalprostock/"]}
+  "about": {"@type": "SportsTeam", "name": "Heavy Metal Pro Stock: “The Evil One”", "sport": "Tractor pulling", "address": {"@type": "PostalAddress", "addressLocality": "Waterloo", "addressRegion": "WI", "addressCountry": "US"}, "sameAs": ["https://www.facebook.com/heavymetalprostock/"]}
 }
 </script>
 </head>
@@ -60,10 +64,9 @@
 <main id="main">
 <section class="ct" aria-labelledby="ct-title">
   <div class="wrap">
-    <div class="ct__box">
       <header class="ct__head">
         <h1 class="h1" id="ct-title">Contact us</h1>
-        <p>Questions about an order, merch or sponsorship? Send us a message and we'll get back to you within 2 business days.</p>
+        <p>Questions about an order, merch or sponsorship? Send us a message and we’ll get back to you within 2 business days.</p>
       </header>
 
       <div class="ct__in">
@@ -83,7 +86,7 @@
           <div class="field full" id="c-order-f"><label for="c-order">Order number <span class="opt">(optional)</span></label><input class="input" id="c-order" name="order" type="text" autocomplete="off" placeholder="e.g. #1001"></div>
           <div class="field full"><label for="c-msg">Message</label><textarea class="input" id="c-msg" name="message" required placeholder="How can we help?"></textarea></div>
           <p class="consent full">We use your details only to answer your message. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
-          <div class="full ct-send"><button class="btn" type="submit">Send message</button><p class="small">Reply within 2 business days</p></div>
+          <div class="full ct-send"><button class="btn" type="submit">Send message</button><p class="small">We reply within 2 business days</p></div>
           <p class="ct-status full" id="ct-status" role="status" aria-live="polite"></p>
         </form>
 
@@ -98,16 +101,16 @@
               <li><a href="account.html">Track my order</a></li>
             </ul>
           </nav>
+          <p class="reply"><b>Reply time</b>We reply within 2 business days. For order help, add your order number so we can find it fast.</p>
           <div>
-            <h2 id="det-t">Reach the team</h2>
+            <h2 id="det-t">Follow the team</h2>
             <dl class="info" aria-labelledby="det-t">
-              <div><dt>Mail</dt><dd>Heavy Metal Pro Stock: “The Evil One”<br>P.O. Box 42<br>Waterloo, WI 53594</dd></div>
-              <div><dt>Follow</dt><dd><a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook<span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span></a><br><span class="pend">Instagram [pending]</span></dd></div>
+              <div><dt>Facebook</dt><dd><a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Heavy Metal Pro Stock: “The Evil One”<span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span></a></dd></div>
             </dl>
+            <p class="note">Instagram: falta el link de la cuenta; cuando exista se agrega aquí como otra fila. La dirección postal (P.O. Box) ya no sale en esta página: por regla solo va en Policies &gt; Contact Information.</p>
           </div>
         </aside>
       </div>
-    </div>
   </div>
 </section>
 </main>
@@ -131,7 +134,7 @@
     });
     if (bad.length) { st.className = 'ct-status full is-err'; st.textContent = 'Please add your name, a valid email and a message.'; bad[0].focus(); return; }
     st.className = 'ct-status full is-ok';
-    st.textContent = 'Thanks, ' + $('c-name').value.trim().split(' ')[0] + '. Your message is in. We\'ll reply to ' + $('c-email').value.trim() + ' within 2 business days.';
+    st.textContent = 'Thanks, ' + $('c-name').value.trim().split(' ')[0] + '. Your message is in. We’ll reply to ' + $('c-email').value.trim() + ' within 2 business days.';
     form.querySelector('button[type="submit"]').disabled = true;
   });
 })();

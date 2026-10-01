@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>“The Evil One” Tee · Heavy Metal Pro Stock: “The Evil One”</title>
-<meta name="description" content="“The Evil One” Tee from Heavy Metal Pro Stock: “The Evil One”, the pulling tractor from Waterloo, WI. Designed by the crew, printed to order, ships in 5 days.">
+<meta name="description" content="“The Evil One” Tee from Heavy Metal Pro Stock: “The Evil One”, the pulling tractor from Waterloo, WI. Designed by the crew, printed when you order, ships in 5 days.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -95,7 +95,8 @@ html,body{overflow-x:clip}
 /* buy box */
 .buy{display:grid;gap:16px;align-content:start;min-width:0}
 .buy__head{display:grid;gap:6px;justify-items:start}
-.buy__name{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:24px;line-height:1.1;letter-spacing:.01em;text-transform:uppercase;margin:0;color:var(--ink);overflow-wrap:anywhere}
+/* el nombre del producto (H1) es el título más grande de la página: 28 a 32px; los H2 de abajo se quedan en 20 a 24px */
+.buy__name{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:clamp(28px,2.4vw,32px);line-height:1.08;letter-spacing:.01em;text-transform:uppercase;margin:0;color:var(--ink);overflow-wrap:anywhere}
 .buy__price{margin:0;font-size:var(--t-md);font-weight:600;color:var(--ink)}
 .buy__desc{margin:0;font-size:var(--t-sm);color:var(--soft);max-width:48ch}
 
@@ -193,6 +194,8 @@ html,body{overflow-x:clip}
 .look__list li span:first-child{font-weight:600;letter-spacing:.04em;text-transform:uppercase}
 
 @media (max-width:1024px){.like .pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* jerarquía: los H2 de la ficha nunca pasan al H1 */
+#main .sect .h2{font-size:min(var(--t-h2),24px)}
 
 /* v10 · estrellas junto al título */
 .buy__rv{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-xs);color:var(--ink);text-decoration:none;min-height:24px}
@@ -246,7 +249,7 @@ html,body{overflow-x:clip}
 .rvi{display:grid;gap:8px;padding-block:20px;border-bottom:1px solid var(--line)}
 .rvi:focus{outline:none}
 .rvi:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-.rvi__top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:4px 12px}
+.rvi__top{display:flex;flex-wrap:wrap;justify-content:flex-start;align-items:center;gap:4px 12px}
 .rvi__top .stars{font-size:14px}
 .rvi__date{font-size:var(--t-xs);color:var(--mute)}
 .rvi__who{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:var(--t-xs)}
@@ -254,7 +257,11 @@ html,body{overflow-x:clip}
 .rvi__ver{display:inline-flex;align-items:center;gap:4px;color:var(--soft)}
 .rvi__ver svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
 .rv__ex{display:inline-block;padding:1px 6px;background:#FFF6CC;border:1px dashed #C9A800;color:var(--ink);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
-.no-notes .rv__ex{display:none}
+/* reseñas de ejemplo: la etiqueta "Example review" se ve siempre (también al ocultar notas) y nunca dicen "Verified buyer" */
+.rv__demo{margin:0 0 16px;font-size:var(--t-xs);color:var(--soft);max-width:72ch}
+.rv__demo b{color:var(--ink)}
+@media (min-width:1200px){.rv__list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(32px,3vw,56px)}.rvi__txt{max-width:none}}
+@media (max-width:600px){.rv__chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter)}.rv__chips::-webkit-scrollbar{display:none}.rv__chip{flex:none}}
 .rvi__t{margin:0;font-size:var(--t-sm);font-weight:700;color:var(--ink)}
 .rvi__txt{margin:0;font-size:var(--t-sm);color:var(--text);max-width:65ch}
 .rvi__meta{display:flex;flex-wrap:wrap;gap:4px 18px;margin:0;font-size:var(--t-xs)}
@@ -323,7 +330,8 @@ html,body{overflow-x:clip}
 .satc__txt span{font-size:11px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .satc .btn{flex:none;padding-inline:1.1em}
 @media (min-width:900px){.satc{display:none}}
-@media (max-width:899px){body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}}
+/* espacio para la barra solo cuando la barra está visible (sin hueco vacío bajo el footer) */
+@media (max-width:899px){body:has(.satc.is-on){padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}}
 @media (max-width:400px){.sizes{grid-template-columns:repeat(3,minmax(0,1fr))}.sizes.sizes--4{grid-template-columns:repeat(4,minmax(0,1fr))}}
 </style>
 </head>
@@ -436,7 +444,7 @@ html,body{overflow-x:clip}
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg><span><b>Printed to order · ships in 5 days.</b> Free US shipping over $XX.</span></li>
           <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/></svg><span><b>The Black Smoke Guarantee:</b> if <span id="bsg-noun">this shirt</span> ever stops being evil, we replace it. <a href="policies.html?p=refund#bsg">Details</a><br>No returns for size, so check the <a href="sizes.html">size guide</a>.</span></li>
         </ul>
-        <p class="note">Galería: las fotos del producto en Shopify (Printify sube un mockup por vista y color; agrega fotos reales y ordénalas arrastrando). Aquí hay 15 de prueba; con pocas: <a href="product.html?p=crew-cap&amp;imgs=3">3 fotos</a> · <a href="product.html?imgs=1">1 foto</a>. Estado (Productos &gt; el producto): Live = activo con inventario; Coming soon = etiqueta <b>coming-soon</b>; Sold out = inventario en 0 con "Seguir vendiendo" apagado; "Almost gone!" sale solo con 5 o menos. Shop Pay lo pinta Shopify y va directo al checkout. "Notify me" guarda el email como suscriptor con etiqueta; el aviso automático de reposición necesita una app (las hay con plan gratis). Prueba: <a href="product.html?p=evil-one-beanie#notify">Coming soon</a> · <a href="product.html?p=full-pull-ls#notify">Sold out</a> · <a href="product.html?p=evil-one-tee">Only 4 left</a>. Confirmar con Printify devoluciones, 5 días y "printed in the USA".</p>
+        <p class="note">Galería: las fotos del producto en Shopify (Printify sube un mockup por vista y color; agrega fotos reales y ordénalas arrastrando). El cliente ve solo las fotos reales (aquí, las vistas del mockup). Prueba con más o menos fotos (los espacios grises son solo de prueba): <a href="product.html?imgs=15">15 fotos</a> · <a href="product.html?p=crew-cap&amp;imgs=3">3 fotos</a> · <a href="product.html?imgs=1">1 foto</a>. Estado (Productos &gt; el producto): Live = activo con inventario; Coming soon = etiqueta <b>coming-soon</b>; Sold out = inventario en 0 con "Seguir vendiendo" apagado; "Almost gone!" sale solo con 5 o menos. Shop Pay lo pinta Shopify y va directo al checkout. "Notify me" guarda el email como suscriptor con etiqueta; el aviso automático de reposición necesita una app (las hay con plan gratis). Prueba: <a href="product.html?p=evil-one-beanie#notify">Coming soon</a> · <a href="product.html?p=full-pull-ls#notify">Sold out</a> · <a href="product.html?p=evil-one-tee">Only 4 left</a>. Confirmar con Printify devoluciones, 5 días y "printed in the USA".</p>
 
         <div class="acc">
           <details>
@@ -452,7 +460,7 @@ html,body{overflow-x:clip}
             <div class="acc__body">
               <p>Every piece is printed when you order it and ships in 5 days. Free US shipping on orders over $XX. Taxes and shipping are calculated at checkout.</p>
               <p>Misprints and defects are replaced free: send a photo within 30 days of delivery. Printed-to-order items can't be returned or exchanged for size, so check the size guide first.</p>
-              <p><a href="policies.html?p=shipping">Shipping policy</a> · <a href="policies.html?p=refund">Refund policy</a></p>
+              <p><a href="policies.html?p=shipping">Shipping Policy</a> · <a href="policies.html?p=refund">Refund Policy</a></p>
             </div>
           </details>
         </div>
@@ -475,7 +483,7 @@ html,body{overflow-x:clip}
           <li><span>Crew Cap</span><span class="num">$XX</span></li>
           <li><span>Bundle</span><span class="num"><b>$XX</b> · save $X</span></li>
         </ul>
-        <a class="btn btn--ghost" href="product.html?p=crew-pack">Shop the Crew Pack</a>
+        <a class="link" href="product.html?p=crew-pack">Shop the Crew Pack</a>
       </div>
     </div>
   </section>
@@ -485,8 +493,9 @@ html,body{overflow-x:clip}
     <div class="wrap">
       <div class="sect-head">
         <h2 class="h2" id="rv-t" tabindex="-1">Reviews</h2>
-        <button class="btn btn--ghost" type="button" id="rv-write" aria-expanded="false" aria-controls="rf">Write a review</button>
+        <button class="link" type="button" id="rv-write" aria-expanded="false" aria-controls="rf">Write a review</button>
       </div>
+      <p class="rv__demo" id="rv-demo"><b>Example reviews.</b> These show how reviews will look on this page. They are not from real buyers. Reviews from people who bought this item will appear here.</p>
 
       <form class="rf" id="rf" novalidate hidden aria-labelledby="rf-t">
         <h3 class="h3" id="rf-t">Write a review</h3>
@@ -528,8 +537,8 @@ html,body{overflow-x:clip}
           </div>
           <p class="rv__count" id="rv-count" role="status" aria-live="polite"></p>
           <ul class="rv__list" id="rv-list"></ul>
-          <div class="rv__none" id="rv-none" hidden><p>No reviews match these filters.</p><button class="btn btn--ghost btn--sm" type="button" id="rv-clear">Show all reviews</button></div>
-          <div class="rv__more" id="rv-more-wrap"><button class="btn btn--ghost" type="button" id="rv-more">Load more reviews</button></div>
+          <div class="rv__none" id="rv-none" hidden><p>No reviews match these filters.</p><button class="link" type="button" id="rv-clear">Show all reviews</button></div>
+          <div class="rv__more" id="rv-more-wrap"><button class="link" type="button" id="rv-more">Load more reviews</button></div>
         </div>
       </div>
 
@@ -631,7 +640,7 @@ html,body{overflow-x:clip}
   /* cabecera, SEO y breadcrumb */
   document.title = p.name + ' · Heavy Metal Pro Stock: “The Evil One”';
   var md = document.querySelector('meta[name="description"]');
-  md.setAttribute('content', p.name + ' (' + p.sub.toLowerCase() + ') from Heavy Metal Pro Stock: “The Evil One”, the pulling tractor from Waterloo, WI. Designed by the crew, printed to order, ships in 5 days.');
+  md.setAttribute('content', p.name + ' (' + p.sub.toLowerCase() + ') from Heavy Metal Pro Stock: “The Evil One”, the pulling tractor from Waterloo, WI. Designed by the crew, printed when you order.');
   $('bc-cat').textContent = cname; $('bc-cat').href = p.cat === 'limited' ? 'limited.html' : 'shop.html?cat=' + p.cat;
   $('bc-name').textContent = p.name;
   $('p-name').textContent = p.name; $('satc-name').textContent = p.name;
@@ -649,20 +658,22 @@ html,body{overflow-x:clip}
   else document.querySelectorAll('[data-mock]').forEach(function (el) { var m = CAT.filter(function (x) { return x.id === el.getAttribute('data-mock'); })[0]; if (m) el.innerHTML = window.hmMock(m); });
 
   /* galería: en Shopify son las fotos del producto (el proveedor de impresión sube un mockup por vista y color).
-     Boceto: frente y espalda de cada color con hmMock y "Foto del producto" hasta completar 15 (?imgs=N para probar otra cantidad). */
-  var N = Math.max(1, Math.min(30, parseInt(new URLSearchParams(location.search).get('imgs'), 10) || 15));
+     Boceto: solo las vistas reales (frente y espalda de cada color con hmMock). ?imgs=N es una prueba de la nota:
+     rellena con espacios grises hasta N fotos para ver cómo aguanta la galería muchas o pocas imágenes. */
+  var IMGQ = parseInt(new URLSearchParams(location.search).get('imgs'), 10);
   var hasBack = /^(tees|sweats|kids|limited|bundles)$/.test(p.cat);
-  var SHOTS = ['Puesto', 'Detalle del estampado', 'En los pits', 'Modelo', 'Espalda puesta', 'Etiqueta', 'Doblada', 'Tela de cerca', 'En las gradas', 'Manga', 'Grupo', 'Flat lay', 'Con el tractor'];
+  var SHOTS = ['On body', 'Print detail', 'In the pits', 'On a model', 'Back, on body', 'Label', 'Folded', 'Fabric close-up', 'In the grandstand', 'Sleeve', 'Group', 'Flat lay', 'With the tractor'];
   var IMGS = [];
   (hasColors ? p.colors : ['']).forEach(function (c) {
     IMGS.push({ mock: true, color: c, view: '', label: (c ? c + ', ' : '') + 'front' });
     if (hasBack) IMGS.push({ mock: true, color: c, view: 'back', label: (c ? c + ', ' : '') + 'back' });
   });
+  var N = IMGQ > 0 ? Math.min(30, IMGQ) : IMGS.length;
   for (var k = 0; IMGS.length < N; k++) IMGS.push({ mock: false, label: SHOTS[k % SHOTS.length] });
   IMGS = IMGS.slice(0, N);
   function imgHTML(m, i) {
     if (m.mock) return '<span class="ph ph--mock">' + window.hmMock(p, '', m.view, m.color || undefined) + '</span>';
-    return '<span class="ph"><span class="ph__tag"><b>Foto del producto · ' + (i + 1) + '</b>' + m.label + '</span></span>';
+    return '<span class="ph"><span class="ph__tag"><b>Test photo · ' + (i + 1) + '</b>' + m.label + '</span></span>';
   }
   function imgAlt(m) { return p.name + ', ' + m.label.toLowerCase() + (m.mock ? '' : ' (photo coming soon)'); }
 
@@ -804,6 +815,8 @@ html,body{overflow-x:clip}
   }).join('');
   dots.innerHTML = IMGS.map(function (m, i) { return '<button type="button" data-i="' + i + '" aria-label="Image ' + (i + 1) + ' of ' + IMGS.length + '"></button>'; }).join('');
   ['pg-prev', 'pg-next', 'pg-count', 'pg-thumbs', 'pg-dots'].forEach(function (id) { $(id).hidden = !many; });
+  /* con más de 8 fotos los puntos ya no se pueden tocar: en móvil queda el contador "3 / 15" */
+  if (IMGS.length > 8) dots.hidden = true;
   function mark(i) {
     cur = i;
     $('pg-count').textContent = (i + 1) + ' / ' + IMGS.length;
@@ -816,11 +829,17 @@ html,body{overflow-x:clip}
       if (l < thumbs.scrollLeft || l + w > thumbs.scrollLeft + thumbs.clientWidth) thumbs.scrollTo({ left: l - (thumbs.clientWidth - w) / 2, behavior: smooth });
     }
   }
+  /* flechas rápidas: mientras el carrusel se desliza hacia una foto pedida (flecha, miniatura, punto, teclado),
+     el aviso de scroll no reescribe la foto actual; así cada clic avanza exactamente una foto */
+  var aim = null, aimT;
   function go(i, instant) {
     i = (i + IMGS.length) % IMGS.length;
+    aim = i; clearTimeout(aimT); aimT = setTimeout(function () { aim = null; }, 1200);
     track.scrollTo({ left: i * track.clientWidth, behavior: instant ? 'auto' : smooth });
     mark(i);
   }
+  /* si la persona arrastra o hace swipe, manda ella */
+  ['pointerdown', 'touchstart', 'wheel'].forEach(function (ev) { track.addEventListener(ev, function () { aim = null; }, { passive: true }); });
   $('pg-prev').addEventListener('click', function () { go(cur - 1); });
   $('pg-next').addEventListener('click', function () { go(cur + 1); });
   thumbs.addEventListener('click', function (e) { var b = e.target.closest('[data-i]'); if (b) go(+b.getAttribute('data-i')); });
@@ -828,7 +847,11 @@ html,body{overflow-x:clip}
   var st;
   track.addEventListener('scroll', function () {
     clearTimeout(st);
-    st = setTimeout(function () { var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth)); if (i !== cur) mark(Math.max(0, Math.min(IMGS.length - 1, i))); }, 60);
+    st = setTimeout(function () {
+      var i = Math.max(0, Math.min(IMGS.length - 1, Math.round(track.scrollLeft / Math.max(1, track.clientWidth))));
+      if (aim !== null) { if (i === aim) { aim = null; clearTimeout(aimT); } return; }
+      if (i !== cur) mark(i);
+    }, 60);
   }, { passive: true });
   window.addEventListener('resize', function () { track.scrollTo({ left: cur * track.clientWidth }); });
   $('pg').addEventListener('keydown', function (e) {
@@ -935,7 +958,7 @@ html,body{overflow-x:clip}
       };
     });
   }
-  var RV = buildReviews(p.reviews || 0, p.rating || 0);
+  var RV = buildReviews(p.reviews || 0, p.rating || 0), RV_DEMO = true;
   var avg = RV.length ? RV.reduce(function (a, r) { return a + r.stars; }, 0) / RV.length : 0;
   function starsHTML(r, label) {
     return '<span class="stars" role="img" aria-label="' + (label || 'Rated ' + r + ' out of 5') + '"><span class="stars__bg" aria-hidden="true">★★★★★</span><span class="stars__fg" aria-hidden="true" style="width:' + Math.round(r / 5 * 100) + '%">★★★★★</span></span>';
@@ -947,13 +970,13 @@ html,body{overflow-x:clip}
   if (RV.length) {
     var rvLink = $('p-rv');
     rvLink.hidden = false;
-    rvLink.innerHTML = '<span aria-hidden="true">' + starsHTML(avg) + '</span><b>' + avg.toFixed(1) + '</b><u>(' + RV.length + (RV.length === 1 ? ' review' : ' reviews') + ')</u>';
-    rvLink.setAttribute('aria-label', 'Rated ' + avg.toFixed(1) + ' out of 5. Read ' + RV.length + ' reviews');
+    rvLink.innerHTML = '<span aria-hidden="true">' + starsHTML(avg) + '</span><b>' + avg.toFixed(1) + '</b><u>(' + RV.length + (RV.length === 1 ? ' review' : ' reviews') + ')</u>' + (RV_DEMO ? '<span class="rv__ex">Example</span>' : '');
+    rvLink.setAttribute('aria-label', (RV_DEMO ? 'Example rating ' : 'Rated ') + avg.toFixed(1) + ' out of 5. Read ' + RV.length + (RV_DEMO ? ' example reviews' : ' reviews'));
     rvLink.addEventListener('click', function (e) { e.preventDefault(); $('reviews').scrollIntoView({ behavior: rvSmooth, block: 'start' }); $('rv-t').focus({ preventScroll: true }); });
   }
 
   var rvState = { photos: false, star: 0, sort: 'recent', shown: 5 }, PAGE = 5;
-  if (!RV.length) { $('rv-has').hidden = true; $('rv-empty').hidden = false; $('rv-write').hidden = true; }
+  if (!RV.length) { $('rv-has').hidden = true; $('rv-empty').hidden = false; $('rv-write').hidden = true; $('rv-demo').hidden = true; }
   else {
     $('rv-big').textContent = avg.toFixed(1);
     $('rv-big-stars').innerHTML = starsHTML(avg, 'Average rating ' + avg.toFixed(1) + ' out of 5');
@@ -977,11 +1000,11 @@ html,body{overflow-x:clip}
     for (var i = 0; i < r.photos; i++) out += '<button type="button" class="rvi__pic" data-pic="' + r.id + '-' + i + '" aria-label="View photo ' + (i + 1) + ' from ' + r.name + '">' + window.hmMock(p, '', i ? 'back' : '', p.colors[i % Math.max(1, p.colors.length)] || undefined) + '</button>';
     return '<div class="rvi__pics">' + out + '</div>';
   }
-  var CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>';
+  /* Judge.me pone "Verified buyer" en las reseñas reales; las de ejemplo nunca lo llevan */
   var THUMB = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9h3Zm0 0 4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H19a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 17.8 20H7"/></svg>';
   function rvItem(r) {
     return '<li class="rvi" id="rvi-' + r.id + '" tabindex="-1"><div class="rvi__top">' + starsHTML(r.stars) + '<span class="rvi__date">' + r.when + '</span></div>' +
-      '<p class="rvi__who"><b>' + r.name + '</b><span class="rvi__ver">' + CHECK + 'Verified buyer</span><span class="rv__ex" title="Reseña de ejemplo del boceto">Ejemplo</span></p>' +
+      '<p class="rvi__who"><b>' + r.name + '</b><span class="rv__ex">Example review</span></p>' +
       '<h3 class="rvi__t">' + r.title + '</h3><p class="rvi__txt">' + r.text + '</p>' +
       (r.size || r.fit ? '<dl class="rvi__meta">' + (r.size ? '<div><dt>Size bought:</dt><dd>' + r.size + '</dd></div>' : '') + (r.fit ? '<div><dt>Fit:</dt><dd>' + r.fit + '</dd></div>' : '') + '</dl>' : '') +
       rvPhotos(r) +
@@ -1133,7 +1156,8 @@ html,body{overflow-x:clip}
       { '@type': 'ListItem', position: 4, name: p.name, item: url }
     ]
   }];
-  if (RV.length) {
+  /* AggregateRating y Review van solo con reseñas reales (Judge.me las agrega solo); las de ejemplo no se marcan para Google */
+  if (RV.length && !RV_DEMO) {
     ld[0].aggregateRating = { '@type': 'AggregateRating', ratingValue: avg.toFixed(1), reviewCount: RV.length, bestRating: 5, worstRating: 1 };
     ld[0].review = RV.slice().sort(byRecent).slice(0, 5).map(function (r) {
       return { '@type': 'Review', author: { '@type': 'Person', name: r.name }, datePublished: r.date, name: r.title, reviewBody: r.text, reviewRating: { '@type': 'Rating', ratingValue: r.stars, bestRating: 5, worstRating: 1 } };
