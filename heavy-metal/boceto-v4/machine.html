@@ -157,9 +157,13 @@ html,body{overflow-x:clip}
   .mx-big{grid-template-columns:repeat(2,minmax(0,1fr))}
   .mx-big>div{padding:10px 0 12px!important;border-left:0!important}
   .mx-big>div:nth-child(2n){padding-left:14px!important;border-left:1px solid var(--line-night)!important}
-  .mx-big>.mx-unk{grid-column:1/-1;padding-left:0!important;border-left:0!important}
-  .mx-fine{grid-template-columns:1fr}
-  .mx-cmp{grid-template-columns:minmax(0,92px) minmax(0,1fr) minmax(0,1fr)}
+  .mx-v{font-size:30px}
+  .mx-fine{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px}
+  .mx-fine div{display:grid;gap:0;justify-content:start}
+  .mx-fine dd{text-align:left}
+  .mx-hear__poster{aspect-ratio:16/9}
+  .mx-cmp{grid-template-columns:minmax(0,96px) minmax(0,1fr) minmax(0,1fr)}
+  .mx-cmp .rh{font-size:10px;letter-spacing:0}
   .mx-cmp [role=row]>*{padding-right:8px;font-size:var(--t-xs)}
   .pips{grid-template-columns:repeat(var(--c),10px);gap:3px}
   .pips i{width:10px;height:10px}
@@ -206,7 +210,7 @@ html,body{overflow-x:clip}
     </div>
     <div class="mx-anat">
       <figure class="mx-stage" id="stage">
-        <svg class="mx-lines" id="lines" viewBox="0 0 1120 676" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <svg class="mx-lines" id="mx-lines" viewBox="0 0 1120 676" preserveAspectRatio="none" aria-hidden="true"></svg>
         <div class="mx-img" id="pts" role="group" aria-label="Parts of the tractor">
           <img src="img/hm-tractor-cutout.webp" alt="Heavy Metal cut out in profile, facing right" width="1120" height="576" loading="lazy">
         </div>
@@ -242,7 +246,7 @@ html,body{overflow-x:clip}
         <div><dt><i>01</i>Engine</dt><dd><span class="mx-v">V8</span><span class="mx-s">Cat 3208, reverse flow</span></dd></div>
         <div><dt><i>02</i>Displacement</dt><dd><span class="mx-v">680<small>CI</small></span><span class="mx-s">636 stock</span></dd></div>
         <div><dt><i>03</i>Turbo</dt><dd><span class="mx-v">1<small>Turbo</small></span><span class="mx-s">Single, large</span></dd></div>
-        <div><dt><i>04</i>Weight</dt><dd><span class="mx-v">10,000<small>LB</small></span><span class="mx-s">Matte black, weight box included</span></dd></div>
+        <div><dt><i>04</i>Weight</dt><dd><span class="mx-v">10,000<small>LB</small></span><span class="mx-s">Front weight box included</span></dd></div>
         <div><dt><i>05</i>Tires</dt><dd><span class="mx-v">24.5-32</span><span class="mx-s">Rear</span></dd></div>
         <div class="mx-unk"><dt><i>06</i>Horsepower</dt><dd><span class="mx-v">Unknown</span><span class="mx-s">We'll let the track answer.</span></dd></div>
       </dl>
@@ -382,7 +386,7 @@ html,body{overflow-x:clip}
     { k: 'tires', n: 'Tires', v: '24.5-32', x: 200, y: 340, lx: 170, row: 'b', img: 'img/hm-rear.webp', pos: '50% 62%', alt: 'Heavy Metal from the rear on the track, big rear tires in view',
       b: 'Rear tires sized 24.5-32. This is where 680 cubic inches meets the dirt.' }
   ];
-  var pts = document.getElementById('pts'), stage = document.getElementById('stage'), lines = document.getElementById('lines');
+  var pts = document.getElementById('pts'), stage = document.getElementById('stage'), lines = document.getElementById('mx-lines');
   var img = document.getElementById('panel-img'), cur = 0, NS = 'http://www.w3.org/2000/svg';
   function nn(i) { return (i < 9 ? '0' : '') + (i + 1); }
   P.forEach(function (p, i) {

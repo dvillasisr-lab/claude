@@ -36,10 +36,10 @@ html,body{overflow-x:clip}
 
 .hc-body{min-width:0}
 .hc-body .note{margin:0 0 16px}
-.cat{scroll-margin-top:calc(var(--header) + 16px);margin-bottom:28px}
-.cat>h2{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h3);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin:0 0 4px}
+.hc-cat{scroll-margin-top:calc(var(--header) + 16px);margin-bottom:28px}
+.hc-cat>h2{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h3);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin:0 0 4px}
 .qa{border-top:1px solid var(--line)}
-.cat .qa:last-of-type{border-bottom:1px solid var(--line)}
+.hc-cat .qa:last-of-type{border-bottom:1px solid var(--line)}
 .qa summary{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:48px;padding-block:10px;cursor:pointer;font-weight:600;font-size:var(--t-sm);list-style:none;color:var(--ink)}
 .qa summary::-webkit-details-marker{display:none}
 .qa summary::after{content:"+";font-size:20px;font-weight:400;flex:none;width:20px;text-align:center}
@@ -67,7 +67,7 @@ mark{background:#FFF0A8;color:inherit;padding:0}
   .hc-nav li{flex:none}
   .hc-nav a{font-size:var(--t-xs);line-height:1;padding:9px 12px;border:1px solid var(--line);background:var(--surface)}
   .hc-nav a[aria-current="true"]{border-color:var(--ink)}
-  .cat{scroll-margin-top:calc(var(--header) + 72px)}
+  .hc-cat{scroll-margin-top:calc(var(--header) + 72px)}
   .qa .a{padding-right:0}
 }
 </style>
@@ -477,7 +477,7 @@ mark{background:#FFF0A8;color:inherit;padding:0}
     <div class="hc-body" id="hc-body">
       <p class="note">Todo lo que depende de Printly (cambios, cancelaciones, envíos separados, material) está marcado [pending]; confirmar antes de publicar. Devoluciones solo remiten a la Refund Policy.</p>
 
-      <section class="cat" id="orders" aria-labelledby="h-orders">
+      <section class="hc-cat" id="orders" aria-labelledby="h-orders">
         <h2 id="h-orders">Orders</h2>
         <details class="qa"><summary>Do I need an account to order?</summary><div class="a"><p>No. You can check out as a guest. If you later sign in with the same email, your past orders show up in <a href="account.html">your account</a>.</p></div></details>
         <details class="qa"><summary>Where is my order confirmation?</summary><div class="a"><p>We email it right after checkout. If you can't find it, check your spam or promotions folder, then sign in to <a href="account.html">your account</a> to see the order. Still nothing? <a href="contact.html?topic=order">Message us</a> with the email you used.</p></div></details>
@@ -485,7 +485,7 @@ mark{background:#FFF0A8;color:inherit;padding:0}
         <details class="qa"><summary>I entered the wrong shipping address. What now?</summary><div class="a"><p>Message us right away with your order number and the correct address. If the order hasn't shipped, we update it. If it already shipped, we'll work with the carrier, but we can't promise a reroute.</p></div></details>
       </section>
 
-      <section class="cat" id="shipping" aria-labelledby="h-shipping">
+      <section class="hc-cat" id="shipping" aria-labelledby="h-shipping">
         <h2 id="h-shipping">Shipping</h2>
         <details class="qa"><summary>How long does shipping take?</summary><div class="a"><p>Printed to order, ships in 5 days. Transit time depends on your address and the method you choose at checkout. Details in the <a href="policies.html?p=shipping">Shipping Policy</a>.</p></div></details>
         <details class="qa"><summary>How much is shipping?</summary><div class="a"><p>Shipping is calculated at checkout. US orders over <span class="pend">$XX</span> ship free.</p></div></details>
@@ -496,7 +496,7 @@ mark{background:#FFF0A8;color:inherit;padding:0}
         <details class="qa"><summary>Will all my items arrive together?</summary><div class="a"><p>Not always. Items may ship in separate packages <span class="pend">[pending]</span>. Each package gets its own tracking email.</p></div></details>
       </section>
 
-      <section class="cat" id="returns" aria-labelledby="h-returns">
+      <section class="hc-cat" id="returns" aria-labelledby="h-returns">
         <h2 id="h-returns">Returns &amp; exchanges</h2>
         <details class="qa"><summary>Can I return or exchange an item?</summary><div class="a"><p>Everything is printed to order, so returns work differently than a regular store. What's covered, and for how long, is in the <a href="policies.html?p=refund">Refund Policy</a>.</p></div></details>
         <details class="qa"><summary>My item arrived damaged or misprinted.</summary><div class="a"><p>Sorry about that. Send us your order number and a photo of the problem: pick "Returns &amp; exchanges" on the <a href="contact.html?topic=returns">contact form</a>. Next steps follow the <a href="policies.html?p=refund">Refund Policy</a>.</p></div></details>
@@ -504,7 +504,7 @@ mark{background:#FFF0A8;color:inherit;padding:0}
         <details class="qa"><summary>How do I start a return or exchange?</summary><div class="a"><p>Message us with your order number on the <a href="contact.html?topic=returns">contact form</a>. Please don't mail anything back before we reply.</p></div></details>
       </section>
 
-      <section class="cat" id="sizing" aria-labelledby="h-sizing">
+      <section class="hc-cat" id="sizing" aria-labelledby="h-sizing">
         <h2 id="h-sizing">Sizing &amp; fit</h2>
         <details class="qa"><summary>How do the sizes run?</summary><div class="a"><p>Unisex fit. Between sizes? Size up for a relaxed fit. Measurements for every style are in the <a href="sizes.html">Size guide</a>.</p></div></details>
         <details class="qa"><summary>What sizes do you carry?</summary><div class="a"><p>Adult tees, long sleeves, hoodies and crewnecks come in S to 3XL. Kids styles come in YS to YXL. Caps and beanies are one size.</p></div></details>
@@ -512,7 +512,7 @@ mark{background:#FFF0A8;color:inherit;padding:0}
         <details class="qa"><summary>Will it shrink?</summary><div class="a"><p>Cotton can shrink a little in a hot wash or dryer. Wash cold and hang dry to keep the fit. Fabric details are <span class="pend">[pending]</span> from our print partner.</p></div></details>
       </section>
 
-      <section class="cat" id="care" aria-labelledby="h-care">
+      <section class="hc-cat" id="care" aria-labelledby="h-care">
         <h2 id="h-care">Products &amp; care</h2>
         <details class="qa"><summary>How do I wash printed merch?</summary><div class="a"><ul><li>Turn it inside out and wash cold.</li><li>Hang dry.</li><li>Don't iron over the print and skip bleach.</li></ul><p>That keeps the print sharp for more seasons.</p></div></details>
         <details class="qa"><summary>What are the shirts made of?</summary><div class="a"><p>Fabric and weight come from our print partner and are listed on each product page: <span class="pend">XX% cotton, XX oz [pending]</span>.</p></div></details>
@@ -521,14 +521,14 @@ mark{background:#FFF0A8;color:inherit;padding:0}
         <details class="qa"><summary>A size is sold out. Will it come back?</summary><div class="a"><p>Leave your email on the product page under the sold out size and we'll email you when it's back.</p></div></details>
       </section>
 
-      <section class="cat" id="payments" aria-labelledby="h-payments">
+      <section class="hc-cat" id="payments" aria-labelledby="h-payments">
         <h2 id="h-payments">Payments</h2>
         <details class="qa"><summary>What payment methods do you accept?</summary><div class="a"><p>Shop Pay, Apple Pay, Google Pay, PayPal and major credit and debit cards, including Visa and Mastercard.</p></div></details>
         <details class="qa"><summary>Is checkout secure?</summary><div class="a"><p>Yes. Checkout runs on Shopify. Payments are processed by Shopify and its payment partners, and we never see or store your full card number.</p></div></details>
         <details class="qa"><summary>Do you charge sales tax?</summary><div class="a"><p>Sales tax depends on your address and is calculated at checkout. Prices are in US dollars.</p></div></details>
       </section>
 
-      <section class="cat" id="account" aria-labelledby="h-account">
+      <section class="hc-cat" id="account" aria-labelledby="h-account">
         <h2 id="h-account">Account</h2>
         <details class="qa"><summary>How does sign in work? There's no password.</summary><div class="a"><p>Right, no password to remember. Enter your email on the <a href="account.html">Account</a> page, we email you a 6 digit code, and you type it in to sign in.</p></div></details>
         <details class="qa"><summary>I didn't get my sign in code.</summary><div class="a"><p>Give it a minute and check spam or promotions. Make sure the email is spelled right, then request a new code and use the newest one.</p></div></details>
@@ -537,21 +537,21 @@ mark{background:#FFF0A8;color:inherit;padding:0}
         <details class="qa"><summary>How do I delete my account or data?</summary><div class="a"><p>Send a request through the <a href="contact.html?topic=other">contact form</a>. How we handle it is in the <a href="policies.html?p=privacy">Privacy Policy</a>.</p></div></details>
       </section>
 
-      <section class="cat" id="alerts" aria-labelledby="h-alerts">
+      <section class="hc-cat" id="alerts" aria-labelledby="h-alerts">
         <h2 id="h-alerts">Hook Alerts</h2>
         <details class="qa"><summary>What are Hook Alerts?</summary><div class="a"><p>Our one email list: new merch drops and a heads up before every pull. No spam.</p></div></details>
         <details class="qa"><summary>How do I sign up?</summary><div class="a"><p>Enter your email in the Hook Alerts box at the bottom of any page or on the <a href="schedule.html">Schedule</a>. Hook Alerts are email only.</p></div></details>
         <details class="qa"><summary>How do I unsubscribe?</summary><div class="a"><p>Use the unsubscribe link at the bottom of any Hook Alerts email, or turn it off in <a href="account.html">your account</a>.</p></div></details>
       </section>
 
-      <section class="cat" id="sponsors" aria-labelledby="h-sponsors">
+      <section class="hc-cat" id="sponsors" aria-labelledby="h-sponsors">
         <h2 id="h-sponsors">Sponsors</h2>
         <details class="qa"><summary>How do I sponsor the team?</summary><div class="a"><p>There are three packages: Title Partner ($25,000), Pit Partner ($10,000) and Crew Supporter ($5,000). See what each includes on <a href="sponsors.html">Sponsors</a>, or pick "Sponsorship" on the <a href="contact.html?topic=sponsorship">contact form</a>.</p></div></details>
         <details class="qa"><summary>Where would my brand show up?</summary><div class="a"><p>Depending on the package: team gear, the trailer and pit area, this website, our social media, on the tractor and in announcer mentions.</p></div></details>
         <details class="qa"><summary>I run a small local shop. Is there a smaller option?</summary><div class="a"><p>Crew Supporter is built for local shops and fans: your name on the trailer supporters board, a listing on this website, a thank you post on our socials and a Heavy Metal sponsor decal for your shop.</p></div></details>
       </section>
 
-      <section class="cat" id="tractor" aria-labelledby="h-tractor">
+      <section class="hc-cat" id="tractor" aria-labelledby="h-tractor">
         <h2 id="h-tractor">The tractor &amp; events</h2>
         <details class="qa"><summary>Where can I see The Evil One pull?</summary><div class="a"><p>We run Pro Stock on the NTPA and PPL Badger State circuits, about 20 competitions this season. 2026 dates are on the <a href="schedule.html">Schedule</a> as they're confirmed.</p></div></details>
         <details class="qa"><summary>Can I watch online?</summary><div class="a"><p>NTPA pulls stream on <a href="https://fullpull.live/" target="_blank" rel="noopener">Full Pull LIVE<span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span></a>, the official paid stream. PPL is now the IHRA Pro Pulling Series, with free 2026 streams at <a href="https://www.ihra.com/pulling" target="_blank" rel="noopener">IHRA Pulling<span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span></a>.</p></div></details>
@@ -579,7 +579,7 @@ mark{background:#FFF0A8;color:inherit;padding:0}
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
-  var cats = [].slice.call(document.querySelectorAll('.cat'));
+  var cats = [].slice.call(document.querySelectorAll(".hc-cat"));
   var items = [].slice.call(document.querySelectorAll('.qa'));
   var links = [].slice.call(document.querySelectorAll('#hc-list a'));
   var q = $('hc-q'), list = $('hc-list');
