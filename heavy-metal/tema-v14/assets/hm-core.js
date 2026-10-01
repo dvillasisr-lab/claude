@@ -159,7 +159,11 @@
         panel.hidden = true;
         trigger.setAttribute('aria-expanded', 'false');
         if (openMenu === m) openMenu = null;
-        if (refocus) trigger.focus();
+        if (refocus) {
+          m.skipFocusOpen = true;
+          trigger.focus();
+          m.skipFocusOpen = false;
+        }
       },
       later: function () {
         clearTimeout(closeTimer);
@@ -192,7 +196,7 @@
       }
     });
     on(trigger, 'focus', function () {
-      if (trigger.matches(':focus-visible')) m.open();
+      if (!m.skipFocusOpen && trigger.matches(':focus-visible')) m.open();
     });
     on(trigger, 'keydown', function (e) {
       var items;

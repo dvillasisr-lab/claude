@@ -400,7 +400,7 @@ input[type=radio]:focus-visible,input[type=checkbox]:focus-visible{outline:2px s
 .ftr__social svg{width:20px;height:20px;fill:currentColor}
 .ftr__biz{margin:0 0 16px;color:var(--mute)}
 .ftr__legal{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;border-top:1px solid var(--line);padding-top:16px;color:var(--mute)}
-.ftr__legal .linklike{color:inherit;font-size:inherit;min-height:24px}
+.ftr__legal .linklike{color:inherit;font-size:inherit;line-height:inherit;vertical-align:baseline}
 .ftr__acc summary{list-style:none}
 .ftr__acc summary::-webkit-details-marker{display:none}
 .ftr__acc summary::before{content:none}
