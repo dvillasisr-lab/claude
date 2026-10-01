@@ -42,7 +42,9 @@
   var $ = function (s) { return root.querySelector(s); };
   var brand = $('.fp__brand'), rig = $('.fp__rig'), track = $('.fp__track'), top = $('.fp__top'), rail = $('[data-fp-rail]'), flag = $('[data-fp-flag]');
   var fill = $('.fp__rail-fill'), dist = $('[data-fp-dist]'), chip = $('[data-fp-chip]'), needle = $('.fp__needle'), rpm = $('[data-fp-rpm]');
-  var ctrl = $('[data-fp-ctrl]');
+  var ctrl = $('[data-fp-ctrl]'), ctrlTxt = $('[data-fp-ctrl-txt]');
+  /* v13: el control vive abajo a la derecha junto a la bandera; ícono + texto (pause / play / again) */
+  function setCtrl(mode) { ctrl.setAttribute('data-mode', mode); ctrlTxt.textContent = mode === 'pause' ? 'Pause' : mode === 'play' ? 'Resume' : 'Pull again'; }
   var box = $('.fp__box'), pile = $('.fp__pile'), wheelie = $('.fp__wheelie'), smokeG = $('.fp__smoke');
   var wheels = [].slice.call(root.querySelectorAll('.fp__sw'));
   var TARGET = parseInt(root.getAttribute('data-target') || '300', 10);
@@ -75,7 +77,13 @@
     left = $('.fp__logo').getBoundingClientRect().left - tr.left;
     right = narrow ? tr.width - (brand.getBoundingClientRect().left - tr.left) : tp.right - tr.left - parseFloat(cs.paddingRight);
     var flagW = flag.getBoundingClientRect().width + Math.max(22, rigW * .04);
-    var noseOff = U.nose * scale, finish = right - flagW;
+    /* v13 escritorio: el botón Pause / Pull again va a la derecha del poste, sobre la tierra; la meta se recorre para dejarle lugar.
+       En celular va en la fila de tierra debajo de los pies (CSS), alineado a la derecha bajo la bandera. */
+    var poleW = flag.getBoundingClientRect().width, CG = 12;
+    var ctrlW = narrow ? 0 : Math.max(150, ctrl.getBoundingClientRect().width);
+    var noseOff = U.nose * scale, finish = right - (narrow ? flagW : Math.max(flagW, poleW + CG + ctrlW));
+    if (narrow) ctrl.style.left = ''; else { ctrl.style.left = (tr.left - rr.left) + finish + 4 + poleW + CG + 'px'; ctrl.style.right = 'auto'; }
+    if (narrow) ctrl.style.right = '';
     /* v10: 0 FT = borde izquierdo del logo (left). En el frame 0 la llanta trasera del tractor está en 0 FT (tractor completo
        a la vista, sled a la izquierda en el margen); en el full pull la trompa llega a la bandera. */
     var zero = left, startNose = zero + (U.nose - U.rear) * scale;
@@ -197,19 +205,19 @@
   }
   function kick() { if (!reduce && ready && !raf && visible) { last = 0; raf = requestAnimationFrame(loop); } }
   function finish() {
-    state = 'done'; idleUntil = clock; root.classList.remove('is-running', 'is-pulling'); ctrl.textContent = 'Pull again';
+    state = 'done'; idleUntil = clock; root.classList.remove('is-running', 'is-pulling'); setCtrl('again');
     if (!reduce) { root.classList.remove('is-strike'); void root.offsetWidth; root.classList.add('is-strike'); }
   }
   function restart() {
     if (reduce) { paint(DUR, 0); return; }
     ms = 0; state = 'run'; nextPuff = 0; idleUntil = 0; root.classList.remove('is-strike', 'is-full'); root.classList.add('is-running');
     if (P.length) preroll(clock, G.start - G.noseOff);
-    ctrl.textContent = 'Pause'; kick();
+    setCtrl('pause'); kick();
   }
   ctrl.addEventListener('click', function () {
     if (reduce) return;
-    if (state === 'run') { state = 'paused'; root.classList.remove('is-running', 'is-pulling'); ctrl.textContent = 'Resume'; return; }
-    if (state === 'paused') { state = 'run'; root.classList.add('is-running'); ctrl.textContent = 'Pause'; kick(); return; }
+    if (state === 'run') { state = 'paused'; root.classList.remove('is-running', 'is-pulling'); setCtrl('play'); return; }
+    if (state === 'paused') { state = 'run'; root.classList.add('is-running'); setCtrl('pause'); kick(); return; }
     restart();
   });
   function applyReduce() {

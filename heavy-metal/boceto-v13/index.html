@@ -59,6 +59,18 @@ html,body{overflow-x:clip}
   .shop-home .pgrid::-webkit-scrollbar{display:none}
   .shop-home .pgrid>.card{flex:0 0 68%;scroll-snap-align:start}
 }
+/* v13 celular: indicador de que la fila se desliza (barra de avance + "Swipe for more") */
+.swipe{display:none}
+@media (max-width:760px){
+  .swipe{display:flex;align-items:center;gap:12px;margin-top:12px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+  .swipe__bar{position:relative;flex:1;height:3px;background:var(--line);overflow:hidden}
+  .swipe__bar i{position:absolute;left:0;top:0;bottom:0;width:var(--sw-w,40%);transform:translateX(var(--sw-x,0%));background:var(--ink)}
+  .swipe__txt span{display:inline-block;margin-left:2px}
+}
+/* v13 celular: las categorías no caben (son 9) y se deslizan; el borde derecho se desvanece para indicarlo */
+@media (max-width:760px){
+  .shop-home .cats{padding-right:48px;margin-right:calc(var(--gutter) * -1);-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 56px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 56px),transparent)}
+}
 
 /* 2 · THE MACHINE: copia + díptico vertical (fotos reales 3:4) */
 .mach{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);align-items:center}
@@ -195,7 +207,6 @@ html,body{overflow-x:clip}
           <span class="fp__dist"><span data-fp-dist>000</span><small>FT</small></span>
           <span class="fp__chip" data-fp-chip>Hooked</span>
         </div>
-        <button class="fp__ctrl" type="button" data-fp-ctrl>Pause</button>
       </div>
     </div>
   </div>
@@ -274,6 +285,8 @@ html,body{overflow-x:clip}
       <g class="fp__fly fp__fly--pan" fill="#7A6649"><circle cx="1462" cy="540" r="7"/><circle cx="1466" cy="536" r="9"/><circle cx="1460" cy="542" r="6"/><circle cx="1468" cy="538" r="8"/></g>
     </svg>
   </div>
+  <!-- control del pull sim: abajo a la derecha, junto a la bandera de la meta (hero.js lo coloca y cambia ícono y texto) -->
+  <button class="fp__ctrl" type="button" data-fp-ctrl data-mode="pause"><svg class="fp__ctrl-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g class="i-pause"><rect x="6" y="5" width="4" height="14"/><rect x="14" y="5" width="4" height="14"/></g><path class="i-play" d="M7 4.5v15l12-7.5z"/><path class="i-again" d="M12 4a8 8 0 1 1-7.4 5h2.3A6 6 0 1 0 12 6v3L7.5 5 12 1z"/></svg><span data-fp-ctrl-txt>Pause</span></button>
 </section>
 <div class="fp-marquee" aria-hidden="true" data-fp-marquee><div class="fp-marquee__track"><span>Full pull or nothing<i>·</i>This thing is f#ck!ng evil<i>·</i>Born in a lightning storm<i>·</i></span><span>Full pull or nothing<i>·</i>This thing is f#ck!ng evil<i>·</i>Born in a lightning storm<i>·</i></span></div></div>
 
@@ -286,6 +299,7 @@ html,body{overflow-x:clip}
       </div>
       <nav id="home-cats" aria-label="Shop by category"></nav>
       <div class="pgrid" id="home-row" role="list" aria-label="New drop"></div>
+      <div class="swipe" id="home-swipe" aria-hidden="true"><span class="swipe__bar"><i id="home-swipe-fill"></i></span><span class="swipe__txt">Swipe for more <span>→</span></span></div>
     </div>
   </section>
 
@@ -392,6 +406,15 @@ html,body{overflow-x:clip}
   /* "The Evil One" siempre entre comillas, también en nombres de producto */
   var q = function (h) { return h.replace(/(^|[^“])The Evil One(?!”)/g, '$1“The Evil One”'); };
   row.innerHTML = pick.map(function (p) { return q(window.hmCard(p)).replace('<article class="card"', '<article class="card" role="listitem"'); }).join('');
+  /* indicador "Swipe for more": la barra sigue el scroll de la fila (solo se ve en celular) */
+  var sw = document.getElementById('home-swipe'), swf = document.getElementById('home-swipe-fill');
+  var swUp = function () {
+    var max = row.scrollWidth - row.clientWidth, vis = row.scrollWidth ? row.clientWidth / row.scrollWidth : 1;
+    sw.hidden = max < 4 && matchMedia('(max-width:760px)').matches;
+    swf.style.setProperty('--sw-w', (vis * 100).toFixed(1) + '%');
+    swf.style.setProperty('--sw-x', (max > 0 ? row.scrollLeft / max * (1 / vis - 1) * 100 : 0).toFixed(1) + '%');
+  };
+  row.addEventListener('scroll', swUp, { passive: true }); addEventListener('resize', swUp); swUp();
 })();
 
 /* Next pull + contadores: simula los metaobjetos "Pull event" (mismo formato que schedule.html) y "Season stats".
