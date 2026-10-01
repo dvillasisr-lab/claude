@@ -1,0 +1,1036 @@
+{%- liquid
+  assign p = product
+
+  assign is_soon = false
+  if p.tags contains 'coming-soon'
+    assign is_soon = true
+  endif
+  assign is_special = false
+  if p.tags contains 'special-edition'
+    assign is_special = true
+  endif
+  assign state = 'live'
+  if is_soon
+    assign state = 'soon'
+  elsif p.available == false
+    assign state = 'soldout'
+  endif
+
+  assign tracked = false
+  assign left = 0
+  for v in p.variants
+    if v.inventory_management == 'shopify' and v.inventory_policy == 'deny'
+      assign tracked = true
+      if v.inventory_quantity > 0
+        assign left = left | plus: v.inventory_quantity
+      endif
+    endif
+  endfor
+  assign almost = false
+  if tracked and state == 'live' and left > 0 and left <= 5
+    assign almost = true
+  endif
+
+  assign size_pos = 0
+  for opt in p.options_with_values
+    assign oname = opt.name | downcase
+    if oname contains 'size'
+      assign size_pos = opt.position
+    endif
+  endfor
+  assign needs_size = false
+  if size_pos > 0 and p.has_only_default_variant == false
+    assign needs_size = true
+  endif
+
+  assign sel = p.selected_or_first_available_variant
+  assign size_chosen = false
+  if p.selected_variant
+    assign size_chosen = true
+  endif
+  assign ready = true
+  if needs_size and size_chosen == false
+    assign ready = false
+  endif
+
+  comment
+    Black Smoke Guarantee noun: metafield custom.guarantee_noun, else derived from the product type or title.
+  endcomment
+  assign noun = p.metafields.custom.guarantee_noun.value
+  if noun == blank
+    assign hay = p.type | append: ' ' | append: p.title | downcase
+    if hay contains 'hoodie'
+      assign noun = 'this hoodie'
+    elsif hay contains 'crewneck' or hay contains 'sweat'
+      assign noun = 'this sweatshirt'
+    elsif hay contains 'long sleeve' or hay contains 'longsleeve' or hay contains 'long-sleeve'
+      assign noun = 'this long sleeve'
+    elsif hay contains 'tee' or hay contains 'shirt'
+      assign noun = 'this shirt'
+    elsif hay contains 'beanie'
+      assign noun = 'this beanie'
+    elsif hay contains 'cap' or hay contains 'hat'
+      assign noun = 'this cap'
+    elsif hay contains 'sticker'
+      assign noun = 'this sticker'
+    elsif hay contains 'koozie'
+      assign noun = 'this koozie'
+    elsif hay contains 'pack' or hay contains 'bundle'
+      assign noun = 'this pack'
+    else
+      assign noun = 'it'
+    endif
+  endif
+
+  assign chart = p.metafields.custom.size_chart.value
+  assign form_id = 'hm-pdp-form-' | append: section.id
+  assign media_count = p.media.size
+
+  assign refund_url = shop.refund_policy.url
+  if refund_url == blank
+    assign refund_url = routes.root_url | append: '/policies/refund-policy' | replace: '//', '/'
+  endif
+  assign bsg_url = refund_url | append: '#bsg'
+
+  assign sizes_url = section.settings.sizes_page_url
+  if sizes_url == blank
+    assign sizes_url = routes.root_url | append: '/pages/sizes' | replace: '//', '/'
+  endif
+
+  assign crumb_link = nil
+  if collection
+    assign crumb_link = collection
+  endif
+
+  assign price_text = sel.price | money_without_trailing_zeros
+-%}
+
+<div
+  class="hm-pdp"
+  data-hm-pdp
+  data-section-id="{{ section.id }}"
+  data-handle="{{ p.handle }}"
+  data-state="{{ state }}"
+  data-needs-size="{{ needs_size }}"
+  data-size-pos="{{ size_pos }}"
+  data-money-format="{{ shop.money_format | escape }}"
+  data-url="{{ p.url }}"
+>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="{{ routes.root_url }}">Home</a></li>
+        <li><a href="{{ routes.all_products_collection_url }}">Shop</a></li>
+        {%- if crumb_link -%}
+          <li><a href="{{ crumb_link.url }}">{{ crumb_link.title | escape }}</a></li>
+        {%- elsif p.collections.size > 0 -%}
+          {%- for c in p.collections limit: 1 -%}
+            <li><a href="{{ c.url }}">{{ c.title | escape }}</a></li>
+          {%- endfor -%}
+        {%- endif -%}
+        <li><span aria-current="page">{{ p.title | escape }}</span></li>
+      </ol>
+    </nav>
+
+    <div class="pdp">
+      {%- comment -%} Gallery: only the real product media, in the order dragged in the admin {%- endcomment -%}
+      <section class="pg" data-hm-pg aria-roledescription="carousel" aria-label="Product images">
+        <div class="pg__stage">
+          <div
+            class="pg__track"
+            data-pg-track
+            tabindex="0"
+            aria-label="Product images. Use the arrow keys to browse{% if section.settings.enable_zoom %}, Enter to zoom{% endif %}."
+          >
+            {%- if media_count > 0 -%}
+              {%- for media in p.media -%}
+                {%- liquid
+                  assign alt = media.alt | default: p.title | escape
+                  assign zoom = ''
+                  if media.media_type == 'image' and section.settings.enable_zoom
+                    assign zoom = media | image_url: width: 2000
+                  endif
+                -%}
+                <div
+                  class="pg__slide{% if media.media_type != 'image' %} pg__slide--media{% endif %}"
+                  role="group"
+                  aria-roledescription="slide"
+                  aria-label="{{ forloop.index }} of {{ media_count }}: {{ alt }}"
+                  data-i="{{ forloop.index0 }}"
+                  data-media-id="{{ media.id }}"
+                  {% if zoom != blank %}
+                    data-zoom="{{ zoom }}" data-alt="{{ alt }}"
+                  {% endif %}
+                >
+                  {%- case media.media_type -%}
+                    {%- when 'image' -%}
+                      <span class="ph ph--mock">
+                        {%- if forloop.first -%}
+                          {{- media | image_url: width: 1600 | image_tag: widths: '400, 600, 800, 1000, 1200, 1600', sizes: '(min-width: 1200px) calc(100vw - 640px), (min-width: 900px) 58vw, 100vw', class: 'photo', alt: alt, loading: 'eager', fetchpriority: 'high' -}}
+                        {%- else -%}
+                          {{- media | image_url: width: 1600 | image_tag: widths: '400, 600, 800, 1000, 1200, 1600', sizes: '(min-width: 1200px) calc(100vw - 640px), (min-width: 900px) 58vw, 100vw', class: 'photo', alt: alt, loading: 'lazy' -}}
+                        {%- endif -%}
+                      </span>
+                    {%- when 'video' -%}
+                      <span class="ph ph--mock">{{ media | video_tag: controls: true, playsinline: true, preload: 'metadata', image_size: '1200x', class: 'photo' }}</span>
+                    {%- when 'external_video' -%}
+                      <span class="ph ph--mock">{{ media | external_video_tag: class: 'photo', loading: 'lazy' }}</span>
+                    {%- else -%}
+                      <span class="ph ph--mock">{{ media | media_tag: image_size: '1200x' }}</span>
+                  {%- endcase -%}
+                </div>
+              {%- endfor -%}
+            {%- else -%}
+              <div class="pg__slide" role="group" aria-roledescription="slide" aria-label="1 of 1" data-i="0">
+                <span class="ph ph--mock">{{ 'product-apparel-1' | placeholder_svg_tag: 'photo' }}</span>
+              </div>
+            {%- endif -%}
+          </div>
+          {%- if media_count > 1 -%}
+            <button class="pg__arw pg__arw--prev" type="button" data-pg-prev aria-label="Previous image">‹</button>
+            <button class="pg__arw pg__arw--next" type="button" data-pg-next aria-label="Next image">›</button>
+            <p class="pg__count" data-pg-count aria-hidden="true">1 / {{ media_count }}</p>
+          {%- endif -%}
+          {%- if section.settings.enable_zoom and media_count > 0 -%}
+            <button class="pg__zoom" type="button" data-pg-zoom aria-label="Zoom image" aria-haspopup="dialog" aria-controls="hm-lb-{{ section.id }}">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4M11 8v6M8 11h6"/></svg>
+            </button>
+          {%- endif -%}
+          <p class="vh" data-pg-live aria-live="polite"></p>
+        </div>
+        {%- if media_count > 1 -%}
+          <ul class="pg__thumbs" data-pg-thumbs aria-label="Image thumbnails">
+            {%- for media in p.media -%}
+              <li>
+                <button
+                  type="button"
+                  class="pg__thumb"
+                  data-i="{{ forloop.index0 }}"
+                  aria-label="Show image {{ forloop.index }} of {{ media_count }}"
+                  aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                >
+                  {{- media.preview_image | image_url: width: 160 | image_tag: width: 64, height: 80, widths: '64, 128', sizes: '64px', loading: 'lazy', alt: '', class: 'photo' -}}
+                </button>
+              </li>
+            {%- endfor -%}
+          </ul>
+          {%- if media_count <= 8 -%}
+            <div class="pg__dots" data-pg-dots role="group" aria-label="Choose image">
+              {%- for media in p.media -%}
+                <button type="button" data-i="{{ forloop.index0 }}" aria-label="Image {{ forloop.index }} of {{ media_count }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}"></button>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+      </section>
+
+      <section class="buy" aria-labelledby="hm-pdp-name-{{ section.id }}">
+        <div class="buy__head">
+          <div class="buy__badges">
+            {%- if is_special -%}<span class="badge badge--ink">Special edition</span>{%- endif -%}
+            {%- if state == 'soon' -%}
+              <span class="badge badge--line">Coming soon</span>
+            {%- elsif state == 'soldout' -%}
+              <span class="badge badge--line">Sold out</span>
+            {%- elsif almost -%}
+              <span class="badge badge--alert">Almost gone!</span>
+            {%- elsif p.tags contains 'best-seller' -%}
+              <span class="badge">Best seller</span>
+            {%- elsif p.tags contains 'new' -%}
+              <span class="badge badge--ink">New</span>
+            {%- endif -%}
+          </div>
+          <h1 class="buy__name" id="hm-pdp-name-{{ section.id }}">{{ p.title | escape }}</h1>
+          <p class="buy__price">
+            <span class="num" data-hm-price>
+              {%- if sel.compare_at_price > sel.price -%}
+                <span class="vh">Sale price </span>{{ price_text }}
+                <s class="muted">{{ sel.compare_at_price | money_without_trailing_zeros }}</s>
+              {%- else -%}
+                {{ price_text }}
+              {%- endif -%}
+            </span>
+            {%- if almost -%}
+              <span class="buy__left">Only {{ left }} left</span>
+            {%- endif -%}
+          </p>
+          {%- if section.settings.show_short_description and p.description != blank -%}
+            <p class="buy__desc">{{ p.description | strip_html | truncatewords: section.settings.short_description_words | escape }}</p>
+          {%- endif -%}
+        </div>
+
+        {%- form 'product', p, id: form_id, class: 'hm-pdp__form', novalidate: 'novalidate', data-hm-pdp-form: '' -%}
+          <input
+            type="hidden"
+            name="id"
+            value="{% if ready %}{{ sel.id }}{% endif %}"
+            data-hm-variant-id
+            {% if state != 'live' %}
+              disabled
+            {% endif %}
+          >
+
+          {%- unless p.has_only_default_variant -%}
+            {%- for option in p.options_with_values -%}
+              {%- liquid
+                assign oname = option.name | downcase
+                assign kind = 'text'
+                if option.position == size_pos
+                  assign kind = 'size'
+                elsif oname contains 'color' or oname contains 'colour'
+                  assign kind = 'color'
+                endif
+                assign chosen = ''
+                if kind != 'size' or size_chosen
+                  assign chosen = option.selected_value
+                endif
+              -%}
+              <fieldset
+                class="opt"
+                data-hm-opt="{{ option.position }}"
+                data-kind="{{ kind }}"
+                {% if kind == 'size' %}
+                  aria-describedby="hm-size-msg-{{ section.id }}"
+                {% endif %}
+              >
+                <legend class="opt__legend">
+                  <span>
+                    {{- option.name | escape }}:
+                    <b data-hm-opt-label>
+                      {%- if chosen != blank -%}
+                        {{- chosen | escape -}}
+                      {%- else -%}
+                        Select a {{ oname | escape -}}
+                      {%- endif -%}
+                    </b></span
+                  >
+                  {%- if kind == 'size' -%}
+                    {%- if chart -%}
+                      <button class="linkbtn" type="button" data-sg-open aria-haspopup="dialog" aria-controls="hm-sg-{{ section.id }}">Size guide</button>
+                    {%- else -%}
+                      <a class="linkbtn" href="{{ sizes_url }}">Size guide</a>
+                    {%- endif -%}
+                  {%- endif -%}
+                </legend>
+                {%- case kind -%}
+                  {%- when 'color' -%}
+                    <div class="colors">
+                      {%- for value in option.values -%}
+                        {%- liquid
+                          assign sw = value.swatch.color
+                          if sw == blank
+                            assign vname = value.name | downcase
+                            case vname
+                              when 'matte black', 'black', 'jet black', 'vintage black'
+                                assign sw = '#1C1B19'
+                              when 'smoke gray', 'smoke grey', 'gray', 'grey', 'heather gray', 'heather grey', 'sport grey', 'sport gray', 'dark heather'
+                                assign sw = '#8C8A82'
+                              when 'bone', 'natural', 'cream', 'sand', 'ivory', 'oatmeal'
+                                assign sw = '#E9E6DC'
+                              when 'safety yellow', 'yellow', 'gold'
+                                assign sw = '#F5C400'
+                              when 'white'
+                                assign sw = '#FFFFFF'
+                              when 'charcoal', 'asphalt'
+                                assign sw = '#3A3936'
+                              when 'navy'
+                                assign sw = '#1F2A44'
+                              when 'red', 'cardinal'
+                                assign sw = '#A3261C'
+                              when 'military green', 'olive', 'army'
+                                assign sw = '#5B5E3C'
+                              when 'brown', 'coyote brown'
+                                assign sw = '#5C4433'
+                              else
+                                assign sw = 'var(--tile)'
+                            endcase
+                          endif
+                          assign input_id = 'hm-opt-' | append: section.id | append: '-' | append: option.position | append: '-' | append: forloop.index
+                        -%}
+                        <input
+                          type="radio"
+                          id="{{ input_id }}"
+                          name="hm-option-{{ option.position }}"
+                          value="{{ value.name | escape }}"
+                          {% if value.name == chosen %}
+                            checked
+                          {% endif %}
+                        >
+                        <label class="cswatch" for="{{ input_id }}" title="{{ value.name | escape }}">
+                          <span style="--sw:{{ sw }}"></span><span class="vh">{{ value.name | escape }}</span>
+                        </label>
+                      {%- endfor -%}
+                    </div>
+                  {%- else -%}
+                    <div class="sizes{% if option.values.size == 4 %} sizes--4{% endif %}">
+                      {%- for value in option.values -%}
+                        {%- assign input_id = 'hm-opt-' | append: section.id | append: '-' | append: option.position | append: '-' | append: forloop.index -%}
+                        <input
+                          type="radio"
+                          id="{{ input_id }}"
+                          name="hm-option-{{ option.position }}"
+                          value="{{ value.name | escape }}"
+                          {% if value.name == chosen %}
+                            checked
+                          {% endif %}
+                          {% if kind == 'size' and value.available == false %}
+                            disabled
+                          {% endif %}
+                        >
+                        <label class="size" for="{{ input_id }}">
+                          {{- value.name | escape -}}
+                          {%- if kind == 'size' and value.available == false -%}<span class="vh">, sold out</span>{%- endif -%}
+                        </label>
+                      {%- endfor -%}
+                    </div>
+                {%- endcase -%}
+                {%- if kind == 'size' -%}
+                  <p class="msg" id="hm-size-msg-{{ section.id }}" data-hm-size-msg aria-live="polite"></p>
+                  <p class="soldout" data-hm-sold hidden>
+                    <span data-hm-sold-list></span> sold out.
+                    <button
+                      class="linkbtn"
+                      type="button"
+                      data-notify="{{ p.handle }}"
+                      data-notify-state="soldout"
+                      data-name="{{ p.title | escape }}"
+                      aria-haspopup="dialog"
+                    >
+                      Notify me
+                    </button>
+                  </p>
+                {%- endif -%}
+              </fieldset>
+            {%- endfor -%}
+          {%- endunless -%}
+
+          {%- if size_pos == 0 -%}
+            <p class="one-size">
+              One size.
+              {%- if chart %}
+                <button class="linkbtn" type="button" data-sg-open aria-haspopup="dialog" aria-controls="hm-sg-{{ section.id }}">Size guide</button>
+              {%- endif -%}
+            </p>
+          {%- endif -%}
+
+          {%- if state == 'live' -%}
+            <div class="buyrow">
+              <div class="qty" role="group" aria-label="Quantity">
+                <button type="button" data-qty="-1" aria-label="Decrease quantity">
+                  <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10"/></svg>
+                </button>
+                <label class="vh" for="hm-qty-{{ section.id }}">Quantity</label>
+                <input
+                  type="number"
+                  id="hm-qty-{{ section.id }}"
+                  name="quantity"
+                  value="1"
+                  min="1"
+                  max="{{ section.settings.max_qty }}"
+                  inputmode="numeric"
+                  data-hm-qty
+                >
+                <button type="button" data-qty="1" aria-label="Increase quantity">
+                  <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M7 2v10"/></svg>
+                </button>
+              </div>
+              <button class="btn btn--block btn--big" type="submit" name="add" data-hm-atc>
+                {%- if ready == false -%}
+                  Select a size
+                {%- elsif sel.available -%}
+                  Add to cart · {{ price_text }}
+                {%- else -%}
+                  Sold out
+                {%- endif -%}
+              </button>
+            </div>
+            <p class="msg" data-hm-atc-msg role="alert"></p>
+            {%- if section.settings.show_dynamic_checkout -%}
+              <div class="dyn" data-hm-dyn>
+                {{ form | payment_button }}
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+
+        {%- if state == 'soldout' -%}
+          <button class="btn btn--block btn--big" type="button" disabled>Sold out</button>
+        {%- endif -%}
+
+        {%- if state != 'live' -%}
+          <section class="nbox" id="notify" aria-labelledby="hm-notify-t-{{ section.id }}" data-hm-nbox>
+            <h2 class="h3" id="hm-notify-t-{{ section.id }}">{{ section.settings.notify_heading | escape }}</h2>
+            <p>
+              {%- if state == 'soon' -%}
+                {{ section.settings.notify_soon_text | escape }}
+              {%- else -%}
+                {{ section.settings.notify_soldout_text | escape }}
+              {%- endif -%}
+            </p>
+            {%- form 'customer', id: 'HmNotifyPdp', novalidate: 'novalidate', data-hm-notify-form: '' -%}
+              <input type="hidden" name="contact[tags]" value="notify,notify-{{ p.handle }}">
+              <div class="nbox__row" data-hm-form-fields>
+                <label class="vh" for="hm-notify-email-{{ section.id }}">Email</label>
+                <input
+                  class="input"
+                  id="hm-notify-email-{{ section.id }}"
+                  type="email"
+                  name="contact[email]"
+                  required
+                  autocomplete="email"
+                  spellcheck="false"
+                  placeholder="Email address"
+                  aria-describedby="hm-notify-err-{{ section.id }}"
+                >
+                <button class="btn" type="submit">Notify me</button>
+              </div>
+              <p class="small nbox__msg is-err" id="hm-notify-err-{{ section.id }}" role="alert" data-hm-form-errors>
+                {%- if form.errors -%}{{ form.errors | default_errors }}{%- endif -%}
+              </p>
+              <p class="small nbox__msg" role="status" data-hm-form-ok{% unless form.posted_successfully? %} hidden{% endunless %}>
+                {%- if state == 'soon' -%}
+                  You’re on the list. We’ll email you once, when it drops.
+                {%- else -%}
+                  You’re on the list. We’ll email you once, if it comes back.
+                {%- endif -%}
+              </p>
+            {%- endform -%}
+            {%- if shop.privacy_policy -%}
+              <p class="consent">
+                Email only. Unsubscribe anytime. See our <a href="{{ shop.privacy_policy.url }}">Privacy Policy</a>.
+              </p>
+            {%- else -%}
+              <p class="consent">Email only. Unsubscribe anytime.</p>
+            {%- endif -%}
+          </section>
+        {%- endif -%}
+
+        <ul class="facts">
+          {%- if settings.hm_ships_line != blank or settings.hm_free_shipping != blank -%}
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg>
+              <span>
+                {%- if settings.hm_ships_line != blank -%}<b>{{ settings.hm_ships_line | escape }}.</b>{%- endif -%}
+                {%- if settings.hm_free_shipping != blank %}
+                  Free US shipping over {{ settings.hm_free_shipping | times: 100 | money_without_trailing_zeros }}.
+                {%- endif -%}
+              </span>
+            </li>
+          {%- endif -%}
+          {%- if section.settings.show_guarantee -%}
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/></svg>
+              <span>
+                <b>{{ section.settings.guarantee_label | escape }}</b>
+                {{ section.settings.guarantee_text | escape | replace: '[noun]', noun }}
+                <a href="{{ bsg_url }}">Details</a>
+                {%- if needs_size -%}
+                  <br>No returns for size, so check the
+                  {% if chart -%}
+                    <button class="linkbtn linkbtn--inline" type="button" data-sg-open aria-haspopup="dialog" aria-controls="hm-sg-{{ section.id }}">size guide</button>.
+                  {%- else -%}
+                    <a href="{{ sizes_url }}">size guide</a>.
+                  {%- endif -%}
+                {%- endif -%}
+              </span>
+            </li>
+          {%- endif -%}
+        </ul>
+
+        {%- comment -%} Accordions (blocks): Details, Design story, Shipping & returns {%- endcomment -%}
+        <div class="acc">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'collapsible' -%}
+              {%- capture acc_body -%}
+                {%- case block.settings.source -%}
+                  {%- when 'details' -%}
+                    {%- assign details = p.metafields.custom.details.value -%}
+                    {%- if details != blank -%}
+                      <ul>
+                        {%- for d in details -%}<li>{{ d | escape }}</li>{%- endfor -%}
+                      </ul>
+                    {%- elsif p.description != blank -%}
+                      {{ p.description }}
+                    {%- endif -%}
+                    {{ block.settings.content }}
+                  {%- when 'design_story' -%}
+                    {%- assign story = p.metafields.custom.design_story -%}
+                    {%- if story != blank -%}
+                      {%- if story.type == 'rich_text_field' -%}
+                        {{ story | metafield_tag }}
+                      {%- else -%}
+                        <p>{{ story.value | escape | newline_to_br }}</p>
+                      {%- endif -%}
+                    {%- endif -%}
+                    {{ block.settings.content }}
+                  {%- when 'shipping' -%}
+                    {{ block.settings.content }}
+                    {%- if shop.shipping_policy or shop.refund_policy -%}
+                      <p>
+                        {%- if shop.shipping_policy -%}<a href="{{ shop.shipping_policy.url }}">Shipping Policy</a>{%- endif -%}
+                        {%- if shop.shipping_policy and shop.refund_policy %} · {% endif -%}
+                        {%- if shop.refund_policy -%}<a href="{{ shop.refund_policy.url }}">Refund Policy</a>{%- endif -%}
+                      </p>
+                    {%- endif -%}
+                  {%- else -%}
+                    {{ block.settings.content }}
+                {%- endcase -%}
+              {%- endcapture -%}
+              {%- if acc_body != blank -%}
+                <details {{ block.shopify_attributes }}{% if block.settings.open %} open{% endif %}>
+                  <summary>{{ block.settings.heading | escape }}</summary>
+                  <div class="acc__body">{{ acc_body }}</div>
+                </details>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </section>
+    </div>
+  </div>
+
+  {%- comment -%} Reviews: app blocks only (Judge.me "Reviews"). Nothing shows until there is an app block. {%- endcomment -%}
+  {%- capture apps -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == '@app' -%}
+        <div class="hm-app-block" {{ block.shopify_attributes }}>{% render block %}</div>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- if apps != blank -%}
+    <section class="sect rv" id="reviews" aria-labelledby="hm-rv-t-{{ section.id }}">
+      <div class="wrap">
+        <div class="sect-head">
+          <h2 class="h2" id="hm-rv-t-{{ section.id }}" tabindex="-1">{{ section.settings.reviews_heading | escape }}</h2>
+        </div>
+        {{ apps }}
+      </div>
+    </section>
+  {%- elsif request.design_mode -%}
+    <section class="sect rv" aria-label="Reviews placeholder">
+      <div class="wrap">
+        <p class="small muted hm-rv-hint">
+          Reviews: add the Judge.me “Reviews” app block to this section (Add block > Apps). Only real reviews from buyers will show here.
+          This hint is only visible in the theme editor.
+        </p>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- if chart -%}
+    <dialog class="sg" id="hm-sg-{{ section.id }}" aria-labelledby="hm-sg-t-{{ section.id }}" data-sg>
+      <div class="sg__head">
+        <h2 class="label" id="hm-sg-t-{{ section.id }}">Size guide · {{ p.title | escape }}</h2>
+        <button class="icon-btn" type="button" data-sg-close aria-label="Close size guide">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+        </button>
+      </div>
+      <div class="sg__body">
+        {%- if chart.unit != blank -%}
+          <p>Measured flat, in {{ chart.unit | escape }}.</p>
+        {%- endif -%}
+        {%- assign cols = chart.columns.value -%}
+        {%- assign rows = chart.rows.value -%}
+        <div class="tbl-wrap">
+          <table class="tbl">
+            {%- if cols != blank -%}
+              <thead>
+                <tr>
+                  {%- for c in cols -%}<th scope="col">{{ c | escape }}</th>{%- endfor -%}
+                </tr>
+              </thead>
+            {%- endif -%}
+            <tbody>
+              {%- for r in rows -%}
+                {%- assign cells = r | split: ' | ' -%}
+                <tr>
+                  {%- for cell in cells -%}
+                    {%- if forloop.first -%}
+                      <th scope="row">{{ cell | strip | escape }}</th>
+                    {%- else -%}
+                      <td>{{ cell | strip | escape }}</td>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+        {%- if chart.note != blank -%}
+          <p>{{ chart.note | escape | newline_to_br }}</p>
+        {%- endif -%}
+        <p><a href="{{ sizes_url }}">See the full size guide</a></p>
+      </div>
+    </dialog>
+  {%- endif -%}
+
+  {%- if section.settings.enable_zoom and media_count > 0 -%}
+    <dialog class="lb" id="hm-lb-{{ section.id }}" aria-label="Image zoom" data-lb>
+      <div class="lb__bar">
+        <p class="lb__count" data-lb-count>1 / {{ media_count }}</p>
+        <button class="icon-btn lb__close" type="button" data-lb-close aria-label="Close zoom">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+        </button>
+      </div>
+      <figure class="lb__fig"><div class="lb__img" data-lb-img></div></figure>
+      {%- if media_count > 1 -%}
+        <button class="lb__arw lb__arw--prev" type="button" data-lb-prev aria-label="Previous image">‹</button>
+        <button class="lb__arw lb__arw--next" type="button" data-lb-next aria-label="Next image">›</button>
+      {%- endif -%}
+      <p class="lb__hint">
+        <span class="lb__hint-k">Click or tap the image to zoom · arrow keys to browse · Esc to close</span>
+        <span class="lb__hint-t">Tap the image to zoom · swipe to browse</span>
+      </p>
+    </dialog>
+  {%- endif -%}
+
+  <div class="satc" data-satc aria-hidden="true">
+    <div class="satc__txt">
+      <b>{{ p.title | escape }}</b>
+      <span data-satc-var>
+        {%- if state == 'soon' -%}
+          Coming soon
+        {%- elsif state == 'soldout' -%}
+          Sold out
+        {%- elsif needs_size -%}
+          Select a size
+        {%- else -%}
+          {{ sel.title | escape }}
+        {%- endif -%}
+      </span>
+    </div>
+    <button class="btn" type="button" data-satc-btn tabindex="-1">
+      {%- if state != 'live' -%}Notify me{%- elsif ready -%}Add · {{ price_text }}{%- else -%}Select a size{%- endif -%}
+    </button>
+  </div>
+
+  <script type="application/json" data-hm-variants>
+    [
+      {%- for v in p.variants -%}
+        {"id":{{ v.id }},"title":{{ v.title | json }},"options":{{ v.options | json }},"available":{{ v.available | json }},"price":{{ v.price }},"compare":{{ v.compare_at_price | default: 0 }},"media":{{ v.featured_media.id | default: 0 }}}
+        {%- unless forloop.last %},{% endunless -%}
+      {%- endfor -%}
+    ]
+  </script>
+  <script type="application/ld+json">
+    {{ p | structured_data }}
+  </script>
+</div>
+
+<script src="{{ 'hm-product.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .hm-pdp { overflow-x: clip; }
+  .hm-pdp .crumbs { padding-block: 14px 12px; }
+  .hm-pdp .crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 2px 8px; font-size: var(--t-xs); color: var(--mute); }
+  .hm-pdp .crumbs li { white-space: nowrap; }
+  .hm-pdp .crumbs li + li::before { content: "/"; margin-right: 8px; color: #B6B1AD; }
+  .hm-pdp .crumbs a { text-decoration: none; }
+  .hm-pdp .crumbs a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .hm-pdp .crumbs [aria-current] { color: var(--ink); }
+  .hm-pdp .pdp { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; padding-bottom: var(--sect); }
+  @media (min-width: 900px) {
+    .hm-pdp .pdp { grid-template-columns: minmax(0, min(58%, calc((100svh - 300px) * .8))) minmax(0, 1fr); gap: clamp(28px, 3.4vw, 56px); align-items: start; }
+    .hm-pdp .buy { max-width: 520px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--header) + 16px); }
+  }
+  @media (min-width: 1200px) {
+    .hm-pdp .pdp { grid-template-columns: minmax(0, 1fr) minmax(0, 520px); }
+    .hm-pdp .pg__slide .ph { aspect-ratio: auto; height: clamp(440px, calc(100svh - 300px), 760px); }
+  }
+  .hm-pdp .pg { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; min-width: 0; align-content: start; }
+  .hm-pdp .pg__stage { position: relative; min-width: 0; background: var(--tile); }
+  .hm-pdp .pg__track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
+  .hm-pdp .pg__track::-webkit-scrollbar { display: none; }
+  .hm-pdp .pg__track:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
+  .hm-pdp .pg__slide { flex: 0 0 100%; min-width: 0; scroll-snap-align: center; scroll-snap-stop: always; }
+  .hm-pdp .pg__slide[data-zoom] { cursor: zoom-in; }
+  .hm-pdp .pg__slide .ph { --ar: 4/5; }
+  .hm-pdp .pg__slide .photo, .hm-pdp .pg__slide video, .hm-pdp .pg__slide iframe { width: 100%; height: 100%; object-fit: contain; display: block; border: 0; }
+  .hm-pdp .pg__arw, .hm-pdp .lb__arw { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 44px; height: 44px; border: 1px solid var(--line); background: rgba(255,255,255,.92); color: var(--ink); font-size: 26px; line-height: 1; display: grid; place-items: center; cursor: pointer; padding: 0 0 3px; }
+  .hm-pdp .pg__arw:hover { background: var(--surface); border-color: var(--ink); }
+  .hm-pdp .pg__arw--prev { left: 10px; } .hm-pdp .pg__arw--next { right: 10px; }
+  .hm-pdp .pg__count { position: absolute; right: 10px; bottom: 10px; z-index: 3; margin: 0; background: rgba(255,255,255,.92); padding: 3px 8px; font-size: var(--t-xs); font-weight: 700; letter-spacing: .04em; font-variant-numeric: tabular-nums; color: var(--ink); }
+  .hm-pdp .pg__zoom { position: absolute; right: 10px; top: 10px; z-index: 3; width: 40px; height: 40px; border: 1px solid var(--line); background: rgba(255,255,255,.92); display: grid; place-items: center; cursor: pointer; color: var(--ink); }
+  .hm-pdp .pg__zoom svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+  .hm-pdp .pg__thumbs { display: flex; gap: 4px; overflow-x: auto; list-style: none; margin: 0; padding: 2px; scrollbar-width: thin; scroll-behavior: smooth; }
+  .hm-pdp .pg__thumbs li { flex: 0 0 64px; }
+  .hm-pdp .pg__thumb { display: block; width: 100%; aspect-ratio: 4/5; padding: 0; border: 1px solid transparent; background: var(--tile); cursor: pointer; overflow: hidden; }
+  .hm-pdp .pg__thumb .photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hm-pdp .pg__thumb:hover { border-color: var(--line); }
+  .hm-pdp .pg__thumb[aria-current="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+  .hm-pdp .pg__dots { display: none; }
+  @media (max-width: 899px) {
+    .hm-pdp .pg { margin-inline: calc(-1 * var(--gutter)); }
+    .hm-pdp .pg__thumbs { display: none; }
+    .hm-pdp .pg__arw { width: 36px; height: 36px; font-size: 22px; }
+    .hm-pdp .pg__dots { display: flex; flex-wrap: wrap; justify-content: center; padding: 0 var(--gutter); }
+    .hm-pdp .pg__dots button { width: 24px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; }
+    .hm-pdp .pg__dots button::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #B6B1AD; }
+    .hm-pdp .pg__dots button[aria-current="true"]::before { background: var(--ink); }
+  }
+  .hm-pdp .lb { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #121211; color: var(--night-ink, #F2F0E9); overflow: hidden; }
+  .hm-pdp .lb::backdrop { background: #121211; }
+  .hm-pdp .lb__bar { position: absolute; left: 0; right: 0; top: 0; z-index: 4; display: flex; justify-content: space-between; align-items: center; padding: 8px 8px 8px 16px; padding-top: calc(8px + env(safe-area-inset-top, 0px)); }
+  .hm-pdp .lb__count { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .06em; font-variant-numeric: tabular-nums; }
+  .hm-pdp .lb__close { color: var(--night-ink, #F2F0E9); }
+  .hm-pdp .lb__fig { position: absolute; inset: 56px 0 56px; display: grid; place-items: center; margin: 0; }
+  .hm-pdp .lb__img { width: min(92vw, calc((100dvh - 112px) * .8)); aspect-ratio: 4/5; overflow: hidden; background: var(--tile); cursor: zoom-in; touch-action: pan-y pinch-zoom; }
+  .hm-pdp .lb__img img { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform .2s; transform-origin: var(--ox, 50%) var(--oy, 50%); }
+  .hm-pdp .lb__img.is-zoom { cursor: zoom-out; touch-action: none; }
+  .hm-pdp .lb__img.is-zoom img { transform: scale(2.2); }
+  .hm-pdp .lb__arw { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.25); color: var(--night-ink, #F2F0E9); }
+  .hm-pdp .lb__arw--prev { left: 12px; } .hm-pdp .lb__arw--next { right: 12px; }
+  .hm-pdp .lb__hint { position: absolute; left: 0; right: 0; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); margin: 0; text-align: center; font-size: 11px; color: #B5B2AA; }
+  .hm-pdp .lb__hint-t { display: none; }
+  @media (hover: none) { .hm-pdp .lb__hint-k { display: none; } .hm-pdp .lb__hint-t { display: inline; } }
+  @media (prefers-reduced-motion: reduce) { .hm-pdp .lb__img img { transition: none; } }
+  .hm-pdp .buy { display: grid; gap: 16px; align-content: start; min-width: 0; }
+  .hm-pdp .buy__head { display: grid; gap: 6px; justify-items: start; }
+  .hm-pdp .buy__name { font-family: var(--f-head); font-stretch: 78%; font-weight: 700; font-size: clamp(28px, 2.4vw, 32px); line-height: 1.08; letter-spacing: .01em; text-transform: uppercase; margin: 0; color: var(--ink); overflow-wrap: anywhere; }
+  .hm-pdp .buy__price { margin: 0; font-size: var(--t-md); font-weight: 600; color: var(--ink); }
+  .hm-pdp .buy__price s { font-weight: 400; margin-left: 6px; }
+  .hm-pdp .buy__desc { margin: 0; font-size: var(--t-sm); color: var(--soft); max-width: 48ch; }
+  .hm-pdp .buy__badges { display: flex; flex-wrap: wrap; gap: 4px; }
+  .hm-pdp .buy__badges:empty { display: none; }
+  .hm-pdp .buy__left { margin-left: 10px; font-size: var(--t-xs); font-weight: 700; letter-spacing: .04em; color: var(--alert); }
+  .hm-pdp__form { display: grid; gap: 16px; }
+  .hm-pdp .opt { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .hm-pdp .opt__legend { padding: 0; margin-bottom: 8px; font-size: var(--t-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .hm-pdp .opt__legend b { color: var(--ink); font-weight: 600; letter-spacing: .04em; }
+  .hm-pdp .opt input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+  .hm-pdp .colors { display: flex; gap: 6px; flex-wrap: wrap; }
+  .hm-pdp .cswatch { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; border: 1px solid transparent; }
+  .hm-pdp .cswatch span:first-child { width: 24px; height: 24px; border-radius: 50%; background: var(--sw); box-shadow: inset 0 0 0 1px rgba(28,27,25,.25); }
+  .hm-pdp .cswatch:hover { border-color: var(--line); }
+  .hm-pdp .opt input:checked + .cswatch { border-color: var(--ink); }
+  .hm-pdp .opt input:focus-visible + .cswatch, .hm-pdp .opt input:focus-visible + .size { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .hm-pdp .linkbtn { background: none; border: 0; padding: 4px 0; font: inherit; font-size: var(--t-xs); font-weight: 600; letter-spacing: .04em; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; color: var(--ink); text-transform: none; min-height: 24px; }
+  .hm-pdp .linkbtn--inline { padding: 0; font-weight: inherit; letter-spacing: 0; color: inherit; }
+  .hm-pdp .sizes { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 4px; }
+  .hm-pdp .size { display: grid; place-items: center; min-height: 40px; padding: 0 4px; background: var(--surface); border: 1px solid var(--line); cursor: pointer; font-size: var(--t-xs); font-weight: 700; letter-spacing: .04em; text-align: center; }
+  .hm-pdp .size:hover { border-color: var(--ink); }
+  .hm-pdp .opt input:checked + .size { background: var(--ink); border-color: var(--ink); color: var(--surface); }
+  .hm-pdp .opt input:disabled + .size { background: transparent; color: var(--mute); cursor: not-allowed; text-decoration: line-through; }
+  .hm-pdp .opt.is-error .size { border-color: var(--alert); }
+  .hm-pdp .msg { margin: 6px 0 0; font-size: var(--t-xs); font-weight: 600; color: var(--alert); }
+  .hm-pdp .msg:empty { display: none; }
+  .hm-pdp .soldout { margin: 6px 0 0; font-size: var(--t-xs); color: var(--mute); }
+  .hm-pdp .one-size { margin: 0; font-size: var(--t-xs); color: var(--soft); }
+  .hm-pdp .nbox { display: grid; gap: 8px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--ink); scroll-margin-top: calc(env(safe-area-inset-top, 0px) + var(--header) + 16px); }
+  .hm-pdp .nbox .h3, .hm-pdp .nbox p { margin: 0; }
+  .hm-pdp .nbox p { font-size: var(--t-xs); color: var(--soft); }
+  .hm-pdp .nbox__row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; }
+  .hm-pdp .nbox__row .input { min-height: 44px; }
+  .hm-pdp .nbox__msg { font-weight: 600; color: var(--ink) !important; }
+  .hm-pdp .nbox__msg:empty { display: none; }
+  .hm-pdp .nbox__msg.is-err { color: var(--alert) !important; }
+  .hm-pdp .nbox .input[aria-invalid="true"] { border-color: var(--alert); outline: 1px solid var(--alert); }
+  @media (max-width: 420px) { .hm-pdp .nbox__row { grid-template-columns: 1fr; } }
+  .hm-pdp .btn:disabled { background: var(--tile); border-color: var(--line); color: var(--mute); cursor: not-allowed; }
+  .hm-pdp .buyrow { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 6px; }
+  .hm-pdp .qty { display: grid; grid-template-columns: 36px minmax(0, 1fr) 36px; height: 48px; border: 1px solid var(--line); background: var(--surface); }
+  .hm-pdp .qty button { border: 0; background: none; cursor: pointer; display: grid; place-items: center; color: var(--ink); }
+  .hm-pdp .qty button svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 1.6; fill: none; }
+  .hm-pdp .qty input { border: 0; background: none; text-align: center; font: inherit; font-size: var(--t-sm); font-weight: 700; font-variant-numeric: tabular-nums; width: 100%; min-width: 0; -moz-appearance: textfield; appearance: textfield; }
+  .hm-pdp .qty input::-webkit-inner-spin-button, .hm-pdp .qty input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  .hm-pdp .btn--big { min-height: 48px; }
+  .hm-pdp .dyn { display: grid; gap: 6px; }
+  .hm-pdp .dyn.is-locked { opacity: .55; }
+  .hm-pdp .facts { list-style: none; margin: 0; padding: 12px 0 0; border-top: 1px solid var(--line); display: grid; gap: 8px; font-size: var(--t-xs); color: var(--soft); }
+  .hm-pdp .facts li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 8px; align-items: start; }
+  .hm-pdp .facts svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .hm-pdp .facts b { color: var(--ink); }
+  .hm-pdp .acc { border-top: 1px solid var(--line); }
+  .hm-pdp .acc:empty { display: none; }
+  .hm-pdp .acc details { border-bottom: 1px solid var(--line); }
+  .hm-pdp .acc summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px; cursor: pointer; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); }
+  .hm-pdp .acc summary::-webkit-details-marker { display: none; }
+  .hm-pdp .acc summary::after { content: "+"; font-size: 18px; font-weight: 400; }
+  .hm-pdp .acc details[open] summary::after { content: "\2212"; }
+  .hm-pdp .acc__body { padding-bottom: 14px; font-size: var(--t-xs); line-height: 1.6; color: var(--soft); display: grid; gap: 8px; }
+  .hm-pdp .acc__body p, .hm-pdp .acc__body ul { margin: 0; }
+  .hm-pdp .acc__body ul { padding-left: 16px; display: grid; gap: 2px; }
+  .hm-pdp .sg { width: min(520px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 0; background: var(--surface); color: var(--ink); }
+  .hm-pdp .sg::backdrop { background: rgba(28,27,25,.45); }
+  .hm-pdp .sg__head { display: flex; justify-content: space-between; align-items: center; padding: 8px 8px 8px 20px; border-bottom: 1px solid var(--line); }
+  .hm-pdp .sg__body { padding: 16px 20px 20px; display: grid; gap: 12px; }
+  .hm-pdp .sg__body p { margin: 0; font-size: var(--t-xs); color: var(--soft); }
+  .hm-pdp .tbl-wrap { overflow-x: auto; }
+  .hm-pdp .tbl { width: 100%; border-collapse: collapse; font-size: var(--t-xs); font-variant-numeric: tabular-nums; }
+  .hm-pdp .tbl th, .hm-pdp .tbl td { text-align: left; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .hm-pdp .tbl thead th { font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+  .hm-pdp .rv { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + var(--header) + 8px); border-top: 1px solid var(--line); }
+  .hm-pdp .rv h2:focus { outline: none; }
+  .hm-rv-hint { margin: 0; padding: 12px 16px; border: 1px dashed var(--line); }
+  .hm-pdp .satc { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; background: var(--surface); border-top: 1px solid var(--line); padding: 8px var(--gutter) calc(8px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; gap: 12px; transform: translateY(110%); transition: transform .2s; visibility: hidden; }
+  .hm-pdp .satc.is-on { transform: none; visibility: visible; }
+  .hm-pdp .satc__txt { min-width: 0; flex: 1; display: grid; line-height: 1.3; }
+  .hm-pdp .satc__txt b { font-size: var(--t-xs); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink); }
+  .hm-pdp .satc__txt span { font-size: 11px; color: var(--mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hm-pdp .satc .btn { flex: none; padding-inline: 1.1em; }
+  @media (min-width: 900px) { .hm-pdp .satc { display: none; } }
+  @media (max-width: 899px) { body:has(.hm-pdp .satc.is-on) { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); } }
+  @media (prefers-reduced-motion: reduce) { .hm-pdp .satc { transition: none; } }
+  @media (max-width: 400px) { .hm-pdp .sizes { grid-template-columns: repeat(3, minmax(0, 1fr)); } .hm-pdp .sizes.sizes--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM Product",
+  "tag": "section",
+  "class": "hm-section hm-main-product",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_zoom",
+      "label": "Zoom on photo click",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_short_description",
+      "label": "Show short description under the price",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "short_description_words",
+      "label": "Short description length (words)",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "max_qty",
+      "label": "Max quantity per add",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dynamic_checkout",
+      "label": "Show Shop Pay and more payment options",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "sizes_page_url",
+      "label": "Size guide page",
+      "info": "Used when the product has no size chart metafield. Empty = /pages/sizes"
+    },
+    {
+      "type": "header",
+      "content": "Black Smoke Guarantee"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_guarantee",
+      "label": "Show the guarantee line",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "guarantee_label",
+      "label": "Label",
+      "default": "The Black Smoke Guarantee:"
+    },
+    {
+      "type": "text",
+      "id": "guarantee_text",
+      "label": "Text",
+      "default": "if [noun] ever stops being evil, we replace it.",
+      "info": "[noun] becomes \"this hoodie\", \"this shirt\", \"this cap\"... from the guarantee_noun metafield or the product type. The Details link goes to the Refund Policy #bsg."
+    },
+    {
+      "type": "header",
+      "content": "Notify me (Coming soon / Sold out)"
+    },
+    {
+      "type": "text",
+      "id": "notify_heading",
+      "label": "Heading",
+      "default": "Notify me"
+    },
+    {
+      "type": "text",
+      "id": "notify_soon_text",
+      "label": "Text when Coming soon",
+      "default": "One email the moment this drops. Nothing else."
+    },
+    {
+      "type": "text",
+      "id": "notify_soldout_text",
+      "label": "Text when Sold out",
+      "default": "One email if this comes back. Nothing else."
+    },
+    {
+      "type": "header",
+      "content": "Reviews"
+    },
+    {
+      "type": "text",
+      "id": "reviews_heading",
+      "label": "Heading",
+      "default": "Reviews",
+      "info": "Reviews only show when you add the Judge.me app block to this section."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "collapsible",
+      "name": "Accordion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Details"
+        },
+        {
+          "type": "select",
+          "id": "source",
+          "label": "Content",
+          "options": [
+            {
+              "value": "details",
+              "label": "Details (metafield details, else product description)"
+            },
+            {
+              "value": "design_story",
+              "label": "Design story (metafield design_story)"
+            },
+            {
+              "value": "shipping",
+              "label": "Shipping & returns (text below + policy links)"
+            },
+            {
+              "value": "custom",
+              "label": "Only the text below"
+            }
+          ],
+          "default": "details"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Text",
+          "info": "Added after the metafield content."
+        },
+        {
+          "type": "checkbox",
+          "id": "open",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

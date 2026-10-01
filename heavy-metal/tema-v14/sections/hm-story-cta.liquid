@@ -1,0 +1,40 @@
+{%- comment -%}
+  Our Story · 8 · The single closing CTA.
+{%- endcomment -%}
+<section class="sect st-cta-sect" aria-labelledby="cta-h-{{ section.id }}">
+  <div class="wrap st-cta">
+    <div class="st-cta__l">
+      <svg viewBox="0 0 140 280" aria-hidden="true"><polygon points="88,0 20,150 58,150 30,280 122,105 78,105" fill="currentColor"/></svg>
+      <div>
+        <h2 class="h2" id="cta-h-{{ section.id }}">{{ section.settings.title | escape }}</h2>
+        {%- if section.settings.text != blank -%}<p class="muted">{{ section.settings.text | escape }}</p>{%- endif -%}
+      </div>
+    </div>
+    {%- if section.settings.button != blank -%}
+      <a class="btn" href="{{ section.settings.url | default: routes.all_products_collection_url }}">{{ section.settings.button | escape }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+.st-cta-sect{padding-block:clamp(28px,3.4vw,40px)}
+.st-cta{display:flex;flex-wrap:wrap;justify-content:flex-start;align-items:center;gap:16px clamp(32px,6vw,96px)}
+.st-cta__l{display:flex;align-items:center;gap:16px;color:var(--ink)}
+.st-cta__l svg{width:22px;height:auto;flex:none}
+.st-cta p{margin:4px 0 0}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Story: closing CTA",
+  "tag": "div",
+  "class": "hm-story-cta",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Born in a lightning storm. Built to pull." },
+    { "type": "text", "id": "text", "label": "Text", "default": "Merch designed by the crew. Every order fuels the team." },
+    { "type": "text", "id": "button", "label": "Button", "default": "Shop the drop" },
+    { "type": "url", "id": "url", "label": "Button link", "default": "/collections/all" }
+  ],
+  "presets": [{ "name": "Story: closing CTA" }]
+}
+{% endschema %}

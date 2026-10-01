@@ -1,0 +1,700 @@
+{%- comment -%}
+  Book the team. Options from the booking_option metaobject (sorted by order). Ticking a card ticks the
+  matching box in the quote form (and back). The quote form is {% form 'contact' %} with
+  contact[topic] = Booking request. Steps and requirements are blocks; a requirement with an empty
+  value is not shown, it goes into "The rest" line instead.
+{%- endcomment -%}
+{%- liquid
+  assign season = settings.hm_season
+  assign exhibitions = 0
+  for s in metaobjects.season_stats.values
+    if s.season.value == season
+      assign exhibitions = s.exhibitions.value | default: 0
+      break
+    endif
+  endfor
+
+  assign opts = metaobjects.booking_option.values
+  assign okeys = ''
+  for o in opts
+    assign ord = o.order.value | default: 999 | plus: 10000
+    assign ix = forloop.index | plus: 100
+    assign okeys = okeys | append: ord | append: '-' | append: ix | append: ','
+  endfor
+  assign okeys = okeys | split: ',' | sort
+
+  assign missing = ''
+  for block in section.blocks
+    if block.type == 'requirement' and block.settings.value == blank and block.settings.label != blank
+      assign missing = missing | append: block.settings.label | downcase | append: '|'
+    endif
+  endfor
+  assign missing = missing | split: '|'
+
+  assign fid = 'BookForm-' | append: section.id
+-%}
+
+<div class="hm-book" data-book>
+  {%- comment -%} 1 · title, proof and photo {%- endcomment -%}
+  <section class="sect--white bk-top" aria-labelledby="{{ fid }}-title">
+    <div class="wrap bk-top__in">
+      <div>
+        {%- if section.settings.kicker != blank -%}<p class="label">{{ section.settings.kicker }}</p>{%- endif -%}
+        <h1 class="h-hero" id="{{ fid }}-title">{{ section.settings.title }}</h1>
+        {%- if section.settings.lede != blank -%}<p class="lede">{{ section.settings.lede }}</p>{%- endif -%}
+        <ul class="bk-proof">
+          {%- if exhibitions > 0 -%}
+            <li>
+              <b>{{ exhibitions }}</b
+              ><span
+                >exhibitions so far
+                {%- if section.settings.log_url != blank %} · <a href="{{ section.settings.log_url }}">Pit Log</a>{% endif -%}
+              </span>
+            </li>
+          {%- endif -%}
+          {%- if section.settings.years > 0 -%}
+            <li>
+              <b>{{ section.settings.years }}+ years</b><span>{{ section.settings.years_text }}</span>
+            </li>
+          {%- endif -%}
+          {%- if section.settings.home != blank -%}
+            <li>
+              <b>{{ section.settings.home }}</b><span>{{ section.settings.home_text }}</span>
+            </li>
+          {%- endif -%}
+        </ul>
+        <div class="bk-links">
+          <a class="bk-go" href="#{{ fid }}-offer" data-bk-jump
+            >{{ section.settings.see_label }}<span aria-hidden="true"> ↓</span></a
+          >
+          {%- if section.settings.sponsor_label != blank -%}
+            <a class="bk-go bk-go--soft" href="{{ section.settings.sponsor_url | default: '/pages/sponsors' }}">
+              {{- section.settings.sponsor_label -}}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+      <figure class="bk-photo">
+        {%- if section.settings.image != blank -%}
+          {%- assign img_alt = section.settings.image.alt | default: section.settings.image_alt -%}
+          {{
+            section.settings.image
+            | image_url: width: 1400
+            | image_tag:
+              widths: '500, 800, 1100, 1400',
+              sizes: '(max-width: 860px) 100vw, 42vw',
+              fetchpriority: 'high',
+              class: 'photo',
+              alt: img_alt
+          }}
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'photo bk-ph' }}
+        {%- endif -%}
+      </figure>
+    </div>
+  </section>
+
+  {%- comment -%} 2 · what we bring {%- endcomment -%}
+  {%- if okeys.size > 0 -%}
+    <section class="sect" aria-labelledby="{{ fid }}-offer">
+      <div class="wrap">
+        <div class="sect-head">
+          <h2 class="h2" id="{{ fid }}-offer" tabindex="-1">{{ section.settings.offer_title }}</h2>
+          <p class="small muted bk-sub">{{ section.settings.offer_text }}</p>
+        </div>
+        <ul class="bk-offer" aria-label="Booking options, pick one or more">
+          {%- for ok in okeys -%}
+            {%- assign want = ok | split: '-' | last | minus: 100 -%}
+            {%- for o in opts -%}
+              {%- if forloop.index == want -%}
+                {%- assign k = forloop.parentloop.index -%}
+                {%- assign icon = o.icon.value | default: 'display' | downcase -%}
+                <li class="bk-opt" data-bk-card>
+                  <input
+                    type="checkbox"
+                    id="{{ fid }}-o{{ k }}"
+                    data-bk-opt="{{ k }}"
+                    aria-labelledby="{{ fid }}-o{{ k }}-t"
+                    aria-describedby="{{ fid }}-o{{ k }}-d"
+                  >
+                  <span class="bk-tick" aria-hidden="true"
+                    ><svg viewBox="0 0 16 16"><path d="M3 8.5l3 3 7-7"/></svg
+                  ></span>
+                  <span class="bk-ico" aria-hidden="true">
+                    <svg viewBox="0 0 32 32">
+                      {%- case icon -%}
+                        {%- when 'pull' -%}
+                          <path d="M3 26h26"/><path d="M6 26V6"/><path d="M6 7h11l-2 4 2 4H6"/><path d="M21 26c0-3 2-5 5-5"/><path d="M21 15c2-3 1-5-1-7M25 15c2-3 1-5-1-7"/>
+                        {%- when 'meet' -%}
+                          <circle cx="11" cy="10" r="4"/><circle cx="22" cy="11" r="3.5"/><path d="M3 26c1-5 4-8 8-8s7 3 8 8"/><path d="M19 19c1-1 2-1.5 3-1.5 3.5 0 6 2.5 7 7"/>
+                        {%- when 'social' -%}
+                          <rect x="9" y="3" width="14" height="26" rx="2"/><path d="M14 25h4"/><path d="M13 12l2 2 4-5"/><path d="M13 18h6"/>
+                        {%- else -%}
+                          <path d="M3 24h26M6 24v-3h20v3"/><circle cx="11" cy="17" r="3.5"/><circle cx="23" cy="16" r="4.5"/><path d="M8 13h8l2-5h4v8"/>
+                      {%- endcase -%}
+                    </svg>
+                  </span>
+                  <h3 class="h3" id="{{ fid }}-o{{ k }}-t">{{ o.name.value }}</h3>
+                  <div class="bk-opt__d" id="{{ fid }}-o{{ k }}-d">
+                    {%- if o.text.value != blank -%}<p>{{ o.text.value | newline_to_br }}</p>{%- endif -%}
+                    {%- if o.needs.value != blank -%}<p class="bk-if">{{ o.needs.value }}</p>{%- endif -%}
+                  </div>
+                </li>
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endfor -%}
+        </ul>
+        <div class="bk-pickbar">
+          <p data-bk-picked aria-live="polite">{{ section.settings.pick_hint }}</p>
+          <a class="bk-go" href="#{{ fid }}-quote" data-bk-goform
+            >{{ section.settings.quote_label }}<span aria-hidden="true"> →</span></a
+          >
+        </div>
+        {%- if section.settings.updated != blank -%}
+          <p class="bk-upd">Last updated: <b>{{ section.settings.updated }}</b></p>
+        {%- endif -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} 3 · how it works and what we need {%- endcomment -%}
+  <section class="sect sect--white" aria-labelledby="{{ fid }}-how">
+    <div class="wrap bk-how">
+      <div>
+        <h2 class="h2 bk-h" id="{{ fid }}-how">{{ section.settings.how_title }}</h2>
+        <ol class="bk-steps">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'step' -%}
+              <li {{ block.shopify_attributes }}>
+                <h3 class="h3">{{ block.settings.title }}</h3>
+                <p>{{ block.settings.text }}</p>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ol>
+      </div>
+      <div>
+        <h2 class="h2 bk-h" id="{{ fid }}-req">{{ section.settings.req_title }}</h2>
+        <dl class="bk-req" aria-labelledby="{{ fid }}-req">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'requirement' and block.settings.value != blank -%}
+              <div {{ block.shopify_attributes }}>
+                <dt>{{ block.settings.label }}</dt>
+                <dd>{{ block.settings.value }}</dd>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if missing.size > 0 -%}
+            <div>
+              <dt>{{ section.settings.rest_label }}</dt>
+              <dd>
+                We go over
+                {% for m in missing -%}
+                  {%- if forloop.last and forloop.length > 1 %} and {% elsif forloop.first == false %}, {% endif -%}
+                  {{- m -}}
+                {%- endfor %}
+                with you when we reply.
+              </dd>
+            </div>
+          {%- endif -%}
+        </dl>
+        {%- if section.settings.alt_text != blank -%}
+          <div class="bk-alt">{{ section.settings.alt_text }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} 4 · quote form {%- endcomment -%}
+  <section class="sect bk-quote" id="{{ fid }}-quote" aria-labelledby="{{ fid }}-ft">
+    <div class="wrap bk-formwrap">
+      <div>
+        <h2 class="h2" id="{{ fid }}-ft">{{ section.settings.form_title }}</h2>
+        <p>{{ section.settings.form_text }}</p>
+      </div>
+      <div>
+        {%- form 'contact', id: fid, class: 'bk-form' -%}
+          {%- if form.posted_successfully? -%}
+            <div class="bk-ok full" role="status" tabindex="-1" data-bk-ok>
+              <p class="label">{{ section.settings.ok_label }}</p>
+              <p class="h2">{{ section.settings.ok_title }}</p>
+              <p>{{ section.settings.ok_text }}</p>
+            </div>
+          {%- endif -%}
+          {%- if form.errors -%}
+            <div class="bk-status full" role="alert" data-bk-server-err>{{ form.errors | default_errors }}</div>
+          {%- endif -%}
+          <input type="hidden" name="contact[topic]" value="{{ section.settings.topic | escape }}">
+
+          <div class="field">
+            <label for="{{ fid }}-name">Your name</label>
+            <input
+              class="input"
+              id="{{ fid }}-name"
+              name="contact[name]"
+              type="text"
+              required
+              autocomplete="name"
+              aria-describedby="{{ fid }}-name-err"
+              data-rule="name"
+            >
+            <p class="err" id="{{ fid }}-name-err"></p>
+          </div>
+          <div class="field">
+            <label for="{{ fid }}-company">Company or event <span class="opt">(optional)</span></label>
+            <input class="input" id="{{ fid }}-company" name="contact[company]" type="text" autocomplete="organization">
+          </div>
+          <div class="field">
+            <label for="{{ fid }}-email">Email</label>
+            <input
+              class="input"
+              id="{{ fid }}-email"
+              name="contact[email]"
+              type="email"
+              required
+              autocomplete="email"
+              spellcheck="false"
+              value="{{ form.email }}"
+              aria-describedby="{{ fid }}-email-err"
+              data-rule="email"
+              {% if form.errors contains 'email' %}
+                aria-invalid="true"
+              {% endif %}
+            >
+            <p class="err" id="{{ fid }}-email-err">
+              {%- if form.errors contains 'email' -%}
+                {{ form.errors.translated_fields.email | capitalize }}
+                {{ form.errors.messages.email }}.
+              {%- endif -%}
+            </p>
+          </div>
+          <div class="field">
+            <label for="{{ fid }}-phone">Phone <span class="opt">(optional)</span></label>
+            <input
+              class="input"
+              id="{{ fid }}-phone"
+              name="contact[phone]"
+              type="tel"
+              autocomplete="tel"
+              inputmode="tel"
+              aria-describedby="{{ fid }}-phone-err"
+              data-rule="phone"
+            >
+            <p class="err" id="{{ fid }}-phone-err"></p>
+          </div>
+          <div class="field">
+            <label for="{{ fid }}-date">Event date</label>
+            <input
+              class="input"
+              id="{{ fid }}-date"
+              name="contact[event_date]"
+              type="date"
+              required
+              aria-describedby="{{ fid }}-date-err"
+              data-rule="date"
+            >
+            <p class="err" id="{{ fid }}-date-err"></p>
+          </div>
+          <div class="field">
+            <label for="{{ fid }}-place">City and state</label>
+            <input
+              class="input"
+              id="{{ fid }}-place"
+              name="contact[city_state]"
+              type="text"
+              required
+              autocomplete="address-level2"
+              placeholder="e.g. Jefferson, WI"
+              aria-describedby="{{ fid }}-place-err"
+              data-rule="place"
+            >
+            <p class="err" id="{{ fid }}-place-err"></p>
+          </div>
+          <div class="field">
+            <label for="{{ fid }}-type">Type of event</label>
+            <select
+              class="input"
+              id="{{ fid }}-type"
+              name="contact[event_type]"
+              required
+              aria-describedby="{{ fid }}-type-err"
+              data-rule="type"
+            >
+              <option value="">Choose one</option>
+              {%- assign types = section.settings.event_types | split: '|' -%}
+              {%- for x in types -%}
+                {%- assign x = x | strip -%}
+                {%- if x != blank -%}<option>{{ x }}</option>{%- endif -%}
+              {%- endfor -%}
+            </select>
+            <p class="err" id="{{ fid }}-type-err"></p>
+          </div>
+          <div class="field">
+            <label for="{{ fid }}-crowd">Expected attendance</label>
+            <select
+              class="input"
+              id="{{ fid }}-crowd"
+              name="contact[attendance]"
+              required
+              aria-describedby="{{ fid }}-crowd-err"
+              data-rule="crowd"
+            >
+              <option value="">Choose one</option>
+              {%- assign crowds = section.settings.crowds | split: '|' -%}
+              {%- for x in crowds -%}
+                {%- assign x = x | strip -%}
+                {%- if x != blank -%}<option>{{ x }}</option>{%- endif -%}
+              {%- endfor -%}
+            </select>
+            <p class="err" id="{{ fid }}-crowd-err"></p>
+          </div>
+          {%- if okeys.size > 0 -%}
+            <fieldset class="bk-wants full">
+              <legend>What are you interested in? <span class="opt">(optional)</span></legend>
+              {%- for ok in okeys -%}
+                {%- assign want = ok | split: '-' | last | minus: 100 -%}
+                {%- for o in opts -%}
+                  {%- if forloop.index == want -%}
+                    <label>
+                      <input
+                        type="checkbox"
+                        name="contact[interested_{{ forloop.parentloop.index }}]"
+                        value="{{ o.name.value | escape }}"
+                        data-bk-field="{{ forloop.parentloop.index }}"
+                      >
+                      {{- o.name.value -}}
+                    </label>
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endfor -%}
+            </fieldset>
+          {%- endif -%}
+          <div class="field full">
+            <label for="{{ fid }}-msg">Message <span class="opt">(optional)</span></label>
+            <textarea
+              class="input"
+              id="{{ fid }}-msg"
+              name="contact[body]"
+              maxlength="1500"
+              placeholder="Hours, track and sled on site, where the tractor would go, anything else we should know."
+            ></textarea>
+          </div>
+          {%- if section.settings.consent != blank -%}
+            <div class="consent full">{{ section.settings.consent }}</div>
+          {%- endif -%}
+          <div class="full"><button class="btn" type="submit">{{ section.settings.submit_label }}</button></div>
+          <p class="bk-status full" role="alert" data-bk-status></p>
+        {%- endform -%}
+      </div>
+    </div>
+  </section>
+</div>
+
+{% stylesheet %}
+  .bk-top{padding-block:28px 32px}
+  .bk-top__in{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(20px,3vw,48px);align-items:center}
+  .bk-top .label{color:var(--mute);margin-bottom:8px}
+  .bk-top .lede{margin-top:12px}
+  .bk-go{display:inline-flex;align-items:center;gap:.4em;min-height:44px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+  .bk-go:hover{text-decoration-thickness:3px}
+  .bk-go--soft{text-decoration-thickness:1px;color:var(--soft)}
+  .bk-links{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px}
+  .bk-proof{list-style:none;margin:20px 0 22px;padding:0;display:flex;flex-wrap:wrap;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .bk-proof:empty{display:none}
+  .bk-proof li{padding:10px 20px 10px 0;display:grid;gap:1px}
+  .bk-proof li+li{padding-left:20px;border-left:1px solid var(--line)}
+  .bk-proof b{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h2);line-height:1.1;text-transform:uppercase;color:var(--ink);font-variant-numeric:tabular-nums}
+  .bk-proof span{font-size:var(--t-xs);color:var(--mute)}
+  .bk-proof a{color:var(--ink);font-weight:600;text-underline-offset:3px}
+  .bk-photo{margin:0;aspect-ratio:1/1;max-height:calc(100svh - var(--header) - 140px);overflow:hidden;background:var(--tile);justify-self:end;width:100%}
+  .bk-photo .photo{width:100%;height:100%;object-fit:cover;object-position:50% 40%}
+  .bk-photo svg{fill:#C9C6BE}
+  @media (max-width:860px){.bk-top__in{grid-template-columns:minmax(0,1fr)}.bk-photo{order:-1;aspect-ratio:16/10;max-height:none}}
+  @media (max-width:480px){.bk-proof{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.bk-proof li{padding-right:12px}.bk-proof li+li{padding-left:12px}.bk-proof li:nth-child(odd):not(:first-child){padding-left:0;border-left:0;border-top:1px solid var(--line)}.bk-proof li:last-child:nth-child(odd){grid-column:1/-1}}
+  .bk-sub{margin:0}
+  .bk-offer{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+  @media (max-width:1024px){.bk-offer{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:560px){.bk-offer{grid-template-columns:minmax(0,1fr)}}
+  .bk-opt{position:relative;background:var(--surface);border:1px solid var(--line);padding:20px;display:grid;grid-template-rows:auto auto 1fr;gap:8px;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+  .bk-opt:hover{border-color:var(--soft)}
+  .bk-opt input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:1}
+  .bk-opt:has(input:focus-visible){outline:2px solid var(--ink);outline-offset:2px}
+  .bk-opt.is-on{border-color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+  .bk-tick{position:absolute;top:16px;right:16px;width:24px;height:24px;border:2px solid var(--ink);background:var(--surface);display:grid;place-items:center}
+  .bk-tick svg{width:16px;height:16px;fill:none;stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+  .bk-opt.is-on .bk-tick{background:var(--accent)}
+  .bk-opt.is-on .bk-tick svg{opacity:1}
+  .bk-ico{width:44px;height:44px;display:grid;place-items:center;background:var(--accent);color:var(--ink);margin-bottom:6px}
+  .bk-ico svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+  .bk-opt__d{display:grid;gap:6px;align-content:start}
+  .bk-opt p{margin:0;font-size:var(--t-sm);color:var(--soft)}
+  .bk-opt .bk-if{font-size:var(--t-xs);color:var(--mute)}
+  .bk-pickbar{margin-top:16px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px}
+  .bk-pickbar p{margin:0;font-size:var(--t-sm);color:var(--soft)}
+  .bk-pickbar b{color:var(--ink)}
+  .bk-upd{margin:12px 0 0;font-size:var(--t-xs);color:var(--mute)}
+  .bk-upd b{color:var(--ink);font-weight:600}
+  .bk-h{margin-bottom:20px}
+  .bk-how{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(24px,3vw,56px);align-items:start}
+  @media (max-width:900px){.bk-how{grid-template-columns:minmax(0,1fr)}}
+  .bk-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;counter-reset:s}
+  @media (max-width:640px){.bk-steps{grid-template-columns:minmax(0,1fr);gap:14px}}
+  .bk-steps li{counter-increment:s;border-top:2px solid var(--ink);padding-top:12px;display:grid;gap:4px;align-content:start}
+  .bk-steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h2);color:var(--ink);line-height:1}
+  .bk-steps p{margin:0;font-size:var(--t-sm);color:var(--soft)}
+  .bk-req{margin:0;display:grid;border-top:1px solid var(--line)}
+  .bk-req div{display:grid;grid-template-columns:minmax(0,130px) minmax(0,1fr);gap:4px 16px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .bk-req dt{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+  .bk-req dd{margin:0;font-size:var(--t-sm);color:var(--ink)}
+  @media (max-width:420px){.bk-req div{grid-template-columns:minmax(0,1fr)}}
+  .bk-alt{margin:20px 0 0;padding:12px 14px;border-left:3px solid var(--accent);background:var(--bg);font-size:var(--t-sm);color:var(--soft)}
+  .bk-alt p{margin:0}
+  .bk-alt a{color:var(--ink);font-weight:700;text-underline-offset:3px}
+  .bk-quote{scroll-margin-top:calc(var(--header) + 12px)}
+  .bk-formwrap{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(20px,3vw,48px);align-items:start}
+  @media (max-width:900px){.bk-formwrap{grid-template-columns:minmax(0,1fr)}}
+  .bk-formwrap>div>p{margin:8px 0 0;font-size:var(--t-sm);color:var(--soft);max-width:40ch}
+  .bk-form{background:var(--surface);border:1px solid var(--line);padding:clamp(16px,2vw,24px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .bk-form .full{grid-column:1/-1}
+  .bk-form textarea.input{min-height:96px;padding-block:10px;resize:vertical}
+  .bk-form select.input{cursor:pointer}
+  @media (max-width:560px){.bk-form{grid-template-columns:minmax(0,1fr)}}
+  .bk-form .field .opt,.bk-wants .opt{font-weight:400;text-transform:none;letter-spacing:0;color:var(--mute)}
+  .bk-form .input[aria-invalid="true"]{border-color:var(--alert);outline:1px solid var(--alert)}
+  .bk-form .err{margin:0;font-size:var(--t-xs);color:var(--alert);font-weight:600}
+  .bk-form .err:empty{display:none}
+  .bk-wants{border:0;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px 18px}
+  .bk-wants legend{font-size:var(--t-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--soft);padding:0;margin-bottom:8px;width:100%}
+  .bk-wants label{display:inline-flex;align-items:center;gap:8px;font-size:var(--t-sm);cursor:pointer;min-height:32px}
+  .bk-wants input{width:18px;height:18px;margin:0}
+  .bk-status{margin:0;font-size:var(--t-sm);font-weight:600;color:var(--alert)}
+  .bk-status:empty{display:none}
+  .bk-status ul{margin:0;padding-left:18px}
+  .bk-ok{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--accent);padding:clamp(16px,2vw,24px);display:grid;gap:8px;justify-items:start}
+  .bk-ok:focus{outline:none}
+  .bk-ok:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .bk-ok p{margin:0;color:var(--soft);max-width:56ch}
+  .bk-ok .h2{color:var(--ink)}
+  .bk-form .consent p{margin:0}
+  @media (prefers-reduced-motion:reduce){.bk-opt{transition:none}}
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function pad(n) { return String(n).padStart(2, '0'); }
+    function iso(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+    function init(root) {
+      if (!root || root.dataset.ready) return;
+      root.dataset.ready = '1';
+      var form = root.querySelector('form');
+      var tmw = new Date(); tmw.setDate(tmw.getDate() + 1);
+      var MIN = iso(tmw);
+      var date = root.querySelector('[data-rule="date"]');
+      if (date) date.min = MIN;
+      var cards = Array.prototype.slice.call(root.querySelectorAll('[data-bk-opt]'));
+      var out = root.querySelector('[data-bk-picked]');
+      var hint = out ? out.textContent : '';
+      function field(k) { return root.querySelector('[data-bk-field="' + k + '"]'); }
+      function names() {
+        return cards.filter(function (c) { return c.checked; }).map(function (c) {
+          var t = document.getElementById(c.getAttribute('aria-labelledby'));
+          return t ? t.textContent.trim() : '';
+        });
+      }
+      function paint() {
+        cards.forEach(function (c) { c.closest('[data-bk-card]').classList.toggle('is-on', c.checked); });
+        if (!out) return;
+        var p = names();
+        if (!p.length) { out.textContent = hint; return; }
+        var txt = p.length > 1 ? p.slice(0, -1).join(', ') + ' and ' + p[p.length - 1] : p[0];
+        out.textContent = '';
+        out.appendChild(document.createTextNode('Picked: '));
+        var b = document.createElement('b'); b.textContent = txt; out.appendChild(b);
+        out.appendChild(document.createTextNode(' · added to the form below'));
+      }
+      root.addEventListener('change', function (e) {
+        var t = e.target;
+        if (t.hasAttribute('data-bk-opt')) {
+          var f = field(t.getAttribute('data-bk-opt'));
+          if (f) f.checked = t.checked;
+          paint();
+        } else if (t.hasAttribute('data-bk-field')) {
+          var c = root.querySelector('[data-bk-opt="' + t.getAttribute('data-bk-field') + '"]');
+          if (c) { c.checked = t.checked; paint(); }
+        }
+      });
+      root.addEventListener('click', function (e) {
+        var a = e.target.closest('[data-bk-goform], [data-bk-jump]');
+        if (!a) return;
+        var target = document.getElementById(a.getAttribute('href').slice(1));
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+        var focusEl = a.hasAttribute('data-bk-goform') ? target.querySelector('input:not([type="hidden"])') : target;
+        if (focusEl) setTimeout(function () { focusEl.focus({ preventScroll: true }); }, reduce ? 0 : 450);
+      });
+      paint();
+      if (!form) return;
+      form.noValidate = true;
+      var RULES = {
+        name: function (v) { return v ? '' : 'Add your name.'; },
+        email: function (v) { return !v ? 'Add your email so we can reply.' : !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? 'Check the email: it should look like name@example.com.' : ''; },
+        phone: function (v) { return v && v.replace(/\D/g, '').length < 10 ? 'Check the phone: 10 digits, area code first.' : ''; },
+        date: function (v) { return !v ? 'Pick the event date.' : v < MIN ? 'Pick a date from tomorrow on.' : ''; },
+        place: function (v) { return v ? '' : 'Add the city and state.'; },
+        type: function (v) { return v ? '' : 'Choose the type of event.'; },
+        crowd: function (v) { return v ? '' : 'Choose about how many people. "Not sure yet" is fine.'; }
+      };
+      var fields = Array.prototype.slice.call(form.querySelectorAll('[data-rule]'));
+      function check(el) {
+        var fn = RULES[el.getAttribute('data-rule')];
+        var msg = fn ? fn(el.value.trim()) : '';
+        el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+        var err = document.getElementById(el.getAttribute('aria-describedby'));
+        if (err) err.textContent = msg;
+        return !msg;
+      }
+      fields.forEach(function (el) {
+        el.addEventListener('blur', function () { if (el.value.trim() || el.getAttribute('aria-invalid') === 'true') check(el); });
+        el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', function () { if (el.getAttribute('aria-invalid') === 'true') check(el); });
+      });
+      form.addEventListener('submit', function (e) {
+        var bad = fields.filter(function (el) { return !check(el); });
+        var st = form.querySelector('[data-bk-status]');
+        if (bad.length) {
+          e.preventDefault();
+          if (st) st.textContent = bad.length === 1 ? 'One thing to fix before we can send it.' : bad.length + ' things to fix before we can send it.';
+          bad[0].focus();
+        } else if (st) st.textContent = '';
+      });
+      var ok = form.querySelector('[data-bk-ok]');
+      if (ok) { form.scrollIntoView({ block: 'start' }); ok.focus({ preventScroll: true }); }
+      else if (form.querySelector('[data-bk-server-err]')) form.scrollIntoView({ block: 'start' });
+    }
+    function initAll(scope) { (scope || document).querySelectorAll('[data-book]').forEach(init); }
+    document.addEventListener('shopify:section:load', function (e) { initAll(e.target); });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { initAll(); });
+    else initAll();
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Book the team",
+  "tag": "div",
+  "class": "hm-book-section",
+  "settings": [
+    { "type": "header", "content": "Top" },
+    { "type": "text", "id": "kicker", "label": "Small label", "default": "For fairs, pulls, dealers and events" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Book “The Evil One”" },
+    {
+      "type": "textarea",
+      "id": "lede",
+      "label": "Intro",
+      "default": "Bring a Pro Stock pulling tractor built from scratch in Waterloo, WI, to your event. Put it on display, run it for the crowd where the track allows it, and meet the driver."
+    },
+    {
+      "type": "paragraph",
+      "content": "The exhibitions count comes from Content > Metaobjects > Season stats (current season). 0 = not shown."
+    },
+    { "type": "url", "id": "log_url", "label": "Pit Log link next to exhibitions" },
+    { "type": "number", "id": "years", "label": "Years in the sport (0 = hide)", "default": 20 },
+    { "type": "text", "id": "years_text", "label": "Years text", "default": "driver Chris F. in the sport" },
+    { "type": "text", "id": "home", "label": "Home town (empty = hide)", "default": "Waterloo, WI" },
+    { "type": "text", "id": "home_text", "label": "Home town text", "default": "home shop" },
+    { "type": "text", "id": "see_label", "label": "Link to options", "default": "See what we bring" },
+    { "type": "text", "id": "sponsor_label", "label": "Sponsor link", "default": "Sponsor instead" },
+    { "type": "url", "id": "sponsor_url", "label": "Sponsor page" },
+    { "type": "image_picker", "id": "image", "label": "Photo" },
+    { "type": "text", "id": "image_alt", "label": "Photo description (if the file has no alt text)", "default": "Chris F. and the crew next to the rear tire of “The Evil One”" },
+    { "type": "header", "content": "What we bring" },
+    {
+      "type": "paragraph",
+      "content": "Options come from Content > Metaobjects > Booking option (name, icon, text, needs, order). No prices on purpose."
+    },
+    { "type": "text", "id": "offer_title", "label": "Title", "default": "What we bring" },
+    { "type": "text", "id": "offer_text", "label": "Text", "default": "Pick one or mix them. Every event is different, so we quote each one." },
+    { "type": "text", "id": "pick_hint", "label": "Hint before picking", "default": "Tap the options you want, then ask for a quote." },
+    { "type": "text", "id": "quote_label", "label": "Link to the form", "default": "Ask for a quote" },
+    { "type": "text", "id": "updated", "label": "Last updated (empty = hide)", "info": "Write it like October 1, 2026" },
+    { "type": "header", "content": "How it works" },
+    { "type": "text", "id": "how_title", "label": "Title", "default": "How it works" },
+    { "type": "text", "id": "req_title", "label": "Requirements title", "default": "What we need from you" },
+    { "type": "text", "id": "rest_label", "label": "Label for requirements with no value", "default": "The rest" },
+    {
+      "type": "richtext",
+      "id": "alt_text",
+      "label": "Sponsor note",
+      "default": "<p>Want your logo on the tractor all season instead of a one-day visit? That is sponsorship. <a href=\"/pages/sponsors\" title=\"Sponsors\">See sponsor packages</a></p>"
+    },
+    { "type": "header", "content": "Quote form" },
+    { "type": "text", "id": "topic", "label": "Email subject (topic)", "default": "Booking request" },
+    { "type": "text", "id": "form_title", "label": "Title", "default": "Ask for a quote" },
+    { "type": "text", "id": "form_text", "label": "Text", "default": "The more we know about your event, the faster we can say yes." },
+    {
+      "type": "text",
+      "id": "event_types",
+      "label": "Event types (separate with |)",
+      "default": "County or state fair | Tractor pull | Dealership or business event | Farm show or expo | Festival or community event | Other"
+    },
+    {
+      "type": "text",
+      "id": "crowds",
+      "label": "Attendance options (separate with |)",
+      "default": "Under 500 | 500 to 2,000 | 2,000 to 5,000 | 5,000 or more | Not sure yet"
+    },
+    {
+      "type": "richtext",
+      "id": "consent",
+      "label": "Privacy line",
+      "default": "<p>We use your details only to reply about your event. See our <a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a>.</p>"
+    },
+    { "type": "text", "id": "submit_label", "label": "Button", "default": "Send request" },
+    { "type": "text", "id": "ok_label", "label": "After sending: label", "default": "Request sent" },
+    { "type": "text", "id": "ok_title", "label": "After sending: title", "default": "Thanks, we got it." },
+    {
+      "type": "text",
+      "id": "ok_text",
+      "label": "After sending: text",
+      "default": "We’ll reply within 2 business days with availability and a quote."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Step",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Tell us about it" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Send the form below with the date, the place and the kind of event." }
+      ]
+    },
+    {
+      "type": "requirement",
+      "name": "Requirement",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Space" },
+        { "type": "text", "id": "value", "label": "Value", "info": "Empty = not shown; it goes into the line “We go over … with you when we reply.”" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Book the team",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Tell us about it", "text": "Send the form below with the date, the place and the kind of event." } },
+        { "type": "step", "settings": { "title": "Get a quote", "text": "We check the date and reply with availability and a quote within 2 business days." } },
+        { "type": "step", "settings": { "title": "Lock the date", "text": "We confirm the details with you in writing, then haul “The Evil One” in." } },
+        { "type": "requirement", "settings": { "label": "Space" } },
+        { "type": "requirement", "settings": { "label": "Trailer access" } },
+        { "type": "requirement", "settings": { "label": "Notice" } },
+        { "type": "requirement", "settings": { "label": "For a pull", "value": "A pulling track and sled on site, cleared for an exhibition run" } },
+        { "type": "requirement", "settings": { "label": "Travel" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

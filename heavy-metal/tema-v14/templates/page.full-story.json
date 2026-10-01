@@ -1,0 +1,39 @@
+{
+  "sections": {
+    "main": {
+      "type": "hm-full-story",
+      "blocks": {
+        "n1": { "type": "note", "settings": { "text": "2014", "heading": 1 } },
+        "n2": { "type": "note", "settings": { "text": "Feb 2020", "heading": 2 } },
+        "n3": { "type": "note", "settings": { "text": "2026", "heading": 3 } },
+        "n4": { "type": "note", "settings": { "text": "Aug 2026", "heading": 4 } },
+        "p1": { "type": "print", "settings": { "caption": "“The Evil One”, in profile", "heading": 1, "at": "p1", "side": "out-r", "tape": "tape", "tilt": 2.4, "ratio": "4/3", "position": "50% 78%" } },
+        "p2": { "type": "print", "settings": { "caption": "The Cat 3208 in the shop, Waterloo, WI", "heading": 2, "at": "h", "side": "hang-r", "tape": "corners", "tilt": -1.6, "ratio": "4/5", "position": "50% 42%" } },
+        "p3": { "type": "print", "settings": { "caption": "Out on the track", "heading": 4, "at": "p1", "side": "hang-l", "tape": "tape", "tilt": 1.6, "ratio": "4/5", "position": "50% 60%" } },
+        "p4": { "type": "print", "settings": { "caption": "Chris and the crew in the pits", "heading": 5, "at": "h", "side": "out-r", "tape": "tape", "tilt": -1.2, "ratio": "4/3", "position": "50% 64%" } },
+        "p5": { "type": "print", "settings": { "caption": "Next to the rear tire", "heading": 5, "at": "p2", "side": "out-l", "tape": "corners", "tilt": -2.6, "ratio": "4/5", "position": "50% 40%" } },
+        "p6": { "type": "print", "settings": { "caption": "Chris, in the seat", "heading": 6, "at": "h", "side": "out-r", "tape": "tape", "tilt": 2.2, "ratio": "4/5", "position": "50% 30%" } },
+        "p7": { "type": "print", "settings": { "caption": "Black smoke from the stack", "heading": 7, "at": "p1", "side": "out-r", "tape": "corners", "tilt": -2, "ratio": "4/5", "position": "50% 55%" } },
+        "p8": { "type": "print", "settings": { "caption": "Head on, in the smoke", "heading": 9, "at": "h", "side": "out-l", "tape": "tape", "tilt": 1.8, "ratio": "4/5", "position": "50% 70%" } },
+        "p9": { "type": "print", "settings": { "caption": "In front of the grandstand", "heading": 10, "at": "h", "side": "out-r", "tape": "corners", "tilt": 2.2, "ratio": "4/3", "position": "50% 55%" } },
+        "l1": { "type": "link", "settings": { "label": "See the schedule →", "url": "shopify://pages/schedule" } },
+        "l2": { "type": "link", "settings": { "label": "Shop the merch →", "url": "shopify://collections/all" } }
+      },
+      "block_order": ["n1", "n2", "n3", "n4", "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "l1", "l2"],
+      "settings": {
+        "hero_position": "50% 53%",
+        "badge": "The full story",
+        "kicker": "Tomah to Waterloo, WI",
+        "heading": "Twelve years",
+        "heading_mark": "in the making",
+        "dek": "One idea in 2014. Twelve years from idea to engine, six of them in a family shop in Waterloo, and the night the engine fired and the lights went out. This is how Heavy Metal Pro Stock: “The Evil One” came to be, in our own words.",
+        "rt_text": "[min] min read",
+        "back_text": "Back to Our Story",
+        "quote_credit": "Chris, owner and driver",
+        "crew_text": "Meet the people behind the pull",
+        "next_label": "What’s next"
+      }
+    }
+  },
+  "order": ["main"]
+}

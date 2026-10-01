@@ -36,6 +36,10 @@
   endif
   assign pulls_line = pulls | append: plus | append: ' pulls a season' | append: est
   assign pitch_line = 'Your brand in front of ' | append: reach_txt | append: plus | append: ' fans across ' | append: pulls_line
+  if reach == 0
+    assign pulls_line = 'pulls all season'
+    assign pitch_line = 'Your brand in front of the fans at every pull we run'
+  endif
 
   assign faqs = metaobjects.faq_item.values
   assign fkeys = ''

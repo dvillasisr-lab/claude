@@ -15,7 +15,7 @@
   endfor
 
   comment
-    Active sponsors sorted by tier order, then sponsor order. Build sortable keys "tier-order-index".
+    Active sponsors sorted by tier order, then sponsor order. Build sortable keys "tier|order|handle".
   endcomment
   assign all_sponsors = shop.metaobjects.sponsor.values
   assign keys = ''
@@ -25,8 +25,7 @@
     endif
     assign tier_order = s.tier.value.order.value | default: 99 | plus: 1000
     assign own_order = s.order.value | default: 999 | plus: 1000
-    assign idx = forloop.index0 | plus: 1000
-    assign key = tier_order | append: '-' | append: own_order | append: '-' | append: idx
+    assign key = tier_order | append: '|' | append: own_order | append: '|' | append: s.system.handle
     assign keys = keys | append: key | append: ','
   endfor
   assign sorted_keys = keys | split: ',' | sort
@@ -41,9 +40,12 @@
     {%- if has_sponsors -%}
       {%- for k in sorted_keys -%}
         {%- liquid
-          assign parts = k | split: '-'
-          assign i = parts[2] | minus: 1000
-          assign s = all_sponsors[i]
+          assign parts = k | split: '|'
+          assign sh = parts[2]
+          assign s = shop.metaobjects.sponsor[sh]
+          if s == blank
+            continue
+          endif
           assign tier_key = s.tier.value.key.value | default: 'crew' | downcase
           assign shape = s.shape.value | default: 'wide' | downcase
           if shape == 'round'

@@ -1,54 +1,78 @@
 {
-  "name": "t:sections.header.name",
+  "name": "Header",
   "type": "header",
   "sections": {
-    "announcement-bar": {
-      "type": "announcement-bar",
-      "settings": {
-        "color_scheme": "scheme-1",
-        "show_line_separator": true,
-        "show_social": false,
-        "auto_rotate": false,
-        "change_slides_speed": 5,
-        "enable_country_selector": false,
-        "enable_language_selector": false
-      },
+    "hm_announcement": {
+      "type": "hm-announcement",
       "blocks": {
-        "announcement-bar-0": {
-          "type": "announcement",
+        "msg_season": {
+          "type": "message",
           "settings": {
-            "text": "Welcome to our store",
-            "text_alignment": "center",
-            "color_scheme": "scheme-1",
-            "link": ""
+            "text": "Testing season [season]: <a href=\"/pages/evil-list\" title=\"The Evil List\">join The Evil List</a>"
+          }
+        },
+        "msg_shipping": {
+          "type": "message",
+          "settings": {
+            "text": "Free US shipping on orders over [free_shipping]"
+          }
+        },
+        "msg_printed": {
+          "type": "message",
+          "settings": {
+            "text": "Printed when you order · ships in 5 days"
           }
         }
       },
-      "block_order": [
-        "announcement-bar-0"
-      ]
-    },
-    "header": {
-      "type": "header",
+      "block_order": ["msg_season", "msg_shipping", "msg_printed"],
       "settings": {
-        "color_scheme": "scheme-1",
-        "menu_color_scheme": "scheme-1",
-        "logo_position": "middle-left",
+        "seconds": 4,
+        "region_label": "Announcements"
+      }
+    },
+    "hm_header": {
+      "type": "hm-header",
+      "blocks": {
+        "note_story": {
+          "type": "link_note",
+          "settings": {
+            "match": "Our Story",
+            "subtitle": "The short version",
+            "featured": false,
+            "tag": ""
+          }
+        },
+        "note_full_story": {
+          "type": "link_note",
+          "settings": {
+            "match": "the-full-story",
+            "subtitle": "Long read, in our own words",
+            "featured": true,
+            "tag": "Long read"
+          }
+        }
+      },
+      "block_order": ["note_story", "note_full_story"],
+      "settings": {
+        "logo_height": 20,
+        "sticky": true,
         "menu": "main-menu",
-        "menu_type_desktop": "dropdown",
-        "sticky_header_type": "on-scroll-up",
-        "show_line_separator": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
-        "mobile_logo_position": "center",
-        "margin_bottom": 0,
-        "padding_top": 20,
-        "padding_bottom": 20
+        "mega_title": "Shop",
+        "mega_label": "Category",
+        "show_thumbs": true,
+        "thumb_count": 6,
+        "new_handles": "new,new-drop",
+        "ltd_handles": "special-edition",
+        "promo_label": "“The Evil One” Drop",
+        "promo_text": "New tees and hoodies, designed by the crew in Waterloo, WI.",
+        "promo_link_label": "Shop the drop",
+        "promo_url": "/collections/all",
+        "show_facebook": true,
+        "mobile_mega_children": false,
+        "search_placeholder": "Search tees, hoodies, caps...",
+        "trending_count": 4
       }
     }
   },
-  "order": [
-    "announcement-bar",
-    "header"
-  ]
+  "order": ["hm_announcement", "hm_header"]
 }

@@ -8,6 +8,191 @@
     "theme_support_url": "https://support.shopify.com/"
   },
   {
+    "name": "HM v14",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Brand"
+      },
+      {
+        "type": "text",
+        "id": "hm_brand_name",
+        "label": "Brand name",
+        "default": "Heavy Metal Pro Stock: “The Evil One”",
+        "info": "Used in the footer, the logo alt text and search engines. Always with curly quotes."
+      },
+      {
+        "type": "number",
+        "id": "hm_season",
+        "label": "Season (year)",
+        "default": 2026,
+        "info": "Shows wherever a page says [season]: announcement bar, schedule, stats."
+      },
+      {
+        "type": "text",
+        "id": "hm_ships_line",
+        "label": "Shipping line",
+        "default": "Printed when you order · ships in 5 days"
+      },
+      {
+        "type": "image_picker",
+        "id": "hm_logo",
+        "label": "Logo for search engines and sharing",
+        "info": "Square or wide PNG. Empty uses the built in logo."
+      },
+      {
+        "type": "header",
+        "content": "Social"
+      },
+      {
+        "type": "url",
+        "id": "hm_facebook_url",
+        "label": "Facebook",
+        "info": "Empty hides it everywhere."
+      },
+      {
+        "type": "url",
+        "id": "hm_instagram_url",
+        "label": "Instagram",
+        "info": "Empty hides it everywhere."
+      },
+      {
+        "type": "header",
+        "content": "Cart"
+      },
+      {
+        "type": "number",
+        "id": "hm_free_shipping",
+        "label": "Free US shipping from (USD)",
+        "info": "Empty hides the free shipping bar and the announcement that mentions it."
+      },
+      {
+        "type": "number",
+        "id": "hm_gift_threshold",
+        "label": "Free gift from (USD)",
+        "info": "Second step of the bar. Empty hides it."
+      },
+      {
+        "type": "text",
+        "id": "hm_gift_label",
+        "label": "Free gift name",
+        "default": "Free sticker"
+      },
+      {
+        "type": "product",
+        "id": "hm_feed_beast_product",
+        "label": "Feed The Beast tip product",
+        "info": "Hidden product with one variant per amount."
+      },
+      {
+        "type": "text",
+        "id": "hm_feed_beast_amounts",
+        "label": "Feed The Beast amounts (USD)",
+        "default": "1,2,5",
+        "info": "Separated by commas."
+      },
+      {
+        "type": "product",
+        "id": "hm_crew_pack_product",
+        "label": "Crew Pack bundle"
+      },
+      {
+        "type": "product",
+        "id": "hm_crew_cap_product",
+        "label": "Crew Cap (upgrade to Crew Pack)"
+      },
+      {
+        "type": "collection",
+        "id": "hm_addons_collection",
+        "label": "Add to your order collection"
+      },
+      {
+        "type": "collection",
+        "id": "hm_best_sellers_collection",
+        "label": "Best sellers collection",
+        "info": "Automatic collection sorted by best selling. Feeds Trending in search."
+      },
+      {
+        "type": "header",
+        "content": "Search engines (home page)"
+      },
+      {
+        "type": "text",
+        "id": "hm_sport",
+        "label": "Sport",
+        "default": "Tractor pulling"
+      },
+      {
+        "type": "text",
+        "id": "hm_city",
+        "label": "City",
+        "default": "Waterloo"
+      },
+      {
+        "type": "text",
+        "id": "hm_region",
+        "label": "State",
+        "default": "WI"
+      },
+      {
+        "type": "text",
+        "id": "hm_postal",
+        "label": "ZIP code",
+        "default": "53594"
+      },
+      {
+        "type": "text",
+        "id": "hm_country",
+        "label": "Country code",
+        "default": "US"
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "paragraph",
+        "content": "Muted on purpose: nothing saturated. Yellow is only a fill behind black text."
+      },
+      {
+        "type": "color",
+        "id": "hm_color_bg",
+        "label": "Background (bone)",
+        "default": "#F6F5F2"
+      },
+      {
+        "type": "color",
+        "id": "hm_color_surface",
+        "label": "Surface (header, footer, cards)",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "hm_color_ink",
+        "label": "Ink (buttons and headings)",
+        "default": "#1C1B19"
+      },
+      {
+        "type": "color",
+        "id": "hm_color_text",
+        "label": "Body text",
+        "default": "#2D2A26"
+      },
+      {
+        "type": "color",
+        "id": "hm_color_accent",
+        "label": "Accent (helmet yellow)",
+        "default": "#F5C400"
+      },
+      {
+        "type": "color",
+        "id": "hm_color_night",
+        "label": "Night band",
+        "default": "#121211"
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.logo.name",
     "settings": [
       {

@@ -30,6 +30,15 @@
   --sect:clamp(40px,5vw,64px);
   --announce:36px;
   --header:56px;
+
+  /* Dawn sections that stay (product form, cart page, accounts) use Archivo too */
+  --font-body-family:var(--f-sans);
+  --font-body-style:normal;
+  --font-body-weight:400;
+  --font-body-weight-bold:700;
+  --font-heading-family:var(--f-head);
+  --font-heading-style:normal;
+  --font-heading-weight:700;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}

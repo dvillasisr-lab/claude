@@ -1,25 +1,26 @@
 <!doctype html>
-<html class="js" lang="{{ request.locale.iso_code }}">
+<html class="js" lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="">
+    <meta name="theme-color" content="{{ settings.hm_color_ink | default: '#1C1B19' }}">
     <link rel="canonical" href="{{ canonical_url }}">
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
 
-    {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
-      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
-    {%- endunless -%}
+    {%- comment -%} HM v14: Archivo variable font (width 62 to 125, weight 100 to 900), self hosted {%- endcomment -%}
+    {% comment %}theme-check-disable AssetPreload{% endcomment %}
+    <link rel="preload" as="font" href="{{ 'hm-archivo-latin.woff2' | asset_url }}" type="font/woff2" crossorigin>
+    {% comment %}theme-check-enable AssetPreload{% endcomment %}
 
     <title>
       {{ page_title }}
-      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
-      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- if current_tags %} | tagged "{{ current_tags | join: ', ' }}"{% endif -%}
+      {%- if current_page != 1 %} | Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} | {{ shop.name }}{% endunless -%}
     </title>
 
     {% if page_description %}
@@ -281,24 +282,40 @@
     {{ 'base.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
-    {%- if settings.cart_type == 'drawer' -%}
-      {{ 'component-cart-drawer.css' | asset_url | stylesheet_tag }}
-      {{ 'component-cart.css' | asset_url | stylesheet_tag }}
-      {{ 'component-totals.css' | asset_url | stylesheet_tag }}
-      {{ 'component-price.css' | asset_url | stylesheet_tag }}
-      {{ 'component-discounts.css' | asset_url | stylesheet_tag }}
-    {%- endif -%}
+    {%- comment -%} HM v14 design system, loaded after Dawn's base.css so its rules win {%- endcomment -%}
+    {%- style -%}
+      @font-face {
+        font-family: 'Archivo';
+        font-style: normal;
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+        font-display: swap;
+        src: url({{ 'hm-archivo-latin.woff2' | asset_url }}) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+      @font-face {
+        font-family: 'Archivo';
+        font-style: normal;
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+        font-display: swap;
+        src: url({{ 'hm-archivo-latin-ext.woff2' | asset_url }}) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+    {%- endstyle -%}
+    {{ 'hm-base.css' | asset_url | stylesheet_tag }}
+    {%- style -%}
+      :root {
+        --bg: {{ settings.hm_color_bg | default: '#F6F5F2' }};
+        --surface: {{ settings.hm_color_surface | default: '#FFFFFF' }};
+        --ink: {{ settings.hm_color_ink | default: '#1C1B19' }};
+        --text: {{ settings.hm_color_text | default: '#2D2A26' }};
+        --accent: {{ settings.hm_color_accent | default: '#F5C400' }};
+        --night: {{ settings.hm_color_night | default: '#121211' }};
+      }
+    {%- endstyle -%}
 
-    {%- unless settings.type_body_font.system? -%}
-      {% comment %}theme-check-disable AssetPreload{% endcomment %}
-      <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
-      {% comment %}theme-check-enable AssetPreload{% endcomment %}
-    {%- endunless -%}
-    {%- unless settings.type_header_font.system? -%}
-      {% comment %}theme-check-disable AssetPreload{% endcomment %}
-      <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
-      {% comment %}theme-check-enable AssetPreload{% endcomment %}
-    {%- endunless -%}
+    {%- comment -%} Dawn's font pickers are not preloaded: hm-base.css maps Dawn's font variables to Archivo {%- endcomment -%}
 
     {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
       {{ 'component-localization-form.css' | asset_url | stylesheet_tag: preload: true }}
@@ -314,6 +331,71 @@
       >
     {%- endif -%}
 
+    <script src="{{ 'hm-core.js' | asset_url }}" defer="defer"></script>
+
+    {%- if template.name == 'index' -%}
+      {%- liquid
+        assign hm_brand = settings.hm_brand_name | default: shop.name
+        if settings.hm_logo != blank
+          assign hm_logo_url = settings.hm_logo | image_url: width: 1200 | prepend: 'https:'
+        else
+          assign hm_logo_url = 'logo-ink.svg' | asset_url | prepend: 'https:'
+        endif
+        assign hm_same = ''
+        if settings.hm_facebook_url != blank
+          assign hm_same = hm_same | append: settings.hm_facebook_url | append: '|'
+        endif
+        if settings.hm_instagram_url != blank
+          assign hm_same = hm_same | append: settings.hm_instagram_url | append: '|'
+        endif
+        assign hm_same = hm_same | split: '|'
+        assign hm_search_target = request.origin | append: routes.search_url | append: '?q={search_term_string}'
+      -%}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": ["SportsTeam", "Organization"],
+              "@id": {{ request.origin | append: '/#team' | json }},
+              "name": {{ hm_brand | json }},
+              "url": {{ request.origin | append: routes.root_url | json }},
+              "sport": {{ settings.hm_sport | default: 'Tractor pulling' | json }},
+              "logo": {{ hm_logo_url | json }}
+              {%- if settings.hm_city != blank -%},
+              "location": {
+                "@type": "Place",
+                "address": {
+                  "@type": "PostalAddress",
+                  "addressLocality": {{ settings.hm_city | json }},
+                  "addressRegion": {{ settings.hm_region | json }},
+                  "postalCode": {{ settings.hm_postal | json }},
+                  "addressCountry": {{ settings.hm_country | default: 'US' | json }}
+                }
+              }
+              {%- endif -%}
+              {%- if hm_same.size > 0 -%},
+              "sameAs": {{ hm_same | json }}
+              {%- endif %}
+            },
+            {
+              "@type": "WebSite",
+              "@id": {{ request.origin | append: '/#website' | json }},
+              "name": {{ hm_brand | json }},
+              "url": {{ request.origin | append: routes.root_url | json }},
+              "publisher": { "@id": {{ request.origin | append: '/#team' | json }} },
+              "inLanguage": "en-US",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": {{ hm_search_target | json }},
+                "query-input": "required name=search_term_string"
+              }
+            }
+          ]
+        }
+      </script>
+    {%- endif -%}
+
     <script>
       if (Shopify.designMode) {
         document.documentElement.classList.add('shopify-design-mode');
@@ -321,14 +403,8 @@
     </script>
   </head>
 
-  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
-    <a class="skip-to-content-link button visually-hidden" href="#MainContent">
-      {{ 'accessibility.skip_to_text' | t }}
-    </a>
-
-    {%- if settings.cart_type == 'drawer' -%}
-      {%- render 'cart-drawer' -%}
-    {%- endif -%}
+  <body class="hm-body{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
+    <a class="skip" href="#MainContent">Skip to content</a>
 
     {% sections 'header-group' %}
 
@@ -398,8 +474,5 @@
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    {%- if settings.cart_type == 'drawer' -%}
-      <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
-    {%- endif -%}
   </body>
 </html>
