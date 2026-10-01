@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Contact · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Questions about an order, returns, sponsorship or press? Send the Heavy Metal Pro Stock team a message. We reply within 2 business days.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Contact v4: bloque compacto y centrado (patrón SKIMS). Formulario de 640px + columna de ayuda de 300px; nada se estira a 1920. */
+.ct{padding-block:32px var(--sect)}
+.ct__box{max-width:1000px;margin-inline:auto}
+.ct__head{padding-bottom:16px;margin-bottom:24px;border-bottom:1px solid var(--line)}
+.ct__head p{margin:6px 0 0;color:var(--soft);font-size:var(--t-sm);max-width:60ch}
+.ct__in{display:grid;grid-template-columns:minmax(0,640px) minmax(0,300px);justify-content:space-between;gap:32px 48px;align-items:start}
+
+.ct-form{background:var(--surface);border:1px solid var(--line);padding:clamp(16px,2vw,24px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px}
+.ct-form .full{grid-column:1/-1}
+.ct-form textarea.input{min-height:132px;padding-block:10px;resize:vertical}
+.field .opt{font-weight:400;text-transform:none;letter-spacing:0;color:var(--mute)}
+.input[aria-invalid="true"]{border-color:var(--alert);outline:1px solid var(--alert)}
+.ct-send{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
+.ct-send .small{margin:0;color:var(--mute)}
+.ct-status{margin:0;font-size:var(--t-sm);font-weight:600}
+.ct-status:empty{display:none}
+.ct-status.is-err{color:var(--alert)}
+.ct-status.is-ok{color:var(--ink);background:var(--bg);border-left:3px solid var(--accent);padding:8px 10px}
+
+.ct-side{display:grid;gap:24px}
+.ct-side h2{font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:0 0 6px;font-family:var(--f-sans)}
+.help{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.help a{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:44px;border-bottom:1px solid var(--line);font-size:var(--t-sm);font-weight:600;color:var(--ink);text-decoration:none}
+.help a::after{content:"\203A";font-size:18px;font-weight:400;color:var(--mute)}
+.help a:hover{text-decoration:underline;text-underline-offset:3px}
+.info{margin:0;border-top:1px solid var(--line)}
+.info div{display:grid;grid-template-columns:96px minmax(0,1fr);gap:8px;padding:10px 0;border-bottom:1px solid var(--line);font-size:var(--t-sm)}
+.info dt{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding-top:2px}
+.info dd{margin:0;color:var(--ink);overflow-wrap:anywhere}
+.info a{text-underline-offset:3px}
+
+@media (max-width:900px){.ct__in{grid-template-columns:minmax(0,1fr)}.ct-side{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}}
+@media (max-width:600px){.ct-side{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:480px){.ct-form{grid-template-columns:minmax(0,1fr)}}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contact Heavy Metal Pro Stock",
+  "about": {"@type": "SportsTeam", "name": "Heavy Metal Pro Stock: “The Evil One”", "sport": "Tractor pulling", "email": "heavymetalevil72@gmail.com", "telephone": "+1-920-650-4374", "address": {"@type": "PostalAddress", "postOfficeBoxNumber": "42", "addressLocality": "Waterloo", "addressRegion": "WI", "postalCode": "53594", "addressCountry": "US"}, "sameAs": ["https://www.facebook.com/heavymetalprostock/"]}
+}
+</script>
+</head>
+<body>
+<div data-hm-header data-current="contact"></div>
+
+<main id="main">
+<section class="ct" aria-labelledby="ct-title">
+  <div class="wrap">
+    <div class="ct__box">
+      <header class="ct__head">
+        <h1 class="h1" id="ct-title">Contact us</h1>
+        <p>Questions about an order, merch or sponsorship? Send us a message and we'll get back to you within 2 business days.</p>
+      </header>
+
+      <div class="ct__in">
+        <!-- En Shopify: {% form 'contact' %} nativo; el tema va en contact[topic] -->
+        <form class="ct-form" id="ct-form" novalidate aria-labelledby="ct-title">
+          <div class="field full"><label for="c-topic">Topic</label>
+            <select class="input" id="c-topic" name="topic">
+              <option value="order">Order help</option>
+              <option value="returns">Returns &amp; exchanges</option>
+              <option value="sponsorship">Sponsorship</option>
+              <option value="press">Press &amp; media</option>
+              <option value="other">Something else</option>
+            </select>
+          </div>
+          <div class="field"><label for="c-name">Name</label><input class="input" id="c-name" name="name" type="text" required autocomplete="name" placeholder="e.g. Jake Miller"></div>
+          <div class="field"><label for="c-email">Email</label><input class="input" id="c-email" name="email" type="email" required autocomplete="email" spellcheck="false" placeholder="you@example.com"></div>
+          <div class="field full" id="c-order-f"><label for="c-order">Order number <span class="opt">(optional)</span></label><input class="input" id="c-order" name="order" type="text" autocomplete="off" placeholder="e.g. #1001"></div>
+          <div class="field full"><label for="c-msg">Message</label><textarea class="input" id="c-msg" name="message" required placeholder="How can we help?"></textarea></div>
+          <p class="consent full">We use your details only to answer your message. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
+          <div class="full ct-send"><button class="btn" type="submit">Send message</button><p class="small">Reply within 2 business days</p></div>
+          <p class="ct-status full" id="ct-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <aside class="ct-side" aria-label="Help and contact details">
+          <nav aria-labelledby="qh-t">
+            <h2 id="qh-t">Quick help</h2>
+            <ul class="help">
+              <li><a href="faq.html">FAQ</a></li>
+              <li><a href="policies.html?p=shipping">Shipping</a></li>
+              <li><a href="policies.html?p=refund">Returns &amp; exchanges</a></li>
+              <li><a href="sizes.html">Size guide</a></li>
+              <li><a href="account.html">Track my order</a></li>
+            </ul>
+          </nav>
+          <div>
+            <h2 id="det-t">Reach the team</h2>
+            <dl class="info" aria-labelledby="det-t">
+              <div><dt>Mail</dt><dd>Heavy Metal Pro Stock<br>P.O. Box 42<br>Waterloo, WI 53594</dd></div>
+              <div><dt>Email</dt><dd><a href="mailto:heavymetalevil72@gmail.com">heavymetalevil72@gmail.com</a></dd></div>
+              <div><dt>Phone</dt><dd><a href="tel:+19206504374">(920) 650-4374</a></dd></div>
+              <div><dt>Follow</dt><dd><a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook<span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span></a></dd></div>
+            </dl>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  /* tema por URL: contact.html?topic=sponsorship */
+  var t = new URLSearchParams(location.search).get('topic');
+  if (t && $('c-topic').querySelector('option[value="' + t + '"]')) $('c-topic').value = t;
+  function syncOrder() { var v = $('c-topic').value; $('c-order-f').hidden = v !== 'order' && v !== 'returns'; }
+  $('c-topic').addEventListener('change', syncOrder); syncOrder();
+
+  var form = $('ct-form'), st = $('ct-status');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var bad = Array.prototype.filter.call(form.querySelectorAll('[required]'), function (i) {
+      var ok = i.value.trim() !== '' && i.checkValidity(); i.setAttribute('aria-invalid', ok ? 'false' : 'true'); return !ok;
+    });
+    if (bad.length) { st.className = 'ct-status full is-err'; st.textContent = 'Please add your name, a valid email and a message.'; bad[0].focus(); return; }
+    st.className = 'ct-status full is-ok';
+    st.textContent = 'Thanks, ' + $('c-name').value.trim().split(' ')[0] + '. Your message is in. We\'ll reply to ' + $('c-email').value.trim() + ' within 2 business days.';
+    form.querySelector('button[type="submit"]').disabled = true;
+  });
+})();
+</script>
+</body>
+</html>

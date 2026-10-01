@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cómo editas todo · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Manual de la dueña: dónde se edita en Shopify cada cosa dinámica de la tienda, el año de temporada, el calendario anual y los íconos de prenda.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Manual de la dueña: mismo sistema que la tienda (banner corto, secciones pegadas), pensado para consultar rápido.
+   Mapa filtrable de tarjetas, demo del ajuste Temporada, checklist anual y galería de íconos. */
+html,body{overflow-x:clip}
+.ed-banner{background:var(--surface);border-bottom:1px solid var(--line)}
+.ed-banner .wrap{padding-block:28px 24px;display:grid;gap:10px}
+.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px;font-size:var(--t-xs);color:var(--mute)}
+.crumbs li+li::before{content:"/";margin-right:4px}
+.crumbs a{color:var(--soft);text-underline-offset:3px}
+.crumbs [aria-current]{color:var(--ink);font-weight:600}
+.ed-only{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--accent);padding:3px 8px;justify-self:start}
+
+.asks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:8px;max-width:1100px}
+.ask{border:1px solid var(--line);background:var(--bg);padding:14px 16px;display:grid;gap:6px;align-content:start}
+.ask q{font-size:var(--t-sm);color:var(--soft);font-style:italic;quotes:"“" "”"}
+.ask p{margin:0;font-size:var(--t-sm);color:var(--ink)}
+.ask b{font-weight:700}
+@media (max-width:760px){.asks{grid-template-columns:minmax(0,1fr)}}
+
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border:1px solid var(--line);background:var(--surface);font-size:var(--t-xs);font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;color:var(--ink)}
+.toc a:hover{border-color:var(--ink)}
+.toc a span{color:var(--mute);margin-right:6px;font-variant-numeric:tabular-nums}
+
+section[id]{scroll-margin-top:calc(var(--header) + 12px)}
+.kick{display:flex;align-items:baseline;gap:10px}
+.kick i{font-style:normal;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h2);color:var(--mute)}
+.sect-head p{margin:0;color:var(--soft);font-size:var(--t-sm);max-width:70ch;flex-basis:100%}
+
+/* las 3 puertas */
+.doors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.door{background:var(--surface);border:1px solid var(--line);padding:18px;display:grid;gap:8px;align-content:start}
+.door__n{width:28px;height:28px;display:grid;place-items:center;background:var(--accent);color:var(--ink);font-weight:800;font-size:var(--t-xs)}
+.door p{margin:0;font-size:var(--t-sm);color:var(--soft)}
+.door ul{margin:0;padding-left:18px;font-size:var(--t-xs);color:var(--soft);display:grid;gap:2px}
+@media (max-width:860px){.doors{grid-template-columns:minmax(0,1fr)}}
+
+/* rutas del admin */
+.path{display:inline-flex;flex-wrap:wrap;align-items:center;gap:2px 0;font-size:var(--t-xs);font-weight:600;color:var(--ink)}
+.path span{background:var(--tile);padding:2px 6px;border-radius:3px;white-space:nowrap}
+.path span+span{margin-left:16px;position:relative}
+.path span+span::before{content:"›";position:absolute;left:-11px;top:1px;color:var(--mute);font-weight:400}
+.path{row-gap:6px}
+
+/* temporada */
+.season{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:start}
+.adm{background:var(--surface);border:1px solid var(--line);box-shadow:0 18px 40px -30px rgba(0,0,0,.4)}
+.adm__bar{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 12px;background:#1A1A1A;color:#E6E3DA;font-size:11px}
+.adm__bar b{color:#fff}
+.adm__body{padding:16px;display:grid;gap:10px}
+.adm__body .field label{color:var(--ink)}
+.adm__hint{margin:0;font-size:var(--t-xs);color:var(--mute)}
+.yr-in{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h1);font-weight:700;max-width:160px;font-variant-numeric:tabular-nums}
+.preview{display:grid;gap:8px}
+.preview h3{margin:0}
+.pv{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.pv li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:4px 16px;padding:10px 0;border-bottom:1px solid var(--line);font-size:var(--t-sm);align-items:baseline}
+.pv li>span:first-child{font-size:var(--t-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.pv b{color:var(--ink)}
+.yr{background:var(--accent);color:var(--ink);padding:0 3px;font-weight:700;font-variant-numeric:tabular-nums;transition:background .3s}
+.yr.flash{background:var(--ink);color:var(--accent)}
+.pv .fixed{background:var(--tile);padding:0 3px;font-weight:700}
+.keep{margin:0;font-size:var(--t-xs);color:var(--soft)}
+@media (max-width:860px){.season{grid-template-columns:minmax(0,1fr)}.pv li{grid-template-columns:minmax(0,1fr)}}
+
+/* mapa */
+.tools{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin-bottom:16px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{min-height:36px;padding:0 12px;border:1px solid var(--line);background:var(--surface);font-size:var(--t-xs);font-weight:700;letter-spacing:.04em;cursor:pointer;color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.chip i{font-style:normal;font-weight:600;opacity:.7}
+.find{position:relative;flex:1 1 240px;max-width:340px}
+.find .input{padding-left:36px}
+.find svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:16px;height:16px;fill:none;stroke:var(--mute);stroke-width:2;pointer-events:none}
+.count{margin:0 0 12px;font-size:var(--t-xs);color:var(--mute)}
+.map{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;list-style:none;margin:0;padding:0}
+@media (min-width:1600px){.map{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:860px){.map{grid-template-columns:minmax(0,1fr)}}
+.ec{background:var(--surface);border:1px solid var(--line);display:grid;align-content:start}
+.ec__head{display:flex;justify-content:space-between;align-items:start;gap:10px;padding:14px 16px 10px}
+.ec__head .h3{font-size:var(--t-md)}
+.tag{flex:none;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border:1px solid var(--line);color:var(--soft);white-space:nowrap}
+.tag--lista{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.tag--tema{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.tag--auto{border-style:dashed}
+.ec__what{margin:0;padding:0 16px 10px;font-size:var(--t-sm);color:var(--soft)}
+.ec__where{padding:0 16px 12px}
+.ec__acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+.ec__acts div{padding:10px 12px;font-size:var(--t-xs);line-height:1.5;color:var(--soft)}
+.ec__acts div+div{border-left:1px solid var(--line)}
+.ec__acts dt{display:flex;align-items:center;gap:6px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin-bottom:4px;font-size:11px}
+.ec__acts dt svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;flex:none}
+.ec__acts dd{margin:0}
+.ec__pages{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;border-top:1px solid var(--line);padding:8px 16px;font-size:var(--t-xs);color:var(--mute)}
+.ec__pages a{color:var(--ink);font-weight:600;text-underline-offset:3px}
+@media (max-width:600px){.ec__acts{grid-template-columns:minmax(0,1fr)}.ec__acts div+div{border-left:0;border-top:1px solid var(--line)}}
+.empty{padding:20px;border:1px dashed var(--line);font-size:var(--t-sm);color:var(--soft)}
+
+/* calendario anual */
+.cal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.phase{background:var(--surface);border:1px solid var(--line);display:grid;align-content:start}
+.phase header{padding:14px 16px;border-bottom:1px solid var(--line);display:grid;gap:2px}
+.phase header .label{color:var(--mute)}
+.phase--hot header{background:var(--ink)}
+.phase--hot header .h3{color:var(--surface)}
+.phase--hot header .label{color:var(--accent)}
+.todo{list-style:none;margin:0;padding:6px 16px 12px}
+.todo li{border-bottom:1px solid var(--line)}
+.todo li:last-child{border-bottom:0}
+.todo label{display:grid;grid-template-columns:18px minmax(0,1fr);gap:10px;align-items:start;padding:10px 0;cursor:pointer;font-size:var(--t-sm);color:var(--ink)}
+.todo input{margin-top:2px}
+.todo small{display:block;font-size:var(--t-xs);color:var(--mute);margin-top:2px}
+.todo input:checked+span{color:var(--mute);text-decoration:line-through}
+.todo input:checked+span small{text-decoration:none}
+.cal-foot{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin-top:12px}
+.cal-foot p{margin:0;font-size:var(--t-xs);color:var(--mute)}
+@media (max-width:1024px){.cal{grid-template-columns:minmax(0,1fr)}}
+
+/* íconos */
+.icons-in{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
+.icons-txt{display:grid;gap:10px;font-size:var(--t-sm);color:var(--soft)}
+.icons-txt p{margin:0}
+.icons-txt ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.icons-txt b{color:var(--ink)}
+.icons-txt code{font-size:var(--t-xs);background:var(--tile);padding:1px 5px}
+.igrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;list-style:none;margin:0;padding:0}
+.ig{background:var(--surface);border:1px solid var(--line);padding:10px;display:grid;gap:8px}
+.ig h3{margin:0;font-size:var(--t-sm)}
+.ig__row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.ig figure{margin:0;display:grid;gap:4px}
+.ig img{width:100%;height:auto;aspect-ratio:1/1;border-radius:3px}
+.ig figcaption{font-size:10px;color:var(--mute);overflow-wrap:anywhere;line-height:1.3}
+@media (max-width:1024px){.icons-in{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:760px){.igrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:420px){.igrid{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<div data-hm-header data-current=""></div>
+<main id="main">
+  <section class="ed-banner" aria-labelledby="ed-title">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Migas"><ol><li><a href="index.html">Home</a></li><li aria-current="page">Cómo editas todo</li></ol></nav>
+      <span class="ed-only">Solo para la dueña · no sale en la tienda</span>
+      <h1 class="h1" id="ed-title">Cómo editas todo (sin código)</h1>
+      <p class="lede">Todo lo que cambia en la tienda (pulls, contadores, paquetes, bitácora, ediciones especiales, anuncios) se llena en formularios del admin de Shopify. Tú agregas, editas u ocultas; el tema lo pinta solo en cada página.</p>
+      <div class="asks">
+        <div class="ask"><q>¿Cómo hago que todo lo dinámico se pueda editar fácil para agregar, borrar o editar?</q><p><b>Cada lista es un formulario.</b> Pulls, contadores, paquetes, lugares del logo y crew son entradas de <b>Metaobjetos</b>; la bitácora es un <b>blog</b>; anuncios y frases son <b>bloques</b> del editor. Abajo está el mapa completo.</p></div>
+        <div class="ask"><q>¿Cómo tengo una sección en Editar tema con todos los 2026 que cada año se actualizan?</q><p><b>Es un solo ajuste:</b> Personalizar &gt; Ajustes del tema &gt; <b>Temporada</b>. Cambias el número una vez al año y todos los “2026” de la temporada cambian juntos. El copyright se pone solo con el año actual.</p></div>
+      </div>
+      <nav class="toc" aria-label="En esta página">
+        <a href="#puertas"><span>01</span>Las 3 puertas</a>
+        <a href="#temporada"><span>02</span>Año de temporada</a>
+        <a href="#mapa"><span>03</span>Mapa de todo</a>
+        <a href="#calendario"><span>04</span>Calendario anual</a>
+        <a href="#iconos"><span>05</span>Íconos de prenda</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- 01 · Las 3 puertas -->
+  <section class="sect" id="puertas" aria-labelledby="pu-t">
+    <div class="wrap">
+      <div class="sect-head"><h2 class="h2 kick" id="pu-t"><i>01</i>Las 3 puertas del admin</h2><p>Casi todo se edita desde uno de estos tres lugares. Si no sabes dónde está algo, búscalo en el mapa (sección 03).</p></div>
+      <div class="doors">
+        <article class="door">
+          <span class="door__n">1</span>
+          <h3 class="h3">Listas: Metaobjetos</h3>
+          <p class="path"><span>Contenido</span><span>Metaobjetos</span></p>
+          <p>Cada lista es un tipo y cada renglón una entrada con campos fijos. Llenas, guardas y la página se actualiza.</p>
+          <ul><li>Pull event, Season stats, Sponsor tier</li><li>Logo placement, Decal zone, Crew member</li></ul>
+        </article>
+        <article class="door">
+          <span class="door__n">2</span>
+          <h3 class="h3">Textos y bloques: Personalizar</h3>
+          <p class="path"><span>Tienda online</span><span>Temas</span><span>Personalizar</span></p>
+          <p>Lo que ves en pantalla se edita ahí mismo. Cada anuncio, frase o pregunta es un bloque: agregas, arrastras, ocultas con el ojo.</p>
+          <ul><li>Ajustes del tema: Temporada, contacto, carrito</li><li>Anuncios, cinta, FAQ, Spotify</li></ul>
+        </article>
+        <article class="door">
+          <span class="door__n">3</span>
+          <h3 class="h3">Tienda: Productos, Blog, Menús</h3>
+          <p class="path"><span>Productos</span><span>Colecciones</span></p>
+          <p>Prendas, colecciones y la Special edition. Del mismo menú lateral salen:</p>
+          <ul><li>Contenido &gt; Entradas de blog (Pit Log), Menús, Archivos</li><li>Configuración &gt; Políticas, cookies, envíos</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 · Temporada -->
+  <section class="sect sect--white" id="temporada" aria-labelledby="te-t">
+    <div class="wrap">
+      <div class="sect-head"><h2 class="h2 kick" id="te-t"><i>02</i>Año de temporada: un solo ajuste</h2><p>Pruébalo: cambia el número y mira qué se actualiza en la tienda. En los textos del editor puedes escribir <b>[season]</b> y el tema pone el año de este ajuste.</p></div>
+      <div class="season">
+        <figure class="adm" style="margin:0">
+          <figcaption class="adm__bar"><span>Personalizar &gt; Ajustes del tema &gt; <b>Temporada</b></span><span>Vista previa</span></figcaption>
+          <div class="adm__body">
+            <div class="field"><label for="yr-in">Año de la temporada actual</label><input class="input yr-in" id="yr-in" type="number" inputmode="numeric" min="2020" max="2099" step="1"></div>
+            <p class="adm__hint">Cámbialo en enero, antes del primer pull, y dale Guardar arriba a la derecha.</p>
+            <button class="btn btn--ghost btn--sm" type="button" id="yr-reset" style="justify-self:start">Volver al año actual</button>
+          </div>
+        </figure>
+        <div class="preview">
+          <h3 class="h3">Qué cambia con este ajuste</h3>
+          <ul class="pv" id="pv">
+            <li><span>Anuncio de arriba</span><span>Testing season <span class="yr">2026</span>: get Hook Alerts</span></li>
+            <li><span>Schedule</span><span><span class="yr">2026</span> pulls · filtro de año abre en <span class="yr">2026</span></span></li>
+            <li><span>Contadores</span><span>Season <span class="yr">2026</span>: competitions, exhibitions, wins</span></li>
+            <li><span>Pit Log</span><span>Filtro de año abre en <span class="yr">2026</span></span></li>
+            <li><span>Sponsors</span><span><span class="yr">2026</span> sponsorship packages</span></li>
+            <li><span>Buscador</span><span>Testing season <span class="yr">2026</span> on the NTPA and PPL Badger State circuits</span></li>
+          </ul>
+          <h3 class="h3" style="margin-top:10px">Qué NO cambia (a propósito)</h3>
+          <ul class="pv">
+            <li><span>Copyright</span><span>© <span class="fixed" id="yr-now">2026</span> Heavy Metal Pro Stock: “The Evil One”. Usa el año de hoy, solo.</span></li>
+            <li><span>Historia</span><span><span class="fixed">2014</span> la idea, <span class="fixed">Feb 2020</span> el primer tornillo: fechas fijas.</span></li>
+            <li><span>Historial</span><span>Pulls, contadores y entradas del Pit Log de años pasados se quedan en su año.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · Mapa -->
+  <section class="sect" id="mapa" aria-labelledby="ma-t">
+    <div class="wrap">
+      <div class="sect-head"><h2 class="h2 kick" id="ma-t"><i>03</i>Mapa de todo lo editable</h2><p>Qué es, dónde está en el admin, cómo agregar, editar y borrar u ocultar, y en qué páginas se ve. Filtra por tipo o busca.</p></div>
+      <div class="tools">
+        <div class="chips" role="group" aria-label="Filtrar por tipo" id="chips"></div>
+        <div class="find"><label class="vh" for="find">Buscar en el mapa</label><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input class="input" id="find" type="search" placeholder="Buscar: pulls, sold out, menú..." autocomplete="off"></div>
+      </div>
+      <p class="count" id="count" role="status" aria-live="polite"></p>
+      <ul class="map" id="map"></ul>
+      <p class="empty" id="map-empty" hidden>Nada coincide. Prueba otra palabra o elige “Todo”.</p>
+      <p class="note">Los tipos de metaobjeto (Pull event, Season stats, Sponsor tier, Logo placement, Decal zone, Crew member) y los metacampos de Special edition los dejamos creados al montar el tema. Tú solo llenas entradas; no tienes que tocar Configuración &gt; Datos personalizados.</p>
+    </div>
+  </section>
+
+  <!-- 04 · Calendario anual -->
+  <section class="sect sect--white" id="calendario" aria-labelledby="ca-t">
+    <div class="wrap">
+      <div class="sect-head"><h2 class="h2 kick" id="ca-t"><i>04</i>Calendario anual del dueño</h2><p>Lo que toca actualizar cada temporada. Las palomitas se guardan en este navegador para que lleves la cuenta.</p></div>
+      <div class="cal" id="cal"></div>
+      <div class="cal-foot"><button class="btn btn--ghost btn--sm" type="button" id="cal-reset">Empezar temporada nueva (borrar palomitas)</button><p id="cal-status" role="status" aria-live="polite"></p></div>
+    </div>
+  </section>
+
+  <!-- 05 · Íconos -->
+  <section class="sect" id="iconos" aria-labelledby="ic-t">
+    <div class="wrap">
+      <div class="sect-head"><h2 class="h2 kick" id="ic-t"><i>05</i>Íconos de prenda</h2><p>Placeholders para productos y colecciones mientras no hay mockups o fotos reales.</p></div>
+      <div class="icons-in">
+        <div class="icons-txt">
+          <p><b>Son genéricos: sin logo, sin texto y sin “Heavy Metal”.</b> Solo la silueta de la prenda en tres colores, sobre el mismo fondo hueso de las tarjetas de la tienda.</p>
+          <ul>
+            <li>6 prendas: playera, sudadera, gorra, gorro, sticker y koozie.</li>
+            <li>3 colores: negro, gris y hueso.</li>
+            <li>SVG cuadrado de 1000 × 1000 px: se ve nítido en cualquier tamaño.</li>
+          </ul>
+          <p><b>Dónde están:</b> en la carpeta <code>img/icons</code> del proyecto (18 archivos). Este visor no deja descargar, así que tómalos de esa carpeta.</p>
+          <p><b>Cómo usarlos:</b> súbelos en Contenido &gt; Archivos y elígelos como imagen de un producto o colección que todavía no tiene foto. Cuando Printify genere el mockup real, cambias la imagen y listo.</p>
+        </div>
+        <ul class="igrid" id="igrid"></ul>
+      </div>
+    </div>
+  </section>
+</main>
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var NOW = new Date().getFullYear(), SEASON = window.HM_SEASON || NOW;
+
+  /* ---------- 02 · Temporada (demo del ajuste global) ---------- */
+  var yin = $('yr-in'); yin.value = SEASON; $('yr-now').textContent = NOW;
+  function setYr(v) {
+    v = parseInt(v, 10); if (!(v >= 2020 && v <= 2099)) return;
+    document.querySelectorAll('#pv .yr').forEach(function (el) { if (el.textContent !== String(v)) { el.textContent = v; el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 350); } });
+  }
+  yin.addEventListener('input', function () { setYr(this.value); });
+  $('yr-reset').addEventListener('click', function () { yin.value = SEASON; setYr(SEASON); yin.focus(); });
+  setYr(SEASON);
+
+  /* ---------- 03 · Mapa: un renglón por cosa editable ---------- */
+  var TYPES = [['all', 'Todo'], ['lista', 'Listas (Metaobjetos)'], ['tema', 'Personalizar'], ['admin', 'Admin'], ['auto', 'Automático']];
+  var TAGS = { lista: 'Metaobjeto', tema: 'Personalizar', admin: 'Admin', auto: 'Automático' };
+  var IC = {
+    add: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+    edit: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/></svg>',
+    hide: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6Z"/><path d="M4 4l16 16"/></svg>'
+  };
+  var ITEMS = [
+    { n: 'Año de temporada', t: 'tema', q: 'UN ajuste que cambia todos los “2026” de la temporada actual: anuncio, Schedule, contadores, Pit Log, Sponsors y buscador. El copyright usa el año de hoy, solo.',
+      w: [['Tienda online', 'Temas', 'Personalizar', 'Ajustes del tema', 'Temporada']],
+      a: 'No se agrega: es un solo número.', e: 'Cámbialo una vez al año, en enero, y Guardar. En textos escribe [season] y sale el año.', d: 'No aplica. Los años pasados quedan en el historial.',
+      p: [['Todas', 'index.html']] },
+    { n: 'Pull events (calendario)', t: 'lista', q: 'Cada pull: nombre, fecha, ciudad, liga (NTPA o PPL Badger State), estado, link del evento y resultado. De aquí salen la tabla del Schedule, el próximo pull de la home, “Add to calendar” y el filtro por año.',
+      w: [['Contenido', 'Metaobjetos', 'Pull event']],
+      a: 'Agregar entrada, llena los campos y Guardar. Aparece sola en su año.', e: 'Abre la entrada y cambia fecha, estado (Upcoming, Done, Canceled) o resultado.', d: 'Estado Hidden lo oculta sin perder el historial. Eliminar solo si fue un error.',
+      p: [['Schedule', 'schedule.html'], ['Home', 'index.html'], ['Pit Log', 'log.html']] },
+    { n: 'Season stats (contadores)', t: 'lista', q: 'Los números de la temporada: competencias, exhibiciones, wins y full pulls. Una entrada por año, así el historial queda y el filtro por año funciona.',
+      w: [['Contenido', 'Metaobjetos', 'Season stats']],
+      a: 'Al arrancar la temporada: Agregar entrada con el año nuevo y todo en 0.', e: 'Después de cada pull súmale 1 al contador que toque y Guardar.', d: 'No borres años pasados. Desmarca Visible si no quieres mostrar uno.',
+      p: [['Home', 'index.html'], ['Our Story', 'story.html'], ['Pit Log', 'log.html'], ['Sponsors', 'sponsors.html']] },
+    { n: 'Pit Log (bitácora)', t: 'admin', q: 'Lo que pasó en cada pull, exhibición o día de pruebas: texto, distancia, qué se rompió, fotos. Es un blog de Shopify llamado Pit Log.',
+      w: [['Contenido', 'Entradas de blog'], ['Blog: Pit Log']],
+      a: 'Crear entrada, elige el blog Pit Log, título, texto, foto y etiqueta (Result, Test, Exhibition). La fecha pone el año del filtro.', e: 'Abre la entrada, cambia y Guardar. Puedes programar la publicación.', d: 'Visibilidad: Oculta. O Eliminar entrada.',
+      p: [['Pit Log', 'log.html'], ['Home', 'index.html'], ['FAQ', 'faq.html']] },
+    { n: 'Sponsor tiers (paquetes)', t: 'lista', q: 'Title Partner, Pit Partner y Crew Supporter: nombre, precio, beneficios, cuál va destacado, orden y la casilla Sold out.',
+      w: [['Contenido', 'Metaobjetos', 'Sponsor tier']],
+      a: 'Agregar entrada para un paquete nuevo. El campo Orden decide su lugar.', e: 'Cambia precio o beneficios. Marca Sold out cuando ya no haya lugar: la tarjeta lo muestra sola.', d: 'Desmarca Visible para ocultarlo; Eliminar si ya no existe. Ojo: los precios del FAQ son texto, cámbialos también.',
+      p: [['Sponsors', 'sponsors.html'], ['FAQ', 'faq.html']] },
+    { n: 'Logo placements (dónde sale tu marca)', t: 'lista', q: 'Los lugares donde sale el logo de un patrocinador: team gear, tráiler y pits, este sitio, redes, el tractor y menciones del locutor. Cada uno con foto y los paquetes que lo incluyen.',
+      w: [['Contenido', 'Metaobjetos', 'Logo placement']],
+      a: 'Agregar entrada con nombre, descripción corta, foto (de Archivos) y paquetes.', e: 'Cambia la foto o los paquetes que lo incluyen.', d: 'Desmarca Visible o Eliminar.',
+      p: [['Sponsors', 'sponsors.html']] },
+    { n: 'Decal zones (mapa de calcomanías)', t: 'lista', q: 'Las zonas marcadas sobre la foto del tractor: nombre, posición, tamaño de guía y paquete al que pertenece.',
+      w: [['Contenido', 'Metaobjetos', 'Decal zone']],
+      a: 'Agregar entrada. Posición: x = % desde la izquierda, y = % desde arriba de la foto.', e: 'Mueve x y y hasta que el punto quede en su lugar; cambia el paquete si se vendió.', d: 'Desmarca Visible o Eliminar.',
+      p: [['Sponsors', 'sponsors.html']] },
+    { n: 'Special edition', t: 'admin', q: 'Una prenda numerada para un momento de la temporada (hoy: Lightning Night Tee). Es un producto normal en la colección Special edition, más metacampos: Piezas totales, Lanzamiento, Historia y Edición cerrada.',
+      w: [['Productos', 'Colecciones', 'Special edition'], ['Producto', 'Metacampos (al final de la ficha)']],
+      a: 'Crea la prenda en Printify y publícala. En Shopify agrégala a la colección Special edition y llena sus metacampos.', e: 'Historia, fecha o piezas: en los metacampos. Diseño y precio: en Printify.', d: 'Al agotarse marca Edición cerrada (sale Sold out). Para quitarla de la tienda: Estado Borrador.',
+      p: [['Edición especial', 'limited.html'], ['Shop', 'shop.html?cat=limited'], ['Home', 'index.html']] },
+    { n: 'Productos y colecciones', t: 'admin', q: 'Todas las prendas (tees, hoodies, gorras, kids, stickers, bundles) y sus grupos: New drop, Tees, Sweatshirts, Hats, Kids, Stickers & gear, Bundles.',
+      w: [['Productos', 'Todos los productos'], ['Productos', 'Colecciones']],
+      a: 'Diseño, colores, tallas y precio se crean en Printify y se publican a Shopify. Luego: colección y etiqueta “new” si es nuevo.', e: 'Fotos, precio y tallas: en Printify y vuelve a publicar. Colección, etiquetas y orden: en Shopify.', d: 'Estado Borrador lo oculta sin borrarlo. Best sellers se arma solo con las ventas.',
+      p: [['Shop', 'shop.html'], ['Producto', 'product.html'], ['Home', 'index.html'], ['Search', 'search.html']] },
+    { n: 'Menús (renombrar “The Machine”)', t: 'admin', q: 'Los links del encabezado, del menú del celular y del footer.',
+      w: [['Contenido', 'Menús', 'Main menu'], ['Contenido', 'Menús', 'Footer']],
+      a: 'Agregar elemento del menú: nombre y link (página, colección o blog).', e: 'Clic en “The Machine”, cambia el Nombre y Guardar. El link no cambia. Arrastra para reordenar.', d: 'Eliminar el elemento. La página sigue existiendo, solo sale del menú.',
+      p: [['Todas (header y footer)', 'index.html']] },
+    { n: 'Anuncios rotativos (barra negra)', t: 'tema', q: 'Los mensajes que rotan arriba de todo: Testing season, envío gratis, printed to order.',
+      w: [['Personalizar', 'Encabezado', 'Barra de anuncios']],
+      a: 'Agregar bloque Anuncio: texto y link opcional.', e: 'Clic en el bloque y cambia el texto. Escribe [season] donde vaya el año.', d: 'Ojo para ocultar; Eliminar bloque para quitarlo.',
+      p: [['Todas', 'index.html']] },
+    { n: 'Frases de la cinta amarilla', t: 'tema', q: 'La cinta que corre en la home: “Heavy Metal · Pro Stock · Wisconsin · Full pull or nothing”.',
+      w: [['Personalizar', 'Inicio', 'Cinta']],
+      a: 'Agregar bloque Frase y escríbela.', e: 'Clic en la frase y cambia el texto. Arrastra para el orden.', d: 'Ojo para ocultar una frase; Eliminar bloque para quitarla.',
+      p: [['Home', 'index.html']] },
+    { n: 'Búsquedas', t: 'auto', q: 'Trending sale de los más vendidos, las sugerencias mientras escriben las pone Shopify y “recent searches” se guarda en el navegador de cada cliente. Ya no se escriben a mano.',
+      w: [['Automático'], ['Apps', 'Search & Discovery', 'Sinónimos']],
+      a: 'Solo sinónimos (hoodie = sweatshirt) en Search & Discovery.', e: 'Nada que mantener: Trending cambia solo con las ventas.', d: 'Quitar un sinónimo en la misma app.',
+      p: [['Buscador (lupa)', 'search.html'], ['Search', 'search.html'], ['404', '404.html']] },
+    { n: 'Banner de cookies', t: 'admin', q: 'El aviso con Accept all, Decline y Manage, y el link Cookie Preferences del footer que lo vuelve a abrir.',
+      w: [['Configuración', 'Privacidad del cliente', 'Banner de cookies']],
+      a: 'Ya viene con Shopify: lo activas por región (EE. UU. y otras).', e: 'Textos, posición y regiones en esa misma pantalla.', d: 'Se apaga por región. Si usas anuncios de Facebook o Google, déjalo prendido.',
+      p: [['Todas', 'index.html'], ['Cookie Preferences', 'policies.html?p=cookies']] },
+    { n: 'Políticas', t: 'admin', q: 'Privacy, Terms, Refund, Shipping y Contact Information. Shopify las enlaza solas en el footer y en el checkout. Accessibility y Cookie Preferences son páginas normales.',
+      w: [['Configuración', 'Políticas'], ['Tienda online', 'Páginas']],
+      a: 'Las 5 ya existen. Una política extra se crea como página en Tienda online > Páginas.', e: 'Cambia el texto y la fecha “Last updated”.', d: 'No se borran; una página extra sí se puede ocultar o eliminar.',
+      p: [['Policies', 'policies.html'], ['Footer', 'index.html']] },
+    { n: 'Email, teléfono y dirección', t: 'admin', q: 'heavymetalevil72@gmail.com, (920) 650-4374 y P.O. Box 42, Waterloo, WI 53594. Salen en el footer, Contact, políticas y correos a clientes.',
+      w: [['Configuración', 'Detalles de la tienda'], ['Personalizar', 'Ajustes del tema', 'Contacto']],
+      a: 'Ya están cargados.', e: 'Cambia el dato en los dos lugares y Guardar. Revisa Contact Information en Políticas.', d: 'Deja vacío el campo del tema para no mostrar el teléfono.',
+      p: [['Contact', 'contact.html'], ['Policies', 'policies.html?p=contact'], ['FAQ', 'faq.html']] },
+    { n: 'Fotos y videos', t: 'admin', q: 'Todas las fotos del tractor, del crew y los logos de patrocinadores. Los videos de YouTube van como link en su sección.',
+      w: [['Contenido', 'Archivos']],
+      a: 'Subir archivos y luego elegirlos en Personalizar o en el metaobjeto.', e: 'Reemplazar archivo conserva el mismo link: se cambia en todas las páginas a la vez.', d: 'Eliminar solo si ya no se usa en ninguna parte.',
+      p: [['Todas', 'index.html']] },
+    { n: 'Crew (equipo)', t: 'lista', q: 'Cada persona del equipo y las mascotas: nombre, rol, foto opcional (sin foto salen sus iniciales) y orden.',
+      w: [['Contenido', 'Metaobjetos', 'Crew member']],
+      a: 'Agregar entrada con nombre, rol y orden.', e: 'Cambia el rol o sube su foto cuando la tengas.', d: 'Desmarca Visible o Eliminar.',
+      p: [['Our Story', 'story.html']] },
+    { n: 'Playlist de Spotify', t: 'tema', q: 'El walk-up song: Fear of the Dark, Iron Maiden. Puede ser la canción o una playlist del equipo.',
+      w: [['Personalizar', 'Our Story', 'Walk-up song', 'Link de Spotify']],
+      a: 'En Spotify: Compartir > Copiar enlace, y pégalo en el campo.', e: 'Pega otro link (canción o playlist) y Guardar.', d: 'Ojo para ocultar la sección.',
+      p: [['Our Story', 'story.html'], ['FAQ', 'faq.html']] },
+    { n: 'Preguntas del FAQ', t: 'tema', q: 'Cada pregunta y respuesta del Help Center, agrupadas por tema.',
+      w: [['Personalizar', 'FAQ', 'bloques Pregunta']],
+      a: 'Agregar bloque Pregunta dentro de su tema.', e: 'Clic en la pregunta y cambia el texto. Arrastra para el orden.', d: 'Ojo para ocultar; Eliminar bloque para quitarla.',
+      p: [['FAQ', 'faq.html']] },
+    { n: 'Envío gratis y barra del carrito', t: 'admin', q: 'El monto de envío gratis ($XX) y los escalones de la barra del carrito (envío gratis, sticker de regalo).',
+      w: [['Configuración', 'Envío y entrega'], ['Personalizar', 'Ajustes del tema', 'Carrito']],
+      a: 'Crea la tarifa gratis con mínimo de compra en Envío y entrega.', e: 'Pon el mismo monto en el ajuste del carrito para que la barra cuadre.', d: 'Apaga la barra en Ajustes del tema > Carrito.',
+      p: [['Carrito (todas)', 'shop.html'], ['Shipping Policy', 'policies.html?p=shipping']] }
+  ];
+
+  var cur = 'all';
+  $('chips').innerHTML = TYPES.map(function (t) {
+    var n = t[0] === 'all' ? ITEMS.length : ITEMS.filter(function (i) { return i.t === t[0]; }).length;
+    return '<button class="chip" type="button" data-t="' + t[0] + '" aria-pressed="' + (t[0] === cur) + '">' + t[1] + ' <i>' + n + '</i></button>';
+  }).join('');
+  function path(w) { return w.map(function (seg) { return '<span class="path">' + seg.map(function (s) { return '<span>' + esc(s) + '</span>'; }).join('') + '</span>'; }).join('<br>'); }
+  function card(i) {
+    return '<li class="ec"><div class="ec__head"><h3 class="h3">' + esc(i.n) + '</h3><span class="tag tag--' + i.t + '">' + TAGS[i.t] + '</span></div>' +
+      '<p class="ec__what">' + esc(i.q) + '</p>' +
+      '<div class="ec__where"><p class="label muted" style="margin-bottom:4px">Dónde se edita</p>' + path(i.w) + '</div>' +
+      '<dl class="ec__acts"><div><dt>' + IC.add + 'Agregar</dt><dd>' + esc(i.a) + '</dd></div><div><dt>' + IC.edit + 'Editar</dt><dd>' + esc(i.e) + '</dd></div><div><dt>' + IC.hide + 'Borrar u ocultar</dt><dd>' + esc(i.d) + '</dd></div></dl>' +
+      '<p class="ec__pages" style="margin:0"><span>Se ve en:</span>' + i.p.map(function (x) { return '<a href="' + x[1] + '">' + esc(x[0]) + '</a>'; }).join('') + '</p></li>';
+  }
+  function hay(i) { return [i.n, i.q, i.a, i.e, i.d, TAGS[i.t]].concat(i.w.map(function (s) { return s.join(' '); })).concat(i.p.map(function (x) { return x[0]; })).join(' ').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+  function render() {
+    var words = $('find').value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').split(/\s+/).filter(Boolean);
+    var list = ITEMS.filter(function (i) { return (cur === 'all' || i.t === cur) && words.every(function (w) { return hay(i).indexOf(w) > -1; }); });
+    $('map').innerHTML = list.map(card).join('');
+    $('map-empty').hidden = !!list.length;
+    $('count').textContent = list.length === ITEMS.length ? ITEMS.length + ' cosas editables' : list.length + ' de ' + ITEMS.length + ' cosas editables';
+  }
+  $('chips').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-t]'); if (!b) return;
+    cur = b.getAttribute('data-t');
+    [].forEach.call(this.children, function (c) { c.setAttribute('aria-pressed', c === b); });
+    render();
+  });
+  $('find').addEventListener('input', render);
+  render();
+
+  /* ---------- 04 · Calendario anual ---------- */
+  var CAL = [
+    { k: 'pre', when: 'Enero a marzo', t: 'Antes de arrancar la temporada', hot: true, items: [
+      ['Cambiar el año de Temporada', 'Personalizar > Ajustes del tema > Temporada. Un solo número.'],
+      ['Contadores en 0', 'Season stats: entrada nueva del año con competencias, exhibiciones y wins en 0.'],
+      ['Cargar el calendario', 'Pull event: una entrada por pull conforme NTPA y Badger State confirmen fechas.'],
+      ['Paquetes y precios', 'Sponsor tier: revisar precios y beneficios, quitar Sold out. Si cambian, corregir el FAQ.'],
+      ['Logos de patrocinadores', 'Logo placement y Decal zone: agregar los nuevos, ocultar los que no renovaron.'],
+      ['Políticas', 'Configuración > Políticas: revisar y cambiar la fecha “Last updated”.'],
+      ['Anuncios y cinta', 'Personalizar: revisar las frases de la barra negra y de la cinta amarilla.']
+    ] },
+    { k: 'pull', when: 'Cada fin de semana de pull', t: 'Después de cada pull', items: [
+      ['Marcar el pull como hecho', 'Pull event: Estado Done y el resultado.'],
+      ['Sumar al contador', 'Season stats: +1 competencia o exhibición, +1 win si ganó.'],
+      ['Escribir en el Pit Log', 'Entrada de blog con lo que pasó y 2 o 3 fotos (súbelas a Archivos).'],
+      ['Avisar el siguiente', 'Hook Alerts: correo con Shopify Email antes del próximo pull.'],
+      ['Special edition (si hubo momento)', 'Producto nuevo en la colección Special edition con sus metacampos.']
+    ] },
+    { k: 'post', when: 'Octubre a diciembre', t: 'Al cerrar la temporada', items: [
+      ['Cerrar la Special edition', 'Marcar Edición cerrada si sigue abierta.'],
+      ['Resumen en el Pit Log', 'Una entrada con lo mejor y lo peor del año.'],
+      ['Limpiar el calendario', 'Pulls sin fecha o cancelados: Estado Hidden.'],
+      ['Revisar productos', 'Diseños que ya no van: Estado Borrador. Best sellers se acomoda solo.'],
+      ['Pensar paquetes del año que viene', 'Anotar cambios de precios y lugares para enero.']
+    ] }
+  ];
+  var KEY = 'hm-owner-cal', done = {};
+  try { done = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { done = {}; }
+  $('cal').innerHTML = CAL.map(function (ph) {
+    return '<article class="phase' + (ph.hot ? ' phase--hot' : '') + '"><header><p class="label">' + ph.when + '</p><h3 class="h3">' + ph.t + '</h3></header><ul class="todo">' +
+      ph.items.map(function (it, j) { var id = 'cal-' + ph.k + '-' + j; return '<li><label for="' + id + '"><input type="checkbox" id="' + id + '"' + (done[id] ? ' checked' : '') + '><span>' + esc(it[0]) + '<small>' + esc(it[1]) + '</small></span></label></li>'; }).join('') +
+      '</ul></article>';
+  }).join('');
+  function saveCal() { try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {} }
+  $('cal').addEventListener('change', function (e) { if (e.target.type !== 'checkbox') return; if (e.target.checked) done[e.target.id] = 1; else delete done[e.target.id]; saveCal(); });
+  var armed = false;
+  $('cal-reset').addEventListener('click', function () {
+    if (!armed) { armed = true; this.textContent = 'Confirmar: borrar todas las palomitas'; $('cal-status').textContent = 'Da clic otra vez para confirmar.'; return; }
+    armed = false; done = {}; saveCal();
+    document.querySelectorAll('#cal input').forEach(function (i) { i.checked = false; });
+    this.textContent = 'Empezar temporada nueva (borrar palomitas)'; $('cal-status').textContent = 'Listo: checklist en blanco para la temporada nueva.';
+  });
+
+  /* ---------- 05 · Íconos de prenda (img/icons) ---------- */
+  var KINDS = [['tee', 'Playera'], ['hoodie', 'Sudadera'], ['cap', 'Gorra'], ['beanie', 'Gorro'], ['sticker', 'Sticker'], ['koozie', 'Koozie']];
+  var COLS = [['black', 'negro'], ['gray', 'gris'], ['bone', 'hueso']];
+  $('igrid').innerHTML = KINDS.map(function (k) {
+    return '<li class="ig"><h3 class="h3">' + k[1] + '</h3><div class="ig__row">' + COLS.map(function (c) {
+      var f = k[0] + '-' + c[0] + '.svg';
+      return '<figure><img src="img/icons/' + f + '" alt="Ícono genérico: ' + k[1].toLowerCase() + ', color ' + c[1] + '" width="1000" height="1000" loading="lazy"><figcaption>' + f + '</figcaption></figure>';
+    }).join('') + '</div></li>';
+  }).join('');
+})();
+</script>
+</body>
+</html>
