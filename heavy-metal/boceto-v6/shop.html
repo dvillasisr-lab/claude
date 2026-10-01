@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Tractor Pulling Shirts, Hoodies &amp; Hats · Heavy Metal Pro Stock</title>
-<meta name="description" content="Shop Heavy Metal Pro Stock merch: tractor pull tees, hoodies, hats, kids sizes, stickers and numbered Special editions from the crew behind “The Evil One” in Waterloo, WI. Printed to order.">
+<title>Tractor Pulling Shirts, Hoodies &amp; Hats · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Shop Heavy Metal Pro Stock: “The Evil One” merch. Tractor pull tees, hoodies, hats, kids sizes, stickers and limited Special editions from the crew in Waterloo, WI. Printed to order.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -91,6 +91,10 @@ html,body{overflow-x:clip}
 .plp-ltd .link{text-decoration:underline}
 .plp-ltd:hover{border-color:var(--ink)}
 @media (max-width:600px){.plp-ltd{grid-template-columns:minmax(0,1fr)}}
+.plp-soon{padding-block:8px var(--sect)}
+.plp-notes{padding-bottom:var(--sect)}
+.plp-notes .note{margin-top:0}
+.plp-notes .note+.note{margin-top:8px}
 </style>
 </head>
 <body>
@@ -122,7 +126,7 @@ html,body{overflow-x:clip}
   <div class="wrap">
     <div class="plp-chips" id="plp-chips" aria-label="Active filters" role="group" hidden></div>
     <div class="plp-results">
-      <a class="plp-ltd" id="plp-ltd" href="limited.html" hidden><span class="badge badge--ink">Special edition</span><span><b>Numbered run · one moment of the season</b><span class="muted">Each piece is numbered. When the run sells out, it is gone. See the story behind it.</span></span><span class="link" aria-hidden="true">View the edition</span></a>
+      <a class="plp-ltd" id="plp-ltd" href="limited.html" hidden><span class="badge badge--ink">Special edition</span><span><b>Limited run · one moment of the season</b><span class="muted">Out for a short window and a set quantity. When it closes or sells out, it is gone.</span></span><span class="link" aria-hidden="true">View the edition</span></a>
       <div class="pgrid" id="plp-grid"></div>
       <div class="plp-empty" id="plp-empty" hidden>
         <h2 class="h2">Nothing matches these filters</h2>
@@ -133,6 +137,14 @@ html,body{overflow-x:clip}
         <p class="small muted num" id="plp-seen">You've seen 14 of 14 products</p>
       </div>
     </div>
+  </div>
+
+  <!-- tienda vacía: si no hay ningún producto activo, en lugar de fotitos, filtros y grid sale "Coming soon" -->
+  <div class="wrap plp-soon" id="plp-soon" hidden></div>
+
+  <div class="wrap plp-notes">
+    <p class="note">Categorías: cada fotito es una colección automática (Productos &gt; Colecciones &gt; Crear colección &gt; Automática, condición "Tipo de producto es igual a T-Shirt", o una etiqueta como <b>hats</b>). Printify llena el tipo al publicar, así que cada diseño nuevo cae solo en su categoría. La foto de la fotito es la imagen de la colección. Para agregar o quitar una: crea o borra la colección y ponla en el menú (Tienda online &gt; Navegación). Filtros de talla y color: app Search &amp; Discovery; orden Featured = orden manual de la colección.</p>
+    <p class="note" id="plp-empty-note">Sin merch: si no hay productos activos, la tienda muestra "Coming soon" con aviso por email; al publicar el primero, vuelve sola a esta vista. <a id="plp-empty-link" href="shop.html?empty=1">Probar tienda vacía</a></p>
   </div>
 </main>
 
@@ -166,7 +178,7 @@ html,body{overflow-x:clip}
     kids: ['Kids', 'Youth sizes for the next generation of pullers.'],
     gear: ['Stickers & gear', 'Stickers, koozies and the small stuff for the truck and the cooler.'],
     bundles: ['Bundles', 'Sets that pair a tee with a cap. Every piece keeps its own size.'],
-    limited: ['Special edition', 'Numbered, limited runs. When one sells out, it is gone.']
+    limited: ['Special edition', 'Limited runs for a short window. When one sells out, it is gone.']
   };
   var SORTS = [['featured', 'Featured'], ['best', 'Best selling'], ['new', 'Newest'], ['price-asc', 'Price low to high'], ['price-desc', 'Price high to low'], ['az', 'A to Z']];
   var SIZE_ORDER = ['S', 'M', 'L', 'XL', '2XL', '3XL', 'YS', 'YM', 'YL', 'YXL', 'One size'];
@@ -239,8 +251,7 @@ html,body{overflow-x:clip}
   function drawerHTML() {
     var sort = '<fieldset><legend class="vh">Sort by</legend><div class="plp-opts">' + SORTS.map(function (s, i) {
       return '<label class="plp-opt" for="plp-sort-' + i + '"><input type="radio" name="plp-sort" id="plp-sort-' + i + '" value="' + s[0] + '"' + (st.sort === s[0] ? ' checked' : '') + '>' + s[1] + '</label>';
-    }).join('') + '</div></fieldset>' +
-      '<p class="note">Cómo se llena en Shopify: Featured = orden manual de la colección; Best selling = ventas reales; Newest = fecha de publicación; Price y A to Z son automáticos. Los filtros (talla, color, tipo de producto) salen de la app Search &amp; Discovery.</p>';
+    }).join('') + '</div></fieldset>' ;
     var so = sizeOpts();
     var size = '<fieldset><legend class="vh">Size</legend><div class="plp-sizes">' + so.map(function (o, i) {
       var on = st.size.indexOf(o[0]) > -1, off = !o[1] && !on;
@@ -268,7 +279,7 @@ html,body{overflow-x:clip}
     $('plp-title').textContent = c[0];
     $('plp-desc').textContent = c[1];
     $('plp-crumbs').innerHTML = '<li><a href="index.html">Home</a></li>' + (st.cat === 'all' ? '<li aria-current="page">Shop all</li>' : '<li><a href="shop.html?cat=all">Shop</a></li><li aria-current="page">' + esc(c[0]) + '</li>');
-    document.title = (st.cat === 'all' ? 'Tractor Pulling Shirts, Hoodies & Hats' : c[0] + ' · Tractor Pulling Merch') + ' · Heavy Metal Pro Stock';
+    document.title = (st.cat === 'all' ? 'Tractor Pulling Shirts, Hoodies & Hats' : c[0] + ' · Tractor Pulling Merch') + ' · Heavy Metal Pro Stock: “The Evil One”';
     $('plp-count').textContent = n + (n === 1 ? ' product' : ' products') + (nFilters() ? ' of ' + total : '');
     $('plp-grid').innerHTML = list.map(window.hmCard).join('');
     /* Special edition: sus tarjetas ya llevan a limited.html (p.page en hm.js); arriba, un acceso directo a la página de la edición */
@@ -300,6 +311,20 @@ html,body{overflow-x:clip}
 
   function setCat(k) { st.cat = k; prune(); render(); }
   function clearAll() { st.size = []; st.color = []; st.sort = 'featured'; render(); }
+
+  /* tienda vacía (?empty=1 en el boceto): "Coming soon" en lugar de fotitos, filtros y grid */
+  if (!CAT.length) {
+    ['plp-cats', 'plp-chips', 'plp-drawer', 'plp-scrim'].forEach(function (id) { $(id).hidden = true; });
+    document.querySelector('.plp-bar').hidden = true;
+    document.querySelector('.plp-results').hidden = true;
+    $('plp-title').textContent = 'Shop';
+    $('plp-desc').textContent = 'Merch from the crew behind “The Evil One” in Waterloo, WI.';
+    $('plp-count').hidden = true;
+    $('plp-soon').hidden = false;
+    $('plp-soon').innerHTML = window.hmComingSoon ? window.hmComingSoon() : '';
+    $('plp-empty-link').href = 'shop.html'; $('plp-empty-link').textContent = 'Ver la tienda con merch';
+    return;
+  }
 
   $('plp-cats').innerHTML = window.hmCats ? window.hmCats(st.cat) : '';
   prune();

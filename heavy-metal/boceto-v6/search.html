@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Search · Heavy Metal Pro Stock</title>
-<meta name="description" content="Search Heavy Metal Pro Stock: tractor pull tees, hoodies, hats and pages about “The Evil One”, its schedule, Pit Log and sponsors.">
+<title>Search · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Search Heavy Metal Pro Stock: “The Evil One”. Tractor pull tees, hoodies, hats and pages about the tractor, its schedule, Pit Log and sponsors.">
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
@@ -76,8 +76,10 @@ mark{background:var(--accent);color:var(--ink);padding:0 1px}
     <div class="pgrid" id="srp-best-grid"></div>
   </section>
 
+  <section class="wrap srp-sect" id="srp-soon" hidden aria-label="Merch coming soon"></section>
+
   <div class="wrap srp-end">
-    <p class="note">En Shopify esto es la plantilla /search con Search &amp; Discovery: sinónimos (hoodie = sweatshirt, hat = cap), resultados de productos y páginas, y filtros iguales a Shop. Sin resultados muestra sugerencias y best sellers para no dejar un callejón sin salida.</p>
+    <p class="note">En Shopify esto es la plantilla /search con Search &amp; Discovery: sinónimos (hoodie = sweatshirt, hat = cap), resultados de productos y páginas, y filtros iguales a Shop. Sin resultados muestra sugerencias y best sellers para no dejar un callejón sin salida; sin merch muestra "Coming soon" (<a href="search.html?empty=1&amp;q=tee">probar tienda vacía</a>).</p>
   </div>
 </main>
 <div data-hm-footer></div>
@@ -89,7 +91,7 @@ mark{background:var(--accent);color:var(--ink);padding:0 1px}
   var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var ARROW = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
-  var LABEL = { tees: 'tees tee shirt t-shirt long sleeve', sweats: 'sweatshirts sweatshirt hoodie crewneck sweater', hats: 'hats hat cap caps beanie', kids: 'kids kid youth children', gear: 'stickers sticker gear koozie decal', bundles: 'bundles bundle set pack', limited: 'special edition limited numbered drop' };
+  var LABEL = { tees: 'tees tee shirt t-shirt long sleeve', sweats: 'sweatshirts sweatshirt hoodie crewneck sweater', hats: 'hats hat cap caps beanie', kids: 'kids kid youth children', gear: 'stickers sticker gear koozie decal', bundles: 'bundles bundle set pack', limited: 'special edition limited drop' };
   /* sinónimos simples (Search & Discovery los maneja en Shopify) */
   var SYN = { shirt: 'tee', tshirt: 'tee', sweater: 'sweatshirt', hoody: 'hoodie', cap: 'hat', youth: 'kids' };
   var SEASON = window.HM_SEASON || new Date().getFullYear();
@@ -98,7 +100,7 @@ mark{background:var(--accent);color:var(--ink);padding:0 1px}
     ['Our Story', 'story.html', 'From a 2014 idea in Tomah, WI to the first pull in 2026.', 'story history chris team crew family lightning first pull evil one waterloo tomah'],
     ['Schedule', 'schedule.html', 'Testing season ' + SEASON + ' on the NTPA and PPL Badger State circuits. Get Hook Alerts.', 'schedule pulls events dates calendar ntpa ppl badger state hook alerts monroe'],
     ['Pit Log', 'log.html', 'Results, test runs and notes from every pull, newest first.', 'pit log blog results result tests test runs news updates diary journal pull report wins'],
-    ['Special edition', 'limited.html', 'Numbered, limited runs. When they sell out, they are gone.', 'special edition limited numbered drop lightning night tee exclusive'],
+    ['Special edition', 'limited.html', 'Limited runs for a short window. When they sell out, they are gone.', 'special edition limited drop lightning night tee exclusive'],
     ['Sponsors', 'sponsors.html', 'Title Partner, Pit Partner and Crew Supporter packages.', 'sponsors sponsor sponsorship partner title pit crew supporter media kit brand'],
     ['FAQ', 'faq.html', 'Answers about orders, shipping, sizes and the team.', 'faq questions answers help orders shipping returns sizing team'],
     ['Size guide', 'sizes.html', 'Measurements for tees, sweatshirts and kids sizes.', 'size sizes sizing guide fit chart measurements tee hoodie kids youth'],
@@ -121,17 +123,21 @@ mark{background:var(--accent);color:var(--ink);padding:0 1px}
   }
 
   /* búsquedas populares automáticas: best sellers + categorías (en Shopify salen de Search & Discovery) */
-  $('srp-pop').innerHTML = CAT.filter(function (p) { return p.tag === 'best'; }).map(function (p) { return p.name.toLowerCase().replace(/ tee$| cap$/, ''); })
-    .concat(['tee', 'hoodie', 'kids', 'special edition']).slice(0, 7)
+  var EMPTY = !CAT.length; /* tienda sin merch (?empty=1 en el boceto) */
+  $('srp-pop').innerHTML = (EMPTY ? ['the machine', 'schedule', 'pit log', 'sponsors', 'story'] : CAT.filter(function (p) { return p.tag === 'best'; }).map(function (p) { return p.name.toLowerCase().replace(/ tee$| cap$/, ''); })
+    .concat(['tee', 'hoodie', 'kids', 'special edition'])).slice(0, 7)
     .map(function (w) { return '<li><a href="search.html?q=' + encodeURIComponent(w) + '">' + esc(w) + '</a></li>'; }).join('');
 
   var q = (new URLSearchParams(location.search).get('q') || '').trim().slice(0, 80);
   var input = $('srp-q'); input.value = q;
   var toks = tokens(q);
 
+  function soon() { $('srp-soon').hidden = false; $('srp-soon').innerHTML = window.hmComingSoon ? window.hmComingSoon() : ''; }
+
   if (!q) {
     $('srp-title').textContent = 'Search';
-    $('srp-count').textContent = 'Search for a product or a page.';
+    $('srp-count').textContent = EMPTY ? 'Search the pages. Merch is coming soon.' : 'Search for a product or a page.';
+    if (EMPTY) { soon(); return; }
     $('srp-best').hidden = false;
     $('srp-best-grid').innerHTML = bestFour().map(window.hmCard).join('');
     return;
@@ -159,9 +165,9 @@ mark{background:var(--accent);color:var(--ink);padding:0 1px}
   if (!n) {
     $('srp-none').hidden = false;
     $('srp-none-p').textContent = 'We couldn\'t find anything for "' + q + '". Try one of these instead.';
-    $('srp-best').hidden = false;
-    $('srp-best-grid').innerHTML = bestFour().map(window.hmCard).join('');
+    if (!EMPTY) { $('srp-best').hidden = false; $('srp-best-grid').innerHTML = bestFour().map(window.hmCard).join(''); }
   }
+  if (EMPTY) soon();
 })();
 </script>
 </body>

@@ -178,6 +178,7 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
 .light--soon::before{background:var(--accent);box-shadow:inset 0 0 0 1px rgba(28,27,25,.35)}
 .light--late{background:#FBE9E7;border-color:#E8B4AE;color:var(--alert)}
 .light--late::before{background:var(--alert)}
+.lu-key{display:inline-block;margin-top:4px;font-size:10px;font-weight:400;color:var(--mute);background:var(--tile);padding:1px 5px;overflow-wrap:anywhere}
 .lu .due{display:block;margin:6px 0 8px;font-size:var(--t-xs);color:var(--mute);white-space:nowrap}
 .lu-done{min-height:30px;padding:0 10px;font-size:10px}
 @media (max-width:1100px){
@@ -371,7 +372,79 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
   $('yr-reset').addEventListener('click', function () { yin.value = SEASON; setYr(SEASON); yin.focus(); });
   setYr(SEASON);
 
-  /* ---------- 03 · Mapa: un renglón por cosa editable ---------- */
+  /* ---------- 03 · Last updated: todo lo que se debe mantener al día ----------
+     Un renglón por cosa con fecha. En Shopify: src 'auto' = fecha de edición del metaobjeto, metacampo o post (la guarda Shopify al dar Guardar);
+     'mano' = fecha que la dueña escribe (políticas y textos de Personalizar). Cada página marca el lugar con un comentario last-updated: k (k = la llave de cada renglón) */
+  var FQ = { pull: ['Después de cada pull', 14], mes: ['Mensual', 31], temp: ['Cada temporada', 365] };
+  var LU = [
+    { n: 'Calendario de pulls', k: 'schedule', s: 'Pull event: fechas, estado y resultado', p: [['Schedule', 'schedule.html'], ['Home', 'index.html']], w: ['Contenido', 'Metaobjetos', 'Pull event'], f: 'pull', d: '2026-09-21', src: 'auto' },
+    { n: 'Pit Log', k: 'pit-log', s: 'Un post por pull, exhibición o prueba', p: [['Pit Log', 'log.html'], ['Home', 'index.html']], w: ['Contenido', 'Entradas de blog', 'Pit Log'], f: 'pull', d: '2026-09-22', src: 'auto' },
+    { n: 'Contadores de temporada', k: 'season-stats', s: 'Competitions, exhibitions y wins (0 sale como “Coming soon”)', p: [['Home', 'index.html'], ['Our Story', 'story.html'], ['Pit Log', 'log.html']], w: ['Contenido', 'Metaobjetos', 'Season stats'], f: 'pull', d: '2026-09-08', src: 'auto' },
+    { n: 'Paquetes de patrocinio', k: 'sponsor-tiers', s: 'Title Partner, Pit Partner, Crew Supporter: precio y beneficios', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Sponsor tier'], f: 'temp', d: '2026-02-10', src: 'auto' },
+    { n: 'Stats de patrocinio', k: 'sponsor-stats', s: 'XX+ pulls, XX+ states, XX+ fans (est.)', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Sponsor stats'], f: 'temp', d: '2025-11-20', src: 'auto' },
+    { n: 'Lugares del logo', k: 'logo-placements', s: 'Team gear, tráiler, sitio, redes, tractor, locutor', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Logo placement'], f: 'temp', d: '2026-02-10', src: 'auto' },
+    { n: 'Calcomanías', k: 'decal-zones', s: 'Zonas del mapa de calcomanías del tractor', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Decal zone'], f: 'temp', d: '2025-10-05', src: 'auto' },
+    { n: 'Playlist', k: 'playlist', s: 'Walk-up song: Fear of the Dark, o la playlist del equipo', p: [['Our Story', 'story.html'], ['FAQ', 'faq.html']], w: ['Personalizar', 'Our Story', 'Walk-up song'], f: 'mes', d: '2026-08-20', src: 'mano' },
+    { n: 'Ficha técnica', k: 'spec-sheet', s: 'Motor, cilindrada, peso, llantas, carrocería', p: [['The Machine', 'machine.html']], w: ['Personalizar', 'The Machine', 'Spec sheet'], f: 'temp', d: '2026-03-15', src: 'mano' },
+    { n: 'Políticas', k: 'policy-*', s: 'Privacy, Terms, Refund, Shipping, Contact, Accessibility, Choices, Cookies', p: [['Policies', 'policies.html?p=privacy']], w: ['Configuración', 'Políticas'], f: 'temp', d: '2026-10-01', src: 'mano' },
+    { n: 'FAQ', k: 'faq', s: 'Preguntas del Help Center', p: [['FAQ', 'faq.html']], w: ['Personalizar', 'FAQ', 'Last updated'], f: 'mes', d: '2026-09-25', src: 'mano' },
+    { n: 'Edición especial', k: 'special-edition', s: 'Fechas, historia y si sigue a la venta', p: [['Special edition', 'limited.html'], ['Shop', 'shop.html?cat=limited']], w: ['Productos', 'el producto', 'Metacampos'], f: 'mes', d: '2026-09-05', src: 'auto' },
+    { n: 'Anuncios', k: 'announcements', s: 'Mensajes de la barra negra de arriba', p: [['Todas las páginas', 'index.html']], w: ['Personalizar', 'Encabezado', 'Barra de anuncios'], f: 'mes', d: '2026-09-12', src: 'mano' },
+    { n: 'Año de temporada', k: 'season', s: 'Un solo número para todos los “' + SEASON + '”', p: [['Todas las páginas', 'index.html']], w: ['Personalizar', 'Ajustes del tema', 'Temporada'], f: 'temp', d: '2026-01-12', src: 'mano' }
+  ];
+  var LUKEY = 'hm-lu', luOver = {};
+  try { luOver = JSON.parse(localStorage.getItem(LUKEY) || '{}') || {}; } catch (e) { luOver = {}; }
+  function iso(dt) { return dt.getFullYear() + '-' + ('0' + (dt.getMonth() + 1)).slice(-2) + '-' + ('0' + dt.getDate()).slice(-2); }
+  function parse(v) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || ''); return m ? new Date(+m[1], +m[2] - 1, +m[3], 12) : null; }
+  function fmtEs(dt) { return dt.toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' }); }
+  var DAY = 864e5, luCur = 'all', luFocus = null;
+  $('lu-date').value = iso(new Date());
+  function luState(it, today) {
+    var last = parse(luOver[it.n] || it.d), k = it.f, mo = today.getMonth();
+    if (k === 'pull' && (mo >= 10 || mo <= 3)) k = 'temp'; /* noviembre a abril: sin pulls */
+    var days = FQ[k][1], due = new Date(last.getTime() + days * DAY), warn = Math.max(3, Math.round(days / 4));
+    var left = Math.round((due - today) / DAY), age = Math.round((today - last) / DAY);
+    var st = left < 0 ? 'late' : left <= warn ? 'soon' : 'ok';
+    return { last: last, due: due, left: left, age: age, st: st, off: k !== it.f };
+  }
+  var LBL = { late: 'Vencido', soon: 'Revisar', ok: 'Al día' };
+  function luRender() {
+    var today = parse($('lu-date').value) || parse(iso(new Date()));
+    var rows = LU.map(function (it, i) { return { it: it, i: i, r: luState(it, today) }; });
+    var cnt = { late: 0, soon: 0, ok: 0 }; rows.forEach(function (x) { cnt[x.r.st]++; });
+    var ORD = { late: 0, soon: 1, ok: 2 };
+    rows.sort(function (a, b) { return ORD[a.r.st] - ORD[b.r.st] || a.r.due - b.r.due; });
+    var list = rows.filter(function (x) { return luCur === 'all' || x.r.st === luCur; });
+    $('lu-chips').innerHTML = [['all', 'Todo', LU.length], ['late', 'Vencido', cnt.late], ['soon', 'Revisar', cnt.soon], ['ok', 'Al día', cnt.ok]].map(function (c) {
+      return '<button class="chip" type="button" data-lu="' + c[0] + '" aria-pressed="' + (c[0] === luCur) + '">' + c[1] + ' <i>' + c[2] + '</i></button>';
+    }).join('');
+    $('lu-body').innerHTML = list.map(function (x) {
+      var it = x.it, r = x.r;
+      var when = r.left < 0 ? 'Venció hace ' + (-r.left) + (r.left === -1 ? ' día' : ' días') : r.left === 0 ? 'Vence hoy' : 'Vence en ' + r.left + (r.left === 1 ? ' día' : ' días');
+      return '<tr data-n="' + esc(it.n) + '"><th scope="row" tabindex="-1">' + esc(it.n) + '<small>' + esc(it.s) + '</small><code class="lu-key" title="Comentario en el código de la página">last-updated: ' + esc(it.k) + '</code></th>' +
+        '<td data-l="Dónde sale">' + it.p.map(function (q) { return '<a href="' + q[1] + '">' + esc(q[0]) + '</a>'; }).join(' ') + '</td>' +
+        '<td data-l="Dónde se edita"><span class="path">' + it.w.map(function (q) { return '<span>' + esc(q) + '</span>'; }).join('') + '</span></td>' +
+        '<td data-l="Cada cuánto"><span class="fq">' + FQ[it.f][0] + '</span>' + (r.off ? '<small class="src" style="display:block">Fuera de temporada</small>' : '') + '</td>' +
+        '<td data-l="Last updated"><span class="dt">' + fmtEs(r.last) + '<small>hace ' + r.age + (r.age === 1 ? ' día' : ' días') + '</small></span><span class="src' + (it.src === 'auto' ? ' src--auto' : '') + '">' + (it.src === 'auto' ? 'Fecha automática' : 'Fecha a mano') + '</span></td>' +
+        '<td data-l="Estado"><span class="light light--' + r.st + '">' + LBL[r.st] + '</span><span class="due">' + when + ' · ' + fmtEs(r.due) + '</span><button class="btn btn--ghost lu-done" type="button" data-done="' + esc(it.n) + '">Ya lo actualicé<span class="vh">: ' + esc(it.n) + '</span></button></td></tr>';
+    }).join('') || '<tr><td colspan="6">Nada con este estado. Elige “Todo”.</td></tr>';
+    $('lu-count').textContent = cnt.late + (cnt.late === 1 ? ' vencido' : ' vencidos') + ' · ' + cnt.soon + ' por revisar · ' + cnt.ok + ' al día, al ' + fmtEs(today) + '.';
+    if (luFocus) { var row = [].filter.call($('lu-body').querySelectorAll('tr[data-n]'), function (tr) { return tr.getAttribute('data-n') === luFocus; })[0]; if (row) row.querySelector('th').focus(); luFocus = null; }
+  }
+  $('lu-chips').addEventListener('click', function (e) { var b = e.target.closest('[data-lu]'); if (!b) return; luCur = b.getAttribute('data-lu'); luRender(); var nb = this.querySelector('[data-lu="' + luCur + '"]'); if (nb) nb.focus(); });
+  $('lu-body').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-done]'); if (!b) return;
+    var n = b.getAttribute('data-done'); luOver[n] = $('lu-date').value || iso(new Date());
+    try { localStorage.setItem(LUKEY, JSON.stringify(luOver)); } catch (err) {}
+    luFocus = n; luRender();
+  });
+  $('lu-date').addEventListener('change', luRender);
+  $('lu-date').addEventListener('input', luRender);
+  $('lu-now').addEventListener('click', function () { $('lu-date').value = iso(new Date()); luRender(); });
+  $('lu-reset').addEventListener('click', function () { luOver = {}; try { localStorage.removeItem(LUKEY); } catch (e) {} luRender(); $('lu-count').focus && $('lu-count').setAttribute('tabindex', '-1'); $('lu-count').focus(); });
+  luRender();
+
+  /* ---------- 04 · Mapa: un renglón por cosa editable ---------- */
   var TYPES = [['all', 'Todo'], ['lista', 'Listas (Metaobjetos)'], ['tema', 'Personalizar'], ['admin', 'Admin'], ['auto', 'Automático']];
   var TAGS = { lista: 'Metaobjeto', tema: 'Personalizar', admin: 'Admin', auto: 'Automático' };
   var IC = {
@@ -496,7 +569,7 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
   $('find').addEventListener('input', render);
   render();
 
-  /* ---------- 04 · Calendario anual ---------- */
+  /* ---------- 05 · Calendario anual ---------- */
   var CAL = [
     { k: 'pre', when: 'Enero a marzo', t: 'Antes de arrancar la temporada', hot: true, items: [
       ['Cambiar el año de Temporada', 'Personalizar > Ajustes del tema > Temporada. Un solo número.'],
@@ -539,7 +612,7 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
     this.textContent = 'Empezar temporada nueva (borrar palomitas)'; $('cal-status').textContent = 'Listo: checklist en blanco para la temporada nueva.';
   });
 
-  /* ---------- 05 · Íconos de prenda (img/icons) ---------- */
+  /* ---------- 06 · Íconos de prenda (img/icons) ---------- */
   var KINDS = [['tee', 'Playera'], ['hoodie', 'Sudadera'], ['cap', 'Gorra'], ['beanie', 'Gorro'], ['sticker', 'Sticker'], ['koozie', 'Koozie']];
   var COLS = [['black', 'negro'], ['gray', 'gris'], ['bone', 'hueso']];
   $('igrid').innerHTML = KINDS.map(function (k) {

@@ -188,7 +188,7 @@ html,body{overflow-x:clip}
 /* diseño del embed de Spotify (352px como el real); en el sitio lo reemplaza el iframe */
 .st-spot{height:352px;border-radius:12px;overflow:hidden;background:#2A2A26}
 .st-spot__mock{position:relative;height:100%;display:flex;flex-direction:column;gap:12px;padding:16px;background:linear-gradient(180deg,#4A4320 0%,#2A2A26 46%)}
-.st-spot__lbl{position:absolute;right:48px;top:16px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);background:var(--accent);padding:2px 6px}
+.st-spot__lbl{justify-self:start;margin-bottom:4px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);background:var(--accent);padding:2px 6px}
 .st-spot__top{display:grid;grid-template-columns:112px minmax(0,1fr) 24px;gap:14px;align-items:end}
 .st-spot__cover{aspect-ratio:1/1;background:#121211;border-radius:6px;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.4)}
 .st-spot__cover svg{width:30%;height:auto;filter:drop-shadow(0 0 10px rgba(245,196,0,.6))}
@@ -271,7 +271,6 @@ html,body{overflow-x:clip}
   .st-song__main{grid-template-columns:56px minmax(0,1fr);gap:12px}
   .st-song__go{grid-column:1/-1}
   .st-spot__top{grid-template-columns:84px minmax(0,1fr) 22px;gap:12px}
-  .st-spot__lbl{right:44px}
   .st-bros{min-height:0}
   .st-bros .st-photo,.st-bros .ph{aspect-ratio:4/3;min-height:0}
   .st-vid__play{width:60px;height:60px}
@@ -464,10 +463,10 @@ html,body{overflow-x:clip}
         </div>
         <div class="st-spot" id="pl-player">
           <div class="st-spot__mock" role="img" aria-label="Spotify player: The pit playlist by Heavy Metal Pro Stock. It loads on the live site.">
-            <span class="st-spot__lbl">Spotify player</span>
             <div class="st-spot__top">
               <div class="st-spot__cover"><svg viewBox="0 0 140 280" aria-hidden="true"><polygon class="bolt" points="88,0 20,150 58,150 30,280 122,105 78,105"/></svg></div>
               <div class="st-spot__meta">
+                <span class="st-spot__lbl">Spotify player</span>
                 <b>The Pit Playlist</b>
                 <span>Heavy Metal Pro Stock</span>
                 <span class="st-spot__btns"><i class="st-spot__save">Save on Spotify</i><i class="st-spot__play"><svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg></i></span>
