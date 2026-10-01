@@ -261,7 +261,7 @@
     ck.hidden = seen;
     ck.addEventListener('click', function (e) {
       var b = e.target.closest('[data-cookie]'); if (!b) return;
-      if (b.getAttribute('data-cookie') === 'manage') { location.href = 'policies.html?p=choices'; return; }
+      if (b.getAttribute('data-cookie') === 'manage') { location.href = 'policies.html?p=cookies'; return; }
       ck.hidden = true; try { sessionStorage.setItem('hm-cookie', '1'); } catch (err) {}
     });
     $('cookie-prefs').addEventListener('click', function (e) { e.preventDefault(); ck.hidden = false; });
