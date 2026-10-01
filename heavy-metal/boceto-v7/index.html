@@ -154,7 +154,7 @@ html,body{overflow-x:clip}
 </style>
 <div data-hm-header data-current="home"></div>
 <main id="main">
-<!-- HERO Full Pull v6. Requiere hero.css y hero.js (después de hm.js).
+<!-- HERO Full Pull v7. Requiere hero.css y hero.js (después de hm.js).
      En Shopify: sección "HM Hero"; ajustes = distancia de full pull, textos y botones; fondo único de tormenta.
      Las frases de la cinta amarilla son bloques de texto de la sección (máximo 3). -->
 <section class="fp" data-fp data-target="300" aria-labelledby="fp-title">
@@ -193,14 +193,7 @@ html,body{overflow-x:clip}
           <span class="fp__dist"><span data-fp-dist>000</span><small>FT</small></span>
           <span class="fp__chip" data-fp-chip>Hooked</span>
         </div>
-        <dl class="fp__stats">
-          <div><dt>Speed<i>sim</i></dt><dd><span data-fp-mph>0</span><small>mph</small></dd></div>
-          <div><dt>Run time</dt><dd><span data-fp-time>0.00</span><small>s</small></dd></div>
-        </dl>
-        <div class="fp__ctrls">
-          <button class="fp__ctrl" type="button" data-fp-ctrl>Pause</button>
-          <button class="fp__snd" type="button" data-fp-snd aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6h3l4-3v10l-4-3H2z" fill="currentColor" stroke="none"/><path class="on" d="M11 5.5c1 .7 1.5 1.6 1.5 2.5s-.5 1.8-1.5 2.5M12.6 3.6C14 4.7 14.8 6.3 14.8 8s-.8 3.3-2.2 4.4"/><path class="off" d="M11 6l4 4M15 6l-4 4"/></svg>Sound<span class="vh"> of the engine</span> <span aria-hidden="true" data-fp-snd-state>off</span></button>
-        </div>
+        <button class="fp__ctrl" type="button" data-fp-ctrl>Pause</button>
       </div>
     </div>
   </div>
@@ -280,7 +273,7 @@ html,body{overflow-x:clip}
     </svg>
   </div>
 </section>
-<div class="fp-marquee" aria-hidden="true" data-fp-marquee><div class="fp-marquee__track"><span>Heavy Metal Pro Stock<i>·</i>Full pull or nothing<i>·</i>This is f#cking evil<i>·</i></span><span>Heavy Metal Pro Stock<i>·</i>Full pull or nothing<i>·</i>This is f#cking evil<i>·</i></span></div></div>
+<div class="fp-marquee" aria-hidden="true" data-fp-marquee><div class="fp-marquee__track"><span>Full pull or nothing<i>·</i>This is f#cking evil<i>·</i></span><span>Full pull or nothing<i>·</i>This is f#cking evil<i>·</i></span></div></div>
 
   <!-- 1 · SHOP: categorías + una sola fila de producto -->
   <section class="shop-home" aria-labelledby="drop-title">
@@ -372,10 +365,10 @@ html,body{overflow-x:clip}
       <div class="sp__copy">
         <p class="label muted">Sponsorship</p>
         <h2 class="h1" id="sp-title">Partner with “The Evil One”</h2>
-        <p class="sp__line" id="sp-line">Your brand in front of <b>XX+ fans</b> across <b>XX pulls</b> a season.</p>
+        <p class="sp__line" id="sp-line">Your brand in front of <b>100,000+ fans</b> across <b>20+ pulls</b> a season (est.)</p>
       </div>
       <a class="btn" href="sponsors.html">See sponsor packages</a>
-      <p class="note">“XX+ fans” y “XX pulls” salen de Personalizar &gt; Sponsors &gt; Sales line (los mismos valores que la página Sponsors). Cinta amarilla = 3 bloques de texto de la sección HM Hero. Sonido del pull sim: motor sintetizado en el navegador (sin música: Fear of the Dark necesita licencia), apagado por defecto.</p>
+      <p class="note">Frase de venta = Metaobjetos &gt; Sponsor stat (pulls por temporada × fans por pull, los mismos de Sponsors; vacíos = “XX”). Frases de la cinta amarilla = bloques de texto de la sección HM Hero.</p>
     </div>
   </section>
 </main>
@@ -414,8 +407,8 @@ html,body{overflow-x:clip}
   var SEASON_STATS = [
     { season: SEASON, competitions: 2, exhibitions: 3, wins: 0, updated: '2026-09-28' }
   ];
-  /* frase de venta: los mismos valores que Sponsors (Personalizar > Sponsors > Sales line); vacíos = "XX" */
-  var PITCH = { fans: null, pulls: null };
+  /* frase de venta: los mismos valores que Sponsors (Metaobjetos > Sponsor stat). fans = pulls × fans por pull; vacíos = "XX" */
+  var PITCH = { pulls: 20, fansPerPull: 5000 };
   var $ = function (id) { return document.getElementById(id); };
   var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var today = new Date().toISOString().slice(0, 10);
@@ -439,7 +432,8 @@ html,body{overflow-x:clip}
     }).join('');
     if (st.updated) $('nx-upd').textContent = 'Last updated: ' + new Date(st.updated + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
   }
-  $('sp-line').innerHTML = 'Your brand in front of <b>' + (PITCH.fans ? esc(PITCH.fans.toLocaleString('en-US')) : 'XX') + '+ fans</b> across <b>' + (PITCH.pulls ? esc(PITCH.pulls) : 'XX') + ' pulls</b> a season.';
+  var fans = PITCH.pulls && PITCH.fansPerPull ? PITCH.pulls * PITCH.fansPerPull : 0;
+  $('sp-line').innerHTML = 'Your brand in front of <b>' + (fans ? esc(fans.toLocaleString('en-US')) : 'XX') + '+ fans</b> across <b>' + (PITCH.pulls ? esc(PITCH.pulls) : 'XX') + '+ pulls</b> a season (est.)';
 })();
 
 /* First fire: el póster "se va la luz" una vez al entrar en pantalla; play avisa que el video está pendiente. */

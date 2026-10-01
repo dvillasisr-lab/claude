@@ -20,7 +20,7 @@ html,body{overflow-x:clip}
 .pl-head p{margin:0;font-size:var(--t-sm);color:var(--soft);max-width:60ch}
 .pl-upd{margin:10px 0 0;font-size:var(--t-xs);color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 14px}
 .pl-upd b{color:var(--ink);font-weight:600}
-.pl-stats{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.pl-stats{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .pl-stat{padding:12px 16px 12px 0;display:grid;gap:2px;align-content:start}
 .pl-stat+.pl-stat{padding-left:16px;border-left:1px solid var(--line)}
 .pl-stat b{font-family:var(--f-head);font-stretch:78%;font-size:clamp(28px,3vw,40px);line-height:1;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
@@ -32,11 +32,11 @@ html,body{overflow-x:clip}
 .pl-stat--win:not(.is-zero) b:not(.pl-soon){box-shadow:inset 0 -.18em 0 var(--accent)}
 .pl-scope{margin:8px 0 0;font-size:var(--t-xs);color:var(--mute)}
 @media (max-width:760px){
-  .pl-stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .pl-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
   .pl-stat{padding:10px 10px 10px 0}
   .pl-stat+.pl-stat{padding-left:10px}
-  .pl-stat:nth-child(4){border-left:0;padding-left:0}
-  .pl-stat:nth-child(n+4){border-top:1px solid var(--line)}
+  .pl-stat:nth-child(3){border-left:0;padding-left:0}
+  .pl-stat:nth-child(n+3){border-top:1px solid var(--line)}
 }
 
 /* 2 · wins y hitos destacados */
@@ -115,6 +115,8 @@ html,body{overflow-x:clip}
 .pl-card__pic{background:var(--tile);overflow:hidden;position:relative}
 .pl-card__pic .photo{position:absolute;inset:0}
 .pl-card__pic .ph--mock{height:100%}
+.pl-fb{position:absolute;left:4px;bottom:4px;z-index:1;background:#FFF6CC;color:var(--ink);border:1px dashed #C9A400;font-size:9px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:1px 4px;line-height:1.4}
+.no-notes .pl-fb{display:none}
 .pl-card__body{padding:14px 18px 16px;display:grid;gap:6px;align-content:start}
 .pl-tags{display:flex;flex-wrap:wrap;gap:4px}
 .t-test{background:var(--surface);border:1px solid var(--line);color:var(--soft)}
@@ -183,7 +185,28 @@ html,body{overflow-x:clip}
 .adm__del:disabled{opacity:.4;cursor:default;background:none;color:var(--alert)}
 .adm__msg{margin:0;padding:0 12px 10px;font-size:var(--t-xs);color:var(--soft)}
 .adm__msg:empty{display:none}
-@media (max-width:760px){.adm__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* imagen destacada + fotos por tipo */
+.adm__lbl{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--soft)}
+.adm__imgrow{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.adm__thumb{position:relative;width:96px;height:72px;flex:none;background:var(--tile);overflow:hidden;border:1px solid var(--line)}
+.adm__thumb img{width:100%;height:100%;object-fit:cover}
+.adm__thumb .pl-fb{left:2px;bottom:2px}
+.adm__imgctl{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-width:0;flex:1}
+.adm__imgctl .hint{width:100%}
+.adm__rm{background:none;border:0;padding:0 4px;min-height:34px;font:inherit;font-size:11px;color:var(--soft);text-decoration:underline;cursor:pointer}
+.adm__rm:disabled{opacity:.4;cursor:default;text-decoration:none}
+.adm__files{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:6px;margin-top:8px;padding:8px;background:var(--bg);border:1px solid var(--line)}
+.adm__files button{display:grid;gap:3px;padding:0;border:2px solid transparent;background:none;cursor:pointer;font:inherit;font-size:10px;color:var(--soft);text-align:left}
+.adm__files button img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.adm__files button[aria-pressed="true"]{border-color:var(--ink);color:var(--ink);font-weight:700}
+.adm2{margin-top:16px}
+.adm__types{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:12px}
+.adm__type{display:grid;gap:4px;align-content:start}
+.adm__type .adm__thumb{width:100%;height:auto;aspect-ratio:4/3}
+.adm__type .input{min-height:32px;font-size:var(--t-xs);padding:0 6px}
+.adm__type label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.adm__types-hint{margin:0;padding:0 12px 12px;font-size:var(--t-xs);color:var(--soft)}
+@media (max-width:760px){.adm__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.adm__types{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -238,7 +261,7 @@ html,body{overflow-x:clip}
     <p class="pl-count" id="pl-count" role="status" aria-live="polite"></p>
     <ol class="pl-list" id="pl-list"></ol>
     <div class="pl-more" id="pl-more"></div>
-    <p class="note">Las entradas con "Example" son de ejemplo: bórralas o cámbialas por las reales. Faltan fechas y lugares de las exhibiciones (¿3 o 4?), fecha del primer pull y resultado de Monroe (¿el primer pull fue Monroe? Si sí, van en una sola entrada). Full pull lo definimos como "reached the 300 ft line" y sale de la etiqueta "Full pull": confírmanos si así lo cuentan ustedes y qué entradas lo fueron. <button type="button" class="pl-test" id="pl-test" aria-pressed="false">Probar con 200 entradas</button></p>
+    <p class="note">Las entradas con "Example" son de ejemplo: bórralas o cámbialas por las reales. Faltan fechas y lugares de las exhibiciones (¿3 o 4?), fecha del primer pull y resultado de Monroe (¿el primer pull fue Monroe? Si sí, van en una sola entrada). Las fotos con la marca "Foto por tipo" son entradas sin imagen destacada (ver abajo). "Photos &amp; video" lleva a esa fecha en la Galería. <button type="button" class="pl-test" id="pl-test" aria-pressed="false">Probar con 200 entradas</button></p>
   </div>
 </section>
 
@@ -257,14 +280,28 @@ html,body{overflow-x:clip}
 <section class="pl-owner" aria-labelledby="own-t">
   <div class="wrap">
     <h2 class="label" id="own-t" style="margin-bottom:8px">Solo para la dueña · no se ve en el sitio</h2>
-    <p class="note">Cada día es una entrada del blog "Pit Log" (Contenido &gt; Blog posts). Las etiquetas hacen todo solas: contadores, filtros y la franja. La franja "Wins &amp; milestones" muestra SOLO las entradas Win o Milestone a las que les pongas también "Featured": máximo 6, las más recientes; si son más de 3 salen flechas. Para quitar una de la franja, le quitas "Featured" (la entrada sigue en la bitácora). La bitácora muestra 10 y "Load more" trae 10 más (en Shopify: paginación del blog); el buscador usa la búsqueda de la tienda solo en el Pit Log. "Last updated" es la fecha de la entrada más nueva, sola. Pruébalo abajo.</p>
+    <p class="note">Cada día es una entrada del blog "Pit Log" (Contenido &gt; Blog posts). Las etiquetas hacen todo solas: contadores, filtros y la franja. La franja "Wins &amp; milestones" muestra SOLO las entradas Win o Milestone a las que les pongas también "Featured": máximo 6, las más recientes; si son más de 3 salen flechas. Para quitar una de la franja, le quitas "Featured" (la entrada sigue en la bitácora). La bitácora muestra 10 y "Load more" trae 10 más (en Shopify: paginación del blog); el buscador usa la búsqueda de la tienda solo en el Pit Log. "Last updated" es la fecha de la entrada más nueva, sola. <b>La foto de cada entrada es la imagen destacada del post</b> (súbela o elígela de Contenido &gt; Archivos). Si no le pones imagen, se usa la foto de su tipo (Test, Exhibition, Competition, Win), que defines una sola vez en Personalizar; si la entrada tiene foto propia, sale solo el link "Photos &amp; video" a la Galería. Pruébalo abajo.</p>
     <figure class="adm" aria-labelledby="adm-cap">
       <figcaption class="adm__bar" id="adm-cap"><span>Contenido &gt; Blog posts &gt; <b>Pit Log</b> &gt; Add blog post</span><span class="adm__only">Solo para la dueña</span></figcaption>
       <form id="adm-form" novalidate>
         <div class="adm__grid">
           <div class="field span2"><label for="adm-title">Title</label><input class="input" id="adm-title" type="text" value="First win at the County Fair Pull"></div>
           <div class="field"><label for="adm-date">Date</label><input class="input" id="adm-date" type="date"></div>
-          <div class="field"><label for="adm-img">Image</label><select class="input" id="adm-img"><option value="hm-grandstand">hm-grandstand</option><option value="hm-hero">hm-hero</option><option value="hm-front-white">hm-front-white</option><option value="hm-crew">hm-crew</option><option value="hm-driver">hm-driver</option></select></div>
+          <div class="field"><label for="adm-vis">Visibility</label><select class="input" id="adm-vis" aria-describedby="adm-vis-hint"><option>Visible</option><option>Hidden</option></select><span class="hint" id="adm-vis-hint">Hidden: se guarda pero no sale en el sitio</span></div>
+          <div class="field span4" role="group" aria-labelledby="adm-img-l">
+            <span class="adm__lbl" id="adm-img-l">Imagen destacada</span>
+            <div class="adm__imgrow">
+              <span class="adm__thumb" id="adm-thumb"></span>
+              <div class="adm__imgctl">
+                <button type="button" class="btn btn--ghost btn--sm" id="adm-up">Subir imagen</button>
+                <input type="file" id="adm-file" accept="image/*" hidden>
+                <button type="button" class="btn btn--ghost btn--sm" id="adm-pick" aria-expanded="false" aria-controls="adm-files">Elegir de Archivos</button>
+                <button type="button" class="adm__rm" id="adm-noimg">Quitar imagen</button>
+                <span class="hint" id="adm-img-hint" aria-live="polite"></span>
+              </div>
+            </div>
+            <div class="adm__files" id="adm-files" role="group" aria-label="Contenido &gt; Archivos" hidden></div>
+          </div>
           <div class="field span4"><label for="adm-text">Excerpt</label><textarea class="input" id="adm-text" rows="2">Example: write two or three lines about the day. What ran, what broke, what is next.</textarea></div>
           <fieldset class="adm__tags span4"><legend>Tags</legend>
             <label><input type="checkbox" value="Test">Test</label>
@@ -275,10 +312,9 @@ html,body{overflow-x:clip}
             <label><input type="checkbox" value="Milestone">Milestone</label>
             <label><input type="checkbox" value="Shop">Shop</label>
             <label class="feat"><input type="checkbox" value="Featured" checked>Featured</label>
-            <span class="hint">Featured + Win o Milestone = sale en la franja (máx. 6). Full pull = llegó a la línea de 300 ft.</span>
+            <span class="hint">Featured + Win o Milestone = sale en la franja (máx. 6). Full pull = el tractor arrastró el trineo hasta el final de la pista; es solo una etiqueta, no lleva contador.</span>
           </fieldset>
-          <div class="field span2"><label for="adm-video">Video URL (metacampo)</label><input class="input" id="adm-video" type="url" placeholder="https://www.youtube.com/..."></div>
-          <div class="field span2"><label for="adm-vis">Visibility</label><select class="input" id="adm-vis"><option>Visible</option><option>Hidden</option></select><span class="hint">Hidden: se guarda pero no sale en el sitio</span></div>
+          <div class="field span4"><label for="adm-video">Video URL (metacampo)</label><input class="input" id="adm-video" type="url" placeholder="https://www.youtube.com/..."></div>
         </div>
         <div class="adm__foot">
           <button class="adm__del" type="button" id="adm-del" disabled>Delete</button>
@@ -287,6 +323,11 @@ html,body{overflow-x:clip}
         </div>
       </form>
       <p class="adm__msg" id="adm-msg" role="status" aria-live="polite"></p>
+    </figure>
+    <figure class="adm adm2" aria-labelledby="adm2-cap">
+      <figcaption class="adm__bar" id="adm2-cap"><span>Personalizar &gt; Plantillas &gt; Blog: Pit Log &gt; <b>Foto por tipo</b></span><span class="adm__only">Se define una vez</span></figcaption>
+      <div class="adm__types" id="adm-types"></div>
+      <p class="adm__types-hint">Para entradas sin imagen destacada. Si tiene varias etiquetas manda Win, luego Competition, Exhibition y Test; Milestone o Shop solos usan la de Test. Cambia una y mira la bitácora arriba.</p>
     </figure>
   </div>
 </section>

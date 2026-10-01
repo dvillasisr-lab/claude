@@ -385,7 +385,7 @@
 <section class="sc-owner" aria-labelledby="own-t">
   <div class="wrap">
     <h2 class="label" id="own-t" style="margin-bottom:8px">Solo para la dueña · no se ve en el sitio</h2>
-    <p class="note">El calendario NO se edita aparte: se genera solo desde las entradas de Contenido &gt; Metaobjetos &gt; Pull event. ¿Un error? Abre esa entrada, corrige fecha, nombre o tipo y guarda: calendario, lista, historial, contadores y .ics se actualizan solos. Status “Hidden” lo esconde sin borrarlo. Al guardar, cambia también “Last updated” en Personalizar &gt; Schedule.</p>
+    <p class="note">El calendario NO se edita aparte: se genera solo desde las entradas de Contenido &gt; Metaobjetos &gt; Pull event. ¿Un error? Abre esa entrada, corrige fecha, nombre o tipo y guarda: calendario, lista, historial, contadores y .ics se actualizan solos. Status “Hidden” lo esconde sin borrarlo. Cada pull con Status Done liga solo a su evento en la Galería (“Photos &amp; video”). Al guardar, cambia también “Last updated” en Personalizar &gt; Schedule.</p>
     <figure class="adm" aria-labelledby="adm-cap">
       <figcaption class="adm__bar" id="adm-cap"><span>Contenido &gt; Metaobjetos &gt; <b>Pull event</b> &gt; Green County Fall Nationals</span><span class="adm__only">Solo para la dueña</span></figcaption>
       <form id="adm-form" novalidate>
@@ -399,7 +399,7 @@
           <div class="field"><label for="adm-status">Status</label><select class="input" id="adm-status" aria-describedby="adm-st-hint"><option>Upcoming</option><option selected>Done</option><option>Cancelled</option><option>Hidden</option></select><span class="hint" id="adm-st-hint">Hidden: se guarda pero no sale en el sitio</span></div>
           <div class="field"><label for="adm-dist">Distance</label><input class="input" id="adm-dist" type="text" placeholder="e.g. 312.4 ft"></div>
           <div class="field span3"><label for="adm-result">Result</label><input class="input" id="adm-result" type="text" placeholder="e.g. 3rd place, or Full pull" aria-describedby="adm-res-hint"><span class="hint" id="adm-res-hint">“Full pull” saca la etiqueta amarilla; “1st place” o “Win” suma un win</span></div>
-          <div class="field span2"><label for="adm-video">Video or photos URL</label><input class="input" id="adm-video" type="url" value="https://www.youtube.com/watch?v=HfJ5FAJJ5Ac"></div>
+          <div class="field span2"><label for="adm-video">Video URL (YouTube)</label><input class="input" id="adm-video" type="url" value="https://www.youtube.com/watch?v=HfJ5FAJJ5Ac" aria-describedby="adm-vid-hint"><span class="hint" id="adm-vid-hint">Las fotos van en la Galería: con Status Done sale solo “Photos &amp; video”</span></div>
           <div class="field span2"><label for="adm-site">Event website / tickets</label><input class="input" id="adm-site" type="url" value="https://greencountyfair.net/"></div>
         </div>
         <div class="adm__foot">
@@ -437,14 +437,14 @@
   /* Entradas del metaobjeto "Pull event" (en Shopify las pinta Liquid). El calendario NO tiene datos propios:
      sale solo de estas entradas, igual que la lista, el historial, los contadores y el .ics.
      Campos: date, event, short (Calendar label, opcional), city, league, type (Competition | Exhibition),
-     status (Upcoming | Done | Cancelled | Hidden), result, distance, video, website. Sin fecha, cuenta en la temporada actual.
+     status (Upcoming | Done | Cancelled | Hidden), result, distance, video, website, gallery (handle del Gallery event). Sin fecha, cuenta en la temporada actual.
      example / sample: solo en el boceto. Si la temporada no tiene ningún pull real con fecha, los ejemplos reciben fechas de muestra
      (sábados del mes pasado y el próximo sábado) para que el calendario se vea lleno. */
   var EVENTS = [
-    { date: '', event: 'Green County Fall Nationals', short: 'Monroe', city: 'Monroe, WI', league: 'Badger State Tractor Pullers', type: 'Competition', status: 'Done', result: '', distance: '', video: 'https://www.youtube.com/watch?v=HfJ5FAJJ5Ac', website: 'https://greencountyfair.net/' },
-    { date: '', event: 'Exhibition run', short: 'Exhib.', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 0 },
-    { date: '', event: 'Exhibition run', short: 'Exhib.', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 1 },
-    { date: '', event: 'Exhibition run', short: 'Exhib.', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 2 },
+    { date: '', event: 'Green County Fall Nationals', short: 'Monroe', city: 'Monroe, WI', league: 'Badger State Tractor Pullers', type: 'Competition', status: 'Done', result: '', distance: '', video: 'https://www.youtube.com/watch?v=HfJ5FAJJ5Ac', website: 'https://greencountyfair.net/', gallery: 'monroe-' + SEASON },
+    { date: '', event: 'Exhibition run', short: 'Exhib.', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 0, gallery: 'exhibition-1' },
+    { date: '', event: 'Exhibition run', short: 'Exhib.', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 1, gallery: 'exhibition-2' },
+    { date: '', event: 'Exhibition run', short: 'Exhib.', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 2, gallery: 'exhibition-3' },
     { date: '', event: 'County fair pull', short: 'County', city: '[pending]', league: '[pending]', type: 'Competition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sampleOnly: true, sample: 3 },
     { date: '', event: 'Season finale pull', short: 'Finale', city: '[pending]', league: '[pending]', type: 'Competition', status: 'Upcoming', result: '', distance: '', video: '', website: '', example: true, sampleOnly: true, sample: 'next' }
   ];
@@ -480,6 +480,9 @@
   function fmtDate(iso, long) { return dObj(iso).toLocaleDateString('en-US', long ? { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' } : { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }); }
   function isExh(e) { return e.type === 'Exhibition'; }
   function isYT(u) { return /youtube\.com|youtu\.be/.test(u || ''); }
+  /* handle del evento en la Galería: campo "Gallery" del Pull event (referencia al metaobjeto Gallery event); si está vacío, nombre + año */
+  function slug(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+  function galleryOf(e) { return e.gallery || slug((e.event || 'pull') + ' ' + yearOf(e)); }
   function isFull(e) { return /full pull/i.test(e.result || ''); }
   function isWin(e) { return e.status === 'Done' && /^\s*(1st|first place|win)/i.test(e.result || ''); }
   function shortOf(e) { return e.short || (e.event || 'Pull').split(/\s+/)[0]; }
@@ -488,7 +491,9 @@
   function dateText(e) { return e.date ? fmtDate(e.date) : '[date pending]'; }
   function linksOf(e) {
     var up = e.status === 'Upcoming', l = [];
-    if (e.video) l.push(ext(e.video, isYT(e.video) ? 'YouTube video' : 'Photos', ' of ' + e.event));
+    /* pull pasado (Done): liga a su evento en la Galería (gallery.html?event=handle) */
+    if (e.status === 'Done') l.push('<a href="gallery.html?event=' + encodeURIComponent(galleryOf(e)) + '">Photos &amp; video<span class="vh"> from ' + esc(e.event) + ' in the gallery</span></a>');
+    if (e.video) l.push(ext(e.video, isYT(e.video) ? 'YouTube video' : 'Video', ' of ' + e.event));
     if (e.website) l.push(ext(e.website, up ? 'Tickets and info' : 'Event site', ' for ' + e.event));
     return l;
   }
@@ -525,7 +530,7 @@
       '<td data-label="Type">' + typeBadge(e) + '</td>' +
       '<td data-label="League">' + esc(e.league) + '</td>' +
       '<td data-label="Result">' + resultHtml(e) + '</td>' +
-      '<td data-label="Video, photos">' + (l.length ? '<span class="links">' + l.join('') + '</span>' : '<span class="dash">Coming soon</span>') + '</td></tr>';
+      '<td data-label="Video, photos">' + (l.length ? '<span class="links">' + l.join('') + '</span>' : '<span class="dash">' + (e.status === 'Cancelled' ? '-' : 'Coming soon') + '</span>') + '</td></tr>';
   }
 
   /* estado de la vista */
@@ -591,11 +596,10 @@
     var nC = done.filter(function (e) { return !isExh(e); }).length;
     var nE = done.filter(isExh).length;
     var nW = done.filter(isWin).length;
-    var nF = done.filter(isFull).length;
-    /* testing: un contador de wins o full pulls en 0 dice "Coming soon", nunca "0" */
+    /* testing: el contador de wins en 0 dice "Coming soon", nunca "0" (sin contador de full pulls) */
     $('panel-past').innerHTML = past.length
       ? '<p class="sc-sum"><span>' + S.year + (cur ? ' so far:' : ':') + '</span>' + stat('Competitions', nC) + stat('Exhibitions', nE) +
-        stat('Wins', nW || 'Coming soon') + stat('Full pulls', nF || 'Coming soon') + '</p>' +
+        stat('Wins', nW || 'Coming soon') + '</p>' +
         '<div class="sc-table-wrap"><table class="sc-table">' + HEAD_PAST + '<tbody>' + past.map(rowPast).join('') + '</tbody></table></div>'
       : '<div class="sc-table-wrap"><table class="sc-table"><tbody><tr class="sc-empty"><td colspan="6">No past pulls in ' + S.year + '.</td></tr></tbody></table></div>';
   }
