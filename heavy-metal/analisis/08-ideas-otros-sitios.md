@@ -1,6 +1,6 @@
 # Ideas de otros sitios de pulling y motorsport (para decidir)
 
-Investigado en v6. No se ha construido nada de esto. Prioridad sugerida: 1, 3, 4 y 5 (esfuerzo bajo); 2 es la base para 1, 9 y 10.
+Investigado en v6. Decisión de la dueña: se construyen ya la 3 (Book the team) y la 10 (galería). Van a pendientes la 4, 5, 8, 9, 12 y 13. Descartadas: 1, 2, 6, 7, 11 y 14.
 
 | # | Idea | Quién lo hace | Valor | Esfuerzo |
 |---|---|---|---|---|

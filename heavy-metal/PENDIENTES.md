@@ -20,7 +20,13 @@ Lo que me vayas dando "para después" va aquí. No se trabaja hasta que digas.
 | 13 | Estrategia de shipping | Definir el monto de "Free US shipping over $XX" y los escalones del carrito. | En espera |
 | 14 | Estrategia de pricing y cupones | Precios por prenda, márgenes con Printify, cupones (bienvenida, eventos, patrocinadores). | En espera |
 | 15 | Pop up de descuento | Cuándo sale, a quién, qué ofrece (ligado a Hook Alerts). | En espera |
-| 16 | Ideas de otros sitios de pulling | Lista de lo que tienen otros equipos que aporte valor (respondida en el chat de v6). | Para decidir |
+| 16 | Kit de prensa descargable | Logos PNG/EPS, fotos en alta, bios, ficha técnica (idea 4 de analisis/08). | En espera |
+| 17 | Hero card autografiada | Tarjeta firmada por correo o gratis en cada pedido, con logos de patrocinadores (idea 5). | En espera |
+| 18 | Réplica a escala 1/64 | Diecast o resina de "The Evil One" en preventa (idea 8). | En espera |
+| 19 | Evolución del tractor | Línea de tiempo por temporada, primeras veces, alumni del crew (idea 9). | En espera |
+| 20 | Playera de crew personalizada | Camisa de mecánico con nombre bordado (idea 12). | En espera |
+| 21 | Colección con causa | Diseño anual con margen para una causa local (idea 13). | En espera |
+| 22 | Nombre de "Hook Alerts" | La dueña no está segura de la frase; elegir nombre de la lista de correo. | Por decidir |
 
 ## Datos que faltan
 - Cifras de patrocinio: ¿5,000+ fans es por evento o por temporada? (el sitio usa "XX+" en frases de venta y estimados "est." en contadores).
