@@ -216,6 +216,22 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
 .sp-book__go{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px}
 .sp-book__go svg{width:16px;height:16px;transition:transform .15s}
 .sp-book:hover .sp-book__go svg{transform:translateX(3px)}
+.why{margin:0 0 16px}
+.why__q{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h3);letter-spacing:.03em;text-transform:uppercase;margin:0 0 8px;color:var(--ink)}
+.why ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.why a{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 8px;min-height:64px;height:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--line);text-decoration:none;color:var(--ink);transition:border-color .15s,background-color .15s}
+.why a:hover{border-color:var(--ink)}
+.why a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.why a.is-main{background:var(--ink);border-color:var(--ink);color:var(--night-ink)}
+.why a.is-main:hover{background:#000}
+.why b{font-size:var(--t-sm);line-height:1.25;font-weight:700}
+.why small{grid-column:1;font-size:var(--t-xs);line-height:1.3;color:var(--soft)}
+.why a.is-main small{color:var(--line)}
+.why svg{grid-column:2;grid-row:1/span 2;width:18px;height:18px;transition:transform .15s}
+.why a:hover svg{transform:translateX(3px)}
+.why a.is-main svg{color:var(--accent)}
+@media (max-width:1240px) and (min-width:1025px){.why ul{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.why ul{grid-template-columns:repeat(2,minmax(0,1fr))}.why a{min-height:72px;padding:10px}}
 @media (max-width:900px){.sp-end{grid-template-columns:1fr}}
 @media (max-width:480px){.sp-form{grid-template-columns:1fr}}
 </style>
@@ -228,12 +244,12 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
      "publisher": {"@type": "SportsTeam", "name": "Heavy Metal Pro Stock", "alternateName": "“The Evil One”", "sport": "Tractor pulling", "location": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "Waterloo", "addressRegion": "WI", "addressCountry": "US"}}}},
     {"@type": "FAQPage",
      "mainEntity": [
-      {"@type": "Question", "name": "Which package fits my business?", "acceptedAnswer": {"@type": "Answer", "text": "Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. If you are not sure, pick Not sure in the form and we will help."}},
+      {"@type": "Question", "name": "Which package fits my business?", "acceptedAnswer": {"@type": "Answer", "text": "Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. If you are not sure, pick Not sure yet in the form and we will send you the sponsor info kit."}},
       {"@type": "Question", "name": "Where does “The Evil One” pull?", "acceptedAnswer": {"@type": "Answer", "text": "On the NTPA and PPL Badger State circuits, 20+ pulls a season (est.), plus exhibitions. Driver and owner Chris F. has 20+ years in the sport."}},
-      {"@type": "Question", "name": "How many people will see my brand?", "acceptedAnswer": {"@type": "Answer", "text": "Your brand in front of 100,000+ fans across 20+ pulls a season (est.), in the stands alone. Streams and social media come on top of that. We send current numbers with the sponsor kit."}},
+      {"@type": "Question", "name": "How many people will see my brand?", "acceptedAnswer": {"@type": "Answer", "text": "Your brand in front of 100,000+ fans across 20+ pulls a season (est.), in the stands alone. Streams and social media come on top of that. Current numbers are in our sponsor info kit."}},
       {"@type": "Question", "name": "How long does a package run?", "acceptedAnswer": {"@type": "Answer", "text": "Packages are built around the pulling season. We confirm the exact dates and terms in writing with you before anything goes on the tractor."}},
       {"@type": "Question", "name": "What if the package I want is sold out?", "acceptedAnswer": {"@type": "Answer", "text": "Join the waitlist from that package. We will contact you if a spot opens up."}},
-      {"@type": "Question", "name": "What happens after I send the form?", "acceptedAnswer": {"@type": "Answer", "text": "We will email you our sponsor kit within 2 business days."}}
+      {"@type": "Question", "name": "What happens after I send the form?", "acceptedAnswer": {"@type": "Answer", "text": "If you asked for the sponsor info kit, we email it within 2 business days: a short PDF with the packages, who sees your logo, the decal map and real photos, so you can decide. If you picked a package, we also reply to set up a call. No commitment: nothing is signed until we agree on the terms in writing."}}
      ]}
   ]
 }
@@ -254,14 +270,24 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
           <h1 class="h1" id="sp-title">Sponsor “The Evil One”</h1>
           <p><span data-pitch>Your brand in front of 100,000+ fans across 20+ pulls a season (est.)</span>, on a Pro Stock tractor built from scratch in Waterloo, WI, by a driver with 20+ years in the sport.</p>
         </div>
-        <a class="link" href="#contact" style="text-decoration:underline">Not sure? Ask us</a>
+        <a class="link" href="#contact" id="kit-link" style="text-decoration:underline">Not sure yet? Get the info kit</a>
       </div>
+      <!-- Propuesta (idea dbrand, "Why are you here?"): selector que manda a cada quien a lo suyo. Si se queda, en Shopify es una sección del tema con 4 bloques (texto, subtexto, liga). -->
+      <nav class="why" id="why" aria-labelledby="why-q">
+        <h2 class="why__q" id="why-q">Why are you here?</h2>
+        <ul>
+          <li><a class="is-main" href="#sp-tiers" id="why-logo"><b>I want my logo on “The Evil One”</b><small>Good call. Packages right below.</small><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></li>
+          <li><a href="shop.html"><b>I just want a shirt</b><small>Fair. No contract needed.</small><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          <li><a href="schedule.html"><b>I'm a pulling fan</b><small>Same. Here's where we pull next.</small><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          <li><a href="story.html"><b>I have no clue</b><small>Honest. Start with the story.</small><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+        </ul>
+      </nav>
       <!-- En Shopify: un bloque Liquid recorre las entradas del metaobjeto "Sponsor tier". Aquí: array TIERS al final. -->
       <ul class="sp-tiers" id="sp-tiers" aria-label="Sponsorship packages" tabindex="0"></ul>
       <div class="sp-foot"><p class="sp-hint" id="sp-hint" aria-hidden="true">Swipe to see all 3 packages</p>
         <!-- last-updated: sponsor-packages (Metaobjetos > Sponsor tier, campo Updated) -->
         <p class="sp-upd" id="sp-tiers-upd">Last updated: October 1, 2026</p></div>
-      <div class="note sp-owner" id="sp-owner">Esto no sale en el sitio. La frase de venta se calcula sola con tus cifras de <b>Sponsor stat</b>: Pulls per season (20+) × Fans per pull (5,000+) = "100,000+ fans across 20+ pulls a season (est.)". Cambias una cifra allá y se actualiza aquí, en el FAQ y en Google. Prueba cómo se ve Pit Partner:
+      <div class="note sp-owner" id="sp-owner"><b>Propuesta (idea dbrand):</b> el bloque "Why are you here?" de arriba; dime si se queda. Lo demás no sale en el sitio. La frase de venta se calcula sola con tus cifras de <b>Sponsor stat</b>: Pulls per season (20+) × Fans per pull (5,000+) = "100,000+ fans across 20+ pulls a season (est.)". Cambias una cifra allá y se actualiza aquí, en el FAQ y en Google. Prueba cómo se ve Pit Partner:
         <span class="sp-seg" id="tier-seg" role="group" aria-label="Estado de Pit Partner, solo boceto">
           <button type="button" data-st="available" aria-pressed="true">Available</button>
           <button type="button" data-st="limited" aria-pressed="false">Limited</button>
@@ -383,18 +409,18 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
   <div class="wrap sp-end">
     <div class="faq" id="faq">
       <h2 class="h2" id="faq-t" style="margin-bottom:12px">FAQ</h2>
-      <details><summary>Which package fits my business?</summary><p>Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. Not sure? Pick "Not sure" in the form and we'll help.</p></details>
+      <details><summary>Which package fits my business?</summary><p>Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. Not sure? Pick "Not sure yet" in the form and we'll send you the info kit.</p></details>
       <details><summary>Where does “The Evil One” pull?</summary><p>On the NTPA and PPL Badger State circuits, <span data-pulls>20+ pulls a season (est.)</span>, plus exhibitions. Driver and owner Chris F. has 20+ years in the sport. Dates go up on the <a href="schedule.html">Schedule</a>.</p></details>
-      <details><summary>How many people will see my brand?</summary><p><span data-pitch>Your brand in front of 100,000+ fans across 20+ pulls a season (est.)</span>, in the stands alone. Streams and social media come on top of that. We send current numbers with the sponsor kit.</p></details>
+      <details><summary>How many people will see my brand?</summary><p><span data-pitch>Your brand in front of 100,000+ fans across 20+ pulls a season (est.)</span>, in the stands alone. Streams and social media come on top of that. Current numbers are in our sponsor info kit.</p></details>
       <details><summary>How long does a package run?</summary><p>Packages are built around the pulling season. We confirm the exact dates and terms in writing with you before anything goes on the tractor.</p></details>
       <details><summary>What if the package I want is sold out?</summary><p>Hit "Join the waitlist" on that package. We'll contact you if a spot opens up.</p></details>
-      <details><summary>What happens after I send the form?</summary><p>We'll email you our sponsor kit within 2 business days.</p></details>
+      <details><summary>What happens after I send the form?</summary><p>If you asked for the sponsor info kit, we email it within 2 business days: a short PDF with the packages, who sees your logo, the decal map and real photos, so you can decide. If you picked a package, we also reply to set up a call. No commitment: nothing is signed until we agree on the terms in writing.</p></details>
       <a class="sp-book" href="book.html"><span class="sp-book__q">Want “The Evil One” at your event?</span><span class="sp-book__go">Book the team<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
     </div>
 
     <div id="contact">
       <h2 class="h2" id="form-t">Request a package</h2>
-      <p class="small muted" style="margin:4px 0 12px">Tell us a little about your business and pick a package.</p>
+      <p class="small muted" style="margin:4px 0 12px">Tell us a little about your business and pick a package, or just ask for the info kit.</p>
       <form class="sp-form" id="sp-form" novalidate aria-labelledby="form-t">
         <div class="field"><label for="f-company">Company</label><input class="input" id="f-company" name="company" type="text" required autocomplete="organization" placeholder="e.g. Waterloo Ag Supply"></div>
         <div class="field"><label for="f-name">Your name</label><input class="input" id="f-name" name="name" type="text" required autocomplete="name" placeholder="e.g. Jake Miller"></div>
@@ -404,7 +430,7 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
           <select class="input" id="f-pkg" name="package"></select>
         </div>
         <div class="field full"><label for="f-msg">Message <span class="opt">(optional)</span></label><textarea class="input" id="f-msg" name="message" placeholder="Tell us about your business and what you'd like to get out of it..."></textarea></div>
-        <p class="sp-next full"><b>What you get</b>We'll email you our sponsor kit within 2 business days.</p>
+        <p class="sp-next full"><b>Not sure yet?</b>Pick "Not sure yet" above to request our sponsor info kit: a short PDF with the packages, who sees your logo, the decal map and real photos. We email it within 2 business days. No commitment.</p>
         <p class="consent full">We use your details only to reply about sponsorship. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
         <div class="full"><button class="btn" type="submit" id="f-submit">Send request</button></div>
         <p class="sp-status full" id="sp-status" role="status" aria-live="polite"></p>
@@ -536,8 +562,9 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
   }
   function syncForm() {
     var t = byHandle($('f-pkg').value), wait = !!(t && t.status === 'soldout');
-    $('form-t').textContent = wait ? 'Join the waitlist' : 'Request a package';
-    $('f-submit').textContent = wait ? 'Join the waitlist' : 'Send request';
+    var unsure = $('f-pkg').value === 'unsure';
+    $('form-t').textContent = wait ? 'Join the waitlist' : unsure ? 'Request the info kit' : 'Request a package';
+    $('f-submit').textContent = wait ? 'Join the waitlist' : unsure ? 'Request the info kit' : 'Send request';
   }
   $('f-pkg').addEventListener('change', syncForm);
 
@@ -549,8 +576,14 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
     $('contact').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
     setTimeout(function () { $('f-company').focus({ preventScroll: true }); }, reduce ? 0 : 450);
   });
+  /* Propuesta "Why are you here?": la opción de logo baja a los paquetes y deja el foco ahí */
+  $('why-logo').addEventListener('click', function (e) {
+    e.preventDefault(); var t = $('sp-tiers');
+    t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    t.focus({ preventScroll: true });
+  });
   document.querySelectorAll('a[href="#contact"]:not(.sp-tabs a):not(#dz-cta)').forEach(function (a) {
-    a.addEventListener('click', function (e) { e.preventDefault(); $('contact').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); });
+    a.addEventListener('click', function (e) { e.preventDefault(); if (a.id === 'kit-link') { $('f-pkg').value = 'unsure'; syncForm(); } $('contact').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); });
   });
 
   /* Control SOLO de boceto: cambia el estado de Pit Partner y el mock del admin */
@@ -745,7 +778,7 @@ main [id]{scroll-margin-top:calc(var(--header) + 56px)}
     var pkg = $('f-pkg'); var label = pkg.options[pkg.selectedIndex].text.split(' · ')[0];
     var tw = byHandle(pkg.value), wait = !!(tw && tw.status === 'soldout');
     st.className = 'sp-status full is-ok';
-    st.textContent = 'Thanks, ' + $('f-name').value.trim().split(' ')[0] + '. ' + (wait ? 'You\'re on the waitlist for ' + label + '.' : (pkg.value === 'unsure' ? 'Your request is in.' : 'Your request for ' + label + ' is in.')) + ' We\'ll email your sponsor kit to ' + $('f-email').value.trim() + ' within 2 business days.';
+    st.textContent = 'Thanks, ' + $('f-name').value.trim().split(' ')[0] + '. ' + (wait ? 'You\'re on the waitlist for ' + label + '.' : (pkg.value === 'unsure' ? 'Your info kit request is in.' : 'Your request for ' + label + ' is in.')) + ' We\'ll email our sponsor info kit (a short PDF to help you decide, no commitment) to ' + $('f-email').value.trim() + ' within 2 business days.';
     form.querySelector('button[type="submit"]').disabled = true;
   });
 })();
