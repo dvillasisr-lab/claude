@@ -223,7 +223,7 @@
         '<div class="drawer__foot"><p class="drawer__sub"><span>Subtotal</span><span class="num">$XX</span></p><p class="small muted" style="margin:0">Printed to order. Ships in 5 days. Taxes and shipping at checkout.</p><a class="btn btn--block" href="#" id="checkout">Checkout</a><div class="paybadges" aria-label="Payment methods"><span>Shop Pay</span><span>Apple Pay</span><span>Google Pay</span><span>PayPal</span><span>Visa</span><span>Mastercard</span></div><p class="small muted" style="margin:0;text-align:center">Secure checkout by Shopify</p></div>' +
       '</aside>' +
       '<div class="qsheet" id="qsheet" hidden role="dialog" aria-modal="true" aria-labelledby="qs-name"><div style="display:flex;justify-content:space-between;align-items:start;gap:12px"><div><p class="h3" id="qs-name"></p><p class="small muted" style="margin:2px 0 0">$XX · <span id="qs-color"></span></p></div><button class="icon-btn" type="button" id="qs-close" aria-label="Close">' + I.close + '</button></div><p class="label">Select a size</p><div class="qsheet__sizes" id="qs-sizes"></div><a class="link" id="qs-more" href="#" style="text-decoration:underline">View full details</a></div>' +
-      '<div class="qsheet nfy" id="notify" hidden role="dialog" aria-modal="true" aria-labelledby="nf-t"><div style="display:flex;justify-content:space-between;align-items:start;gap:12px"><div><p class="label" id="nf-k">Coming soon</p><p class="h3" id="nf-t"></p></div><button class="icon-btn" type="button" id="nf-close" aria-label="Close">' + I.close + '</button></div>' +
+      '<div class="qsheet nfy" id="nfy-modal" hidden role="dialog" aria-modal="true" aria-labelledby="nf-t"><div style="display:flex;justify-content:space-between;align-items:start;gap:12px"><div><p class="label" id="nf-k">Coming soon</p><p class="h3" id="nf-t"></p></div><button class="icon-btn" type="button" id="nf-close" aria-label="Close">' + I.close + '</button></div>' +
         '<form id="nf-form" novalidate><p class="small muted" id="nf-d" style="margin:0 0 10px">We will email you the moment it drops. One email, no spam.</p><label class="vh" for="nf-email">Email</label><div style="display:flex;gap:8px"><input class="input" id="nf-email" type="email" required autocomplete="email" placeholder="Email address"><button class="btn" type="submit">Notify me</button></div><p class="small" id="nf-err" role="alert" style="margin:6px 0 0;color:var(--alert)"></p><p class="consent" style="margin-top:8px">You can also join <a href="evil-list.html">The Evil List</a> for every drop.</p></form>' +
         '<p id="nf-ok" role="status" hidden style="margin:0"><b>You are on the list.</b> We will email you when it is available.</p><a class="link" id="nf-more" href="#" style="text-decoration:underline;font-size:var(--t-xs)">View product details</a></div>';
   }
@@ -271,7 +271,7 @@
   var scrim = $('scrim');
   var open = null;
   function show(el, focus) { hideAll(); last = document.activeElement; el.hidden = false; if (scrim) scrim.hidden = false; document.body.style.overflow = 'hidden'; open = el; if (focus) focus.focus(); }
-  function hideAll() { ['mnav', 'search', 'drawer', 'qsheet', 'notify'].forEach(function (id) { var e = $(id); if (e) e.hidden = true; }); if (scrim) scrim.hidden = true; document.body.style.overflow = ''; if (open && last && last.focus) last.focus(); open = null; }
+  function hideAll() { ['mnav', 'search', 'drawer', 'qsheet', 'nfy-modal'].forEach(function (id) { var e = $(id); if (e) e.hidden = true; }); if (scrim) scrim.hidden = true; document.body.style.overflow = ''; if (open && last && last.focus) last.focus(); open = null; }
   if (scrim) scrim.addEventListener('click', hideAll);
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') { hideAll(); closeMega(); return; }
@@ -393,7 +393,7 @@
     $('nf-t').textContent = p.name;
     $('nf-d').textContent = p.status === 'soldout' ? 'We will email you if it comes back. One email, no spam.' : 'We will email you the moment it drops. One email, no spam.';
     $('nf-more').href = href(p); $('nf-form').hidden = false; $('nf-ok').hidden = true; $('nf-err').textContent = ''; $('nf-email').value = '';
-    show($('notify'), $('nf-email'));
+    show($('nfy-modal'), $('nf-email'));
   }
   window.hmNotify = function (id) { var p = CAT.filter(function (x) { return x.id === id; })[0]; if (p) notifyOpen(p); };
   document.addEventListener('click', function (e) { var n = e.target.closest('[data-notify]'); if (n) { e.preventDefault(); window.hmNotify(n.getAttribute('data-notify')); } });
