@@ -12,17 +12,24 @@
 /* Help Center: banner corto con buscador, lista lateral de categorías (igual que policies.html) y acordeones */
 html,body{overflow-x:clip}
 .hc-banner{background:var(--surface);border-bottom:1px solid var(--line)}
-.hc-banner .wrap{padding-block:clamp(24px,3vw,40px) 12px;display:grid;gap:6px}
-.hc-banner .h1{margin:0}
+.hc-banner .wrap{padding-block:clamp(24px,3vw,36px) 10px;display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,400px);grid-template-areas:"h q" "l q" ". c";column-gap:56px;row-gap:6px;align-items:end}
+.hc-banner .h1{margin:0;grid-area:h}
+.hc-banner .lede{grid-area:l;align-self:start}
+.hc-banner .hc-search{grid-area:q;align-self:center}
+.hc-banner .hc-count{grid-area:c}
+@media (max-width:760px){
+  .hc-banner .wrap{grid-template-columns:minmax(0,1fr);grid-template-areas:"h" "l" "q" "c"}
+  .hc-banner .hc-search{margin-top:10px}
+}
 .crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px;font-size:var(--t-xs);color:var(--mute)}
 .crumbs li+li::before{content:"/";margin-right:4px}
 .crumbs a{color:var(--soft);text-underline-offset:3px}
 .crumbs [aria-current]{color:var(--ink);font-weight:600}
 .hc-banner .lede{margin:0;font-size:var(--t-sm);color:var(--mute)}
 .hc-banner .lede a,.still p a{color:var(--ink);text-underline-offset:3px;overflow-wrap:anywhere}
-.hc-search{position:relative;max-width:560px;margin-top:10px}
+.hc-search{position:relative;width:100%;margin:0}
 .hc-search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;fill:none;stroke:var(--mute);stroke-width:2;pointer-events:none}
-.hc-search .input{padding-left:40px;padding-right:44px;min-height:48px;font-size:var(--t-md)}
+.hc-search .input{padding-left:40px;padding-right:44px;min-height:44px;font-size:var(--t-sm)}
 .hc-search .input::-webkit-search-cancel-button{display:none}
 .hc-clear{position:absolute;right:2px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;background:none;cursor:pointer;display:grid;place-items:center}
 .hc-clear svg{position:static;transform:none;stroke:var(--ink)}
