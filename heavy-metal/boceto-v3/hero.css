@@ -1,0 +1,86 @@
+/* HERO "Full Pull" v3: el tractor real (recorte) jala el trineo por la pista.
+   Versión mejorada del hero animado del tema original: clara, una sola pasada de ~6.5 s,
+   termina en FULL PULL!, botón de repetir/pausa, todo con transform (sin leer layout por frame). */
+.fp{position:relative;background:var(--surface);overflow:hidden;border-bottom:1px solid var(--line);
+  height:clamp(480px,calc(100svh - var(--header) - var(--announce) - 40px),680px);display:grid;grid-template-rows:auto 1fr}
+.fp>.wrap{width:100%}
+.fp__top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:start;padding-top:clamp(24px,4vh,48px)}
+.fp__brand{display:grid;gap:14px;justify-items:start;max-width:560px}
+.fp__logo{width:clamp(220px,30vw,420px);height:auto}
+.fp__tag{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-hero);line-height:1;text-transform:uppercase;margin:0;color:var(--ink)}
+.fp__sub{margin:0;color:var(--soft);font-size:var(--t-sm);max-width:44ch}
+
+/* telemetría */
+.fp__tele{display:grid;grid-template-columns:auto auto;gap:6px 20px;align-items:center;border:1px solid var(--line);background:var(--bg);padding:14px 16px;min-width:300px}
+.fp__tele-head{grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);border-bottom:1px solid var(--line);padding-bottom:8px}
+.fp__tach{width:128px;height:auto}
+.fp__needle{transform-origin:60px 60px;transition:transform .12s linear}
+.fp__read{display:grid;gap:2px}
+.fp__dist{font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:48px;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+.fp__dist small{font-size:16px;font-weight:600;margin-left:4px;color:var(--mute)}
+.fp__chip{justify-self:start;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--ink)}
+.fp__chip.is-full{background:var(--accent);border-color:var(--accent)}
+.fp__ctrl{grid-column:1/-1;justify-self:start;background:none;border:0;padding:4px 0;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+
+/* pista */
+.fp__track{position:relative;min-height:220px}
+.fp__dirt{position:absolute;left:0;right:0;bottom:0;height:56px;background:
+  repeating-linear-gradient(90deg,#8A7556 0 6px,#7A6649 6px 14px)}
+.fp__dirt::before{content:"";position:absolute;inset:-10px 0 auto;height:10px;background:linear-gradient(transparent,rgba(122,102,73,.35))}
+.fp__rail{position:absolute;left:var(--gutter);right:calc(var(--gutter) + 40px);bottom:66px;height:22px}
+.fp__rail-bar,.fp__rail-fill{position:absolute;left:0;bottom:0;height:3px}
+.fp__rail-bar{right:0;background:var(--line)}
+.fp__rail-fill{width:100%;background:var(--ink);transform-origin:left;transform:scaleX(var(--p,0))}
+.fp__tick{position:absolute;top:0;transform:translateX(-50%);font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--mute);white-space:nowrap}
+.fp__flag{position:absolute;right:calc(var(--gutter) + 40px);bottom:56px;width:8px;height:120px;background:repeating-linear-gradient(180deg,var(--ink) 0 14px,var(--accent) 14px 28px)}
+
+/* el equipo: tractor + cadena + trineo, se mueve como un bloque */
+.fp__rig{position:absolute;left:0;bottom:44px;width:min(54vw,640px);display:flex;align-items:flex-end;
+  transform:translateX(var(--x,-100%));will-change:transform}
+.fp__sled{flex:none;width:22%;height:46%;margin-right:-2%;align-self:flex-end;margin-bottom:3%;background:#2A2927;border:2px solid #3A3936;position:relative}
+.fp__sled::before{content:"";position:absolute;left:8%;right:8%;top:-38%;height:38%;background:#1E1E1C;border:2px solid #3A3936;border-bottom:0;transform:translateX(var(--box,0))}
+.fp__sled::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:6px;background:#141413}
+.fp__chain{flex:none;width:6%;height:3px;align-self:flex-end;margin-bottom:9%;background:repeating-linear-gradient(90deg,#3A3936 0 6px,transparent 6px 9px)}
+.fp__tractor{position:relative;flex:1;min-width:0}
+.fp__tractor img{width:100%;height:auto;display:block;animation:fpShake .12s linear infinite paused}
+.fp.is-running .fp__tractor img{animation-play-state:running}
+.fp__tractor.is-up img{transform-origin:20% 95%;transform:rotate(-3deg)}
+.fp__smoke{position:absolute;left:46%;top:4%;width:0;height:0}
+.fp__smoke i{position:absolute;left:-14px;top:-14px;width:28px;height:28px;border-radius:50%;background:radial-gradient(circle at 40% 40%,rgba(30,30,28,.75),rgba(30,30,28,0) 70%);opacity:0}
+.fp.is-running .fp__smoke i{animation:fpSmoke 1.6s ease-out infinite}
+.fp__smoke i:nth-child(2){animation-delay:.3s!important}
+.fp__smoke i:nth-child(3){animation-delay:.6s!important}
+.fp__smoke i:nth-child(4){animation-delay:.9s!important}
+.fp__smoke i:nth-child(5){animation-delay:1.2s!important}
+.fp__dust{position:absolute;left:12%;bottom:2%;width:0;height:0}
+.fp__dust i{position:absolute;width:6px;height:6px;border-radius:50%;background:#7A6649;opacity:0}
+.fp.is-running .fp__dust i{animation:fpDust .7s ease-out infinite}
+.fp__dust i:nth-child(2){animation-delay:.18s!important;width:8px;height:8px}
+.fp__dust i:nth-child(3){animation-delay:.36s!important}
+.fp__dust i:nth-child(4){animation-delay:.54s!important;width:5px;height:5px}
+@keyframes fpShake{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.5px)}}
+@keyframes fpSmoke{0%{transform:translate(0,0) scale(.6);opacity:.9}100%{transform:translate(-160px,-150px) scale(4.2);opacity:0}}
+@keyframes fpDust{0%{transform:translate(0,0);opacity:1}100%{transform:translate(-80px,-36px);opacity:0}}
+
+/* cinta amarilla (marquee del original) */
+.fp-marquee{height:40px;overflow:hidden;background:var(--accent);color:var(--ink);display:flex;align-items:center;border-bottom:1px solid var(--line)}
+.fp-marquee__track{display:flex;flex:none;white-space:nowrap;font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:18px;letter-spacing:.08em;text-transform:uppercase;animation:fpMarquee 40s linear infinite}
+.fp-marquee__track span{padding-right:40px}
+.fp-marquee:hover .fp-marquee__track{animation-play-state:paused}
+@keyframes fpMarquee{to{transform:translateX(-50%)}}
+
+@media (max-width:860px){
+  .fp{height:auto;min-height:0}
+  .fp__top{grid-template-columns:1fr}
+  .fp__tele{min-width:0;grid-template-columns:auto 1fr}
+  .fp__tach{width:96px}
+  .fp__dist{font-size:40px}
+  .fp__track{min-height:190px}
+  .fp__rig{width:96vw}
+  .fp__flag{height:90px;right:12px}
+  .fp__rail{right:28px}
+}
+@media (prefers-reduced-motion:reduce){
+  .fp__rig{transform:translateX(var(--x-end,0))!important}
+  .fp-marquee__track{animation:none}
+}
