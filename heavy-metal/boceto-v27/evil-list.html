@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>The Evil List · Heavy Metal Pro Stock: “The Evil One”</title>
-<meta name="description" content="Join The Evil List, the Heavy Metal Pro Stock: “The Evil One” email list: a heads up before every pull, new drops and special editions first, Pit Log results and behind the scenes. A few emails a month during the season. No spam.">
+<meta name="description" content="Join The Evil List from Heavy Metal Pro Stock: “The Evil One”: a heads-up before every pull, new drops first and Pit Log results. Email only, no spam.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -86,7 +86,7 @@ html,body{overflow-x:clip}
 .el-mail__band{margin:12px 18px 0;padding:14px 16px;background:var(--night);color:var(--night-ink);position:relative;overflow:hidden}
 .el-mail__band::after{content:"";position:absolute;right:-10px;top:-6px;width:60px;height:80px;background:var(--accent);clip-path:polygon(55% 0,20% 52%,46% 52%,30% 100%,80% 40%,54% 40%,72% 0);opacity:.9}
 .el-mail__band p{margin:0;position:relative;z-index:1;max-width:80%}
-.el-mail__band .t{font-family:var(--f-head);font-stretch:78%;font-weight:800;text-transform:uppercase;font-size:24px;line-height:1}
+.el-mail__band .t{font-family:var(--f-head);font-stretch:78%;font-weight:800;text-transform:uppercase;font-size:clamp(20px,5.6vw,24px);line-height:1}
 .el-mail__band .s{margin-top:6px;font-size:var(--t-xs);color:#CFCCC3}
 .el-mail__body{padding:12px 18px 16px;display:grid;gap:10px;font-size:13px;line-height:1.5}
 .el-mail__body p{margin:0}
@@ -108,9 +108,9 @@ html,body{overflow-x:clip}
 .el-ico svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .el-card p{margin:0;font-size:var(--t-sm);color:var(--soft)}
 .el-card a{color:var(--ink);text-underline-offset:3px}
-.el-freq{margin:16px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 14px;border-left:3px solid var(--accent);background:var(--surface);font-size:var(--t-sm);color:var(--soft)}
+.el-freq{margin:16px 0 0;width:fit-content;max-width:100%;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 14px;border-left:3px solid var(--accent);background:var(--surface);font-size:var(--t-sm);color:var(--soft)}
 .el-freq b{font-family:var(--f-head);font-stretch:78%;font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:var(--t-md);color:var(--ink)}
-.el-freq a{margin-left:auto;color:var(--ink)}
+.el-freq a{margin-left:6px;color:var(--ink)}
 @media (max-width:560px){.el-freq a{margin-left:0}}
 
 /* 3 · preguntas */
@@ -171,7 +171,7 @@ html,body{overflow-x:clip}
         <span class="el-mail__cta">See the schedule</span>
       </div>
       <p class="el-mail__foot">You joined The Evil List. <u>Unsubscribe</u></p>
-      <figcaption>Sample email: a heads up before a pull, with where, class time and a link to the schedule.</figcaption>
+      <figcaption>Sample email: a heads-up before a pull, with where, class time and a link to the schedule.</figcaption>
     </figure>
   </div>
 </section>
@@ -181,7 +181,7 @@ html,body{overflow-x:clip}
   <div class="wrap">
     <div class="sect-head"><h2 class="h2" id="get-t">What you get</h2><p class="small muted" style="margin:0">One list for everything. Email only.</p></div>
     <ul class="el-get" id="el-get"></ul>
-    <p class="el-freq"><b id="el-freq"></b><span>That's it.</span><a class="link" href="#join" data-gojoin>Join now</a></p>
+    <p class="el-freq"><b id="el-freq"></b><span>That’s it.</span><a class="link" href="#join" data-gojoin>Join The Evil List</a></p>
     <p class="note">En Shopify es una página (Tienda online &gt; Páginas &gt; The Evil List) con el formulario de newsletter nativo: cada correo queda como cliente con “acepta marketing por correo electrónico” y la etiqueta evil-list. Los correos se mandan con Shopify Email (Marketing &gt; Crear campaña) al segmento de suscriptores; activa la doble confirmación en Configuración &gt; Notificaciones de clientes. Las tarjetas, la frecuencia y las preguntas se editan en Personalizar &gt; The Evil List. La estrategia de correos (cuántos, cuándo y plantillas) está en pendientes.</p>
   </div>
 </section>
@@ -216,15 +216,15 @@ html,body{overflow-x:clip}
     shop: '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 11h5l2-3h10l2 3h5v15H4Z"/><circle cx="16" cy="18" r="5"/><path d="M24 14h1"/></svg>'
   };
   var PERKS = [
-    { key: 'pull', name: 'A heads up before every pull', text: 'Where we pull, when our class runs and how to find the pits. Sent before we roll out.' },
+    { key: 'pull', name: 'A heads-up before every pull', text: 'Where we pull, when our class runs and how to find the pits. Sent before we roll out.' },
     { key: 'drop', name: 'New drops first', text: 'New merch and special editions land in your inbox before anyone else hears about them.' },
-    { key: 'log', name: 'Results and Pit Log news', text: 'How far we pulled, what broke and what\'s next, with a link to the full <a href="log.html">Pit Log</a> story.' },
-    { key: 'shop', name: 'Behind the scenes', text: 'Shop nights, the build and the crew behind “The Evil One”. The stuff we don\'t post anywhere else.' }
+    { key: 'log', name: 'Results and Pit Log news', text: 'How far we pulled, what broke and what’s next, with a link to the full <a href="log.html">Pit Log</a> story.' },
+    { key: 'shop', name: 'Behind the scenes', text: 'Shop nights, the build and the crew behind “The Evil One”. The stuff we don’t post anywhere else.' }
   ];
   var QAS = [
-    ['How often will you email me?', FREQ.replace(' No spam.', '') + ' Fewer in the off season. No spam, and we never share your email.'],
-    ['How do I unsubscribe?', 'Tap “Unsubscribe” at the bottom of any email from The Evil List. One tap and you\'re off. You can also turn it off in <a href="account.html">your account</a>.'],
-    ['Is there an SMS list?', 'No. The Evil List is email only. We don\'t ask for your phone number and we don\'t send texts.']
+    ['How often will you email me?', FREQ.replace(' No spam.', '') + ' Fewer in the offseason. No spam, and we never share your email.'],
+    ['How do I unsubscribe?', 'Tap “Unsubscribe” at the bottom of any email from The Evil List. One tap and you’re off. You can also turn it off in <a href="account.html">your account</a>.'],
+    ['Do you send texts?', 'No. The Evil List is email only. We don’t ask for your phone number and we don’t send texts.']
   ];
 
   $('el-get').innerHTML = PERKS.map(function (p) {
@@ -266,7 +266,7 @@ html,body{overflow-x:clip}
       if (bad.length) { $(bad[0]).focus(); return; }
       var em = $('el-email').value.trim(), nm = $('el-name').value.trim().split(/\s+/)[0];
       $('el-formbox').innerHTML = '<div class="el-ok" id="el-ok" tabindex="-1" role="status"><p class="label">Almost there</p><p class="h2">Check your inbox to confirm' + (nm ? ', ' + esc(nm) : '') + '.</p>' +
-        '<p>We sent a link to <b>' + esc(em) + '</b>. Tap it and you\'re on The Evil List. Not there in a few minutes? Check spam or promotions.</p>' +
+        '<p>We sent a link to <b>' + esc(em) + '</b>. Tap it and you’re on The Evil List. Not there in a few minutes? Check spam or promotions.</p>' +
         '<button type="button" class="btn btn--sm" id="el-again">Use a different email</button></div>';
       $('el-ok').focus();
       if (!reduce) { var hero = $('join'); hero.classList.remove('is-strike'); void hero.offsetWidth; hero.classList.add('is-strike'); }
