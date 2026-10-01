@@ -24,7 +24,11 @@
           }
         }
       },
-      "block_order": ["msg_season", "msg_shipping", "msg_printed"],
+      "block_order": [
+        "msg_season",
+        "msg_shipping",
+        "msg_printed"
+      ],
       "settings": {
         "seconds": 4,
         "region_label": "Announcements"
@@ -52,11 +56,14 @@
           }
         }
       },
-      "block_order": ["note_story", "note_full_story"],
+      "block_order": [
+        "note_story",
+        "note_full_story"
+      ],
       "settings": {
         "logo_height": 20,
         "sticky": true,
-        "menu": "main-menu",
+        "menu": "main-menu-v14",
         "mega_title": "Shop",
         "mega_label": "Category",
         "show_thumbs": true,
@@ -74,5 +81,8 @@
       }
     }
   },
-  "order": ["hm_announcement", "hm_header"]
+  "order": [
+    "hm_announcement",
+    "hm_header"
+  ]
 }

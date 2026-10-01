@@ -1,5 +1,5 @@
 {% doc %}
-  Heavy Metal cart drawer (replaces Dawn cart-drawer). Render once from layout/theme.liquid, before </body>.
+  Heavy Metal cart drawer (replaces Dawn cart-drawer). Rendered once by sections/hm-header.liquid (do not render it again in the layout).
   Everything inside is painted by `assets/hm-cart.js` from the AJAX cart (/cart.js), starting from the cart JSON printed here.
   Free shipping tiers: theme settings `hm_free_shipping`, `hm_gift_threshold`, `hm_gift_label`.
   Add to your order: `hm_addons_collection`. Crew Pack upgrade: `hm_crew_pack_product` + `hm_crew_cap_product`.

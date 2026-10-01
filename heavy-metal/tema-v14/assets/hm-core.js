@@ -4,10 +4,10 @@
    - Announcement rotation with pause, header menus (mega + compact dropdowns), phone side drawer,
      predictive search (/search/suggest.json), sponsor strip controls, footer accordions and sign up,
      Cookie Preferences, horizontal strip edge fades.
-   - Cart contract: clicking [data-hm-cart-open] dispatches "hm:cart:open" (cancelable) on document.
-     If nobody calls preventDefault(), HM opens [data-hm-cart-drawer] as a dialog. Anyone may dispatch
-     "hm:cart:open" / "hm:cart:close". Dispatch "hm:cart:updated" with detail { item_count } or
-     { cart } to refresh the header count.
+   - Cart contract: clicking [data-hm-cart-open] dispatches "hm:cart:open" (cancelable, detail { trigger }) on
+     document. hm-cart.js handles it and calls preventDefault(); if nobody does, HM opens [data-hm-cart] as a
+     dialog. Anyone may dispatch "hm:cart:open" / "hm:cart:close". Dispatch "hm:cart:updated" with detail
+     { count } (preferred, excludes the tip), { item_count } or { cart } to refresh [data-hm-cart-count].
    - Re-inits on shopify:section:load and cleans timers/listeners on shopify:section:unload. */
 (function () {
   'use strict';
@@ -48,13 +48,25 @@
     }
   };
 
-  /* ---------- dialogs: one at a time ---------- */
-  var current = null; /* { el, returnFocus, trigger, scrim } */
+  /* ---------- dialogs: one at a time ----------
+     HM.open(el, { trigger, returnFocus, focus, scrim, onClose })
+       scrim: omitted = the header scrim [data-hm-scrim]; an element = that scrim; false = none.
+       onClose: called once when this dialog closes (by HM.close, Escape, scrim, or another dialog opening).
+     Opening a dialog closes the one already open (menu, search, cart, quick add, notify, filters).
+     window.HMOverlay is a thin alias kept for the commerce scripts. */
+  var current = null; /* { el, returnFocus, trigger, scrim, onClose } */
+  var lastReturn = null; /* return target of a dialog that was replaced, reused by the next one */
   function scrimEl() {
     return doc.querySelector('[data-hm-scrim]');
   }
+  function usableReturn(x, el) {
+    return !!(x && x.focus && x !== doc.body && doc.contains(x) && !el.contains(x) && !x.closest('[hidden],[inert]'));
+  }
   HM.current = function () {
     return current ? current.el : null;
+  };
+  HM.isOpen = function (el) {
+    return !!(current && el && current.el === el);
   };
   HM.open = function (el, opts) {
     if (!el) return;
@@ -63,21 +75,30 @@
       if (opts.focus !== false) focusInto(el, opts.focus);
       return;
     }
+    var active = doc.activeElement;
     var prevReturn = current ? current.returnFocus : null;
     if (current) HM.close({ restore: false, silent: true });
     closeMenus();
-    var returnFocus = opts.returnFocus || prevReturn || doc.activeElement;
+    var returnFocus = null;
+    [opts.returnFocus, prevReturn, lastReturn, active].some(function (x) {
+      if (usableReturn(x, el)) {
+        returnFocus = x;
+        return true;
+      }
+      return false;
+    });
     el.hidden = false;
-    var scrim = opts.scrim === false ? null : scrimEl();
+    var scrim = opts.scrim === false ? null : opts.scrim && opts.scrim.nodeType === 1 ? opts.scrim : scrimEl();
     if (scrim) scrim.hidden = false;
     root.classList.add('hm-locked');
-    current = { el: el, returnFocus: returnFocus, trigger: opts.trigger || null, scrim: scrim };
+    current = { el: el, returnFocus: returnFocus, trigger: opts.trigger || null, scrim: scrim, onClose: opts.onClose || null };
+    lastReturn = null;
     if (current.trigger) current.trigger.setAttribute('aria-expanded', 'true');
     if (opts.focus !== false) focusInto(el, opts.focus);
     el.dispatchEvent(new CustomEvent('hm:dialog:open', { bubbles: true }));
   };
   function focusInto(el, target) {
-    var t = target && target.focus ? target : el.querySelector('[autofocus],[data-hm-autofocus]') || HM.focusables(el)[0];
+    var t = target && target.focus ? target : el.querySelector('[autofocus],[data-hm-autofocus]') || HM.focusables(el)[0] || el;
     if (t) {
       try {
         t.focus({ preventScroll: true });
@@ -86,18 +107,41 @@
       }
     }
   }
+  /* HM.close(opts) closes the open dialog. opts.el: only if that element is the open one. opts.restore: false keeps focus where it is. */
   HM.close = function (opts) {
     opts = opts || {};
     if (!current) return;
+    if (opts.el && current.el !== opts.el) return;
     var c = current;
     current = null;
     c.el.hidden = true;
     if (c.scrim) c.scrim.hidden = true;
     root.classList.remove('hm-locked');
     if (c.trigger) c.trigger.setAttribute('aria-expanded', 'false');
+    if (c.onClose) {
+      try {
+        c.onClose();
+      } catch (err) {}
+    }
     c.el.dispatchEvent(new CustomEvent('hm:dialog:close', { bubbles: true }));
     if (opts.restore !== false && c.returnFocus && c.returnFocus.focus && doc.contains(c.returnFocus)) {
-      c.returnFocus.focus();
+      c.returnFocus.focus({ preventScroll: true });
+    } else if (opts.restore === false) {
+      lastReturn = c.returnFocus;
+    }
+  };
+  /* alias for hm-cart.js, hm-quick-add.js, hm-collection.js (same API they were built against) */
+  window.HMOverlay = {
+    open: function (el, opts) {
+      opts = opts || {};
+      HM.open(el, { scrim: opts.scrim || false, focus: opts.focus, returnFocus: opts.returnFocus, trigger: opts.trigger, onClose: opts.onClose });
+    },
+    close: function (el, keepFocus) {
+      HM.close({ el: el, restore: !keepFocus });
+    },
+    isOpen: HM.isOpen,
+    top: function () {
+      return current ? { el: current.el } : undefined;
     }
   };
 
@@ -128,7 +172,7 @@
 
   doc.addEventListener('click', function (e) {
     var t = e.target;
-    if (t.closest('[data-hm-scrim]')) {
+    if (t.closest('[data-hm-scrim]') || (current && current.scrim && current.scrim.contains(t))) {
       HM.close();
       return;
     }
@@ -554,7 +598,7 @@
 
   /* ---------- cart: open/close events and count ---------- */
   function cartDrawer() {
-    return doc.querySelector('[data-hm-cart-drawer]');
+    return doc.querySelector('[data-hm-cart],[data-hm-cart-drawer]');
   }
   doc.addEventListener('click', function (e) {
     var b = e.target.closest('[data-hm-cart-open]');
@@ -591,7 +635,8 @@
   };
   doc.addEventListener('hm:cart:updated', function (e) {
     var d = e.detail || {};
-    var n = d.item_count != null ? d.item_count : d.cart && d.cart.item_count;
+    /* detail.count (hm-cart.js) leaves the Feed The Beast tip out, so it wins over cart.item_count */
+    var n = d.count != null ? d.count : d.item_count != null ? d.item_count : d.cart && d.cart.item_count;
     if (n != null) HM.setCartCount(n);
   });
 

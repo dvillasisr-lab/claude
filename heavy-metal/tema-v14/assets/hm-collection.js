@@ -2,52 +2,12 @@
    Load more, and The Evil List tile when the last row is not full. */
 (function () {
   'use strict';
-  /* shared overlay stack (same code as hm-cart.js / hm-quick-add.js; first one wins) */
-  if (!window.HMOverlay) {
-    window.HMOverlay = (function () {
-      var stack = [];
-      var FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),summary,[tabindex]:not([tabindex="-1"])';
-      function visible(el) { return el.getClientRects().length && !el.closest('[hidden]'); }
-      function top() { return stack[stack.length - 1]; }
-      function lock(on) { document.documentElement.style.overflow = on ? 'hidden' : ''; }
-      function open(el, opts) {
-        opts = opts || {};
-        if (stack.some(function (s) { return s.el === el; })) return;
-        var entry = { el: el, scrim: opts.scrim || null, onClose: opts.onClose || null, ret: opts.returnFocus || document.activeElement };
-        stack.push(entry);
-        el.hidden = false;
-        if (entry.scrim) entry.scrim.hidden = false;
-        lock(true);
-        var f = opts.focus || el.querySelector(FOCUSABLE) || el;
-        if (f && f.focus) f.focus({ preventScroll: true });
-      }
-      function close(el, keepFocus) {
-        var i = -1;
-        stack.forEach(function (s, j) { if (s.el === el) i = j; });
-        if (i < 0) return;
-        var entry = stack.splice(i, 1)[0];
-        el.hidden = true;
-        if (entry.scrim) entry.scrim.hidden = true;
-        if (!stack.length) lock(false);
-        if (entry.onClose) entry.onClose();
-        if (!keepFocus && entry.ret && entry.ret.focus && document.contains(entry.ret)) entry.ret.focus({ preventScroll: true });
-      }
-      function isOpen(el) { return stack.some(function (s) { return s.el === el; }); }
-      document.addEventListener('keydown', function (e) {
-        var t = top(); if (!t) return;
-        if (e.key === 'Escape') { e.preventDefault(); close(t.el); return; }
-        if (e.key !== 'Tab') return;
-        var f = [].filter.call(t.el.querySelectorAll(FOCUSABLE), visible);
-        if (!f.length) { e.preventDefault(); return; }
-        var first = f[0], last = f[f.length - 1];
-        if (!t.el.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
-        else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-      });
-      return { open: open, close: close, isOpen: isOpen, top: top };
-    })();
-  }
-  var OV = window.HMOverlay;
+  /* overlays: window.HMOverlay is the alias of HM.open/close from hm-core.js (one dialog at a time) */
+  var OV = {
+    open: function (el, o) { if (window.HMOverlay) window.HMOverlay.open(el, o); },
+    close: function (el, k) { if (window.HMOverlay) window.HMOverlay.close(el, k); },
+    isOpen: function (el) { return !!(el && window.HMOverlay && window.HMOverlay.isOpen(el)); }
+  };
 
   function sectionUrl(url, id) {
     var u = new URL(url, location.href);

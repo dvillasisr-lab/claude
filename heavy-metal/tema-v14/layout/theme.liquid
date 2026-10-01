@@ -23,6 +23,10 @@
       {%- unless page_title contains shop.name %} | {{ shop.name }}{% endunless -%}
     </title>
 
+    {%- if template.suffix == '3208' -%}
+      <meta name="robots" content="noindex">
+    {%- endif -%}
+
     {% if page_description %}
       <meta name="description" content="{{ page_description | escape }}">
     {% endif %}
@@ -499,5 +503,8 @@
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
+    {%- comment -%} HM v14: quick add size sheet and Notify me dialog, once per page (they also load hm-quick-add.js). The cart drawer is rendered by hm-header. {%- endcomment -%}
+    {% render 'hm-quick-add' %}
+    {% render 'hm-notify-modal' %}
   </body>
 </html>

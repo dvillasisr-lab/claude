@@ -1,56 +1,16 @@
-/* Heavy Metal cart drawer: AJAX cart (/cart.js, /cart/add.js, /cart/change.js, /cart/update.js).
+/* Heavy Metal cart drawer (needs hm-core.js for HM.open/close): AJAX cart (/cart.js, /cart/add.js, /cart/change.js, /cart/update.js).
    Free shipping tiers, Add to your order, Crew Pack upgrade, Feed The Beast tip, discount code, order note.
    Public API: window.HMCart.add(items) / .refresh() / .open() / .close() ; events: hm:cart:open, hm:cart:updated. */
 (function () {
   'use strict';
   if (window.HMCart) return;
 
-  /* ---------- shared overlay stack (also defined by hm-quick-add.js; first one wins) ---------- */
-  if (!window.HMOverlay) {
-    window.HMOverlay = (function () {
-      var stack = [];
-      var FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),summary,[tabindex]:not([tabindex="-1"])';
-      function visible(el) { return el.getClientRects().length && !el.closest('[hidden]'); }
-      function top() { return stack[stack.length - 1]; }
-      function lock(on) { document.documentElement.style.overflow = on ? 'hidden' : ''; }
-      function open(el, opts) {
-        opts = opts || {};
-        if (stack.some(function (s) { return s.el === el; })) return;
-        var entry = { el: el, scrim: opts.scrim || null, onClose: opts.onClose || null, ret: opts.returnFocus || document.activeElement };
-        stack.push(entry);
-        el.hidden = false;
-        if (entry.scrim) entry.scrim.hidden = false;
-        lock(true);
-        var f = opts.focus || el.querySelector(FOCUSABLE) || el;
-        if (f && f.focus) f.focus({ preventScroll: true });
-      }
-      function close(el, keepFocus) {
-        var i = -1;
-        stack.forEach(function (s, j) { if (s.el === el) i = j; });
-        if (i < 0) return;
-        var entry = stack.splice(i, 1)[0];
-        el.hidden = true;
-        if (entry.scrim) entry.scrim.hidden = true;
-        if (!stack.length) lock(false);
-        if (entry.onClose) entry.onClose();
-        if (!keepFocus && entry.ret && entry.ret.focus && document.contains(entry.ret)) entry.ret.focus({ preventScroll: true });
-      }
-      function isOpen(el) { return stack.some(function (s) { return s.el === el; }); }
-      document.addEventListener('keydown', function (e) {
-        var t = top(); if (!t) return;
-        if (e.key === 'Escape') { e.preventDefault(); close(t.el); return; }
-        if (e.key !== 'Tab') return;
-        var f = [].filter.call(t.el.querySelectorAll(FOCUSABLE), visible);
-        if (!f.length) { e.preventDefault(); return; }
-        var first = f[0], last = f[f.length - 1];
-        if (!t.el.contains(document.activeElement)) { e.preventDefault(); first.focus(); }
-        else if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-      });
-      return { open: open, close: close, isOpen: isOpen, top: top };
-    })();
-  }
-  var OV = window.HMOverlay;
+  /* overlays: window.HMOverlay is the alias of HM.open/close from hm-core.js (one dialog at a time) */
+  var OV = {
+    open: function (el, o) { if (window.HMOverlay) window.HMOverlay.open(el, o); },
+    close: function (el, k) { if (window.HMOverlay) window.HMOverlay.close(el, k); },
+    isOpen: function (el) { return !!(el && window.HMOverlay && window.HMOverlay.isOpen(el)); }
+  };
 
   var drawer, scrim, state = { cart: null, busy: false };
   var $ = function (sel, root) { return (root || drawer).querySelector(sel); };
@@ -217,7 +177,7 @@
   function open(opts) {
     if (!drawer) return;
     opts = opts || {};
-    if (!OV.isOpen(drawer)) OV.open(drawer, { scrim: scrim, focus: $('[data-hm-cart-close]'), returnFocus: opts.returnFocus });
+    if (!OV.isOpen(drawer)) OV.open(drawer, { scrim: scrim, focus: $('[data-hm-cart-close]'), returnFocus: opts.returnFocus || opts.trigger, trigger: opts.trigger });
   }
   function close() { if (drawer) OV.close(drawer); }
 
@@ -329,13 +289,15 @@
     if (scrim) scrim.addEventListener('click', close);
   }
 
-  document.addEventListener('hm:cart:open', function (e) { open(e.detail || {}); });
-  document.addEventListener('hm:cart:refresh', function () { refresh(); });
-  document.addEventListener('click', function (e) {
-    var b = e.target.closest('[data-hm-cart-open]');
-    if (!b || !drawer || e.metaKey || e.ctrlKey || e.shiftKey) return;
-    e.preventDefault(); open({ returnFocus: b });
+  /* hm-core.js turns clicks on [data-hm-cart-open] into "hm:cart:open"; this drawer handles it */
+  document.addEventListener('hm:cart:open', function (e) {
+    if (!drawer) init();
+    if (!drawer) return;
+    if (e.cancelable) e.preventDefault();
+    open(e.detail || {});
   });
+  document.addEventListener('hm:cart:close', function () { close(); });
+  document.addEventListener('hm:cart:refresh', function () { refresh(); });
   /* back/forward cache: the cart may have changed in another tab */
   window.addEventListener('pageshow', function (e) { if (e.persisted && drawer) refresh(); });
 

@@ -201,17 +201,31 @@
           {% render 'hm-icon', name: 'user' %}
         </a>
       {%- endif -%}
+      {%- liquid
+        comment
+          Same count as the cart drawer: the Feed The Beast tip never counts
+        endcomment
+        assign hm_count = 0
+        assign hm_tip = settings.hm_feed_beast_product
+        for item in cart.items
+          unless hm_tip and item.product_id == hm_tip.id
+            assign hm_count = hm_count | plus: item.quantity
+          endunless
+        endfor
+      -%}
       <a
         class="icon-btn"
         href="{{ routes.cart_url }}"
         id="HmCartOpen-{{ sid }}"
         data-hm-cart-open
         aria-haspopup="dialog"
-        aria-label="Cart, {{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %}"
+        aria-controls="hm-cart"
+        aria-expanded="false"
+        aria-label="Cart, {{ hm_count }} {% if hm_count == 1 %}item{% else %}items{% endif %}"
       >
         {% render 'hm-icon', name: 'bag' %}
-        <span class="cart-count" data-hm-cart-count data-n="{{ cart.item_count }}" aria-hidden="true">
-          {{- cart.item_count -}}
+        <span class="cart-count" data-hm-cart-count data-n="{{ hm_count }}" aria-hidden="true">
+          {{- hm_count -}}
         </span>
       </a>
     </div>

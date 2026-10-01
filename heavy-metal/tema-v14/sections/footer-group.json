@@ -32,9 +32,14 @@
         "show_social": true,
         "biz_suffix": "Waterloo, WI",
         "show_cookie_link": true,
-        "cookie_label": "Cookie Preferences"
+        "cookie_label": "Cookie Preferences",
+        "help_menu": "footer-help-v14",
+        "team_menu": "footer-team-v14"
       }
     }
   },
-  "order": ["hm_sponsor_strip", "hm_footer"]
+  "order": [
+    "hm_sponsor_strip",
+    "hm_footer"
+  ]
 }
