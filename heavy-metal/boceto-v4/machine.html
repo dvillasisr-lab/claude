@@ -33,9 +33,9 @@ html,body{overflow-x:clip}
 .mx-gal figcaption b{color:var(--ink)}
 
 /* 2 · anatomía: plano técnico */
-.mx-anat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,340px);gap:clamp(20px,3vw,48px);align-items:center}
-.mx-stage{position:relative;aspect-ratio:1120/776;width:100%;margin:0}
-.mx-img{position:absolute;left:0;right:0;top:12.887%;height:74.227%}
+.mx-anat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,320px);gap:clamp(20px,3vw,48px);align-items:center}
+.mx-stage{position:relative;aspect-ratio:1120/676;width:100%;max-width:calc((100svh - var(--header) - var(--announce) - 2 * var(--sect) - 90px) * 1120 / 676);margin:0 auto}
+.mx-img{position:absolute;left:0;right:0;top:7.396%;height:85.207%}
 .mx-img>img{width:100%;height:100%;object-fit:contain}
 .mx-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
 .mx-lines line{stroke:var(--mute);stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke;transition:stroke .15s}
@@ -100,7 +100,7 @@ html,body{overflow-x:clip}
 .mx-vs__txt{display:grid;gap:10px}
 .mx-vs__txt p{margin:0}
 .mx-cmp{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr) minmax(0,1fr);margin:0}
-.mx-cmp>*{padding:12px 12px 12px 0;border-bottom:1px solid var(--line);font-size:var(--t-sm);min-width:0}
+.mx-cmp [role=row]>*{padding:12px 12px 12px 0;border-bottom:1px solid var(--line);font-size:var(--t-sm);min-width:0}
 .mx-cmp .hd{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-md);text-transform:uppercase;color:var(--ink);border-bottom:2px solid var(--ink);padding-block:6px}
 .mx-cmp .rh{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
 .mx-cmp .us{font-weight:700;color:var(--ink)}
@@ -160,7 +160,7 @@ html,body{overflow-x:clip}
   .mx-big>.mx-unk{grid-column:1/-1;padding-left:0!important;border-left:0!important}
   .mx-fine{grid-template-columns:1fr}
   .mx-cmp{grid-template-columns:minmax(0,92px) minmax(0,1fr) minmax(0,1fr)}
-  .mx-cmp>*{padding-right:8px;font-size:var(--t-xs)}
+  .mx-cmp [role=row]>*{padding-right:8px;font-size:var(--t-xs)}
   .pips{grid-template-columns:repeat(var(--c),10px);gap:3px}
   .pips i{width:10px;height:10px}
   .mx-tee{grid-template-columns:1fr}
@@ -206,7 +206,7 @@ html,body{overflow-x:clip}
     </div>
     <div class="mx-anat">
       <figure class="mx-stage" id="stage">
-        <svg class="mx-lines" id="lines" viewBox="0 0 1120 776" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <svg class="mx-lines" id="lines" viewBox="0 0 1120 676" preserveAspectRatio="none" aria-hidden="true"></svg>
         <div class="mx-img" id="pts" role="group" aria-label="Parts of the tractor">
           <img src="img/hm-tractor-cutout.webp" alt="Heavy Metal cut out in profile, facing right" width="1120" height="576" loading="lazy">
         </div>
@@ -398,8 +398,8 @@ html,body{overflow-x:clip}
     t.innerHTML = '<i>' + nn(i) + '</i>' + p.n;
     stage.appendChild(t);
     var l = document.createElementNS(NS, 'line');
-    l.setAttribute('x1', p.lx); l.setAttribute('y1', p.row === 't' ? 26 : 750);
-    l.setAttribute('x2', p.x); l.setAttribute('y2', p.y + 100);
+    l.setAttribute('x1', p.lx); l.setAttribute('y1', p.row === 't' ? 24 : 652);
+    l.setAttribute('x2', p.x); l.setAttribute('y2', p.y + 50);
     l.dataset.i = i; lines.appendChild(l);
   });
   var hs = pts.querySelectorAll('.hs');
