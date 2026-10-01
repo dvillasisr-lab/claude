@@ -29,6 +29,7 @@ html,body{overflow-x:clip}
 .pol-body .note{margin:0 0 20px}
 .pol-doc>header{border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:20px}
 .pol-doc>header p{margin:4px 0 0;font-size:var(--t-xs);color:var(--mute)}
+.pol-doc>header .lu time{color:var(--ink);font-weight:600}
 .pol-doc h3{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin:24px 0 6px}
 .pol-doc p,.pol-doc ul{margin:0 0 10px;max-width:80ch}
 .pol-doc ul{padding-left:18px}
@@ -98,12 +99,13 @@ html,body{overflow-x:clip}
     </nav>
 
     <div class="pol-body" id="pol-main" tabindex="-1">
-      <p class="note">Texto base: se edita en Configuración &gt; Políticas (Shopify las enlaza solas en el checkout); revisarlo con un abogado. Cada temporada: cambiar la fecha "Last updated" si cambias algo.</p>
+      <p class="note">Texto base: se edita en Configuración &gt; Políticas (Shopify las enlaza solas en el checkout); revisarlo con un abogado. La fecha "Last updated" de cada política la escribes tú al cambiar algo: sale en la tabla de Last updated de editar.html.</p>
 
       <!-- PRIVACY -->
       <article class="pol-doc" data-p="privacy" aria-labelledby="t-privacy">
-        <header><h2 class="h2" id="t-privacy">Privacy Policy</h2><p>Last updated: October 1, 2026</p></header>
-        <p class="lede-l">This policy explains what personal information Heavy Metal Pro Stock ("Heavy Metal", "we", "us") collects through this store, how we use it, who we share it with and the choices you have.</p>
+        <!-- last-updated: policy-privacy -->
+        <header><h2 class="h2" id="t-privacy">Privacy Policy</h2><p class="lu" data-lu="privacy">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
+        <p class="lede-l">This policy explains what personal information Heavy Metal Pro Stock ("we", "us") collects through this store, how we use it, who we share it with and the choices you have.</p>
         <h3>1. Who we are</h3>
         <p>Heavy Metal Pro Stock is a tractor pulling team based in Waterloo, Wisconsin, USA. This store sells team merch that is printed to order and shares sponsorship information. Our store runs on Shopify.</p>
         <h3>2. Information we collect</h3>
@@ -111,6 +113,7 @@ html,body{overflow-x:clip}
         <ul>
           <li>Order details: name, email, phone, shipping and billing address, items purchased.</li>
           <li>Hook Alerts sign ups: your email address.</li>
+          <li>"Notify me" requests: your email and the item you asked about, so we can tell you when it drops or is back.</li>
           <li>Sponsorship and contact requests: your name, company, email, phone and message.</li>
           <li>Account information if you sign in to a customer account.</li>
         </ul>
@@ -120,6 +123,7 @@ html,body{overflow-x:clip}
         <ul>
           <li>To process, print, ship and support your orders, including returns and replacements.</li>
           <li>To send Hook Alerts by email: new merch drops and a heads up before each pull. Every email has an unsubscribe link and our mailing address.</li>
+          <li>To email you once when an item you asked about with "Notify me" drops or is back in stock.</li>
           <li>To answer sponsorship requests and send the media kit you asked for.</li>
           <li>To keep the store secure, prevent fraud and meet legal obligations.</li>
           <li>To understand how the store is used and, only with your consent where required, to measure ads.</li>
@@ -162,7 +166,8 @@ html,body{overflow-x:clip}
 
       <!-- TERMS -->
       <article class="pol-doc" data-p="terms" aria-labelledby="t-terms">
-        <header><h2 class="h2" id="t-terms">Terms of Service</h2><p>Last updated: October 1, 2026</p></header>
+        <!-- last-updated: policy-terms -->
+        <header><h2 class="h2" id="t-terms">Terms of Service</h2><p class="lu" data-lu="terms">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
         <p class="lede-l">These terms apply to your use of this store and to every purchase you make here. By using the store you agree to them.</p>
         <h3>1. Overview</h3>
         <p>This store is operated by Heavy Metal Pro Stock, Waterloo, WI, on the Shopify platform. "Store" includes the website, Hook Alerts and customer accounts.</p>
@@ -174,8 +179,10 @@ html,body{overflow-x:clip}
         <p>Prices are in US dollars and may change without notice. Sales tax is calculated at checkout. Payment is processed by Shopify and its payment partners.</p>
         <h3>5. Orders</h3>
         <p>We may refuse or cancel an order, for example for a pricing error, suspected fraud or an address we cannot ship to. If we cancel after you paid, we refund you in full.</p>
+        <p><b>Coming soon and sold out items</b> can't be ordered. "Notify me" only sends you an email when the item is available; it does not reserve one for you.</p>
+        <p><b>Discount codes</b> are entered in the cart or at checkout. Each code has its own terms (amount, dates, minimum order, usage limits) shown when you apply it. Codes have no cash value and can't be applied to past orders.</p>
         <h3>6. Intellectual property</h3>
-        <p>The Heavy Metal and “The Evil One” names, logos, artwork and photos belong to Heavy Metal Pro Stock. You may not copy, resell or reproduce them without written permission.</p>
+        <p>The Heavy Metal Pro Stock and “The Evil One” names, logos, artwork and photos belong to Heavy Metal Pro Stock. You may not copy, resell or reproduce them without written permission.</p>
         <h3>7. Prohibited uses</h3>
         <p>You may not use the store for unlawful purposes, to interfere with its security, to scrape it, or to submit offensive or infringing content.</p>
         <h3>8. Disclaimers and limitation of liability</h3>
@@ -190,7 +197,8 @@ html,body{overflow-x:clip}
 
       <!-- REFUND -->
       <article class="pol-doc" data-p="refund" aria-labelledby="t-refund">
-        <header><h2 class="h2" id="t-refund">Refund Policy</h2><p>Last updated: October 1, 2026</p></header>
+        <!-- last-updated: policy-refund -->
+        <header><h2 class="h2" id="t-refund">Refund Policy</h2><p class="lu" data-lu="refund">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
         <p class="lede-l">Every item is printed to order just for you. That is why we replace anything we got wrong, but we cannot take back items for size or change of mind.</p>
         <dl class="facts">
           <div><dt>Misprints and defects</dt><dd>Replaced free within 30 days</dd></div>
@@ -214,7 +222,8 @@ html,body{overflow-x:clip}
 
       <!-- SHIPPING -->
       <article class="pol-doc" data-p="shipping" aria-labelledby="t-shipping">
-        <header><h2 class="h2" id="t-shipping">Shipping Policy</h2><p>Last updated: October 1, 2026</p></header>
+        <!-- last-updated: policy-shipping -->
+        <header><h2 class="h2" id="t-shipping">Shipping Policy</h2><p class="lu" data-lu="shipping">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
         <dl class="facts">
           <div><dt>Production</dt><dd>Printed to order, ships in 5 days</dd></div>
           <div><dt>Where we ship</dt><dd>United States only, to start</dd></div>
@@ -241,7 +250,8 @@ html,body{overflow-x:clip}
 
       <!-- CONTACT -->
       <article class="pol-doc" data-p="contact" aria-labelledby="t-contact">
-        <header><h2 class="h2" id="t-contact">Contact Information</h2><p>Last updated: October 1, 2026</p></header>
+        <!-- last-updated: policy-contact -->
+        <header><h2 class="h2" id="t-contact">Contact Information</h2><p class="lu" data-lu="contact">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
         <p class="lede-l">Questions about merch or sponsorship? Send us a message and we'll get back to you within 2 business days.</p>
         <dl class="facts">
           <div><dt>Business name</dt><dd>Heavy Metal Pro Stock</dd></div>
@@ -256,7 +266,8 @@ html,body{overflow-x:clip}
 
       <!-- ACCESSIBILITY -->
       <article class="pol-doc" data-p="accessibility" aria-labelledby="t-accessibility">
-        <header><h2 class="h2" id="t-accessibility">Accessibility</h2><p>Last updated: October 1, 2026</p></header>
+        <!-- last-updated: policy-accessibility -->
+        <header><h2 class="h2" id="t-accessibility">Accessibility</h2><p class="lu" data-lu="accessibility">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
         <p class="lede-l">We want every fan to be able to shop this store, read about the team and follow the season.</p>
         <h3>1. Our goal</h3>
         <p>We aim to meet the <b>Web Content Accessibility Guidelines (WCAG) 2.1, level AA</b>. That includes keyboard navigation, visible focus, text alternatives for images, enough color contrast, and respecting reduced motion settings.</p>
@@ -274,7 +285,8 @@ html,body{overflow-x:clip}
 
       <!-- CHOICES -->
       <article class="pol-doc" data-p="choices" aria-labelledby="t-choices">
-        <header><h2 class="h2" id="t-choices">Your Privacy Choices</h2><p>Last updated: October 1, 2026</p></header>
+        <!-- last-updated: policy-choices -->
+        <header><h2 class="h2" id="t-choices">Your Privacy Choices</h2><p class="lu" data-lu="choices">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
         <p class="lede-l">Opt out of the sale or sharing of your personal information for targeted advertising. This choice is saved on this browser and device.</p>
         <p class="gpc" id="gpc-msg">Your browser is not sending a Global Privacy Control signal. If it does, we treat it as an opt out automatically.</p>
         <div class="prefs">
@@ -291,7 +303,8 @@ html,body{overflow-x:clip}
 
       <!-- COOKIES -->
       <article class="pol-doc" data-p="cookies" aria-labelledby="t-cookies">
-        <header><h2 class="h2" id="t-cookies">Cookie Preferences</h2><p>Last updated: October 1, 2026</p></header>
+        <!-- last-updated: policy-cookies -->
+        <header><h2 class="h2" id="t-cookies">Cookie Preferences</h2><p class="lu" data-lu="cookies">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
         <p class="lede-l">Cookies are small files your browser saves when you visit. Some keep the store working. The rest are optional, and you decide.</p>
         <p class="note">En Shopify: Settings &gt; Customer privacy &gt; Cookie banner (banner nativo, se activa por región: EE. UU., UE, etc.). La elección vive en la cookie <code>_tracking_consent</code> del navegador de cada visitante, no en su cuenta. El enlace "Cookie Preferences" del footer reabre el banner.</p>
         <h3>1. The cookie banner</h3>
@@ -340,6 +353,13 @@ html,body{overflow-x:clip}
 <script src="hm.js"></script>
 <script>
 (function () {
+  /* Last updated de cada política (en Shopify: la fecha que escribes arriba del texto en Configuración > Políticas; Shopify no la guarda sola) */
+  var UPDATED = { privacy: '2026-10-01', terms: '2026-10-01', refund: '2026-10-01', shipping: '2026-10-01', contact: '2026-10-01', accessibility: '2026-10-01', choices: '2026-10-01', cookies: '2026-10-01' };
+  document.querySelectorAll('[data-lu]').forEach(function (el) {
+    var v = UPDATED[el.getAttribute('data-lu')], m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || ''), t = el.querySelector('time');
+    if (!m) { t.textContent = '[date pending]'; return; }
+    t.setAttribute('datetime', v); t.textContent = new Date(+m[1], +m[2] - 1, +m[3], 12).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  });
   var NAMES = { privacy: 'Privacy Policy', terms: 'Terms of Service', refund: 'Refund Policy', shipping: 'Shipping Policy', contact: 'Contact Information', accessibility: 'Accessibility', choices: 'Your Privacy Choices', cookies: 'Cookie Preferences' };
   var docs = document.querySelectorAll('.pol-doc');
   var links = document.querySelectorAll('#pol-list a');

@@ -92,6 +92,8 @@ html,body{overflow-x:clip}
 .plp-ltd:hover{border-color:var(--ink)}
 @media (max-width:600px){.plp-ltd{grid-template-columns:minmax(0,1fr)}}
 .plp-soon{padding-block:8px var(--sect)}
+.soon__form .btn{flex:none;white-space:nowrap}
+.soon__form .input{min-width:0}
 .plp-notes{padding-bottom:var(--sect)}
 .plp-notes .note{margin-top:0}
 .plp-notes .note+.note{margin-top:8px}
@@ -318,6 +320,7 @@ html,body{overflow-x:clip}
     document.querySelector('.plp-bar').hidden = true;
     document.querySelector('.plp-results').hidden = true;
     $('plp-title').textContent = 'Shop';
+    $('plp-crumbs').innerHTML = '<li><a href="index.html">Home</a></li><li aria-current="page">Shop</li>';
     $('plp-desc').textContent = 'Merch from the crew behind “The Evil One” in Waterloo, WI.';
     $('plp-count').hidden = true;
     $('plp-soon').hidden = false;

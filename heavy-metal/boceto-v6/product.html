@@ -24,14 +24,15 @@ html,body{overflow-x:clip}
 .pdp{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;padding-bottom:var(--sect)}
 @media (min-width:900px){
   /* la foto grande nunca pasa de una pantalla: el ancho de la galería sale del alto disponible */
-  .pdp{grid-template-columns:minmax(0,min(58%,calc((100svh - 230px) * .8))) minmax(0,1fr);gap:clamp(28px,3.4vw,56px);align-items:start}
+  .pdp{grid-template-columns:minmax(0,min(58%,calc((100svh - 300px) * .8))) minmax(0,1fr);gap:clamp(28px,3.4vw,56px);align-items:start}
   .buy{max-width:520px}
   .buy{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header) + 16px)}
 }
 
 /* galería v6: foto grande + flechas + contador, tira de miniaturas, swipe con puntos en móvil, lightbox con zoom.
    Aguanta 15 fotos o más: nunca se ven todas al mismo tiempo. */
-.pg{display:grid;gap:8px;min-width:0;align-content:start}
+.pg{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;min-width:0;align-content:start}
+.pg__stage{min-width:0}
 .pg__stage{position:relative;background:var(--tile)}
 .pg__track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
 .pg__track::-webkit-scrollbar{display:none}
@@ -57,6 +58,7 @@ html,body{overflow-x:clip}
 @media (max-width:899px){
   .pg{margin-inline:calc(-1 * var(--gutter))}
   .pg__thumbs{display:none}
+  .pg .note{margin-inline:var(--gutter)}
   .pg__arw{width:36px;height:36px;font-size:22px}
   .pg__dots{display:flex;flex-wrap:wrap;justify-content:center;padding:0 var(--gutter)}
   .pg__dots button{width:16px;height:24px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center}

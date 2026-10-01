@@ -231,7 +231,7 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
           <h3 class="h3">Listas: Metaobjetos</h3>
           <p class="path"><span>Contenido</span><span>Metaobjetos</span></p>
           <p>Cada lista es un tipo y cada renglón una entrada con campos fijos. Llenas, guardas y la página se actualiza.</p>
-          <ul><li>Pull event, Season stats, Sponsor tier</li><li>Logo placement, Decal zone, Crew member</li></ul>
+          <ul><li>Pull event, Season stats, Sponsor tier, Sponsor stat</li><li>Logo placement, Decal zone, Crew member</li></ul>
         </article>
         <article class="door">
           <span class="door__n">2</span>
@@ -321,7 +321,7 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       <p class="count" id="count" role="status" aria-live="polite"></p>
       <ul class="map" id="map"></ul>
       <p class="empty" id="map-empty" hidden>Nada coincide. Prueba otra palabra o elige “Todo”.</p>
-      <p class="note">Los tipos de metaobjeto (Pull event, Season stats, Sponsor tier, Sponsor stats, Logo placement, Decal zone, Crew member), los metacampos de Special edition y las colecciones automáticas los dejamos creados al montar el tema. Tú solo llenas entradas; no tienes que tocar Configuración &gt; Datos personalizados.</p>
+      <p class="note">Los tipos de metaobjeto (Pull event, Season stats, Sponsor tier, Sponsor stat, Logo placement, Decal zone, Crew member), los metacampos de Special edition y las colecciones automáticas los dejamos creados al montar el tema. Tú solo llenas entradas; no tienes que tocar Configuración &gt; Datos personalizados.</p>
     </div>
   </section>
 
@@ -381,7 +381,8 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
     { n: 'Pit Log', k: 'pit-log', s: 'Un post por pull, exhibición o prueba', p: [['Pit Log', 'log.html'], ['Home', 'index.html']], w: ['Contenido', 'Entradas de blog', 'Pit Log'], f: 'pull', d: '2026-09-22', src: 'auto' },
     { n: 'Contadores de temporada', k: 'season-stats', s: 'Competitions, exhibitions y wins (0 sale como “Coming soon”)', p: [['Home', 'index.html'], ['Our Story', 'story.html'], ['Pit Log', 'log.html']], w: ['Contenido', 'Metaobjetos', 'Season stats'], f: 'pull', d: '2026-09-08', src: 'auto' },
     { n: 'Paquetes de patrocinio', k: 'sponsor-tiers', s: 'Title Partner, Pit Partner, Crew Supporter: precio y beneficios', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Sponsor tier'], f: 'temp', d: '2026-02-10', src: 'auto' },
-    { n: 'Stats de patrocinio', k: 'sponsor-stats', s: 'XX+ pulls, XX+ states, XX+ fans (est.)', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Sponsor stats'], f: 'temp', d: '2025-11-20', src: 'auto' },
+    { n: 'Stats de patrocinio', k: 'sponsor-stats', s: 'Cifras estimadas: pulls, estados, fans (est.)', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Sponsor stat'], f: 'temp', d: '2025-11-20', src: 'auto' },
+    { n: 'Frase de venta (Sales line)', k: 'sales-line', s: '“XX+ fans across XX pulls”: valores fans y pulls', p: [['Sponsors', 'sponsors.html']], w: ['Personalizar', 'Sponsors', 'Sales line'], f: 'temp', d: '2026-04-02', src: 'mano' },
     { n: 'Lugares del logo', k: 'logo-placements', s: 'Team gear, tráiler, sitio, redes, tractor, locutor', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Logo placement'], f: 'temp', d: '2026-02-10', src: 'auto' },
     { n: 'Calcomanías', k: 'decal-zones', s: 'Zonas del mapa de calcomanías del tractor', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Decal zone'], f: 'temp', d: '2025-10-05', src: 'auto' },
     { n: 'Playlist', k: 'playlist', s: 'Walk-up song: Fear of the Dark, o la playlist del equipo', p: [['Our Story', 'story.html'], ['FAQ', 'faq.html']], w: ['Personalizar', 'Our Story', 'Walk-up song'], f: 'mes', d: '2026-08-20', src: 'mano' },
@@ -425,7 +426,7 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
         '<td data-l="Dónde sale">' + it.p.map(function (q) { return '<a href="' + q[1] + '">' + esc(q[0]) + '</a>'; }).join(' ') + '</td>' +
         '<td data-l="Dónde se edita"><span class="path">' + it.w.map(function (q) { return '<span>' + esc(q) + '</span>'; }).join('') + '</span></td>' +
         '<td data-l="Cada cuánto"><span class="fq">' + FQ[it.f][0] + '</span>' + (r.off ? '<small class="src" style="display:block">Fuera de temporada</small>' : '') + '</td>' +
-        '<td data-l="Last updated"><span class="dt">' + fmtEs(r.last) + '<small>hace ' + r.age + (r.age === 1 ? ' día' : ' días') + '</small></span><span class="src' + (it.src === 'auto' ? ' src--auto' : '') + '">' + (it.src === 'auto' ? 'Fecha automática' : 'Fecha a mano') + '</span></td>' +
+        '<td data-l="Last updated"><span class="dt">' + fmtEs(r.last) + '<small>' + (r.age <= 0 ? 'hoy' : 'hace ' + r.age + (r.age === 1 ? ' día' : ' días')) + '</small></span><span class="src' + (it.src === 'auto' ? ' src--auto' : '') + '">' + (it.src === 'auto' ? 'Fecha automática' : 'Fecha a mano') + '</span></td>' +
         '<td data-l="Estado"><span class="light light--' + r.st + '">' + LBL[r.st] + '</span><span class="due">' + when + ' · ' + fmtEs(r.due) + '</span><button class="btn btn--ghost lu-done" type="button" data-done="' + esc(it.n) + '">Ya lo actualicé<span class="vh">: ' + esc(it.n) + '</span></button></td></tr>';
     }).join('') || '<tr><td colspan="6">Nada con este estado. Elige “Todo”.</td></tr>';
     $('lu-count').textContent = cnt.late + (cnt.late === 1 ? ' vencido' : ' vencidos') + ' · ' + cnt.soon + ' por revisar · ' + cnt.ok + ' al día, al ' + fmtEs(today) + '.';
@@ -473,9 +474,17 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       w: [['Contenido', 'Metaobjetos', 'Sponsor tier']],
       a: 'Agregar entrada para un paquete nuevo. El campo Orden decide su lugar.', e: 'Cambia precio o beneficios. Marca Sold out cuando ya no haya lugar: la tarjeta lo muestra sola.', d: 'Desmarca Visible para ocultarlo; Eliminar si ya no existe. El FAQ ya no repite precios: manda a Sponsors.',
       p: [['Sponsors', 'sponsors.html']] },
-    { n: 'Logo placements (dónde sale tu marca)', t: 'lista', q: 'Los lugares donde sale el logo de un patrocinador: team gear, tráiler y pits, este sitio, redes, el tractor y menciones del locutor. Cada uno con foto y los paquetes que lo incluyen.',
+    { n: 'Logo placements (dónde sale tu marca)', t: 'lista', q: 'Los lugares donde sale el logo de un patrocinador: tractor, tráiler y pits, team gear, este sitio, redes y menciones del locutor. Sin fotos: cada lugar lleva un ícono elegido de una lista, y los paquetes que lo incluyen.',
       w: [['Contenido', 'Metaobjetos', 'Logo placement']],
-      a: 'Agregar entrada con nombre, descripción corta, foto (de Archivos) y paquetes.', e: 'Cambia la foto o los paquetes que lo incluyen.', d: 'Desmarca Visible o Eliminar.',
+      a: 'Agregar entrada con nombre, descripción corta, ícono (de la lista), paquetes y Status Active.', e: 'Cambia el ícono, el texto o los paquetes que lo incluyen.', d: 'Status Hidden lo oculta sin borrarlo; Eliminar si ya no existe.',
+      p: [['Sponsors', 'sponsors.html']] },
+    { n: 'Sponsor stat (cifras de patrocinio)', t: 'lista', q: 'Las cifras estimadas de la página de patrocinio: pulls por temporada, estados y fans, marcadas “est.”, con su campo Updated. Es otro metaobjeto, distinto de Season stats (contadores de temporada).',
+      w: [['Contenido', 'Metaobjetos', 'Sponsor stat']],
+      a: 'Agregar entrada con la cifra, su etiqueta y si es estimada.', e: 'Al cerrar la temporada cambia los números por los reales y la fecha Updated.', d: 'Status Hidden o Eliminar.',
+      p: [['Sponsors', 'sponsors.html']] },
+    { n: 'Frase de venta (Sales line)', t: 'tema', q: 'La frase “XX+ fans across XX pulls” de Sponsors. No se escribe la cifra en el texto: se llenan los valores fans y pulls; vacíos se ven “XX”.',
+      w: [['Personalizar', 'Sponsors', 'Sales line']],
+      a: 'No se agrega: son dos valores.', e: 'Pon fans y pulls con datos reales y Guardar.', d: 'Déjalos vacíos para mostrar “XX”.',
       p: [['Sponsors', 'sponsors.html']] },
     { n: 'Decal zones (mapa de calcomanías)', t: 'lista', q: 'Las zonas marcadas sobre la foto del tractor: nombre, posición, tamaño de guía y paquete al que pertenece.',
       w: [['Contenido', 'Metaobjetos', 'Decal zone']],
@@ -604,7 +613,8 @@ section[id]{scroll-margin-top:calc(var(--header) + 12px)}
       ['Contadores en 0', 'Season stats: entrada nueva del año con competencias, exhibiciones y wins en 0.'],
       ['Cargar el calendario', 'Pull event: una entrada por pull conforme NTPA y Badger State confirmen fechas.'],
       ['Paquetes y precios', 'Sponsor tier: revisar precios y beneficios, quitar Sold out. Si cambian, corregir el FAQ.'],
-      ['Logos de patrocinadores', 'Logo placement y Decal zone: agregar los nuevos, ocultar los que no renovaron.'],
+      ['Logos de patrocinadores', 'Logo placement y Decal zone: agregar los nuevos, Status Hidden a los que no renovaron.'],
+      ['Cifras de patrocinio', 'Sponsor stat y Sales line (Personalizar > Sponsors): números reales del año que cerró.'],
       ['Políticas', 'Configuración > Políticas: revisar y cambiar la fecha “Last updated”.'],
       ['Cupones de la temporada', 'Descuentos: apagar los del año pasado, crear los nuevos.'],
       ['Anuncios y cinta', 'Personalizar: revisar las frases de la barra negra y de la cinta amarilla.']

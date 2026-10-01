@@ -143,7 +143,7 @@ html,body{overflow-x:clip}
       <svg class="stage__bolt" viewBox="0 0 12 16" aria-hidden="true"><polygon points="8,0 1,9 5,9 3,16 11,6 7,6"/></svg>
       <span id="stage-mock"></span>
       <span class="stage__st"><span class="st-badge" id="st-badge-img" data-s="soon">Coming soon</span></span>
-      <span class="stage__plate"><span>Limited run</span><b id="ed-plate">Drop 01</b></span>
+      <span class="stage__plate"><span>Limited time · limited quantity</span><b>Limited run</b></span>
     </figure>
 
     <div class="buy">
@@ -261,7 +261,6 @@ html,body{overflow-x:clip}
   $('ed-drop').textContent = ED.drop + ' · ' + ED.year;
   $('ed-color').textContent = P.colors[0] || 'One color';
   $('run-size').textContent = ED.runSize == null ? 'XX' : ED.runSize;
-  $('ed-plate').textContent = ED.drop + ' · ' + ED.year;
   $('sizes').innerHTML = P.sizes.map(function (s, i) {
     return '<input type="radio" name="size" id="sz-' + i + '" value="' + s + '"><label class="size" for="sz-' + i + '">' + s + '</label>';
   }).join('');

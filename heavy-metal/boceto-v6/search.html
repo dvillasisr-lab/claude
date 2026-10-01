@@ -33,6 +33,8 @@ html,body{overflow-x:clip}
 .srp-pop a{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border:1px solid var(--line);background:var(--surface);font-size:var(--t-xs);font-weight:600;text-decoration:none;color:var(--ink)}
 .srp-pop a:hover{border-color:var(--ink)}
 mark{background:var(--accent);color:var(--ink);padding:0 1px}
+.soon__form .btn{flex:none;white-space:nowrap}
+.soon__form .input{min-width:0}
 </style>
 </head>
 <body>
@@ -146,7 +148,7 @@ mark{background:var(--accent);color:var(--ink);padding:0 1px}
   var prods = toks.length ? CAT.filter(function (p) { return match(prodHay(p), toks); }) : [];
   var pages = toks.length ? PAGES.filter(function (pg) { return match(pg[0] + ' ' + pg[2] + ' ' + pg[3], toks); }) : [];
   var n = prods.length + pages.length;
-  document.title = 'Search: ' + q + ' · Heavy Metal Pro Stock';
+  document.title = 'Search: ' + q + ' · Heavy Metal Pro Stock: “The Evil One”';
   $('srp-title').innerHTML = n ? 'Results for "' + esc(q) + '"' : 'No results for "' + esc(q) + '"';
   $('srp-count').textContent = n ? prods.length + (prods.length === 1 ? ' product' : ' products') + ' and ' + pages.length + (pages.length === 1 ? ' page' : ' pages') : '0 results';
 

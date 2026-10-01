@@ -146,7 +146,7 @@
   .cal .day{min-height:60px;gap:3px;padding-bottom:4px}
   .cal th{padding-left:3px}
   .cal .d{margin:3px 0 0 3px;min-width:18px;height:18px}
-  .ev{margin:0 2px;padding:3px 3px;font-size:10px;letter-spacing:0;text-overflow:clip}
+  .ev{margin:0 2px;padding:3px 3px;font-size:10px;letter-spacing:0}
   .ev small{display:none}
   .ev--up{box-shadow:inset 0 0 0 1.5px var(--ink),inset 3px 0 0 var(--ink);padding-left:5px}
   .ev--up.ev--e{box-shadow:inset 0 0 0 1.5px #B38F00,inset 3px 0 0 var(--accent)}
@@ -222,10 +222,11 @@
 .adm__bar b{color:var(--ink)}
 .adm__only{background:var(--accent);color:var(--ink);font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px}
 .adm__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 10px;padding:12px}
-.adm__grid .field{gap:3px}
+.adm__grid .field{gap:3px;align-content:start}
 .adm__grid .field label{font-size:10px}
 .adm__grid .input{min-height:34px;font-size:var(--t-xs);padding:0 8px}
 .adm__grid .span2{grid-column:span 2}
+.adm__grid .span3{grid-column:span 3}
 .adm__grid .hint{font-size:10px;color:var(--mute);line-height:1.3}
 .adm__new{background:var(--accent);color:var(--ink);font-size:9px;font-weight:800;padding:0 4px;margin-left:4px;letter-spacing:.06em}
 .adm__foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 12px;border-top:1px solid var(--line);background:var(--bg)}
@@ -236,7 +237,7 @@
 .adm__msg:empty{display:none}
 .adm-prev{padding:0 12px 12px}
 .adm-prev .sc-table{font-size:var(--t-xs)}
-@media (max-width:760px){.adm__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.adm__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.adm__grid .span3{grid-column:1/-1}}
 </style>
 </head>
 <body>
@@ -306,7 +307,7 @@
       </div>
     </div>
 
-    <p class="note">Monroe es el pull del video de YouTube (Green County Fall Nationals, Badger State): confírmanos fecha y resultado. Todo lo marcado “Ejemplo” lleva fechas inventadas solo para que veas cómo se llena el calendario; existe únicamente en el boceto y se quita solo en cuanto guardas un pull con fecha real. Pásanos fecha, lugar y resultado de las 3 o 4 exhibiciones.</p>
+    <p class="note">Monroe es el pull del video de YouTube (Green County Fall Nationals, Badger State): confírmanos fecha y resultado. Todo lo marcado “Ejemplo” lleva fechas inventadas solo para que veas cómo se llena el calendario; existe únicamente en el boceto y se quita solo en cuanto guardas un pull con fecha real de la temporada. Pásanos fecha, lugar y resultado de las 3 o 4 exhibiciones.</p>
   </div>
 </section>
 
@@ -391,13 +392,13 @@
         <div class="adm__grid">
           <div class="field"><label for="adm-date">Date</label><input class="input" id="adm-date" type="date"></div>
           <div class="field span2"><label for="adm-event">Event</label><input class="input" id="adm-event" type="text" value="Green County Fall Nationals"></div>
-          <div class="field"><label for="adm-short">Calendar label</label><input class="input" id="adm-short" type="text" value="Monroe" maxlength="14" aria-describedby="adm-sh-hint"><span class="hint" id="adm-sh-hint">Nombre corto del cuadrito del calendario (opcional)</span></div>
+          <div class="field"><label for="adm-short">Calendar label <span class="adm__new">Nuevo</span></label><input class="input" id="adm-short" type="text" value="Monroe" maxlength="12" aria-describedby="adm-sh-hint"><span class="hint" id="adm-sh-hint">Nombre corto del cuadrito del calendario; hasta 8 letras se lee completo en el celular</span></div>
           <div class="field"><label for="adm-city">City</label><input class="input" id="adm-city" type="text" value="Monroe, WI"></div>
           <div class="field"><label for="adm-league">League</label><select class="input" id="adm-league"><option>NTPA</option><option selected>Badger State Tractor Pullers</option><option>IHRA Pro Pulling (PPL)</option><option>Other</option></select></div>
-          <div class="field"><label for="adm-type">Type <span class="adm__new">Nuevo</span></label><select class="input" id="adm-type" aria-describedby="adm-ty-hint"><option selected>Competition</option><option>Exhibition</option></select><span class="hint" id="adm-ty-hint">Exhibition: corrida para el público, sin puntos</span></div>
+          <div class="field"><label for="adm-type">Type</label><select class="input" id="adm-type" aria-describedby="adm-ty-hint"><option selected>Competition</option><option>Exhibition</option></select><span class="hint" id="adm-ty-hint">Exhibition: corrida para el público, sin puntos</span></div>
           <div class="field"><label for="adm-status">Status</label><select class="input" id="adm-status" aria-describedby="adm-st-hint"><option>Upcoming</option><option selected>Done</option><option>Cancelled</option><option>Hidden</option></select><span class="hint" id="adm-st-hint">Hidden: se guarda pero no sale en el sitio</span></div>
           <div class="field"><label for="adm-dist">Distance</label><input class="input" id="adm-dist" type="text" placeholder="e.g. 312.4 ft"></div>
-          <div class="field span2"><label for="adm-result">Result</label><input class="input" id="adm-result" type="text" placeholder="e.g. 3rd place, or Full pull" aria-describedby="adm-res-hint"><span class="hint" id="adm-res-hint">“Full pull” saca la etiqueta amarilla; “1st place” o “Win” suma un win</span></div>
+          <div class="field span3"><label for="adm-result">Result</label><input class="input" id="adm-result" type="text" placeholder="e.g. 3rd place, or Full pull" aria-describedby="adm-res-hint"><span class="hint" id="adm-res-hint">“Full pull” saca la etiqueta amarilla; “1st place” o “Win” suma un win</span></div>
           <div class="field span2"><label for="adm-video">Video or photos URL</label><input class="input" id="adm-video" type="url" value="https://www.youtube.com/watch?v=HfJ5FAJJ5Ac"></div>
           <div class="field span2"><label for="adm-site">Event website / tickets</label><input class="input" id="adm-site" type="url" value="https://greencountyfair.net/"></div>
         </div>
@@ -437,14 +438,14 @@
      sale solo de estas entradas, igual que la lista, el historial, los contadores y el .ics.
      Campos: date, event, short (Calendar label, opcional), city, league, type (Competition | Exhibition),
      status (Upcoming | Done | Cancelled | Hidden), result, distance, video, website. Sin fecha, cuenta en la temporada actual.
-     example / sample: solo en el boceto. Si no hay ningún pull real con fecha, los ejemplos reciben fechas de muestra
+     example / sample: solo en el boceto. Si la temporada no tiene ningún pull real con fecha, los ejemplos reciben fechas de muestra
      (sábados del mes pasado y el próximo sábado) para que el calendario se vea lleno. */
   var EVENTS = [
     { date: '', event: 'Green County Fall Nationals', short: 'Monroe', city: 'Monroe, WI', league: 'Badger State Tractor Pullers', type: 'Competition', status: 'Done', result: '', distance: '', video: 'https://www.youtube.com/watch?v=HfJ5FAJJ5Ac', website: 'https://greencountyfair.net/' },
-    { date: '', event: 'Exhibition run', short: 'Exhibition', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 0 },
-    { date: '', event: 'Exhibition run', short: 'Exhibition', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 1 },
-    { date: '', event: 'Exhibition run', short: 'Exhibition', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 2 },
-    { date: '', event: 'County fair pull', short: 'County fair', city: '[pending]', league: '[pending]', type: 'Competition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sampleOnly: true, sample: 3 },
+    { date: '', event: 'Exhibition run', short: 'Exhib.', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 0 },
+    { date: '', event: 'Exhibition run', short: 'Exhib.', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 1 },
+    { date: '', event: 'Exhibition run', short: 'Exhib.', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 2 },
+    { date: '', event: 'County fair pull', short: 'County', city: '[pending]', league: '[pending]', type: 'Competition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sampleOnly: true, sample: 3 },
     { date: '', event: 'Season finale pull', short: 'Finale', city: '[pending]', league: '[pending]', type: 'Competition', status: 'Upcoming', result: '', distance: '', video: '', website: '', example: true, sampleOnly: true, sample: 'next' }
   ];
 
@@ -465,7 +466,7 @@
   }
   var samplesOn = false;
   function applySamples() {
-    var real = EVENTS.some(function (e) { return !e.example && e.date && e.status !== 'Hidden'; });
+    var real = EVENTS.some(function (e) { return !e.example && e.date && e.status !== 'Hidden' && yearOf(e) === SEASON; });
     samplesOn = !real;
     EVENTS.forEach(function (e) {
       if (!e.example) return;
@@ -603,7 +604,7 @@
   function evLabel(e) { return esc(e.event) + ', ' + esc(e.type) + (e.status === 'Upcoming' ? ', upcoming' : e.status === 'Cancelled' ? ', cancelled' : '') + (e.example ? ' (ejemplo)' : ''); }
   function chip(e) {
     return '<span class="ev ' + (isExh(e) ? 'ev--e' : 'ev--c') + (e.status === 'Upcoming' ? ' ev--up' : '') + (e.status === 'Cancelled' ? ' ev--x' : '') + '" aria-hidden="true">' +
-      esc(shortOf(e)) + '<small>' + (e.status === 'Upcoming' ? 'Upcoming' : e.status === 'Cancelled' ? 'Cancelled' : esc(e.type)) + '</small></span>';
+      esc(shortOf(e)) + (e.status === 'Upcoming' ? '<small>Upcoming</small>' : e.status === 'Cancelled' ? '<small>Cancelled</small>' : shortOf(e) === e.type ? '' : '<small>' + esc(e.type) + '</small>') + '</span>';
   }
   function renderCal() {
     var y = S.year, m = S.month;
@@ -788,7 +789,7 @@
     applySamples(); fillYears();
     if (e.status !== 'Hidden') { S.year = yearOf(e); $('year').value = S.year; S.month = e.date ? +e.date.slice(5, 7) - 1 : bestMonth(); }
     S.sel = e.date && e.status !== 'Hidden' ? { day: e.date } : null; pickTab(); render();
-    var gone = had && !samplesOn ? ' Los “Ejemplo” se quitaron porque ya hay un pull con fecha real.' : '';
+    var gone = had && !samplesOn ? ' Los “Ejemplo” se quitaron porque la temporada ya tiene un pull con fecha real.' : '';
     if (e.status === 'Hidden') { box.hidden = true; amsg.textContent = 'Guardado con Status Hidden: la entrada sigue en el admin pero ya no sale arriba.' + gone; return; }
     amsg.innerHTML = 'Guardado. Ya cambió arriba: lista, calendario, contadores y filtro de año.' + gone +
       (e.date ? ' <button type="button" class="sc-linkbtn" id="adm-see">Verlo en el calendario</button>' : ' Sin fecha sale en la lista como “date pending”.') +

@@ -1,9 +1,9 @@
-<title>Heavy Metal · “The Evil One” | Pro Stock Tractor Pulling Merch</title>
-<meta name="description" content="Merch from Heavy Metal, “The Evil One”: the only Cat V8 Pro Stock pulling tractor in the class, built in Waterloo, WI. Tees, hoodies and hats.">
-<meta property="og:title" content="Heavy Metal · “The Evil One” | Pro Stock Tractor Pulling Merch">
-<meta property="og:description" content="“The Evil One”: the only Cat V8 Pro Stock pulling tractor in the class, built in Waterloo, WI. Merch designed by the crew.">
+<title>Heavy Metal Pro Stock · “The Evil One” | Tractor Pulling Merch</title>
+<meta name="description" content="Merch from Heavy Metal Pro Stock, “The Evil One”: the only Cat V8 Pro Stock pulling tractor in the class, built in Waterloo, WI. Tees, hoodies and hats.">
+<meta property="og:title" content="Heavy Metal Pro Stock · “The Evil One” | Tractor Pulling Merch">
+<meta property="og:description" content="Heavy Metal Pro Stock, “The Evil One”: the only Cat V8 Pro Stock pulling tractor in the class, built in Waterloo, WI. Merch designed by the crew.">
 <meta property="og:image" content="img/hm-hero.webp">
-<meta name="theme-color" content="#F6F5F2">
+<meta name="theme-color" content="#1A1D22">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -15,23 +15,24 @@
     {
       "@type": ["SportsTeam", "Organization"],
       "@id": "#team",
-      "name": "Heavy Metal",
+      "name": "Heavy Metal Pro Stock",
       "alternateName": "“The Evil One”",
       "legalName": "Heavy Metal Pro Stock",
       "sport": "Tractor pulling",
       "logo": "img/logo-ink.svg",
       "image": "img/hm-hero.webp",
+      "email": "heavymetalevil72@gmail.com",
+      "telephone": "+1-920-650-4374",
       "location": {
         "@type": "Place",
-        "address": { "@type": "PostalAddress", "addressLocality": "Waterloo", "addressRegion": "WI", "addressCountry": "US" }
+        "address": { "@type": "PostalAddress", "addressLocality": "Waterloo", "addressRegion": "WI", "postalCode": "53594", "addressCountry": "US" }
       },
       "sameAs": ["https://www.facebook.com/heavymetalprostock/"]
     },
     {
       "@type": "WebSite",
       "@id": "#website",
-      "name": "Heavy Metal · “The Evil One”",
-      "alternateName": "Heavy Metal Pro Stock",
+      "name": "Heavy Metal Pro Stock · “The Evil One”",
       "publisher": { "@id": "#team" },
       "inLanguage": "en-US"
     }
@@ -136,54 +137,45 @@ html,body{overflow-x:clip}
 }
 @media (max-width:480px){.nx__date{width:68px;height:68px}.nx__date b{font-size:26px}}
 
-/* 5 · PARTNER: qué recibe la marca + 3 paquetes con 2 beneficios + dos salidas claras */
-.ptn{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:24px clamp(24px,4vw,64px);align-items:start}
-.ptn__copy{display:grid;gap:12px;justify-items:start}
-.ptn__what{margin:0;font-size:var(--t-md);color:var(--text);max-width:40ch}
-.ptn__what b{color:var(--ink)}
-.ptn__reach{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
-.ptn__reach li{border:1px solid var(--line);padding:4px 10px;font-size:var(--t-xs);color:var(--soft)}
-.ptn__reach b{color:var(--ink);font-weight:800}
-.ptn__est{margin:0;font-size:11px;color:var(--mute)}
-.ptn__tiers{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid var(--ink)}
-.ptn__tier{display:grid;gap:8px;align-content:start;padding:16px 20px 4px 0}
-.ptn__tier+.ptn__tier{padding-left:20px;border-left:1px solid var(--line)}
-.ptn__tier h3{margin:0;font-size:var(--t-xs);font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);display:flex;gap:8px;align-items:center}
-.ptn__price{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:var(--t-h1);line-height:1;color:var(--ink)}
-.ptn__tier ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:var(--t-sm);color:var(--soft)}
-.ptn__tier li{position:relative;padding-left:14px;line-height:1.4}
-.ptn__tier li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;background:var(--accent);box-shadow:0 0 0 1px var(--ink)}
-.ptn__go{grid-column:2;display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;padding-top:16px;border-top:1px solid var(--line)}
-.ptn__talk{margin:0;font-size:var(--t-sm);color:var(--soft)}
-.ptn__talk a{color:var(--ink);font-weight:700;text-underline-offset:3px;white-space:nowrap}
-.ptn__note{grid-column:1/-1;margin-top:0}
-@media (max-width:860px){
-  .ptn{grid-template-columns:1fr}
-  .ptn__go{grid-column:auto}
-}
-@media (max-width:600px){
-  .ptn__tiers{grid-template-columns:1fr}
-  .ptn__tier,.ptn__tier+.ptn__tier{padding:12px 0;border-left:0;border-bottom:1px solid var(--line)}
-  .ptn__go .btn{width:100%}
-}
+/* Next pull: wins en 0 = "Coming soon" (más chico que un número); fecha de actualización */
+.nx__stats dd.is-soon{font-size:clamp(17px,1.6vw,20px);line-height:1.15;padding-bottom:4px;text-transform:uppercase}
+.nx__meta a{color:var(--ink);font-weight:700;text-underline-offset:3px}
+.nx__upd{margin:0;font-size:11px;color:var(--ink);opacity:.8}
+.nx .note{grid-column:1/-1;margin:0}
+
+/* 5 · SPONSORSHIP: una línea y un botón (los paquetes y el form viven en sponsors.html) */
+.sp{background:var(--surface);border-bottom:1px solid var(--line)}
+.sp__in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px;padding-block:clamp(28px,3.4vw,44px)}
+.sp__copy{display:grid;gap:6px;min-width:0;max-width:62ch}
+.sp__line{margin:0;font-size:var(--t-md);color:var(--soft)}
+.sp__line b{color:var(--ink);font-weight:800}
+.sp .note{flex-basis:100%;margin:0}
+@media (max-width:600px){.sp__in .btn{width:100%}}
 </style>
 <div data-hm-header data-current="home"></div>
 <main id="main">
-<!-- HERO Full Pull v5. Requiere hero.css y hero.js (después de hm.js).
-     En Shopify: sección "HM Hero"; ajustes = fondo (sky | print | storm), distancia de full pull, textos y botones;
-     las frases de la cinta amarilla son bloques de texto de la sección. -->
-<section class="fp" data-fp data-bg="sky" data-target="300" aria-labelledby="fp-title">
+<!-- HERO Full Pull v6. Requiere hero.css y hero.js (después de hm.js).
+     En Shopify: sección "HM Hero"; ajustes = distancia de full pull, textos y botones; fondo único de tormenta.
+     Las frases de la cinta amarilla son bloques de texto de la sección (máximo 3). -->
+<section class="fp" data-fp data-target="300" aria-labelledby="fp-title">
   <div class="fp__sky" aria-hidden="true">
-    <i class="fp__day"></i><i class="fp__dusk"></i><i class="fp__sun"></i>
-    <i class="fp__print"></i><i class="fp__storm"></i><i class="fp__clouds"></i>
+    <i class="fp__storm"></i><i class="fp__clouds"></i>
     <svg class="fp__bolt" viewBox="0 0 120 420"><path d="M70 0 L38 150 L66 150 L22 300 L52 300 L8 420 L96 250 L64 250 L104 120 L74 120 L98 0 Z" fill="#F7F9FF"/></svg>
     <i class="fp__flash"></i>
   </div>
+  <svg class="fp__smokes" aria-hidden="true" focusable="false">
+    <defs>
+      <radialGradient id="fpPuff0"><stop offset="0" stop-color="#0E0E0D"/><stop offset=".5" stop-color="#141413" stop-opacity=".96"/><stop offset=".78" stop-color="#1E1D1B" stop-opacity=".55"/><stop offset="1" stop-color="#2A2926" stop-opacity="0"/></radialGradient>
+      <radialGradient id="fpPuff1"><stop offset="0" stop-color="#151514"/><stop offset=".5" stop-color="#1E1D1B" stop-opacity=".95"/><stop offset=".78" stop-color="#2A2926" stop-opacity=".5"/><stop offset="1" stop-color="#34332F" stop-opacity="0"/></radialGradient>
+      <radialGradient id="fpPuff2"><stop offset="0" stop-color="#1E1D1B"/><stop offset=".5" stop-color="#2A2926" stop-opacity=".92"/><stop offset=".8" stop-color="#3A3936" stop-opacity=".45"/><stop offset="1" stop-color="#46454F" stop-opacity="0"/></radialGradient>
+    </defs>
+    <g class="fp__smoke"></g>
+  </svg>
   <div class="wrap fp__top">
     <div class="fp__brand">
-      <h1 id="fp-title" class="fp__h1"><img class="fp__logo" src="img/logo-stack-ink.svg" alt="Heavy Metal" width="1106" height="612"></h1>
+      <h1 id="fp-title" class="fp__h1"><img class="fp__logo" src="img/logo-stack-ink.svg" alt="Heavy Metal Pro Stock" width="1106" height="612"></h1>
       <p class="fp__tag">“The Evil One”</p>
-      <p class="fp__sub">Pro Stock pulling tractor from Waterloo, Wisconsin. The only Cat V8 in the class. Merch designed by the crew.</p>
+      <p class="fp__sub">Heavy Metal Pro Stock is a Pro Stock pulling tractor out of Waterloo, Wisconsin. Merch designed by the crew.</p>
       <div class="btn-row"><a class="btn" href="shop.html?cat=new">Shop the drop</a><a class="btn btn--ghost" href="machine.html">Meet the machine</a></div>
     </div>
     <div class="fp__side">
@@ -201,65 +193,92 @@ html,body{overflow-x:clip}
           <span class="fp__dist"><span data-fp-dist>000</span><small>FT</small></span>
           <span class="fp__chip" data-fp-chip>Hooked</span>
         </div>
-        <button class="fp__ctrl" type="button" data-fp-ctrl>Pause</button>
+        <dl class="fp__stats">
+          <div><dt>Speed<i>sim</i></dt><dd><span data-fp-mph>0</span><small>mph</small></dd></div>
+          <div><dt>Run time</dt><dd><span data-fp-time>0.00</span><small>s</small></dd></div>
+        </dl>
+        <div class="fp__ctrls">
+          <button class="fp__ctrl" type="button" data-fp-ctrl>Pause</button>
+          <button class="fp__snd" type="button" data-fp-snd aria-pressed="false"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6h3l4-3v10l-4-3H2z" fill="currentColor" stroke="none"/><path class="on" d="M11 5.5c1 .7 1.5 1.6 1.5 2.5s-.5 1.8-1.5 2.5M12.6 3.6C14 4.7 14.8 6.3 14.8 8s-.8 3.3-2.2 4.4"/><path class="off" d="M11 6l4 4M15 6l-4 4"/></svg>Sound<span class="vh"> of the engine</span> <span aria-hidden="true" data-fp-snd-state>off</span></button>
+        </div>
       </div>
-      <div class="note">Fondo del hero (prueba): <span class="fp-bgpick" role="group" aria-label="Hero background"><button type="button" data-bg="sky">A · Día a atardecer</button><button type="button" data-bg="print">B · Amarillo serigrafía</button><button type="button" data-bg="storm">C · Tormenta y rayo</button></span>Recomendado: A. En Shopify es un ajuste de la sección; las frases de la cinta amarilla son bloques de texto.</div>
     </div>
   </div>
   <div class="fp__track" aria-hidden="true">
     <div class="fp__dirt"></div>
     <div class="fp__rail" data-fp-rail><div class="fp__rail-fill"></div></div>
     <div class="fp__flag" data-fp-flag></div>
-    <svg class="fp__rig" viewBox="0 0 2240 576" overflow="visible" focusable="false">
-      <defs>
-        <radialGradient id="fpPuff"><stop offset="0" class="fp__puff-c" stop-opacity=".95"/><stop offset=".55" class="fp__puff-c" stop-opacity=".78"/><stop offset="1" class="fp__puff-e" stop-opacity="0"/></radialGradient>
-      </defs>
-      <ellipse cx="1120" cy="550" rx="1080" ry="12" fill="rgba(28,27,25,.2)"/>
-      <!-- SLED: trineo de arrastre. Atrás: cabina y ruedas; arriba: caja de pesas sobre rieles; al frente: pan (patín) -->
+    <svg class="fp__rig" viewBox="0 0 2700 576" overflow="visible" focusable="false">
+      <ellipse cx="1350" cy="551" rx="1330" ry="12" fill="rgba(0,0,0,.35)"/>
+      <!-- SLED de transferencia de peso (~1.3 veces el tractor). Atrás: cabina alta con operador y ruedas dobles;
+           arriba: caja de pesas que avanza sobre los rieles; al frente: la placa (pan) que se clava en la tierra; gancho y cadena. -->
       <g class="fp__sled">
-        <rect x="58" y="258" width="122" height="134" fill="#1E1E1C" stroke="#3A3936" stroke-width="4"/>
-        <rect x="74" y="274" width="90" height="56" fill="#46525C"/>
-        <line x1="96" y1="274" x2="96" y2="330" stroke="#1E1E1C" stroke-width="4"/>
-        <rect x="58" y="350" width="122" height="10" fill="#F5C400"/>
-        <line x1="120" y1="258" x2="120" y2="206" stroke="#3A3936" stroke-width="6"/>
-        <rect x="106" y="190" width="28" height="18" rx="4" fill="#F5C400"/>
-        <rect x="40" y="390" width="996" height="32" fill="#232321" stroke="#3A3936" stroke-width="4"/>
-        <rect x="40" y="406" width="996" height="6" fill="#F5C400"/>
-        <path d="M430 422 L520 468 L620 422 L720 468 L820 422" fill="none" stroke="#2C2C2A" stroke-width="12" stroke-linejoin="round"/>
-        <rect x="186" y="376" width="808" height="14" fill="#34332F"/>
-        <line x1="186" y1="379" x2="994" y2="379" stroke="#A9A59B" stroke-width="3"/>
-        <path d="M84 424 Q 245 370 404 424 Z" fill="#1A1A19"/>
-        <g class="fp__sw" data-c="168 486"><circle cx="168" cy="486" r="60" fill="#1C1C1A"/><circle cx="168" cy="486" r="52" fill="none" stroke="#33322E" stroke-width="10" stroke-dasharray="9 7"/><circle cx="168" cy="486" r="24" fill="#8C8F92"/><rect x="164" y="464" width="8" height="44" fill="#3A3936"/><rect x="146" y="482" width="44" height="8" fill="#3A3936"/></g>
-        <g class="fp__sw" data-c="318 486"><circle cx="318" cy="486" r="60" fill="#1C1C1A"/><circle cx="318" cy="486" r="52" fill="none" stroke="#33322E" stroke-width="10" stroke-dasharray="9 7"/><circle cx="318" cy="486" r="24" fill="#8C8F92"/><rect x="314" y="464" width="8" height="44" fill="#3A3936"/><rect x="296" y="482" width="44" height="8" fill="#3A3936"/></g>
-        <path d="M824 422 H1020 L1048 470 L1038 548 H846 L814 482 Z" fill="#1B1B1A" stroke="#3A3936" stroke-width="4" stroke-linejoin="round"/>
-        <line x1="846" y1="545" x2="1038" y2="545" stroke="#6B6862" stroke-width="6"/>
-        <line x1="860" y1="470" x2="1030" y2="470" stroke="#2C2C2A" stroke-width="4"/>
-        <path class="fp__pile" d="M1030 550 Q1066 512 1112 550 Z" fill="#7A6649"/>
-        <path d="M1010 436 L1062 452" stroke="#2A2A28" stroke-width="18" stroke-linecap="round"/>
-        <circle cx="1068" cy="454" r="11" fill="none" stroke="#9C9A92" stroke-width="5"/>
+        <!-- llanta de atrás de cada par (rueda doble) -->
+        <circle cx="200" cy="443" r="105" fill="#121211"/><circle cx="440" cy="443" r="105" fill="#121211"/>
+        <!-- chasis, rieles y armadura -->
+        <path d="M560 362 L640 404 L740 362 L840 404 L940 362 L1040 404 L1110 372" fill="none" stroke="#2C2C2A" stroke-width="12" stroke-linejoin="round"/>
+        <rect x="24" y="318" width="1420" height="44" fill="#232321" stroke="#3A3936" stroke-width="4"/>
+        <rect x="24" y="338" width="1420" height="6" fill="#F5C400"/>
+        <rect x="290" y="304" width="1120" height="14" fill="#34332F"/>
+        <line x1="290" y1="307" x2="1410" y2="307" stroke="#A9A59B" stroke-width="3"/>
+        <rect x="1398" y="276" width="16" height="42" fill="#3A3936"/>
+        <!-- pan (placa) al frente -->
+        <path d="M1100 362 H1440 L1470 420 L1452 540 H1150 L1112 468 Z" fill="#1B1B1A" stroke="#3A3936" stroke-width="4" stroke-linejoin="round"/>
+        <line x1="1150" y1="537" x2="1452" y2="537" stroke="#6B6862" stroke-width="6"/>
+        <line x1="1124" y1="468" x2="1460" y2="468" stroke="#2C2C2A" stroke-width="4"/>
+        <path class="fp__pile" d="M1452 550 Q1494 506 1546 550 Z" fill="#6A5A42"/>
+        <!-- lengua y gancho del sled -->
+        <path d="M1430 396 L1484 430" stroke="#2A2A28" stroke-width="20" stroke-linecap="round"/>
+        <circle cx="1492" cy="434" r="12" fill="none" stroke="#9C9A92" stroke-width="6"/>
+        <!-- llanta del frente de cada par (gira) -->
+        <g class="fp__sw" data-c="184 443"><circle cx="184" cy="443" r="105" fill="#1C1C1A"/><circle cx="184" cy="443" r="93" fill="none" stroke="#33322E" stroke-width="14" stroke-dasharray="12 9"/><circle cx="184" cy="443" r="50" fill="#8C8F92"/><circle cx="184" cy="443" r="18" fill="#3A3936"/><rect x="179" y="397" width="10" height="92" fill="#5E605F"/><rect x="138" y="438" width="92" height="10" fill="#5E605F"/></g>
+        <g class="fp__sw" data-c="424 443"><circle cx="424" cy="443" r="105" fill="#1C1C1A"/><circle cx="424" cy="443" r="93" fill="none" stroke="#33322E" stroke-width="14" stroke-dasharray="12 9"/><circle cx="424" cy="443" r="50" fill="#8C8F92"/><circle cx="424" cy="443" r="18" fill="#3A3936"/><rect x="419" y="397" width="10" height="92" fill="#5E605F"/><rect x="378" y="438" width="92" height="10" fill="#5E605F"/></g>
+        <!-- cabina alta del operador (atrás), con escalera y torreta -->
+        <path d="M30 318 V120 M50 318 V120 M30 300 H50 M30 270 H50 M30 240 H50 M30 210 H50 M30 180 H50 M30 150 H50" stroke="#46454F" stroke-width="5" fill="none"/>
+        <rect x="56" y="98" width="232" height="220" fill="#1E1E1C" stroke="#3A3936" stroke-width="4"/>
+        <rect x="88" y="120" width="184" height="118" fill="#5B6873"/>
+        <polygon points="196,120 236,120 170,238 130,238" fill="#fff" opacity=".1"/>
+        <!-- operador sentado, de cara al tractor: chaleco de alta visibilidad, gorra, mano en la palanca -->
+        <g class="fp__op">
+          <rect x="112" y="150" width="16" height="88" fill="#2A2C30"/>
+          <path d="M150 238 H206" stroke="#2B2E33" stroke-width="18" stroke-linecap="round"/>
+          <path d="M132 236 L138 178 Q140 168 152 168 H164 Q176 168 178 180 L182 236 Z" fill="#F5C400"/>
+          <rect x="135" y="204" width="46" height="6" fill="#E9E6DC"/>
+          <path d="M168 182 L196 206 L214 196" fill="none" stroke="#F5C400" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="158" cy="150" r="16" fill="#B48C6C"/>
+          <path d="M141 148 Q143 130 160 130 Q176 131 176 146 L190 148 Q190 152 186 152 H141 Z" fill="#141413"/>
+          <line x1="222" y1="238" x2="218" y2="196" stroke="#9C9A92" stroke-width="5"/>
+          <circle cx="217" cy="194" r="7" fill="#A3261C"/>
+          <circle cx="214" cy="197" r="6" fill="#B48C6C"/>
+        </g>
+        <path d="M88 120 H272 V238 H88 Z M180 120 V238" fill="none" stroke="#3A3936" stroke-width="6"/>
+        <rect x="40" y="82" width="264" height="22" fill="#141413"/>
+        <rect x="40" y="100" width="264" height="6" fill="#F5C400"/>
+        <rect x="150" y="62" width="30" height="20" rx="5" fill="#F5C400"/>
+        <rect x="56" y="270" width="232" height="8" fill="#F5C400"/>
+        <!-- caja de pesas grande: avanza sobre los rieles hacia el pan -->
         <g class="fp__box">
-          <rect x="198" y="200" width="44" height="16" fill="#2A2A28"/><rect x="356" y="200" width="44" height="16" fill="#2A2A28"/>
-          <rect x="190" y="214" width="218" height="160" fill="#1F1F1D" stroke="#3A3936" stroke-width="4"/>
-          <rect x="190" y="214" width="218" height="16" fill="#F5C400"/>
-          <line x1="190" y1="262" x2="408" y2="262" stroke="#3A3936" stroke-width="4"/><line x1="190" y1="300" x2="408" y2="300" stroke="#3A3936" stroke-width="4"/><line x1="190" y1="338" x2="408" y2="338" stroke="#3A3936" stroke-width="4"/>
-          <rect x="282" y="240" width="34" height="122" fill="#2A2A28"/>
-          <circle cx="214" cy="378" r="9" fill="#9C9A92"/><circle cx="384" cy="378" r="9" fill="#9C9A92"/>
+          <rect x="336" y="80" width="40" height="18" fill="#2A2A28"/><rect x="600" y="80" width="40" height="18" fill="#2A2A28"/>
+          <rect x="300" y="96" width="380" height="200" fill="#1F1F1D" stroke="#3A3936" stroke-width="4"/>
+          <rect x="300" y="96" width="380" height="18" fill="#F5C400"/>
+          <line x1="300" y1="152" x2="680" y2="152" stroke="#3A3936" stroke-width="4"/><line x1="300" y1="198" x2="680" y2="198" stroke="#3A3936" stroke-width="4"/><line x1="300" y1="244" x2="680" y2="244" stroke="#3A3936" stroke-width="4"/>
+          <rect x="470" y="124" width="40" height="160" fill="#2A2A28"/>
+          <circle cx="332" cy="300" r="11" fill="#9C9A92"/><circle cx="490" cy="300" r="11" fill="#9C9A92"/><circle cx="648" cy="300" r="11" fill="#9C9A92"/>
         </g>
       </g>
-      <!-- cadena y gancho -->
-      <line x1="1076" y1="455" x2="1166" y2="447" stroke="#9C9A92" stroke-width="10" stroke-dasharray="15 5"/>
-      <line x1="1076" y1="455" x2="1166" y2="447" stroke="#2A2A28" stroke-width="3" stroke-dasharray="15 5"/>
-      <rect x="1158" y="438" width="140" height="18" fill="#141413"/>
-      <path d="M1170 444 q-18 0 -18 14 q0 12 12 12" fill="none" stroke="#9C9A92" stroke-width="7" stroke-linecap="round"/>
-      <!-- tractor real -->
-      <g class="fp__wheelie"><g class="fp__shake"><image href="img/hm-tractor-cutout.webp" x="1120" y="0" width="1120" height="576"/></g></g>
-      <g class="fp__fly fp__fly--tire" fill="#7A6649"><circle cx="1150" cy="528" r="9"/><circle cx="1158" cy="534" r="12"/><circle cx="1146" cy="522" r="7"/><circle cx="1160" cy="530" r="10"/><circle cx="1152" cy="536" r="8"/></g>
-      <g class="fp__fly fp__fly--pan" fill="#8A7556"><circle cx="1046" cy="540" r="7"/><circle cx="1050" cy="536" r="9"/><circle cx="1044" cy="542" r="6"/><circle cx="1052" cy="538" r="8"/></g>
-      <g class="fp__smoke"></g>
+      <!-- barra de tiro del tractor y cadena al gancho del sled -->
+      <rect x="1532" y="430" width="160" height="20" fill="#141413"/>
+      <circle cx="1540" cy="440" r="11" fill="none" stroke="#9C9A92" stroke-width="6"/>
+      <line x1="1502" y1="436" x2="1530" y2="440" stroke="#9C9A92" stroke-width="10" stroke-dasharray="12 4"/>
+      <line x1="1502" y1="436" x2="1530" y2="440" stroke="#2A2A28" stroke-width="3" stroke-dasharray="12 4"/>
+      <!-- tractor real (recorte) -->
+      <g class="fp__wheelie"><g class="fp__shake"><image href="img/hm-tractor-cutout.webp" x="1580" y="0" width="1120" height="576"/></g></g>
+      <g class="fp__fly fp__fly--tire" fill="#6A5A42"><circle cx="1610" cy="528" r="9"/><circle cx="1618" cy="534" r="12"/><circle cx="1606" cy="522" r="7"/><circle cx="1620" cy="530" r="10"/><circle cx="1612" cy="536" r="8"/></g>
+      <g class="fp__fly fp__fly--pan" fill="#7A6649"><circle cx="1462" cy="540" r="7"/><circle cx="1466" cy="536" r="9"/><circle cx="1460" cy="542" r="6"/><circle cx="1468" cy="538" r="8"/></g>
     </svg>
   </div>
 </section>
-<div class="fp-marquee" aria-hidden="true" data-fp-marquee><div class="fp-marquee__track"><span>Full pull or nothing<i></i>F#ckin’ evil<i></i>Pro Stock · Waterloo, WI<i></i>Cat V8 · 680 ci<i></i>Horsepower: Unknown<i></i>Get hooked<i></i></span><span>Full pull or nothing<i></i>F#ckin’ evil<i></i>Pro Stock · Waterloo, WI<i></i>Cat V8 · 680 ci<i></i>Horsepower: Unknown<i></i>Get hooked<i></i></span></div></div>
+<div class="fp-marquee" aria-hidden="true" data-fp-marquee><div class="fp-marquee__track"><span>Heavy Metal Pro Stock<i>·</i>Full pull or nothing<i>·</i>This is f#cking evil<i>·</i></span><span>Heavy Metal Pro Stock<i>·</i>Full pull or nothing<i>·</i>This is f#cking evil<i>·</i></span></div></div>
 
   <!-- 1 · SHOP: categorías + una sola fila de producto -->
   <section class="shop-home" aria-labelledby="drop-title">
@@ -322,46 +341,39 @@ html,body{overflow-x:clip}
     </div>
   </section>
 
-  <!-- 4 · NEXT UP: franja visible. Próximo evento si hay fecha; si no, el último pull + contador de la temporada -->
+  <!-- 4 · NEXT PULL: el próximo pull con fecha; si no hay, "Next pull: date TBA" + Facebook. Contador de la temporada. -->
   <section class="nx" aria-labelledby="nx-title">
     <div class="wrap nx__in">
-      <div class="nx__date" id="nx-date" aria-hidden="true"><span>Season</span><b class="num">2026</b></div>
+      <div class="nx__date" id="nx-date" aria-hidden="true"><span>Date</span><b>TBA</b></div>
       <div class="nx__ev">
-        <p class="nx__kick" id="nx-kick">Last pull</p>
-        <h2 class="h1" id="nx-title">Green County Fall Nationals</h2>
-        <p class="nx__meta" id="nx-meta">Monroe, WI · Badger State Tractor Pullers · Pro Stock</p>
+        <p class="nx__kick" id="nx-kick">Next pull</p>
+        <h2 class="h1" id="nx-title">Next pull: date TBA</h2>
+        <p class="nx__meta" id="nx-meta">New dates hit <a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook first<span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span></a></p>
       </div>
       <div class="nx__season">
         <p class="nx__kick"><span id="nx-yr" class="num">2026</span> season so far</p>
         <dl class="nx__stats" id="nx-stats"></dl>
+        <!-- last-updated: season-stats -->
+        <p class="nx__upd" id="nx-upd"></p>
       </div>
       <div class="nx__go">
         <a class="btn" href="schedule.html">See the schedule</a>
         <a class="link" href="log.html">Read the Pit Log</a>
       </div>
+      <p class="note">Próximo pull = Contenido &gt; Metaobjetos &gt; Pull event (sale el primero con fecha futura; sin fecha sale “date TBA”; prueba con <a href="index.html?next=1">?next=1</a>). Contadores = Metaobjetos &gt; Season stats (wins en 0 = “Coming soon”).</p>
     </div>
   </section>
 
-  <!-- 5 · PARTNER: qué recibe la marca, 3 paquetes con 2 beneficios, dos salidas (paquetes o contacto directo) -->
-  <section class="sect--white home-sect" aria-labelledby="ptn-title">
-    <div class="wrap ptn">
-      <div class="ptn__copy">
+  <!-- 5 · SPONSORSHIP: una línea con alcance (desde datos) y un botón. Paquetes y contacto viven en sponsors.html -->
+  <section class="sp" aria-labelledby="sp-title">
+    <div class="wrap sp__in">
+      <div class="sp__copy">
         <p class="label muted">Sponsorship</p>
-        <h2 class="h1" id="ptn-title">Partner with “The Evil One”</h2>
-        <p class="ptn__what">Your brand on the tractor, the trailer and team gear, in front of <b>100,000+ fans a season (est.)</b></p>
-        <ul class="ptn__reach">
-          <li><b class="num">20+</b> pulls a season</li>
-          <li><b class="num">5,000+</b> fans per pull</li>
-          <li><b class="num">10+</b> states</li>
-        </ul>
-        <p class="ptn__est">Estimates for the NTPA and PPL Badger State circuits, before streams and socials.</p>
+        <h2 class="h1" id="sp-title">Partner with “The Evil One”</h2>
+        <p class="sp__line" id="sp-line">Your brand in front of <b>XX+ fans</b> across <b>XX pulls</b> a season.</p>
       </div>
-      <ul class="ptn__tiers" id="ptn-tiers" aria-label="Sponsor packages"></ul>
-      <div class="ptn__go">
-        <a class="btn" href="sponsors.html">See packages</a>
-        <p class="ptn__talk"><span>Or talk to us directly:</span> <a href="mailto:heavymetalevil72@gmail.com">heavymetalevil72@gmail.com</a> <span aria-hidden="true">·</span> <a href="tel:+19206504374">(920) 650-4374</a></p>
-      </div>
-      <p class="note ptn__note">Todo lo de la home se edita sin código: último pull/próximo evento = Contenido &gt; Metaobjetos &gt; Pull event; contadores = Metaobjetos &gt; Season stats; paquetes = Metaobjetos &gt; Sponsor tier (aquí salen los 2 primeros beneficios); fila de tienda = colección New drop (la 4ª tarjeta es la edición especial); video = sección Video.</p>
+      <a class="btn" href="sponsors.html">See sponsor packages</a>
+      <p class="note">“XX+ fans” y “XX pulls” salen de Metaobjetos &gt; Season stats (campos fans y pulls). Cinta amarilla = 3 bloques de texto de la sección HM Hero. Sonido del pull sim: motor sintetizado en el navegador (sin música: Fear of the Dark necesita licencia), apagado por defecto.</p>
     </div>
   </section>
 </main>
@@ -383,51 +395,48 @@ html,body{overflow-x:clip}
   row.innerHTML = pick.map(function (p) { return q(window.hmCard(p)).replace('<article class="card"', '<article class="card" role="listitem"'); }).join('');
 })();
 
-/* Next up: simula los metaobjetos "Pull event" (mismo formato que schedule.html) y "Season stats".
-   Si hay un evento con fecha futura, sale "Next up" con su fecha; si no, el último pull. */
+/* Next pull + contadores: simula los metaobjetos "Pull event" (mismo formato que schedule.html) y "Season stats".
+   Sale el primer pull con fecha futura; si no hay, "Next pull: date TBA" y el link a Facebook.
+   Boceto: ?next=1 agrega un pull de ejemplo con fecha para ver ese estado. */
 (function () {
   var SEASON = window.HM_SEASON || new Date().getFullYear();
   var EVENTS = [
-    { date: '', year: SEASON, event: 'Green County Fall Nationals', city: 'Monroe, WI', league: 'Badger State Tractor Pullers', cls: 'Pro Stock' }
+    { date: '', event: 'Green County Fall Nationals', city: 'Monroe, WI', league: 'Badger State Tractor Pullers', type: 'Competition', status: 'Done' }
   ];
+  if (/[?&]next=1/.test(location.search)) {
+    var d0 = new Date(Date.now() + 12 * 864e5);
+    EVENTS.push({ date: d0.toISOString().slice(0, 10), event: '[Example] Badger State Pull', city: '[City], WI', league: 'Badger State Tractor Pullers', type: 'Competition', status: 'Scheduled' });
+  }
+  /* fans y pulls: estimados que pone la dueña; "XX" mientras no estén */
   var SEASON_STATS = [
-    { season: SEASON, competitions: 2, exhibitions: 3, wins: 0 }
+    { season: SEASON, competitions: 2, exhibitions: 3, wins: 0, fans: 'XX', pulls: 'XX', updated: '2026-09-28' }
   ];
   var $ = function (id) { return document.getElementById(id); };
+  var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
   var today = new Date().toISOString().slice(0, 10);
-  var next = EVENTS.filter(function (e) { return e.date && e.date >= today; }).sort(function (a, b) { return a.date < b.date ? -1 : 1; })[0];
-  var last = EVENTS.filter(function (e) { return !e.date || e.date < today; }).sort(function (a, b) { return (b.date || b.year + '') < (a.date || a.year + '') ? -1 : 1; })[0];
-  var ev = next || last;
-  if (ev) {
-    $('nx-kick').textContent = next ? 'Next up' : 'Last pull';
-    $('nx-title').textContent = ev.event;
-    $('nx-meta').textContent = [ev.city, ev.league, ev.cls].filter(Boolean).join(' · ');
-    if (ev.date) {
-      var d = new Date(ev.date + 'T12:00:00');
-      $('nx-date').innerHTML = '<span>' + d.toLocaleString('en-US', { month: 'short' }) + '</span><b class="num">' + d.getDate() + '</b>';
-    } else $('nx-date').innerHTML = '<span>Season</span><b class="num">' + (ev.year || SEASON) + '</b>';
+  var next = EVENTS.filter(function (e) { return e.date && e.date >= today && e.status !== 'Hidden' && e.status !== 'Canceled'; })
+    .sort(function (a, b) { return a.date < b.date ? -1 : 1; })[0];
+  $('nx-kick').hidden = !next;   /* sin fecha, el título ya dice "Next pull: date TBA" */
+  if (next) {
+    var d = new Date(next.date + 'T12:00:00');
+    $('nx-date').innerHTML = '<span>' + d.toLocaleString('en-US', { month: 'short' }) + '</span><b class="num">' + d.getDate() + '</b>';
+    $('nx-kick').textContent = 'Next pull · ' + d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    $('nx-title').textContent = next.event;
+    $('nx-meta').textContent = [next.city, next.league].filter(Boolean).join(' · ');
   }
   var st = SEASON_STATS.filter(function (r) { return r.season === SEASON; })[0];
   $('nx-yr').textContent = SEASON;
-  if (st) $('nx-stats').innerHTML = [
-    ['Competitions', st.competitions, ''], ['Exhibitions', st.exhibitions, ''], ['Wins', st.wins, st.wins ? '' : 'First one is next']
-  ].map(function (f) { return '<div><dt>' + f[0] + (f[2] ? '<small>' + f[2] + '</small>' : '') + '</dt><dd class="num">' + f[1] + '</dd></div>'; }).join('');
+  if (st) {
+    /* testing: un contador en 0 nunca dice "0"; dice "Coming soon" */
+    $('nx-stats').innerHTML = [['Competitions', st.competitions], ['Exhibitions', st.exhibitions], ['Wins', st.wins]].map(function (f) {
+      var soon = !f[1];
+      return '<div><dt>' + f[0] + '</dt><dd class="' + (soon ? 'is-soon' : 'num') + '">' + (soon ? 'Coming soon' : f[1]) + '</dd></div>';
+    }).join('');
+    if (st.updated) $('nx-upd').textContent = 'Last updated: ' + new Date(st.updated + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    $('sp-line').innerHTML = 'Your brand in front of <b>' + esc(st.fans) + '+ fans</b> across <b>' + esc(st.pulls) + ' pulls</b> a season.';
+  }
 })();
 
-/* Partner: simula el metaobjeto "Sponsor tier" (mismo que sponsors.html); en la home salen los 2 primeros beneficios. */
-(function () {
-  var TIERS = [
-    { name: 'Title Partner', price: 25000, status: 'available', benefits: ['Your name in the team name all season', 'Biggest logo on the tractor itself'] },
-    { name: 'Pit Partner', price: 10000, status: 'available', featured: true, benefits: ['Logo on the team shirt sleeve', 'Logo on the trailer'] },
-    { name: 'Crew Supporter', price: 5000, status: 'available', benefits: ['Name on the trailer supporters board', 'Listed on this website'] }
-  ];
-  var ul = document.getElementById('ptn-tiers'); if (!ul) return;
-  ul.innerHTML = TIERS.filter(function (t) { return t.status !== 'hidden'; }).map(function (t) {
-    return '<li class="ptn__tier"><h3>' + t.name + (t.featured ? ' <span class="badge">Featured</span>' : '') + (t.status === 'soldout' ? ' <span class="badge badge--line">Sold out</span>' : '') + '</h3>' +
-      '<p class="ptn__price num">$' + t.price.toLocaleString('en-US') + '</p>' +
-      '<ul>' + t.benefits.slice(0, 2).map(function (b) { return '<li>' + b + '</li>'; }).join('') + '</ul></li>';
-  }).join('');
-})();
 /* First fire: el póster "se va la luz" una vez al entrar en pantalla; play avisa que el video está pendiente. */
 (function () {
   var v = document.getElementById('fire-vid'), b = document.getElementById('fire-play'), m = document.getElementById('fire-msg');

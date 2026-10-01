@@ -68,9 +68,15 @@ html,body{overflow-x:clip}
 <script src="hm.js"></script>
 <script>
 (function () {
-  var CAT = window.HM_CATALOG || [];
-  var four = CAT.filter(function (p) { return p.tag === 'best'; }).concat(CAT.filter(function (p) { return p.tag === 'new'; })).slice(0, 4);
-  document.getElementById('nf-grid').innerHTML = four.map(window.hmCard).join('');
+  var CAT = (window.HM_CATALOG || []).filter(function (p) { return p.status !== 'soon'; });
+  var four = CAT.filter(function (p) { return p.tag === 'best'; }).concat(CAT.filter(function (p) { return p.tag !== 'best'; })).slice(0, 4);
+  var grid = document.getElementById('nf-grid');
+  if (four.length) { grid.innerHTML = four.map(window.hmCard).join(''); return; }
+  /* tienda vacía: el bloque "Coming soon" en lugar del grid (en Shopify sale solo si la colección no tiene productos activos) */
+  document.getElementById('nf-best-h').textContent = 'Merch';
+  var all = document.querySelector('.nf-best .sect-head .link'); if (all) all.hidden = true;
+  grid.outerHTML = window.hmComingSoon ? window.hmComingSoon() : '';
+  var cta = document.querySelector('.nf__acts .btn'); if (cta) { cta.textContent = 'Read the full story'; cta.href = 'story.html'; var dup = document.querySelector('.nf__acts a[href="story.html"].link'); if (dup) dup.remove(); }
 })();
 </script>
 </body>

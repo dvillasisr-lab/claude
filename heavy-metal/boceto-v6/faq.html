@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Help Center · Heavy Metal Pro Stock: “The Evil One”</title>
-<meta name="description" content="Answers about orders, shipping, returns, sizing, payments, your account, Hook Alerts, sponsorship, Special edition drops, the Pit Log and “The Evil One” tractor.">
+<meta name="description" content="Answers about orders, shipping, returns, sizing, drops and Notify me, discount codes, your account, Hook Alerts, sponsorship, Special edition, the Pit Log and the Heavy Metal Pro Stock tractor, “The Evil One”.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 <link rel="stylesheet" href="hm.css">
@@ -25,6 +25,8 @@ html,body{overflow-x:clip}
 .hc-search .input::-webkit-search-cancel-button{display:none}
 .hc-clear{position:absolute;right:2px;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;background:none;cursor:pointer;display:grid;place-items:center}
 .hc-clear svg{position:static;transform:none;stroke:var(--ink)}
+.hc-lu{margin:0;font-size:var(--t-xs);color:var(--mute)}
+.hc-lu time{color:var(--ink);font-weight:600}
 .hc-count{margin:0;font-size:var(--t-xs);color:var(--mute);min-height:1.5em}
 
 .hc{display:grid;grid-template-columns:240px minmax(0,880px);gap:clamp(32px,6vw,120px);padding-block:32px var(--sect);align-items:start}
@@ -80,6 +82,8 @@ mark{background:#FFF0A8;color:inherit;padding:0}
     <div class="wrap">
       <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li aria-current="page">Help Center</li></ol></nav>
       <h1 class="h1">Help Center</h1>
+      <!-- last-updated: faq -->
+      <p class="hc-lu" id="hc-lu">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p>
       <p class="lede">Orders, shipping, sizing and the tractor. Search or pick a topic. Email <a href="mailto:heavymetalevil72@gmail.com">heavymetalevil72@gmail.com</a> or call <a href="tel:+19206504374">(920) 650-4374</a>.</p>
       <form class="hc-search" role="search" id="hc-form">
         <label class="vh" for="hc-q">Search the Help Center</label>
@@ -99,6 +103,7 @@ mark{background:#FFF0A8;color:inherit;padding:0}
         <li><a href="#returns">Returns &amp; exchanges</a></li>
         <li><a href="#sizing">Sizing &amp; fit</a></li>
         <li><a href="#care">Products &amp; care</a></li>
+        <li><a href="#drops">Drops &amp; availability</a></li>
         <li><a href="#payments">Payments</a></li>
         <li><a href="#account">Account</a></li>
         <li><a href="#alerts">Hook Alerts</a></li>
@@ -154,13 +159,23 @@ mark{background:#FFF0A8;color:inherit;padding:0}
         <details class="qa"><summary>What are the shirts made of?</summary><div class="a"><p>Fabric and weight depend on the style. Each product page lists them, as given by our print partner, Printify.</p></div></details>
         <details class="qa"><summary>Who prints the merch?</summary><div class="a"><p>Printify, our print on demand partner, prints every item when you order it. That's why nothing sits in a warehouse and why orders take a few days to ship.</p></div></details>
         <details class="qa"><summary>The color looks different from the picture.</summary><div class="a"><p>Screens show color differently, so the printed item can look slightly different. If it looks clearly wrong, <a href="contact.html?topic=returns">send us a photo</a>.</p></div></details>
-        <details class="qa"><summary>A size is sold out. Will it come back?</summary><div class="a"><p>Leave your email on the product page under the sold out size and we'll email you when it's back.</p></div></details>
+      </section>
+
+      <section class="hc-cat" id="drops" aria-labelledby="h-drops">
+        <h2 id="h-drops">Drops &amp; availability</h2>
+        <details class="qa"><summary>What does "Coming soon" mean?</summary><div class="a"><p>The design is done and it drops soon, but it can't be ordered yet. Tap <b>Notify me</b> on the item and we'll email you the moment it goes live. Hook Alerts subscribers hear about every drop first.</p></div></details>
+        <details class="qa"><summary>How does "Notify me" work?</summary><div class="a"><p>Enter your email on the item page. We send you one email when it drops or is back in stock. It doesn't reserve an item for you, and it doesn't sign you up for anything else. To get every drop and pull day, join <a href="schedule.html">Hook Alerts</a>.</p></div></details>
+        <details class="qa"><summary>A size is sold out. Will it come back?</summary><div class="a"><p>Most items are printed to order, so they rarely sell out. If one does, tap <b>Notify me</b> on the product page and we'll email you when it's back. Special edition pieces don't come back.</p></div></details>
+        <details class="qa"><summary>What does "Almost gone!" mean?</summary><div class="a"><p>Only a few pieces are left. When they're gone, the item switches to Sold out.</p></div></details>
+        <details class="qa"><summary>The shop says "Coming soon". Is the store open?</summary><div class="a"><p>Not yet, or we're between drops. Leave your email in the Coming soon box and you'll hear when the next drop lands.</p></div></details>
       </section>
 
       <section class="hc-cat" id="payments" aria-labelledby="h-payments">
         <h2 id="h-payments">Payments</h2>
         <details class="qa"><summary>What payment methods do you accept?</summary><div class="a"><p>Shop Pay, Apple Pay, Google Pay, PayPal and major credit and debit cards, including Visa and Mastercard.</p></div></details>
         <details class="qa"><summary>Is checkout secure?</summary><div class="a"><p>Yes. Checkout runs on Shopify. Payments are processed by Shopify and its payment partners, and we never see or store your full card number.</p></div></details>
+        <details class="qa"><summary>Where do I enter a discount code?</summary><div class="a"><p>In your cart: open <b>Discount code</b>, type the code and tap <b>Apply</b>. You can also enter it at checkout, in the discount code box. The discount shows before you pay.</p></div></details>
+        <details class="qa"><summary>My discount code doesn't work.</summary><div class="a"><p>Check the spelling, the dates and any minimum order. Each code shows its terms when you apply it. Still stuck? <a href="contact.html?topic=order">Message us</a> with the code before you check out.</p></div></details>
         <details class="qa"><summary>Do you charge sales tax?</summary><div class="a"><p>Sales tax depends on your address and is calculated at checkout. Prices are in US dollars.</p></div></details>
       </section>
 
@@ -182,15 +197,15 @@ mark{background:#FFF0A8;color:inherit;padding:0}
 
       <section class="hc-cat" id="sponsors" aria-labelledby="h-sponsors">
         <h2 id="h-sponsors">Sponsors</h2>
-        <details class="qa"><summary>How do I sponsor the team?</summary><div class="a"><p>There are three packages: Title Partner ($25,000), Pit Partner ($10,000) and Crew Supporter ($5,000). See what each includes on <a href="sponsors.html">Sponsors</a>, or pick "Sponsorship" on the <a href="contact.html?topic=sponsorship">contact form</a>.</p></div></details>
+        <details class="qa"><summary>How do I sponsor the team?</summary><div class="a"><p>There are three packages, from Crew Supporter for local shops up to Title Partner. See what each includes and costs on <a href="sponsors.html">Sponsors</a>, or pick "Sponsorship" on the <a href="contact.html?topic=sponsorship">contact form</a>.</p></div></details>
         <details class="qa"><summary>Where would my brand show up?</summary><div class="a"><p>Depending on the package: team gear, the trailer and pit area, this website, our social media, on the tractor and in announcer mentions.</p></div></details>
-        <details class="qa"><summary>I run a small local shop. Is there a smaller option?</summary><div class="a"><p>Crew Supporter is built for local shops and fans: your name on the trailer supporters board, a listing on this website, a thank you post on our socials and a Heavy Metal sponsor decal for your shop.</p></div></details>
+        <details class="qa"><summary>I run a small local shop. Is there a smaller option?</summary><div class="a"><p>Crew Supporter is built for local shops and fans: your name on the trailer supporters board, a listing on this website, a thank you post on our socials and a Heavy Metal Pro Stock sponsor decal for your shop.</p></div></details>
       </section>
 
       <section class="hc-cat" id="special" aria-labelledby="h-special">
         <h2 id="h-special">Special edition</h2>
         <details class="qa"><summary>What is a Special edition?</summary><div class="a"><p>A short run of merch made for one moment of the season, like the night the engine first fired and the lightning struck. It has its own design and lives on its own page, apart from the regular shop. See the current one on <a href="limited.html">Special edition</a>.</p></div></details>
-        <details class="qa"><summary>Are Special edition pieces numbered?</summary><div class="a"><p>Yes. Each run is limited to <span class="pend">XX</span> pieces and every piece is numbered. Numbers are assigned in order as orders come in.</p></div></details>
+        <details class="qa"><summary>How long is a Special edition on sale?</summary><div class="a"><p>Only for a limited time. The <a href="limited.html">Special edition</a> page shows when it opens and when it closes. When the window closes or it sells out, it's gone.</p></div></details>
         <details class="qa"><summary>When is there a new one?</summary><div class="a"><p>There's no fixed calendar. A Special edition drops around a big moment of the season. Hook Alerts get the heads up first: sign up at the bottom of any page.</p></div></details>
         <details class="qa"><summary>Will a Special edition come back?</summary><div class="a"><p>No. When the run sells out, it's gone. Regular designs stay in the <a href="shop.html?cat=all">shop</a>.</p></div></details>
       </section>
@@ -229,6 +244,11 @@ mark{background:#FFF0A8;color:inherit;padding:0}
   var items = [].slice.call(document.querySelectorAll('.qa'));
   var links = [].slice.call(document.querySelectorAll('#hc-list a'));
   var q = $('hc-q'), list = $('hc-list');
+
+  /* Last updated (en Shopify: campo "Last updated" de la sección FAQ en Personalizar) */
+  var FAQ_UPDATED = '2026-10-01';
+  (function () { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(FAQ_UPDATED), t = document.querySelector('#hc-lu time'); if (!m) { t.textContent = '[date pending]'; return; }
+    t.setAttribute('datetime', FAQ_UPDATED); t.textContent = new Date(+m[1], +m[2] - 1, +m[3], 12).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); })();
 
   /* FAQPage JSON-LD armado desde las mismas preguntas (en Shopify: Liquid recorre los bloques FAQ) */
   var ld = document.createElement('script'); ld.type = 'application/ld+json';
