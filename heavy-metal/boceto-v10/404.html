@@ -275,7 +275,7 @@ html,body{overflow-x:clip}
       if (pulls >= 3) n = FULL - dist;                        /* el cuarto jalón siempre llega a la bandera */
       dist += n; pulls++;
       if (dist >= FULL) {
-        msg.textContent = 'Full pull! This is f#cking evil. The page still isn\'t here, but the shop is open.';
+        msg.textContent = 'Full pull! This thing is f#ck!ng evil. The page still isn\'t here, but the shop is open.';
         if (!still) { nf.classList.remove('is-strike'); void nf.offsetWidth; nf.classList.add('is-strike'); }
         nf.classList.add('is-full');
       } else msg.textContent = LINES[(pulls - 1) % LINES.length].replace('{n}', n);

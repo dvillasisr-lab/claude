@@ -70,6 +70,7 @@ html,body{overflow-x:clip}
   .g-bar{gap:10px 20px}
   .g-fgroup{max-width:100%;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
   .g-fgroup::-webkit-scrollbar{display:none}
+  .g-fgroup>.label{position:sticky;left:0;z-index:1;align-self:stretch;display:flex;align-items:center;background:var(--surface);padding-right:8px;margin-right:0;box-shadow:8px 0 8px -6px var(--surface)}
 }
 .g-alb{display:grid;grid-template-columns:52px minmax(0,1fr);align-items:center;gap:10px;width:clamp(196px,15vw,250px);padding:6px 12px 6px 6px;background:var(--bg);border:1px solid var(--line);cursor:pointer;text-align:left;color:var(--ink);transition:border-color .15s,background .15s}
 .g-alb:hover{border-color:var(--ink)}
