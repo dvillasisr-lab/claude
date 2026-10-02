@@ -1,5 +1,7 @@
 /* HM Carousel (sections/hm-carousel.liquid): coverflow with autoplay, arrows, swipe, keyboard and dots.
-   Reduced motion or fewer than 3 products: stays the plain scroll-snap row from the CSS (nothing moves on its own). */
+   Reduced motion or a single product: stays the plain scroll-snap row from the CSS (nothing moves on its own).
+   With 2 to 4 products the slides are cloned (copies marked data-cf-clone) so both sides of the center card are filled;
+   dots and announcements still count real products. */
 (function () {
   'use strict';
   if (window.HMCarousel) return;
@@ -15,7 +17,7 @@
     this.hold = { hover: false, focus: false, hidden: false, out: false, drag: false };
     this.interval = Math.max(2500, Number(root.getAttribute('data-interval')) || 5000);
     this.auto = root.getAttribute('data-autoplay') === 'true';
-    if (this.n < 3 || rm.matches) return;
+    if (this.n < 2 || rm.matches) return;
     this.build();
   }
 
@@ -24,6 +26,17 @@
   Cf.prototype.build = function () {
     var self = this, r = this.root;
     r.classList.add('is-3d');
+    /* few products: clone them until there are at least 5 cards in the ring */
+    var track = r.querySelector('[data-cf-track]'), orig = this.slides.slice();
+    while (this.slides.length < 5) {
+      orig.forEach(function (s) {
+        var c = s.cloneNode(true);
+        c.setAttribute('data-cf-clone', '');
+        track.appendChild(c);
+        self.slides.push(c);
+      });
+    }
+    this.m = this.slides.length;
     this.stage = r.querySelector('[data-cf-stage]');
     this.live = r.querySelector('[data-cf-live]');
     this.dots = [].slice.call(r.querySelectorAll('[data-cf-dots] button'));
@@ -34,7 +47,7 @@
 
     this.on(prev, 'click', function () { self.go(self.cur - 1, true); });
     this.on(next, 'click', function () { self.go(self.cur + 1, true); });
-    this.dots.forEach(function (b, i) { self.on(b, 'click', function () { self.go(i, true); }); });
+    this.dots.forEach(function (b, i) { self.on(b, 'click', function () { self.go(self.nearest(i), true); }); });
     this.on(this.pauseBtn, 'click', function () { self.userPaused = !self.userPaused; self.sync(); });
 
     /* a side card: the first click brings it to the center instead of opening it */
@@ -97,8 +110,18 @@
     this.sync();
   };
 
+  /* index of the card for real product i that is closest to the center */
+  Cf.prototype.nearest = function (i) {
+    var best = i, bd = Infinity, m = this.m, c = this.cur;
+    for (var j = i; j < m; j += this.n) {
+      var d = Math.abs(j - c); d = Math.min(d, m - d);
+      if (d < bd) { bd = d; best = j; }
+    }
+    return best;
+  };
+
   Cf.prototype.place = function () {
-    var n = this.n, c = this.cur;
+    var n = this.m, c = this.cur, vis = this.n >= 5 ? 2 : 1; /* few real products: only one card each side, so no product shows twice */
     this.slides.forEach(function (s, i) {
       var d = i - c;
       if (d > n / 2) d -= n; else if (d < -n / 2) d += n;
@@ -108,7 +131,7 @@
       s.style.setProperty('--r', Math.max(-1, Math.min(1, d)));
       s.style.zIndex = String(10 - ad);
       s.classList.toggle('is-on', d === 0);
-      s.classList.toggle('is-far', Math.abs(d) > 2);
+      s.classList.toggle('is-far', Math.abs(d) > vis);
       s.setAttribute('aria-hidden', d === 0 ? 'false' : 'true');
       [].forEach.call(s.querySelectorAll('a,button'), function (a) {
         if (!a.hasAttribute('data-cf-tab')) a.setAttribute('data-cf-tab', a.getAttribute('tabindex') || '');
@@ -117,17 +140,17 @@
         else a.setAttribute('tabindex', '-1');
       });
     });
-    var cur = this.cur;
+    var cur = this.cur % this.n;
     this.dots.forEach(function (b, i) { b.setAttribute('aria-current', i === cur ? 'true' : 'false'); });
   };
 
   Cf.prototype.go = function (i, user, announce) {
-    this.cur = ((i % this.n) + this.n) % this.n;
+    this.cur = ((i % this.m) + this.m) % this.m;
     this.place();
     if (user) { this.restart(); }
     if (announce && this.live) {
       var t = this.slides[this.cur].querySelector('.cf__name');
-      this.live.textContent = (this.cur + 1) + ' of ' + this.n + ': ' + (t ? t.textContent.trim() : '');
+      this.live.textContent = (this.cur % this.n + 1) + ' of ' + this.n + ': ' + (t ? t.textContent.trim() : '');
     }
   };
 
@@ -154,6 +177,8 @@
     if (flat) {
       var r = this.root;
       r.classList.remove('is-3d');
+      [].forEach.call(r.querySelectorAll('[data-cf-clone]'), function (c) { c.remove(); });
+      this.slides = this.slides.filter(function (s) { return !s.hasAttribute('data-cf-clone'); });
       ['[data-cf-prev]', '[data-cf-next]', '[data-cf-ctrl]'].forEach(function (s) { var el = r.querySelector(s); if (el) el.hidden = true; });
       this.slides.forEach(function (s) {
         s.removeAttribute('aria-hidden'); s.style.zIndex = '';

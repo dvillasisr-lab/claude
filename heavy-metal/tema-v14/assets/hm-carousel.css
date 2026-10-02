@@ -1,4 +1,4 @@
-/* HM Carousel (sections/hm-carousel.liquid). Default = plain scroll-snap row (no JS, reduced motion, fewer than 3 products).
+/* HM Carousel (sections/hm-carousel.liquid). Default = plain scroll-snap row (no JS, reduced motion, a single product).
    .is-3d (added by hm-carousel.js) = coverflow: every slide in one grid cell, placed by --d (signed distance from the center card). */
 .cf{padding-block:var(--sect);background:var(--bg);overflow:hidden}
 .cf--band{background:var(--surface)}

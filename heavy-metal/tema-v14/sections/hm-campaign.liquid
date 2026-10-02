@@ -65,16 +65,36 @@
             <h2 class="h2" id="{{ cid }}-g">{{ section.settings.grid_heading | escape }}</h2>
             <a class="link" href="{{ coll.url | default: routes.all_products_collection_url }}">View all</a>
           </div>
-          {%- if coll.products.size > 0 -%}
-            <div class="pgrid">
-              {%- for product in coll.products limit: section.settings.limit -%}
+          {%- liquid
+            comment
+              Gift cards and products tagged hidden never go on sale, so they stay out of the grid.
+              With fewer than 4 products the grid shrinks to that many columns and centers, so nothing sits empty on the right.
+            endcomment
+            assign shown = 0
+            for product in coll.products
+              if product.gift_card? or product.tags contains 'hidden'
+                continue
+              endif
+              assign shown = shown | plus: 1
+              if shown >= section.settings.limit
+                break
+              endif
+            endfor
+          -%}
+          {%- if shown > 0 -%}
+            <div class="pgrid hm-camp__pgrid{% if shown < 4 %} hm-camp__pgrid--few{% endif %}" style="--n: {{ shown }};">
+              {%- assign n = 0 -%}
+              {%- for product in coll.products -%}
+                {%- if product.gift_card? or product.tags contains 'hidden' -%}{%- continue -%}{%- endif -%}
                 {%- liquid
+                  assign n = n | plus: 1
                   assign lazy = true
-                  if forloop.index <= 4
+                  if n <= 4
                     assign lazy = false
                   endif
                 -%}
                 {%- render 'hm-card', product: product, lazy: lazy -%}
+                {%- if n >= section.settings.limit -%}{%- break -%}{%- endif -%}
               {%- endfor -%}
             </div>
           {%- else -%}
@@ -151,6 +171,8 @@
   .hm-camp__unit small { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(242, 240, 233, .65); }
   .hm-camp__end { margin: 0; color: rgba(242, 240, 233, .7); }
 
+  .hm-camp__pgrid .card { grid-template-columns: minmax(0, 1fr); }
+  .hm-camp__pgrid--few { grid-template-columns: repeat(var(--n), minmax(0, 1fr)); max-width: calc(var(--n) * 360px); margin-inline: auto; }
   .hm-camp__fine { margin-top: 24px; max-width: 72ch; }
 
   .hm-camp__off { background: var(--surface); }
@@ -161,6 +183,10 @@
 
   @media (max-width: 900px) {
     .hm-camp__grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .hm-camp__pgrid--few { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: none; }
+    .hm-camp__pgrid--few[style*="--n: 1;"] { grid-template-columns: minmax(0, 1fr); max-width: 360px; }
   }
   @media (max-width: 480px) {
     .hm-camp__coderow { flex-direction: column; }

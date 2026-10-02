@@ -201,7 +201,10 @@
       /* things fixed to the bottom of the screen: the button sits above whichever is showing */
       function lift() {
         var h = 0, vh = window.innerHeight;
-        ['.satc.is-on', '#shopify-pc__banner', '.shopify-pc__banner__dialog'].forEach(function (sel) {
+        /* sticky add to cart bar: use its layout height, it may still be sliding in */
+        var bar = document.querySelector('.satc.is-on');
+        if (bar && getComputedStyle(bar).display !== 'none') h = bar.offsetHeight;
+        [ '#shopify-pc__banner', '.shopify-pc__banner__dialog'].forEach(function (sel) {
           var el = document.querySelector(sel);
           if (!el || !el.getClientRects().length) return;
           var r = el.getBoundingClientRect(), cs = getComputedStyle(el);
@@ -227,7 +230,12 @@
       document.addEventListener('click', function () { setTimeout(queue, 350); });
       document.addEventListener('hm:dialog:open', queue);
       document.addEventListener('hm:dialog:close', queue);
-      if ('MutationObserver' in window) new MutationObserver(queue).observe(root, { attributes: true, attributeFilter: ['class'] });
+      if ('MutationObserver' in window) {
+        var mo = new MutationObserver(queue);
+        mo.observe(root, { attributes: true, attributeFilter: ['class'] });
+        var sb = document.querySelector('[data-satc]');
+        if (sb) mo.observe(sb, { attributes: true, attributeFilter: ['class'] });
+      }
       b.addEventListener('click', function () {
         window.scrollTo({ top: 0, behavior: rm.matches ? 'auto' : 'smooth' });
         var main = document.getElementById('MainContent');
