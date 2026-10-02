@@ -69,6 +69,22 @@
           assign h = k | split: '|' | last
           assign e = shop.metaobjects.season_stats[h]
           assign wins = e.wins.value | default: 0
+          comment
+            Competitions empty = count the Done competition pulls of that season (same number the Schedule shows)
+          endcomment
+          assign comps = e.competitions.value
+          if comps == blank
+            assign comps = 0
+            for pe in shop.metaobjects.pull_event.values
+              assign pes = pe.season.value | default: settings.hm_season | append: ''
+              if pe.date.value != blank
+                assign pes = pe.date.value | date: '%Y'
+              endif
+              if pes == y and pe.status.value == 'done' and pe.type.value != 'exhibition'
+                assign comps = comps | plus: 1
+              endif
+            endfor
+          endif
           if wins == 1
             assign line = 'First win in the books'
           elsif wins > 1
@@ -80,7 +96,7 @@
         <div class="st-season__data" data-season="{{ y }}"{% if y != sel %} hidden{% endif %}>
           <h2 class="h2 st-season__line">{{ line | escape }}</h2>
           <dl>
-            <div><dt>Competitions</dt><dd class="num">{{ e.competitions.value | default: 0 }}<small>{{ e.competitions_note.value | default: 'this season' | escape }}</small></dd></div>
+            <div><dt>Competitions</dt><dd class="num">{{ comps }}<small>{{ e.competitions_note.value | default: 'this season' | escape }}</small></dd></div>
             <div><dt>Exhibitions</dt><dd class="num">{{ e.exhibitions.value | default: 0 }}<small>so far</small></dd></div>
             <div><dt>Wins</dt><dd class="num">{% if wins > 0 %}{{ wins }}<small>this season</small>{% else %}<span class="st-soon">Coming soon</span><small>chasing the first one</small>{% endif %}</dd></div>
           </dl>
@@ -102,7 +118,7 @@
 .st-pull .st-photo{aspect-ratio:3/2}
 .st-pull__txt{display:grid;gap:12px;max-width:62ch}
 .st-pull__txt p{margin:0;color:var(--soft)}
-.st-pull__txt strong,.st-pull__txt b{color:var(--ink)}
+.st-pull__txt p strong,.st-pull__txt p:not(.st-eyebrow) b{color:var(--ink)}
 .st-quote{margin:2px 0;padding:2px 0 2px 16px;border-left:4px solid var(--accent)}
 .st-quote p{font-family:var(--f-head);font-stretch:78%;font-weight:700;text-transform:uppercase;font-size:var(--t-h1);line-height:1.12;color:var(--ink)!important;margin:0}
 .st-season{margin-top:clamp(24px,3vw,36px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.4fr);gap:6px 32px;align-items:center;padding:18px 24px;background:var(--accent);color:var(--ink);scroll-margin-top:var(--header)}
@@ -112,7 +128,7 @@
 .st-season__yr select{font:inherit;letter-spacing:inherit;color:var(--ink);background:transparent;border:1px solid rgba(28,27,25,.55);padding:1px 4px;min-height:24px;cursor:pointer;border-radius:0}
 .st-season__data{display:contents}
 .st-season__data[hidden]{display:none!important}
-.st-season__line{grid-column:1;grid-row:2;align-self:start;color:var(--ink)!important}
+.st-season__line.st-season__line{grid-column:1;grid-row:2;align-self:start;color:var(--ink)!important}
 .st-season dl{grid-column:2;grid-row:1 / span 2;margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
 .st-season dl div{padding:2px 16px;border-left:1px solid rgba(28,27,25,.35);display:grid;align-content:start}
 .st-season dt{font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.75}
@@ -121,11 +137,11 @@
 .st-season dd .st-soon{display:block;font-size:var(--t-h2);line-height:1.1;padding-top:4px}
 .st-season__foot{grid-column:1/-1;grid-row:3;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 24px;border-top:1px solid rgba(28,27,25,.35);padding-top:10px;margin-top:10px;font-size:var(--t-sm)}
 .st-season__foot .link{color:var(--ink)}
-.st-upd{opacity:.8;font-weight:600}
+.st-upd.st-upd{opacity:.8;font-weight:600}
 @media (max-width:1200px){.st-pull{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.st-pull .st-photo{aspect-ratio:4/5}}
 @media (max-width:1000px){
   .st-season{grid-template-columns:1fr}
-  .st-season__line{grid-row:auto}
+  .st-season__line.st-season__line{grid-row:auto}
   .st-season dl{grid-column:1;grid-row:auto;margin-top:8px}
   .st-season__foot{grid-row:auto}
 }

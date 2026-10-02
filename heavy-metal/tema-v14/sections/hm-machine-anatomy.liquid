@@ -60,7 +60,7 @@
           {%- if section.settings.cutout != blank -%}
             {{ section.settings.cutout | image_url: width: 1600 | image_tag: widths: '560, 840, 1120, 1600', sizes: '(max-width: 960px) 100vw, 70vw', loading: 'lazy' }}
           {%- else -%}
-            {{ 'image' | placeholder_svg_tag: 'mx-ph' }}
+            <img src="{{ 'hm-tractor-cutout.webp' | asset_url }}" alt="" width="1120" height="576" loading="lazy" class="mx-cut">
           {%- endif -%}
           {%- for k in keys -%}
             {%- liquid
@@ -77,8 +77,16 @@
       {%- liquid
         assign h = keys.first | split: '|' | last
         assign p0 = shop.metaobjects.tractor_part[h]
+        assign imgs = 0
+        for k in keys
+          assign hh = k | split: '|' | last
+          if shop.metaobjects.tractor_part[hh].image.value != blank
+            assign imgs = imgs | plus: 1
+          endif
+        endfor
       -%}
-      <div class="mx-panel">
+      <div class="mx-panel{% if imgs == 0 %} mx-panel--noimg{% endif %}">
+        {%- if imgs > 0 -%}
         <figure class="mx-photo">
           {%- for k in keys -%}
             {%- liquid
@@ -93,6 +101,7 @@
             {%- endif -%}
           {%- endfor -%}
         </figure>
+        {%- endif -%}
         <div class="mx-panel__txt">
           <p class="label muted" data-anat-label aria-live="polite">01 · {{ p0.name.value | escape }}</p>
           <p class="mx-panel__val" data-anat-val>{{ p0.value.value | escape }}</p>
@@ -132,6 +141,7 @@
 .mx-stage{--band:50;--img-h:576;--stage-h:676;position:relative;margin:0 auto;width:100%;aspect-ratio:1120/676;max-width:calc((100svh - var(--header) - var(--announce) - 2 * var(--sect) - 90px) * 1120 / 676)}
 .mx-img{position:absolute;left:0;right:0;top:calc(var(--band) / var(--stage-h) * 100%);height:calc(var(--img-h) / var(--stage-h) * 100%)}
 .mx-img>img,.mx-img>.mx-ph{width:100%;height:100%;object-fit:cover;display:block}
+.mx-img>img.mx-cut{object-fit:contain}
 .mx-lines{position:absolute;inset:0;z-index:1;width:100%;height:100%;pointer-events:none;overflow:visible;filter:drop-shadow(0 0 1px rgba(255,255,255,.95))}
 .mx-lines line{stroke:var(--mute);stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke;transition:stroke .15s}
 .mx-lines line.on{stroke:var(--ink);stroke-dasharray:none;stroke-width:1.5}
@@ -180,6 +190,7 @@
   .mx-panel{grid-template-columns:110px minmax(0,1fr);gap:12px}
   .mx-panel .mx-nav{grid-column:1/-1}
 }
+@media (max-width:960px){.mx-panel--noimg{grid-template-columns:1fr}}
 {% endstylesheet %}
 
 {% schema %}
@@ -191,7 +202,7 @@
     { "type": "paragraph", "content": "The parts come from Content > Metaobjects > Tractor part (sorted by Order). X, Y and Label X are pixels on the 1120 x 576 cutout." },
     { "type": "text", "id": "title", "label": "Title", "default": "Anatomy" },
     { "type": "text", "id": "hint", "label": "Hint", "default": "Tap a number. On a keyboard, use the arrow keys." },
-    { "type": "image_picker", "id": "cutout", "label": "Tractor cutout (1120 x 576)", "info": "Profile photo of the tractor, facing right." },
+    { "type": "image_picker", "id": "cutout", "label": "Tractor cutout (1120 x 576)", "info": "Profile photo of the tractor, facing right. Empty = the cutout that ships with the theme (hotspot positions match it)." },
     { "type": "text", "id": "group_label", "label": "Parts label (screen readers)", "default": "Parts of the tractor" },
     { "type": "text", "id": "list_label", "label": "Text list toggle", "default": "All parts as a list" }
   ],

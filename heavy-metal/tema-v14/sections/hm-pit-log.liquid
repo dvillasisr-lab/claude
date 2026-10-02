@@ -57,11 +57,29 @@
       </p>
     </div>
     {%- if st -%}
-      {%- assign w = st.wins.value | default: 0 -%}
+      {%- liquid
+        assign w = st.wins.value | default: 0
+        comment
+          Competitions empty = count the Done competition pulls of the season (same number the Schedule shows)
+        endcomment
+        assign comps = st.competitions.value
+        if comps == blank
+          assign comps = 0
+          for pe in shop.metaobjects.pull_event.values
+            assign pes = pe.season.value | default: season | append: ''
+            if pe.date.value != blank
+              assign pes = pe.date.value | date: '%Y'
+            endif
+            if pes == season and pe.status.value == 'done' and pe.type.value != 'exhibition'
+              assign comps = comps | plus: 1
+            endif
+          endfor
+        endif
+      -%}
       <div class="pl-sum">
         <p class="pl-scope" id="pl-scope-{{ section.id }}">{{ season }} season so far</p>
         <ul class="pl-stats" aria-describedby="pl-scope-{{ section.id }}">
-          <li class="pl-stat{% if st.competitions.value == 0 %} is-zero{% endif %}"><b>{{ st.competitions.value | default: 0 }}</b><span>Competitions</span></li>
+          <li class="pl-stat{% if comps == 0 %} is-zero{% endif %}"><b>{{ comps }}</b><span>Competitions</span></li>
           <li class="pl-stat{% if st.exhibitions.value == 0 %} is-zero{% endif %}"><b>{{ st.exhibitions.value | default: 0 }}</b><span>Exhibitions</span></li>
           <li class="pl-stat">{% if w > 0 %}<b>{{ w }}</b>{% else %}<b class="pl-soon"><svg viewBox="0 0 12 16" aria-hidden="true"><polygon points="8,0 1,9 5,9 3,16 11,6 7,6"/></svg>Soon</b>{% endif %}<span>Wins</span></li>
           <li class="pl-stat{% if st.test_days.value == 0 %} is-zero{% endif %}"><b>{{ st.test_days.value | default: 0 }}</b><span>Test days</span></li>
@@ -141,7 +159,12 @@
         {%- if fcount > 0 -%}
           <ol class="pl-track" tabindex="0" aria-label="Featured wins and milestones, {{ fcount }} items" data-wm-track data-count="{{ fcount }}">{{ feat_items }}</ol>
         {%- else -%}
-          <p class="pl-wm__empty">{{ section.settings.wm_empty | escape }}</p>
+          <div class="pl-wm__empty">
+            <svg class="pl-wm__bolt" viewBox="0 0 12 16" aria-hidden="true"><polygon points="8,0 1,9 5,9 3,16 11,6 7,6"/></svg>
+            <p class="pl-wm__et">{{ section.settings.wm_empty | escape }}</p>
+            {%- if section.settings.wm_empty_sub != blank -%}<p>{{ section.settings.wm_empty_sub | escape }}</p>{%- endif -%}
+            {%- if section.settings.wm_empty_link_url != blank and section.settings.wm_empty_link_text != blank -%}<a class="link pl-wins__go" href="{{ section.settings.wm_empty_link_url }}">{{ section.settings.wm_empty_link_text | escape }}<span aria-hidden="true"> →</span></a>{%- endif -%}
+          </div>
         {%- endif -%}
       </div>
     </div>
@@ -191,8 +214,14 @@
 <section class="pl-log" aria-labelledby="log-t-{{ section.id }}" data-pl-log data-section-id="{{ section.id }}" data-blog-url="{{ blog.url }}" data-blog-handle="{{ blog_handle }}" data-season="{{ season }}" data-search-url="{{ routes.predictive_search_url }}" data-full-search="{{ routes.search_url }}">
   <div class="wrap">
     <div class="sect-head"><h2 class="h2" id="log-t-{{ section.id }}">{{ section.settings.log_title | escape }}</h2></div>
-    <div class="pl-layout">
-      <div class="pl-bar" role="search" aria-label="Search and filter the log">
+    {%- liquid
+      assign log_empty = false
+      if blog.articles_count == 0 and cur_tag == ''
+        assign log_empty = true
+      endif
+    -%}
+    <div class="pl-layout{% if log_empty %} pl-layout--empty{% endif %}">
+      <div class="pl-bar" role="search" aria-label="Search and filter the log"{% if log_empty %} hidden{% endif %}>
         <form class="pl-q" action="{{ routes.search_url }}" method="get" data-pl-search>
           <label class="vh" for="pl-q-{{ section.id }}">Search the log</label>
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
@@ -327,7 +356,13 @@
               <li class="pl-empty">
                 <p class="h3">{% if cur_tag != '' %}Nothing logged here yet{% else %}{{ section.settings.empty_title | escape }}{% endif %}</p>
                 <p>{% if cur_tag != '' %}No {{ cur_tag | downcase | escape }} entries yet.{% else %}{{ section.settings.empty_text | escape }}{% endif %}</p>
-                {%- if cur_tag != '' -%}<a class="btn btn--ghost btn--sm" href="{{ blog.url }}">Show every entry</a>{%- endif -%}
+                {%- if cur_tag != '' -%}
+                  <a class="btn btn--ghost btn--sm" href="{{ blog.url }}">Show every entry</a>
+                {%- else -%}
+                  <span class="pl-empty__go">
+                    {%- if section.settings.empty_link_url != blank and section.settings.empty_link_text != blank -%}<a class="link" href="{{ section.settings.empty_link_url }}">{{ section.settings.empty_link_text | escape }}<span aria-hidden="true"> →</span></a>{%- endif -%}
+                  </span>
+                {%- endif -%}
               </li>
             {%- endfor -%}
           </ol>
@@ -371,7 +406,7 @@
 <script src="{{ 'hm-pit-log.js' | asset_url }}" defer></script>
 
 {% stylesheet %}
-.pl-top{padding-block:32px 28px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px 56px;align-items:start}
+.pl-top.pl-top{padding-block:32px 28px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px 56px;align-items:start}
 .pl-head p{margin:6px 0 0;font-size:var(--t-sm);color:var(--soft);max-width:64ch}
 .pl-head .pl-upd{margin:8px 0 0;max-width:none;font-size:var(--t-xs);color:var(--mute);display:flex;flex-wrap:wrap;gap:2px 0}
 .pl-head .pl-upd b{color:var(--soft);font-weight:500}
@@ -388,7 +423,7 @@
 .pl-stat b.pl-soon svg{width:.5em;height:.82em;margin-bottom:.06em;fill:var(--accent);stroke:var(--ink);stroke-width:.6;flex:none}
 .pl-stat span{white-space:nowrap}
 .pl-stat.is-zero b{color:var(--mute)}
-@media (max-width:860px){.pl-top{grid-template-columns:1fr;gap:20px}.pl-sum{padding-top:16px;border-top:1px solid var(--line)}}
+@media (max-width:860px){.pl-top.pl-top{grid-template-columns:1fr;gap:20px}.pl-sum{padding-top:16px;border-top:1px solid var(--line)}}
 @media (max-width:420px){.pl-stats{display:grid;grid-template-columns:repeat(4,auto);justify-content:space-between}.pl-stat{padding:0 10px}.pl-stat b{font-size:24px;height:24px}}
 .pl-wm{padding-block:clamp(32px,4vw,48px)}
 .pl-wm .sect-head{align-items:center}
@@ -401,7 +436,7 @@
 .pl-dots span:nth-child(2){animation-delay:.2s}
 .pl-dots span:nth-child(3){animation-delay:.4s}
 @keyframes pl-blink{0%,60%,100%{opacity:.25}30%{opacity:1}}
-.pl-wins__go{justify-self:start;color:var(--night-ink);text-decoration-color:var(--accent);text-decoration-thickness:2px;margin-top:4px}
+.pl-wins__go.pl-wins__go{justify-self:start;color:var(--night-ink);text-decoration-color:var(--accent);text-decoration-thickness:2px;margin-top:4px}
 .pl-trophy{width:40px;height:40px;fill:none;stroke:var(--accent);stroke-width:1.4}
 .pl-arws{display:flex;gap:4px}
 .pl-arw{width:40px;height:40px;display:grid;place-items:center;background:none;border:1px solid #4A4844;color:var(--night-ink);font-size:22px;line-height:1;cursor:pointer}
@@ -426,7 +461,11 @@
 .pl-mile__arw{display:inline-block;margin-left:.3em;color:var(--accent);transition:transform .15s}
 .pl-mile:hover .pl-mile__lnk{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
 .pl-mile:hover .pl-mile__arw{transform:translateX(3px)}
-.pl-wm__empty{border:1px solid #2E2D2A;padding:18px 20px;margin:0;color:#B5B2AA;font-size:var(--t-sm)}
+.pl-wm__empty{position:relative;overflow:hidden;height:100%;box-sizing:border-box;border:1px solid #2E2D2A;padding:18px 20px;margin:0;color:#B5B2AA;font-size:var(--t-sm);display:grid;align-content:center;justify-items:start;gap:10px;background:linear-gradient(90deg,rgba(255,255,255,.03),transparent 70%)}
+.pl-wm__empty p{margin:0;max-width:46ch}
+.pl-wm__empty .pl-wm__et{font-family:var(--f-head);font-stretch:78%;font-weight:700;text-transform:uppercase;font-size:clamp(20px,1.9vw,26px);line-height:1.1;color:var(--night-ink)}
+.pl-wm__bolt{position:absolute;right:clamp(16px,4vw,56px);top:50%;width:clamp(48px,6vw,88px);height:auto;transform:translateY(-50%) rotate(8deg);fill:none;stroke:rgba(245,196,0,.35);stroke-width:.5;pointer-events:none}
+@media (max-width:640px){.pl-wm__bolt{display:none}}
 @media (max-width:1024px){.pl-wm__grid{grid-template-columns:1fr}}
 @media (max-width:640px){.pl-track{grid-auto-columns:78%;margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter);scroll-padding-inline:var(--gutter)}}
 .pl-log{padding-block:clamp(32px,4vw,48px)}
@@ -479,6 +518,15 @@
 .pl-links{display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:2px}
 .pl-links a{font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-underline-offset:3px;white-space:nowrap}
 .pl-empty{padding:28px 0;display:grid;gap:8px;justify-items:start;max-width:52ch}
+.pl-empty__go:empty{display:none}
+.pl-layout--empty{display:block!important}
+.pl-layout--empty .pl-list{border-left:0!important}
+.pl-layout--empty .pl-list::before{content:none!important}
+.pl-layout--empty .pl-empty{max-width:none;padding:28px clamp(20px,3vw,40px);border:1px dashed var(--line);background:var(--surface);grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 32px}
+.pl-layout--empty .pl-empty .h3{grid-column:1}
+.pl-layout--empty .pl-empty p:not(.h3){grid-column:1}
+.pl-layout--empty .pl-empty__go{grid-column:2;grid-row:1 / span 2}
+@media (max-width:640px){.pl-layout--empty .pl-empty{grid-template-columns:1fr}.pl-layout--empty .pl-empty__go{grid-column:1;grid-row:auto}}
 .pl-empty p{margin:0;color:var(--soft)}
 .pl-more{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;margin:16px 0 0;padding-left:156px}
 .pl-more p{margin:0;font-size:var(--t-xs);color:var(--mute)}
@@ -533,6 +581,9 @@
     { "type": "text", "id": "wm_title", "label": "Title", "default": "Wins & milestones" },
     { "type": "range", "id": "featured_max", "label": "Most cards shown", "min": 3, "max": 12, "step": 1, "default": 6 },
     { "type": "text", "id": "wm_empty", "label": "Text when nothing is featured", "default": "Big days from the log show up here." },
+    { "type": "text", "id": "wm_empty_sub", "label": "Second line when nothing is featured", "default": "First pulls, first wins, full pulls: the days worth framing get pinned here." },
+    { "type": "text", "id": "wm_empty_link_text", "label": "Link when nothing is featured", "default": "See where we pull next" },
+    { "type": "url", "id": "wm_empty_link_url", "label": "Link URL", "default": "/pages/schedule" },
     { "type": "text", "id": "wins_text", "label": "Text before the first win", "default": "Still chasing the first one. The day it happens, it goes up here first." },
     { "type": "text", "id": "wins_link_text", "label": "Link text before the first win", "default": "Hear it first on The Evil List" },
     { "type": "url", "id": "wins_link_url", "label": "Link before the first win" },
@@ -541,6 +592,8 @@
     { "type": "text", "id": "search_placeholder", "label": "Search placeholder", "default": "Search the log: Monroe, turbo, exhibition..." },
     { "type": "text", "id": "empty_title", "label": "Empty log: title", "default": "Nothing logged yet" },
     { "type": "text", "id": "empty_text", "label": "Empty log: text", "default": "The first entry from the pit shows up here." },
+    { "type": "text", "id": "empty_link_text", "label": "Empty log: link", "default": "See the schedule" },
+    { "type": "url", "id": "empty_link_url", "label": "Empty log: link URL", "default": "/pages/schedule" },
     { "type": "header", "content": "Photo by type", "info": "Used when a post has no featured image. A post with several tags uses Win, then Competition, Exhibition, Test." },
     { "type": "image_picker", "id": "photo_test", "label": "Test (also Milestone and Shop)" },
     { "type": "image_picker", "id": "photo_exhibition", "label": "Exhibition" },

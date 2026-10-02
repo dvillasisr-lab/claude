@@ -4,18 +4,21 @@
   this page by the footer section (page handle "evil-list").
   Questions: faq_item entries whose "pages" list includes evil_list; if there are none, the Question blocks.
 {%- endcomment -%}
+{%- comment -%} paginate: a plain loop over metaobject values stops at 50 entries {%- endcomment -%}
+{%- assign fkeys = '' -%}
+{%- paginate metaobjects.faq_item.values by 250 -%}
+  {%- for f in metaobjects.faq_item.values -%}
+    {%- liquid
+      assign pgs = f.pages.value | join: ',' | downcase | replace: '-', '_'
+      unless pgs contains 'evil_list'
+        continue
+      endunless
+      assign o = f.order.value | default: 999 | plus: 10000
+      assign fkeys = fkeys | append: o | append: '|' | append: f.system.handle | append: ','
+    -%}
+  {%- endfor -%}
+{%- endpaginate -%}
 {%- liquid
-  assign faqs = metaobjects.faq_item.values
-  assign fkeys = ''
-  for f in faqs
-    assign pgs = f.pages.value | join: ',' | downcase | replace: '-', '_'
-    unless pgs contains 'evil_list'
-      continue
-    endunless
-    assign o = f.order.value | default: 999 | plus: 10000
-    assign ix = forloop.index | plus: 100
-    assign fkeys = fkeys | append: o | append: '-' | append: ix | append: ','
-  endfor
   assign fkeys = fkeys | split: ',' | sort
   assign eid = 'EvilList-' | append: section.id
 -%}
@@ -197,16 +200,12 @@
       <div>
         {%- if fkeys.size > 0 -%}
           {%- for fk in fkeys -%}
-            {%- assign want = fk | split: '-' | last | minus: 100 -%}
-            {%- for f in faqs -%}
-              {%- if forloop.index == want -%}
-                <details class="el-qa">
-                  <summary>{{ f.question.value }}</summary>
-                  <div class="el-qa__a">{{ f.answer | metafield_tag }}</div>
-                </details>
-                {%- break -%}
-              {%- endif -%}
-            {%- endfor -%}
+            {%- assign fh = fk | split: '|' | last -%}
+            {%- assign f = metaobjects.faq_item[fh] -%}
+            <details class="el-qa">
+              <summary>{{ f.question.value }}</summary>
+              <div class="el-qa__a">{{ f.answer | metafield_tag }}</div>
+            </details>
           {%- endfor -%}
         {%- else -%}
           {%- for block in section.blocks -%}
@@ -255,8 +254,8 @@
   .el-err{margin:0;font-size:var(--t-sm);font-weight:600;color:#FFB4A8}
   .el-err:empty{display:none}
   .el-err ul{margin:0;padding-left:18px}
-  .el-go{min-height:56px;font-size:var(--t-sm);background:var(--accent);border-color:var(--accent);color:var(--ink);box-shadow:0 6px 22px rgba(0,0,0,.35)}
-  .el-go:hover{background:#FFD83D;border-color:#FFD83D;color:var(--ink)}
+  .el-go.el-go{min-height:56px;font-size:var(--t-sm);background:var(--accent);border-color:var(--accent);color:var(--ink);box-shadow:0 6px 22px rgba(0,0,0,.35)}
+  .el-go.el-go:hover{background:#FFD83D;border-color:#FFD83D;color:var(--ink)}
   .el-go svg{width:18px;height:18px}
   .el-consent{margin:2px 0 0;font-size:var(--t-xs);line-height:1.55;color:#C9C6BD;max-width:60ch}
   .el-consent p{margin:0}

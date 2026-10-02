@@ -5,15 +5,20 @@
 {%- liquid
   assign page_key = section.settings.page_key | default: 'machine' | strip | downcase
   assign keys = ''
-  for e in shop.metaobjects.faq_item.values
-    assign pg = e.pages.value
-    if pg contains page_key
-      assign o = e.order.value | default: 999 | plus: 10000
-      assign keys = keys | append: o | append: '|' | append: e.system.handle | append: ','
-    endif
-  endfor
-  assign keys = keys | split: ',' | sort
 -%}
+{%- comment -%} paginate: a plain loop over metaobject values stops at 50 entries {%- endcomment -%}
+{%- paginate metaobjects.faq_item.values by 250 -%}
+  {%- for e in metaobjects.faq_item.values -%}
+    {%- liquid
+      assign pg = e.pages.value | join: ',' | downcase
+      if pg contains page_key
+        assign o = e.order.value | default: 999 | plus: 10000
+        assign keys = keys | append: o | append: '|' | append: e.system.handle | append: ','
+      endif
+    -%}
+  {%- endfor -%}
+{%- endpaginate -%}
+{%- assign keys = keys | split: ',' | sort -%}
 {%- if keys.size > 0 or request.design_mode -%}
 <section class="sect" aria-labelledby="faq-h-{{ section.id }}">
   <div class="wrap mx-faq">
@@ -27,7 +32,7 @@
       {%- endif -%}
       {%- for k in keys -%}
         {%- assign h = k | split: '|' | last -%}
-        {%- assign q = shop.metaobjects.faq_item[h] -%}
+        {%- assign q = metaobjects.faq_item[h] -%}
         <details{% if forloop.first and section.settings.open_first %} open{% endif %}>
           <summary>{{ q.question.value | escape }}</summary>
           <div class="mx-faq__a">{{ q.answer | metafield_tag }}</div>
@@ -45,7 +50,7 @@
   "mainEntity": [
     {%- for k in keys -%}
       {%- assign h = k | split: '|' | last -%}
-      {%- assign q = shop.metaobjects.faq_item[h] -%}
+      {%- assign q = metaobjects.faq_item[h] -%}
       {
         "@type": "Question",
         "name": {{ q.question.value | json }},

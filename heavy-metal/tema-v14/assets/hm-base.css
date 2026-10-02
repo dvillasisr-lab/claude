@@ -458,6 +458,9 @@ input[type=radio]:focus-visible,input[type=checkbox]:focus-visible{outline:2px s
 /* phones: loose text links get a taller touch area without moving the layout */
 @media (hover:none){a.link,button.link{padding-block:12px;margin-block:-12px}}
 
+/* Dawn compatibility: Dawn's base.css hides every div:empty, which also hid decorative divs (hero flag pole, dirt, rails).
+   Same specificity as Dawn's rule and loaded later, so it wins; any class rule with higher specificity still decides. */
+:where(.hm-body) div:empty{display:revert}
 /* Dawn compatibility: Dawn hides empty elements; our overlays and tiles stay visible when shown */
 .hm-body .scrim:empty:not([hidden]),.hm-body .thumb:empty{display:block}
 .hm-body .cart-count:empty{display:none}

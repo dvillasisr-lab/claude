@@ -144,6 +144,9 @@
       var nC = done.filter(function (e) { return !isExh(e); }).length;
       var nE = done.filter(isExh).length;
       var nW = done.filter(isWin).length;
+      /* Season stats (metaobject) win when they are higher: they count pulls that are not listed */
+      var st = (DATA.stats || {})[S.year];
+      if (st) { nC = Math.max(nC, st.c || 0); nE = Math.max(nE, st.e || 0); nW = Math.max(nW, st.w || 0); }
       panelPast.innerHTML = past.length
         ? '<p class="sc-sum"><span>' + S.year + (cur ? ' so far:' : ':') + '</span>' + stat('Competitions', nC) + stat('Exhibitions', nE) + stat('Wins', nW || 'Coming soon') + '</p>' +
           '<div class="sc-table-wrap"><table class="sc-table">' + HEAD_PAST + '<tbody>' + past.map(rowPast).join('') + '</tbody></table></div>'

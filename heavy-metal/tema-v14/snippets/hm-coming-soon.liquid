@@ -5,6 +5,8 @@
   @param {string} [id] - Unique form id (default HmComingSoon)
   @param {string} [heading] - Heading text (default "Coming soon")
   @param {string} [text] - Text under the heading
+  @param {string} [label] - Small label above the heading (default "Merch")
+  @param {string} [tags] - Customer tags for the signup (default "evil-list,notify")
 
   @example
   {% render 'hm-coming-soon', id: 'HmSoonShop' %}
@@ -12,15 +14,17 @@
 {%- liquid
   assign form_id = id | default: 'HmComingSoon'
   assign title = heading | default: 'Coming soon'
+  assign eyebrow = label | default: 'Merch'
+  assign form_tags = tags | default: 'evil-list,notify'
   assign body = text | default: 'The first drop from the crew behind “The Evil One” is on its way. Get a heads up when it lands.'
 -%}
 <div class="soon">
   <span class="soon__bolt" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
-  <p class="label">Merch</p>
+  <p class="label">{{ eyebrow | escape }}</p>
   <h2 class="h2">{{ title | escape }}</h2>
   <p class="muted">{{ body | escape }}</p>
   {%- form 'customer', id: form_id, class: 'soon__form-wrap', novalidate: 'novalidate', data-hm-notify-form: '' -%}
-    <input type="hidden" name="contact[tags]" value="evil-list,notify">
+    <input type="hidden" name="contact[tags]" value="{{ form_tags | escape }}">
     <div class="soon__form" data-hm-form-fields>
       <label class="vh" for="{{ form_id }}-email">Email</label>
       <input

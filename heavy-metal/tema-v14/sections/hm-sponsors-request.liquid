@@ -7,6 +7,21 @@
   (Sold out = waitlist, Hidden = not listed) plus "Not sure yet" (info kit).
   Any link on the page with data-sp-pkg="<tier handle>" (or "unsure") preselects that package here.
 {%- endcomment -%}
+{%- comment -%} paginate: a plain loop over metaobject values stops at 50 entries {%- endcomment -%}
+{%- assign fkeys = '' -%}
+{%- paginate metaobjects.faq_item.values by 250 -%}
+  {%- for f in metaobjects.faq_item.values -%}
+    {%- liquid
+      assign pgs = f.pages.value | join: ',' | downcase
+      unless pgs contains 'sponsors'
+        continue
+      endunless
+      assign o = f.order.value | default: 999 | plus: 10000
+      assign fkeys = fkeys | append: o | append: '|' | append: f.system.handle | append: ','
+    -%}
+  {%- endfor -%}
+{%- endpaginate -%}
+{%- assign fkeys = fkeys | split: ',' | sort -%}
 {%- liquid
   assign season = settings.hm_season | default: 'this season'
 
@@ -41,18 +56,6 @@
     assign pitch_line = 'Your brand in front of the fans at every pull we run'
   endif
 
-  assign faqs = metaobjects.faq_item.values
-  assign fkeys = ''
-  for f in faqs
-    assign pgs = f.pages.value | join: ',' | downcase
-    unless pgs contains 'sponsors'
-      continue
-    endunless
-    assign o = f.order.value | default: 999 | plus: 10000
-    assign ix = forloop.index | plus: 100
-    assign fkeys = fkeys | append: o | append: '-' | append: ix | append: ','
-  endfor
-  assign fkeys = fkeys | split: ',' | sort
 
   assign tiers = metaobjects.sponsor_tier.values
   assign tkeys = ''
@@ -85,18 +88,14 @@
       {%- capture ld_items -%}
         {%- if fkeys.size > 0 -%}
           {%- for fk in fkeys -%}
-            {%- assign want = fk | split: '-' | last | minus: 100 -%}
-            {%- for f in faqs -%}
-              {%- if forloop.index == want -%}
-                {%- liquid
-                  assign q_txt = f.question.value
-                  assign a_txt = f.answer | metafield_text | replace: '[pitch]', pitch_line | replace: '[pulls]', pulls_line
-                -%}
-                {%- unless forloop.parentloop.first %},{% endunless -%}
-                {"@type":"Question","name":{{ q_txt | json }},"acceptedAnswer":{"@type":"Answer","text":{{ a_txt | json }}}}
-                {%- break -%}
-              {%- endif -%}
-            {%- endfor -%}
+            {%- liquid
+              assign fh = fk | split: '|' | last
+              assign f = metaobjects.faq_item[fh]
+              assign q_txt = f.question.value
+              assign a_txt = f.answer | metafield_text | replace: '[pitch]', pitch_line | replace: '[pulls]', pulls_line
+            -%}
+            {%- unless forloop.first %},{% endunless -%}
+            {"@type":"Question","name":{{ q_txt | json }},"acceptedAnswer":{"@type":"Answer","text":{{ a_txt | json }}}}
           {%- endfor -%}
         {%- else -%}
           {%- for block in section.blocks -%}
@@ -109,18 +108,14 @@
 
       {%- if fkeys.size > 0 -%}
         {%- for fk in fkeys -%}
-          {%- assign want = fk | split: '-' | last | minus: 100 -%}
-          {%- for f in faqs -%}
-            {%- if forloop.index == want -%}
-              <details>
-                <summary>{{ f.question.value }}</summary>
-                <div class="faq__a">
-                  {{ f.answer | metafield_tag | replace: '[pitch]', pitch_line | replace: '[pulls]', pulls_line }}
-                </div>
-              </details>
-              {%- break -%}
-            {%- endif -%}
-          {%- endfor -%}
+          {%- assign fh = fk | split: '|' | last -%}
+          {%- assign f = metaobjects.faq_item[fh] -%}
+          <details>
+            <summary>{{ f.question.value }}</summary>
+            <div class="faq__a">
+              {{ f.answer | metafield_tag | replace: '[pitch]', pitch_line | replace: '[pulls]', pulls_line }}
+            </div>
+          </details>
         {%- endfor -%}
       {%- else -%}
         {%- for block in section.blocks -%}

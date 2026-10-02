@@ -5,6 +5,9 @@
 {%- endcomment -%}
 {%- liquid
   assign coll = section.settings.collection
+  if coll == blank
+    assign coll = collections.all
+  endif
   assign limit = section.settings.products_count
   assign extra = section.settings.extra_product
   if extra != blank

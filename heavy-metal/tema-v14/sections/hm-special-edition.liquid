@@ -256,12 +256,24 @@
     {%- else -%}
       <div class="hm-se__none">
         <h1 class="h1">Special edition</h1>
-        <p class="muted">{{ section.settings.empty_text | escape }}</p>
+        {%- render 'hm-coming-soon',
+          id: 'HmSoonSpecial',
+          label: 'Next special edition',
+          heading: 'Coming soon',
+          text: section.settings.empty_text,
+          tags: 'evil-list,notify,special-edition'
+        -%}
       </div>
     {%- endif -%}
   </div>
 
-  {%- if section.settings.show_archive -%}
+  {%- liquid
+    assign show_past = section.settings.show_archive
+    if p == blank and archive.products_count == 0
+      assign show_past = false
+    endif
+  -%}
+  {%- if show_past -%}
     <section class="sect--white past" aria-labelledby="hm-se-past-{{ section.id }}" data-se-past>
       <div class="wrap">
         <div class="sect-head">
@@ -404,7 +416,8 @@
   .hm-se .facts svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   .hm-se .facts p { margin: 0; }
   .hm-se .facts b, .hm-se .facts strong { color: var(--ink); }
-  .hm-se__none { padding-block: var(--sect); display: grid; gap: 10px; }
+  .hm-se__none { padding-block: 16px var(--sect); display: grid; gap: 20px; }
+  .hm-se__none .h1 { margin: 0; }
   .hm-se .past { padding-block: clamp(32px, 4vw, 48px); }
   .hm-se .past .sect-head p { margin: 0; font-size: var(--t-xs); color: var(--mute); }
   .hm-se .yrs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }

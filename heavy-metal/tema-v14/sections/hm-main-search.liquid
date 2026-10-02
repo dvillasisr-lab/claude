@@ -146,11 +146,10 @@
       </section>
     {%- endif -%}
   {%- endif -%}
-  <div class="srp-end"></div>
 </div>
 
 {% stylesheet %}
-  .hm-srp { overflow-x: clip; }
+  .hm-srp { overflow-x: clip; padding-bottom: var(--sect); }
   .hm-srp .srp-head { padding-block: 24px 20px; border-bottom: 1px solid var(--line); }
   .hm-srp .srp-head .h1 { margin: 0; line-height: 1.2; overflow-wrap: anywhere; }
   .hm-srp .srp-form { display: flex; max-width: 640px; margin-top: 14px; }
@@ -164,7 +163,6 @@
   }
   .hm-srp .srp-count { margin: 10px 0 0; font-size: var(--t-xs); color: var(--mute); }
   .hm-srp .srp-sect { padding-block: 28px 0; }
-  .hm-srp .srp-end { padding-bottom: var(--sect); }
   .hm-srp .srp-pages { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); max-width: 860px; }
   .hm-srp .srp-pages a { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--line); text-decoration: none; }
   .hm-srp .srp-pages a:hover .srp-pages__t { text-decoration: underline; text-underline-offset: 3px; }

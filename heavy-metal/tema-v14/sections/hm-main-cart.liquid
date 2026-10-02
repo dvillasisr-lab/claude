@@ -21,13 +21,20 @@
   </div>
 
   {%- if cart.item_count == 0 or count == 0 -%}
-    <div class="cempty">
-      <p style="margin:0">Your cart is empty.</p>
-      <p class="cempty__links">
-        <a href="{{ routes.all_products_collection_url }}">Shop the drop</a>
-        <a href="{{ best_url }}">Best sellers</a>
-      </p>
-    </div>
+    {%- if collections.all.all_products_count == 0 -%}
+      <div class="cempty hm-cartpage__empty">
+        <p class="cempty__lead">Your cart is empty.</p>
+        {%- render 'hm-coming-soon', id: 'HmSoonCart' -%}
+      </div>
+    {%- else -%}
+      <div class="cempty hm-cartpage__empty">
+        <p class="cempty__lead">Your cart is empty.</p>
+        <div class="cempty__links">
+          <a class="btn" href="{{ routes.all_products_collection_url }}">Shop the drop</a>
+          <a href="{{ best_url }}">Best sellers</a>
+        </div>
+      </div>
+    {%- endif -%}
   {%- else -%}
     <form action="{{ routes.cart_url }}" method="post" id="hm-cart-form" class="hm-cartpage__grid" novalidate>
       <div>
@@ -109,6 +116,10 @@
   .hm-cartpage { padding-block: clamp(20px, 3vw, 40px) var(--sect); }
   .hm-cartpage__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 20px; margin-bottom: 20px; }
   .hm-cartpage__head .h1 { margin: 0; }
+  .hm-cartpage__empty { gap: 20px; }
+  .hm-cartpage__empty .cempty__lead { margin: 0; font-size: var(--t-md); color: var(--soft); }
+  .hm-cartpage__empty .cempty__links { align-items: center; margin: 0; }
+  .hm-cartpage__empty .cempty__links .btn { text-decoration: none; }
   .hm-cartpage__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; align-items: start; }
   @media (min-width: 900px) { .hm-cartpage__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 380px); gap: clamp(32px, 4vw, 64px); } }
   .hm-cartpage .line { grid-template-columns: 96px minmax(0, 1fr) auto; padding-bottom: 14px; border-bottom: 1px solid var(--line); }

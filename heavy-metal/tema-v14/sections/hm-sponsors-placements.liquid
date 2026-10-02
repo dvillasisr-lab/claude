@@ -122,6 +122,18 @@
                       {%- endfor -%}
                     {%- endfor -%}
                   {%- endcapture -%}
+                  {%- comment -%} No package references yet: use the "Package details" lines as they are {%- endcomment -%}
+                  {%- if chips == blank and pk_handles == blank and p.package_details.value != blank -%}
+                    {%- capture chips -%}
+                      {%- for line in p.package_details.value -%}
+                        {%- liquid
+                          assign raw_k = line | split: ':' | first
+                          assign detail = line | remove_first: raw_k | remove_first: ':' | strip
+                        -%}
+                        <li><b>{{ raw_k | strip | escape }}</b>{%- if detail != blank %} · {{ detail | escape }}{% endif -%}</li>
+                      {%- endfor -%}
+                    {%- endcapture -%}
+                  {%- endif -%}
                   {%- if chips != blank -%}
                     <ul class="sp-chips" aria-label="Included in">
                       {{ chips }}

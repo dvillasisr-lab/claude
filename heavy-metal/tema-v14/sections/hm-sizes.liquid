@@ -86,11 +86,15 @@
           {{ block.shopify_attributes }}
         >
           <header>
-            {%- if block.settings.image != blank -%}
-              <span class="ico" aria-hidden="true">
+            <span class="ico" aria-hidden="true">
+              {%- if block.settings.image != blank -%}
                 {{- block.settings.image | image_url: width: 160 | image_tag: widths: '80, 160', sizes: '56px', loading: 'lazy', alt: '' -}}
-              </span>
-            {%- endif -%}
+              {%- elsif block.settings.style == 'hats' or block.settings.style == 'cap' or block.settings.style == 'beanie' -%}
+                <svg viewBox="0 0 48 48"><path d="M8 32c0-10 7-17 16-17s16 7 16 17Z"/><path d="M6 32h36c0 2-2 4-6 4H10c-3 0-4-2-4-4Z"/></svg>
+              {%- else -%}
+                <svg viewBox="0 0 48 48"><path d="M18 8 8 12 3 22l7 3 3-5v20h22V20l3 5 7-3-5-10-10-4c-1 3-3 5-6 5s-5-2-6-5Z"/></svg>
+              {%- endif -%}
+            </span>
             <div>
               <h2 class="h2" id="t-{{ key }}-{{ sid }}">{{ block.settings.label | escape }}</h2>
               {%- if block.settings.subtitle != blank -%}<p>{{ block.settings.subtitle | escape }}</p>{%- endif -%}
@@ -102,10 +106,35 @@
           {%- endif -%}
 
           {%- if found == 0 -%}
-            <p class="sz-empty">{{ section.settings.empty_text | escape }}</p>
-            {%- if request.design_mode -%}
-              <p class="sz-empty">Add a Size chart entry with style “{{ styles | join: '” or “' }}” in Content &gt; Metaobjects.</p>
-            {%- endif -%}
+            {%- assign show_fig = block.settings.show_figure -%}
+            {%- if block.settings.style == 'hats' or block.settings.style == 'cap' or block.settings.style == 'beanie' -%}{%- assign show_fig = false -%}{%- endif -%}
+            <div class="chart{% unless show_fig %} chart--solo{% endunless %}">
+              <div class="sz-soon">
+                <span class="sz-soon__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18M8 3v18M16 3v18"/></svg></span>
+                <div>
+                  <p class="label">{{ block.settings.table_label | escape }}</p>
+                  <p class="sz-soon__t">{{ section.settings.empty_text | escape }}</p>
+                  {%- if section.settings.empty_help != blank -%}
+                    <p class="sz-soon__p">
+                      {{ section.settings.empty_help | escape }}
+                      <a href="{{ section.settings.empty_link | default: '/pages/contact' }}">{{ section.settings.empty_link_label | escape }}</a>
+                    </p>
+                  {%- endif -%}
+                  {%- if request.design_mode -%}
+                    <p class="sz-soon__p">Editor only: add a Size chart entry with style “{{ styles | join: '” or “' }}” in Content &gt; Metaobjects.</p>
+                  {%- endif -%}
+                </div>
+              </div>
+              {%- if show_fig -%}
+                <figure class="fig">
+                  <svg viewBox="0 0 200 190" role="img" aria-labelledby="fig-{{ key }}-{{ sid }}">
+                    <title id="fig-{{ key }}-{{ sid }}">Flat shirt with three measurements: A chest width armpit to armpit, B body length shoulder to hem, C sleeve shoulder seam to cuff</title>
+                    {{ fig_svg }}
+                  </svg>
+                  <figcaption>A: chest width · B: body length · C: sleeve</figcaption>
+                </figure>
+              {%- endif -%}
+            </div>
           {%- else -%}
             <div class="tools">
               <p class="label">{{ block.settings.table_label | escape }}</p>
@@ -264,6 +293,14 @@
   .hm-sizes .sz-doc>header p{margin:2px 0 0;font-size:var(--t-xs);color:var(--mute)}
   .hm-sizes .ico{flex:none;width:56px;height:56px;background:var(--tile);display:grid;place-items:center;overflow:hidden}
   .hm-sizes .ico img{width:100%;height:100%;object-fit:contain}
+  .hm-sizes .ico svg{width:34px;height:34px;fill:var(--ink)}
+  .hm-sizes .sz-soon{display:flex;gap:16px;align-items:flex-start;padding:24px;background:var(--surface);border:1px dashed var(--line);min-height:100%;box-sizing:border-box}
+  .hm-sizes .sz-soon .label{margin:0 0 6px}
+  .hm-sizes .sz-soon__ico{flex:none;width:40px;height:40px;display:grid;place-items:center;background:var(--tile, #EDEBE6)}
+  .hm-sizes .sz-soon__ico svg{width:22px;height:22px;fill:none;stroke:var(--mute);stroke-width:1.6}
+  .hm-sizes .sz-soon__t{margin:0;font-family:var(--f-head);font-weight:800;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.02em;color:var(--ink)}
+  .hm-sizes .sz-soon__p{margin:8px 0 0;color:var(--soft);font-size:var(--t-sm);max-width:52ch}
+  .hm-sizes .sz-soon__p a{color:var(--ink);font-weight:600;text-decoration:underline;text-underline-offset:3px}
   .hm-sizes .sz-doc p{margin:0 0 10px;max-width:80ch}
   .hm-sizes .sz-doc a{color:var(--ink);text-underline-offset:3px}
   .hm-sizes .sz-empty{padding:12px;background:var(--surface);border:1px solid var(--line)}
@@ -331,6 +368,9 @@
     { "type": "text", "id": "heading", "label": "Heading", "default": "Size guide" },
     { "type": "text", "id": "nav_label", "label": "Tab list label (screen readers)", "default": "Size charts" },
     { "type": "text", "id": "empty_text", "label": "Text when a style has no chart yet", "default": "Measurements for this style are coming soon." },
+    { "type": "text", "id": "empty_help", "label": "Help text when a style has no chart yet", "default": "Need a size before then? We’ll send you the exact numbers." },
+    { "type": "text", "id": "empty_link_label", "label": "Help link label", "default": "Ask us" },
+    { "type": "url", "id": "empty_link", "label": "Help link", "info": "Empty = /pages/contact" },
     { "type": "text", "id": "policy_label", "label": "Refund Policy link label", "default": "Refund Policy" },
     { "type": "url", "id": "policy_link", "label": "Refund Policy link", "info": "Empty = /pages/policies?p=refund" },
     { "type": "header", "content": "How to measure" },

@@ -118,6 +118,20 @@
           h.textContent = s.textContent.trim();
           p.parentNode.replaceChild(h, p);
         });
+        /* Shopify policy bodies often repeat the policy name as their first heading ("1. Refund policy"): drop it */
+        var norm = function (s) { return (s || '').replace(/^\s*\d+\.\s*/, '').replace(/\s+/g, ' ').trim().toLowerCase(); };
+        var firstH = text.querySelector('h1, h2, h3, h4');
+        if (firstH && norm(firstH.textContent) === norm(d.getAttribute('data-name'))) firstH.parentNode.removeChild(firstH);
+        /* plain-text subheads ("Lost packages"): a short line with no punctuation, followed by a longer paragraph */
+        [].forEach.call(text.querySelectorAll(':scope > p'), function (p) {
+          var t = p.textContent.trim();
+          var next = p.nextElementSibling;
+          if (!t || t.length > 60 || /[.:;!?,]$/.test(t) || t.indexOf(':') !== -1 || p.querySelector('a')) return;
+          if (!next || next.tagName !== 'P' || next.textContent.trim().length < 80) return;
+          var h = document.createElement('h3');
+          h.textContent = t;
+          p.parentNode.replaceChild(h, p);
+        });
         [].forEach.call(text.querySelectorAll('h2, h3'), function (h, i) {
           if (!h.id && /black smoke guarantee/i.test(h.textContent) && !document.getElementById('bsg')) h.id = 'bsg';
           if (!h.id) h.id = key + '-' + (i + 1);
