@@ -1,7 +1,7 @@
 {% doc %}
   Quick add size sheet (bottom sheet on phones, small dialog on desktop). Render once from layout/theme.liquid.
   Opened by any `[data-quick="<handle>"]` button (product cards, cart add-ons, Crew Pack upgrade).
-  Sizes come from the product variants (AJAX `/products/<handle>.js`); sold out sizes are disabled.
+  Colors (when there are 2 or more) and sizes come from the product variants (AJAX `/products/<handle>.js`); sold out sizes are disabled.
   `assets/hm-quick-add.js` also runs the card image arrows and opens the Notify me dialog (`hm-notify-modal`).
 
   @example
@@ -31,6 +31,10 @@
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
     </button>
   </div>
+  <div class="hm-qs__colors" data-hm-qs-colors hidden>
+    <p class="label" id="hm-qs-color-label">Color</p>
+    <div class="hm-qs__colorlist" data-hm-qs-color-list role="group" aria-labelledby="hm-qs-color-label"></div>
+  </div>
   <p class="label" id="hm-qs-label">Select a size</p>
   <div class="qsheet__sizes" data-hm-qs-sizes role="group" aria-labelledby="hm-qs-label" aria-busy="true"></div>
   <p class="small hm-qs__err" data-hm-qs-err role="alert"></p>
@@ -45,6 +49,11 @@
   .hm-qs .qsheet__sizes { grid-template-columns: repeat(auto-fill, minmax(56px, 1fr)); }
   .hm-qs .qsheet__sizes button { color: var(--ink); padding: 0 6px; }
   .hm-qs .qsheet__sizes button[aria-busy="true"] { opacity: .5; }
+  .hm-qs__colors { display: grid; gap: 8px; }
+  .hm-qs__colorlist { display: flex; flex-wrap: wrap; gap: 6px; }
+  .hm-qs__colorlist button { min-height: 40px; padding: 0 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-weight: 600; cursor: pointer; }
+  .hm-qs__colorlist button[aria-pressed="true"] { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+  .hm-qs__colorlist button:disabled { color: var(--mute); text-decoration: line-through; cursor: not-allowed; }
   .hm-qs__err { margin: 0; color: var(--alert); font-weight: 600; }
   .hm-qs__err:empty { display: none; }
   .hm-qs-scrim, .hm-nfy-scrim { z-index: 84; }

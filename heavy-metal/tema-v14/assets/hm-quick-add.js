@@ -48,28 +48,44 @@
   }
   function optName(o) { return (typeof o === 'string' ? o : o.name) || ''; }
 
-  function fill(p) {
+  /* color (v14.1): if the product has more than one color, the sheet shows color buttons first; sizes follow the chosen color */
+  function fill(p, color) {
     var s = sheet();
     var names = (p.options || []).map(optName);
     var si = -1, ci = -1;
     names.forEach(function (n, i) { if (/size/i.test(n)) si = i; else if (/colou?r/i.test(n)) ci = i; });
-    var base = p.variants.filter(function (v) { return v.available; })[0] || p.variants[0];
+    function vals(i) {
+      var out = ((p.options[i] && p.options[i].values) || []).slice();
+      if (!out.length) p.variants.forEach(function (v) { if (out.indexOf(v.options[i]) < 0) out.push(v.options[i]); });
+      return out;
+    }
+    var base = p.variants.filter(function (v) { return v.available && (ci < 0 || !color || v.options[ci] === color); })[0]
+      || p.variants.filter(function (v) { return v.available; })[0] || p.variants[0];
+    if (ci > -1 && !color) color = base.options[ci];
     var label = s.querySelector('#hm-qs-label');
     s.querySelector('#hm-qs-name').textContent = p.title;
     s.querySelector('[data-hm-qs-price]').textContent = p.price_varies ? 'From ' + money(p.price_min) : money(p.price);
-    s.querySelector('[data-hm-qs-color]').textContent = ci > -1 ? base.options[ci] : 'One color';
+    s.querySelector('[data-hm-qs-color]').textContent = ci > -1 ? color : 'One color';
     s.querySelector('[data-hm-qs-more]').href = (p.url || root() + '/products/' + p.handle);
+
+    var cbox = s.querySelector('[data-hm-qs-colors]'), colors = ci > -1 ? vals(ci) : [];
+    if (cbox) {
+      cbox.hidden = colors.length < 2;
+      cbox.querySelector('[data-hm-qs-color-list]').innerHTML = colors.length < 2 ? '' : colors.map(function (c) {
+        var any = p.variants.some(function (v) { return v.options[ci] === c && v.available; });
+        return '<button type="button" data-qs-color="' + esc(c) + '" aria-pressed="' + (c === color) + '"' + (any ? '' : ' disabled aria-label="' + esc(c) + ', sold out"') + '>' + esc(c) + '</button>';
+      }).join('');
+    }
+
     var buttons;
     if (si > -1) {
       label.textContent = 'Select a size';
-      var values = (p.options[si].values || []).slice();
-      if (!values.length) p.variants.forEach(function (v) { if (values.indexOf(v.options[si]) < 0) values.push(v.options[si]); });
-      buttons = values.map(function (val) {
+      buttons = vals(si).map(function (val) {
         var v = p.variants.filter(function (x) {
-          return x.options.every(function (o, i) { return i === si ? o === val : o === base.options[i]; });
+          return x.options.every(function (o, i) { return i === si ? o === val : (i === ci ? o === color : o === base.options[i]); });
         })[0];
-        var off = !v || !v.available;
-        return '<button type="button" data-qs-variant="' + (v ? v.id : '') + '"' + (off ? ' disabled aria-label="' + esc(val) + ', sold out"' : '') + '>' + esc(val) + '</button>';
+        if (!v) return '<button type="button" disabled aria-label="' + esc(val) + ', not available in ' + esc(color) + '">' + esc(val) + '</button>';
+        return '<button type="button" data-qs-variant="' + v.id + '"' + (v.available ? '' : ' disabled aria-label="' + esc(val) + ', sold out"') + '>' + esc(val) + '</button>';
       });
     } else {
       label.textContent = 'Select an option';
@@ -115,6 +131,12 @@
       return;
     }
     var s = sheet(); if (!s) return;
+    var cb = e.target.closest('[data-qs-color]');
+    if (cb && s.contains(cb) && !cb.disabled && cache[current]) {
+      fill(cache[current], cb.getAttribute('data-qs-color'));
+      var again = s.querySelector('[data-qs-color="' + cb.getAttribute('data-qs-color').replace(/"/g, '\\"') + '"]'); if (again) again.focus();
+      return;
+    }
     if (e.target.closest('[data-hm-qs-close]') || e.target.closest('[data-hm-qs-scrim]')) { closeSheet(); return; }
     var b = e.target.closest('[data-qs-variant]');
     if (b && s.contains(b) && !b.disabled) {

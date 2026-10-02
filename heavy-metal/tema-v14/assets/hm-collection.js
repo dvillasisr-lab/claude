@@ -153,6 +153,7 @@
     if (!rest || cols - rest < 2) return;
     var node = tpl.content.firstElementChild.cloneNode(true);
     node.style.gridColumn = 'span ' + (cols - rest);
+    if (cols - rest > 2) node.setAttribute('data-wide', '');
     grid.appendChild(node);
   };
 

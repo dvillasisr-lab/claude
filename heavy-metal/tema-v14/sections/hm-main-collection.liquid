@@ -550,8 +550,10 @@
   .plp-crumbs.vh:focus-within { position: static !important; width: auto; height: auto; clip: auto; overflow: visible; white-space: normal; font-size: var(--t-xs); margin-bottom: 8px; }
   .plp-crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; }
   .hm-plp .pgrid .card__name { text-wrap: balance; }
-  .plp-promo { display: grid; align-content: end; gap: 10px; padding: clamp(16px, 2vw, 28px); background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); text-decoration: none; color: var(--ink); min-height: 100%; }
+  .plp-promo { display: grid; align-content: center; gap: 10px; padding: clamp(16px, 2vw, 28px); background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--accent); text-decoration: none; color: var(--ink); min-height: 100%; }
   .plp-promo .h2 { margin: 0; }
+  .plp-promo[data-wide] { padding-inline: clamp(24px, 5vw, 72px); }
+  .plp-promo[data-wide] .h2 { font-size: var(--t-hero); line-height: 1; }
   .plp-promo p { margin: 0; font-size: var(--t-sm); color: var(--soft); max-width: 44ch; }
   .plp-promo .link { justify-self: start; text-decoration: underline; }
   .plp-promo:hover { border-color: var(--ink); }
