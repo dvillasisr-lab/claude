@@ -16,22 +16,87 @@
     <link rel="preload" as="font" href="{{ 'hm-archivo-latin.woff2' | asset_url }}" type="font/woff2" crossorigin>
     {% comment %}theme-check-enable AssetPreload{% endcomment %}
 
-    <title>
-      {{ page_title }}
-      {%- if current_tags %} | tagged "{{ current_tags | join: ', ' }}"{% endif -%}
-      {%- if current_page != 1 %} | Page {{ current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} | {{ shop.name }}{% endunless -%}
-    </title>
+    {%- comment -%}
+      SEO: title "Page · Heavy Metal Pro Stock: “The Evil One”" (brand added once), meta description with a
+      fallback per template. Titles or descriptions that say "Heavy Metal" without the full brand are treated
+      as outdated: a trailing " | Heavy Metal..." part is dropped and on the home page a safe default is used.
+      Long dashes are replaced so they never show in results.
+    {%- endcomment -%}
+    {%- liquid
+      assign hm_brand = settings.hm_brand_name | default: shop.name
+      assign hm_t = page_title | split: ' | Heavy Metal' | first | split: ' · Heavy Metal' | first | strip
+      if request.page_type == 'collection' and collection.handle == 'all' and page_title == collection.title
+        assign hm_t = 'Tractor Pulling Shirts and Merch: Shop the Pro Stock Team'
+      endif
+      if hm_t contains 'Heavy Metal'
+        unless hm_t contains hm_brand
+          if request.page_type == 'index'
+            assign hm_t = 'Pro Stock Tractor Pulling Team and Merch from Wisconsin'
+          endif
+        endunless
+      endif
+      if current_tags
+        assign hm_tags = current_tags | join: ', '
+        assign hm_t = hm_t | append: ' | tagged “' | append: hm_tags | append: '”'
+      endif
+      if current_page != 1
+        assign hm_t = hm_t | append: ' | Page ' | append: current_page
+      endif
+      assign hm_t = hm_t | replace: ' — ', ', ' | replace: ' – ', ', ' | replace: '—', ', ' | replace: '–', ', '
+      if hm_t contains hm_brand
+        assign hm_title = hm_t
+      elsif hm_t == blank
+        assign hm_title = hm_brand
+      else
+        assign hm_title = hm_t | append: ' · ' | append: hm_brand
+      endif
 
-    {%- if template.suffix == '3208' -%}
-      <meta name="robots" content="noindex">
+      assign hm_d = page_description | default: '' | strip_html | strip_newlines | strip
+      if hm_d contains 'Heavy Metal'
+        unless hm_d contains hm_brand
+          assign hm_d = ''
+        endunless
+      endif
+      if hm_d == blank
+        case request.page_type
+          when 'product'
+            assign hm_d = product.title | split: ' — ' | last | append: ' from ' | append: hm_brand | append: ', a Pro Stock tractor pulling team from Waterloo, Wisconsin. Printed when you order.'
+          when 'collection'
+            if collection.handle == 'all'
+              assign hm_d = 'Shop official tractor pulling shirts, hoodies and hats from ' | append: hm_brand | append: ', a Pro Stock pulling team from Waterloo, Wisconsin.'
+            elsif collection.description != blank
+              assign hm_d = collection.description | strip_html | strip_newlines | strip
+            else
+              assign hm_d = 'Shop ' | append: collection.title | append: ' from ' | append: hm_brand | append: ', a Pro Stock tractor pulling team from Waterloo, Wisconsin.'
+            endif
+          when 'blog'
+            assign hm_d = blog.title | append: ' from ' | append: hm_brand | append: ': tractor pull results, stories and build notes from the pits.'
+          when 'article'
+            assign hm_d = article.excerpt_or_content | strip_html | strip_newlines | strip
+          else
+            assign hm_d = hm_brand | append: ': Cat 3208 V8 Pro Stock tractor pulling team from Waterloo, Wisconsin. NTPA and PPL Badger State pulls, merch and sponsors.'
+        endcase
+      endif
+      assign hm_d = hm_d | replace: ' — ', ', ' | replace: ' – ', ', ' | replace: '—', ', ' | replace: '–', ', ' | truncate: 160
+    -%}
+    <title>{{ hm_title | escape }}</title>
+    <meta name="description" content="{{ hm_d | escape }}">
+
+    {%- liquid
+      assign hm_noindex = false
+      if template.suffix == '3208' and page.metafields.seo.hidden == blank
+        assign hm_noindex = true
+      endif
+      if request.page_type == 'search' or request.page_type == 'password'
+        assign hm_noindex = true
+      endif
+    -%}
+    {%- if hm_noindex -%}
+      <meta name="robots" content="noindex, follow">
     {%- endif -%}
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
-    {% endif %}
-
-    {% render 'meta-tags' %}
+    {% render 'meta-tags', hm_title: hm_t, hm_desc: hm_d, hm_brand: hm_brand %}
+    {% render 'hm-seo-schema', brand: hm_brand %}
 
     <script type="module">
       import * as StandardEvents from 'https://cdn.shopify.com/storefront/standard-events.js';
@@ -364,68 +429,6 @@
 
     <script src="{{ 'hm-core.js' | asset_url }}" defer="defer"></script>
 
-    {%- if template.name == 'index' -%}
-      {%- liquid
-        assign hm_brand = settings.hm_brand_name | default: shop.name
-        if settings.hm_logo != blank
-          assign hm_logo_url = settings.hm_logo | image_url: width: 1200 | prepend: 'https:'
-        else
-          assign hm_logo_url = 'logo-ink.svg' | asset_url | prepend: 'https:'
-        endif
-        assign hm_same = ''
-        if settings.hm_facebook_url != blank
-          assign hm_same = hm_same | append: settings.hm_facebook_url | append: '|'
-        endif
-        if settings.hm_instagram_url != blank
-          assign hm_same = hm_same | append: settings.hm_instagram_url | append: '|'
-        endif
-        assign hm_same = hm_same | split: '|'
-        assign hm_search_target = request.origin | append: routes.search_url | append: '?q={search_term_string}'
-      -%}
-      <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@graph": [
-            {
-              "@type": ["SportsTeam", "Organization"],
-              "@id": {{ request.origin | append: '/#team' | json }},
-              "name": {{ hm_brand | json }},
-              "url": {{ request.origin | append: routes.root_url | json }},
-              "sport": {{ settings.hm_sport | default: 'Tractor pulling' | json }},
-              "logo": {{ hm_logo_url | json }}
-              {%- if settings.hm_city != blank -%},
-              "location": {
-                "@type": "Place",
-                "address": {
-                  "@type": "PostalAddress",
-                  "addressLocality": {{ settings.hm_city | json }},
-                  "addressRegion": {{ settings.hm_region | json }},
-                  "postalCode": {{ settings.hm_postal | json }},
-                  "addressCountry": {{ settings.hm_country | default: 'US' | json }}
-                }
-              }
-              {%- endif -%}
-              {%- if hm_same.size > 0 -%},
-              "sameAs": {{ hm_same | json }}
-              {%- endif %}
-            },
-            {
-              "@type": "WebSite",
-              "@id": {{ request.origin | append: '/#website' | json }},
-              "name": {{ hm_brand | json }},
-              "url": {{ request.origin | append: routes.root_url | json }},
-              "publisher": { "@id": {{ request.origin | append: '/#team' | json }} },
-              "inLanguage": "en-US",
-              "potentialAction": {
-                "@type": "SearchAction",
-                "target": {{ hm_search_target | json }},
-                "query-input": "required name=search_term_string"
-              }
-            }
-          ]
-        }
-      </script>
-    {%- endif -%}
 
     <script>
       if (Shopify.designMode) {

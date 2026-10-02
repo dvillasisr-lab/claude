@@ -250,8 +250,16 @@
           {%- endif -%}
         </div>
       </section>
+      {%- liquid
+        assign se_ld = p | structured_data
+        assign se_vendor = p.vendor | json
+        assign se_brand = settings.hm_brand_name | default: shop.name | json
+        assign se_from = '"@type":"Brand","name":' | append: se_vendor
+        assign se_to = '"@type":"Brand","name":' | append: se_brand
+        assign se_ld = se_ld | replace: se_from, se_to
+      -%}
       <script type="application/ld+json">
-        {{ p | structured_data }}
+        {{ se_ld }}
       </script>
     {%- else -%}
       <div class="hm-se__none">

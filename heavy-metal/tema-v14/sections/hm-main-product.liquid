@@ -871,15 +871,14 @@
   </script>
   {%- liquid
     comment
-      Structured data: the supplier is the product vendor; never publish it as the brand.
+      Structured data: the brand is always the theme setting (settings.hm_brand_name), never the vendor.
     endcomment
     assign ld = p | structured_data
-    assign vendor_l = p.vendor | downcase
-    if vendor_l contains 'printify'
-      assign brand_json = settings.hm_brand_name | default: shop.name | json
-      assign vendor_json = p.vendor | json
-      assign ld = ld | replace: vendor_json, brand_json
-    endif
+    assign brand_json = settings.hm_brand_name | default: shop.name | json
+    assign vendor_json = p.vendor | json
+    assign brand_from = '"@type":"Brand","name":' | append: vendor_json
+    assign brand_to = '"@type":"Brand","name":' | append: brand_json
+    assign ld = ld | replace: brand_from, brand_to
   -%}
   <script type="application/ld+json">
     {{ ld }}

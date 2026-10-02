@@ -1,8 +1,14 @@
+{%- comment -%}
+  Open Graph and Twitter tags. hm_title / hm_desc / hm_brand come from layout/theme.liquid (already cleaned).
+  Image: the page image (product, article, collection image, or the social sharing image from
+  Online Store > Preferences), else the theme's "Logo for search engines and sharing" setting.
+{%- endcomment -%}
 {%- liquid
-  assign og_title = page_title | default: shop.name
+  assign og_brand = hm_brand | default: settings.hm_brand_name | default: shop.name
+  assign og_title = hm_title | default: page_title | default: og_brand
   assign og_url = canonical_url | default: request.origin
   assign og_type = 'website'
-  assign og_description = page_description | default: shop.description | default: shop.name
+  assign og_description = hm_desc | default: page_description | default: shop.description | default: og_brand
 
   if request.page_type == 'product'
     assign og_type = 'product'
@@ -11,19 +17,31 @@
   elsif request.page_type == 'password'
     assign og_url = request.origin
   endif
-%}
 
-<meta property="og:site_name" content="{{ shop.name }}">
+  assign og_image = page_image
+  if og_image == blank and settings.hm_logo != blank
+    assign og_image = settings.hm_logo
+  endif
+-%}
+
+<meta property="og:site_name" content="{{ og_brand | escape }}">
 <meta property="og:url" content="{{ og_url }}">
 <meta property="og:title" content="{{ og_title | escape }}">
 <meta property="og:type" content="{{ og_type }}">
 <meta property="og:description" content="{{ og_description | escape }}">
+<meta property="og:locale" content="en_US">
 
-{%- if page_image -%}
-  <meta property="og:image" content="http:{{ page_image | image_url }}">
-  <meta property="og:image:secure_url" content="https:{{ page_image | image_url }}">
-  <meta property="og:image:width" content="{{ page_image.width }}">
-  <meta property="og:image:height" content="{{ page_image.height }}">
+{%- if og_image != blank -%}
+  <meta property="og:image" content="https:{{ og_image | image_url: width: 1200 }}">
+  <meta property="og:image:secure_url" content="https:{{ og_image | image_url: width: 1200 }}">
+  {%- liquid
+    assign og_w = og_image.width | at_most: 1200
+    assign og_h = og_image.height | times: og_w | divided_by: og_image.width
+  -%}
+  <meta property="og:image:width" content="{{ og_w }}">
+  <meta property="og:image:height" content="{{ og_h }}">
+  <meta property="og:image:alt" content="{{ og_image.alt | default: og_title | escape }}">
+  <meta name="twitter:image" content="https:{{ og_image | image_url: width: 1200 }}">
 {%- endif -%}
 
 {%- if request.page_type == 'product' -%}
