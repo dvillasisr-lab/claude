@@ -44,8 +44,7 @@
         "phrase_2",
         "phrase_3"
       ],
-      "settings": {},
-      "disabled": true
+      "settings": {}
     },
     "shop": {
       "type": "hm-home-shop",
