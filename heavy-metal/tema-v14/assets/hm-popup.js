@@ -138,7 +138,8 @@
     if (btn) btn.setAttribute('aria-busy', 'true');
     fetch(form.action, { method: 'POST', body: new FormData(form), credentials: 'same-origin', headers: { Accept: 'text/html' } })
       .then(function (r) {
-        if (/\/challenge/.test(r.url)) { set(KEY_CLOSED, ''); form.submit(); return null; }
+        /* bot check or captcha: let the browser post the form for real, the reload opens the scratch card */
+        if (/\/challenge/.test(r.url) || r.status === 403 || r.status === 429) { HTMLFormElement.prototype.submit.call(form); return null; }
         if (/customer_posted=true/.test(r.url)) return { ok: true };
         return r.text().then(function (html) {
           var doc = new DOMParser().parseFromString(html, 'text/html');
