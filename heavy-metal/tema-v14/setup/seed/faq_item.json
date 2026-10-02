@@ -1508,7 +1508,7 @@
       },
       {
         "key": "answer",
-        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Chris F., owner, driver and crew chief, with more than 20 years in the sport. Meet the whole crew in \"}, {\"type\": \"link\", \"url\": \"/pages/our-story\", \"children\": [{\"type\": \"text\", \"value\": \"our story\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Chris F., owner, driver and crew chief, with more than 20 years in the sport. Meet the whole crew in \"}, {\"type\": \"link\", \"url\": \"/pages/about\", \"children\": [{\"type\": \"text\", \"value\": \"our story\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
       },
       {
         "key": "category",
