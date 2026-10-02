@@ -65,11 +65,12 @@ Notas por correo:
 2. Ábrelo en el celular y en la computadora. Revisa logo, botón y que se vean los productos.
 3. Prueba completa (recomendado): haz un pedido de prueba con un código de descuento del 100% y una dirección tuya. Así ves la confirmación real; luego márcalo como enviado con un número de guía para ver Shipping confirmation. Para la Gift Evil, compra una de prueba enviada a tu propio correo.
 
-## Lo que tienes que decidir
+## Decisiones tomadas
 
-1. **Voz**: en el boceto el tractor habla en primera persona ("I"). Donde el texto explica cómo se imprime usé "We print every item when you order it", como pediste. Si prefieres todo en "I", se cambia esa frase.
-2. **Barra de avance**: el boceto decía Ordered / Packed / Shipped / Delivered. Puse **Printed** en lugar de Packed para que cuadre con "Printed when you order". Si prefieres Packed, es un cambio de una palabra.
-3. **Responder al correo**: el boceto del carrito decía "Just hit reply". Lo cambié por el link al formulario de contacto, porque el contacto es solo por formulario.
-4. **Carrito abandonado**: ¿notificación clásica o automatización de Shopify Email? ¿Con descuento o sin descuento? (hoy va sin descuento, como en el boceto).
-5. **Pista 3208**: el "P.S. People who dig find page 3208." va en Order confirmation, Shipping confirmation y Delivered. Si la página 3208 no está publicada todavía, quítalo o publícala antes.
-6. **Logo**: si cambias el ancho en Customize email templates, 200 px se ve bien; menos de 160 hace la línea "Pro Stock" muy chica.
+1. **Voz**: todo habla “The Evil One” en primera persona. La línea de impresión dice "My crew prints every item when you order it".
+2. **Barra de avance**: Ordered / Printed / Shipped / Delivered, para que cuadre con "Printed when you order".
+3. **Contacto**: siempre el link al formulario, nunca "responde a este correo".
+4. **Carrito abandonado**: se usa la notificación clásica (Configuración > Notificaciones > Pago abandonado), sin descuento. Actívala en Configuración > Pago > Pagos abandonados: enviar a los clientes que abandonan, 10 horas después. Un descuento automático enseña a los clientes a abandonar el carrito para esperar el cupón.
+5. **Pista 3208**: la página 3208 ya está publicada, así que el "P.S." se queda.
+6. **Color de acento**: #1C1B19 (negro) en Personalizar plantillas de correo. El amarillo con texto blanco no se lee.
+7. **Logo**: 200 px de ancho.
