@@ -1,0 +1,137 @@
+{% doc %}
+  Site wide JSON-LD rendered once in the head by layout/theme.liquid.
+  Home: SportsTeam + Organization and WebSite with SearchAction.
+  Product, collection, page, blog and article: BreadcrumbList.
+  Sections add their own page specific types: Product (hm-main-product), FAQPage (hm-faq, hm-machine-faq,
+  hm-sponsors-request), SportsEvent (hm-schedule, only pulls with a date), BlogPosting (hm-article),
+  ContactPage (hm-contact).
+
+  @param {string} brand - Brand name (settings.hm_brand_name)
+
+  @example
+  {% render 'hm-seo-schema', brand: hm_brand %}
+{% enddoc %}
+{%- liquid
+  assign hm_root = request.origin | append: routes.root_url
+  assign hm_team_id = request.origin | append: '/#team'
+-%}
+{%- if request.page_type == 'index' -%}
+  {%- liquid
+    if settings.hm_logo != blank
+      assign hm_logo_url = settings.hm_logo | image_url: width: 1200 | prepend: 'https:'
+    else
+      assign hm_logo_url = 'logo-ink.svg' | asset_url | prepend: 'https:'
+    endif
+    assign hm_same = ''
+    if settings.hm_facebook_url != blank
+      assign hm_same = hm_same | append: settings.hm_facebook_url | append: '|'
+    endif
+    if settings.hm_instagram_url != blank
+      assign hm_same = hm_same | append: settings.hm_instagram_url | append: '|'
+    endif
+    assign hm_same = hm_same | split: '|'
+    assign hm_search_target = request.origin | append: routes.search_url | append: '?q={search_term_string}'
+  -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": ["SportsTeam", "Organization"],
+          "@id": {{ hm_team_id | json }},
+          "name": {{ brand | json }},
+          "url": {{ hm_root | json }},
+          "sport": {{ settings.hm_sport | default: 'Tractor pulling' | json }},
+          "logo": {{ hm_logo_url | json }}
+          {%- if page_image -%},
+          "image": {{ page_image | image_url: width: 1200 | prepend: 'https:' | json }}
+          {%- endif -%}
+          {%- if settings.hm_city != blank -%},
+          "location": {
+            "@type": "Place",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": {{ settings.hm_city | json }},
+              "addressRegion": {{ settings.hm_region | json }},
+              "postalCode": {{ settings.hm_postal | json }},
+              "addressCountry": {{ settings.hm_country | default: 'US' | json }}
+            }
+          }
+          {%- endif -%}
+          {%- if hm_same.size > 0 -%},
+          "sameAs": {{ hm_same | json }}
+          {%- endif %}
+        },
+        {
+          "@type": "WebSite",
+          "@id": {{ request.origin | append: '/#website' | json }},
+          "name": {{ brand | json }},
+          "url": {{ hm_root | json }},
+          "publisher": { "@id": {{ hm_team_id | json }} },
+          "inLanguage": "en-US",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": {{ hm_search_target | json }}
+            },
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
+    }
+  </script>
+{%- else -%}
+  {%- liquid
+    assign n2 = ''
+    assign u2 = ''
+    assign n3 = ''
+    assign u3 = ''
+    case request.page_type
+      when 'product'
+        if collection and collection.handle != blank
+          assign n2 = collection.title
+          assign u2 = request.origin | append: collection.url
+        else
+          assign n2 = 'Shop'
+          assign u2 = request.origin | append: routes.all_products_collection_url
+        endif
+        assign n3 = product.title
+        assign u3 = request.origin | append: product.url
+      when 'collection'
+        assign n2 = collection.title
+        if collection.handle == 'all'
+          assign n2 = 'Shop'
+        endif
+        assign u2 = request.origin | append: collection.url
+      when 'page'
+        unless template.suffix == '3208'
+          assign n2 = page.title
+          assign u2 = request.origin | append: page.url
+        endunless
+      when 'blog'
+        assign n2 = blog.title
+        assign u2 = request.origin | append: blog.url
+      when 'article'
+        assign n2 = blog.title
+        assign u2 = request.origin | append: blog.url
+        assign n3 = article.title
+        assign u3 = request.origin | append: article.url
+    endcase
+  -%}
+  {%- if n2 != '' -%}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": {{ hm_root | json }} },
+          { "@type": "ListItem", "position": 2, "name": {{ n2 | json }}, "item": {{ u2 | json }} }
+          {%- if n3 != '' -%},
+          { "@type": "ListItem", "position": 3, "name": {{ n3 | json }}, "item": {{ u3 | json }} }
+          {%- endif %}
+        ]
+      }
+    </script>
+  {%- endif -%}
+{%- endif -%}

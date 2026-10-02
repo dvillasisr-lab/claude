@@ -1,213 +1,265 @@
 {% layout none %}
+{%- comment -%}
+  Page the recipient opens from the gift card email (boceto v29 gift-card.html). Standalone: no store header or footer.
+  Logo, the card with its amount, the code with Copy, balance and expiry ("Never" when the card has no expiry date),
+  the buyer's message in handwriting (only when there is one), Shop now, Apple Wallet and Print.
+  This page can be served from Shopify's checkout domain, so every link to the store is absolute (shop.url).
+  Shopify also gives a QR code (gift_card.qr_identifier); it is only useful with Shopify POS, so it is not shown.
+{%- endcomment -%}
+{%- liquid
+  assign brand = settings.hm_brand_name | default: shop.name
+  assign card_name = gift_card.product.title | default: 'Gift Evil'
+  assign symbol = cart.currency.symbol | default: '$'
+  assign initial_amount = gift_card.initial_value | money_without_currency | remove: '.00'
+  assign balance_amount = gift_card.balance | money_without_trailing_zeros | strip_html
+  assign balance_full = gift_card.balance | money | strip_html
 
+  assign state = 'live'
+  if gift_card.enabled == false
+    assign state = 'off'
+  elsif gift_card.expired
+    assign state = 'expired'
+  elsif gift_card.balance <= 0
+    assign state = 'used'
+  endif
+
+  assign shop_url = shop.url | append: routes.all_products_collection_url
+  assign contact_url = shop.url | append: '/pages/contact?topic=order'
+  assign terms_url = ''
+  if shop.terms_of_service
+    assign terms_url = shop.url | append: shop.terms_of_service.url
+  endif
+-%}
 <!doctype html>
 <html lang="{{ request.locale.iso_code }}">
   <head>
-    <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="{{ settings.color_background }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#F6F5F2">
     <link rel="canonical" href="{{ canonical_url }}">
-
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
-
-    {%- unless settings.type_header_font.system? -%}
-      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
-    {%- endunless -%}
-
-    {%- assign formatted_balance = gift_card.balance | money_without_trailing_zeros | strip_html -%}
-
-    <title>{{ 'gift_cards.issued.title' | t: value: formatted_balance, shop: shop.name }}</title>
-
-    <meta name="description" content="{{ 'gift_cards.issued.subtext' | t }}">
+    <title>Your {{ card_name | escape }} gift card · {{ brand | escape }}</title>
+    <meta name="description" content="Your {{ card_name | escape }} gift card code and balance.">
+    <link rel="preload" as="font" href="{{ 'hm-archivo-latin.woff2' | asset_url }}" type="font/woff2" crossorigin>
 
     {{ content_for_header }}
 
-    {%- liquid
-      assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
-      assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
-      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
-    %}
-
-    {% style %}
-      {{ settings.type_body_font | font_face: font_display: 'swap' }}
-      {{ body_font_bold | font_face: font_display: 'swap' }}
-      {{ body_font_italic | font_face: font_display: 'swap' }}
-      {{ body_font_bold_italic | font_face: font_display: 'swap' }}
-      {{ settings.type_header_font | font_face: font_display: 'swap' }}
-
-      :root {
-        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
-        --font-body-style: {{ settings.type_body_font.style }};
-        --font-body-weight: {{ settings.type_body_font.weight }};
-
-        --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
-        --font-heading-style: {{ settings.type_header_font.style }};
-        --font-heading-weight: {{ settings.type_header_font.weight }};
-
-        --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
-        --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
-
-        {% assign scheme = settings.color_schemes | first %}
-        --color-background: {{ scheme.settings.background.red }},{{ scheme.settings.background.green }},{{ scheme.settings.background.blue }};
-        {% if scheme.settings.background_gradient != empty -%}
-          --gradient-background: {{ scheme.settings.background_gradient }};
-        {%- else -%}
-          --gradient-background: {{ scheme.settings.background }};
-        {%- endif %}
-        --color-foreground: {{ scheme.settings.text.red }},{{ scheme.settings.text.green }},{{ scheme.settings.text.blue }};
-        --color-button: {{ scheme.settings.button.red }},{{ scheme.settings.button.green }},{{ scheme.settings.button.blue }};
-        --color-button-label: {{ scheme.settings.button_label.red }},{{ scheme.settings.button_label.green }},{{ scheme.settings.button_label.blue }};
-        --color-secondary-button-label: {{ scheme.settings.secondary_button_label.red }},{{ scheme.settings.secondary_button_label.green }},{{ scheme.settings.secondary_button_label.blue }};
-        --color-shadow: {{ scheme.settings.shadow.red }},{{ scheme.settings.shadow.green }},{{ scheme.settings.shadow.blue }};
-
-        {% assign badge_scheme_id = settings.sold_out_badge_color_scheme | append: '' %}
-        {% assign badge_scheme = settings.color_schemes[badge_scheme_id] %}
-        --color-soldout-badge: {{ badge_scheme.settings.background.red }},{{ badge_scheme.settings.background.green }},{{ badge_scheme.settings.background.blue }};
-        --color-soldout-badge-label: {{ badge_scheme.settings.text.red }},{{ badge_scheme.settings.text.green }},{{ badge_scheme.settings.text.blue }};
-
-        --page-width: {{ settings.page_width | divided_by: 10 }}rem;
-        --page-width-margin: {% if settings.page_width == '1600' %}2{% else %}0{% endif %}rem;
-
-        --buttons-radius: {{ settings.buttons_radius }}px;
-        --buttons-border-width: {% if settings.buttons_border_opacity > 0 %}{{ settings.buttons_border_thickness }}{% else %}0{% endif %}px;
-        --buttons-border-opacity: {{ settings.buttons_border_opacity | divided_by: 100.0 }};
-        --buttons-shadow-opacity: {{ settings.buttons_shadow_opacity | divided_by: 100.0 }};
-        --buttons-shadow-horizontal-offset: {{ settings.buttons_shadow_horizontal_offset }}px;
-        --buttons-shadow-vertical-offset: {{ settings.buttons_shadow_vertical_offset }}px;
-        --buttons-shadow-blur-radius: {{ settings.buttons_shadow_blur }}px;
-        --buttons-border-offset: {% if settings.buttons_radius > 0 or settings.buttons_shadow_opacity > 0 %}0.3{% else %}0{% endif %}px;
-
-        --inputs-radius: {{ settings.inputs_radius }}px;
-        --inputs-border-width: {{ settings.inputs_border_thickness }}px;
-        --inputs-border-opacity: {{ settings.inputs_border_opacity | divided_by: 100.0 }};
-        --inputs-shadow-opacity: {{ settings.inputs_shadow_opacity | divided_by: 100.0 }};
-        --inputs-shadow-horizontal-offset: {{ settings.inputs_shadow_horizontal_offset }}px;
-        --inputs-shadow-vertical-offset: {{ settings.inputs_shadow_vertical_offset }}px;
-        --inputs-shadow-blur-radius: {{ settings.inputs_shadow_blur }}px;
+    {%- style -%}
+      @font-face {
+        font-family: 'Archivo';
+        font-style: normal;
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+        font-display: swap;
+        src: url({{ 'hm-archivo-latin.woff2' | asset_url }}) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
       }
-    {% endstyle %}
+      @font-face {
+        font-family: 'Archivo';
+        font-style: normal;
+        font-weight: 100 900;
+        font-stretch: 62% 125%;
+        font-display: swap;
+        src: url({{ 'hm-archivo-latin-ext.woff2' | asset_url }}) format('woff2');
+        unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+      }
+      @font-face {
+        font-family: 'Caveat';
+        font-style: normal;
+        font-weight: 400 700;
+        font-display: swap;
+        src: url({{ 'hm-caveat-latin.woff2' | asset_url }}) format('woff2');
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+      }
+    {%- endstyle -%}
+    {{ 'hm-base.css' | asset_url | stylesheet_tag }}
 
-    {%- unless settings.type_body_font.system? -%}
-      {% comment %}theme-check-disable AssetPreload{% endcomment %}
-      <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
-      {% comment %}theme-check-enable AssetPreload{% endcomment %}
-    {%- endunless -%}
-    {%- unless settings.type_header_font.system? -%}
-      {% comment %}theme-check-disable AssetPreload{% endcomment %}
-      <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
-      {% comment %}theme-check-enable AssetPreload{% endcomment %}
-    {%- endunless -%}
+    <style>
+      html, body { overflow-x: clip; }
+      body { background: var(--bg); }
+      .gc-top { display: flex; justify-content: center; padding: 18px var(--gutter); border-bottom: 1px solid var(--line); background: var(--surface); }
+      .gc-top a { display: inline-flex; min-height: 24px; align-items: center; }
+      .gc-top img { height: 20px; width: auto; display: block; }
+      .gc { max-width: 1200px; margin-inline: auto; padding: clamp(24px, 5vw, 64px) var(--gutter) var(--sect); display: grid; grid-template-columns: minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
+      @media (min-width: 900px) { .gc { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } }
 
-    {{ 'template-giftcard.css' | asset_url | stylesheet_tag }}
+      .gc-stage { display: grid; gap: 22px; justify-items: center; }
+      .gcard { position: relative; width: min(100%, 560px); aspect-ratio: 85.6 / 54; border-radius: clamp(10px, 1.4vw, 18px); overflow: hidden; color: var(--night-ink);
+        background: radial-gradient(60% 80% at 82% 30%, rgba(170, 178, 190, .30), transparent 70%), radial-gradient(70% 60% at 10% 0%, rgba(100, 110, 126, .35), transparent 70%), linear-gradient(160deg, #16191E 0%, #23282F 55%, #3A414B 100%);
+        box-shadow: 0 18px 40px -18px rgba(18, 18, 17, .55); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .gcard__in { position: absolute; inset: 0; padding: 7% 7.5%; display: grid; grid-template-rows: auto 1fr auto; }
+      .gcard__logo { width: 58%; height: auto; display: block; }
+      .gcard__sub { margin: 6px 0 0; font-family: var(--f-head); font-size: clamp(9px, 1.1vw, 13px); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; opacity: .75; }
+      .gcard__bolt { position: absolute; right: 7%; top: 9%; width: 16%; height: auto; }
+      .gcard__foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+      .gcard__name { margin: 0; font-family: var(--f-head); font-stretch: 70%; font-weight: 800; font-size: clamp(18px, 2.4vw, 30px); text-transform: uppercase; line-height: 1; }
+      .gcard__amt { margin: 0; font-family: var(--f-head); font-stretch: 62%; font-weight: 800; font-size: clamp(44px, 7vw, 92px); line-height: .85; font-variant-numeric: tabular-nums; white-space: nowrap; }
+      .gcard__amt sup { font-size: .42em; vertical-align: .95em; margin-right: 2px; font-weight: 700; }
+      .gcard__stripe { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: var(--accent); }
+
+      .gc-note { position: relative; width: min(100%, 440px); margin: 0; background: #FBF7EC; padding: 18px 22px 16px; transform: rotate(1.2deg); box-shadow: 0 8px 18px -12px rgba(28, 27, 25, .35); }
+      .gc-note::before { content: ""; position: absolute; left: 50%; top: -10px; width: 84px; height: 20px; transform: translateX(-50%) rotate(-2deg); background: rgba(232, 226, 208, .85); }
+      .gc-note p { margin: 0; font-family: 'Caveat', 'Bradley Hand', 'Segoe Print', cursive; font-size: clamp(22px, 2.4vw, 28px); line-height: 1.2; color: #2D2A26; white-space: pre-line; overflow-wrap: anywhere; }
+      .gc-note figcaption { margin-top: 6px; font-size: var(--t-xs); color: var(--mute); }
+
+      .gc-info { display: grid; gap: 18px; align-content: center; min-width: 0; }
+      .gc-info .label { color: var(--mute); }
+      .gc-info h1 { margin: 4px 0 0; font-family: var(--f-head); font-stretch: 75%; font-weight: 800; text-transform: uppercase; font-size: var(--t-hero); line-height: 1; color: var(--ink); }
+      .gc-info .lead { margin: 0; color: var(--soft); max-width: 44ch; }
+      .code { display: flex; align-items: stretch; border: 1px solid var(--ink); background: var(--surface); }
+      .code output { flex: 1; display: flex; align-items: center; padding: 0 14px; min-height: 56px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: clamp(16px, 1.8vw, 20px); font-weight: 700; letter-spacing: .12em; color: var(--ink); min-width: 0; overflow-wrap: anywhere; }
+      .code button { flex: none; border: 0; border-left: 1px solid var(--ink); background: var(--surface); padding: 0 18px; min-width: 72px; font: inherit; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; color: var(--ink); }
+      .code button:hover { background: var(--ink); color: var(--surface); }
+      .code button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+      .bal { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 0; }
+      .bal div { padding: 12px 0; min-width: 0; }
+      .bal div + div { border-left: 1px solid var(--line); padding-left: 16px; }
+      .bal dt { font-size: var(--t-xs); color: var(--mute); text-transform: uppercase; letter-spacing: .08em; font-weight: 600; }
+      .bal dd { margin: 2px 0 0; font-family: var(--f-head); font-stretch: 75%; font-weight: 800; font-size: 28px; color: var(--ink); font-variant-numeric: tabular-nums; }
+      .gc-info .btn { width: 100%; min-height: 52px; }
+      .gc-more { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: center; }
+      .gc-more a, .gc-more button { display: inline-flex; align-items: center; min-height: 44px; font: inherit; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; text-underline-offset: 4px; background: none; border: 0; padding: 0; cursor: pointer; color: var(--ink); text-decoration: underline; }
+      .gc-msg { margin: 0; font-size: var(--t-sm); min-height: 1.2em; }
+      .gc-foot { text-align: center; padding: 24px var(--gutter) calc(24px + env(safe-area-inset-bottom, 0px)); font-size: var(--t-xs); color: var(--mute); border-top: 1px solid var(--line); }
+      .gc-foot p { margin: 0; }
+      .gc-foot a { color: var(--ink); }
+      @media print {
+        .gc-top, .gc-more, .gc-info .btn, .gc-foot, .gc-msg, .code button, #preview-bar-iframe { display: none !important; }
+        .gc { padding-top: 0; }
+      }
+    </style>
   </head>
 
-  <body class="gradient gift-card">
-    <header>
-      <div class="gift-card__price">
-        <h1>
-          {% if settings.currency_code_enabled %}
-            {{ gift_card.balance | money_with_currency }}
-          {% else %}
-            {{ gift_card.balance | money }}
-          {% endif %}
-        </h1>
-        {%- if gift_card.enabled == false or gift_card.expired -%}
-          <p class="badge badge--expired">{{ 'gift_cards.issued.expired' | t }}</p>
-        {%- endif -%}
-      </div>
-      {% if gift_card.expires_on %}
-        {%- assign gift_card_expiration_date = gift_card.expires_on | date: '%B %e, %Y' -%}
-        <p class="gift-card__text">
-          {{ 'gift_cards.issued.expiration_date' | t: expires_on: gift_card_expiration_date }}
-        </p>
-      {% endif %}
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <header class="gc-top">
+      <a href="{{ shop.url }}">
+        <img src="{{ 'logo-ink.svg' | asset_url }}" alt="{{ brand | escape }}" width="139" height="20">
+      </a>
     </header>
 
-    <main>
-      <div class="gift-card__image-wrapper">
-        {%- if settings.logo != blank -%}
-          {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
-          {{ settings.logo | image_url: width: 570 | image_tag: class: 'gift-card__image', alt: logo_alt }}
-        {%- else %}
-          <img
-            class="gift-card__image"
-            src="{{ 'gift-card/card.svg' | shopify_asset_url }}"
-            alt=""
-            height="{{ 570 | divided_by: 1.5 }}"
-            width="570"
-            loading="eager"
-          >
-        {%- endif %}
+    <main id="main" class="gc">
+      <div class="gc-stage">
+        <div class="gcard" role="img" aria-label="{{ card_name | escape }} gift card, {{ gift_card.initial_value | money_without_trailing_zeros | strip_html | escape }}">
+          <svg class="gcard__bolt" viewBox="0 0 40 64" aria-hidden="true" focusable="false">
+            <path d="M24 0 6 36h12L12 64l22-38H21L30 0z" fill="#F5C400"/>
+          </svg>
+          <div class="gcard__in">
+            <div>
+              <img class="gcard__logo" src="{{ 'logo-bone.svg' | asset_url }}" alt="" width="560" height="81">
+              <p class="gcard__sub">Pro Stock · “The Evil One”</p>
+            </div>
+            <span></span>
+            <div class="gcard__foot">
+              <p class="gcard__name">{{ card_name | escape }}</p>
+              <p class="gcard__amt"><sup>{{ symbol }}</sup>{{ initial_amount }}</p>
+            </div>
+          </div>
+          <span class="gcard__stripe"></span>
+        </div>
+
+        {%- if gift_card.message != blank -%}
+          <figure class="gc-note">
+            <p>{{ gift_card.message | escape }}</p>
+            <figcaption>A note that came with your gift</figcaption>
+          </figure>
+        {%- endif -%}
       </div>
-      <h2>{{ shop.name }}</h2>
-      <div class="gift-card__text-wrapper">
-        <p class="gift-card__text">{{ 'gift_cards.issued.how_to_use_gift_card' | t }}</p>
-      </div>
-      <p id="gift-card-code" class="gift-card__number">{{ gift_card.code | format_code }}</p>
-      <div class="gift-card__qr-code" data-identifier="{{ gift_card.qr_identifier }}"></div>
-      {%- if gift_card.pass_url -%}
-        <a href="{{ gift_card.pass_url }}" class="gift_card__apple-wallet no-print">
-          <img
-            src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}"
-            width="120"
-            height="40"
-            alt="{{ 'gift_cards.issued.add_to_apple_wallet' | t }}"
-            loading="lazy"
-          >
-        </a>
-      {%- endif -%}
-      <div class="gift-card__buttons no-print">
-        <span class="gift-card__copy-success form__message" role="status"></span>
-        <template>
-          <span class="svg-wrapper">
-            {{- 'icon-success.svg' | inline_asset_content -}}
-          </span>
-          {{ 'gift_cards.issued.copy_code_success' | t }}
-        </template>
-        <button class="button gift-card__copy-button">{{ 'gift_cards.issued.copy_code' | t }}</button>
-        <a
-          href="{{ shop.url }}"
-          class="button button--secondary"
-          target="_blank"
-          rel="noopener"
-          aria-describedby="a11y-new-window-message"
-        >
-          {{ 'gift_cards.issued.shop_link' | t }}
-        </a>
+
+      <div class="gc-info">
+        <div>
+          <p class="label">Gift card</p>
+          <h1>
+            {%- case state -%}
+              {%- when 'used' -%}
+                This card is all used up
+              {%- when 'expired' -%}
+                This card has expired
+              {%- when 'off' -%}
+                This card is no longer active
+              {%- else -%}
+                Here’s {{ balance_amount }} of evil
+            {%- endcase -%}
+          </h1>
+        </div>
+        <p class="lead">
+          {%- if state == 'live' -%}
+            Use this code at checkout on anything in the shop. Whatever you don’t spend stays on the card.
+          {%- elsif state == 'used' -%}
+            Every dollar on this card has been spent. Hope the gear was worth it.
+          {%- else -%}
+            This code can’t be used at checkout anymore. Questions? Send us a note.
+          {%- endif -%}
+        </p>
+
+        {%- if state == 'live' -%}
+          <div class="code">
+            <output id="gc-code" aria-label="Gift card code">{{ gift_card.code | format_code }}</output>
+            <button type="button" id="gc-copy">Copy</button>
+          </div>
+          <p class="gc-msg" id="gc-msg" role="status" aria-live="polite"></p>
+        {%- endif -%}
+
+        <dl class="bal">
+          <div>
+            <dt>Balance</dt>
+            <dd>{{ balance_full }}</dd>
+          </div>
+          <div>
+            <dt>Expires</dt>
+            <dd>
+              {%- if gift_card.expires_on -%}
+                {{ gift_card.expires_on | date: '%b %-d, %Y' }}
+              {%- else -%}
+                Never
+              {%- endif -%}
+            </dd>
+          </div>
+        </dl>
+
+        <a class="btn" href="{{ shop_url }}">{% if state == 'live' %}Shop now{% else %}Shop{% endif %}</a>
+
+        <div class="gc-more">
+          {%- if gift_card.pass_url and state == 'live' -%}
+            <a href="{{ gift_card.pass_url }}">Add to Apple Wallet</a>
+          {%- endif -%}
+          <button type="button" id="gc-print">Print</button>
+        </div>
       </div>
     </main>
 
-    <div hidden>
-      <span id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t }}</span>
-    </div>
+    <footer class="gc-foot">
+      <p>
+        Questions? <a href="{{ contact_url }}">Send us a note</a>
+        {%- if terms_url != blank %} · <a href="{{ terms_url }}">Terms</a>{%- endif -%}
+      </p>
+    </footer>
+
+    <script>
+      (function () {
+        var copy = document.getElementById('gc-copy'), code = document.getElementById('gc-code'), msg = document.getElementById('gc-msg');
+        function selectCode() {
+          try { var r = document.createRange(); r.selectNodeContents(code); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (e) {}
+          msg.textContent = 'Select the code and copy it.';
+        }
+        if (copy && code) {
+          copy.addEventListener('click', function () {
+            var text = code.textContent.replace(/\s+/g, '');
+            function done() {
+              copy.textContent = 'Copied';
+              msg.textContent = 'Code copied. Paste it at checkout.';
+              setTimeout(function () { copy.textContent = 'Copy'; }, 2500);
+            }
+            if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, selectCode);
+            else selectCode();
+          });
+        }
+        var pr = document.getElementById('gc-print');
+        if (pr) pr.addEventListener('click', function () { window.print(); });
+      })();
+    </script>
   </body>
 </html>
-
-<script>
-  var string = { qrImageAlt: {{ 'gift_cards.issued.qr_image_alt' | t | json }} };
-  document.addEventListener('DOMContentLoaded', function() {
-   new QRCode( document.querySelector('.gift-card__qr-code'), {
-    text: document.querySelector('.gift-card__qr-code').dataset.identifier,
-    width: 72,
-    height: 72,
-    imageAltText: string.qrImageAlt
-    });
-  });
-  var template = document.getElementsByTagName("template")[0];
-  var clonedTemplate = template.content.cloneNode(true);
-  var isMessageDisplayed = false
-  document
-  .querySelector('.gift-card__copy-button')
-  .addEventListener('click', () => {
-    navigator.clipboard.writeText(document.getElementById('gift-card-code').innerText).then(function () {
-      if (!isMessageDisplayed) {
-        document.querySelector('.gift-card__copy-success').appendChild(clonedTemplate);
-        isMessageDisplayed = true
-      }
-    });
-  });
-</script>

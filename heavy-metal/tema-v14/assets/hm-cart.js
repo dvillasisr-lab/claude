@@ -49,7 +49,12 @@
         /* not JSON: a bot check, the password page or an outage. Never show the parser error. */
         var e = new Error('Something went wrong. Try again.'); e.notJson = true; e.status = r.status; throw e;
       }).then(function (j) {
-        if (!r.ok || j.status) throw new Error(j.description || j.message || 'Something went wrong. Try again.');
+        if (!r.ok || j.status) {
+          /* gift card recipient errors come back as an object ({ email: [...] }): turn them into one sentence */
+          var d = j.description;
+          if (d && typeof d === 'object') d = Object.keys(d).map(function (k) { return [].concat(d[k]).join(' '); }).join(' ');
+          throw new Error(d || j.message || 'Something went wrong. Try again.');
+        }
         return j;
       });
     });
@@ -62,7 +67,7 @@
   function products(cart) { return cart.items.filter(function (i) { return !isTip(i); }); }
   function itemCount(cart) { return products(cart).reduce(function (n, i) { return n + i.quantity; }, 0); }
   function img(src, w) { if (!src) return ''; return src + (src.indexOf('?') > -1 ? '&' : '?') + 'width=' + w; }
-  function isTee(i) { var t = (i.product_type || '') + ' ' + (i.product_title || ''); return /\btee\b|t-shirt|\bshirt\b/i.test(t) && !/sweat/i.test(t); }
+  function isTee(i) { if (i.gift_card) return false; var t = (i.product_type || '') + ' ' + (i.product_title || ''); return /\btee\b|t-shirt|\bshirt\b/i.test(t) && !/sweat/i.test(t); }
 
   /* ---------- render ---------- */
   function render(cart) {
@@ -88,7 +93,7 @@
       var disc = (i.line_level_discount_allocations || []).map(function (d) { return esc(d.discount_application.title) + ' (−' + money(d.amount) + ')'; }).join('<br>');
       var orig = i.original_line_price > i.final_line_price ? '<s>' + money(i.original_line_price) + '</s>' : '';
       return '<li class="line" data-key="' + esc(i.key) + '" data-product="' + i.product_id + '">' +
-        '<a class="thumb" href="' + esc(i.url) + '" tabindex="-1" aria-hidden="true">' + (i.image ? '<img class="photo" src="' + esc(img(i.image, 160)) + '" alt="" width="72" height="90" loading="lazy">' : '') + '</a>' +
+        '<a class="thumb' + (i.gift_card ? ' thumb--gift' : '') + '" href="' + esc(i.url) + '" tabindex="-1" aria-hidden="true">' + (i.gift_card ? '<span class="gthumb"><b>' + esc(money(i.price)) + '</b></span>' : i.image ? '<img class="photo" src="' + esc(img(i.image, 160)) + '" alt="" width="72" height="90" loading="lazy">' : '') + '</a>' +
         '<div><p class="line__n"><a href="' + esc(i.url) + '" style="text-decoration:none">' + esc(i.product_title) + '</a></p>' +
         (variant ? '<p class="line__v">' + esc(variant) + '</p>' : '<p class="line__v"></p>') +
         (props ? '<p class="line__disc">' + props + '</p>' : '') + (disc ? '<p class="line__disc">' + disc + '</p>' : '') +
@@ -114,9 +119,11 @@
 
     /* free shipping tiers */
     var free = threshold('data-free'), gift = threshold('data-gift'), total = cart.total_price;
+    /* gift cards never ship: with only gift cards in the cart, no shipping bar and no fuel tip */
+    var shippable = products(cart).some(function (i) { return !i.gift_card; });
     var tiers = $('[data-hm-tiers]');
     if (tiers) {
-      tiers.hidden = n === 0 || !free;
+      tiers.hidden = n === 0 || !free || !shippable;
       var max = gift > free ? gift : free;
       var stopFree = $('[data-hm-stop="free"]');
       if (stopFree) stopFree.style.left = (gift > free ? Math.round(free / max * 100) : 100) + '%';
@@ -152,7 +159,7 @@
     var beast = $('[data-hm-beast]');
     if (beast) {
       var below = free && (total - (tip ? tip.final_line_price : 0)) < free;
-      beast.hidden = n === 0 || !(below || tip);
+      beast.hidden = n === 0 || !(below || tip) || (!shippable && !tip);
       [].forEach.call(beast.querySelectorAll('[data-tip]'), function (b) {
         b.setAttribute('aria-pressed', tip && String(tip.variant_id) === b.getAttribute('data-tip') ? 'true' : 'false');
       });
