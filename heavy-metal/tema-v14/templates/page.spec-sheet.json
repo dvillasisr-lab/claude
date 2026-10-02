@@ -88,7 +88,7 @@
       "type": "hm-machine-faq",
       "settings": {
         "title": "Questions from the fence line",
-        "text": "What’s worth knowing before you watch it pull.",
+        "text": "What people ask us at the fence. Usually yelling.",
         "page_key": "machine",
         "open_first": true
       }

@@ -4,7 +4,7 @@
   "Question" blocks of this section are used. In answers, [pitch] and [pulls] are replaced with the
   figures calculated from Sponsor stats.
   Form: {% form 'contact' %}; contact[topic] = Sponsorship. The package list comes from sponsor_tier
-  (Sold out = waitlist, Hidden = not listed) plus "Not sure yet" (info kit).
+  (Sold out = waitlist, Hidden = not listed) plus "Not sure yet" (a plain question to the team).
   Any link on the page with data-sp-pkg="<tier handle>" (or "unsure") preselects that package here.
 {%- endcomment -%}
 {%- comment -%} paginate: a plain loop over metaobject values stops at 50 entries {%- endcomment -%}
@@ -264,7 +264,7 @@
               {%- endfor -%}
             {%- endfor -%}
             <option
-              value="Not sure yet: send the info kit"
+              value="Not sure yet, I have questions"
               data-handle="unsure"
               {% if preselect == 'unsure' %}
                 selected
@@ -313,7 +313,7 @@
             data-sp-submit
             data-label="{{ section.settings.submit_label | escape }}"
             data-label-wait="{{ section.settings.submit_wait | escape }}"
-            data-label-kit="{{ section.settings.submit_kit | escape }}"
+            data-label-unsure="{{ section.settings.submit_unsure | escape }}"
           >
             {{ section.settings.submit_label }}
           </button>
@@ -324,7 +324,7 @@
         {
           "pkg": {{ section.settings.form_title | json }},
           "wait": {{ section.settings.form_title_wait | json }},
-          "kit": {{ section.settings.form_title_kit | json }}
+          "unsure": {{ section.settings.form_title_unsure | json }}
         }
       </script>
     </div>
@@ -393,10 +393,10 @@
       if (!sel) return;
       var opt = sel.options[sel.selectedIndex];
       var wait = !!(opt && opt.getAttribute('data-wait'));
-      var kit = !!(opt && opt.getAttribute('data-handle') === 'unsure');
+      var unsure = !!(opt && opt.getAttribute('data-handle') === 'unsure');
       var t = titles(b), h = b.querySelector('[data-sp-title]'), s = b.querySelector('[data-sp-submit]');
-      if (h) h.textContent = wait ? t.wait || t.pkg : kit ? t.kit || t.pkg : t.pkg;
-      if (s) s.textContent = wait ? s.getAttribute('data-label-wait') : kit ? s.getAttribute('data-label-kit') : s.getAttribute('data-label');
+      if (h) h.textContent = wait ? t.wait || t.pkg : unsure ? t.unsure || t.pkg : t.pkg;
+      if (s) s.textContent = wait ? s.getAttribute('data-label-wait') : unsure ? s.getAttribute('data-label-unsure') : s.getAttribute('data-label');
     }
     function pick(handle, msg) {
       var b = box();
@@ -505,9 +505,9 @@
     { "type": "text", "id": "topic", "label": "Email subject (topic)", "default": "Sponsorship request" },
     { "type": "text", "id": "form_title", "label": "Title", "default": "Request a package" },
     { "type": "text", "id": "form_title_wait", "label": "Title for a sold out package", "default": "Join the waitlist" },
-    { "type": "text", "id": "form_title_kit", "label": "Title for Not sure yet", "default": "Request the info kit" },
-    { "type": "text", "id": "form_text", "label": "Text", "default": "Tell us a little about your business and pick a package, or just ask for the info kit." },
-    { "type": "text", "id": "unsure_label", "label": "Not sure option", "default": "Not sure yet (send me the info kit)" },
+    { "type": "text", "id": "form_title_unsure", "label": "Title for Not sure yet", "default": "Ask us anything" },
+    { "type": "text", "id": "form_text", "label": "Text", "default": "Tell us about your business and pick a package. Not sure yet? Just ask." },
+    { "type": "text", "id": "unsure_label", "label": "Not sure option", "default": "Not sure yet, I have questions" },
     { "type": "text", "id": "why_label", "label": "Why question", "default": "What do you want out of it?" },
     {
       "type": "text",
@@ -518,8 +518,8 @@
     {
       "type": "richtext",
       "id": "unsure_note",
-      "label": "Info kit note",
-      "default": "<p><strong>Not sure yet?</strong>Pick “Not sure yet” above to request our sponsor info kit: a short PDF with the packages, who sees your logo, the decal map and real photos. We email it within 2 business days. No commitment.</p>"
+      "label": "Not sure yet note",
+      "default": "<p><strong>Not sure yet?</strong>Pick “Not sure yet” above and ask us anything. Packages, logo spots, the decal map, how loud it gets. No commitment, no pressure.</p>"
     },
     {
       "type": "richtext",
@@ -529,15 +529,15 @@
     },
     { "type": "text", "id": "submit_label", "label": "Button", "default": "Send request" },
     { "type": "text", "id": "submit_wait", "label": "Button for a sold out package", "default": "Join the waitlist" },
-    { "type": "text", "id": "submit_kit", "label": "Button for Not sure yet", "default": "Request the info kit" },
+    { "type": "text", "id": "submit_unsure", "label": "Button for Not sure yet", "default": "Send my question" },
     { "type": "header", "content": "After sending" },
     { "type": "text", "id": "ok_label", "label": "Label", "default": "Request sent" },
-    { "type": "text", "id": "ok_title", "label": "Title", "default": "Thanks, your request is in." },
+    { "type": "text", "id": "ok_title", "label": "Title", "default": "Got it. Your request is in." },
     {
       "type": "text",
       "id": "ok_text",
       "label": "Text",
-      "default": "We’ll email our sponsor info kit (a short PDF to help you decide, no commitment) within 2 business days."
+      "default": "We reply within 2 business days. Nothing is signed until we agree on it in writing."
     }
   ],
   "blocks": [
@@ -558,7 +558,7 @@
           "type": "question",
           "settings": {
             "question": "Which package fits my business?",
-            "answer": "<p>Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. Not sure? Pick “Not sure yet” in the form and we’ll send you the info kit.</p>"
+            "answer": "<p>Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. Still stuck? Pick “Not sure yet” in the form and ask us.</p>"
           }
         },
         {
@@ -572,7 +572,7 @@
           "type": "question",
           "settings": {
             "question": "How many people will see my brand?",
-            "answer": "<p>[pitch], in the stands alone. Streams and social media come on top of that. Current numbers are in our sponsor info kit.</p>"
+            "answer": "<p>[pitch], in the stands alone. Streams and social media come on top of that. Want the latest numbers? Ask us in the form.</p>"
           }
         },
         {
@@ -593,7 +593,7 @@
           "type": "question",
           "settings": {
             "question": "What happens after I send the form?",
-            "answer": "<p>If you asked for the sponsor info kit, we email it within 2 business days: a short PDF with the packages, who sees your logo, the decal map and real photos, so you can decide. If you picked a package, we also reply to set up a call. No commitment: nothing is signed until we agree on the terms in writing.</p>"
+            "answer": "<p>A human reads it and replies within 2 business days. Picked a package? We set up a call. Picked “Not sure yet”? We answer your questions. No commitment: nothing is signed until we agree on the terms in writing.</p>"
           }
         }
       ]

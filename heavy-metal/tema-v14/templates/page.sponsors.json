@@ -165,7 +165,7 @@
           "type": "question",
           "settings": {
             "question": "Which package fits my business?",
-            "answer": "<p>Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. Not sure? Pick “Not sure yet” in the form and we’ll send you the info kit.</p>"
+            "answer": "<p>Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. Still stuck? Pick “Not sure yet” in the form and ask us.</p>"
           }
         },
         "question_2": {
@@ -179,7 +179,7 @@
           "type": "question",
           "settings": {
             "question": "How many people will see my brand?",
-            "answer": "<p>[pitch], in the stands alone. Streams and social media come on top of that. Current numbers are in our sponsor info kit.</p>"
+            "answer": "<p>[pitch], in the stands alone. Streams and social media come on top of that. Want the latest numbers? Ask us in the form.</p>"
           }
         },
         "question_4": {
@@ -200,7 +200,7 @@
           "type": "question",
           "settings": {
             "question": "What happens after I send the form?",
-            "answer": "<p>If you asked for the sponsor info kit, we email it within 2 business days: a short PDF with the packages, who sees your logo, the decal map and real photos, so you can decide. If you picked a package, we also reply to set up a call. No commitment: nothing is signed until we agree on the terms in writing.</p>"
+            "answer": "<p>A human reads it and replies within 2 business days. Picked a package? We set up a call. Picked “Not sure yet”? We answer your questions. No commitment: nothing is signed until we agree on the terms in writing.</p>"
           }
         }
       },

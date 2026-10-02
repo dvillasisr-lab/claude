@@ -33,7 +33,7 @@
   {%- form 'customer', id: 'HmNotifyModal', class: 'hm-nfy__form', novalidate: 'novalidate', data-hm-notify-form: '' -%}
     <input type="hidden" name="contact[tags]" value="notify" data-hm-nfy-tags>
     <p class="small muted" id="hm-nfy-d" data-hm-nfy-d style="margin:0 0 10px">
-      We will email you the moment it drops. One email, no spam.
+      One email the second it drops. Then we leave you alone.
     </p>
     <div data-hm-form-fields>
       <label class="vh" for="hm-nfy-email">Email</label>
@@ -61,7 +61,7 @@
       {%- if form.errors -%}{{ form.errors | default_errors }}{%- endif -%}
     </p>
     <p role="status" data-hm-form-ok{% unless form.posted_successfully? %} hidden{% endunless %} style="margin:0">
-      <b>You are on the list.</b> We will email you when it is available.
+      <b>You’re on the list.</b> One email when it’s ready. Promise.
     </p>
   {%- endform -%}
   <a class="link" data-hm-nfy-more href="{{ routes.all_products_collection_url }}" style="text-decoration:underline;font-size:var(--t-xs)">

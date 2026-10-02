@@ -132,9 +132,9 @@
       $('[data-hm-tiers-fill]').style.width = Math.min(100, max ? total / max * 100 : 0) + '%';
       var label = (drawer.getAttribute('data-gift-label') || 'Free sticker').toLowerCase();
       var msg;
-      if (total < free) msg = 'You are <b>' + money(free - total) + '</b> away from <b>free US shipping</b>';
+      if (total < free) msg = 'You’re <b>' + money(free - total) + '</b> away from <b>free US shipping</b>. So close.';
       else if (gift > free && total < gift) msg = 'Free US shipping unlocked. <b>' + money(gift - total) + '</b> more for a <b>' + esc(label) + '</b>';
-      else msg = '<b>You unlocked free US shipping' + (gift > free ? ' and a ' + esc(label) : '') + '.</b>';
+      else msg = '<b>Free US shipping unlocked' + (gift > free ? ' and a ' + esc(label) : '') + '.</b> Look at you.';
       $('[data-hm-tiers-msg]').innerHTML = msg;
     }
 
@@ -235,7 +235,7 @@
     p.then(function () { return same ? null : req('/cart/add.js', { items: [{ id: vid, quantity: 1 }] }); })
       .then(refresh)
       .then(function () {
-        say(same ? 'Fuel tip removed.' : 'Fuel tip added. Thank you.');
+        say(same ? 'Fuel tip removed.' : 'Fuel tip added. The crew salutes you.');
         var b = drawer.querySelector('[data-tip="' + vid + '"]'); if (b) b.focus();
       })
       .catch(function (e) { setErr(e.message); });

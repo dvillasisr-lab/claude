@@ -7,7 +7,7 @@
           "type": "step",
           "settings": {
             "title": "Tell us about it",
-            "text": "Send the form below with the date, the place and the kind of event."
+            "text": "Fill in the form below: date, place, kind of event. That’s the hard part."
           }
         },
         "step_2": {
@@ -21,7 +21,7 @@
           "type": "step",
           "settings": {
             "title": "Lock the date",
-            "text": "We confirm the details with you in writing, then haul “The Evil One” in."
+            "text": "We confirm the details in writing, then haul “The Evil One” in. Earplugs recommended."
           }
         },
         "requirement_4": {

@@ -116,7 +116,7 @@
       ],
       "settings": {
         "heading": "FAQ",
-        "lede": "Orders, shipping, sizing and the tractor. Search or pick a topic.",
+        "lede": "Orders, shipping, sizing and the tractor. We’ve heard it all. Search or pick a topic.",
         "search_label": "Search the FAQ",
         "search_placeholder": "Search questions, e.g. tracking",
         "nav_label": "Help topics",
@@ -124,7 +124,7 @@
         "no_items": "Answers are on the way.",
         "updated": "2026-10-01",
         "help_heading": "Still need help?",
-        "help_text": "Send us a message and we’ll get back to you within 2 business days.",
+        "help_text": "Ask a human. We reply within 2 business days.",
         "help_button": "Contact us",
         "help_link": "/pages/contact"
       }

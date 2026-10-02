@@ -111,7 +111,7 @@
         {%- form 'customer', id: soon_form_id, class: 'soon__form' -%}
           <input type="hidden" name="contact[tags]" value="evil-list">
           {%- if form.posted_successfully? -%}
-            <p role="status" style="margin:0"><b>You are on the list.</b> We will email you when the drop goes live.</p>
+            <p role="status" style="margin:0"><b>You’re on the list.</b> One email when the drop goes live. That’s it.</p>
           {%- else -%}
             <label class="vh" for="{{ soon_form_id }}-email">Email</label>
             <input
@@ -256,7 +256,7 @@
       "type": "textarea",
       "id": "soon_text",
       "label": "Texto",
-      "default": "The first drop from the crew behind “The Evil One” is on its way. Get a heads up when it lands."
+      "default": "The first drop from the crew behind “The Evil One” is on its way. Leave your email. We’ll yell when it lands."
     },
     { "type": "text", "id": "soon_button", "label": "Botón", "default": "Notify me" }
   ],

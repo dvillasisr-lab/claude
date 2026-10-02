@@ -11,7 +11,7 @@
       "settings": {
         "label": "Our Story · Tomah to Waterloo, WI",
         "title": "Built in Wisconsin. Built to pull.",
-        "lede": "It started in 2014 with one idea. That idea became a Pro Stock tractor, built by a family in its own shop. And that tractor was nicknamed “The Evil One”.",
+        "lede": "It started in 2014 with one idea. The idea became a Pro Stock tractor, built by one family in its own shop. Then it got a nickname: “The Evil One”. It earned it.",
         "more_text": "Read the full story",
         "position_1": "50% 40%",
         "caption_1": "Chris in the seat",
@@ -47,7 +47,7 @@
         "kicker": "In our own words",
         "heading": "Twelve years",
         "heading_mark": "in the making",
-        "text": "The sketches, the nights and weekends, the family shop, and the night the engine fired and lightning struck. The whole story, the way we tell it.",
+        "text": "The sketches, the nights and weekends, the family shop, and the night the engine fired and lightning struck. The whole story. Long, loud, ours.",
         "go": "Read the full story"
       }
     },
@@ -64,7 +64,7 @@
         "post": "<p>Some would call it a coincidence. <strong>We call it a sign.</strong> From that night on, there was no doubt about what we had built.</p>",
         "video_title": "The night it fired",
         "duration": "",
-        "caption": "Sound on. This is how it sounded in the shop when the engine fired and the lightning hit.",
+        "caption": "Sound on. Sorry, neighbors. This is the shop the moment the engine fired and the lightning hit.",
         "soon_text": "Video coming soon."
       }
     },
@@ -109,10 +109,10 @@
         "song_artist": "Iron Maiden · 2015 Remaster",
         "song_url": "https://open.spotify.com/track/6p8eFfPw3nQkf37aT3AkmK",
         "song_link_text": "Listen on Spotify",
-        "song_caption": "The song “The Evil One” rolls up to the line with. Turn it up before the next pull.",
+        "song_caption": "The song “The Evil One” rolls up to the line with. Turn it up. Louder. No, louder.",
         "tagline": "#HEAVYMETALPULLING",
         "pl_title": "The pit playlist",
-        "pl_sub": "What plays in the trailer and the pit",
+        "pl_sub": "What plays in the trailer and the pit, loud",
         "pl_updated": "2026-09-28",
         "pl_button": "Play the playlist",
         "pl_fine": "Loads the Spotify player."
@@ -122,7 +122,7 @@
       "type": "hm-story-crew",
       "settings": {
         "title": "The people behind the pull",
-        "subtitle": "Family, friends and two mascots.",
+        "subtitle": "Family, friends and two mascots. Guess who’s in charge.",
         "chief_years": "20+",
         "chief_years_text": "years in tractor pulling",
         "team_label": "Team",
@@ -135,7 +135,7 @@
       "type": "hm-story-cta",
       "settings": {
         "title": "Born in a lightning storm. Built to pull.",
-        "text": "Merch designed by the crew. Every order fuels the team.",
+        "text": "Merch designed by the crew. Every order keeps the diesel flowing.",
         "button": "Shop the drop",
         "url": "/collections/all"
       }

@@ -171,7 +171,7 @@
       var name = n.getAttribute('data-name') || '';
       m.querySelector('[data-hm-nfy-k]').textContent = st === 'soldout' ? 'Sold out' : 'Coming soon';
       m.querySelector('#hm-nfy-t').textContent = name;
-      m.querySelector('[data-hm-nfy-d]').textContent = st === 'soldout' ? 'We will email you if it comes back. One email, no spam.' : 'We will email you the moment it drops. One email, no spam.';
+      m.querySelector('[data-hm-nfy-d]').textContent = st === 'soldout' ? 'One email if it comes back from the dead. That’s it.' : 'One email the second it drops. Then we leave you alone.';
       m.querySelector('[data-hm-nfy-tags]').value = 'notify,notify-' + handle;
       var more = m.querySelector('[data-hm-nfy-more]'); if (n.getAttribute('data-url')) { more.href = n.getAttribute('data-url'); more.hidden = false; } else more.hidden = true;
       resetForm(m.querySelector('form'));

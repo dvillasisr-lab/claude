@@ -23,12 +23,12 @@
   {%- if cart.item_count == 0 or count == 0 -%}
     {%- if collections.all.all_products_count == 0 -%}
       <div class="cempty hm-cartpage__empty">
-        <p class="cempty__lead">Your cart is empty.</p>
+        <p class="cempty__lead">Your cart is empty. Bold strategy.</p>
         {%- render 'hm-coming-soon', id: 'HmSoonCart' -%}
       </div>
     {%- else -%}
       <div class="cempty hm-cartpage__empty">
-        <p class="cempty__lead">Your cart is empty.</p>
+        <p class="cempty__lead">Your cart is empty. Bold strategy.</p>
         <div class="cempty__links">
           <a class="btn" href="{{ routes.all_products_collection_url }}">Shop the drop</a>
           <a href="{{ best_url }}">Best sellers</a>

@@ -4,7 +4,7 @@
       "type": "hm-hero",
       "settings": {
         "tagline": "“The Evil One”",
-        "intro": "“The Evil One” is a Pro Stock pulling tractor out of Waterloo, Wisconsin. Merch designed by the crew.",
+        "intro": "“The Evil One” is a Pro Stock pulling tractor out of Waterloo, Wisconsin. Merch by the crew that built it.",
         "cta1_label": "Shop the drop",
         "cta1_link": "shopify://collections/all",
         "cta2_label": "Meet the machine",
@@ -58,7 +58,7 @@
         "swipe_label": "Swipe for more",
         "soon_label": "Merch",
         "soon_heading": "Coming soon",
-        "soon_text": "The first drop from the crew behind “The Evil One” is on its way. Get a heads up when it lands.",
+        "soon_text": "The first drop from the crew behind “The Evil One” is on its way. Leave your email. We’ll yell when it lands.",
         "soon_button": "Notify me"
       }
     },
@@ -98,7 +98,7 @@
       "settings": {
         "label": "The Machine",
         "heading": "The only Cat V8 in the class",
-        "text": "A Cat 3208 V8, reverse flow, in a Pro Stock tractor. A setup you won't find on any other tractor on the track. Everything on it is custom-built.",
+        "text": "A Cat 3208 V8, reverse flow, in a Pro Stock tractor. Nobody else on the track runs this setup. Probably for a reason. Everything on it is custom-built.",
         "link_label": "Meet the machine",
         "caption_1": "On the track",
         "caption_2": "Cat 3208 V8 · in the shop",
@@ -138,7 +138,7 @@
       "type": "hm-home-sponsor",
       "settings": {
         "label": "Sponsorship",
-        "heading": "Partner with “The Evil One”",
+        "heading": "Put your name on “The Evil One”",
         "button_label": "See sponsor packages",
         "button_url": "/pages/sponsors",
         "alt_label": "Book the team for your event",

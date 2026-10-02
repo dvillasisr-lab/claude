@@ -7,7 +7,7 @@
           "type": "fact",
           "settings": {
             "icon": "bolt",
-            "text": "<p><strong>One run only.</strong> When the window closes or the run sells out, it is gone.</p>"
+            "text": "<p><strong>One run only.</strong> When the window closes or the run sells out, it’s gone. Crying won’t bring it back.</p>"
           }
         },
         "fact2": {
@@ -29,14 +29,14 @@
       "settings": {
         "plate_small": "Limited time · limited quantity",
         "plate_big": "Limited run",
-        "ended_text": "Sold out. Thank you.",
+        "ended_text": "Sold out. You animals. Thank you.",
         "notify_soon_text": "One email when it drops. Then we leave you alone.",
         "notify_ended_text": "Gone. Snooze, lose. Get one email when the next one drops so it doesn’t happen twice.",
         "empty_text": "The next special edition is coming. The Evil List hears first. Everyone else hears too late.",
         "show_archive": true,
         "archive_heading": "Past editions",
         "archive_empty_heading": "Nothing in the archive yet",
-        "archive_empty_text": "When a special edition closes or sells out, it moves here so you can see every run “The Evil One” has done."
+        "archive_empty_text": "When a special edition closes or sells out, it retires here. Look, don’t touch."
       }
     }
   },

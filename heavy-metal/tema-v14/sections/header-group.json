@@ -8,13 +8,13 @@
         "msg_season": {
           "type": "message",
           "settings": {
-            "text": "Testing season [season]: <a href=\"/pages/evil-list\" title=\"The Evil List\">join The Evil List</a>"
+            "text": "Testing season [season]. Get on <a href=\"/pages/evil-list\" title=\"The Evil List\">The Evil List</a>"
           }
         },
         "msg_shipping": {
           "type": "message",
           "settings": {
-            "text": "Free US shipping on orders of [free_shipping] or more"
+            "text": "Free US shipping on [free_shipping] or more. You’re welcome."
           }
         },
         "msg_printed": {
@@ -50,7 +50,7 @@
           "type": "link_note",
           "settings": {
             "match": "the-full-story",
-            "subtitle": "Long read, in our own words",
+            "subtitle": "Long read. Grab a coffee.",
             "featured": true,
             "tag": "Long read"
           }
@@ -71,7 +71,7 @@
         "new_handles": "new,new-drop",
         "ltd_handles": "special-edition",
         "promo_label": "“The Evil One” Drop",
-        "promo_text": "New tees and hoodies, designed by the crew in Waterloo, WI.",
+        "promo_text": "New tees and hoodies. Designed by the crew, not a committee.",
         "promo_link_label": "Shop the drop",
         "promo_url": "/collections/all",
         "show_facebook": true,

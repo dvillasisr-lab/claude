@@ -19,7 +19,7 @@
         "t2": { "type": "tip", "settings": { "title": "What is a full pull", "text": "The sled gets harder to drag the farther it goes. Reach the end of the track and it’s a full pull." } },
         "t3": { "type": "tip", "settings": { "title": "Competition or exhibition", "text": "A competition counts for the class standings. An exhibition is a run for the crowd, no points on the line." } },
         "t4": { "type": "tip", "settings": { "title": "Arrive early", "text": "Grandstands fill before the first class. Come early for a good seat and a look at the pits." } },
-        "t5": { "type": "tip", "settings": { "title": "Bring ear protection", "text": "Pro Stock tractors are loud. Ear plugs or muffs for everyone, kids first." } }
+        "t5": { "type": "tip", "settings": { "title": "Bring ear protection", "text": "Pro Stock tractors are loud. Like, really loud. Ear plugs or muffs for everyone, kids first." } }
       },
       "block_order": ["g1", "g1a", "g1b", "g1c", "g2", "g2a", "g2b", "g2c", "g2d", "g2e", "g3", "g3a", "t1", "t2", "t3", "t4", "t5"],
       "settings": {
@@ -40,7 +40,7 @@
         "list_button": "Join The Evil List",
         "list_consent": "Email only. By signing up you agree to receive marketing emails from Heavy Metal Pro Stock: “The Evil One”. Unsubscribe anytime.",
         "list_ok": "You’re on the list. Check your inbox to confirm.",
-        "list_err": "Enter a valid email to join The Evil List."
+        "list_err": "That email looks off. Fix it and you’re in."
       }
     }
   },
