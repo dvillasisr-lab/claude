@@ -196,7 +196,7 @@
   function pt(e) { var r = canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
   function scratchTo(p) {
     if (!ctx) return;
-    ctx.lineWidth = 34; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#000'; ctx.lineWidth = 34; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     ctx.beginPath();
     var a = lastPt || p;
     ctx.moveTo(a.x, a.y); ctx.lineTo(p.x + 0.01, p.y);

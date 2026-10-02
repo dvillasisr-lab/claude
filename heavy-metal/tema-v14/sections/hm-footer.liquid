@@ -215,7 +215,9 @@
       }
       function update() {
         raf = 0;
-        var on = window.scrollY > window.innerHeight * 1.5 && !blocked();
+        /* about 1.5 screens down; on a shorter page, once the visitor reaches the bottom (and is at least a screen down) */
+        var vh = window.innerHeight, max = document.documentElement.scrollHeight - vh;
+        var on = window.scrollY > Math.min(vh * 1.5, Math.max(vh, max - 40)) && !blocked();
         if (on) lift();
         if (b.hidden === on) b.hidden = !on;
       }
