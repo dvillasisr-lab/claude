@@ -25,7 +25,15 @@
   assign cat_menu = section.settings.categories_menu
   assign has_cat_menu = false
   if cat_menu != blank and cat_menu.links.size > 0
-    assign has_cat_menu = true
+    comment
+      v14.1: a category collection with no products yet is skipped everywhere (list and photos), so the menu never sends fans to an empty page
+    endcomment
+    for cl in cat_menu.links
+      if cl.type != 'collection_link' or cl.object.products_count > 0
+        assign has_cat_menu = true
+        break
+      endif
+    endfor
   endif
 
   assign new_handles = section.settings.new_handles | downcase | split: ','
@@ -58,6 +66,7 @@
   {%- endif -%}
   {%- assign shown_thumbs = 0 -%}
   {%- for l in thumb_links -%}
+    {%- if l.type == 'collection_link' and l.object.products_count == 0 -%}{%- continue -%}{%- endif -%}
     {%- if shown_thumbs >= section.settings.thumb_count -%}{%- break -%}{%- endif -%}
     {%- unless has_cat_menu -%}
       {%- unless l.type == 'collection_link' -%}{%- continue -%}{%- endunless -%}
@@ -261,6 +270,7 @@
             {%- endif -%}
             <ul class="mega__small">
               {%- for l in cat_menu.links -%}
+                {%- if l.type == 'collection_link' and l.object.products_count == 0 -%}{%- continue -%}{%- endif -%}
                 <li>
                   <a href="{{ l.url }}"{% if l.current %} aria-current="page"{% endif %}>{{ l.title | escape }}</a>
                 </li>
@@ -344,6 +354,7 @@
     {%- if mthumb_links -%}
       <ul class="mnav__thumbs" aria-label="Shop by category" data-hm-hs>
         {%- for l in mthumb_links -%}
+          {%- if l.type == 'collection_link' and l.object.products_count == 0 -%}{%- continue -%}{%- endif -%}
           {%- if forloop.index > 12 -%}{%- break -%}{%- endif -%}
           {%- assign h = l.object.handle | default: '' -%}
           <li>

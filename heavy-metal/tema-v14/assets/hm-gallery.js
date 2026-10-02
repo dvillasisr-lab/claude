@@ -42,24 +42,24 @@
   function lightbox() {
     if (LB) return LB;
     var el = document.createElement('div');
-    el.className = 'lb';
+    el.className = 'glb';
     el.setAttribute('role', 'dialog');
     el.setAttribute('aria-modal', 'true');
     el.setAttribute('aria-labelledby', 'hm-lb-title');
     el.hidden = true;
     el.innerHTML =
-      '<div class="lb__top"><div class="lb__tt"><p class="lb__t" id="hm-lb-title"></p><p class="lb__n" aria-live="polite"></p></div>' +
-      '<button class="lb__tool" type="button" data-lb-ev aria-pressed="false" hidden></button>' +
-      '<button class="lb__tool" type="button" data-lb-play aria-pressed="false">' + PLAY + '<span class="tl">Slideshow</span><span class="vh"> (a new photo every 4 seconds)</span></button>' +
+      '<div class="glb__top"><div class="glb__tt"><p class="glb__t" id="hm-lb-title"></p><p class="glb__n" aria-live="polite"></p></div>' +
+      '<button class="glb__tool" type="button" data-lb-ev aria-pressed="false" hidden></button>' +
+      '<button class="glb__tool" type="button" data-lb-play aria-pressed="false">' + PLAY + '<span class="tl">Slideshow</span><span class="vh"> (a new photo every 4 seconds)</span></button>' +
       '<button class="icon-btn" type="button" data-lb-close aria-label="Close photo viewer">' + X + '</button></div>' +
-      '<div class="lb__stage" data-lb-stage><img class="lb__img" alt="" data-lb-img>' +
-      '<button class="lb__arw lb__arw--prev" type="button" data-lb-prev aria-label="Previous photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>' +
-      '<button class="lb__arw lb__arw--next" type="button" data-lb-next aria-label="Next photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>' +
-      '<div class="lb__bot"><p class="lb__cap"></p><ul class="lb__thumbs" aria-label="All photos in this view"></ul></div>';
+      '<div class="glb__stage" data-lb-stage><img class="glb__img" alt="" data-lb-img>' +
+      '<button class="glb__arw glb__arw--prev" type="button" data-lb-prev aria-label="Previous photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>' +
+      '<button class="glb__arw glb__arw--next" type="button" data-lb-next aria-label="Next photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>' +
+      '<div class="glb__bot"><p class="glb__cap"></p><ul class="glb__thumbs" aria-label="All photos in this view"></ul></div>';
     document.body.appendChild(el);
 
     var q = function (s) { return el.querySelector(s); };
-    var img = q('[data-lb-img]'), title = q('.lb__t'), count = q('.lb__n'), cap = q('.lb__cap'), thumbs = q('.lb__thumbs');
+    var img = q('[data-lb-img]'), title = q('.glb__t'), count = q('.glb__n'), cap = q('.glb__cap'), thumbs = q('.glb__thumbs');
     var bPlay = q('[data-lb-play]'), bEv = q('[data-lb-ev]'), bPrev = q('[data-lb-prev]'), bNext = q('[data-lb-next]');
     var seq = [], base = null, i = 0, from = null, timer = null, thumbKey = '';
 

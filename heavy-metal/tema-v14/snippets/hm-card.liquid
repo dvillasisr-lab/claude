@@ -15,6 +15,8 @@
   @example
   {% render 'hm-card', product: product, lazy: true %}
 {% enddoc %}
+{%- comment -%} v14.1: products tagged "hidden" (like the Feed The Beast tip) never show as a card in the shop, search or home {%- endcomment -%}
+{%- unless product.tags contains 'hidden' -%}
 {%- liquid
   assign p = product
   assign img_sizes = sizes | default: '(min-width: 1200px) 300px, (min-width: 761px) 25vw, 50vw'
@@ -245,3 +247,4 @@
     </div>
   </div>
 </article>
+{%- endunless -%}

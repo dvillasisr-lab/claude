@@ -1,0 +1,106 @@
+{% comment %}
+NOTIFICATION: Order confirmation (Settings > Notifications > Customer notifications > Order confirmation)
+SUBJECT: Order {{ order_name }} is locked in
+Brand: Heavy Metal Pro Stock: “The Evil One”. Built from boceto-v29/correos.html + hm.css. Table layout, inline CSS, 600px.
+{% endcomment %}
+{%- assign hm_brand = 'Heavy Metal Pro Stock: “The Evil One”' -%}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>Order {{ order_name }} is locked in</title>
+<!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><style>h1,p,td,a{font-family:Arial,sans-serif!important}</style><![endif]-->
+<!--[if !mso]><!--><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Caveat:wght@500&display=swap" rel="stylesheet"><!--<![endif]-->
+<style>
+body{margin:0;padding:0;width:100%!important;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+table,td{mso-table-lspace:0pt;mso-table-rspace:0pt}
+img{-ms-interpolation-mode:bicubic;border:0;outline:none;text-decoration:none}
+a{color:#1C1B19}
+.btn:hover{background:#4A4741!important}
+@media only screen and (max-width:620px){
+  .outer{padding:0!important}
+  .card{border-left:0!important;border-right:0!important}
+  .px{padding-left:20px!important;padding-right:20px!important}
+  .h{font-size:32px!important}
+  .li-img{width:64px!important;padding-left:10px!important}
+  .li-pic{width:64px!important;height:64px!important}
+  .gc-amt{font-size:52px!important}
+  .code{font-size:20px!important;letter-spacing:.06em!important}
+  .stack{display:block!important;width:100%!important;padding-left:0!important;padding-right:0!important}
+  .stack-gap{padding-top:16px!important}
+}
+</style>
+</head>
+<body style="margin:0;padding:0;background:#F6F5F2;">
+<div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">Order {{ order_name }} is in. Here’s what happens next.&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#F6F5F2" style="border-collapse:collapse;background:#F6F5F2;">
+<tr><td align="center" class="outer" style="padding:24px 12px;">
+<!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
+<table role="presentation" class="card" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;max-width:600px;background:#FFFFFF;border:1px solid #DEDCD6;">
+<tr><td class="px" style="padding:28px 36px 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;border-bottom:3px solid #1C1B19;"><tr>
+<td valign="middle" style="padding:0 0 14px;">
+<a href="{{ shop.url }}" style="text-decoration:none;color:#1C1B19;">{% if shop.email_logo_url %}<img src="{{ shop.email_logo_url }}" alt="{{ hm_brand }}" width="{{ shop.email_logo_width | default: 200 }}" style="display:block;width:{{ shop.email_logo_width | default: 200 }}px;max-width:100%;height:auto;border:0;">{% else %}<span style="font-family:'Archivo','Arial Narrow','Helvetica Neue',Arial,sans-serif;font-stretch:78%;font-weight:800;text-transform:uppercase;letter-spacing:.01em;color:#1C1B19;font-size:18px;line-height:1.1;">{{ hm_brand }}</span>{% endif %}</a>
+</td>
+<td valign="middle" align="right" style="padding:0 0 14px 10px;white-space:nowrap;"><span style="display:inline-block;padding:2px 6px;background:#F5C400;color:#1C1B19;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1.5;">Order {{ order_name }}</span></td>
+</tr></table>
+</td></tr>
+<tr><td class="px" style="padding:24px 36px 16px;"><h1 class="h" style="margin:0;font-family:'Archivo','Arial Narrow','Helvetica Neue',Arial,sans-serif;font-stretch:78%;font-weight:800;text-transform:uppercase;letter-spacing:.01em;color:#1C1B19;font-size:38px;line-height:1;">Order locked in</h1></td></tr>
+<tr><td class="px" style="padding:0 36px 16px;"><p style="margin:0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#2D2A26;">Hey {% if customer.first_name != blank %}{{ customer.first_name }}{% elsif shipping_address.first_name != blank %}{{ shipping_address.first_name }}{% else %}there{% endif %}, it’s me, “The Evil One”. Order {{ order_name }} is in. Thanks for backing the beast.</p></td></tr>
+{% assign hm_has_gift = false %}{% for line in subtotal_line_items %}{% if line.gift_card %}{% assign hm_has_gift = true %}{% endif %}{% endfor %}
+{% if requires_shipping %}<tr><td class="px" style="padding:0 36px 16px;"><p style="margin:0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#2D2A26;">Your gear doesn’t exist yet. That’s a good thing: it gets made for you, then it hits the road.</p></td></tr>{% endif %}
+{% if hm_has_gift %}<tr><td class="px" style="padding:0 36px 16px;"><p style="margin:0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#2D2A26;">Your Gift Evil card goes out by email, on the date you picked or right now if you didn’t pick one. No shipping, no waiting on me.</p></td></tr>{% endif %}
+{% if requires_shipping %}
+<tr><td class="px" style="padding:4px 36px 12px;"><p style="margin:0 0 8px;font-family:'Archivo','Arial Narrow','Helvetica Neue',Arial,sans-serif;font-stretch:78%;font-weight:800;text-transform:uppercase;letter-spacing:.01em;color:#1C1B19;font-size:18px;line-height:1.2;letter-spacing:.02em;">Printed when you order</p><p style="margin:0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#2D2A26;font-size:14px;color:#4A4741;">We print every item when you order it, so nothing sits in a warehouse. Here’s the road ahead:</p></td></tr>
+<tr><td class="px" style="padding:0 36px 20px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;border-spacing:4px 0;margin:0 -4px;"><tr><td width="25%" valign="top" style="width:25%;"><div style="height:6px;line-height:6px;font-size:0;background:#F5C400;">&nbsp;</div><div class="trk-l" style="padding-top:6px;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#1C1B19;">Ordered</div></td><td width="25%" valign="top" style="width:25%;"><div style="height:6px;line-height:6px;font-size:0;background:#DEDCD6;">&nbsp;</div><div class="trk-l" style="padding-top:6px;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6862;">Printed</div></td><td width="25%" valign="top" style="width:25%;"><div style="height:6px;line-height:6px;font-size:0;background:#DEDCD6;">&nbsp;</div><div class="trk-l" style="padding-top:6px;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6862;">Shipped</div></td><td width="25%" valign="top" style="width:25%;"><div style="height:6px;line-height:6px;font-size:0;background:#DEDCD6;">&nbsp;</div><div class="trk-l" style="padding-top:6px;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B6862;">Delivered</div></td></tr></table></td></tr>
+<tr><td class="px" style="padding:0 36px 16px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;background:#F6F5F2;border-left:3px solid #F5C400;"><tr><td style="padding:12px 14px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td valign="top" width="96" style="width:96px;padding:3px 12px 3px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B6862;">Printed</td><td valign="top" style="padding:3px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.45;color:#1C1B19;word-break:break-word;">Within 5 business days</td></tr><tr><td valign="top" width="96" style="width:96px;padding:3px 12px 3px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B6862;">Shipping</td><td valign="top" style="padding:3px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.45;color:#1C1B19;word-break:break-word;">Standard: 2 to 5 business days<br>Express: 2 to 3 business days</td></tr><tr><td valign="top" width="96" style="width:96px;padding:3px 12px 3px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B6862;">Tracking</td><td valign="top" style="padding:3px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.45;color:#1C1B19;word-break:break-word;">I email it the minute your box ships</td></tr></table></td></tr></table></td></tr>
+{% endif %}
+<tr><td class="px" style="padding:4px 36px 20px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td>
+<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ order_status_url }}" style="height:48px;v-text-anchor:middle;width:260px;" stroke="f" fillcolor="#1C1B19"><w:anchorlock/><center style="color:#FFFFFF;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;">View my order</center></v:rect><![endif]-->
+<!--[if !mso]><!-- --><a href="{{ order_status_url }}" class="btn" style="display:inline-block;background:#1C1B19;color:#FFFFFF;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;line-height:48px;padding:0 28px;mso-hide:all;">View my order</a><!--<![endif]-->
+</td></tr></table></td></tr>
+<tr><td class="px" style="padding:4px 36px 12px;"><p style="margin:0 0 8px;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B6862;">Your order</p><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">{% for line in subtotal_line_items %}
+<tr><td style="padding:0 0 8px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;background:#F6F5F2;border:1px solid #DEDCD6;"><tr>
+<td width="96" valign="middle" class="li-img" style="width:96px;padding:12px 0 12px 12px;">{% if line.image %}<img src="{{ line | img_url: 'compact_cropped' }}" width="80" height="80" alt="{{ line.title | escape }}" class="li-pic" style="display:block;width:80px;height:80px;border:0;background:#ECEAE5;object-fit:cover;">{% else %}<div class="li-pic" style="width:80px;height:80px;background:#ECEAE5;"></div>{% endif %}</td>
+<td valign="middle" style="padding:12px 14px;">
+<p style="margin:0;font-family:'Archivo','Arial Narrow','Helvetica Neue',Arial,sans-serif;font-stretch:78%;font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:16px;line-height:1.2;color:#1C1B19;">{% if line.product.title %}{{ line.product.title }}{% else %}{{ line.title }}{% endif %}</p>
+<p style="margin:2px 0 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;line-height:1.4;color:#6B6862;">{% if line.variant.title and line.variant.title != 'Default Title' %}{{ line.variant.title }} · {% endif %}Qty {{ line.quantity }}</p>{% if line.gift_card and line.properties['Recipient email'] != blank %}<p style="margin:2px 0 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;color:#6B6862;">Emailed to {{ line.properties['Recipient email'] }}</p>{% endif %}{% for da in line.discount_allocations %}{% if da.discount_application.target_selection != 'all' %}<p style="margin:4px 0 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;color:#4A4741;">{{ da.discount_application.title | default: 'Discount' }} (-{{ da.amount | money }})</p>{% endif %}{% endfor %}
+</td>
+<td valign="top" align="right" style="padding:12px 12px 12px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;color:#1C1B19;white-space:nowrap;">{% if line.original_line_price != line.final_line_price %}<span style="display:block;font-weight:400;color:#6B6862;text-decoration:line-through;">{{ line.original_line_price | money }}</span>{% endif %}{% if line.final_line_price == 0 %}Free{% else %}{{ line.final_line_price | money }}{% endif %}</td>
+</tr></table></td></tr>{% endfor %}</table></td></tr>
+<tr><td class="px" style="padding:0 36px 20px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;border-top:1px solid #DEDCD6;">
+<tr><td colspan="2" style="height:8px;line-height:8px;font-size:0;">&nbsp;</td></tr>
+<tr><td style="padding:4px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;color:#4A4741;">Subtotal</td><td align="right" style="padding:4px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;color:#1C1B19;white-space:nowrap;">{{ subtotal_price | money }}</td></tr>
+{% for discount_application in discount_applications %}{% if discount_application.target_selection == 'all' and discount_application.target_type != 'shipping_line' %}<tr><td style="padding:4px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;color:#4A4741;">Discount{% if discount_application.title != blank %} ({{ discount_application.title }}){% endif %}</td><td align="right" style="padding:4px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;color:#1C1B19;white-space:nowrap;">-{{ discount_application.total_allocated_amount | money }}</td></tr>{% endif %}{% endfor %}
+{% if requires_shipping %}<tr><td style="padding:4px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;color:#4A4741;">Shipping{% if shipping_method.title != blank %} ({{ shipping_method.title }}){% endif %}</td><td align="right" style="padding:4px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;color:#1C1B19;white-space:nowrap;">{% if shipping_price == 0 %}Free{% else %}{{ shipping_price | money }}{% endif %}</td></tr>{% endif %}
+{% if tax_price > 0 %}<tr><td style="padding:4px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;color:#4A4741;">Taxes</td><td align="right" style="padding:4px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;color:#1C1B19;white-space:nowrap;">{{ tax_price | money }}</td></tr>{% endif %}
+{% if total_tip and total_tip > 0 %}<tr><td style="padding:4px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;color:#4A4741;">Feed The Beast (tip)</td><td align="right" style="padding:4px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;color:#1C1B19;white-space:nowrap;">{{ total_tip | money }}</td></tr>{% endif %}
+<tr><td colspan="2" style="height:6px;line-height:6px;font-size:0;border-bottom:1px solid #DEDCD6;">&nbsp;</td></tr>
+<tr><td colspan="2" style="height:6px;line-height:6px;font-size:0;">&nbsp;</td></tr>
+<tr><td style="padding:4px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:16px;font-weight:700;color:#1C1B19;">Total</td><td align="right" style="padding:4px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:18px;font-weight:700;color:#1C1B19;white-space:nowrap;">{{ total_price | money_with_currency }}</td></tr>
+{% for transaction in transactions %}{% if transaction.gateway == 'gift_card' and transaction.status == 'success' %}<tr><td style="padding:4px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;color:#4A4741;">Paid with gift card</td><td align="right" style="padding:4px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;font-weight:700;color:#1C1B19;white-space:nowrap;">-{{ transaction.amount | money }}</td></tr>{% endif %}{% endfor %}
+{% if total_discounts > 0 %}<tr><td colspan="2" style="padding:6px 0 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;color:#4A4741;">You saved {{ total_discounts | money }}. Nice.</td></tr>{% endif %}
+</table></td></tr>
+{% if requires_shipping %}<tr><td class="px" style="padding:4px 36px 20px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr>
+<td valign="top" width="50%" class="stack" style="width:50%;padding-right:12px;"><p style="margin:0 0 6px;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B6862;">Shipping to</p><p style="margin:0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#2D2A26;font-size:14px;">{{ shipping_address | format_address }}</p></td>
+<td valign="top" width="50%" class="stack stack-gap" style="width:50%;padding-left:12px;"><p style="margin:0 0 6px;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B6862;">Shipping method</p><p style="margin:0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#2D2A26;font-size:14px;">{% if shipping_method.title != blank %}{{ shipping_method.title }}{% else %}Standard{% endif %}</p><p style="margin:6px 0 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:12px;line-height:1.5;color:#6B6862;">US only. Free Standard shipping on orders of $75 or more.</p></td>
+</tr></table></td></tr>{% endif %}
+<tr><td class="px" style="padding:4px 36px 28px;"><p style="margin:0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.5;font-style:italic;color:#4A4741;">Running hot,</p><p style="margin:2px 0 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.5;font-weight:700;color:#1C1B19;">“The Evil One” · Cat 3208 · Waterloo, WI</p></td></tr>
+<tr><td class="px" style="padding:14px 36px 18px;background:#F6F5F2;border-top:1px solid #DEDCD6;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;line-height:1.55;color:#6B6862;">
+<p style="margin:0;">{{ hm_brand }} · Waterloo, WI</p>
+<p style="margin:4px 0 0;">Questions? <a href="https://heavymetalprostock.com/pages/contact" style="color:#4A4741;text-decoration:underline;">Send the crew a note</a> through the contact form.</p>
+<p style="margin:4px 0 0;color:#4A4741;">P.S. People who dig find page 3208.</p>
+</td></tr>
+</table>
+<!--[if mso]></td></tr></table><![endif]-->
+</td></tr>
+</table>
+</body>
+</html>

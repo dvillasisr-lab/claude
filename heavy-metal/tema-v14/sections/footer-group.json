@@ -34,7 +34,8 @@
         "show_cookie_link": true,
         "cookie_label": "Cookie Preferences",
         "help_menu": "footer-help-v14",
-        "team_menu": "footer-team-v14"
+        "team_menu": "footer-team-v14",
+        "legal_menu": "footer-legal-v14"
       }
     }
   },

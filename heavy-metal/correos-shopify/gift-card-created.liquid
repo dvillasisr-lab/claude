@@ -1,0 +1,90 @@
+{% comment %}
+NOTIFICATION: Gift card created (Settings > Notifications > Customer notifications > Gift card created)
+Goes to whoever gets the Gift Evil card (the recipient, or the buyer if no recipient was set).
+SUBJECT: {% if gift_card.recipient %}You got {{ gift_card.initial_value | money_without_trailing_zeros }} of evil{% else %}Your Gift Evil card is here{% endif %}
+Brand: Heavy Metal Pro Stock: “The Evil One”. Built from boceto-v29/correos.html + hm.css. Table layout, inline CSS, 600px.
+{% endcomment %}
+{%- assign hm_brand = 'Heavy Metal Pro Stock: “The Evil One”' -%}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>Your Gift Evil card</title>
+<!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><style>h1,p,td,a{font-family:Arial,sans-serif!important}</style><![endif]-->
+<!--[if !mso]><!--><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Caveat:wght@500&display=swap" rel="stylesheet"><!--<![endif]-->
+<style>
+body{margin:0;padding:0;width:100%!important;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+table,td{mso-table-lspace:0pt;mso-table-rspace:0pt}
+img{-ms-interpolation-mode:bicubic;border:0;outline:none;text-decoration:none}
+a{color:#1C1B19}
+.btn:hover{background:#4A4741!important}
+@media only screen and (max-width:620px){
+  .outer{padding:0!important}
+  .card{border-left:0!important;border-right:0!important}
+  .px{padding-left:20px!important;padding-right:20px!important}
+  .h{font-size:32px!important}
+  .li-img{width:64px!important;padding-left:10px!important}
+  .li-pic{width:64px!important;height:64px!important}
+  .gc-amt{font-size:52px!important}
+  .code{font-size:20px!important;letter-spacing:.06em!important}
+  .stack{display:block!important;width:100%!important;padding-left:0!important;padding-right:0!important}
+  .stack-gap{padding-top:16px!important}
+}
+</style>
+</head>
+<body style="margin:0;padding:0;background:#F6F5F2;">
+<div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">Here’s {{ gift_card.initial_value | money_without_trailing_zeros }} of evil. Use the code at checkout.&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#F6F5F2" style="border-collapse:collapse;background:#F6F5F2;">
+<tr><td align="center" class="outer" style="padding:24px 12px;">
+<!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
+<table role="presentation" class="card" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;max-width:600px;background:#FFFFFF;border:1px solid #DEDCD6;">
+<tr><td class="px" style="padding:28px 36px 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;border-bottom:3px solid #1C1B19;"><tr>
+<td valign="middle" style="padding:0 0 14px;">
+<a href="{{ shop.url }}" style="text-decoration:none;color:#1C1B19;">{% if shop.email_logo_url %}<img src="{{ shop.email_logo_url }}" alt="{{ hm_brand }}" width="{{ shop.email_logo_width | default: 200 }}" style="display:block;width:{{ shop.email_logo_width | default: 200 }}px;max-width:100%;height:auto;border:0;">{% else %}<span style="font-family:'Archivo','Arial Narrow','Helvetica Neue',Arial,sans-serif;font-stretch:78%;font-weight:800;text-transform:uppercase;letter-spacing:.01em;color:#1C1B19;font-size:18px;line-height:1.1;">{{ hm_brand }}</span>{% endif %}</a>
+</td>
+<td valign="middle" align="right" style="padding:0 0 14px 10px;white-space:nowrap;"><span style="display:inline-block;padding:2px 6px;background:#F5C400;color:#1C1B19;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1.5;">Gift Evil</span></td>
+</tr></table>
+</td></tr>
+{%- assign hm_sender = '' -%}
+{%- if gift_card.recipient and gift_card.customer.first_name != blank and gift_card.customer.email != gift_card.recipient.email -%}{%- assign hm_sender = gift_card.customer.first_name -%}{%- endif -%}
+<tr><td class="px" style="padding:24px 36px 16px;"><h1 class="h" style="margin:0;font-family:'Archivo','Arial Narrow','Helvetica Neue',Arial,sans-serif;font-stretch:78%;font-weight:800;text-transform:uppercase;letter-spacing:.01em;color:#1C1B19;font-size:38px;line-height:1;">Here’s {{ gift_card.initial_value | money_without_trailing_zeros }} of evil</h1></td></tr>
+<tr><td class="px" style="padding:0 36px 16px;"><p style="margin:0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#2D2A26;">Hey {% if gift_card.recipient.nickname != blank %}{{ gift_card.recipient.nickname }}{% elsif gift_card.customer.first_name != blank %}{{ gift_card.customer.first_name }}{% else %}there{% endif %}, it’s me, “The Evil One”. {% if hm_sender != blank %}{{ hm_sender }} sent you a Gift Evil card. Good taste in friends.{% else %}Your Gift Evil card is ready.{% endif %}</p></td></tr>
+<tr><td class="px" style="padding:4px 36px 20px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;background:#121211;background-image:linear-gradient(160deg,#16191E 0%,#23282F 55%,#3A414B 100%);">
+<tr><td style="padding:22px 24px 6px;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#C9C6BE;">Pro Stock · “The Evil One”</td></tr>
+<tr><td style="padding:18px 24px 18px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr>
+<td valign="bottom" style="font-family:'Archivo','Arial Narrow','Helvetica Neue',Arial,sans-serif;font-stretch:70%;font-weight:800;font-size:24px;line-height:1;text-transform:uppercase;color:#F2F0E9;">Gift Evil</td>
+<td valign="bottom" align="right" class="gc-amt" style="font-family:'Archivo','Arial Narrow','Helvetica Neue',Arial,sans-serif;font-stretch:62%;font-weight:800;font-size:64px;line-height:.9;color:#F2F0E9;white-space:nowrap;">{{ gift_card.initial_value | money_without_trailing_zeros }}</td>
+</tr></table></td></tr>
+<tr><td style="height:5px;line-height:5px;font-size:0;background:#F5C400;">&nbsp;</td></tr>
+</table></td></tr>
+{% if gift_card.message != blank %}<tr><td class="px" style="padding:0 36px 20px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;background:#FBF7EC;border:1px solid #DEDCD6;"><tr><td style="padding:16px 20px;">
+<p style="margin:0 0 6px;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B6862;">{% if hm_sender != blank %}A note from {{ hm_sender }}{% else %}A note that came with your gift{% endif %}</p>
+<p style="margin:0;font-family:'Caveat','Segoe Print','Bradley Hand',cursive;font-size:24px;line-height:1.25;color:#1C1B19;">{{ gift_card.message | escape | newline_to_br }}</p>
+</td></tr></table></td></tr>{% endif %}
+<tr><td class="px" style="padding:0 36px 16px;"><p style="margin:0 0 8px;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B6862;">Your code</p><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;border:2px dashed #1C1B19;"><tr><td align="center" class="code" style="padding:16px 12px;font-family:'Courier New',Courier,monospace;font-size:24px;font-weight:700;letter-spacing:.12em;color:#1C1B19;word-break:break-all;">{{ gift_card.code | format_code }}</td></tr></table></td></tr>
+<tr><td class="px" style="padding:0 36px 16px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;background:#F6F5F2;border-left:3px solid #F5C400;"><tr><td style="padding:12px 14px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td valign="top" width="96" style="width:96px;padding:3px 12px 3px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B6862;">Balance</td><td valign="top" style="padding:3px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.45;color:#1C1B19;word-break:break-word;">{{ gift_card.balance | money }}</td></tr><tr><td valign="top" width="96" style="width:96px;padding:3px 12px 3px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B6862;">Expires</td><td valign="top" style="padding:3px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.45;color:#1C1B19;word-break:break-word;">{% if gift_card.expires_on %}{{ gift_card.expires_on | date: "%B %-d, %Y" }}{% else %}Never{% endif %}</td></tr><tr><td valign="top" width="96" style="width:96px;padding:3px 12px 3px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#6B6862;">Good for</td><td valign="top" style="padding:3px 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:14px;line-height:1.45;color:#1C1B19;word-break:break-word;">Anything in the shop, special edition included</td></tr></table></td></tr></table></td></tr>
+<tr><td class="px" style="padding:0 36px 16px;"><p style="margin:0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#2D2A26;">Enter the code at checkout. Whatever you don’t spend stays on the card. Standard shipping is free on orders of $75 or more (US only).</p></td></tr>
+<tr><td class="px" style="padding:4px 36px 20px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td>
+<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ shop.url }}" style="height:48px;v-text-anchor:middle;width:260px;" stroke="f" fillcolor="#1C1B19"><w:anchorlock/><center style="color:#FFFFFF;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;">Shop now</center></v:rect><![endif]-->
+<!--[if !mso]><!-- --><a href="{{ shop.url }}" class="btn" style="display:inline-block;background:#1C1B19;color:#FFFFFF;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;line-height:48px;padding:0 28px;mso-hide:all;">Shop now</a><!--<![endif]-->
+</td></tr></table></td></tr>
+<tr><td class="px" style="padding:0 36px 16px;"><p style="margin:0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#2D2A26;font-size:14px;color:#4A4741"><a href="{{ gift_card.url }}" style="color:#1C1B19;text-decoration:underline;">See your gift card and balance</a>. Keep this email: that link always shows what’s left.</p></td></tr>
+<tr><td class="px" style="padding:4px 36px 28px;"><p style="margin:0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.5;font-style:italic;color:#4A4741;">Spend it loud,</p><p style="margin:2px 0 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.5;font-weight:700;color:#1C1B19;">“The Evil One” · Cat 3208 · Waterloo, WI</p></td></tr>
+<tr><td class="px" style="padding:14px 36px 18px;background:#F6F5F2;border-top:1px solid #DEDCD6;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;line-height:1.55;color:#6B6862;">
+<p style="margin:0;">{{ hm_brand }} · Waterloo, WI</p>
+<p style="margin:4px 0 0;">Questions? <a href="https://heavymetalprostock.com/pages/contact" style="color:#4A4741;text-decoration:underline;">Send the crew a note</a> through the contact form.</p>
+</td></tr>
+</table>
+<!--[if mso]></td></tr></table><![endif]-->
+</td></tr>
+</table>
+</body>
+</html>

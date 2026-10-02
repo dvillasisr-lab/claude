@@ -77,7 +77,8 @@
         "show_facebook": true,
         "mobile_mega_children": false,
         "search_placeholder": "Search tees, hoodies, caps...",
-        "trending_count": 4
+        "trending_count": 4,
+        "categories_menu": "shop-categories-v14"
       }
     }
   },

@@ -1,0 +1,75 @@
+{% comment %}
+NOTIFICATION: Delivered (Settings > Notifications > Customer notifications > Delivered)
+Only sent when the carrier reports it (tracking needed).
+SUBJECT: Delivered. Go get it.
+Brand: Heavy Metal Pro Stock: “The Evil One”. Built from boceto-v29/correos.html + hm.css. Table layout, inline CSS, 600px.
+{% endcomment %}
+{%- assign hm_brand = 'Heavy Metal Pro Stock: “The Evil One”' -%}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>Your gear was delivered</title>
+<!--[if mso]><noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript><style>h1,p,td,a{font-family:Arial,sans-serif!important}</style><![endif]-->
+<!--[if !mso]><!--><link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Caveat:wght@500&display=swap" rel="stylesheet"><!--<![endif]-->
+<style>
+body{margin:0;padding:0;width:100%!important;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}
+table,td{mso-table-lspace:0pt;mso-table-rspace:0pt}
+img{-ms-interpolation-mode:bicubic;border:0;outline:none;text-decoration:none}
+a{color:#1C1B19}
+.btn:hover{background:#4A4741!important}
+@media only screen and (max-width:620px){
+  .outer{padding:0!important}
+  .card{border-left:0!important;border-right:0!important}
+  .px{padding-left:20px!important;padding-right:20px!important}
+  .h{font-size:32px!important}
+  .li-img{width:64px!important;padding-left:10px!important}
+  .li-pic{width:64px!important;height:64px!important}
+  .gc-amt{font-size:52px!important}
+  .code{font-size:20px!important;letter-spacing:.06em!important}
+  .stack{display:block!important;width:100%!important;padding-left:0!important;padding-right:0!important}
+  .stack-gap{padding-top:16px!important}
+}
+</style>
+</head>
+<body style="margin:0;padding:0;background:#F6F5F2;">
+<div style="display:none;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;">Your box made it. Go check the porch.&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;&#8199;&#847;</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#F6F5F2" style="border-collapse:collapse;background:#F6F5F2;">
+<tr><td align="center" class="outer" style="padding:24px 12px;">
+<!--[if mso]><table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
+<table role="presentation" class="card" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;max-width:600px;background:#FFFFFF;border:1px solid #DEDCD6;">
+<tr><td class="px" style="padding:28px 36px 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;border-bottom:3px solid #1C1B19;"><tr>
+<td valign="middle" style="padding:0 0 14px;">
+<a href="{{ shop.url }}" style="text-decoration:none;color:#1C1B19;">{% if shop.email_logo_url %}<img src="{{ shop.email_logo_url }}" alt="{{ hm_brand }}" width="{{ shop.email_logo_width | default: 200 }}" style="display:block;width:{{ shop.email_logo_width | default: 200 }}px;max-width:100%;height:auto;border:0;">{% else %}<span style="font-family:'Archivo','Arial Narrow','Helvetica Neue',Arial,sans-serif;font-stretch:78%;font-weight:800;text-transform:uppercase;letter-spacing:.01em;color:#1C1B19;font-size:18px;line-height:1.1;">{{ hm_brand }}</span>{% endif %}</a>
+</td>
+<td valign="middle" align="right" style="padding:0 0 14px 10px;white-space:nowrap;"><span style="display:inline-block;padding:2px 6px;background:#F5C400;color:#1C1B19;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;line-height:1.5;">Delivered</span></td>
+</tr></table>
+</td></tr>
+<tr><td class="px" style="padding:24px 36px 16px;"><h1 class="h" style="margin:0;font-family:'Archivo','Arial Narrow','Helvetica Neue',Arial,sans-serif;font-stretch:78%;font-weight:800;text-transform:uppercase;letter-spacing:.01em;color:#1C1B19;font-size:38px;line-height:1;">Delivered. Go get it.</h1></td></tr>
+<tr><td class="px" style="padding:0 36px 20px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:separate;border-spacing:4px 0;margin:0 -4px;"><tr><td width="25%" valign="top" style="width:25%;"><div style="height:6px;line-height:6px;font-size:0;background:#F5C400;">&nbsp;</div><div class="trk-l" style="padding-top:6px;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#1C1B19;">Ordered</div></td><td width="25%" valign="top" style="width:25%;"><div style="height:6px;line-height:6px;font-size:0;background:#F5C400;">&nbsp;</div><div class="trk-l" style="padding-top:6px;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#1C1B19;">Printed</div></td><td width="25%" valign="top" style="width:25%;"><div style="height:6px;line-height:6px;font-size:0;background:#F5C400;">&nbsp;</div><div class="trk-l" style="padding-top:6px;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#1C1B19;">Shipped</div></td><td width="25%" valign="top" style="width:25%;"><div style="height:6px;line-height:6px;font-size:0;background:#F5C400;">&nbsp;</div><div class="trk-l" style="padding-top:6px;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#1C1B19;">Delivered</div></td></tr></table></td></tr>
+<tr><td class="px" style="padding:0 36px 16px;"><p style="margin:0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#2D2A26;">Hey {% if customer.first_name != blank %}{{ customer.first_name }}{% elsif shipping_address.first_name != blank %}{{ shipping_address.first_name }}{% else %}there{% endif %}, the carrier says your box from order {{ order_name }} made it. Go check the porch before somebody else wears it.</p></td></tr>
+<tr><td class="px" style="padding:0 36px 16px;"><p style="margin:0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.55;color:#2D2A26;font-size:14px;color:#4A4741">Box missing or something looks off? <a href="https://heavymetalprostock.com/pages/contact" style="color:#1C1B19;text-decoration:underline;">Tell the crew through the contact form</a> with your order number and we’ll sort it out.</p></td></tr>
+<tr><td class="px" style="padding:4px 36px 20px;">
+<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;"><tr><td>
+<!--[if mso]><v:rect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ order_status_url }}" style="height:48px;v-text-anchor:middle;width:260px;" stroke="f" fillcolor="#1C1B19"><w:anchorlock/><center style="color:#FFFFFF;font-family:Arial,sans-serif;font-size:13px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;">View my order</center></v:rect><![endif]-->
+<!--[if !mso]><!-- --><a href="{{ order_status_url }}" class="btn" style="display:inline-block;background:#1C1B19;color:#FFFFFF;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;line-height:48px;padding:0 28px;mso-hide:all;">View my order</a><!--<![endif]-->
+</td></tr></table></td></tr>
+<tr><td class="px" style="padding:4px 36px 28px;"><p style="margin:0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.5;font-style:italic;color:#4A4741;">Wear it loud,</p><p style="margin:2px 0 0;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;line-height:1.5;font-weight:700;color:#1C1B19;">“The Evil One” · Cat 3208 · Waterloo, WI</p></td></tr>
+<tr><td class="px" style="padding:14px 36px 18px;background:#F6F5F2;border-top:1px solid #DEDCD6;font-family:'Archivo','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:11px;line-height:1.55;color:#6B6862;">
+<p style="margin:0;">{{ hm_brand }} · Waterloo, WI</p>
+<p style="margin:4px 0 0;">Questions? <a href="https://heavymetalprostock.com/pages/contact" style="color:#4A4741;text-decoration:underline;">Send the crew a note</a> through the contact form.</p>
+<p style="margin:4px 0 0;color:#4A4741;">P.S. People who dig find page 3208.</p>
+</td></tr>
+</table>
+<!--[if mso]></td></tr></table><![endif]-->
+</td></tr>
+</table>
+</body>
+</html>
