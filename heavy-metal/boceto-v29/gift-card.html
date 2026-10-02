@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Your Gift Evil gift card · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Caveat:wght@500..700&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4
+   Página que abre quien recibe la tarjeta (gift_card.liquid en Shopify). No lleva menú ni footer de la tienda:
+   logo, la tarjeta, el código para copiar, saldo y un solo botón. La nota de quien la manda va a mano (Caveat). */
+html,body{overflow-x:clip}
+body{background:var(--bg)}
+.gc-top{display:flex;justify-content:center;padding:18px var(--gutter);border-bottom:1px solid var(--line);background:var(--surface)}
+.gc-top img{height:20px;width:auto}
+.gc{max-width:1200px;margin-inline:auto;padding:clamp(24px,5vw,64px) var(--gutter) var(--sect);display:grid;grid-template-columns:minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center}
+@media (min-width:900px){.gc{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}}
+
+.gc-stage{display:grid;gap:22px;justify-items:center}
+.gcard{position:relative;width:min(100%,560px);aspect-ratio:85.6/54;border-radius:clamp(10px,1.4vw,18px);overflow:hidden;color:var(--night-ink);
+  background:radial-gradient(60% 80% at 82% 30%,rgba(170,178,190,.30),transparent 70%),radial-gradient(70% 60% at 10% 0%,rgba(100,110,126,.35),transparent 70%),linear-gradient(160deg,#16191E 0%,#23282F 55%,#3A414B 100%);
+  box-shadow:0 18px 40px -18px rgba(18,18,17,.55)}
+.gcard__in{position:absolute;inset:0;padding:7% 7.5%;display:grid;grid-template-rows:auto 1fr auto}
+.gcard__logo{width:58%;height:auto}
+.gcard__sub{margin:6px 0 0;font-family:var(--f-head);font-size:clamp(9px,1.1vw,13px);font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+.gcard__bolt{position:absolute;right:7%;top:9%;width:16%;height:auto}
+.gcard__foot{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.gcard__name{margin:0;font-family:var(--f-head);font-stretch:70%;font-weight:800;font-size:clamp(18px,2.4vw,30px);text-transform:uppercase;line-height:1}
+.gcard__amt{margin:0;font-family:var(--f-head);font-stretch:62%;font-weight:800;font-size:clamp(44px,7vw,92px);line-height:.85;font-variant-numeric:tabular-nums}
+.gcard__amt sup{font-size:.42em;vertical-align:.95em;margin-right:2px;font-weight:700}
+.gcard__stripe{position:absolute;left:0;right:0;bottom:0;height:5px;background:var(--accent)}
+
+/* nota de quien la manda */
+.gc-note{position:relative;width:min(100%,440px);margin:0;background:#FBF7EC;padding:18px 22px 16px;transform:rotate(1.2deg);box-shadow:0 8px 18px -12px rgba(28,27,25,.35)}
+.gc-note::before{content:"";position:absolute;left:50%;top:-10px;width:84px;height:20px;transform:translateX(-50%) rotate(-2deg);background:rgba(232,226,208,.85)}
+.gc-note p{margin:0;font-family:'Caveat','Bradley Hand','Segoe Print',cursive;font-size:clamp(22px,2.4vw,28px);line-height:1.2;color:#2D2A26}
+.gc-note figcaption{margin-top:6px;font-size:var(--t-xs);color:var(--mute)}
+
+.gc-info{display:grid;gap:18px;align-content:center}
+.gc-info .label{color:var(--mute)}
+.gc-info h1{margin:4px 0 0;font-family:var(--f-head);font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:var(--t-hero);line-height:1;color:var(--ink)}
+.gc-info .lead{margin:0;color:var(--soft);max-width:44ch}
+.code{display:flex;align-items:stretch;border:1px solid var(--ink);background:var(--surface)}
+.code output{flex:1;display:flex;align-items:center;padding:0 14px;min-height:56px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:clamp(16px,1.8vw,20px);font-weight:700;letter-spacing:.12em;color:var(--ink);min-width:0;overflow-wrap:anywhere}
+.code button{flex:none;border:0;border-left:1px solid var(--ink);background:var(--surface);padding:0 18px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--ink)}
+.code button:hover{background:var(--ink);color:var(--surface)}
+.bal{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.bal div{padding:12px 0}
+.bal div+div{border-left:1px solid var(--line);padding-left:16px}
+.bal dt{font-size:var(--t-xs);color:var(--mute);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.bal dd{margin:2px 0 0;font-family:var(--f-head);font-stretch:75%;font-weight:800;font-size:28px;color:var(--ink);font-variant-numeric:tabular-nums}
+.gc-info .btn{width:100%;min-height:52px}
+.gc-more{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center}
+.gc-more a,.gc-more button{font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-underline-offset:4px;background:none;border:0;padding:12px 0;margin:-12px 0;cursor:pointer;color:var(--ink);text-decoration:underline}
+.qr{display:flex;gap:14px;align-items:center;font-size:var(--t-xs);color:var(--mute)}
+.qr span{width:72px;height:72px;flex:none;background:
+  conic-gradient(from 90deg at 2px 2px,#1C1B19 25%,transparent 0) 0 0/12px 12px,var(--surface);border:6px solid var(--surface);outline:1px solid var(--line)}
+.gc-msg{margin:0;font-size:var(--t-sm);min-height:1.2em}
+.gc-foot{text-align:center;padding:24px var(--gutter) calc(24px + env(safe-area-inset-bottom,0px));font-size:var(--t-xs);color:var(--mute);border-top:1px solid var(--line)}
+.gc-foot a{color:var(--ink)}
+@media print{.gc-top,.gc-more,.gc-info .btn,.qr,.gc-foot,.draftbar,.note{display:none!important}.gc{padding-top:0}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="draftbar" style="position:relative"><span>Boceto v29 · página que recibe quien gana la tarjeta</span><a href="gift-evil.html">Volver a Gift Evil</a><a href="index.html">Home</a></div>
+<header class="gc-top"><a href="index.html"><img src="img/logo-ink.svg" alt="Heavy Metal Pro Stock: “The Evil One”" width="139" height="20"></a></header>
+
+<main id="main" class="gc">
+  <div class="gc-stage">
+    <div class="gcard" role="img" aria-label="Gift Evil gift card, $50">
+      <svg class="gcard__bolt" viewBox="0 0 40 64" aria-hidden="true"><path d="M24 0 6 36h12L12 64l22-38H21L30 0z" fill="#F5C400"/></svg>
+      <div class="gcard__in">
+        <div><img class="gcard__logo" src="img/logo-bone.svg" alt="" width="560" height="81"><p class="gcard__sub">Pro Stock · “The Evil One”</p></div>
+        <span></span>
+        <div class="gcard__foot"><p class="gcard__name">Gift Evil</p><p class="gcard__amt"><sup>$</sup>50</p></div>
+      </div>
+      <span class="gcard__stripe"></span>
+    </div>
+    <figure class="gc-note">
+      <p>Happy birthday. Full pull or nothing. Love, Mom</p>
+      <figcaption>A note that came with your gift</figcaption>
+    </figure>
+  </div>
+
+  <div class="gc-info">
+    <div>
+      <p class="label">Gift card</p>
+      <h1>Here's $50 of evil</h1>
+    </div>
+    <p class="lead">Use this code at checkout on anything in the shop. Whatever you don't spend stays on the card.</p>
+    <div class="code"><output id="code" aria-label="Gift card code">EVIL 7KQ2 9XWM 4B8T</output><button type="button" id="copy">Copy</button></div>
+    <p class="gc-msg" id="gc-msg" role="status" aria-live="polite"></p>
+    <dl class="bal" style="margin:0"><div><dt>Balance</dt><dd>$50.00</dd></div><div><dt>Expires</dt><dd>Never</dd></div></dl>
+    <a class="btn" href="shop.html">Shop now</a>
+    <div class="gc-more"><a href="#" id="wallet">Add to Apple Wallet</a><button type="button" id="print">Print</button></div>
+    <p class="note">En Shopify es <b>templates/gift_card.liquid</b>. Todo sale de la tarjeta: monto, saldo, vencimiento, código, el mensaje que escribieron al comprar, el QR y el botón de Apple Wallet (Shopify los genera). Si no hay mensaje, la nota a mano no aparece. Si la tarjeta ya se gastó, el título cambia a "This card is all used up" y el botón a Shop. Shopify también da un QR, pero solo sirve si algún día cobras con Shopify POS en los pulls; por ahora no se muestra.</p>
+  </div>
+</main>
+
+<footer class="gc-foot"><p style="margin:0">Questions? <a href="contact.html?topic=order">Send us a note</a> · <a href="policies.html?p=terms">Terms</a></p></footer>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  $('copy').addEventListener('click', function () {
+    var code = $('code').textContent.replace(/\s+/g, ''), b = this;
+    function done() { b.textContent = 'Copied'; $('gc-msg').textContent = 'Code copied. Paste it at checkout.'; setTimeout(function () { b.textContent = 'Copy'; }, 2500); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code).then(done, function () { $('gc-msg').textContent = 'Select the code and copy it.'; });
+    else $('gc-msg').textContent = 'Select the code and copy it.';
+  });
+  $('print').addEventListener('click', function () { window.print(); });
+  $('wallet').addEventListener('click', function (e) { e.preventDefault(); $('gc-msg').textContent = 'Boceto: aquí Shopify abre el pase de Apple Wallet.'; });
+})();
+</script>
+</body>
+</html>
