@@ -203,14 +203,17 @@
     });
   }
 
-  function change(key, qty) {
-    var li = drawer.querySelector('.line[data-key="' + (window.CSS && CSS.escape ? CSS.escape(key) : key) + '"]');
+  function lineSel(key) { return '.line[data-key="' + (window.CSS && CSS.escape ? CSS.escape(key) : key) + '"]'; }
+  function change(key, qty, ctl) {
+    var li = drawer.querySelector(lineSel(key));
     if (li) li.classList.add('is-busy');
     setErr('');
     return req('/cart/change.js', { id: key, quantity: qty }).then(sweep).then(render).then(function (cart) {
       say(qty === 0 ? 'Item removed.' : 'Quantity updated.');
-      var f = drawer.querySelector('[data-hm-lines] button') || $('[data-hm-cart-close]');
-      if (qty === 0 && f) f.focus();
+      /* lines are re-rendered: put focus back on the same control, or on the next sensible one */
+      var nl = drawer.querySelector(lineSel(key));
+      var f = (nl && ctl && nl.querySelector(ctl)) || (nl && nl.querySelector('[data-q]')) || drawer.querySelector('[data-hm-lines] button') || $('[data-hm-cart-close]');
+      if (f) f.focus();
       return cart;
     }).catch(function (e) { setErr(e.message); if (li) li.classList.remove('is-busy'); });
   }
@@ -271,7 +274,7 @@
         var q = e.target.closest('[data-q]');
         if (q) {
           var item = state.cart.items.filter(function (i) { return i.key === key; })[0];
-          if (item) change(key, Math.max(0, item.quantity + Number(q.getAttribute('data-q'))));
+          if (item) change(key, Math.max(0, item.quantity + Number(q.getAttribute('data-q'))), '[data-q="' + q.getAttribute('data-q') + '"]');
           return;
         }
       }

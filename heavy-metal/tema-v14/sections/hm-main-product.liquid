@@ -129,7 +129,7 @@
       endif
     endfor
   endif
-  assign desc = desc | replace: '<table', '<div class="tbl-wrap"><table' | replace: '</table>', '</table></div>' | replace: '<p></p>', '' | strip
+  assign desc = desc | replace: '<table', '<div class="tbl-wrap"><table' | replace: '</table>', '</table></div>' | replace: '<p></p>', '' | replace: '<br><br><br>', '<br><br>' | replace: '<br><br><br>', '<br><br>' | strip
   assign desc_text = desc | replace: '<br', ' <br' | replace: '</p>', ' </p>' | replace: '</li>', ' </li>' | strip_html | strip
 
   assign has_guide = false
@@ -141,6 +141,15 @@
     Size chart photos in the product media (alt text containing "size chart", "size guide" or "size table")
     leave the gallery and show in the Size guide dialog when the description has no size table.
   endcomment
+  comment
+    The selected (or first available) variant's photo goes first, so the first image matches the preselected color.
+  endcomment
+  assign feat_id = sel.featured_media.id | default: 0
+  assign ordered = p.media
+  if feat_id != 0
+    assign feat_arr = p.media | where: 'id', feat_id
+    assign ordered = feat_arr | concat: p.media
+  endif
   assign media_count = 0
   assign skip_ids = ','
   assign sg_media = nil
@@ -242,10 +251,13 @@
           >
             {%- if media_count > 0 -%}
               {%- assign gi = 0 -%}
-              {%- for media in p.media -%}
+              {%- for media in ordered -%}
                 {%- liquid
                   assign mid = ',' | append: media.id | append: ','
                   if skip_ids contains mid
+                    continue
+                  endif
+                  if feat_id != 0 and media.id == feat_id and forloop.first == false
                     continue
                   endif
                   assign gi = gi | plus: 1
@@ -305,9 +317,10 @@
         {%- if media_count > 1 -%}
           <ul class="pg__thumbs" data-pg-thumbs aria-label="Image thumbnails">
             {%- assign gi = 0 -%}
-            {%- for media in p.media -%}
+            {%- for media in ordered -%}
               {%- assign mid = ',' | append: media.id | append: ',' -%}
               {%- if skip_ids contains mid -%}{%- continue -%}{%- endif -%}
+              {%- if feat_id != 0 and media.id == feat_id and forloop.first == false -%}{%- continue -%}{%- endif -%}
               {%- assign gi = gi | plus: 1 -%}
               <li>
                 <button
