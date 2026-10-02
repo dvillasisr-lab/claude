@@ -158,7 +158,7 @@
       },
       {
         "key": "answer",
-        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Standard shipping starts at $6.99 and is \"}, {\"type\": \"text\", \"value\": \"free on orders of $60 or more\", \"bold\": true}, {\"type\": \"text\", \"value\": \". Express starts at $12.99. You see the exact cost at checkout before you pay.\"}]}]}"
+        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Standard shipping starts at $6.99 and is \"}, {\"type\": \"text\", \"value\": \"free on orders of $75 or more\", \"bold\": true}, {\"type\": \"text\", \"value\": \". Express starts at $12.99. You see the exact cost at checkout before you pay.\"}]}]}"
       },
       {
         "key": "category",
