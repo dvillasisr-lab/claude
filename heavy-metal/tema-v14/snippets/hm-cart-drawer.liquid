@@ -226,9 +226,27 @@
     <p class="drawer__sub">
       <span>Subtotal</span><span class="num" data-hm-cart-total>{{ cart.total_price | money }}</span>
     </p>
-    <p class="small muted" style="margin:0">
+    {%- liquid
+      comment
+        v14.1: a cart with only gift cards ships nothing, so the printed/shipping line swaps for the email line (hm-cart.js toggles it live)
+      endcomment
+      assign gift_only = false
+      if cart.item_count > 0
+        assign gift_only = true
+        for item in cart.items
+          unless item.gift_card
+            assign gift_only = false
+            break
+          endunless
+        endfor
+      endif
+    -%}
+    <p class="small muted" style="margin:0" data-hm-ship-note{% if gift_only %} hidden{% endif %}>
       {%- if settings.hm_ships_line != blank %}{{ settings.hm_ships_line | escape }}. {% endif -%}
       Taxes and shipping at checkout.
+    </p>
+    <p class="small muted" style="margin:0" data-hm-gift-note{% unless gift_only %} hidden{% endunless %}>
+      Gift cards arrive by email. No shipping, no wait.
     </p>
     <form action="{{ routes.cart_url }}" method="post" class="hm-cart__checkout">
       <button class="btn btn--block" type="submit" name="checkout">Checkout</button>

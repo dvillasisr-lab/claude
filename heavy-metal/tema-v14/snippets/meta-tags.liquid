@@ -1,5 +1,6 @@
 {%- comment -%}
   Open Graph and Twitter tags. hm_title / hm_desc / hm_brand come from layout/theme.liquid (already cleaned).
+  The title comes from page_title, which Shopify already HTML escapes, so it is printed without escape.
   Image: the page image (product, article, collection image, or the social sharing image from
   Online Store > Preferences), else the theme's "Logo for search engines and sharing" setting.
 {%- endcomment -%}
@@ -26,7 +27,7 @@
 
 <meta property="og:site_name" content="{{ og_brand | escape }}">
 <meta property="og:url" content="{{ og_url }}">
-<meta property="og:title" content="{{ og_title | escape }}">
+<meta property="og:title" content="{{ og_title }}">
 <meta property="og:type" content="{{ og_type }}">
 <meta property="og:description" content="{{ og_description | escape }}">
 <meta property="og:locale" content="en_US">
@@ -40,7 +41,7 @@
   -%}
   <meta property="og:image:width" content="{{ og_w }}">
   <meta property="og:image:height" content="{{ og_h }}">
-  <meta property="og:image:alt" content="{{ og_image.alt | default: og_title | escape }}">
+  <meta property="og:image:alt" content="{%- if og_image.alt != blank -%}{{ og_image.alt | escape }}{%- else -%}{{ og_title }}{%- endif -%}">
   <meta name="twitter:image" content="https:{{ og_image | image_url: width: 1200 }}">
 {%- endif -%}
 
@@ -53,5 +54,5 @@
   <meta name="twitter:site" content="{{ settings.social_twitter_link | split: 'twitter.com/' | last | prepend: '@' }}">
 {%- endif -%}
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{{ og_title | escape }}">
+<meta name="twitter:title" content="{{ og_title }}">
 <meta name="twitter:description" content="{{ og_description | escape }}">

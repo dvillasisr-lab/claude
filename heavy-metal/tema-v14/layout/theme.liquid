@@ -18,7 +18,7 @@
 
     {%- comment -%}
       SEO: title "Page · Heavy Metal Pro Stock: “The Evil One”" (brand added once), meta description with a
-      fallback per template. Titles or descriptions that say "Heavy Metal" without the full brand are treated
+      fallback per template. page_title arrives HTML escaped from Shopify, so the title is printed as is. Titles or descriptions that say "Heavy Metal" without the full brand are treated
       as outdated: a trailing " | Heavy Metal..." part is dropped and on the home page a safe default is used.
       Long dashes are replaced so they never show in results.
     {%- endcomment -%}
@@ -36,7 +36,7 @@
         endunless
       endif
       if current_tags
-        assign hm_tags = current_tags | join: ', '
+        assign hm_tags = current_tags | join: ', ' | escape
         assign hm_t = hm_t | append: ' | tagged “' | append: hm_tags | append: '”'
       endif
       if current_page != 1
@@ -57,6 +57,14 @@
           assign hm_d = ''
         endunless
       endif
+      if hm_d == blank and request.page_type == 'collection'
+        assign hm_d = collection.description | strip_html | strip_newlines | strip
+        if hm_d contains 'Heavy Metal'
+          unless hm_d contains hm_brand
+            assign hm_d = ''
+          endunless
+        endif
+      endif
       if hm_d == blank
         case request.page_type
           when 'product'
@@ -64,8 +72,6 @@
           when 'collection'
             if collection.handle == 'all'
               assign hm_d = 'Shop official tractor pulling shirts, hoodies and hats from ' | append: hm_brand | append: ', a Pro Stock pulling team from Waterloo, Wisconsin.'
-            elsif collection.description != blank
-              assign hm_d = collection.description | strip_html | strip_newlines | strip
             else
               assign hm_d = 'Shop ' | append: collection.title | append: ' from ' | append: hm_brand | append: ', a Pro Stock tractor pulling team from Waterloo, Wisconsin.'
             endif
@@ -79,7 +85,7 @@
       endif
       assign hm_d = hm_d | replace: ' — ', ', ' | replace: ' – ', ', ' | replace: '—', ', ' | replace: '–', ', ' | truncate: 160
     -%}
-    <title>{{ hm_title | escape }}</title>
+    <title>{{ hm_title }}</title>
     <meta name="description" content="{{ hm_d | escape }}">
 
     {%- liquid

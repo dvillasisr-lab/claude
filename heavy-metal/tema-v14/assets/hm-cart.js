@@ -121,6 +121,8 @@
     var free = threshold('data-free'), gift = threshold('data-gift'), total = cart.total_price;
     /* gift cards never ship: with only gift cards in the cart, no shipping bar and no fuel tip */
     var shippable = products(cart).some(function (i) { return !i.gift_card; });
+    var shipNote = $('[data-hm-ship-note]'), giftNote = $('[data-hm-gift-note]');
+    if (shipNote && giftNote) { var giftOnly = n > 0 && !shippable; shipNote.hidden = giftOnly; giftNote.hidden = !giftOnly; }
     var tiers = $('[data-hm-tiers]');
     if (tiers) {
       tiers.hidden = n === 0 || !free || !shippable;

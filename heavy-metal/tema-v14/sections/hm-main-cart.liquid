@@ -98,9 +98,22 @@
           <p class="hm-cart__disc"><span>{{ d.title | escape }}</span><span class="num">−{{ d.total_allocated_amount | money }}</span></p>
         {%- endfor -%}
         <p class="drawer__sub"><span>Subtotal</span><span class="num">{{ cart.total_price | money }}</span></p>
+        {%- liquid
+          assign gift_only = true
+          for item in cart.items
+            unless item.gift_card
+              assign gift_only = false
+              break
+            endunless
+          endfor
+        -%}
         <p class="small muted" style="margin:0">
-          {%- if settings.hm_ships_line != blank %}{{ settings.hm_ships_line | escape }}. {% endif -%}
-          Taxes, discount codes and shipping at checkout.
+          {%- if gift_only -%}
+            Gift cards arrive by email. No shipping, no wait. Discount codes at checkout.
+          {%- else -%}
+            {%- if settings.hm_ships_line != blank %}{{ settings.hm_ships_line | escape }}. {% endif -%}
+            Taxes, discount codes and shipping at checkout.
+          {%- endif -%}
         </p>
         <button class="btn btn--block" type="submit" name="checkout">Checkout</button>
         {%- if additional_checkout_buttons and section.settings.show_dynamic -%}
