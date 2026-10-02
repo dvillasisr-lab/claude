@@ -27,7 +27,7 @@ Lo que me vayas dando "para después" va aquí. No se trabaja hasta que digas.
 | 20 | Playera de crew personalizada | Camisa de mecánico con nombre bordado (idea 12). | En espera |
 | 21 | Colección con causa | Diseño anual con margen para una causa local (idea 13). | En espera |
 | 22 | Actualizar información faltante e imágenes | Llenar todos los [pending], XX y placeholders con datos y fotos reales en cada página. | En espera |
-| 23 | Correo con dominio propio | hello@heavymetalprostock.com creado (Google Workspace vía Hostinger). Ya está en las políticas del repo. Falta: volver a pegar políticas en Shopify, Sender email + autenticar dominio, correo de la tienda en Store details. | En proceso |
+| 23 | Correo con dominio propio | Listo: hello@ + 10 alias, MX, SPF, DKIM, DMARC, firmas por persona. Falta: Store details y Sender email en Shopify (autenticación propagando), políticas pegadas, verificación en 2 pasos. | Casi listo |
 | 24 | Exhibiciones | Confirmar si fueron 3 o 4 y, de cada una: fecha, lugar, liga, resultado, fotos y video. Cargarlas en Schedule, Pit Log y Gallery. | En espera |
 | 25 | Reseñas con Judge.me | Instalar la app (plan gratis), agregar el bloque de reseñas al tema, activar el correo que pide la reseña después de la entrega, definir moderación y quitar las reseñas de ejemplo. | En espera |
 | 26 | Apps de carrito | Evaluar UpCart, Rebuy o AfterSell (regalo al llegar a $XX, upsell después del pago) cuando haya ventas; hoy el carrito nativo basta. | En espera |
