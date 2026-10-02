@@ -126,18 +126,14 @@
       <line x1="1500" y1="456" x2="1530" y2="441" stroke="#9C9A92" stroke-width="10" stroke-dasharray="12 4"/>
       <line x1="1500" y1="456" x2="1530" y2="441" stroke="#2A2A28" stroke-width="3" stroke-dasharray="12 4"/>
       <g class="nf__wheelie"><g class="nf__shake">
-        {%- if section.settings.tractor_image != blank -%}
-          <image{% if section.settings.crop_cutout %} clip-path="url(#nfCut-{{ section.id }})"{% endif %} href="{{ section.settings.tractor_image | image_url: width: 1400 }}" x="1580" y="0" width="1120" height="576" preserveAspectRatio="xMidYMax meet"/>
-        {%- else -%}
-          <g class="nf__tractor-fallback">
-            <path d="M1690 470 V300 H1990 V250 H2140 V180 H2300 L2360 300 H2520 V470 Z" fill="#141413" stroke="#3A3936" stroke-width="6"/>
-            <rect x="1700" y="330" width="820" height="16" fill="#F5C400"/>
-            <rect x="2010" y="120" width="22" height="130" fill="#2A2A28"/><rect x="2060" y="100" width="22" height="150" fill="#2A2A28"/>
-            <path d="M2160 180 H2290 L2330 290 H2160 Z" fill="#5B6873" stroke="#3A3936" stroke-width="6"/>
-            <circle cx="2440" cy="430" r="140" fill="#1C1C1A"/><circle cx="2440" cy="430" r="124" fill="none" stroke="#33322E" stroke-width="18" stroke-dasharray="16 10"/><circle cx="2440" cy="430" r="58" fill="#8C8F92"/><circle cx="2440" cy="430" r="20" fill="#3A3936"/>
-            <circle cx="1800" cy="476" r="88" fill="#1C1C1A"/><circle cx="1800" cy="476" r="76" fill="none" stroke="#33322E" stroke-width="14" stroke-dasharray="12 9"/><circle cx="1800" cy="476" r="38" fill="#8C8F92"/><circle cx="1800" cy="476" r="14" fill="#3A3936"/>
-          </g>
-        {%- endif -%}
+        {%- liquid
+          if section.settings.tractor_image != blank
+            assign nf_tractor = section.settings.tractor_image | image_url: width: 1400
+          else
+            assign nf_tractor = 'hm-tractor-cutout.webp' | asset_url
+          endif
+        -%}
+        <image{% if section.settings.crop_cutout %} clip-path="url(#nfCut-{{ section.id }})"{% endif %} href="{{ nf_tractor }}" x="1580" y="0" width="1120" height="576" preserveAspectRatio="xMidYMax meet"/>
       </g></g>
       </svg>
   </div>
@@ -264,7 +260,7 @@
       "type": "range",
       "id": "start_ft",
       "label": "Distance shown (ft)",
-      "min": 300,
+      "min": 330,
       "max": 430,
       "step": 1,
       "default": 404
@@ -312,7 +308,7 @@
       "type": "image_picker",
       "id": "tractor_image",
       "label": "Tractor cutout",
-      "info": "Transparent PNG or WebP of the tractor, side view facing right (same file as the home hero). Empty = simple drawn tractor."
+      "info": "Transparent PNG or WebP of the tractor, side view facing right (same file as the home hero). Empty = the theme tractor cutout (hm-tractor-cutout.webp)."
     },
     {
       "type": "checkbox",

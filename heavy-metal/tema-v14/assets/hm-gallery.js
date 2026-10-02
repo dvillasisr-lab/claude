@@ -334,7 +334,8 @@
       if (newest) q('[data-g-updated]').textContent = longDate(newest);
       var n = nItems(), ev = st.event && byEvent(st.event);
       var what = st.type === 'photos' ? 'photo' : st.type === 'videos' ? 'video' : 'item';
-      q('[data-g-count]').textContent = plural(n, what) + (ev ? ' · ' + ev.event : st.year === SEASON && st.kind === 'all' ? ' · ' + SEASON : '');
+      var bw = q('[data-g-barwrap]'); if (bw) bw.hidden = !ALBUMS.length;
+      q('[data-g-count]').textContent = !ALBUMS.length ? SEASON + ' season' : plural(n, what) + (ev ? ' · ' + ev.event : st.year === SEASON && st.kind === 'all' ? ' · ' + SEASON : '');
       q('[data-g-view]').textContent = 'View ' + plural(n, what);
       q('[data-g-dsub]').textContent = plural(n, what) + (ev ? ' in ' + ev.event : '');
       var nf = (st.year !== SEASON ? 1 : 0) + (st.kind !== 'all' ? 1 : 0);
@@ -481,6 +482,14 @@
         return;
       }
       var items = itemsOf(pool);
+      if (!ALBUMS.length) {
+        wall.innerHTML = ''; wall.className = 'g-wall';
+        var sched = root.getAttribute('data-schedule');
+        head.innerHTML = '<div class="g-empty"><p class="h3">The first photos land after the next pull</p><p>The crew posts photos and video from every pull, exhibition and test day of the ' + esc(String(SEASON)) + ' season right here.</p>' +
+          (sched ? '<a class="link" href="' + esc(sched) + '">See where we pull next</a>' : '') + '</div>';
+        q('[data-g-more]').innerHTML = '';
+        return;
+      }
       if (!items.length) {
         wall.innerHTML = ''; wall.className = 'g-wall';
         head.innerHTML = '<div class="g-empty"><p class="h3">Nothing here yet</p><p>No ' + esc(st.type === 'all' ? 'photos or videos' : st.type) + ' for ' + esc(yl) + '. Try another season or event type, or show everything.</p>' +
@@ -496,7 +505,8 @@
       }
     }
     function writeURL() {
-      var p = new URLSearchParams();
+      var p = new URLSearchParams(location.search);
+      ['event', 'year', 'kind', 'type'].forEach(function (k) { p.delete(k); });
       if (st.event) p.set('event', st.event);
       else {
         if (st.year !== SEASON) p.set('year', st.year);

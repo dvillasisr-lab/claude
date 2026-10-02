@@ -4,16 +4,17 @@
 (function () {
   'use strict';
 
+  /* same output as Liquid money_without_trailing_zeros: $25, not $25.00 */
   function money(cents, fmt) {
-    if (window.HMCart) return window.HMCart.money(cents);
-    var v = (cents / 100).toFixed(2).replace(/\.00$/, '');
-    return (fmt || '${{amount}}').replace(/\{\{\s*\w+\s*\}\}/, v);
+    var s = window.HMCart && window.HMCart.money ? window.HMCart.money(cents)
+      : (fmt || '${{amount}}').replace(/\{\{\s*\w+\s*\}\}/, (cents / 100).toFixed(2));
+    return String(s).replace(/([.,])00(?!\d)/, '');
   }
 
   function Pdp(root) {
     this.root = root;
     this.handlers = [];
-    this.timers = [];
+    this.clears = [];
     this.state = root.getAttribute('data-state');
     this.needsSize = root.getAttribute('data-needs-size') === 'true';
     this.sizePos = Number(root.getAttribute('data-size-pos')) || 0;
@@ -60,6 +61,7 @@
       mark(i);
     }
     this.go = go;
+    this.clears.push(function () { clearTimeout(aimT); clearTimeout(st); });
     ['pointerdown', 'touchstart', 'wheel'].forEach(function (ev) { self.on(track, ev, function () { aim = null; }, { passive: true }); });
     this.on(this.q('[data-pg-prev]'), 'click', function () { go(cur - 1); });
     this.on(this.q('[data-pg-next]'), 'click', function () { go(cur + 1); });
@@ -76,12 +78,13 @@
     this.on(window, 'resize', function () { track.scrollTo({ left: cur * track.clientWidth }); });
     this.on(this.q('[data-hm-pg]'), 'keydown', function (e) {
       if (self.lb && self.lb.open) return;
+      if (e.target.closest('video, iframe, model-viewer')) return; /* media keep their own arrow keys */
       if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && many) {
         e.preventDefault(); go(cur + (e.key === 'ArrowRight' ? 1 : -1));
         if (e.target.closest('.pg__thumb')) thumbs.querySelectorAll('button')[cur].focus({ preventScroll: true });
       } else if (e.key === 'Home' && e.target === track) { e.preventDefault(); go(0); }
       else if (e.key === 'End' && e.target === track) { e.preventDefault(); go(n - 1); }
-      else if (e.key === 'Enter' && e.target === track) { e.preventDefault(); self.openLB(); }
+      else if (e.key === 'Enter' && e.target === track && self.openLB) { e.preventDefault(); self.openLB(); }
     });
     mark(0);
 
@@ -93,7 +96,9 @@
     function render() {
       lbImg.classList.remove('is-zoom');
       var s = slides[cur];
-      lbImg.innerHTML = '<img src="' + s.getAttribute('data-zoom') + '" alt="' + (s.getAttribute('data-alt') || '') + '">';
+      var img = document.createElement('img');
+      img.src = s.getAttribute('data-zoom'); img.alt = s.getAttribute('data-alt') || '';
+      lbImg.replaceChildren(img);
       lb.querySelector('[data-lb-count]').textContent = (cur + 1) + ' / ' + n;
     }
     function step(d) {
@@ -141,6 +146,11 @@
     if (vals.some(function (x) { return x == null; })) return null;
     return this.find(vals)[0] || null;
   };
+  Pdp.prototype.qty = function (d) {
+    var i = this.q('[data-hm-qty]'); if (!i) return 1;
+    var max = Number(i.max) || 99;
+    return Math.min(max, Math.max(1, (parseInt(i.value, 10) || 1) + (d || 0)));
+  };
   Pdp.prototype.ready = function () { return this.state === 'live' && !!this.current(); };
 
   Pdp.prototype.initOptions = function () {
@@ -155,10 +165,11 @@
     this.qa('[data-qty]').forEach(function (b) {
       self.on(b, 'click', function () {
         var i = self.q('[data-hm-qty]'); if (!i) return;
-        var max = Number(i.max) || 99, v = Math.min(max, Math.max(1, (Number(i.value) || 1) + Number(b.getAttribute('data-qty'))));
-        i.value = v;
+        i.value = self.qty(Number(b.getAttribute('data-qty')));
       });
     });
+    var qi = this.q('[data-hm-qty]');
+    this.on(qi, 'change', function () { qi.value = self.qty(0); });
     if (this.form) {
       this.on(this.form, 'submit', function (e) { self.submit(e); });
     }
@@ -224,7 +235,7 @@
     var m = this.q('[data-hm-size-msg]');
     if (fs) {
       fs.classList.add('is-error');
-      if (m) m.textContent = 'Select a size to add it to your cart.';
+      if (m) m.textContent = 'Select a size to continue.';
       fs.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
       var f = fs.querySelector('input:not(:disabled)'); if (f) f.focus({ preventScroll: true });
     }
@@ -237,9 +248,9 @@
     var v = this.current();
     if (!v) { e.preventDefault(); this.needSize(); return; }
     if (!v.available) { e.preventDefault(); return; }
+    var qty = this.qty(0), qi = this.q('[data-hm-qty]'); if (qi) qi.value = qty;
     if (!window.HMCart) return; /* no drawer: classic form post to /cart/add */
     e.preventDefault();
-    var qty = Math.max(1, Number((this.q('[data-hm-qty]') || {}).value) || 1);
     var btn = this.atc, old = btn.textContent;
     btn.setAttribute('aria-busy', 'true'); btn.textContent = 'Adding…';
     window.HMCart.add([{ id: v.id, quantity: qty }], { returnFocus: btn }).then(function () {
@@ -287,6 +298,7 @@
 
   Pdp.prototype.destroy = function () {
     this.handlers.forEach(function (h) { h[0].removeEventListener(h[1], h[2], h[3]); });
+    this.clears.forEach(function (f) { f(); });
     if (this.io) this.io.disconnect();
     if (this.lb && this.lb.open) this.lb.close();
   };

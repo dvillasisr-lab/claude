@@ -42,9 +42,10 @@
         "show_guarantee": true,
         "guarantee_label": "The Black Smoke Guarantee:",
         "guarantee_text": "if [noun] ever stops being evil, we replace it.",
-        "notify_heading": "Notify me",
-        "notify_soon_text": "One email the moment this drops. Nothing else.",
-        "notify_soldout_text": "One email if this comes back. Nothing else.",
+        "notify_soon_heading": "Coming soon",
+        "notify_soon_text": "This one is not out yet. Get one email the moment it drops.",
+        "notify_soldout_heading": "Notify me if it comes back",
+        "notify_soldout_text": "This one sold out. Get one email if it comes back.",
         "reviews_heading": "Reviews"
       }
     },

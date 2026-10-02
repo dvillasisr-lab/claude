@@ -70,6 +70,8 @@
           {% render 'hm-image', image: l.object.featured_image, widths: '72, 144, 216', max_width: 216, sizes: '72px', crop_ratio: 1, alt: '' %}
         {%- elsif l.object.image -%}
           {% render 'hm-image', image: l.object.image, widths: '72, 144, 216', max_width: 216, sizes: '72px', crop_ratio: 1, alt: '' %}
+        {%- else -%}
+          {{- 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' -}}
         {%- endif -%}
         {%- if h != blank and new_handles contains h -%}<span class="thumb__new">New</span>{%- elsif h != blank and ltd_handles contains h -%}<span class="thumb__new thumb__new--ink">Ltd</span>{%- endif -%}
       </span>
@@ -156,7 +158,11 @@
                       {%- if note and note.settings.featured -%}
                         <a class="sdd__full" href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>
                           <span class="sdd__img">
-                            {%- render 'hm-image', image: note.settings.image, widths: '112, 168', max_width: 168, sizes: '56px', crop_ratio: 1, alt: '', placeholder: 'none' -%}
+                            {%- if note.settings.image != blank -%}
+                              {%- render 'hm-image', image: note.settings.image, widths: '112, 168', max_width: 168, sizes: '56px', crop_ratio: 1, alt: '', placeholder: 'none' -%}
+                            {%- else -%}
+                              <img src="{{ 'hm-hero.webp' | asset_url }}" alt="" width="56" height="56" loading="lazy">
+                            {%- endif -%}
                           </span>
                           <span>
                             <span class="sdd__t">{{ child.title | escape }}</span>
@@ -272,15 +278,19 @@
         {%- if section.settings.promo_label != blank or section.settings.promo_image != blank -%}
           <a class="mega__card" href="{{ section.settings.promo_url | default: routes.all_products_collection_url }}">
             <span class="thumb">
-              {%- render 'hm-image',
-                image: section.settings.promo_image,
-                widths: '178, 356, 534',
-                max_width: 534,
-                sizes: '178px',
-                crop_ratio: 1,
-                alt: '',
-                class: 'photo'
-              -%}
+              {%- if section.settings.promo_image != blank -%}
+                {%- render 'hm-image',
+                  image: section.settings.promo_image,
+                  widths: '178, 356, 534',
+                  max_width: 534,
+                  sizes: '178px',
+                  crop_ratio: 1,
+                  alt: '',
+                  class: 'photo'
+                -%}
+              {%- else -%}
+                <img class="photo" src="{{ 'hm-hero.webp' | asset_url }}" alt="" width="776" height="1400" loading="lazy" style="object-position:50% 62%">
+              {%- endif -%}
             </span>
             <span>
               {%- if section.settings.promo_label != blank -%}
@@ -343,6 +353,8 @@
                   {% render 'hm-image', image: l.object.featured_image, widths: '64, 128, 192', max_width: 192, sizes: '64px', crop_ratio: 1, alt: '' %}
                 {%- elsif l.object.image -%}
                   {% render 'hm-image', image: l.object.image, widths: '64, 128, 192', max_width: 192, sizes: '64px', crop_ratio: 1, alt: '' %}
+                {%- else -%}
+                  {{- 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' -}}
                 {%- endif -%}
                 {%- if h != blank and new_handles contains h -%}<span class="thumb__new">New</span>{%- elsif h != blank and ltd_handles contains h -%}<span class="thumb__new thumb__new--ink">Ltd</span>{%- endif -%}
               </span>
@@ -488,7 +500,7 @@
             {%- endfor -%}
           {%- endif -%}
         </ul>
-        <p class="label muted" style="margin-top:20px" data-hm-pages-h>Pages</p>
+        <p class="label muted" data-hm-pages-h>Pages</p>
         <ul data-hm-pages>
           {%- assign pages_menu = section.settings.search_pages_menu -%}
           {%- if pages_menu != blank and pages_menu.links.size > 0 -%}
@@ -659,7 +671,8 @@
     {
       "type": "image_picker",
       "id": "promo_image",
-      "label": "Image"
+      "label": "Image",
+      "info": "Empty uses the theme photo of the tractor (hm-hero.webp)."
     },
     {
       "type": "text",
@@ -764,7 +777,8 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Photo for the special style"
+          "label": "Photo for the special style",
+          "info": "Empty uses the theme tractor photo."
         },
         {
           "type": "text",

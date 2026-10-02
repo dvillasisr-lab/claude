@@ -42,7 +42,7 @@
       {%- endif -%}
     </article>
 
-    <article class="st-card st-song" aria-labelledby="song-h-{{ section.id }}" data-st-song>
+    <article class="st-card st-song{% if pl_id == '' %} st-song--solo{% endif %}" aria-labelledby="song-h-{{ section.id }}" data-st-song>
       <p class="st-eyebrow"><b>{{ section.settings.song_number | escape }}</b>{{ section.settings.song_eyebrow | escape }}</p>
       <h2 class="vh" id="song-h-{{ section.id }}">{{ section.settings.song_eyebrow | escape }}: {{ section.settings.song_title | escape }} by {{ section.settings.song_artist | escape }}</h2>
       <div class="st-song__main">
@@ -104,6 +104,7 @@
 .st-route{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0;padding:0;list-style:none;font-size:var(--t-xs);color:var(--mute)}
 .st-route b{color:var(--ink)}
 .st-song{background:var(--night);color:var(--night-ink);border-color:var(--night);gap:12px}
+.st-song--solo{justify-content:center;gap:18px}
 .st-song .st-eyebrow{color:#A8A59A}
 .st-song .st-eyebrow b{background:var(--accent);color:var(--ink)}
 .st-song__main{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:16px;align-items:center}

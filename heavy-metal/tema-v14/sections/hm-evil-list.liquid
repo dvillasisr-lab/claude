@@ -124,7 +124,7 @@
               {%- if section.settings.mail_logo != blank -%}
                 {{ section.settings.mail_logo | image_url: width: 200 | image_tag: loading: 'lazy', alt: '', class: 'el-mail__logo' }}
               {%- else -%}
-                <span class="el-mail__brand">Heavy Metal</span>
+                <img class="el-mail__logo" src="{{ 'logo-ink.svg' | asset_url }}" alt="" width="97" height="14" loading="lazy">
               {%- endif -%}
               {%- if section.settings.mail_badge != blank -%}<span class="badge">{{ section.settings.mail_badge }}</span>{%- endif -%}
             </div>
@@ -355,8 +355,9 @@
         if (err) err.textContent = msg;
         return !msg;
       }
+      form.addEventListener('pointerdown', function (e) { if (e.target.closest('[type="submit"]')) { form.hmPressing = true; setTimeout(function () { form.hmPressing = false; }, 700); } });
       fields.forEach(function (el) {
-        el.addEventListener('blur', function () { if (el.value.trim() || el.getAttribute('aria-invalid') === 'true') check(el); });
+        el.addEventListener('blur', function () { if (form.hmPressing) return; if (el.value.trim() || el.getAttribute('aria-invalid') === 'true') check(el); });
         el.addEventListener('input', function () { if (el.getAttribute('aria-invalid') === 'true') check(el); });
       });
       form.addEventListener('submit', function (e) {

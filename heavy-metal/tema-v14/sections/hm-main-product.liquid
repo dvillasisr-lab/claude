@@ -82,6 +82,8 @@
     endif
   endif
 
+  assign noun_safe = noun | escape
+
   assign chart = p.metafields.custom.size_chart.value
   assign form_id = 'hm-pdp-form-' | append: section.id
   assign media_count = p.media.size
@@ -103,6 +105,22 @@
   endif
 
   assign price_text = sel.price | money_without_trailing_zeros
+
+  comment
+    Coming soon / Sold out: no options to pick (boceto), only the size range.
+  endcomment
+  assign range_text = 'One size.'
+  if size_pos > 0
+    for opt in p.options_with_values
+      if opt.position == size_pos
+        if opt.values.size > 1
+          assign range_text = 'Sizes ' | append: opt.values.first.name | append: ' to ' | append: opt.values.last.name | append: '.'
+        else
+          assign range_text = 'Size ' | append: opt.values.first.name | append: '.'
+        endif
+      endif
+    endfor
+  endif
 -%}
 
 <div
@@ -270,7 +288,7 @@
             {% endif %}
           >
 
-          {%- unless p.has_only_default_variant -%}
+          {%- if p.has_only_default_variant == false and state == 'live' -%}
             {%- for option in p.options_with_values -%}
               {%- liquid
                 assign oname = option.name | downcase
@@ -402,13 +420,15 @@
                 {%- endif -%}
               </fieldset>
             {%- endfor -%}
-          {%- endunless -%}
+          {%- endif -%}
 
-          {%- if size_pos == 0 -%}
+          {%- if size_pos == 0 or state != 'live' -%}
             <p class="one-size">
-              One size.
+              {% if state == 'live' %}One size.{% else %}{{ range_text | escape }}{% endif %}
               {%- if chart %}
                 <button class="linkbtn" type="button" data-sg-open aria-haspopup="dialog" aria-controls="hm-sg-{{ section.id }}">Size guide</button>
+              {%- elsif size_pos > 0 %}
+                <a class="linkbtn" href="{{ sizes_url }}">Size guide</a>
               {%- endif -%}
             </p>
           {%- endif -%}
@@ -459,7 +479,13 @@
 
         {%- if state != 'live' -%}
           <section class="nbox" id="notify" aria-labelledby="hm-notify-t-{{ section.id }}" data-hm-nbox>
-            <h2 class="h3" id="hm-notify-t-{{ section.id }}">{{ section.settings.notify_heading | escape }}</h2>
+            <h2 class="h3" id="hm-notify-t-{{ section.id }}">
+              {%- if state == 'soon' -%}
+                {{ section.settings.notify_soon_heading | escape }}
+              {%- else -%}
+                {{ section.settings.notify_soldout_heading | escape }}
+              {%- endif -%}
+            </h2>
             <p>
               {%- if state == 'soon' -%}
                 {{ section.settings.notify_soon_text | escape }}
@@ -522,7 +548,7 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/></svg>
               <span>
                 <b>{{ section.settings.guarantee_label | escape }}</b>
-                {{ section.settings.guarantee_text | escape | replace: '[noun]', noun }}
+                {{ section.settings.guarantee_text | escape | replace: '[noun]', noun_safe }}
                 <a href="{{ bsg_url }}">Details</a>
                 {%- if needs_size -%}
                   <br>No returns for size, so check the
@@ -951,21 +977,27 @@
     },
     {
       "type": "text",
-      "id": "notify_heading",
-      "label": "Heading",
-      "default": "Notify me"
+      "id": "notify_soon_heading",
+      "label": "Heading when Coming soon",
+      "default": "Coming soon"
     },
     {
       "type": "text",
       "id": "notify_soon_text",
       "label": "Text when Coming soon",
-      "default": "One email the moment this drops. Nothing else."
+      "default": "This one is not out yet. Get one email the moment it drops."
+    },
+    {
+      "type": "text",
+      "id": "notify_soldout_heading",
+      "label": "Heading when Sold out",
+      "default": "Notify me if it comes back"
     },
     {
       "type": "text",
       "id": "notify_soldout_text",
       "label": "Text when Sold out",
-      "default": "One email if this comes back. Nothing else."
+      "default": "This one sold out. Get one email if it comes back."
     },
     {
       "type": "header",
@@ -1000,7 +1032,7 @@
           "options": [
             {
               "value": "details",
-              "label": "Details (metafield details, else product description)"
+              "label": "Details (metafield, else product description)"
             },
             {
               "value": "design_story",

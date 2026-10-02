@@ -436,8 +436,9 @@
       if (!form) return;
       form.noValidate = true;
       var fields = Array.prototype.slice.call(form.querySelectorAll('[data-rule]'));
+      form.addEventListener('pointerdown', function (e) { if (e.target.closest('[type="submit"]')) { form.hmPressing = true; setTimeout(function () { form.hmPressing = false; }, 700); } });
       fields.forEach(function (el) {
-        el.addEventListener('blur', function () { if (el.value.trim() || el.getAttribute('aria-invalid') === 'true') check(el); });
+        el.addEventListener('blur', function () { if (form.hmPressing) return; if (el.value.trim() || el.getAttribute('aria-invalid') === 'true') check(el); });
         el.addEventListener('input', function () { if (el.getAttribute('aria-invalid') === 'true') check(el); });
       });
       var sel = form.querySelector('[data-sp-select]');

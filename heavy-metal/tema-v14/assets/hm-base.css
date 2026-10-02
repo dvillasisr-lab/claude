@@ -45,8 +45,9 @@ html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--f-sans);font-size:var(--t-sm);line-height:1.5;letter-spacing:normal;-webkit-font-smoothing:antialiased}
 @media (min-width:768px){body{font-size:var(--t-md)}}
 img,video{max-width:100%;display:block}
-a{color:inherit}
-button{font:inherit;color:inherit}
+/* zero specificity so any class (like .btn) wins over these element defaults */
+:where(a){color:inherit}
+:where(button){font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--ink);outline-offset:2px;box-shadow:0 0 0 4px #fff}
 [hidden]{display:none!important}
 .vh{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
@@ -75,15 +76,16 @@ button{font:inherit;color:inherit}
 .num{font-variant-numeric:tabular-nums}
 .sect-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px;margin-bottom:20px}
 
-/* buttons: one filled primary per section, the rest as underlined text links */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:44px;padding:0 1.4em;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border:1px solid var(--ink);background:var(--ink);color:var(--surface);cursor:pointer;border-radius:0;transition:background .15s,color .15s}
-.btn:hover{background:var(--soft);border-color:var(--soft)}
-.btn--ghost{background:transparent;color:var(--ink)}
-.btn--ghost:hover{background:var(--ink);color:var(--surface)}
-.btn--light{background:var(--surface);border-color:var(--surface);color:var(--ink)}
-.btn--light:hover{background:var(--bg);border-color:var(--bg);color:var(--ink)}
-.btn--block{width:100%}
-.btn--sm{min-height:34px;padding:0 12px;font-size:11px}
+/* buttons: one filled primary per section, the rest as underlined text links.
+   Zero specificity (:where) so a page or section rule with one class can recolor a button, hover included. */
+:where(.btn){display:inline-flex;align-items:center;justify-content:center;gap:.5em;min-height:44px;padding:0 1.4em;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border:1px solid var(--ink);background:var(--ink);color:var(--surface);cursor:pointer;border-radius:0;transition:background .15s,color .15s}
+:where(.btn:hover){background:var(--soft);border-color:var(--soft)}
+:where(.btn--ghost){background:transparent;color:var(--ink)}
+:where(.btn--ghost:hover){background:var(--ink);color:var(--surface)}
+:where(.btn--light){background:var(--surface);border-color:var(--surface);color:var(--ink)}
+:where(.btn--light:hover){background:var(--bg);border-color:var(--bg);color:var(--ink)}
+:where(.btn--block){width:100%}
+:where(.btn--sm){min-height:34px;padding:0 12px;font-size:11px}
 .btn-row{display:flex;flex-wrap:wrap;gap:8px}
 .link{display:inline;font-family:inherit;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-underline-offset:4px;color:inherit;background:none;border:0;padding:0;box-shadow:none;cursor:pointer}
 .linklike{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
@@ -187,7 +189,7 @@ button{font:inherit;color:inherit}
 .mnav__tag{display:inline-block;margin-left:8px;padding:1px 6px;background:#F4ECDC;color:var(--soft);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;vertical-align:1px}
 .mnav__sub{display:grid;gap:0;margin-top:16px}
 .mnav__sub a{font-size:var(--t-sm);padding-block:10px;text-decoration:none;min-height:24px}
-.mnav__sub a:hover{text-decoration:underline}
+@media (hover:hover){.mnav__sub a:hover{text-decoration:underline}}
 
 /* predictive search overlay */
 .search{position:fixed;inset:0 0 auto 0;z-index:75;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:0 24px 40px -24px rgba(28,27,25,.35);max-height:100svh;overflow-y:auto;padding-top:env(safe-area-inset-top,0px)}
@@ -200,6 +202,9 @@ button{font:inherit;color:inherit}
 .search__body li a{font-size:var(--t-sm);text-decoration:none;display:inline-block;padding-block:2px}
 .search__body li a:hover,.search__body li a[aria-selected="true"]{text-decoration:underline}
 .search__body .label+ul+.label{margin-top:20px}
+.search__body .label[hidden]+ul:empty{display:none}
+.search__body .label[hidden]+ul:empty+.label{margin-top:0}
+.search__body [data-hm-recent-wrap]:not([hidden]){margin-bottom:20px}
 .search__res{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px 4px;margin-top:12px}
 .sres{display:grid;gap:6px;align-content:start;text-decoration:none;font-size:var(--t-xs)}
 .sres .thumb{aspect-ratio:4/5;width:100%}

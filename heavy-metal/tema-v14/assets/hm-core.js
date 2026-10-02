@@ -537,7 +537,18 @@
           if (res)
             res.innerHTML = products.length
               ? products.map(card).join('')
-              : '<p class="muted search__empty">Try "tee", "hoodie" or "kids". Or browse <a href="/collections/all">Shop all</a>.</p>';
+              : '<p class="muted search__empty">Try ' +
+                ['tee', 'hoodie', 'kids', 'cap']
+                  .filter(function (t) {
+                    return t !== q.trim().toLowerCase();
+                  })
+                  .slice(0, 3)
+                  .map(function (t) {
+                    return '“' + t + '”';
+                  })
+                  .join(', ')
+                  .replace(/, ([^,]*)$/, ' or $1') +
+                '. Or browse <a href="/collections/all">Shop all</a>.</p>';
           if (all) {
             all.hidden = !products.length;
             var a = all.querySelector('a');
@@ -662,7 +673,8 @@
     }
     function setBtn() {
       if (!btn) return;
-      btn.setAttribute('aria-label', btn.getAttribute(playing ? 'data-label-pause' : 'data-label-play'));
+      /* toggle button: the name stays "Pause announcements", aria-pressed says whether it is paused */
+      btn.setAttribute('aria-pressed', playing ? 'false' : 'true');
       var p = btn.querySelector('[data-icon-pause]');
       var pl = btn.querySelector('[data-icon-play]');
       if (p) p.hidden = !playing;

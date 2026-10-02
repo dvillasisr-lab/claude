@@ -5,7 +5,7 @@
   Albums are read in pages of 250; older ones get an "Older albums" link.
 {%- endcomment -%}
 {%- assign gid = 'Gallery-' | append: section.id -%}
-<div class="hm-gallery" data-hm-gallery data-page="{{ section.settings.per_page }}" data-season="{{ settings.hm_season | default: 0 }}">
+<div class="hm-gallery" data-hm-gallery data-page="{{ section.settings.per_page }}" data-season="{{ settings.hm_season | default: 0 }}" data-schedule="{{ section.settings.empty_url | default: pages.schedule.url | escape }}">
   <section aria-labelledby="{{ gid }}-title">
     <div class="gw g-head">
       <div class="g-head__t">
@@ -315,6 +315,7 @@
     },
     { "type": "text", "id": "title", "label": "Title", "default": "Gallery" },
     { "type": "text", "id": "text", "label": "Text", "default": "Every pull, exhibition and test day of “The Evil One”." },
+    { "type": "url", "id": "empty_url", "label": "Link while there are no albums yet", "info": "Empty = the Schedule page." },
     { "type": "range", "id": "per_page", "label": "Photos per batch (Load more)", "min": 12, "max": 48, "step": 6, "default": 24 },
     { "type": "header", "content": "Call to action" },
     { "type": "text", "id": "cta_title", "label": "Title (empty = hide)", "default": "Shot “The Evil One” at a pull?" },
