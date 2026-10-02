@@ -14,7 +14,7 @@
         "msg_shipping": {
           "type": "message",
           "settings": {
-            "text": "Free US shipping on orders over [free_shipping]"
+            "text": "Free US shipping on orders of [free_shipping] or more"
           }
         },
         "msg_printed": {
