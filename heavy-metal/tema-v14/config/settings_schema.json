@@ -347,8 +347,8 @@
             "label": "Ink with white text"
           },
           {
-            "value": "accent",
-            "label": "Helmet yellow with ink text"
+            "value": "tile",
+            "label": "Light gray with ink text"
           },
           {
             "value": "bone",

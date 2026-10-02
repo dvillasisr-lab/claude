@@ -5,7 +5,6 @@
       "blocks": {
         "coupon": {
           "type": "coupon",
-          "disabled": true,
           "settings": {
             "code": "",
             "headline": "Extra 10% off",
