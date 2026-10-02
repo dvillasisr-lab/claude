@@ -1,6 +1,6 @@
 {%- comment -%}
   Our Story · 7 · Crew (anchor id="crew"). From "Crew member" metaobjects sorted by Order.
-  Group driver = the big card; then Team, Pit crew and Mascots. No photo = initials (mascots get a paw).
+  Group driver = the big card; then Team, Pit crew and Mascots. A mascot can sit inside Team or Pit crew (its role says mascot). No photo = initials (mascots get a paw).
 {%- endcomment -%}
 {%- liquid
   assign keys = ''
@@ -82,15 +82,20 @@
                     assign ini = ini | append: c
                   endfor
                   assign light = false
+                  assign pet = false
+                  assign role_dc = m.role.value | downcase
+                  if g == 'mascot' or role_dc contains 'mascot'
+                    assign pet = true
+                  endif
                   assign note = m.note.value | downcase
                   if note contains 'white'
                     assign light = true
                   endif
                 -%}
-                <li class="st-m{% if g == 'mascot' %} st-m--pet{% endif %}">
+                <li class="st-m{% if pet %} st-m--pet{% endif %}">
                   {%- if m.photo.value != blank -%}
                     <span class="st-av st-av--photo">{{ m.photo.value | image_url: width: 120 | image_tag: widths: '60, 120', sizes: '44px', loading: 'lazy' }}</span>
-                  {%- elsif g == 'mascot' -%}
+                  {%- elsif pet -%}
                     <span class="st-av{% if light %} st-av--paw-w{% endif %}" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="16" rx="5" ry="4"/><circle cx="6" cy="10" r="2"/><circle cx="18" cy="10" r="2"/><circle cx="9.5" cy="6" r="2"/><circle cx="14.5" cy="6" r="2"/></svg></span>
                   {%- else -%}
                     <span class="st-av" aria-hidden="true">{{ ini | upcase }}</span>

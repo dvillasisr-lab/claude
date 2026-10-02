@@ -82,8 +82,8 @@
 /* la pista sube detrás del texto (--tuck = cuánto se mete) para que el rig grande quepa sin hacer el hero más alto */
 .fp{--tuck:calc(var(--righ) * .5)}
 .fp__track{position:relative;z-index:2;pointer-events:none;height:calc(var(--righ) + var(--dirt) + clamp(8px,1.4vw,24px));margin-top:calc(var(--tuck) * -1)}
-.fp__dirt{position:absolute;left:0;right:0;bottom:0;height:var(--dirt);background:repeating-linear-gradient(90deg,#5C4E3A 0 6px,#514431 6px 14px)}
-.fp__dirt::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:rgba(0,0,0,.3)}
+/* v14.1: sin franja de tierra (la dueña la prefiere así). El bloque guarda su alto para que el tractor, la raya amarilla y los FT no se muevan */
+.fp__dirt{position:absolute;left:0;right:0;bottom:0;height:var(--dirt);background:none}
 .fp__rail{position:absolute;left:0;width:0;bottom:var(--dirt);height:0}
 .fp__rail-fill{position:absolute;left:0;right:0;top:0;height:4px;background:var(--accent);box-shadow:0 1px 0 rgba(0,0,0,.5);transform-origin:left;transform:scaleX(var(--p,0))}
 .fp__tick{position:absolute;top:calc(var(--dirt-row) * .32);transform:translateX(-50%);font-size:10px;font-weight:800;letter-spacing:.12em;color:#F7F3E8;white-space:nowrap;text-shadow:0 1px 0 rgba(0,0,0,.35)}

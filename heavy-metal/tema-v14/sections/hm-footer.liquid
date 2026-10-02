@@ -24,7 +24,7 @@
 
 <footer class="ftr" data-hm-footer>
   <div class="wrap">
-    <div class="ftr__cols{% unless show_news or on_signup %} ftr__cols--two{% endunless %}">
+    <div class="ftr__cols">
       <details class="ftr__acc" open data-hm-acc>
         <summary><h2 class="ftr__h">{{ section.settings.help_heading | escape }}</h2></summary>
         <ul class="ftr__list">
@@ -105,6 +105,13 @@
             {%- endif -%}
           </p>
           <p class="consent" id="EvilConsent-{{ sid }}">{{ section.settings.consent }}</p>
+        </div>
+      {%- else -%}
+        {%- comment -%} v14.1: without The Evil List column the middle holds the logo, so the footer keeps three balanced columns {%- endcomment -%}
+        <div class="ftr__mark">
+          <a href="{{ routes.root_url }}" aria-label="{{ brand | escape }}, home">
+            <img src="{{ 'logo-stack-ink.svg' | asset_url }}" alt="" width="200" height="111" loading="lazy">
+          </a>
         </div>
       {%- endif -%}
 
@@ -226,7 +233,7 @@
       "type": "inline_richtext",
       "id": "news_text",
       "label": "Text",
-      "default": "New drops and a heads up before every pull. One list, no spam. <a href=\"/pages/evil-list\" title=\"The Evil List\">What you get</a>"
+      "default": "First dibs on drops and a heads-up before every pull. We’re too busy wrenching to spam you. <a href=\"/pages/evil-list\" title=\"The Evil List\">What you get</a>"
     },
     {
       "type": "inline_richtext",

@@ -16,7 +16,7 @@
       },
       {
         "key": "bio",
-        "value": "20+ years in the sport.\nHad the idea in 2014, turned the first bolt in 2020 and was in the shop the night the lightning hit."
+        "value": "Had the idea in 2014, turned the first bolt in 2020 and was in the shop the night the lightning hit."
       },
       {
         "key": "order",
@@ -100,7 +100,7 @@
       },
       {
         "key": "group",
-        "value": "mascot"
+        "value": "team"
       },
       {
         "key": "note",
@@ -272,7 +272,7 @@
       },
       {
         "key": "group",
-        "value": "mascot"
+        "value": "pit_crew"
       },
       {
         "key": "note",

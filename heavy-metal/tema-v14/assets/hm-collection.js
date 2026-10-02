@@ -150,7 +150,8 @@
     var tpl = this.$('template[data-hm-promo]'); if (!tpl) return;
     var n = grid.querySelectorAll('[data-hm-card]').length; if (!n) return;
     var cols = getComputedStyle(grid).gridTemplateColumns.split(' ').filter(Boolean).length, rest = n % cols;
-    if (!rest || cols - rest < 2) return;
+    /* v14.1: only once the shop fills at least one full row; with 1 to 3 products the tile looked like an empty box */
+    if (n < cols || !rest || cols - rest < 2) return;
     var node = tpl.content.firstElementChild.cloneNode(true);
     node.style.gridColumn = 'span ' + (cols - rest);
     if (cols - rest > 2) node.setAttribute('data-wide', '');
