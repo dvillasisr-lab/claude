@@ -271,6 +271,8 @@
                   assign n = n_feat
               endcase
             -%}
+            {%- comment -%} A tag with no entries would open a 404 page: hide it when the counts are known. {%- endcomment -%}
+            {%- if counts_ok and n == 0 and on == false -%}{%- continue -%}{%- endif -%}
             <a class="chip" href="{{ blog.url }}/tagged/{{ t | handleize }}" data-pl-type="{{ t | handleize }}" aria-current="{{ on }}">{{ t }}{% if counts_ok and n > 0 %}<span class="n">{{ n }}</span>{% endif %}</a>
           {%- endfor -%}
         </div>

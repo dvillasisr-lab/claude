@@ -18,6 +18,8 @@
   assign newest = ''
   if section.settings.image != blank
     assign zoom_url = section.settings.image | image_url: width: 1600
+  else
+    assign zoom_url = 'hm-tractor-cutout.webp' | asset_url
   endif
 -%}
 
@@ -93,7 +95,7 @@
                   alt: img_alt
               }}
             {%- else -%}
-              {{ 'image' | placeholder_svg_tag: 'dz-ph' }}
+              <img src="{{ 'hm-tractor-cutout.webp' | asset_url }}" alt="{{ section.settings.image_alt | escape }}" width="1120" height="576" loading="lazy" class="dz-cut">
             {%- endif -%}
             {%- for zk in zkeys -%}
               {%- assign want = zk | split: '-' | last | minus: 100 -%}
@@ -263,6 +265,7 @@
   .dz-stage{position:relative;aspect-ratio:1120/676;width:100%;max-width:calc((100svh - var(--header) - 2 * var(--sect) - 90px) * 1120 / 676);min-width:min(100%,560px);margin:0 auto}
   .dz-img{position:absolute;left:0;right:0;top:7.396%;height:85.207%}
   .dz-img>img,.dz-img>svg{width:100%;height:100%;object-fit:cover;display:block}
+  .dz-img>img.dz-cut{object-fit:contain}
   .dz-img>svg{background:var(--tile);fill:#C9C6BE}
   .dz-lines{position:absolute;inset:0;z-index:1;width:100%;height:100%;pointer-events:none;overflow:visible;filter:drop-shadow(0 0 1px rgba(255,255,255,.95))}
   .dz-lines line{stroke:var(--mute);stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke;transition:stroke .15s}
@@ -411,7 +414,7 @@
       "type": "paragraph",
       "content": "Zones come from Content > Metaobjects > Decal zone (pos_x, pos_y and label_x in pixels on a 1120 × 576 photo)."
     },
-    { "type": "image_picker", "id": "image", "label": "Tractor photo (side view, 1120 × 576)" },
+    { "type": "image_picker", "id": "image", "label": "Tractor photo (side view, 1120 × 576)", "info": "Empty = the tractor cutout that ships with the theme (zone positions match it)." },
     { "type": "text", "id": "image_alt", "label": "Photo description (if the file has no alt text)", "default": "“The Evil One” in profile on the fairground grass, facing right, with numbered decal zones" },
     { "type": "text", "id": "title", "label": "Title", "default": "Decal map" },
     { "type": "text", "id": "hint", "label": "Hint", "default": "Tap a number. On a keyboard, use the arrow keys." },
