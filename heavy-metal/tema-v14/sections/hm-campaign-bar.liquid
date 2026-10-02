@@ -1,0 +1,85 @@
+{%- comment -%}
+  Campaign bar with countdown (Theme settings > HM campaign). Sits above the announcement bar in the header group.
+  Hidden by default. layout/theme.liquid sets html[data-hm-campaign="live"] in the head, from the start and end
+  dates, before anything paints, so cached pages stay right and nothing flashes. assets/hm-campaign.js ticks the
+  countdown and hides the bar the second the campaign ends.
+{%- endcomment -%}
+{%- if settings.hm_campaign_enabled -%}
+  {%- liquid
+    assign c_name = settings.hm_campaign_name | default: 'Sale' | escape
+    assign c_label = settings.hm_campaign_label | escape
+    assign c_code = settings.hm_campaign_code | strip | escape
+    assign c_link = settings.hm_campaign_link | default: '/pages/sale'
+    assign c_text = settings.hm_campaign_bar_text | default: '[name]: [label]' | escape
+    assign c_text = c_text | replace: '[name]', c_name | replace: '[label]', c_label
+    if c_code != blank
+      assign c_code_html = '<b class="num">' | append: c_code | append: '</b>'
+      assign c_text = c_text | replace: '[code]', c_code_html
+    else
+      assign c_text = c_text | replace: ' [code]', '' | replace: '[code]', ''
+    endif
+  -%}
+  <div
+    class="hm-cbar hm-cbar--{{ settings.hm_campaign_bar_style | default: 'ink' }}"
+    role="region"
+    aria-label="{{ c_name }}"
+    data-hm-cbar
+  >
+    <a class="hm-cbar__in" href="{{ c_link }}">
+      <span class="hm-cbar__text">{{ c_text }}</span>
+      <span class="hm-cbar__time num" data-hm-countdown data-format="short" aria-live="off"></span>
+      <span class="hm-cbar__go" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </span>
+    </a>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .hm-cbar { display: none; font-size: var(--t-xs); }
+  html[data-hm-campaign="live"] .hm-cbar { display: block; }
+  html[data-hm-campaign="live"].hm-campaign-hide-announce .announce { display: none; }
+  .hm-cbar__in {
+    display: flex; align-items: center; justify-content: center; gap: 6px 14px; flex-wrap: wrap;
+    min-height: var(--announce); padding: 6px var(--gutter); text-decoration: none; color: inherit; text-align: center; line-height: 1.35;
+  }
+  .hm-cbar__text { font-weight: 600; }
+  .hm-cbar__text b { font-weight: 800; letter-spacing: .06em; }
+  .hm-cbar__time { font-weight: 700; letter-spacing: .04em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .hm-cbar__time:empty { display: none; }
+  .hm-cbar__go { display: inline-grid; place-items: center; }
+  .hm-cbar__go svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; }
+  .hm-cbar__in:hover .hm-cbar__text { text-decoration: underline; text-underline-offset: 3px; }
+  .hm-cbar__in:focus-visible { outline-offset: -4px; }
+  .hm-cbar--ink { background: var(--ink); color: var(--surface); }
+  .hm-cbar--night { background: var(--night); color: var(--night-ink); }
+  .hm-cbar--accent { background: var(--accent); color: var(--ink); }
+  .hm-cbar--bone { background: var(--bg); color: var(--ink); border-bottom: 1px solid var(--line); }
+  .hm-cbar--ink .hm-cbar__time, .hm-cbar--night .hm-cbar__time { opacity: .85; }
+  @media (max-width: 760px) {
+    .hm-cbar__in { gap: 2px 10px; }
+    .hm-cbar__go { display: none; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM campaign bar",
+  "tag": "section",
+  "class": "hm-cbar-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Everything is in Theme settings > HM campaign: on or off, dates, code, text and colors. The bar only shows between the start and the end."
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM campaign bar"
+    }
+  ]
+}
+{% endschema %}

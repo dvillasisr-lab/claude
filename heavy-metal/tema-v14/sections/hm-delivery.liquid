@@ -1,0 +1,152 @@
+{%- comment -%}
+  HM Delivery timeline as its own section, for product templates whose main section has no timeline block
+  (the special edition page). Shows only while the product can be bought and ships.
+{%- endcomment -%}
+{%- liquid
+  assign p = product
+  assign show = false
+  if p and p.available
+    assign show = true
+  endif
+  if show
+    assign now_ts = 'now' | date: '%s' | plus: 0
+    if p.metafields.custom.end_date.value != blank
+      assign end_ts = p.metafields.custom.end_date.value | date: '%s' | plus: 0
+      if end_ts < now_ts
+        assign show = false
+      endif
+    endif
+    if p.metafields.custom.start_date.value != blank
+      assign start_ts = p.metafields.custom.start_date.value | date: '%s' | plus: 0
+      if start_ts > now_ts
+        assign show = false
+      endif
+    endif
+  endif
+-%}
+{%- if show -%}
+  {%- capture tl -%}
+    {%- render 'hm-delivery',
+      product: p,
+      heading: section.settings.label,
+      prod_min: section.settings.prod_min,
+      prod_max: section.settings.prod_max,
+      ship_min: section.settings.ship_min,
+      ship_max: section.settings.ship_max,
+      cutoff: section.settings.cutoff
+    -%}
+  {%- endcapture -%}
+  {%- if tl != blank -%}
+    <section class="dlvs" aria-labelledby="hm-dlvs-t-{{ section.id }}">
+      <div class="wrap dlvs__in">
+        <div class="dlvs__txt">
+          <h2 class="h2" id="hm-dlvs-t-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+          {%- if section.settings.text != blank -%}
+            <p class="muted">{{ section.settings.text | escape }}</p>
+          {%- endif -%}
+        </div>
+        {{ tl }}
+      </div>
+    </section>
+  {%- endif -%}
+{%- elsif request.design_mode -%}
+  <div class="wrap" style="padding-block:16px">
+    <p class="small muted" style="margin:0;padding:12px 16px;border:1px dashed var(--line)">
+      Delivery timeline: shows here while the product can be bought and ships. This hint is only visible in the theme editor.
+    </p>
+  </div>
+{%- endif -%}
+
+{% stylesheet %}
+  .dlvs { padding-block: clamp(24px, 3vw, 40px); border-top: 1px solid var(--line); }
+  .dlvs__in { display: grid; gap: 16px; align-items: center; }
+  .dlvs__txt { display: grid; gap: 6px; }
+  .dlvs__txt p { margin: 0; font-size: var(--t-sm); }
+  @media (min-width: 900px) { .dlvs__in { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: clamp(28px, 3.4vw, 56px); } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM Delivery timeline",
+  "tag": "div",
+  "class": "hm-section hm-delivery-section",
+  "enabled_on": {
+    "templates": ["product"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Order placed, Printed, Shipped, Delivered, with dates counted in business days from the shopper's today. Hidden on gift cards and anything that doesn't ship."
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "When it shows up"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Printed when you order it, not before. Worth the wait."
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label above the dates",
+      "default": "Estimated delivery"
+    },
+    {
+      "type": "range",
+      "id": "prod_min",
+      "label": "Printing: fewest business days",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "prod_max",
+      "label": "Printing: most business days",
+      "min": 1,
+      "max": 15,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "ship_min",
+      "label": "Shipping: fewest business days",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "ship_max",
+      "label": "Shipping: most business days",
+      "min": 1,
+      "max": 15,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "cutoff",
+      "label": "Daily cut off hour (0 = none)",
+      "info": "24 hour clock, in the shopper's time. Orders after it count from the next business day.",
+      "min": 0,
+      "max": 23,
+      "step": 1,
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Delivery timeline"
+    }
+  ]
+}
+{% endschema %}

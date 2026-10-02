@@ -1,0 +1,164 @@
+{% doc %}
+  The Evil List pop-up with a scratch-off code (Theme settings > HM pop-up).
+  Joins The Evil List with a customer form (tags newsletter, evil-list, popup), sent in the background by
+  assets/hm-popup.js. After signup a canvas scratch card hides the code; "Reveal it" uncovers it without scratching.
+  Without fetch the form posts normally and Shopify comes back with ?customer_posted=true#HmPopupForm,
+  which the script reads to open the card on the scratch step.
+  Rendered once from layout/theme.liquid, which decides on which pages it is allowed.
+
+  @example
+  {% render 'hm-popup' %}
+{% enddoc %}
+{%- liquid
+  assign code = settings.hm_popup_code | default: 'EVILFIRST' | strip
+  assign shop_url = routes.all_products_collection_url
+-%}
+<div class="hm-pop-scrim" data-hm-pop-scrim hidden></div>
+<div
+  class="hm-pop"
+  id="hm-pop"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="hm-pop-t"
+  aria-describedby="hm-pop-d"
+  tabindex="-1"
+  hidden
+  data-hm-pop
+  data-delay="{{ settings.hm_popup_delay | default: 10 }}"
+  data-days="{{ settings.hm_popup_days | default: 14 }}"
+>
+  <button class="icon-btn hm-pop__x" type="button" data-hm-pop-close aria-label="Close">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+  </button>
+
+  {%- comment -%} Step 1: signup {%- endcomment -%}
+  <div class="hm-pop__step" data-hm-pop-step="join">
+    {%- if settings.hm_popup_kicker != blank -%}
+      <p class="label hm-pop__k">{{ settings.hm_popup_kicker | escape }}</p>
+    {%- endif -%}
+    <p class="h1 hm-pop__t" id="hm-pop-t">{{ settings.hm_popup_heading | escape }}</p>
+    <p class="hm-pop__d" id="hm-pop-d">{{ settings.hm_popup_text | escape }}</p>
+
+    {%- form 'customer', id: 'HmPopupForm', class: 'hm-pop__form', novalidate: 'novalidate', data-hm-pop-form: '' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter,evil-list,popup">
+      <label class="vh" for="hm-pop-email">Email</label>
+      <div class="hm-pop__row">
+        <input
+          class="input"
+          id="hm-pop-email"
+          type="email"
+          name="contact[email]"
+          required
+          inputmode="email"
+          autocomplete="email"
+          autocapitalize="off"
+          spellcheck="false"
+          placeholder="Email address"
+          {% if customer and customer.email != blank %}
+            value="{{ customer.email | escape }}"
+          {% endif %}
+          aria-describedby="hm-pop-err hm-pop-consent"
+        >
+        <button class="btn" type="submit" data-hm-pop-submit>{{ settings.hm_popup_button | default: 'Get my code' | escape }}</button>
+      </div>
+      <p class="small hm-pop__err" id="hm-pop-err" role="alert" data-hm-pop-err>
+        {%- if form.errors -%}{{ form.errors | default_errors }}{%- endif -%}
+      </p>
+      <p class="consent" id="hm-pop-consent">Email only. Unsubscribe anytime. We’re too busy wrenching to spam you.</p>
+      {%- if form.posted_successfully? -%}<span hidden data-hm-pop-posted></span>{%- endif -%}
+      {%- if form.errors -%}<span hidden data-hm-pop-failed></span>{%- endif -%}
+    {%- endform -%}
+    <button class="linklike small hm-pop__no" type="button" data-hm-pop-close>Not now</button>
+  </div>
+
+  {%- comment -%} Step 2: scratch card {%- endcomment -%}
+  <div class="hm-pop__step" data-hm-pop-step="scratch" hidden>
+    <p class="label hm-pop__k">The Evil List</p>
+    <p class="h1 hm-pop__t" id="hm-pop-t2" tabindex="-1">{{ settings.hm_popup_ok_heading | escape }}</p>
+
+    <div class="hm-scratch" data-hm-scratch>
+      <div class="hm-scratch__under" aria-hidden="true" data-hm-scratch-under>
+        <span class="label">Your code</span>
+        <span class="hm-scratch__code num" data-hm-pop-code>{{ code | escape }}</span>
+      </div>
+      <canvas class="hm-scratch__cover" data-hm-scratch-canvas aria-hidden="true"></canvas>
+    </div>
+    <p class="hm-pop__confirm" id="hm-pop-confirm">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14"/><path d="m3 6 9 7 9-7"/></svg>
+      <span>{{ settings.hm_popup_confirm | escape }}</span>
+    </p>
+
+    <div class="hm-pop__actions">
+      <button class="btn btn--ghost hm-pop__reveal" type="button" data-hm-pop-reveal>Reveal it</button>
+      <button class="btn hm-pop__copy" type="button" data-hm-pop-copy hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12"/><path d="M16 8V4H4v12h4"/></svg>
+        <span>Copy code</span>
+      </button>
+      <a class="link hm-pop__shop" href="{{ shop_url }}" data-hm-pop-shop hidden>Start shopping</a>
+    </div>
+    <p class="small hm-pop__msg" role="status" aria-live="polite" data-hm-pop-msg></p>
+    {%- if settings.hm_popup_fine != blank -%}
+      <p class="consent hm-pop__fine">{{ settings.hm_popup_fine | escape }}</p>
+    {%- endif -%}
+  </div>
+</div>
+
+<script src="{{ 'hm-popup.js' | asset_url }}" defer="defer"></script>
+
+{% stylesheet %}
+  .hm-pop-scrim { position: fixed; inset: 0; z-index: 86; background: rgba(28, 27, 25, .45); }
+  .hm-pop {
+    position: fixed; z-index: 87; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: min(480px, calc(100vw - 32px)); max-height: calc(100svh - 32px); overflow-y: auto;
+    background: var(--surface); color: var(--text); padding: 32px 28px 24px;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, .4); border-top: 4px solid var(--accent);
+    animation: hmPopIn .22s ease-out;
+  }
+  .hm-pop:focus { outline: none; }
+  @keyframes hmPopIn { from { opacity: 0; transform: translate(-50%, calc(-50% + 12px)); } to { opacity: 1; transform: translate(-50%, -50%); } }
+  .hm-pop__x { position: absolute; top: 6px; right: 6px; }
+  .hm-pop__step { display: grid; gap: 12px; }
+  .hm-pop__k { color: var(--mute); }
+  .hm-pop__t { padding-right: 32px; }
+  .hm-pop__t:focus { outline: none; }
+  .hm-pop__d { margin: 0; color: var(--soft); font-size: var(--t-sm); }
+  .hm-pop__confirm { display: flex; gap: 10px; align-items: flex-start; margin: 0; padding: 10px 12px; background: var(--bg); border-left: 3px solid var(--ink); font-size: var(--t-sm); font-weight: 600; color: var(--ink); }
+  .hm-pop__confirm svg { flex: none; width: 18px; height: 18px; margin-top: 1px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+  .hm-pop__form { display: grid; gap: 8px; margin: 4px 0 0; }
+  .hm-pop__row { display: flex; gap: 8px; }
+  .hm-pop__row .input { min-width: 0; flex: 1; }
+  .hm-pop__row .btn { flex: none; white-space: nowrap; }
+  .hm-pop__row .btn[aria-busy="true"] { opacity: .6; pointer-events: none; }
+  .hm-pop__err { margin: 0; color: var(--alert); font-weight: 600; }
+  .hm-pop__err:empty { display: none; }
+  .hm-pop__no { justify-self: start; color: var(--mute); }
+  .hm-pop__msg { margin: 0; min-height: 1.5em; color: var(--ink); font-weight: 600; }
+  .hm-pop__msg:empty { min-height: 0; }
+  .hm-pop__fine { margin: 0; }
+
+  .hm-scratch { position: relative; height: 112px; background: var(--bg); border: 1px dashed #9E9B94; overflow: hidden; user-select: none; -webkit-user-select: none; }
+  .hm-scratch__under { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 4px; text-align: center; }
+  .hm-scratch__under .label { color: var(--mute); }
+  .hm-scratch__code { font-family: var(--f-head); font-stretch: 78%; font-weight: 800; font-size: clamp(30px, 8vw, 40px); letter-spacing: .08em; line-height: 1; color: var(--ink); }
+  .hm-scratch__cover { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: grab; transition: opacity .35s ease; }
+  .hm-scratch.is-done .hm-scratch__cover { opacity: 0; pointer-events: none; }
+  .hm-pop__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+  .hm-pop__actions .btn { flex: 1 1 160px; }
+  .hm-pop__actions svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+  .hm-pop__shop { text-decoration: underline; }
+
+  @media (max-width: 760px) {
+    .hm-pop {
+      left: 0; right: 0; top: auto; bottom: 0; transform: none; width: auto; max-height: 88svh;
+      padding: 28px var(--gutter) calc(20px + env(safe-area-inset-bottom, 0px));
+      animation-name: hmPopUp;
+    }
+    @keyframes hmPopUp { from { transform: translateY(100%); } to { transform: none; } }
+    .hm-pop__row { flex-direction: column; }
+    .hm-pop__row .btn { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hm-pop { animation: none; }
+    .hm-scratch__cover { transition: none; }
+  }
+{% endstylesheet %}

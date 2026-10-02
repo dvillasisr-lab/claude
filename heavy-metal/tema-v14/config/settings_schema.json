@@ -193,6 +193,182 @@
     ]
   },
   {
+    "name": "HM pop-up",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Email pop-up that joins The Evil List and reveals a scratch-off code. Opens after the delay, at half the page, or when the mouse leaves the window on desktop, whichever comes first. Never on the cart, password, gift card, /pages/3208 or /pages/evil-list pages, or for logged in customers already on the list."
+      },
+      {
+        "type": "checkbox",
+        "id": "hm_popup_enabled",
+        "label": "Show the pop-up",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "hm_popup_delay",
+        "label": "Open after",
+        "min": 3,
+        "max": 60,
+        "step": 1,
+        "unit": "s",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "hm_popup_days",
+        "label": "Days hidden after someone closes it",
+        "min": 1,
+        "max": 60,
+        "step": 1,
+        "unit": "d",
+        "default": 14
+      },
+      {
+        "type": "text",
+        "id": "hm_popup_code",
+        "label": "Discount code under the scratch card",
+        "default": "EVILFIRST",
+        "info": "Create it first in Discounts. Must match exactly."
+      },
+      {
+        "type": "text",
+        "id": "hm_popup_kicker",
+        "label": "Small label",
+        "default": "The Evil List"
+      },
+      {
+        "type": "text",
+        "id": "hm_popup_heading",
+        "label": "Headline",
+        "default": "Want 10% off? Obviously."
+      },
+      {
+        "type": "textarea",
+        "id": "hm_popup_text",
+        "label": "Text",
+        "default": "Get on The Evil List for drops, pull days and the occasional bad idea. Your first order gets 10% off. Scratch to see the code."
+      },
+      {
+        "type": "text",
+        "id": "hm_popup_button",
+        "label": "Button",
+        "default": "Get my code"
+      },
+      {
+        "type": "text",
+        "id": "hm_popup_ok_heading",
+        "label": "Headline after signup",
+        "default": "You’re in. Now scratch."
+      },
+      {
+        "type": "text",
+        "id": "hm_popup_confirm",
+        "label": "Confirm email line",
+        "default": "Confirm your email first. Then the code works. Check your inbox, we just sent it.",
+        "info": "The code only works for confirmed subscribers with no orders yet. Keep this line."
+      },
+      {
+        "type": "text",
+        "id": "hm_popup_fine",
+        "label": "Fine print",
+        "default": "10% off your first order. New subscribers only, after you confirm. One per customer. Not shipping. Doesn’t stack."
+      }
+    ]
+  },
+  {
+    "name": "HM campaign",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Black Friday or any sale. Turn it on, set the dates, done. The bar at the top and the sale page at /pages/sale show only between the start and the end, then switch off by themselves."
+      },
+      {
+        "type": "checkbox",
+        "id": "hm_campaign_enabled",
+        "label": "Campaign on",
+        "default": false,
+        "info": "Off: no bar, and /pages/sale says no sale is running (hidden from Google)."
+      },
+      {
+        "type": "text",
+        "id": "hm_campaign_name",
+        "label": "Campaign name",
+        "default": "Black Friday"
+      },
+      {
+        "type": "text",
+        "id": "hm_campaign_start",
+        "label": "Starts",
+        "default": "2026-11-27T00:00-06:00",
+        "info": "Format YYYY-MM-DDTHH:MM-06:00 (year, month, day, T, 24 h time, time zone). -06:00 is Wisconsin in winter, -05:00 in summer. Example: 2026-11-27T00:00-06:00"
+      },
+      {
+        "type": "text",
+        "id": "hm_campaign_end",
+        "label": "Ends",
+        "default": "2026-12-01T23:59-06:00",
+        "info": "Same format. The countdown runs to this moment."
+      },
+      {
+        "type": "text",
+        "id": "hm_campaign_code",
+        "label": "Discount code",
+        "info": "Create it first in Discounts. Empty hides the code."
+      },
+      {
+        "type": "text",
+        "id": "hm_campaign_label",
+        "label": "Discount label",
+        "default": "25% off everything"
+      },
+      {
+        "type": "text",
+        "id": "hm_campaign_bar_text",
+        "label": "Bar text",
+        "default": "[name]: [label]. Go before we come to our senses.",
+        "info": "Use [name], [label] and [code]."
+      },
+      {
+        "type": "url",
+        "id": "hm_campaign_link",
+        "label": "Sale page link",
+        "info": "Empty uses /pages/sale."
+      },
+      {
+        "type": "select",
+        "id": "hm_campaign_bar_style",
+        "label": "Bar colors",
+        "default": "ink",
+        "options": [
+          {
+            "value": "ink",
+            "label": "Ink with white text"
+          },
+          {
+            "value": "accent",
+            "label": "Helmet yellow with ink text"
+          },
+          {
+            "value": "bone",
+            "label": "Bone with ink text"
+          },
+          {
+            "value": "night",
+            "label": "Night with bone text"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "hm_campaign_hide_announce",
+        "label": "Hide the announcement bar while the sale runs",
+        "default": true
+      }
+    ]
+  },
+  {
     "name": "t:settings_schema.logo.name",
     "settings": [
       {

@@ -3,6 +3,29 @@
     "main": {
       "type": "hm-main-product",
       "blocks": {
+        "coupon": {
+          "type": "coupon",
+          "disabled": true,
+          "settings": {
+            "code": "",
+            "headline": "Extra 10% off",
+            "text": "Paste it at checkout. We won’t tell anyone.",
+            "fine_print": "One use per order. Can’t be combined with other codes.",
+            "starts": "",
+            "ends": ""
+          }
+        },
+        "delivery": {
+          "type": "delivery",
+          "settings": {
+            "heading": "Estimated delivery",
+            "prod_min": 2,
+            "prod_max": 5,
+            "ship_min": 2,
+            "ship_max": 5,
+            "cutoff": 0
+          }
+        },
         "details": {
           "type": "collapsible",
           "settings": {
@@ -31,7 +54,7 @@
           }
         }
       },
-      "block_order": ["details", "story", "shipping"],
+      "block_order": ["coupon", "delivery", "details", "story", "shipping"],
       "settings": {
         "enable_zoom": true,
         "show_short_description": true,

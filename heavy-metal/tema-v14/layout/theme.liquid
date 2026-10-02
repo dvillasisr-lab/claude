@@ -1,9 +1,25 @@
 <!doctype html>
-<html class="js" lang="en">
+<html class="js{% if settings.hm_campaign_enabled and settings.hm_campaign_hide_announce %} hm-campaign-hide-announce{% endif %}" lang="en" data-hm-campaign="off">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    {%- if settings.hm_campaign_enabled -%}
+      {%- comment -%}
+        HM campaign: decide live or off on the visitor's clock before anything paints, so cached pages stay right.
+        Dates are ISO with an offset (Theme settings > HM campaign). assets/hm-campaign.js keeps it updated.
+      {%- endcomment -%}
+      <script>
+        (function () {
+          var d = document.documentElement;
+          function t(v) { v = String(v || '').trim().replace(' ', 'T'); var n = Date.parse(v); return isNaN(n) ? 0 : n; }
+          var s = t({{ settings.hm_campaign_start | json }}), e = t({{ settings.hm_campaign_end | json }}), n = Date.now();
+          d.setAttribute('data-hm-camp-start', s);
+          d.setAttribute('data-hm-camp-end', e);
+          d.setAttribute('data-hm-campaign', e && n < e && (!s || n >= s) ? 'live' : 'off');
+        })();
+      </script>
+    {%- endif -%}
     <meta name="theme-color" content="{{ settings.hm_color_ink | default: '#1C1B19' }}">
     <link rel="canonical" href="{{ canonical_url }}">
 
@@ -94,6 +110,9 @@
         assign hm_noindex = true
       endif
       if request.page_type == 'search' or request.page_type == 'password'
+        assign hm_noindex = true
+      endif
+      if template.suffix == 'campaign' and settings.hm_campaign_enabled == false
         assign hm_noindex = true
       endif
     -%}
@@ -517,5 +536,34 @@
     {%- comment -%} HM v14: quick add size sheet and Notify me dialog, once per page (they also load hm-quick-add.js). The cart drawer is rendered by hm-header. {%- endcomment -%}
     {% render 'hm-quick-add' %}
     {% render 'hm-notify-modal' %}
+
+    {%- comment -%}
+      HM campaign countdown (bar and /pages/sale). HM pop-up: The Evil List with a scratch-off code, never on the
+      cart, password, gift card, account pages, /pages/3208, /pages/evil-list, or for a logged in customer already on the list.
+    {%- endcomment -%}
+    {%- if settings.hm_campaign_enabled -%}
+      <script src="{{ 'hm-campaign.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+    {%- liquid
+      assign hm_pop = settings.hm_popup_enabled
+      case request.page_type
+        when 'cart', 'password', 'gift_card', 'captcha'
+          assign hm_pop = false
+      endcase
+      if template.name == 'gift_card' or template.name == 'customers' or template.directory == 'customers'
+        assign hm_pop = false
+      endif
+      if request.page_type == 'page'
+        if page.handle == '3208' or page.handle == 'evil-list' or template.suffix == '3208' or template.suffix == 'evil-list'
+          assign hm_pop = false
+        endif
+      endif
+      if customer and customer.accepts_marketing
+        assign hm_pop = false
+      endif
+    -%}
+    {%- if hm_pop -%}
+      {% render 'hm-popup' %}
+    {%- endif -%}
   </body>
 </html>

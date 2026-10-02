@@ -188,6 +188,62 @@
   </div>
 </footer>
 
+{%- if section.settings.show_totop -%}
+  <button class="totop" type="button" data-hm-totop aria-label="Back to top" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg>
+  </button>
+  <script>
+    (function () {
+      var b = document.querySelector('[data-hm-totop]');
+      if (!b || b.__hm) return;
+      b.__hm = true;
+      var root = document.documentElement, rm = window.matchMedia('(prefers-reduced-motion: reduce)'), raf = 0;
+      /* things fixed to the bottom of the screen: the button sits above whichever is showing */
+      function lift() {
+        var h = 0, vh = window.innerHeight;
+        ['.satc.is-on', '#shopify-pc__banner', '.shopify-pc__banner__dialog'].forEach(function (sel) {
+          var el = document.querySelector(sel);
+          if (!el || !el.getClientRects().length) return;
+          var r = el.getBoundingClientRect(), cs = getComputedStyle(el);
+          if (cs.visibility === 'hidden' || cs.display === 'none' || r.height === 0 || r.bottom < vh - 4 || r.top >= vh) return;
+          h = Math.max(h, vh - r.top);
+        });
+        b.style.setProperty('--totop-lift', Math.round(h) + 'px');
+      }
+      function blocked() {
+        return root.classList.contains('hm-locked') || !!document.querySelector('dialog[open]');
+      }
+      function update() {
+        raf = 0;
+        var on = window.scrollY > window.innerHeight * 1.5 && !blocked();
+        if (on) lift();
+        if (b.hidden === on) b.hidden = !on;
+      }
+      function queue() { if (!raf) raf = requestAnimationFrame(update); }
+      window.addEventListener('scroll', queue, { passive: true });
+      window.addEventListener('resize', queue);
+      document.addEventListener('click', function () { setTimeout(queue, 350); });
+      document.addEventListener('hm:dialog:open', queue);
+      document.addEventListener('hm:dialog:close', queue);
+      if ('MutationObserver' in window) new MutationObserver(queue).observe(root, { attributes: true, attributeFilter: ['class'] });
+      b.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: rm.matches ? 'auto' : 'smooth' });
+        var main = document.getElementById('MainContent');
+        if (main) { try { main.focus({ preventScroll: true }); } catch (e) {} }
+      });
+      update();
+    })();
+  </script>
+{%- endif -%}
+
+{% stylesheet %}
+  .totop { position: fixed; z-index: 45; right: calc(16px + env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px) + var(--totop-lift, 0px)); width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: rgba(255, 255, 255, .94); color: var(--ink); display: grid; place-items: center; padding: 0; cursor: pointer; box-shadow: 0 10px 24px -14px rgba(28, 27, 25, .45); transition: bottom .2s, border-color .15s; }
+  .totop:hover { border-color: var(--ink); }
+  .totop svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  @media (min-width: 761px) { .totop { right: calc(24px + env(safe-area-inset-right, 0px)); bottom: calc(24px + env(safe-area-inset-bottom, 0px) + var(--totop-lift, 0px)); } }
+  @media (prefers-reduced-motion: reduce) { .totop { transition: none; } }
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "HM footer",
@@ -330,6 +386,13 @@
       "id": "cookie_label",
       "label": "Cookie link text",
       "default": "Cookie Preferences"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_totop",
+      "label": "Show the Back to top button",
+      "info": "Round button, bottom right. Shows after scrolling about a screen and a half.",
+      "default": true
     }
   ],
   "presets": [

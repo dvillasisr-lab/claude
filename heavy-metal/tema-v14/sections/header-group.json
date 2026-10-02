@@ -2,6 +2,10 @@
   "name": "Header",
   "type": "header",
   "sections": {
+    "hm_campaign_bar": {
+      "type": "hm-campaign-bar",
+      "settings": {}
+    },
     "hm_announcement": {
       "type": "hm-announcement",
       "blocks": {
@@ -83,6 +87,7 @@
     }
   },
   "order": [
+    "hm_campaign_bar",
     "hm_announcement",
     "hm_header"
   ]

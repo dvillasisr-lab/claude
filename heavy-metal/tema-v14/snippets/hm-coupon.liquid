@@ -1,0 +1,76 @@
+{% doc %}
+  Ticket-style coupon with a Copy button (assets/hm-coupon.js).
+  Renders nothing until a code is entered. With a start or end date, it stays hidden
+  and the browser shows it only inside that window (visitor's own clock).
+
+  @param {string} code - Discount code (blank = nothing renders)
+  @param {string} [headline] - Big line, e.g. "Extra 10% off"
+  @param {string} [text] - One line under the code
+  @param {string} [fine_print] - Small print
+  @param {string} [starts] - ISO date or date and time, e.g. 2026-10-10 or 2026-10-10T09:00
+  @param {string} [ends] - ISO date or date and time; a date alone runs to the end of that day
+  @param {string} [attrs] - Extra attributes for the wrapper (block.shopify_attributes)
+
+  @example
+  {% render 'hm-coupon', code: 'EVIL10', headline: 'Extra 10% off' %}
+{% enddoc %}
+{%- assign c = code | strip -%}
+{%- if c != blank -%}
+  {%- liquid
+    assign s = starts | strip
+    assign e = ends | strip
+    assign uid = c | append: s | append: e | handleize | prepend: 'hm-cpn-'
+  -%}
+  <div
+    class="cpn"
+    data-hm-coupon
+    {% if s != blank %}
+      data-start="{{ s | escape }}"
+    {% endif %}
+    {% if e != blank %}
+      data-end="{{ e | escape }}"
+    {% endif %}
+    {% if s != blank or e != blank %}
+      hidden
+    {% endif %}
+    {{ attrs }}
+  >
+    <div class="cpn__stub">
+      <p class="cpn__big">{{ headline | default: 'Extra 10% off' | escape }}</p>
+    </div>
+    <div class="cpn__main">
+      <p class="cpn__use">
+        Use code <code class="cpn__code" data-cpn-code>{{ c | escape }}</code>
+        <button class="cpn__copy" type="button" data-cpn-copy aria-describedby="{{ uid }}-st">
+          <span data-cpn-label>Copy</span><span class="vh"> code {{ c | escape }}</span>
+        </button>
+      </p>
+      <span class="vh" id="{{ uid }}-st" role="status" data-cpn-status></span>
+      {%- if text != blank -%}
+        <p class="cpn__text">{{ text | escape }}</p>
+      {%- endif -%}
+      {%- if fine_print != blank -%}
+        <p class="cpn__fine">{{ fine_print | escape }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+  <script src="{{ 'hm-coupon.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% stylesheet %}
+  .cpn { --cpn-bg: #FFF9DB; --cpn-edge: #E6D58C; position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); background: var(--cpn-bg); border: 1px solid var(--cpn-edge);
+    -webkit-mask: radial-gradient(circle 8px at 0 50%, transparent 7.5px, #000 8px) left / 51% 100% no-repeat, radial-gradient(circle 8px at 100% 50%, transparent 7.5px, #000 8px) right / 51% 100% no-repeat;
+    mask: radial-gradient(circle 8px at 0 50%, transparent 7.5px, #000 8px) left / 51% 100% no-repeat, radial-gradient(circle 8px at 100% 50%, transparent 7.5px, #000 8px) right / 51% 100% no-repeat; }
+  .cpn__stub { display: grid; place-items: center; padding: 12px 16px 12px 22px; border-right: 1.5px dashed #C9B866; }
+  .cpn__big { margin: 0; font-family: var(--f-head); font-stretch: 78%; font-weight: 800; text-transform: uppercase; font-size: clamp(18px, 1.8vw, 22px); line-height: 1.05; color: var(--ink); max-width: 9ch; text-wrap: balance; }
+  .cpn__main { display: grid; gap: 4px; align-content: center; padding: 12px 22px 12px 16px; min-width: 0; }
+  .cpn p { margin: 0; }
+  .cpn__use { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: var(--t-xs); font-weight: 600; letter-spacing: .04em; color: var(--soft); }
+  .cpn__code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: var(--t-sm); font-weight: 700; letter-spacing: .08em; color: var(--ink); background: var(--surface); border: 1px solid var(--cpn-edge); padding: 2px 8px; }
+  .cpn__copy { min-height: 32px; padding: 0 12px; border: 1px solid var(--ink); background: transparent; color: var(--ink); font: inherit; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+  .cpn__copy:hover, .cpn__copy.is-done { background: var(--ink); color: var(--surface); }
+  .cpn__text { font-size: var(--t-xs); color: var(--text); }
+  .cpn__fine { font-size: 11px; line-height: 1.4; color: var(--mute); }
+  .cpn.is-out { opacity: .5; }
+  @media (max-width: 380px) { .cpn__stub { padding-inline: 18px 12px; } .cpn__main { padding-inline: 12px 18px; } }
+{% endstylesheet %}

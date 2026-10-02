@@ -1,0 +1,240 @@
+{%- comment -%}
+  Campaign page (template page.campaign, page /pages/sale). Everything that changes per sale lives in
+  Theme settings > HM campaign (on/off, name, dates, code, label). This section only holds the page copy and the
+  collection for the grid.
+  Two states in the same page: "live" (hero, code, countdown, grid) and "off" (no sale running). layout/theme.liquid
+  sets html[data-hm-campaign] before paint from the dates, so a cached page still shows the right one.
+  When the campaign is switched off only the off state is rendered and the layout adds noindex.
+{%- endcomment -%}
+{%- liquid
+  assign cid = 'Camp-' | append: section.id
+  assign on = settings.hm_campaign_enabled
+  assign c_name = settings.hm_campaign_name | default: 'Sale'
+  assign c_label = settings.hm_campaign_label
+  assign c_code = settings.hm_campaign_code | strip
+  assign coll = section.settings.collection | default: collections.all
+  assign evil_url = routes.root_url | append: '/pages/evil-list' | replace: '//', '/'
+-%}
+<div class="hm-camp">
+  {%- if on -%}
+    <div class="hm-camp__live" data-hm-camp-live>
+      <section class="sect sect--night hm-camp__hero" aria-labelledby="{{ cid }}-t">
+        <div class="wrap hm-camp__grid">
+          <div class="hm-camp__main">
+            <p class="label hm-camp__k">{{ c_name | escape }}</p>
+            <h1 class="h-hero" id="{{ cid }}-t">{{ c_label | default: c_name | escape }}</h1>
+            {%- if section.settings.lede != blank -%}
+              <p class="lede hm-camp__lede">{{ section.settings.lede | escape }}</p>
+            {%- endif -%}
+
+            {%- if c_code != blank -%}
+              <div class="hm-camp__code" role="group" aria-labelledby="{{ cid }}-cl">
+                <p class="label" id="{{ cid }}-cl">Code at checkout</p>
+                <div class="hm-camp__coderow">
+                  <span class="hm-camp__codeval num" data-hm-camp-code>{{ c_code | escape }}</span>
+                  <button class="btn hm-camp__copy" type="button" data-hm-camp-copy>
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12"/><path d="M16 8V4H4v12h4"/></svg>
+                    <span>Copy code</span>
+                  </button>
+                </div>
+                <p class="small hm-camp__msg" role="status" aria-live="polite" data-hm-camp-msg></p>
+              </div>
+            {%- else -%}
+              <a class="btn" href="#{{ cid }}-shop">Shop the sale</a>
+            {%- endif -%}
+          </div>
+
+          <div class="hm-camp__clock">
+            <p class="label">Ends in</p>
+            <div class="hm-camp__units num" role="timer" data-hm-countdown data-format="blocks">
+              <span class="hm-camp__unit"><b data-u="d">0</b><small>Days</small></span>
+              <span class="hm-camp__unit"><b data-u="h">00</b><small>Hours</small></span>
+              <span class="hm-camp__unit"><b data-u="m">00</b><small>Min</small></span>
+              <span class="hm-camp__unit"><b data-u="s">00</b><small>Sec</small></span>
+            </div>
+            {%- if settings.hm_campaign_end != blank -%}
+              <p class="small hm-camp__end">Then it’s gone. Prices go back up and stay up.</p>
+            {%- endif -%}
+          </div>
+        </div>
+      </section>
+
+      <section class="sect hm-camp__shop" id="{{ cid }}-shop" aria-labelledby="{{ cid }}-g">
+        <div class="wrap">
+          <div class="sect-head">
+            <h2 class="h2" id="{{ cid }}-g">{{ section.settings.grid_heading | escape }}</h2>
+            <a class="link" href="{{ coll.url | default: routes.all_products_collection_url }}">View all</a>
+          </div>
+          {%- if coll.products.size > 0 -%}
+            <div class="pgrid">
+              {%- for product in coll.products limit: section.settings.limit -%}
+                {%- liquid
+                  assign lazy = true
+                  if forloop.index <= 4
+                    assign lazy = false
+                  endif
+                -%}
+                {%- render 'hm-card', product: product, lazy: lazy -%}
+              {%- endfor -%}
+            </div>
+          {%- else -%}
+            <p class="muted">Products show up here as soon as the collection has some.</p>
+          {%- endif -%}
+          {%- if section.settings.fine != blank -%}
+            <p class="consent hm-camp__fine">{{ section.settings.fine | escape }}</p>
+          {%- endif -%}
+        </div>
+      </section>
+    </div>
+  {%- endif -%}
+
+  <section class="sect hm-camp__off" aria-labelledby="{{ cid }}-o" data-hm-camp-off>
+    <div class="wrap hm-camp__offin">
+      <p class="label muted">Sale</p>
+      <h1 class="h1" id="{{ cid }}-o">{{ section.settings.off_heading | escape }}</h1>
+      {%- if section.settings.off_text != blank -%}
+        <p class="lede">{{ section.settings.off_text | escape }}</p>
+      {%- endif -%}
+      <div class="hm-camp__offbtns">
+        <a class="btn" href="{{ routes.all_products_collection_url }}">Shop all</a>
+        <a class="link" href="{{ evil_url }}">Get on The Evil List</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% javascript %}
+  (function () {
+    document.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-hm-camp-copy]'); if (!b) return;
+      var box = b.closest('.hm-camp__code');
+      var code = box.querySelector('[data-hm-camp-code]').textContent.trim();
+      var msg = box.querySelector('[data-hm-camp-msg]');
+      function done(ok) { if (msg) msg.textContent = ok ? 'Copied. Go spend it.' : 'Copy failed. The code is ' + code + '.'; }
+      function legacy() {
+        try {
+          var t = document.createElement('textarea'); t.value = code; t.setAttribute('readonly', '');
+          t.style.position = 'fixed'; t.style.opacity = '0'; document.body.appendChild(t); t.select();
+          var ok = document.execCommand('copy'); document.body.removeChild(t); return ok;
+        } catch (x) { return false; }
+      }
+      if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(code).then(function () { done(true); }, function () { done(legacy()); });
+      else done(legacy());
+    });
+  })();
+{% endjavascript %}
+
+{% stylesheet %}
+  .hm-camp__live { display: none; }
+  html[data-hm-campaign="live"] .hm-camp__live { display: block; }
+  html[data-hm-campaign="live"] .hm-camp__off { display: none; }
+
+  .hm-camp__grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
+  .hm-camp__main { display: grid; gap: 14px; justify-items: start; }
+  .hm-camp__k { color: var(--accent); }
+  .hm-camp__lede { color: rgba(242, 240, 233, .78); }
+  .hm-camp__code { display: grid; gap: 8px; width: 100%; max-width: 520px; margin-top: 6px; }
+  .hm-camp__code .label { color: rgba(242, 240, 233, .7); }
+  .hm-camp__coderow { display: flex; align-items: stretch; border: 1px dashed rgba(242, 240, 233, .45); }
+  .hm-camp__codeval { flex: 1; display: flex; align-items: center; padding: 0 16px; min-height: 52px; font-family: var(--f-head); font-stretch: 78%; font-weight: 800; font-size: clamp(22px, 2.6vw, 30px); letter-spacing: .08em; color: var(--night-ink); }
+  .hm-camp__copy { min-height: 52px; background: var(--night-ink); border-color: var(--night-ink); color: var(--ink); }
+  .hm-camp__copy:hover { background: var(--surface); border-color: var(--surface); color: var(--ink); }
+  .hm-camp__copy svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+  .hm-camp__msg { margin: 0; min-height: 1.5em; color: var(--night-ink); font-weight: 600; }
+  .hm-camp__hero .btn { background: var(--night-ink); border-color: var(--night-ink); color: var(--ink); }
+
+  .hm-camp__clock { display: grid; gap: 10px; }
+  .hm-camp__clock .label { color: rgba(242, 240, 233, .7); }
+  .hm-camp__units { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .hm-camp__unit { display: grid; gap: 4px; justify-items: center; padding: clamp(14px, 2vw, 22px) 6px; background: rgba(242, 240, 233, .06); border: 1px solid rgba(242, 240, 233, .14); }
+  .hm-camp__unit b { font-family: var(--f-head); font-stretch: 78%; font-weight: 800; font-size: clamp(34px, 5vw, 64px); line-height: 1; color: var(--night-ink); font-variant-numeric: tabular-nums; }
+  .hm-camp__unit small { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(242, 240, 233, .65); }
+  .hm-camp__end { margin: 0; color: rgba(242, 240, 233, .7); }
+
+  .hm-camp__fine { margin-top: 24px; max-width: 72ch; }
+
+  .hm-camp__off { background: var(--surface); }
+  .hm-camp__offin { display: grid; gap: 14px; justify-items: center; text-align: center; padding-block: clamp(24px, 6vw, 72px); }
+  .hm-camp__offin .lede { margin-inline: auto; }
+  .hm-camp__offbtns { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px 20px; margin-top: 6px; }
+  .hm-camp__offbtns .link { text-decoration: underline; }
+
+  @media (max-width: 900px) {
+    .hm-camp__grid { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .hm-camp__coderow { flex-direction: column; }
+    .hm-camp__codeval { justify-content: center; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM campaign page",
+  "tag": "div",
+  "class": "hm-camp-section",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Name, dates, code and discount label come from Theme settings > HM campaign."
+    },
+    {
+      "type": "textarea",
+      "id": "lede",
+      "label": "Intro",
+      "default": "The tractor doesn’t do discounts. The merch does, for a few days only. Grab the code, beat the clock."
+    },
+    {
+      "type": "text",
+      "id": "grid_heading",
+      "label": "Products heading",
+      "default": "Everything. Yes, everything."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Products from",
+      "info": "Empty shows the whole shop."
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Products to show",
+      "min": 4,
+      "max": 24,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "textarea",
+      "id": "fine",
+      "label": "Fine print",
+      "default": "Use the code at checkout. One code per order. Not shipping, not gift cards. Ends when the clock hits zero. No exceptions, no matter how nicely you ask."
+    },
+    {
+      "type": "header",
+      "content": "When no sale is running"
+    },
+    {
+      "type": "text",
+      "id": "off_heading",
+      "label": "Heading",
+      "default": "No sale running right now"
+    },
+    {
+      "type": "textarea",
+      "id": "off_text",
+      "label": "Text",
+      "default": "Full price, like animals. Get on The Evil List and you’ll hear about the next one before anybody else."
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM campaign page"
+    }
+  ]
+}
+{% endschema %}
