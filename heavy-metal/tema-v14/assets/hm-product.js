@@ -127,7 +127,7 @@
     });
     this.on(lbImg, 'click', function (e) { if (swiped) return; origin(e); lbImg.classList.toggle('is-zoom'); });
     this.on(lbImg, 'pointermove', function (e) { if (lbImg.classList.contains('is-zoom') && (e.pointerType === 'mouse' || sx != null)) origin(e); });
-    this.on(lb, 'click', function (e) { if (e.target === lb || e.target.classList.contains('lb__fig')) lb.close(); });
+    this.on(lb, 'click', function (e) { if (e.target === lb || e.target.classList.contains('pz__fig')) lb.close(); });
     this.on(track, 'click', function (e) { if (e.target.closest('.pg__slide[data-zoom]')) self.openLB(); });
     this.on(this.q('[data-pg-zoom]'), 'click', function () { self.openLB(); });
   };
@@ -158,7 +158,7 @@
     this.qa('[data-hm-opt]').forEach(function (fs) {
       self.on(fs, 'change', function (e) {
         fs.classList.remove('is-error');
-        var m = self.q('[data-hm-size-msg]'); if (m && fs.getAttribute('data-kind') === 'size') m.textContent = '';
+        var m = self.q('[data-hm-size-msg]'); if (m) m.textContent = '';
         self.update(fs.getAttribute('data-kind') === 'color');
       });
     });
@@ -185,20 +185,43 @@
     var self = this, vals = this.chosen();
     /* size buttons: disable sizes sold out in the chosen color */
     if (this.sizePos) {
-      var si = this.sizePos - 1, sold = [];
+      var si = this.sizePos - 1, sold = [], dropped = null;
       var fs = this.q('[data-hm-opt="' + this.sizePos + '"]');
+      /* a size can be sold out (exists, not available) or simply not made in the chosen color (no variant) */
+      var others = vals.filter(function (x, i) { return i !== si && x != null; }).join(' / ');
       if (fs) [].forEach.call(fs.querySelectorAll('input'), function (inp) {
         var test = vals.slice(); test[si] = inp.value;
-        var v = self.find(test.map(function (x, i) { return i === si ? x : x; })).filter(function (x) { return x.available; })[0];
-        var off = !v;
+        var all = self.find(test), v = all.filter(function (x) { return x.available; })[0];
+        var off = !v, why = all.length ? ', sold out' : ', not available' + (others ? ' in ' + others : '');
         inp.disabled = off;
         var lab = fs.querySelector('label[for="' + inp.id + '"]');
-        if (lab) { var sr = lab.querySelector('.vh'); if (off && !sr) lab.insertAdjacentHTML('beforeend', '<span class="vh">, sold out</span>'); if (!off && sr) sr.remove(); }
-        if (off) { sold.push(inp.value); if (inp.checked) inp.checked = false; }
+        if (lab) {
+          var sr = lab.querySelector('.vh');
+          if (off) { if (!sr) { sr = document.createElement('span'); sr.className = 'vh'; lab.appendChild(sr); } sr.textContent = why; } else if (sr) sr.remove();
+          lab.classList.toggle('is-na', off && !all.length);
+        }
+        if (off && all.length) sold.push(inp.value);
+        if (off && inp.checked) { inp.checked = false; dropped = inp.value; }
       });
       var sw = this.q('[data-hm-sold]');
       if (sw) { sw.hidden = !sold.length || this.state !== 'live'; this.q('[data-hm-sold-list]').textContent = sold.join(', '); }
+      var sm = this.q('[data-hm-size-msg]');
+      if (sm && dropped) sm.textContent = dropped + ' is not available' + (others ? ' in ' + others : '') + '. Select a size.';
       vals = this.chosen();
+      /* swatches / other options: mark values with no available variant for the chosen size (still clickable) */
+      var size = vals[si];
+      this.qa('[data-hm-opt]').forEach(function (ofs, oi) {
+        if (oi === si) return;
+        [].forEach.call(ofs.querySelectorAll('input'), function (inp) {
+          var test = vals.slice(); test[oi] = inp.value;
+          var na = size != null && !self.find(test).some(function (x) { return x.available; });
+          var lab = ofs.querySelector('label[for="' + inp.id + '"]'); if (!lab) return;
+          lab.classList.toggle('is-na', na);
+          var sr = lab.querySelector('.vh-na');
+          if (na && !sr) lab.insertAdjacentHTML('beforeend', '<span class="vh vh-na">, not available in ' + esc(size) + '</span>');
+          if (!na && sr) sr.remove();
+        });
+      });
     }
     /* labels */
     this.qa('[data-hm-opt]').forEach(function (fs, i) {
@@ -223,7 +246,7 @@
     if (sv && this.state === 'live') sv.textContent = vals.map(function (x) { return x == null ? 'Select a size' : x; }).join(' · ') || 'One size';
     var dyn = this.q('[data-hm-dyn]'); if (dyn) dyn.classList.toggle('is-locked', !this.ready());
     /* URL and photo for the variant */
-    if (!first && v) { try { var u = new URL(location.href); u.searchParams.set('variant', v.id); history.replaceState(null, '', u.toString()); } catch (e) {} }
+    if (!first) { try { var u = new URL(location.href); if (v) u.searchParams.set('variant', v.id); else u.searchParams.delete('variant'); history.replaceState(null, '', u.toString()); } catch (e) {} }
     if (colorChanged && this.go && this.slides) {
       var mv = (v && v.media) || (this.find(vals).filter(function (x) { return x.media; })[0] || {}).media;
       if (mv) { var idx = this.slides.map(function (s) { return s.getAttribute('data-media-id'); }).indexOf(String(mv)); if (idx > -1) this.go(idx); }
@@ -257,13 +280,94 @@
       btn.removeAttribute('aria-busy'); btn.textContent = old;
     }).catch(function (err) {
       btn.removeAttribute('aria-busy'); btn.textContent = old;
+      /* the store answered with a page (bot check, password, outage): post the form normally instead */
+      if (err && err.notJson) { self.form.submit(); return; }
       if (msg) msg.textContent = err.message;
     });
+  };
+
+  /* ---------------- size table from the product description ----------------
+     The supplier's table (moved into the dialog by Liquid) is rebuilt with our .tbl look:
+     sizes as rows (supplier tables usually have sizes as columns), unit suffixes moved out
+     of the headings, and an in / cm switch (shared with the Sizes page via localStorage "hm-unit"). */
+  var SIZE_RE = /^(one size|os|x{0,4}s|m|x{0,4}l|[2-6]x{1,2}l?|y(s|m|l|xl)|\d{1,2}[ty]|\d{1,2}-\d{1,2}[my]?)$/i;
+  function sizeish(arr) {
+    var full = arr.filter(function (x) { return x; });
+    var hits = full.filter(function (x) { return SIZE_RE.test(x); }).length;
+    return hits >= 2 && hits >= full.length * 0.6;
+  }
+  function unitOf(h) {
+    if (/%/.test(h)) return '';
+    if (/\bcm\b|centim/i.test(h)) return 'cm';
+    if (/(^|[\s,(])(in|inch|inches)\)?\s*$|\binch(es)?\b|["″]/i.test(h)) return 'in';
+    return '';
+  }
+  function cleanHead(h) { return h.replace(/\s*(,|\()\s*(in|inch|inches|cm|%)\s*\)?\s*$/i, '').replace(/["″]/g, '').trim(); }
+  function fmtNum(n, u) {
+    var r = u === 'cm' ? Math.round(n * 2) / 2 : Math.round(n * 100) / 100;
+    return String(r);
+  }
+  function convert(txt, from, to) {
+    if (!from || from === to) return txt.replace(/\d+(?:\.\d+)?/g, function (m) { return fmtNum(parseFloat(m), from); });
+    return txt.replace(/\d+(?:\.\d+)?/g, function (m) { var n = parseFloat(m); return fmtNum(from === 'in' ? n * 2.54 : n / 2.54, to); });
+  }
+  function rebuild(t) {
+    var m = [].map.call(t.rows, function (r) { return [].map.call(r.cells, function (c) { return c.textContent.replace(/\s+/g, ' ').trim(); }); })
+      .filter(function (r) { return r.some(function (x) { return x; }); });
+    if (m.length < 2) return null;
+    var w = Math.max.apply(null, m.map(function (r) { return r.length; }));
+    m = m.map(function (r) { while (r.length < w) r.push(''); return r; });
+    if (sizeish(m[0].slice(1)) && !sizeish(m.slice(1).map(function (r) { return r[0]; }))) {
+      m = m[0].map(function (_, j) { return m.map(function (r) { return r[j]; }); });
+    }
+    var units = m[0].map(unitOf);
+    var pct = m[0].map(function (h) { return /%/.test(h); });
+    var html = '<table class="tbl"><thead><tr>' + m[0].map(function (h, j) {
+      return '<th scope="col">' + esc(j === 0 && !h ? 'Size' : cleanHead(h) + (pct[j] ? ' (%)' : '')) + '</th>';
+    }).join('') + '</tr></thead><tbody>' + m.slice(1).map(function (r) {
+      return '<tr>' + r.map(function (c, j) {
+        if (j === 0) return '<th scope="row">' + esc(c) + '</th>';
+        var num = /^[\d.\s\-–\/%]+$/.test(c) && /\d/.test(c);
+        if (num && !units[j]) return '<td>' + esc(convert(c.replace(/\s*%$/, ''), '', '')) + '</td>';
+        return num ? '<td data-v="' + esc(c) + '" data-u="' + units[j] + '">' + esc(convert(c, units[j], units[j])) + '</td>' : '<td>' + esc(c) + '</td>';
+      }).join('') + '</tr>';
+    }).join('') + '</tbody></table>';
+    return { html: html, units: units.filter(function (u) { return u; }) };
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  Pdp.prototype.initSizeTable = function () {
+    var self = this, src = this.q('[data-sg-src]'); if (!src) return;
+    var built = [], units = [];
+    try {
+      [].forEach.call(src.querySelectorAll('table'), function (t) {
+        var r = rebuild(t); if (!r) return; built.push(r.html); units = units.concat(r.units);
+      });
+    } catch (e) { return; }
+    if (!built.length) return;
+    src.innerHTML = built.join('');
+    if (!units.length) return;
+    var tools = this.q('[data-sg-tools]'), note = this.q('[data-sg-note]');
+    var unit = 'in';
+    try { unit = localStorage.getItem('hm-unit') === 'cm' ? 'cm' : 'in'; } catch (e) {}
+    function set(u) {
+      unit = u;
+      [].forEach.call(src.querySelectorAll('td[data-v]'), function (td) { td.textContent = convert(td.getAttribute('data-v'), td.getAttribute('data-u'), u); });
+      [].forEach.call(self.qa('[data-sg-units] input'), function (r) { r.checked = r.value === u; });
+      if (note) note.textContent = 'Measurements in ' + (u === 'cm' ? 'centimeters' : 'inches') + '.';
+    }
+    if (tools) tools.hidden = false;
+    this.on(this.q('[data-sg-units]'), 'change', function (e) {
+      set(e.target.value);
+      try { localStorage.setItem('hm-unit', e.target.value); } catch (er) {}
+    });
+    set(unit);
   };
 
   /* ---------------- size guide ---------------- */
   Pdp.prototype.initDialogs = function () {
     var self = this, sg = this.q('[data-sg]'); if (!sg) return;
+    this.initSizeTable();
     var last = null;
     this.qa('[data-sg-open]').forEach(function (b) {
       self.on(b, 'click', function () { last = b; sg.showModal(); sg.querySelector('[data-sg-close]').focus(); });

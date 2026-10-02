@@ -85,8 +85,82 @@
   assign noun_safe = noun | escape
 
   assign chart = p.metafields.custom.size_chart.value
+
+  comment
+    Supplier descriptions: never show the supplier name (only capitalized words are replaced so image URLs stay intact).
+    Size info lives in the description (HTML table, or an image whose src/alt mentions size/chart/measure).
+    When the size_chart metafield is empty, the first tables (or that image) move into our Size guide dialog
+    and are removed from the visible description. Tables left in the description get their own scroll box.
+  endcomment
+  assign desc = p.description | replace: '<TABLE', '<table' | replace: '</TABLE>', '</table>' | replace: 'Printify', '' | replace: 'PRINTIFY', ''
+  assign sg_tables = ''
+  assign sg_img = ''
+  if chart == blank and desc contains '<table'
+    assign desc_parts = desc | split: '<table'
+    assign desc = ''
+    for part in desc_parts
+      if forloop.first
+        assign desc = part
+        continue
+      endif
+      if part contains '</table>'
+        assign t_parts = part | split: '</table>'
+        assign t_body = t_parts.first
+        assign sg_tables = sg_tables | append: '<table' | append: t_body | append: '</table>'
+        assign t_rest = part | remove_first: t_body | remove_first: '</table>'
+        assign desc = desc | append: t_rest
+      else
+        assign desc = desc | append: '<table' | append: part
+      endif
+    endfor
+  endif
+  if chart == blank and sg_tables == blank and desc contains '<img'
+    assign img_parts = desc | split: '<img'
+    for part in img_parts
+      if forloop.first
+        continue
+      endif
+      assign img_tag = part | split: '>' | first
+      assign img_hay = img_tag | downcase
+      if img_hay contains 'size' or img_hay contains 'chart' or img_hay contains 'measure'
+        assign sg_img = '<img' | append: img_tag | append: '>'
+        assign desc = desc | remove_first: sg_img
+        break
+      endif
+    endfor
+  endif
+  assign desc = desc | replace: '<table', '<div class="tbl-wrap"><table' | replace: '</table>', '</table></div>' | replace: '<p></p>', '' | strip
+  assign desc_text = desc | replace: '<br', ' <br' | replace: '</p>', ' </p>' | replace: '</li>', ' </li>' | strip_html | strip
+
+  assign has_guide = false
+  if chart or sg_tables != blank or sg_img != blank
+    assign has_guide = true
+  endif
   assign form_id = 'hm-pdp-form-' | append: section.id
-  assign media_count = p.media.size
+  comment
+    Size chart photos in the product media (alt text containing "size chart", "size guide" or "size table")
+    leave the gallery and show in the Size guide dialog when the description has no size table.
+  endcomment
+  assign media_count = 0
+  assign skip_ids = ','
+  assign sg_media = nil
+  for media in p.media
+    assign m_alt = ''
+    if media.media_type == 'image'
+      assign m_alt = media.alt | downcase | replace: '-', ' ' | replace: '_', ' '
+    endif
+    if m_alt contains 'size chart' or m_alt contains 'size guide' or m_alt contains 'size table'
+      assign skip_ids = skip_ids | append: media.id | append: ','
+      if sg_media == nil
+        assign sg_media = media
+      endif
+    else
+      assign media_count = media_count | plus: 1
+    endif
+  endfor
+  if sg_media and chart == blank and sg_tables == blank and sg_img == blank
+    assign has_guide = true
+  endif
 
   assign refund_url = shop.refund_policy.url
   if refund_url == blank
@@ -94,9 +168,15 @@
   endif
   assign bsg_url = refund_url | append: '#bsg'
 
+  comment
+    Full size guide page: the setting, else the page with handle "sizes" when it exists and is published, else no link.
+  endcomment
   assign sizes_url = section.settings.sizes_page_url
   if sizes_url == blank
-    assign sizes_url = routes.root_url | append: '/pages/sizes' | replace: '//', '/'
+    assign sizes_page = pages['sizes']
+    if sizes_page != empty and sizes_page.url != blank
+      assign sizes_url = sizes_page.url
+    endif
   endif
 
   assign crumb_link = nil
@@ -161,8 +241,14 @@
             aria-label="Product images. Use the arrow keys to browse{% if section.settings.enable_zoom %}, Enter to zoom{% endif %}."
           >
             {%- if media_count > 0 -%}
+              {%- assign gi = 0 -%}
               {%- for media in p.media -%}
                 {%- liquid
+                  assign mid = ',' | append: media.id | append: ','
+                  if skip_ids contains mid
+                    continue
+                  endif
+                  assign gi = gi | plus: 1
                   assign alt = media.alt | default: p.title | escape
                   assign zoom = ''
                   if media.media_type == 'image' and section.settings.enable_zoom
@@ -173,8 +259,8 @@
                   class="pg__slide{% if media.media_type != 'image' %} pg__slide--media{% endif %}"
                   role="group"
                   aria-roledescription="slide"
-                  aria-label="{{ forloop.index }} of {{ media_count }}: {{ alt }}"
-                  data-i="{{ forloop.index0 }}"
+                  aria-label="{{ gi }} of {{ media_count }}: {{ alt }}"
+                  data-i="{{ gi | minus: 1 }}"
                   data-media-id="{{ media.id }}"
                   {% if zoom != blank %}
                     data-zoom="{{ zoom }}" data-alt="{{ alt }}"
@@ -183,7 +269,7 @@
                   {%- case media.media_type -%}
                     {%- when 'image' -%}
                       <span class="ph ph--mock">
-                        {%- if forloop.first -%}
+                        {%- if gi == 1 -%}
                           {{- media | image_url: width: 1600 | image_tag: widths: '400, 600, 800, 1000, 1200, 1600', sizes: '(min-width: 1200px) calc(100vw - 640px), (min-width: 900px) 58vw, 100vw', class: 'photo', alt: alt, loading: 'eager', fetchpriority: 'high' -}}
                         {%- else -%}
                           {{- media | image_url: width: 1600 | image_tag: widths: '400, 600, 800, 1000, 1200, 1600', sizes: '(min-width: 1200px) calc(100vw - 640px), (min-width: 900px) 58vw, 100vw', class: 'photo', alt: alt, loading: 'lazy' -}}
@@ -218,14 +304,18 @@
         </div>
         {%- if media_count > 1 -%}
           <ul class="pg__thumbs" data-pg-thumbs aria-label="Image thumbnails">
+            {%- assign gi = 0 -%}
             {%- for media in p.media -%}
+              {%- assign mid = ',' | append: media.id | append: ',' -%}
+              {%- if skip_ids contains mid -%}{%- continue -%}{%- endif -%}
+              {%- assign gi = gi | plus: 1 -%}
               <li>
                 <button
                   type="button"
                   class="pg__thumb"
-                  data-i="{{ forloop.index0 }}"
-                  aria-label="Show image {{ forloop.index }} of {{ media_count }}"
-                  aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+                  data-i="{{ gi | minus: 1 }}"
+                  aria-label="Show image {{ gi }} of {{ media_count }}"
+                  aria-current="{% if gi == 1 %}true{% else %}false{% endif %}"
                 >
                   {{- media.preview_image | image_url: width: 160 | image_tag: width: 64, height: 80, widths: '64, 128', sizes: '64px', loading: 'lazy', alt: '', class: 'photo' -}}
                 </button>
@@ -234,8 +324,8 @@
           </ul>
           {%- if media_count <= 8 -%}
             <div class="pg__dots" data-pg-dots role="group" aria-label="Choose image">
-              {%- for media in p.media -%}
-                <button type="button" data-i="{{ forloop.index0 }}" aria-label="Image {{ forloop.index }} of {{ media_count }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}"></button>
+              {%- for i in (1..media_count) -%}
+                <button type="button" data-i="{{ i | minus: 1 }}" aria-label="Image {{ i }} of {{ media_count }}" aria-current="{% if i == 1 %}true{% else %}false{% endif %}"></button>
               {%- endfor -%}
             </div>
           {%- endif -%}
@@ -272,8 +362,8 @@
               <span class="buy__left">Only {{ left }} left</span>
             {%- endif -%}
           </p>
-          {%- if section.settings.show_short_description and p.description != blank -%}
-            <p class="buy__desc">{{ p.description | strip_html | truncatewords: section.settings.short_description_words | escape }}</p>
+          {%- if section.settings.show_short_description and desc_text != blank -%}
+            <p class="buy__desc">{{ desc_text | truncatewords: section.settings.short_description_words | escape }}</p>
           {%- endif -%}
         </div>
 
@@ -323,9 +413,9 @@
                     </b></span
                   >
                   {%- if kind == 'size' -%}
-                    {%- if chart -%}
+                    {%- if has_guide -%}
                       <button class="linkbtn" type="button" data-sg-open aria-haspopup="dialog" aria-controls="hm-sg-{{ section.id }}">Size guide</button>
-                    {%- else -%}
+                    {%- elsif sizes_url != blank -%}
                       <a class="linkbtn" href="{{ sizes_url }}">Size guide</a>
                     {%- endif -%}
                   {%- endif -%}
@@ -425,9 +515,9 @@
           {%- if size_pos == 0 or state != 'live' -%}
             <p class="one-size">
               {% if state == 'live' %}One size.{% else %}{{ range_text | escape }}{% endif %}
-              {%- if chart %}
+              {%- if has_guide %}
                 <button class="linkbtn" type="button" data-sg-open aria-haspopup="dialog" aria-controls="hm-sg-{{ section.id }}">Size guide</button>
-              {%- elsif size_pos > 0 %}
+              {%- elsif size_pos > 0 and sizes_url != blank %}
                 <a class="linkbtn" href="{{ sizes_url }}">Size guide</a>
               {%- endif -%}
             </p>
@@ -551,11 +641,13 @@
                 {{ section.settings.guarantee_text | escape | replace: '[noun]', noun_safe }}
                 <a href="{{ bsg_url }}">Details</a>
                 {%- if needs_size -%}
-                  <br>No returns for size, so check the
-                  {% if chart -%}
+                  {%- if has_guide -%}
+                    <br>No returns for size, so check the
                     <button class="linkbtn linkbtn--inline" type="button" data-sg-open aria-haspopup="dialog" aria-controls="hm-sg-{{ section.id }}">size guide</button>.
+                  {%- elsif sizes_url != blank -%}
+                    <br>No returns for size, so check the <a href="{{ sizes_url }}">size guide</a>.
                   {%- else -%}
-                    <a href="{{ sizes_url }}">size guide</a>.
+                    <br>No returns for size, so compare with a shirt you own.
                   {%- endif -%}
                 {%- endif -%}
               </span>
@@ -575,8 +667,8 @@
                       <ul>
                         {%- for d in details -%}<li>{{ d | escape }}</li>{%- endfor -%}
                       </ul>
-                    {%- elsif p.description != blank -%}
-                      {{ p.description }}
+                    {%- elsif desc != blank -%}
+                      <div class="rte">{{ desc }}</div>
                     {%- endif -%}
                     {{ block.settings.content }}
                   {%- when 'design_story' -%}
@@ -643,7 +735,7 @@
     </section>
   {%- endif -%}
 
-  {%- if chart -%}
+  {%- if has_guide -%}
     <dialog class="sg" id="hm-sg-{{ section.id }}" aria-labelledby="hm-sg-t-{{ section.id }}" data-sg>
       <div class="sg__head">
         <h2 class="label" id="hm-sg-t-{{ section.id }}">Size guide · {{ p.title | escape }}</h2>
@@ -651,7 +743,30 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
         </button>
       </div>
-      <div class="sg__body">
+      <div class="sg__body" data-sg-body>
+        {%- if chart == blank -%}
+          <div class="sg__tools" data-sg-tools hidden>
+            <p data-sg-note></p>
+            <fieldset class="units" data-sg-units>
+              <legend>Units</legend>
+              <input type="radio" name="hm-sg-u-{{ section.id }}" id="hm-sg-in-{{ section.id }}" value="in" checked>
+              <label for="hm-sg-in-{{ section.id }}">in</label>
+              <input type="radio" name="hm-sg-u-{{ section.id }}" id="hm-sg-cm-{{ section.id }}" value="cm">
+              <label for="hm-sg-cm-{{ section.id }}">cm</label>
+            </fieldset>
+          </div>
+          {%- if sg_tables != blank -%}
+            <div class="tbl-wrap sg__src" data-sg-src>{{ sg_tables }}</div>
+          {%- endif -%}
+          {%- if sg_img != blank -%}
+            <div class="sg__img">{{ sg_img }}</div>
+          {%- elsif sg_tables == blank and sg_media -%}
+            <div class="sg__img">
+              {{- sg_media | image_url: width: 1200 | image_tag: widths: '480, 720, 960, 1200', sizes: 'min(480px, calc(100vw - 72px))', loading: 'lazy', alt: 'Size chart' -}}
+            </div>
+          {%- endif -%}
+          <p>Printed-to-order items can’t be returned for size, so compare with a shirt you own.</p>
+        {%- else -%}
         {%- if chart.unit != blank -%}
           <p>Measured flat, in {{ chart.unit | escape }}.</p>
         {%- endif -%}
@@ -685,27 +800,30 @@
         {%- if chart.note != blank -%}
           <p>{{ chart.note | escape | newline_to_br }}</p>
         {%- endif -%}
-        <p><a href="{{ sizes_url }}">See the full size guide</a></p>
+        {%- endif -%}
+        {%- if sizes_url != blank -%}
+          <p><a href="{{ sizes_url }}">See the full size guide</a></p>
+        {%- endif -%}
       </div>
     </dialog>
   {%- endif -%}
 
   {%- if section.settings.enable_zoom and media_count > 0 -%}
-    <dialog class="lb" id="hm-lb-{{ section.id }}" aria-label="Image zoom" data-lb>
-      <div class="lb__bar">
-        <p class="lb__count" data-lb-count>1 / {{ media_count }}</p>
-        <button class="icon-btn lb__close" type="button" data-lb-close aria-label="Close zoom">
+    <dialog class="pz" id="hm-lb-{{ section.id }}" aria-label="Image zoom" data-lb>
+      <div class="pz__bar">
+        <p class="pz__count" data-lb-count>1 / {{ media_count }}</p>
+        <button class="icon-btn pz__close" type="button" data-lb-close aria-label="Close zoom">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
         </button>
       </div>
-      <figure class="lb__fig"><div class="lb__img" data-lb-img></div></figure>
+      <figure class="pz__fig"><div class="pz__img" data-lb-img></div></figure>
       {%- if media_count > 1 -%}
-        <button class="lb__arw lb__arw--prev" type="button" data-lb-prev aria-label="Previous image">‹</button>
-        <button class="lb__arw lb__arw--next" type="button" data-lb-next aria-label="Next image">›</button>
+        <button class="pz__arw pz__arw--prev" type="button" data-lb-prev aria-label="Previous image">‹</button>
+        <button class="pz__arw pz__arw--next" type="button" data-lb-next aria-label="Next image">›</button>
       {%- endif -%}
-      <p class="lb__hint">
-        <span class="lb__hint-k">Click or tap the image to zoom · arrow keys to browse · Esc to close</span>
-        <span class="lb__hint-t">Tap the image to zoom · swipe to browse</span>
+      <p class="pz__hint">
+        <span class="pz__hint-k">Click or tap the image to zoom · arrow keys to browse · Esc to close</span>
+        <span class="pz__hint-t">Tap the image to zoom · swipe to browse</span>
       </p>
     </dialog>
   {%- endif -%}
@@ -738,8 +856,20 @@
       {%- endfor -%}
     ]
   </script>
+  {%- liquid
+    comment
+      Structured data: the supplier is the product vendor; never publish it as the brand.
+    endcomment
+    assign ld = p | structured_data
+    assign vendor_l = p.vendor | downcase
+    if vendor_l contains 'printify'
+      assign brand_json = settings.hm_brand_name | default: shop.name | json
+      assign vendor_json = p.vendor | json
+      assign ld = ld | replace: vendor_json, brand_json
+    endif
+  -%}
   <script type="application/ld+json">
-    {{ p | structured_data }}
+    {{ ld }}
   </script>
 </div>
 
@@ -772,7 +902,7 @@
   .hm-pdp .pg__slide[data-zoom] { cursor: zoom-in; }
   .hm-pdp .pg__slide .ph { --ar: 4/5; }
   .hm-pdp .pg__slide .photo, .hm-pdp .pg__slide video, .hm-pdp .pg__slide iframe { width: 100%; height: 100%; object-fit: contain; display: block; border: 0; }
-  .hm-pdp .pg__arw, .hm-pdp .lb__arw { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 44px; height: 44px; border: 1px solid var(--line); background: rgba(255,255,255,.92); color: var(--ink); font-size: 26px; line-height: 1; display: grid; place-items: center; cursor: pointer; padding: 0 0 3px; }
+  .hm-pdp .pg__arw, .hm-pdp .pz__arw { position: absolute; top: 50%; transform: translateY(-50%); z-index: 3; width: 44px; height: 44px; border: 1px solid var(--line); background: rgba(255,255,255,.92); color: var(--ink); font-size: 26px; line-height: 1; display: grid; place-items: center; cursor: pointer; padding: 0 0 3px; }
   .hm-pdp .pg__arw:hover { background: var(--surface); border-color: var(--ink); }
   .hm-pdp .pg__arw--prev { left: 10px; } .hm-pdp .pg__arw--next { right: 10px; }
   .hm-pdp .pg__count { position: absolute; right: 10px; bottom: 10px; z-index: 3; margin: 0; background: rgba(255,255,255,.92); padding: 3px 8px; font-size: var(--t-xs); font-weight: 700; letter-spacing: .04em; font-variant-numeric: tabular-nums; color: var(--ink); }
@@ -794,22 +924,22 @@
     .hm-pdp .pg__dots button::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #B6B1AD; }
     .hm-pdp .pg__dots button[aria-current="true"]::before { background: var(--ink); }
   }
-  .hm-pdp .lb { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #121211; color: var(--night-ink, #F2F0E9); overflow: hidden; }
-  .hm-pdp .lb::backdrop { background: #121211; }
-  .hm-pdp .lb__bar { position: absolute; left: 0; right: 0; top: 0; z-index: 4; display: flex; justify-content: space-between; align-items: center; padding: 8px 8px 8px 16px; padding-top: calc(8px + env(safe-area-inset-top, 0px)); }
-  .hm-pdp .lb__count { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .06em; font-variant-numeric: tabular-nums; }
-  .hm-pdp .lb__close { color: var(--night-ink, #F2F0E9); }
-  .hm-pdp .lb__fig { position: absolute; inset: 56px 0 56px; display: grid; place-items: center; margin: 0; }
-  .hm-pdp .lb__img { width: min(92vw, calc((100dvh - 112px) * .8)); aspect-ratio: 4/5; overflow: hidden; background: var(--tile); cursor: zoom-in; touch-action: pan-y pinch-zoom; }
-  .hm-pdp .lb__img img { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform .2s; transform-origin: var(--ox, 50%) var(--oy, 50%); }
-  .hm-pdp .lb__img.is-zoom { cursor: zoom-out; touch-action: none; }
-  .hm-pdp .lb__img.is-zoom img { transform: scale(2.2); }
-  .hm-pdp .lb__arw { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.25); color: var(--night-ink, #F2F0E9); }
-  .hm-pdp .lb__arw--prev { left: 12px; } .hm-pdp .lb__arw--next { right: 12px; }
-  .hm-pdp .lb__hint { position: absolute; left: 0; right: 0; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); margin: 0; text-align: center; font-size: 11px; color: #B5B2AA; }
-  .hm-pdp .lb__hint-t { display: none; }
-  @media (hover: none) { .hm-pdp .lb__hint-k { display: none; } .hm-pdp .lb__hint-t { display: inline; } }
-  @media (prefers-reduced-motion: reduce) { .hm-pdp .lb__img img { transition: none; } }
+  .hm-pdp .pz { width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #121211; color: var(--night-ink, #F2F0E9); overflow: hidden; }
+  .hm-pdp .pz::backdrop { background: #121211; }
+  .hm-pdp .pz__bar { position: absolute; left: 0; right: 0; top: 0; z-index: 4; display: flex; justify-content: space-between; align-items: center; padding: 8px 8px 8px 16px; padding-top: calc(8px + env(safe-area-inset-top, 0px)); }
+  .hm-pdp .pz__count { margin: 0; font-size: var(--t-xs); font-weight: 700; letter-spacing: .06em; font-variant-numeric: tabular-nums; }
+  .hm-pdp .pz__close { color: var(--night-ink, #F2F0E9); }
+  .hm-pdp .pz__fig { position: absolute; inset: 56px 0 56px; display: grid; place-items: center; margin: 0; }
+  .hm-pdp .pz__img { width: min(92vw, calc((100dvh - 112px) * .8)); aspect-ratio: 4/5; overflow: hidden; background: var(--tile); cursor: zoom-in; touch-action: pan-y pinch-zoom; }
+  .hm-pdp .pz__img img { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform .2s; transform-origin: var(--ox, 50%) var(--oy, 50%); }
+  .hm-pdp .pz__img.is-zoom { cursor: zoom-out; touch-action: none; }
+  .hm-pdp .pz__img.is-zoom img { transform: scale(2.2); }
+  .hm-pdp .pz__arw { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.25); color: var(--night-ink, #F2F0E9); }
+  .hm-pdp .pz__arw--prev { left: 12px; } .hm-pdp .pz__arw--next { right: 12px; }
+  .hm-pdp .pz__hint { position: absolute; left: 0; right: 0; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); margin: 0; text-align: center; font-size: 11px; color: #B5B2AA; }
+  .hm-pdp .pz__hint-t { display: none; }
+  @media (hover: none) { .hm-pdp .pz__hint-k { display: none; } .hm-pdp .pz__hint-t { display: inline; } }
+  @media (prefers-reduced-motion: reduce) { .hm-pdp .pz__img img { transition: none; } }
   .hm-pdp .buy { display: grid; gap: 16px; align-content: start; min-width: 0; }
   .hm-pdp .buy__head { display: grid; gap: 6px; justify-items: start; }
   .hm-pdp .buy__name { font-family: var(--f-head); font-stretch: 78%; font-weight: 700; font-size: clamp(28px, 2.4vw, 32px); line-height: 1.08; letter-spacing: .01em; text-transform: uppercase; margin: 0; color: var(--ink); overflow-wrap: anywhere; }
@@ -838,6 +968,9 @@
   .hm-pdp .opt input:checked + .size { background: var(--ink); border-color: var(--ink); color: var(--surface); }
   .hm-pdp .opt input:disabled + .size { background: transparent; color: var(--mute); cursor: not-allowed; text-decoration: line-through; }
   .hm-pdp .opt.is-error .size { border-color: var(--alert); }
+  .hm-pdp .cswatch { position: relative; }
+  .hm-pdp .cswatch.is-na span:first-child { opacity: .45; }
+  .hm-pdp .cswatch.is-na::after { content: ""; position: absolute; left: 50%; top: 4px; bottom: 4px; width: 1px; background: var(--ink); transform: rotate(45deg); }
   .hm-pdp .msg { margin: 6px 0 0; font-size: var(--t-xs); font-weight: 600; color: var(--alert); }
   .hm-pdp .msg:empty { display: none; }
   .hm-pdp .soldout { margin: 6px 0 0; font-size: var(--t-xs); color: var(--mute); }
@@ -885,6 +1018,23 @@
   .hm-pdp .tbl { width: 100%; border-collapse: collapse; font-size: var(--t-xs); font-variant-numeric: tabular-nums; }
   .hm-pdp .tbl th, .hm-pdp .tbl td { text-align: left; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
   .hm-pdp .tbl thead th { font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+  .hm-pdp .tbl tbody th { font-weight: 700; color: var(--ink); }
+  .hm-pdp .tbl td { color: var(--soft); }
+  .hm-pdp .sg__tools { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .hm-pdp .sg__tools[hidden] { display: none; }
+  .hm-pdp .units { display: inline-flex; border: 1px solid var(--ink); margin: 0; padding: 0; position: relative; }
+  .hm-pdp .units legend { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .hm-pdp .units input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .hm-pdp .units label { min-width: 52px; min-height: 36px; display: grid; place-items: center; padding: 0 12px; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; color: var(--ink); background: var(--surface); }
+  .hm-pdp .units input:checked + label { background: var(--ink); color: var(--surface); }
+  .hm-pdp .units input:focus-visible + label { outline: 2px solid var(--ink); outline-offset: 2px; }
+  .hm-pdp .sg__src { border-top: 1px solid var(--ink); }
+  .hm-pdp .sg__src table:not(.tbl), .hm-pdp .acc__body table { width: 100%; border-collapse: collapse; font-size: var(--t-xs); font-variant-numeric: tabular-nums; }
+  .hm-pdp .sg__src table:not(.tbl) td, .hm-pdp .sg__src table:not(.tbl) th, .hm-pdp .acc__body td, .hm-pdp .acc__body th { text-align: left; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .hm-pdp .sg__img img, .hm-pdp .acc__body img { max-width: 100%; height: auto; display: block; }
+  .hm-pdp .acc__body .rte { display: grid; gap: 8px; min-width: 0; overflow-wrap: anywhere; }
+  .hm-pdp .acc__body .tbl-wrap { overflow-x: auto; max-width: 100%; }
+  @media (max-width: 560px) { .hm-pdp .tbl thead th { white-space: normal; vertical-align: bottom; letter-spacing: .04em; } }
   .hm-pdp .rv { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + var(--header) + 8px); border-top: 1px solid var(--line); }
   .hm-pdp .rv h2:focus { outline: none; }
   .hm-rv-hint { margin: 0; padding: 12px 16px; border: 1px dashed var(--line); }
@@ -946,7 +1096,7 @@
       "type": "url",
       "id": "sizes_page_url",
       "label": "Size guide page",
-      "info": "Used when the product has no size chart metafield. Empty = /pages/sizes"
+      "info": "Full size guide link. Empty = the page with handle sizes, if it is published. The size table itself comes from the size_chart metafield or the product description."
     },
     {
       "type": "header",

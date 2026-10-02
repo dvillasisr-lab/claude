@@ -45,7 +45,10 @@
       body: body ? JSON.stringify(body) : undefined,
       credentials: 'same-origin'
     }).then(function (r) {
-      return r.json().then(function (j) {
+      return r.json().catch(function () {
+        /* not JSON: a bot check, the password page or an outage. Never show the parser error. */
+        var e = new Error('Something went wrong. Try again.'); e.notJson = true; e.status = r.status; throw e;
+      }).then(function (j) {
         if (!r.ok || j.status) throw new Error(j.description || j.message || 'Something went wrong. Try again.');
         return j;
       });
@@ -186,9 +189,13 @@
     opts = opts || {};
     var body = Array.isArray(items) ? { items: items } : items;
     setErr('');
-    return req('/cart/add.js', body).then(function () { return refresh(); }).then(function (cart) {
+    return req('/cart/add.js', body).then(function () {
+      /* added; if the cart can't be read back, show the cart page instead of an error */
+      return refresh().catch(function () { location.href = url('/cart'); return new Promise(function () {}); });
+    }).then(function (cart) {
       if (opts.open !== false) open({ returnFocus: opts.returnFocus });
-      say('Added to cart. Cart has ' + itemCount(cart) + ' items.');
+      var n = itemCount(cart);
+      say('Added to cart. Cart has ' + n + (n === 1 ? ' item.' : ' items.'));
       return cart;
     }).catch(function (e) {
       if (opts.showError) { setErr(e.message); open({ returnFocus: opts.returnFocus }); }
