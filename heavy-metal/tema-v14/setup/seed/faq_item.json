@@ -133,7 +133,7 @@
       },
       {
         "key": "answer",
-        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"Printed when you order, ships in 5 days. After that, Standard takes 2 to 5 business days and Express 2 to 3. The fine print lives in the \"}, {\"type\": \"link\", \"url\": \"/pages/policies?p=shipping\", \"children\": [{\"type\": \"text\", \"value\": \"Shipping Policy\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+        "value": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Printed when you order, usually ships in 2 to 5 business days (up to 7 around the holidays). Then Standard takes 2 to 5 business days. Express, on items that offer it, lands 2 to 3 business days after you order. The fine print lives in the \"},{\"type\":\"link\",\"url\":\"/pages/policies?p=shipping\",\"children\":[{\"type\":\"text\",\"value\":\"Shipping Policy\"}]},{\"type\":\"text\",\"value\":\".\"}]}]}"
       },
       {
         "key": "category",
@@ -383,7 +383,7 @@
       },
       {
         "key": "answer",
-        "value": "{\"type\": \"root\", \"children\": [{\"type\": \"paragraph\", \"children\": [{\"type\": \"text\", \"value\": \"If your item ever stops being evil, we replace it. It covers defects like the print cracking, peeling or fading, or seams coming apart, with normal use. Send your order number and a photo through the \"}, {\"type\": \"link\", \"url\": \"/pages/contact\", \"children\": [{\"type\": \"text\", \"value\": \"contact form\"}]}, {\"type\": \"text\", \"value\": \". Full terms in the \"}, {\"type\": \"link\", \"url\": \"/pages/policies?p=refund#bsg\", \"children\": [{\"type\": \"text\", \"value\": \"Refund Policy\"}]}, {\"type\": \"text\", \"value\": \".\"}]}]}"
+        "value": "{\"type\":\"root\",\"children\":[{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"If your item shows up less than evil, we replace it. It covers misprints and defects like the print cracking, peeling or fading, or seams coming apart, reported within 30 days of delivery. Send your order number and a photo through the \"},{\"type\":\"link\",\"url\":\"/pages/contact?topic=returns\",\"children\":[{\"type\":\"text\",\"value\":\"contact form\"}]},{\"type\":\"text\",\"value\":\". No need to send it back. Full terms in the \"},{\"type\":\"link\",\"url\":\"/pages/policies?p=refund#bsg\",\"children\":[{\"type\":\"text\",\"value\":\"Refund Policy\"}]},{\"type\":\"text\",\"value\":\".\"}]}]}"
       },
       {
         "key": "category",
