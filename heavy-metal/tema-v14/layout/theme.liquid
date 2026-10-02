@@ -68,7 +68,6 @@
       <script src="{{ 'animations.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    {{ content_for_header }}
 
     {%- liquid
       assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
@@ -333,6 +332,9 @@
       }
     {%- endstyle -%}
     {{ 'hm-base.css' | asset_url | stylesheet_tag }}
+
+    {%- comment -%} content_for_header goes after base.css and hm-base.css so section stylesheets (compiled_assets) override them {%- endcomment -%}
+    {{ content_for_header }}
     {%- style -%}
       :root {
         --bg: {{ settings.hm_color_bg | default: '#F6F5F2' }};
