@@ -2,8 +2,13 @@
   "sections": {
     "egg": {
       "type": "hm-3208",
-      "settings": {}
+      "settings": {
+        "discount": "10% off",
+        "fine": "Use it at checkout. One per customer. Takes 10% off your gear, not shipping, and doesn’t combine with other discounts."
+      }
     }
   },
-  "order": ["egg"]
+  "order": [
+    "egg"
+  ]
 }
