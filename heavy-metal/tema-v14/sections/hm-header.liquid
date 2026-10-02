@@ -51,9 +51,16 @@
   {%- if section.settings.logo != blank -%}
     {%- assign logo_w2 = logo_h | times: 2 -%}
     {%- assign logo_alt = brand | append: ', home' -%}
-    {{- section.settings.logo | image_url: height: logo_w2 | image_tag: height: logo_h, alt: logo_alt, loading: 'eager', fetchpriority: 'high' -}}
+    {%- comment -%} v14.1: on the home page the hero logo is the LCP image, so the header logo stays at normal priority there {%- endcomment -%}
+    {%- liquid
+      assign logo_prio = 'high'
+      if template.name == 'index'
+        assign logo_prio = 'auto'
+      endif
+    -%}
+    {{- section.settings.logo | image_url: height: logo_w2 | image_tag: height: logo_h, alt: logo_alt, loading: 'eager', fetchpriority: logo_prio -}}
   {%- else -%}
-    <img src="{{ 'logo-ink.svg' | asset_url }}" alt="{{ brand | escape }}, home" width="138" height="20" fetchpriority="high">
+    <img src="{{ 'logo-ink.svg' | asset_url }}" alt="{{ brand | escape }}, home" width="138" height="20"{% unless template.name == 'index' %} fetchpriority="high"{% endunless %}>
   {%- endif -%}
 {%- endcapture -%}
 
