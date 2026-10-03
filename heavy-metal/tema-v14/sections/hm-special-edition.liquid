@@ -78,7 +78,7 @@
           {%- if p.featured_media -%}
             {{- p.featured_media | image_url: width: 1400 | image_tag: widths: '400, 600, 800, 1000, 1200, 1400', sizes: '(min-width: 900px) 55vw, 100vw', class: 'stage__img', alt: p.featured_media.alt | default: p.title, loading: 'eager', fetchpriority: 'high' -}}
           {%- else -%}
-            {{- 'product-apparel-1' | placeholder_svg_tag: 'stage__img' -}}
+            {%- render 'hm-mock', product: p -%}
           {%- endif -%}
           <span class="stage__st"><span class="st-badge" data-se-badge data-s="soon">Coming soon</span></span>
           <span class="stage__plate"><span>{{ section.settings.plate_small | escape }}</span><b>{{ section.settings.plate_big | escape }}</b></span>
@@ -352,6 +352,7 @@
   @media (min-width: 900px) { .hm-se .stage { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--header) + 16px); } }
   @media (max-width: 899px) { .hm-se .stage { margin-inline: calc(-1 * var(--gutter)); width: auto; aspect-ratio: 1/1; } }
   .hm-se .stage__img { position: relative; z-index: 2; width: 70%; height: auto; max-height: 82%; object-fit: contain; filter: drop-shadow(0 24px 30px rgba(0,0,0,.5)); }
+  .hm-se .stage .mock { position: relative; z-index: 2; width: 56%; }
   .hm-se .stage__bolt { position: absolute; z-index: 1; right: 8%; top: 6%; height: 40%; width: auto; fill: var(--accent); opacity: .9; }
   .hm-se .stage__glow { position: absolute; inset: 0; background: radial-gradient(40% 35% at 78% 22%, rgba(245,196,0,.18), transparent 70%); }
   .hm-se .stage.is-flash .stage__glow { animation: hmSeFlash 4s 1; }

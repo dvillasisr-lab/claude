@@ -298,7 +298,7 @@
               {%- endfor -%}
             {%- else -%}
               <div class="pg__slide" role="group" aria-roledescription="slide" aria-label="1 of 1" data-i="0">
-                <span class="ph ph--mock">{{ 'product-apparel-1' | placeholder_svg_tag: 'photo' }}</span>
+                <span class="ph ph--mock">{% render 'hm-mock', product: product %}</span>
               </div>
             {%- endif -%}
           </div>

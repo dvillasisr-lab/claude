@@ -63,6 +63,7 @@
 
   /* ---------- helpers on cart data ---------- */
   function tipId() { return Number(drawer.getAttribute('data-tip-product')) || 0; }
+  var giftLogo = drawer ? drawer.getAttribute('data-gift-logo') : '';
   function isTip(item) { return tipId() && item.product_id === tipId(); }
   function products(cart) { return cart.items.filter(function (i) { return !isTip(i); }); }
   function itemCount(cart) { return products(cart).reduce(function (n, i) { return n + i.quantity; }, 0); }
@@ -93,7 +94,7 @@
       var disc = (i.line_level_discount_allocations || []).map(function (d) { return esc(d.discount_application.title) + ' (−' + money(d.amount) + ')'; }).join('<br>');
       var orig = i.original_line_price > i.final_line_price ? '<s>' + money(i.original_line_price) + '</s>' : '';
       return '<li class="line" data-key="' + esc(i.key) + '" data-product="' + i.product_id + '">' +
-        '<a class="thumb' + (i.gift_card ? ' thumb--gift' : '') + '" href="' + esc(i.url) + '" tabindex="-1" aria-hidden="true">' + (i.gift_card ? '<span class="gthumb"><b>' + esc(money(i.price)) + '</b></span>' : i.image ? '<img class="photo" src="' + esc(img(i.image, 160)) + '" alt="" width="72" height="90" loading="lazy">' : '') + '</a>' +
+        '<a class="thumb' + (i.gift_card ? ' thumb--gift' : '') + '" href="' + esc(i.url) + '" tabindex="-1" aria-hidden="true">' + (i.gift_card ? '<span class="gthumb">' + (giftLogo ? '<img class="gthumb__logo" src="' + esc(giftLogo) + '" alt="" width="60" height="9">' : '') + '<svg class="gthumb__bolt" viewBox="0 0 12 16" aria-hidden="true"><polygon points="8,0 1,9 5,9 3,16 11,6 7,6"/></svg><b>' + esc(money(i.price)) + '</b></span>' : i.image ? '<img class="photo" src="' + esc(img(i.image, 160)) + '" alt="" width="72" height="90" loading="lazy">' : '') + '</a>' +
         '<div><p class="line__n"><a href="' + esc(i.url) + '" style="text-decoration:none">' + esc(i.product_title) + '</a></p>' +
         (variant ? '<p class="line__v">' + esc(variant) + '</p>' : '<p class="line__v"></p>') +
         (props ? '<p class="line__disc">' + props + '</p>' : '') + (disc ? '<p class="line__disc">' + disc + '</p>' : '') +

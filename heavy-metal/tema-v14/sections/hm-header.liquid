@@ -537,8 +537,12 @@
           {%- if best != blank -%}
             {%- for p in best.products limit: 4 -%}
               <a class="sres" href="{{ p.url }}">
-                <span class="thumb">
-                  {%- render 'hm-image', image: p.featured_image, widths: '180, 360, 540', max_width: 540, sizes: '(min-width: 761px) 22vw, 45vw', alt: '', placeholder: 'product-apparel-1' -%}
+                <span class="thumb{% unless p.featured_image %} thumb--mock{% endunless %}">
+                  {%- if p.featured_image -%}
+                    {%- render 'hm-image', image: p.featured_image, widths: '180, 360, 540', max_width: 540, sizes: '(min-width: 761px) 22vw, 45vw', alt: '' -%}
+                  {%- else -%}
+                    {%- render 'hm-mock', product: p -%}
+                  {%- endif -%}
                 </span>
                 <span class="sres__n">{{ p.title | escape }}</span>
                 <span class="sres__p num">
