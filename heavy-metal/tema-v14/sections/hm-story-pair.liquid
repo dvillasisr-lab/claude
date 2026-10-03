@@ -1,6 +1,6 @@
 {%- comment -%}
   Our Story · 6 · Tractor brothers + walk-up song, side by side with the same weight.
-  Spotify: paste the playlist link; the official player (iframe) only loads after a click (facade).
+  Spotify: paste the playlist link; the official player shows right away (lazy loaded when it scrolls into view).
 {%- endcomment -%}
 {%- liquid
   assign pl_url = section.settings.playlist_url
@@ -73,17 +73,12 @@
           <small>{{ section.settings.pl_sub | escape }}{% if section.settings.pl_updated != blank %} · Last updated: <time datetime="{{ section.settings.pl_updated | date: '%Y-%m-%d' }}">{{ section.settings.pl_updated | date: '%B %-d, %Y' }}</time>{% endif %}</small>
         </div>
         <div class="st-spot" data-spotify-box>
-          <div class="st-spot__face">
-            <div class="st-spot__cover" aria-hidden="true"><svg viewBox="0 0 140 280"><polygon class="st-bolt-fill" points="88,0 20,150 58,150 30,280 122,105 78,105"/></svg></div>
-            <div class="st-spot__meta">
-              <b>{{ section.settings.pl_title | escape }}</b>
-              <span>{{ settings.hm_brand_name | default: shop.name | escape }}</span>
-            </div>
-            <button type="button" class="btn btn--light btn--sm st-spot__load" data-spotify-load="{{ pl_id | escape }}" data-spotify-title="{{ section.settings.pl_title | escape }}">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l12-7.5z"/></svg>{{ section.settings.pl_button | escape }}
-            </button>
-            <p class="st-spot__fine">{{ section.settings.pl_fine | escape }}</p>
-          </div>
+          <iframe
+            src="https://open.spotify.com/embed/playlist/{{ pl_id | url_encode }}?utm_source=generator&theme=0"
+            title="Spotify player: {{ section.settings.pl_title | escape }}"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+          ></iframe>
         </div>
       </div>
       {%- endif -%}
