@@ -3,11 +3,36 @@
     "hero": {
       "type": "hm-story-hero",
       "blocks": {
-        "f1": { "type": "fact", "settings": { "value": "20+ years", "text": "Chris F. in tractor pulling", "highlight": true } },
-        "f2": { "type": "fact", "settings": { "value": "12 years", "text": "idea to engine fire", "highlight": false } },
-        "f3": { "type": "fact", "settings": { "value": "11 + 2", "text": "crew and mascots", "highlight": false } }
+        "f1": {
+          "type": "fact",
+          "settings": {
+            "value": "20+ years",
+            "text": "Chris F. in tractor pulling",
+            "highlight": true
+          }
+        },
+        "f2": {
+          "type": "fact",
+          "settings": {
+            "value": "12 years",
+            "text": "idea to engine fire",
+            "highlight": false
+          }
+        },
+        "f3": {
+          "type": "fact",
+          "settings": {
+            "value": "11 + 2",
+            "text": "crew and mascots",
+            "highlight": false
+          }
+        }
       },
-      "block_order": ["f1", "f2", "f3"],
+      "block_order": [
+        "f1",
+        "f2",
+        "f3"
+      ],
       "settings": {
         "label": "Our Story · Tomah to Waterloo, WI",
         "title": "Built in Wisconsin. Built to pull.",
@@ -21,16 +46,100 @@
     "chapters": {
       "type": "hm-story-chapters",
       "blocks": {
-        "m1": { "type": "milestone", "settings": { "year": "2014", "event": "Idea is born", "place": "Tomah, WI", "target": "#ch-2014", "kind": "dot" } },
-        "m2": { "type": "milestone", "settings": { "year": "Feb 2020", "event": "First bolt", "place": "Family shop, Waterloo", "target": "#ch-2020", "kind": "dot" } },
-        "m3": { "type": "milestone", "settings": { "year": "2026", "event": "Engine fires, lightning strikes", "place": "Watch the video", "target": "#bolt", "kind": "bolt" } },
-        "m4": { "type": "milestone", "settings": { "year": "2026", "event": "First pull attempt", "place": "A real track, a short run", "target": "#first-pull", "kind": "dot" } },
-        "m5": { "type": "milestone", "settings": { "year": "Today", "event": "[season] season", "place": "", "target": "#season", "kind": "now" } },
-        "c1": { "type": "chapter", "settings": { "position": "50% 58%", "tag": "Tomah, WI", "eyebrow": "2014 · Tomah, WI", "title": "The name was never up for debate", "text": "<p>Chris, a lifelong heavy metal fan, decided to build a Pro Stock pulling tractor. The name picked itself, and so did the nickname: “The Evil One”.</p>", "anchor": "ch-2014" } },
-        "c2": { "type": "chapter", "settings": { "position": "50% 52%", "tag": "Never a solo job", "eyebrow": "Feb 2020 · First bolt", "title": "Built nights and weekends", "text": "<p>The first bolt went in at the family shop in Waterloo. Then came nights and weekends stolen from work and family, sketches redrawn a thousand times, and a shop the whole family turned into a second home.</p>", "anchor": "ch-2020" } },
-        "c3": { "type": "chapter", "settings": { "position": "50% 45%", "tag": "Cat 3208 · 680 ci", "eyebrow": "The shop · Waterloo, WI", "title": "Nothing off the shelf", "text": "<p>A Cat 3208 V8 in reverse flow, a setup you won’t find on any other tractor on the track. 636 cubic inches stock, built out to 680. Nothing about it was quick. <a href=\"/pages/spec-sheet\" title=\"The Machine\">Full spec sheet</a></p>", "anchor": "ch-shop" } }
+        "m1": {
+          "type": "milestone",
+          "settings": {
+            "year": "2014",
+            "event": "Idea is born",
+            "place": "Tomah, WI",
+            "target": "#ch-2014",
+            "kind": "dot"
+          }
+        },
+        "m2": {
+          "type": "milestone",
+          "settings": {
+            "year": "Feb 2020",
+            "event": "First bolt",
+            "place": "Family shop, Waterloo",
+            "target": "#ch-2020",
+            "kind": "dot"
+          }
+        },
+        "m3": {
+          "type": "milestone",
+          "settings": {
+            "year": "2026",
+            "event": "Engine fires, lightning strikes",
+            "place": "Watch the video",
+            "target": "#bolt",
+            "kind": "bolt"
+          }
+        },
+        "m4": {
+          "type": "milestone",
+          "settings": {
+            "year": "2026",
+            "event": "First pull attempt",
+            "place": "A real track, a short run",
+            "target": "#first-pull",
+            "kind": "dot"
+          }
+        },
+        "m5": {
+          "type": "milestone",
+          "settings": {
+            "year": "Today",
+            "event": "[season] season",
+            "place": "",
+            "target": "#season",
+            "kind": "now"
+          }
+        },
+        "c1": {
+          "type": "chapter",
+          "settings": {
+            "position": "50% 58%",
+            "tag": "Tomah, WI",
+            "eyebrow": "2014 · Tomah, WI",
+            "title": "The name was never up for debate",
+            "text": "<p>Chris, a lifelong heavy metal fan, decided to build a Pro Stock pulling tractor. The name picked itself, and so did the nickname: “The Evil One”.</p>",
+            "anchor": "ch-2014"
+          }
+        },
+        "c2": {
+          "type": "chapter",
+          "settings": {
+            "position": "50% 52%",
+            "tag": "Never a solo job",
+            "eyebrow": "Feb 2020 · First bolt",
+            "title": "Built nights and weekends",
+            "text": "<p>The first bolt went in at the family shop in Waterloo. Then came nights and weekends stolen from work and family, sketches redrawn a thousand times, and a shop the whole family turned into a second home.</p>",
+            "anchor": "ch-2020"
+          }
+        },
+        "c3": {
+          "type": "chapter",
+          "settings": {
+            "position": "50% 45%",
+            "tag": "Cat 3208 · 680 ci",
+            "eyebrow": "The shop · Waterloo, WI",
+            "title": "Nothing off the shelf",
+            "text": "<p>A Cat 3208 V8 in reverse flow, a setup you won’t find on any other tractor on the track. 636 cubic inches stock, built out to 680. Nothing about it was quick. <a href=\"/pages/spec-sheet\" title=\"The Machine\">Full spec sheet</a></p>",
+            "anchor": "ch-shop"
+          }
+        }
       },
-      "block_order": ["m1", "m2", "m3", "m4", "m5", "c1", "c2", "c3"],
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "m5",
+        "c1",
+        "c2",
+        "c3"
+      ],
       "settings": {
         "nav_label": "Story milestones",
         "now_default": "Chasing our first win",
@@ -89,11 +198,33 @@
     "pair": {
       "type": "hm-story-pair",
       "blocks": {
-        "r1": { "type": "fact", "settings": { "label": "Owner", "value": "Gert Stessens" } },
-        "r2": { "type": "fact", "settings": { "label": "Home", "value": "Belgium" } },
-        "r3": { "type": "fact", "settings": { "label": "Met", "value": "at a pull in the Netherlands" } }
+        "r1": {
+          "type": "fact",
+          "settings": {
+            "label": "Owner",
+            "value": "Gert Stessens"
+          }
+        },
+        "r2": {
+          "type": "fact",
+          "settings": {
+            "label": "Home",
+            "value": "Belgium"
+          }
+        },
+        "r3": {
+          "type": "fact",
+          "settings": {
+            "label": "Met",
+            "value": "at a pull in the Netherlands"
+          }
+        }
       },
-      "block_order": ["r1", "r2", "r3"],
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
       "settings": {
         "aria_label": "Friends and the song",
         "bro_number": "06",
@@ -111,11 +242,12 @@
         "song_link_text": "Listen on Spotify",
         "song_caption": "The song “The Evil One” rolls up to the line with. Turn it up. Louder. No, louder.",
         "tagline": "#HEAVYMETALPULLING",
-        "pl_title": "The pit playlist",
-        "pl_sub": "What plays in the trailer and the pit, loud",
-        "pl_updated": "2026-09-28",
+        "pl_title": "Hearing Protection Not Included",
+        "pl_sub": "The official pit playlist. Loud is the only setting.",
+        "pl_updated": "2026-10-03",
         "pl_button": "Play the playlist",
-        "pl_fine": "Loads the Spotify player."
+        "pl_fine": "Loads the Spotify player.",
+        "playlist_url": "https://open.spotify.com/playlist/5eIKNHuPUpXlMNRFoNx0rr"
       }
     },
     "crew": {
@@ -141,5 +273,14 @@
       }
     }
   },
-  "order": ["hero", "chapters", "read", "bolt", "pull", "pair", "crew", "cta"]
+  "order": [
+    "hero",
+    "chapters",
+    "read",
+    "bolt",
+    "pull",
+    "pair",
+    "crew",
+    "cta"
+  ]
 }

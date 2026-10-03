@@ -37,6 +37,7 @@ Lo que me vayas dando "para después" va aquí. No se trabaja hasta que digas.
 | 30 | Voz del tractor en primera persona (idea dbrand) | "The Evil One" narra correos, notas de empaque y redes y firma "The Evil One, Cat 3208, Waterloo WI". | En el boceto v20: correos, nota de empaque, 404 y página 3208 |
 | 31 | Estrategia de descuentos + página escondida (idea dbrand) | Easter egg /pages/3208 "You found the V8. Use code EVIL3208." junto con la estrategia de descuentos. | Página 3208.html en el boceto v20; falta el % del descuento |
 | 32 | Black Smoke Guarantee | Frase: "If this shirt ever stops being evil, we replace it." (se adapta: hoodie, cap, sticker...). Va en producto, FAQ y política de devoluciones (sección 7). Confirmar plazo (12 meses propuesto), qué cubre el proveedor (reimpresión por defecto suele ser solo 30 días; después el costo es nuestro) y revisión legal. | Por confirmar |
+| 33 | Knowledge Base de Shopify | Instalar la app Knowledge Base y pegar las respuestas de la FAQ (envíos, tallas, devoluciones, Black Smoke Guarantee, The Evil List, patrocinios) para que los asistentes de IA respondan bien sobre la tienda. | Pendiente |
 
 ## Datos que faltan
 - Cifras de patrocinio: 5,000+ fans por pull (resuelto, ver tabla "Antes de pasar a Shopify" #4). States we pull in: 10+ (confirmado por la dueña). (el sitio usa "XX+" en frases de venta y estimados "est." en contadores).
