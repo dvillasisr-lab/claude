@@ -1,0 +1,138 @@
+<nav class="sp-tabs" aria-label="{{ section.settings.aria_label | escape }}" data-sp-tabs>
+  <div class="wrap">
+    <ul>
+      {%- for block in section.blocks -%}
+        <li {{ block.shopify_attributes }}>
+          <a href="#{{ block.settings.anchor | remove: '#' | handleize }}">{{ block.settings.label }}</a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</nav>
+
+{% stylesheet %}
+  /* the section wrapper is the sticky element, so the bar sticks for the whole page */
+  .hm-sponsors-tabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header));z-index:40}
+  .sp-tabs{background:var(--surface);border-block:1px solid var(--line)}
+  .sp-tabs ul{display:flex;gap:clamp(12px,2vw,28px);margin:0;padding:0;list-style:none;overflow-x:auto;scrollbar-width:none}
+  .sp-tabs ul::-webkit-scrollbar{display:none}
+  .sp-tabs a{display:flex;align-items:center;min-height:44px;white-space:nowrap;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--mute);border-bottom:2px solid transparent;margin-bottom:-1px}
+  .sp-tabs a:hover{color:var(--ink)}
+  .sp-tabs a[aria-current="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+  #packages,#placements,#decals,#faq,#contact,#numbers,#on-board{scroll-margin-top:calc(var(--header) + 56px)}
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    var live = [];
+    function init(nav) {
+      if (!nav || nav.dataset.ready) return;
+      nav.dataset.ready = '1';
+      var links = Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var lockUntil = 0;
+      function setCur(a) {
+        links.forEach(function (x) {
+          if (x === a) x.setAttribute('aria-current', 'true');
+          else x.removeAttribute('aria-current');
+        });
+      }
+      function secs() {
+        return links.map(function (a) {
+          return document.getElementById(a.getAttribute('href').slice(1));
+        });
+      }
+      function onClick(e) {
+        var a = e.target.closest('a[href^="#"]');
+        if (!a) return;
+        var t = document.getElementById(a.getAttribute('href').slice(1));
+        if (!t) return;
+        e.preventDefault();
+        t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+        try { history.replaceState(null, '', a.getAttribute('href')); } catch (err) {}
+        setCur(a);
+        lockUntil = Date.now() + 1200;
+      }
+      var raf = 0;
+      function measure() {
+        raf = 0;
+        if (Date.now() < lockUntil || !links.length) return;
+        var y = 140, cur = links[0], best = -Infinity, s = secs();
+        s.forEach(function (el, i) {
+          if (!el) return;
+          var top = Math.round(el.getBoundingClientRect().top);
+          if (top <= y && top > best) { best = top; cur = links[i]; }
+        });
+        if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) cur = links[links.length - 1];
+        setCur(cur);
+      }
+      function onScroll() { if (!raf) raf = requestAnimationFrame(measure); }
+      nav.addEventListener('click', onClick);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      measure();
+      live.push({ nav: nav, off: function () {
+        nav.removeEventListener('click', onClick);
+        window.removeEventListener('scroll', onScroll);
+        if (raf) cancelAnimationFrame(raf);
+      } });
+    }
+    function initAll(root) {
+      (root || document).querySelectorAll('[data-sp-tabs]').forEach(init);
+    }
+    document.addEventListener('shopify:section:load', function (e) { initAll(e.target); });
+    document.addEventListener('shopify:section:unload', function (e) {
+      live = live.filter(function (x) {
+        if (e.target.contains(x.nav)) { x.off(); return false; }
+        return true;
+      });
+    });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { initAll(); });
+    else initAll();
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Sponsors: page tabs",
+  "tag": "div",
+  "class": "hm-sponsors-tabs",
+  "settings": [{ "type": "text", "id": "aria_label", "label": "Name for screen readers", "default": "On this page" }],
+  "max_blocks": 8,
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Packages" },
+        {
+          "type": "select",
+          "id": "anchor",
+          "label": "Goes to",
+          "options": [
+            { "value": "packages", "label": "Packages" },
+            { "value": "on-board", "label": "Current sponsors" },
+            { "value": "numbers", "label": "Numbers" },
+            { "value": "placements", "label": "Where your logo goes" },
+            { "value": "decals", "label": "Decal map" },
+            { "value": "faq", "label": "FAQ" },
+            { "value": "contact", "label": "Request form" }
+          ],
+          "default": "packages"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sponsors: page tabs",
+      "blocks": [
+        { "type": "tab", "settings": { "label": "Packages", "anchor": "packages" } },
+        { "type": "tab", "settings": { "label": "Where your logo goes", "anchor": "placements" } },
+        { "type": "tab", "settings": { "label": "Decal map", "anchor": "decals" } },
+        { "type": "tab", "settings": { "label": "FAQ", "anchor": "faq" } },
+        { "type": "tab", "settings": { "label": "Request", "anchor": "contact" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

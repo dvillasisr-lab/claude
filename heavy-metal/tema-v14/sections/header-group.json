@@ -1,0 +1,94 @@
+{
+  "name": "Header",
+  "type": "header",
+  "sections": {
+    "hm_campaign_bar": {
+      "type": "hm-campaign-bar",
+      "settings": {}
+    },
+    "hm_announcement": {
+      "type": "hm-announcement",
+      "blocks": {
+        "msg_season": {
+          "type": "message",
+          "settings": {
+            "text": "Testing season [season]. Get on <a href=\"/pages/evil-list\" title=\"The Evil List\">The Evil List</a>"
+          }
+        },
+        "msg_shipping": {
+          "type": "message",
+          "settings": {
+            "text": "Free US shipping on [free_shipping] or more. You’re welcome."
+          }
+        },
+        "msg_printed": {
+          "type": "message",
+          "settings": {
+            "text": "Printed when you order · ships in 5 days"
+          }
+        }
+      },
+      "block_order": [
+        "msg_season",
+        "msg_shipping",
+        "msg_printed"
+      ],
+      "settings": {
+        "seconds": 4,
+        "region_label": "Announcements"
+      }
+    },
+    "hm_header": {
+      "type": "hm-header",
+      "blocks": {
+        "note_story": {
+          "type": "link_note",
+          "settings": {
+            "match": "Our Story",
+            "subtitle": "The short version",
+            "featured": false,
+            "tag": ""
+          }
+        },
+        "note_full_story": {
+          "type": "link_note",
+          "settings": {
+            "match": "the-full-story",
+            "subtitle": "Long read. Grab a coffee.",
+            "featured": true,
+            "tag": "Long read"
+          }
+        }
+      },
+      "block_order": [
+        "note_story",
+        "note_full_story"
+      ],
+      "settings": {
+        "logo_height": 20,
+        "sticky": true,
+        "menu": "main-menu-v14",
+        "mega_title": "Shop",
+        "mega_label": "Category",
+        "show_thumbs": true,
+        "thumb_count": 6,
+        "new_handles": "new,new-drop",
+        "ltd_handles": "special-edition",
+        "promo_label": "“The Evil One” Drop",
+        "promo_text": "New tees and hoodies. Designed by the crew, not a committee.",
+        "promo_link_label": "Shop the drop",
+        "promo_url": "/collections/all",
+        "show_facebook": true,
+        "mobile_mega_children": false,
+        "search_placeholder": "Search tees, hoodies, caps...",
+        "trending_count": 4,
+        "categories_menu": "shop-categories-v14"
+      }
+    }
+  },
+  "order": [
+    "hm_campaign_bar",
+    "hm_announcement",
+    "hm_header"
+  ]
+}

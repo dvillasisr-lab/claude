@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Policies · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Privacy, terms, refunds, shipping, cookies and privacy choices for the Heavy Metal Pro Stock: “The Evil One” store in Waterloo, WI.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Políticas: patrón de términos de SKIMS (banner corto, lista lateral, texto de 880px) */
+html,body{overflow-x:clip}
+.pol-banner{background:var(--surface);border-bottom:1px solid var(--line)}
+.pol-banner .wrap{padding-block:28px 20px;display:grid;gap:8px}
+.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px;font-size:var(--t-xs);color:var(--mute)}
+.crumbs li+li::before{content:"/";margin-right:4px}
+.crumbs a{color:var(--soft);text-underline-offset:3px}
+.crumbs [aria-current]{color:var(--ink);font-weight:600}
+
+.pol{display:grid;grid-template-columns:260px minmax(0,880px);gap:clamp(32px,6vw,120px);padding-block:32px var(--sect);align-items:start}
+.pol-nav ul{list-style:none;margin:0;padding:0;display:grid}
+.pol-nav a{display:inline-block;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.03em;line-height:36px;text-decoration:none;color:var(--soft);white-space:nowrap}
+.pol-nav a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:6px}
+.pol-nav a[aria-current="page"]{color:var(--ink);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+@media (min-width:861px){.pol-nav{position:sticky;top:calc(var(--header) + 24px)}}
+
+.pol-body{min-width:0;font-size:14px;line-height:1.6;color:var(--text)}
+.pol-body .note{margin:0 0 20px}
+.pol-doc>header{border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:20px}
+.pol-doc>header p{margin:4px 0 0;font-size:var(--t-xs);color:var(--mute)}
+.pol-doc>header .lu time{color:var(--ink);font-weight:600}
+.pol-doc h3{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin:24px 0 6px}
+.pol-doc p,.pol-doc ul{margin:0 0 10px;max-width:80ch}
+.pol-doc ul{padding-left:18px}
+.pol-doc li{margin-bottom:4px}
+.pol-doc a{color:var(--ink);text-underline-offset:3px}
+.pol-doc b{color:var(--ink)}
+.pol-doc .pend{font-size:var(--t-xs);font-weight:700;letter-spacing:.04em;color:var(--soft);text-transform:none}
+#bsg{scroll-margin-top:calc(var(--header) + 72px)}
+.pend{background:var(--tile);padding:0 4px;font-weight:600;color:var(--ink)}
+.pol-doc .lede-l{font-size:var(--t-md);color:var(--soft)}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;border-top:1px solid var(--line);margin:0 0 16px}
+.facts div{border-bottom:1px solid var(--line);padding:10px 12px 10px 0}
+.facts dt{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.facts dd{margin:2px 0 0;font-weight:600;color:var(--ink);overflow-wrap:anywhere}
+.pol-doc p{overflow-wrap:break-word}
+@media (max-width:480px){.facts{grid-template-columns:1fr}}
+
+/* interruptores de preferencias */
+.prefs{border-top:1px solid var(--line);margin:8px 0 16px;max-width:80ch}
+.pref{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+.pref p{margin:0;font-size:var(--t-xs);color:var(--mute);grid-column:1}
+.pref label,.pref .pref__t{font-weight:700;color:var(--ink);grid-column:1}
+.switch{grid-column:2;grid-row:1 / span 2;position:relative;width:44px;height:26px;flex:none}
+.switch input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;z-index:1}
+.switch span{position:absolute;inset:0;background:#B9B6AF;border-radius:13px;transition:background .15s}
+.switch span::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:var(--surface);transition:transform .15s}
+.switch input:checked+span{background:var(--ink)}
+.switch input:checked+span::after{transform:translateX(18px)}
+.switch input:focus-visible+span{outline:2px solid var(--ink);outline-offset:2px}
+.switch input:disabled{cursor:not-allowed;opacity:0}
+.switch input:disabled+span{opacity:.55}
+.save-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+.status{font-size:var(--t-xs);color:var(--soft);margin:0}
+.gpc{font-size:var(--t-xs);padding:8px 10px;background:var(--bg);border:1px solid var(--line);margin:0 0 12px;max-width:80ch}
+
+@media (max-width:860px){
+  .pol{grid-template-columns:minmax(0,1fr);gap:20px;padding-top:0}
+  .pol-nav{position:sticky;top:var(--header);z-index:5;background:var(--bg);margin-inline:calc(var(--gutter) * -1);border-bottom:1px solid var(--line)}
+  .pol-nav ul{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:10px var(--gutter)}
+  .pol-nav ul::-webkit-scrollbar{display:none}
+  .pol-nav li{flex:none}
+  .pol-nav a{font-size:var(--t-xs);line-height:1;padding:15px 12px;border:1px solid var(--line);background:var(--surface)}
+  .pol-nav a[aria-current="page"]{border-color:var(--ink)}
+}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="policies"></div>
+<main id="main">
+  <section class="pol-banner">
+    <div class="wrap">
+      <h1 class="h1">Policies</h1>
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="policies.html?p=privacy">Policies</a></li><li aria-current="page" id="crumb-cur">Privacy Policy</li></ol></nav>
+    </div>
+  </section>
+
+  <div class="wrap pol">
+    <nav class="pol-nav" aria-label="Store policies">
+      <ul id="pol-list">
+        <li><a href="policies.html?p=privacy" data-p="privacy">Privacy Policy</a></li>
+        <li><a href="policies.html?p=terms" data-p="terms">Terms of Service</a></li>
+        <li><a href="policies.html?p=refund" data-p="refund">Refund Policy</a></li>
+        <li><a href="policies.html?p=shipping" data-p="shipping">Shipping Policy</a></li>
+        <li><a href="policies.html?p=contact" data-p="contact">Contact Information</a></li>
+        <li><a href="policies.html?p=accessibility" data-p="accessibility">Accessibility</a></li>
+        <li><a href="policies.html?p=choices" data-p="choices">Your Privacy Choices</a></li>
+        <li><a href="policies.html?p=cookies" data-p="cookies">Cookie Preferences</a></li>
+      </ul>
+    </nav>
+
+    <div class="pol-body" id="pol-main" tabindex="-1">
+      <p class="note">Texto base: se edita en Configuración &gt; Políticas (Shopify las enlaza solas en el checkout); revisarlo con un abogado. La fecha "Last updated" de cada política la escribes tú al cambiar algo: sale en la tabla de Last updated de editar.html.</p>
+
+      <!-- PRIVACY -->
+      <article class="pol-doc" data-p="privacy" aria-labelledby="t-privacy">
+        <!-- last-updated: policy-privacy -->
+        <header><h2 class="h2" id="t-privacy">Privacy Policy</h2><p class="lu" data-lu="privacy">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
+        <p class="lede-l">This policy explains what personal information Heavy Metal Pro Stock: “The Evil One” ("we", "us") collects through this store, how we use it, who we share it with and the choices you have.</p>
+        <h3>1. Who we are</h3>
+        <p>Heavy Metal Pro Stock: “The Evil One” is a tractor pulling team based in Waterloo, Wisconsin, USA. This store sells team merch that is printed to order and shares sponsorship information. Our store runs on Shopify.</p>
+        <h3>2. Information we collect</h3>
+        <p><b>Information you give us:</b></p>
+        <ul>
+          <li>Order details: name, email, phone, shipping and billing address, items purchased.</li>
+          <li>Sign ups for The Evil List: your email address.</li>
+          <li>"Notify me" requests: your email and the item you asked about, so we can tell you when it drops or is back.</li>
+          <li>Sponsorship and contact requests: your name, company, email, phone and message.</li>
+          <li>Account information if you sign in to a customer account.</li>
+        </ul>
+        <p><b>Information collected automatically:</b> device and browser type, IP address, pages viewed, referring site and how you use the store, collected with cookies and similar technologies (see section 6).</p>
+        <p><b>Payment information</b> is processed by Shopify and its payment partners. We never see or store your full card number.</p>
+        <h3>3. How we use your information</h3>
+        <ul>
+          <li>To process, print, ship and support your orders, including returns and replacements.</li>
+          <li>To send The Evil List emails: new merch drops and a heads up before each pull. Every email has an unsubscribe link and our mailing address.</li>
+          <li>To email you once when an item you asked about with "Notify me" drops or is back in stock.</li>
+          <li>To answer sponsorship requests and send the sponsor kit you asked for.</li>
+          <li>To keep the store secure, prevent fraud and meet legal obligations.</li>
+          <li>To understand how the store is used and, only with your consent where required, to measure ads.</li>
+        </ul>
+        <h3>4. Who we share it with</h3>
+        <ul>
+          <li><b>Shopify</b>, which hosts our store and processes payments.</li>
+          <li><b>Our print partner</b>, which receives your name, shipping address and the items ordered so it can print and ship them, and adds the tracking number to your order.</li>
+          <li><b>Shipping carriers</b>, to deliver your order and provide tracking.</li>
+          <li><b>Our email provider</b> <span class="pend">[name pending]</span>, to send The Evil List.</li>
+          <li><b>Analytics and advertising partners</b>, only if you allow analytics or marketing cookies.</li>
+          <li><b>Authorities or others</b> when required by law or to protect our rights.</li>
+        </ul>
+        <p>We do not sell your personal information for money.</p>
+        <h3>5. Sale and sharing under state law</h3>
+        <p>If you allow marketing cookies, some ad tools may count as "selling" or "sharing" personal information for cross context behavioral advertising under California and other state laws. You can opt out at any time on <a href="policies.html?p=choices" data-p="choices">Your Privacy Choices</a>. We honor the <b>Global Privacy Control (GPC)</b> browser signal as a valid opt out.</p>
+        <h3>6. Cookies</h3>
+        <p>We use necessary cookies to run the store (cart, checkout, security). Analytics, marketing and preference cookies are optional. See how they work and change your choice anytime in <a href="policies.html?p=cookies" data-p="cookies">Cookie Preferences</a>.</p>
+        <h3>7. Marketing emails (CAN-SPAM)</h3>
+        <p>We only send The Evil List to people who sign up. Every email says who it is from, has a clear subject, includes our mailing address (P.O. Box 42, Waterloo, WI 53594) and a one click unsubscribe link. We process unsubscribes within 10 business days. The Evil List comes from Heavy Metal Pro Stock: “The Evil One”; to reply or ask to be removed, email <a href="mailto:heavymetalevil72@gmail.com">heavymetalevil72@gmail.com</a> or call <a href="tel:+19206504374">(920) 650-4374</a>.</p>
+        <h3>8. Your California rights (CCPA / CPRA)</h3>
+        <p>If you are a California resident you have the right to:</p>
+        <ul>
+          <li>Know what personal information we collect, use and disclose.</li>
+          <li>Delete personal information we hold about you.</li>
+          <li>Correct inaccurate personal information.</li>
+          <li>Opt out of the sale or sharing of your personal information.</li>
+          <li>Not be discriminated against for using these rights.</li>
+        </ul>
+        <p>We do not collect sensitive personal information for purposes that require a right to limit. To make a request, email us (see section 12). We will verify your request by matching it to information we already have, and you may use an authorized agent. Residents of other states with privacy laws can make the same requests.</p>
+        <h3>9. Retention</h3>
+        <p>We keep order records as long as needed for taxes, accounting and warranty claims. Your email for The Evil List is kept until you unsubscribe. Sponsorship requests are kept while we are in contact and then deleted.</p>
+        <h3>10. Children</h3>
+        <p>This store is not directed to children under 13 and we do not knowingly collect their information.</p>
+        <h3>11. Security and changes</h3>
+        <p>We use Shopify's security safeguards, but no method of transmission is 100% secure. We may update this policy and will change the date at the top when we do.</p>
+        <h3>12. Contact</h3>
+        <p>Heavy Metal Pro Stock: “The Evil One”, P.O. Box 42, Waterloo, WI 53594, USA. Email: <a href="mailto:heavymetalevil72@gmail.com">heavymetalevil72@gmail.com</a>. Phone: <a href="tel:+19206504374">(920) 650-4374</a>.</p>
+      </article>
+
+      <!-- TERMS -->
+      <article class="pol-doc" data-p="terms" aria-labelledby="t-terms">
+        <!-- last-updated: policy-terms -->
+        <header><h2 class="h2" id="t-terms">Terms of Service</h2><p class="lu" data-lu="terms">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
+        <p class="lede-l">These terms apply to your use of this store and to every purchase you make here. By using the store you agree to them.</p>
+        <h3>1. Overview</h3>
+        <p>This store is operated by Heavy Metal Pro Stock: “The Evil One”, Waterloo, WI, on the Shopify platform. "Store" includes the website, The Evil List and customer accounts.</p>
+        <h3>2. Eligibility</h3>
+        <p>You must be at least 18, or the age of majority in your state, or use the store with a parent or guardian. Orders ship to US addresses only.</p>
+        <h3>3. Products</h3>
+        <p>All merch is <b>printed to order</b>. Colors on screen may differ slightly from the printed product. Photos and mockups are for illustration. Check the size guide before ordering, because we do not accept returns for size (see the <a href="policies.html?p=refund" data-p="refund">Refund Policy</a>).</p>
+        <h3>4. Prices and payment</h3>
+        <p>Prices are in US dollars and may change without notice. Sales tax is calculated at checkout. Payment is processed by Shopify and its payment partners.</p>
+        <h3>5. Orders</h3>
+        <p>We may refuse or cancel an order, for example for a pricing error, suspected fraud or an address we cannot ship to. If we cancel after you paid, we refund you in full.</p>
+        <p><b>Coming soon and sold out items</b> can't be ordered. "Notify me" only sends you an email when the item is available; it does not reserve one for you.</p>
+        <p><b>Discount codes</b> are entered in the cart or at checkout. Each code has its own terms (amount, dates, minimum order, usage limits) shown when you apply it. Codes have no cash value and can't be applied to past orders.</p>
+        <h3>6. Intellectual property</h3>
+        <p>The Heavy Metal Pro Stock: “The Evil One” name, logos, artwork and photos belong to us. You may not copy, resell or reproduce them without written permission.</p>
+        <h3>7. Prohibited uses</h3>
+        <p>You may not use the store for unlawful purposes, to interfere with its security, to scrape it, or to submit offensive or infringing content.</p>
+        <h3>8. Disclaimers and limitation of liability</h3>
+        <p>The store is provided "as is". To the extent allowed by law, we are not liable for indirect or consequential damages, and our total liability for any order is limited to the amount you paid for it. Some states do not allow these limits, so they may not apply to you.</p>
+        <h3>9. Indemnification</h3>
+        <p>You agree to hold us harmless from claims caused by your breach of these terms.</p>
+        <h3>10. Governing law</h3>
+        <p>These terms are governed by the laws of the State of Wisconsin, USA.</p>
+        <h3>11. Changes and contact</h3>
+        <p>We may update these terms and will change the date at the top. Questions: see <a href="policies.html?p=contact" data-p="contact">Contact Information</a>.</p>
+      </article>
+
+      <!-- REFUND -->
+      <article class="pol-doc" data-p="refund" aria-labelledby="t-refund">
+        <!-- last-updated: policy-refund -->
+        <header><h2 class="h2" id="t-refund">Refund Policy</h2><p class="lu" data-lu="refund">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
+        <p class="lede-l">Every item is printed to order just for you. That is why we replace anything we got wrong, but we cannot take back items for size or change of mind.</p>
+        <dl class="facts">
+          <div><dt>Misprints and defects</dt><dd>Replaced free within 30 days</dd></div>
+          <div><dt>Wrong size or change of mind</dt><dd>No returns</dd></div>
+          <div><dt>Lost package</dt><dd>Replaced or refunded</dd></div>
+          <div><dt>Damaged in transit</dt><dd>Replaced free within 30 days</dd></div>
+        </dl>
+        <h3>1. Misprints, defects and damage</h3>
+        <p>If your item arrives misprinted, defective, damaged or is not what you ordered, contact us <b>within 30 days of delivery</b> with your order number and a clear photo of the problem. We will send a free replacement. If the item is no longer available, we refund you in full. You do not need to send the item back unless we ask.</p>
+        <h3>2. Size and change of mind</h3>
+        <p>Because items are printed to order, we do not accept returns or exchanges for the wrong size, color choice or change of mind. Please check the size guide on each product page before you order.</p>
+        <h3>3. Cancellations</h3>
+        <p>Orders go to print quickly. If you need to cancel, email us as soon as possible. If printing has not started, we cancel and refund in full. Once printing starts we cannot cancel.</p>
+        <h3>4. Lost packages</h3>
+        <p>If tracking shows no movement for 10 business days, or shows delivered but you did not receive it, contact us and we will work with the carrier on a replacement or refund.</p>
+        <h3>5. How refunds are paid</h3>
+        <p>Approved refunds go back to your original payment method. Your bank may take 5 to 10 business days to post it.</p>
+        <h3>6. How to start a claim</h3>
+        <p>Email <a href="mailto:heavymetalevil72@gmail.com">heavymetalevil72@gmail.com</a> with your order number and photos, call <a href="tel:+19206504374">(920) 650-4374</a>, or use the <a href="contact.html">contact form</a>. We reply within 2 business days.</p>
+        <h3 id="bsg">7. The Black Smoke Guarantee <span class="pend">[terms pending]</span></h3>
+        <p><b>If your item ever stops being evil, we replace it.</b> In plain words, this is a limited guarantee against defects:</p>
+        <ul>
+          <li><b>Covered:</b> the print cracking, peeling or fading, and seams or stitching coming apart, within <span class="pend">[12 months]</span> of delivery, with normal use and following the care label.</li>
+          <li><b>Not covered:</b> normal wear and tear, the wrong size, damage from misuse, heat, bleach or accidents, and lost or stolen items (see section 4 for lost packages).</li>
+          <li><b>What you get:</b> a replacement of the same item. If it is no longer available, a similar item or store credit for what you paid.</li>
+          <li><b>How to claim:</b> use the <a href="contact.html">contact form</a> with your order number and a photo. One replacement per item.</li>
+        </ul>
+        <p>This guarantee is in addition to your rights under law and does not limit them.</p>
+      </article>
+
+      <!-- SHIPPING -->
+      <article class="pol-doc" data-p="shipping" aria-labelledby="t-shipping">
+        <!-- last-updated: policy-shipping -->
+        <header><h2 class="h2" id="t-shipping">Shipping Policy</h2><p class="lu" data-lu="shipping">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
+        <dl class="facts">
+          <div><dt>Production</dt><dd>Printed to order, ships in 5 days</dd></div>
+          <div><dt>Where we ship</dt><dd>United States only, to start</dd></div>
+          <div><dt>Free shipping</dt><dd>On US orders over $XX</dd></div>
+          <div><dt>Tracking</dt><dd>Emailed when it ships</dd></div>
+        </dl>
+        <h3>1. Processing time</h3>
+        <p>Every item is printed to order. Orders usually ship within <b>5 business days</b>. Orders placed on weekends or holidays start processing the next business day.</p>
+        <h3>2. Delivery time</h3>
+        <p>After your order ships, delivery usually takes <span class="pend">X to X</span> business days depending on your address and the carrier.</p>
+        <h3>3. Where we ship</h3>
+        <p>To start, we ship to addresses in the United States only, including PO boxes where the carrier allows. We do not ship internationally yet.</p>
+        <h3>4. Shipping cost</h3>
+        <p>Shipping is calculated at checkout. US orders over <b>$XX</b> ship free.</p>
+        <h3>5. Tracking</h3>
+        <p>When your order ships, we email you a tracking link. You can also see it in your <a href="account.html">account</a> &gt; Orders, or open the order status page from that email. No account needed.</p>
+        <h3>6. Delays</h3>
+        <p>If we cannot ship within the time we promised, we will let you know with a new estimate and give you the option to cancel for a full refund.</p>
+        <h3>7. Address problems</h3>
+        <p>Please check your address at checkout. If a package is returned because of an incorrect address, we can reship it once you cover the new shipping cost.</p>
+        <h3>8. Split shipments</h3>
+        <p>Items in the same order may be printed in different locations and arrive in separate packages.</p>
+      </article>
+
+      <!-- CONTACT -->
+      <article class="pol-doc" data-p="contact" aria-labelledby="t-contact">
+        <!-- last-updated: policy-contact -->
+        <header><h2 class="h2" id="t-contact">Contact Information</h2><p class="lu" data-lu="contact">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
+        <p class="lede-l">Questions about merch or sponsorship? Send us a message and we'll get back to you within 2 business days.</p>
+        <dl class="facts">
+          <div><dt>Business name</dt><dd>Heavy Metal Pro Stock: “The Evil One”</dd></div>
+          <div><dt>Location</dt><dd>Waterloo, WI, USA</dd></div>
+          <div><dt>Email</dt><dd><a href="mailto:heavymetalevil72@gmail.com">heavymetalevil72@gmail.com</a></dd></div>
+          <div><dt>Phone</dt><dd><a href="tel:+19206504374">(920) 650-4374</a></dd></div>
+          <div><dt>Mailing address</dt><dd>P.O. Box 42, Waterloo, WI 53594</dd></div>
+        </dl>
+        <p class="note">Nombre del negocio: lo dejamos como Heavy Metal Pro Stock: “The Evil One” (regla de marca). Si el nombre legal registrado es otro (por ejemplo una LLC), ponlo aquí tal cual aparece en el registro; quitamos la fila “Trade name” para no repetir “The Evil One”.</p>
+        <p>You can also reach us through the <a href="contact.html">contact form</a> or on <a href="https://www.facebook.com/heavymetalprostock/" rel="noopener" target="_blank">Facebook<span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span></a>.</p>
+      </article>
+
+      <!-- ACCESSIBILITY -->
+      <article class="pol-doc" data-p="accessibility" aria-labelledby="t-accessibility">
+        <!-- last-updated: policy-accessibility -->
+        <header><h2 class="h2" id="t-accessibility">Accessibility</h2><p class="lu" data-lu="accessibility">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
+        <p class="lede-l">We want every fan to be able to shop this store, read about the team and follow the season.</p>
+        <h3>1. Our goal</h3>
+        <p>We aim to meet the <b>Web Content Accessibility Guidelines (WCAG) 2.1, level AA</b>. That includes keyboard navigation, visible focus, text alternatives for images, enough color contrast, and respecting reduced motion settings.</p>
+        <h3>2. What we are doing</h3>
+        <ul>
+          <li>Reviewing pages when we add new products or sections.</li>
+          <li>Writing alt text for team and tractor photos.</li>
+          <li>Letting you pause any moving content.</li>
+        </ul>
+        <h3>3. Known limits</h3>
+        <p>Some content comes from third parties, such as embedded videos, checkout and payment screens, which we do not fully control.</p>
+        <h3>4. Need help?</h3>
+        <p>If something on the store is hard to use, email <a href="mailto:heavymetalevil72@gmail.com">heavymetalevil72@gmail.com</a>, call <a href="tel:+19206504374">(920) 650-4374</a> or use the <a href="contact.html">contact form</a>. Tell us the page and the problem and we will help you place your order another way. We reply within 2 business days.</p>
+      </article>
+
+      <!-- CHOICES -->
+      <article class="pol-doc" data-p="choices" aria-labelledby="t-choices">
+        <!-- last-updated: policy-choices -->
+        <header><h2 class="h2" id="t-choices">Your Privacy Choices</h2><p class="lu" data-lu="choices">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
+        <p class="lede-l">Opt out of the sale or sharing of your personal information for targeted advertising. This choice is saved on this browser and device.</p>
+        <p class="gpc" id="gpc-msg">Your browser is not sending a Global Privacy Control signal. If it does, we treat it as an opt out automatically.</p>
+        <div class="prefs">
+          <div class="pref">
+            <label for="opt-out">Opt out of sale and sharing</label>
+            <span class="switch"><input type="checkbox" id="opt-out" role="switch" aria-describedby="opt-out-d"><span aria-hidden="true"></span></span>
+            <p id="opt-out-d">When on, we turn off marketing cookies and do not share your activity with ad partners.</p>
+          </div>
+        </div>
+        <div class="save-row"><button class="btn" type="button" id="opt-save">Save choice</button><p class="status" id="opt-status" role="status" aria-live="polite"></p></div>
+        <h3>Signed in customers</h3>
+        <p>To apply your choice to your account on every device, or to ask us to access, delete or correct your data, email <a href="mailto:heavymetalevil72@gmail.com">heavymetalevil72@gmail.com</a> or call <a href="tel:+19206504374">(920) 650-4374</a>. See the <a href="policies.html?p=privacy" data-p="privacy">Privacy Policy</a> for details.</p>
+      </article>
+
+      <!-- COOKIES -->
+      <article class="pol-doc" data-p="cookies" aria-labelledby="t-cookies">
+        <!-- last-updated: policy-cookies -->
+        <header><h2 class="h2" id="t-cookies">Cookie Preferences</h2><p class="lu" data-lu="cookies">Last updated: <time datetime="2026-10-01">October 1, 2026</time></p></header>
+        <p class="lede-l">Cookies are small files your browser saves when you visit. Some keep the store working. The rest are optional, and you decide.</p>
+        <p class="note">En Shopify: Settings &gt; Customer privacy &gt; Cookie banner (banner nativo, se activa por región: EE. UU., UE, etc.). La elección vive en la cookie <code>_tracking_consent</code> del navegador de cada visitante, no en su cuenta. El enlace "Cookie Preferences" del footer reabre el banner.</p>
+        <h3>1. The cookie banner</h3>
+        <p>On your first visit, a banner from Shopify, the platform that runs our store, asks what you allow. Choose <b>Accept all</b>, <b>Decline</b> or <b>Manage</b> to pick each type. Until you choose, only necessary cookies are used.</p>
+        <h3>2. Types of cookies</h3>
+        <dl class="facts">
+          <div><dt>Necessary</dt><dd>Always on. Cart, checkout, login and security.</dd></div>
+          <div><dt>Analytics</dt><dd>Shows us which pages and products fans use.</dd></div>
+          <div><dt>Marketing</dt><dd>Lets ad partners like Facebook and Google measure ads.</dd></div>
+          <div><dt>Preferences</dt><dd>Remembers choices like your region.</dd></div>
+        </dl>
+        <h3>3. Where your choice is saved</h3>
+        <p>Your choice is saved <b>in this browser on this device</b>, whether or not you have an account. If you use another browser or device, or clear your cookies, the banner asks again.</p>
+        <h3>4. Change your choice</h3>
+        <p>Use the switches below, or click <b>Cookie Preferences</b> at the bottom of any page to open the banner again. Changes apply right away.</p>
+        <div class="prefs">
+          <div class="pref">
+            <span class="pref__t" id="ck-nec-l">Necessary</span>
+            <span class="switch"><input type="checkbox" id="ck-nec" role="switch" checked disabled aria-labelledby="ck-nec-l" aria-describedby="ck-nec-d"><span aria-hidden="true"></span></span>
+            <p id="ck-nec-d">Always on. The store cannot work without them.</p>
+          </div>
+          <div class="pref">
+            <label for="ck-ana">Analytics</label>
+            <span class="switch"><input type="checkbox" id="ck-ana" role="switch" aria-describedby="ck-ana-d"><span aria-hidden="true"></span></span>
+            <p id="ck-ana-d">Helps us see which pages and products fans use.</p>
+          </div>
+          <div class="pref">
+            <label for="ck-mkt">Marketing</label>
+            <span class="switch"><input type="checkbox" id="ck-mkt" role="switch" aria-describedby="ck-mkt-d"><span aria-hidden="true"></span></span>
+            <p id="ck-mkt-d">Lets ad partners measure and personalize ads. Stays off if you opted out on Your Privacy Choices.</p>
+          </div>
+          <div class="pref">
+            <label for="ck-prf">Preferences</label>
+            <span class="switch"><input type="checkbox" id="ck-prf" role="switch" aria-describedby="ck-prf-d"><span aria-hidden="true"></span></span>
+            <p id="ck-prf-d">Remembers your settings between visits.</p>
+          </div>
+        </div>
+        <div class="save-row"><button class="btn" type="button" id="ck-save">Save preferences</button><p class="status" id="ck-status" role="status" aria-live="polite"></p></div>
+        <h3>5. Global Privacy Control (GPC)</h3>
+        <p>If your browser sends a <b>Global Privacy Control</b> signal, we treat it as a request to opt out of sale and sharing: marketing cookies stay off and we do not ask again. See <a href="policies.html?p=choices" data-p="choices">Your Privacy Choices</a> and the <a href="policies.html?p=privacy" data-p="privacy">Privacy Policy</a>.</p>
+      </article>
+    </div>
+  </div>
+</main>
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  /* Last updated de cada política (en Shopify: la fecha que escribes arriba del texto en Configuración > Políticas; Shopify no la guarda sola) */
+  var UPDATED = { privacy: '2026-10-01', terms: '2026-10-01', refund: '2026-10-01', shipping: '2026-10-01', contact: '2026-10-01', accessibility: '2026-10-01', choices: '2026-10-01', cookies: '2026-10-01' };
+  document.querySelectorAll('[data-lu]').forEach(function (el) {
+    var v = UPDATED[el.getAttribute('data-lu')], m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || ''), t = el.querySelector('time');
+    if (!m) { t.textContent = '[date pending]'; return; }
+    t.setAttribute('datetime', v); t.textContent = new Date(+m[1], +m[2] - 1, +m[3], 12).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  });
+  var NAMES = { privacy: 'Privacy Policy', terms: 'Terms of Service', refund: 'Refund Policy', shipping: 'Shipping Policy', contact: 'Contact Information', accessibility: 'Accessibility', choices: 'Your Privacy Choices', cookies: 'Cookie Preferences' };
+  var docs = document.querySelectorAll('.pol-doc');
+  var links = document.querySelectorAll('#pol-list a');
+  var list = document.getElementById('pol-list');
+  var body = document.getElementById('pol-main');
+
+  function show(p, fromClick) {
+    if (!NAMES[p]) p = 'privacy';
+    docs.forEach(function (d) { d.hidden = d.getAttribute('data-p') !== p; });
+    links.forEach(function (a) {
+      var on = a.getAttribute('data-p') === p;
+      if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+      if (on && list.scrollWidth > list.clientWidth) list.scrollLeft = a.parentNode.offsetLeft - 16;
+    });
+    document.getElementById('crumb-cur').textContent = NAMES[p];
+    document.title = NAMES[p] + ' · Heavy Metal Pro Stock: “The Evil One”';
+    if (fromClick) {
+      history.replaceState(null, '', 'policies.html?p=' + p);
+      /* sin brincos: solo sube si el lector ya pasó el inicio del texto */
+      var nav = document.querySelector('.pol-nav');
+      var off = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header'), 10) + (window.innerWidth <= 860 ? nav.offsetHeight : 0) + 12;
+      var top = body.getBoundingClientRect().top;
+      if (top < off) window.scrollBy(0, top - off);
+      body.focus({ preventScroll: true });
+    }
+  }
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="policies.html?p="]');
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault();
+    show(new URL(a.href).searchParams.get('p'), true);
+  });
+  show(new URLSearchParams(location.search).get('p'), false);
+  /* ancla dentro de una política (ej. ?p=refund#bsg desde la ficha de producto) */
+  if (location.hash.length > 1) { var hEl = document.getElementById(location.hash.slice(1)); if (hEl && !hEl.closest('[hidden]')) requestAnimationFrame(function () { hEl.scrollIntoView({ block: 'start' }); }); }
+
+  /* preferencias guardadas en este navegador (boceto: en vivo lo maneja la API de privacidad de Shopify) */
+  function load(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
+  function save(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  var gpc = navigator.globalPrivacyControl === true;
+  var opt = load('hm-optout');
+  var ck = load('hm-cookies') || { analytics: false, marketing: false, preferences: false };
+  var optEl = document.getElementById('opt-out'), ana = document.getElementById('ck-ana'), mkt = document.getElementById('ck-mkt'), prf = document.getElementById('ck-prf');
+  optEl.checked = gpc || opt === true;
+  ana.checked = !!ck.analytics;
+  mkt.checked = !!ck.marketing && !optEl.checked;
+  prf.checked = !!ck.preferences;
+  if (gpc) mkt.disabled = true;
+  if (gpc) {
+    document.getElementById('gpc-msg').textContent = 'Global Privacy Control signal detected. You are opted out of sale and sharing on this browser.';
+    optEl.disabled = true;
+  }
+  document.getElementById('opt-save').addEventListener('click', function () {
+    save('hm-optout', optEl.checked);
+    if (optEl.checked) { mkt.checked = false; ck.marketing = false; save('hm-cookies', ck); }
+    document.getElementById('opt-status').textContent = optEl.checked ? 'Saved. You are opted out of sale and sharing.' : 'Saved. You have not opted out.';
+  });
+  document.getElementById('ck-save').addEventListener('click', function () {
+    if (mkt.checked && optEl.checked) { mkt.checked = false; document.getElementById('ck-status').textContent = 'Marketing stays off because you opted out of sale and sharing.'; }
+    else document.getElementById('ck-status').textContent = 'Preferences saved.';
+    ck = { analytics: ana.checked, marketing: mkt.checked, preferences: prf.checked }; save('hm-cookies', ck);
+    try { sessionStorage.setItem('hm-cookie', '1'); } catch (e) {}
+    var banner = document.getElementById('cookie'); if (banner) banner.hidden = true;
+  });
+})();
+</script>
+</body>
+</html>

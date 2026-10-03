@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Evil One Tee · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Evil One Tee from Heavy Metal Pro Stock: “The Evil One”, the pulling tractor from Waterloo, WI. Designed by the crew, printed to order, ships in 5 days.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V3
+   PDP v3 al estilo SKIMS: galería 2 columnas + buy box sticky, texto 12 a 16px, nombre 24px condensado. */
+:root{--shoppay:#5A31F4;--shoppay-hover:#4A26D6}
+html,body{overflow-x:clip}
+.crumbs{padding-block:14px 12px}
+.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:2px 8px;font-size:var(--t-xs);color:var(--mute)}
+.crumbs li{white-space:nowrap}
+.crumbs li+li::before{content:"/";margin-right:8px;color:#B6B1AD}
+.crumbs a{text-decoration:none}
+.crumbs a:hover{text-decoration:underline;text-underline-offset:3px}
+.crumbs [aria-current]{color:var(--ink)}
+
+.pdp{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;padding-bottom:var(--sect)}
+@media (min-width:900px){
+  .pdp{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr);gap:clamp(28px,3.4vw,56px);align-items:start}
+  .buy{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header) + 16px)}
+}
+
+/* galería: 2 columnas en escritorio; carrusel con puntos en móvil */
+.gal{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+.gal .ph{--ar:4/5}
+.gal .ph__tag{font-size:10px}
+.dots{display:none}
+@media (max-width:899px){
+  .gal-wrap{margin-inline:calc(-1 * var(--gutter))}
+  .gal{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:2px;scrollbar-width:none;overscroll-behavior-x:contain}
+  .gal::-webkit-scrollbar{display:none}
+  .gal>li{flex:0 0 86%;scroll-snap-align:start}
+  .gal>li:last-child{scroll-snap-align:end}
+  .dots{display:flex;justify-content:center;gap:0;padding-top:6px}
+  .dots button{width:24px;height:24px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center}
+  .dots button::before{content:"";width:6px;height:6px;border-radius:50%;background:#B6B1AD}
+  .dots button[aria-current="true"]::before{background:var(--ink)}
+}
+
+/* buy box */
+.buy{display:grid;gap:16px;align-content:start;min-width:0}
+.buy__head{display:grid;gap:6px;justify-items:start}
+.buy__name{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:24px;line-height:1.1;letter-spacing:.01em;text-transform:uppercase;margin:0;color:var(--ink);overflow-wrap:anywhere}
+.buy__price{margin:0;font-size:var(--t-md);font-weight:600;color:var(--ink)}
+.buy__desc{margin:0;font-size:var(--t-sm);color:var(--soft);max-width:48ch}
+
+.opt{border:0;margin:0;padding:0;min-width:0}
+.opt__legend{padding:0;margin-bottom:8px;font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.opt__legend b{color:var(--ink);font-weight:600;letter-spacing:.04em}
+.opt input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.colors{display:flex;gap:6px;flex-wrap:wrap}
+.cswatch{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;cursor:pointer;border:1px solid transparent}
+.cswatch span{width:24px;height:24px;border-radius:50%;background:var(--sw);box-shadow:inset 0 0 0 1px rgba(28,27,25,.25)}
+.cswatch:hover{border-color:var(--line)}
+.opt input:checked+.cswatch{border-color:var(--ink)}
+.opt input:focus-visible+.cswatch,.opt input:focus-visible+.size{outline:2px solid var(--ink);outline-offset:2px}
+
+.linkbtn{background:none;border:0;padding:4px 0;font-size:var(--t-xs);font-weight:600;letter-spacing:.04em;text-decoration:underline;text-underline-offset:3px;cursor:pointer;color:var(--ink);text-transform:none}
+.sizes{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.size{display:grid;place-items:center;min-height:40px;background:var(--surface);border:1px solid var(--line);cursor:pointer;font-size:var(--t-xs);font-weight:700;letter-spacing:.04em}
+.size:hover{border-color:var(--ink)}
+.opt input:checked+.size{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.opt input:disabled+.size{background:transparent;color:var(--mute);cursor:not-allowed;text-decoration:line-through}
+.opt.is-error .size{border-color:var(--alert)}
+.msg{margin:6px 0 0;font-size:var(--t-xs);font-weight:600;color:var(--alert)}
+.msg:empty{display:none}
+.soldout{margin:6px 0 0;font-size:var(--t-xs);color:var(--mute)}
+.notify{display:flex;margin-top:6px}
+.notify .input{min-height:40px}
+.notify .btn{flex:none;min-height:40px}
+.one-size{margin:0;font-size:var(--t-xs);color:var(--soft)}
+
+.buyrow{display:grid;grid-template-columns:112px minmax(0,1fr);gap:6px}
+.qty{display:grid;grid-template-columns:36px minmax(0,1fr) 36px;height:48px;border:1px solid var(--line);background:var(--surface)}
+.qty button{border:0;background:none;cursor:pointer;display:grid;place-items:center}
+.qty button svg{width:12px;height:12px;stroke:currentColor;stroke-width:1.6;fill:none}
+.qty input{border:0;background:none;text-align:center;font:inherit;font-size:var(--t-sm);font-weight:700;font-variant-numeric:tabular-nums;width:100%;min-width:0;-moz-appearance:textfield;appearance:textfield}
+.qty input::-webkit-inner-spin-button,.qty input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.btn--big{min-height:48px}
+
+/* botón de pago dinámico (simulado) */
+.dyn{display:grid;gap:6px;justify-items:center}
+.shoppay{width:100%;min-height:44px;border:0;background:var(--shoppay);color:var(--surface);font-size:var(--t-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.shoppay:hover{background:var(--shoppay-hover)}
+.shoppay b{font-weight:800;letter-spacing:-.01em;font-size:var(--t-md)}
+.dyn .linkbtn{font-weight:500}
+
+.facts{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid var(--line);display:grid;gap:8px;font-size:var(--t-xs);color:var(--soft)}
+.facts li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;align-items:start}
+.facts svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.facts b{color:var(--ink)}
+
+.acc{border-top:1px solid var(--line)}
+.acc details{border-bottom:1px solid var(--line)}
+.acc summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:44px;cursor:pointer;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary::after{content:"+";font-size:18px;font-weight:400}
+.acc details[open] summary::after{content:"\2212"}
+.acc__body{padding-bottom:14px;font-size:var(--t-xs);line-height:1.6;color:var(--soft);display:grid;gap:8px}
+.acc__body p,.acc__body ul{margin:0}
+.acc__body ul{padding-left:16px;display:grid;gap:2px}
+
+/* guía de tallas */
+.sg{width:min(520px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:0;border:0;background:var(--surface);color:var(--ink)}
+.sg::backdrop{background:rgba(28,27,25,.45)}
+.sg__head{display:flex;justify-content:space-between;align-items:center;padding:8px 8px 8px 20px;border-bottom:1px solid var(--line)}
+.sg__body{padding:16px 20px 20px;display:grid;gap:12px}
+.sg__body p{margin:0;font-size:var(--t-xs);color:var(--soft)}
+.tbl-wrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:var(--t-xs);font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{text-align:left;padding:8px 10px 8px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl thead th{font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+
+/* complete the look */
+.look{display:grid;gap:20px;align-items:center;grid-template-columns:minmax(0,1fr)}
+@media (min-width:760px){.look{grid-template-columns:minmax(0,420px) minmax(0,1fr)}}
+.look__pics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+.look__pics .ph__tag{display:none}
+.look__pics .ph{--ar:1/1}
+.look__info{display:grid;gap:10px;justify-items:start;max-width:420px}
+.look__list{list-style:none;margin:0;padding:0;width:100%;border-top:1px solid var(--line)}
+.look__list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:var(--t-xs)}
+.look__list li span:first-child{font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+
+@media (max-width:1024px){.like .pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.rev{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 24px;padding-block:20px;border-block:1px solid var(--line)}
+.rev p{margin:0;font-size:var(--t-xs);color:var(--soft);max-width:60ch}
+
+/* barra sticky móvil */
+.satc{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);border-top:1px solid var(--line);padding:8px var(--gutter) calc(8px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:12px;transform:translateY(110%);transition:transform .2s;visibility:hidden}
+.satc.is-on{transform:none;visibility:visible}
+.satc__txt{min-width:0;flex:1;display:grid;line-height:1.3}
+.satc__txt b{font-size:var(--t-xs);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.satc__txt span{font-size:11px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.satc .btn{flex:none;padding-inline:1.1em}
+@media (min-width:900px){.satc{display:none}}
+@media (max-width:899px){body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}}
+@media (max-width:400px){.sizes{grid-template-columns:repeat(3,minmax(0,1fr))}.sizes.sizes--4{grid-template-columns:repeat(4,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="shop"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html?cat=all">Shop</a></li>
+        <li><a id="bc-cat" href="shop.html?cat=tees">Tees</a></li>
+        <li><span aria-current="page" id="bc-name">Evil One Tee</span></li>
+      </ol>
+    </nav>
+
+    <div class="pdp">
+      <section class="gal-wrap" aria-label="Product images">
+        <ul class="gal" id="gal"></ul>
+        <div class="dots" id="dots" role="group" aria-label="Choose image"></div>
+      </section>
+
+      <section class="buy" aria-labelledby="p-name">
+        <div class="buy__head">
+          <span id="p-badge"></span>
+          <h1 class="buy__name" id="p-name">Evil One Tee</h1>
+          <p class="buy__price num" id="p-price">$XX</p>
+          <p class="buy__desc" id="p-desc">Front logo tee. Designed by the crew in Waterloo, WI, and printed to order.</p>
+        </div>
+
+        <fieldset class="opt" id="color-set">
+          <legend class="opt__legend"><span>Color: <b id="color-name">Matte Black</b></span></legend>
+          <div class="colors" id="colors"></div>
+        </fieldset>
+
+        <fieldset class="opt" id="size-set" aria-describedby="size-msg">
+          <legend class="opt__legend"><span>Size: <b id="size-name">Select a size</b></span><button class="linkbtn" type="button" id="sg-open" aria-haspopup="dialog" aria-controls="size-guide">Size guide</button></legend>
+          <div class="sizes" id="sizes"></div>
+          <p class="msg" id="size-msg" aria-live="polite"></p>
+          <div id="sold-wrap" hidden>
+            <p class="soldout"><span id="sold-list">3XL</span> sold out. <button class="linkbtn" type="button" id="notify-open" aria-expanded="false" aria-controls="notify">Notify me</button></p>
+            <form class="notify" id="notify" hidden novalidate>
+              <label class="vh" for="notify-email">Email for restock alert</label>
+              <input class="input" id="notify-email" type="email" autocomplete="email" spellcheck="false" placeholder="Email for restock" required>
+              <button class="btn" type="submit">Notify me</button>
+            </form>
+          </div>
+        </fieldset>
+        <p class="one-size" id="one-size" hidden>One size. <button class="linkbtn" type="button" id="sg-open-2" aria-haspopup="dialog" aria-controls="size-guide">Size guide</button></p>
+
+        <div class="buyrow">
+          <div class="qty" role="group" aria-label="Quantity">
+            <button type="button" id="qty-dn" aria-label="Decrease quantity"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10"/></svg></button>
+            <label class="vh" for="qty">Quantity</label>
+            <input type="number" id="qty" name="qty" value="1" min="1" max="10" inputmode="numeric">
+            <button type="button" id="qty-up" aria-label="Increase quantity"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M7 2v10"/></svg></button>
+          </div>
+          <button class="btn btn--block btn--big" type="button" id="atc">Select a size</button>
+        </div>
+
+        <div class="dyn">
+          <button class="shoppay" type="button" id="shoppay">Buy with <b>Shop Pay</b></button>
+          <button class="linkbtn" type="button" id="more-pay">More payment options</button>
+          <p class="msg" id="pay-msg" aria-live="polite" style="color:var(--soft)"></p>
+        </div>
+        <p class="note">Shopify pinta este bloque solo (Shop Pay, Apple Pay o Google Pay según el dispositivo) y va directo al checkout, sin pasar por el carrito.</p>
+
+        <ul class="facts">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg><span><b>Printed to order · ships in 5 days.</b> Free US shipping over $XX.</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/></svg><span>Misprints and defects replaced free. Check the size guide: printed-to-order items can't be returned for size. <a href="policies.html?p=refund">Refund policy</a></span></li>
+        </ul>
+        <p class="note">Confirmar con Printify la regla de devoluciones, los 5 días y si se puede decir "printed in the USA". Galería: la 1ª imagen es el mockup del color elegido; las otras se llenan con las fotos o mockups que genera Printify (una por color en la variante).</p>
+
+        <div class="acc">
+          <details>
+            <summary>Details</summary>
+            <div class="acc__body" id="acc-details"></div>
+          </details>
+          <details>
+            <summary>Design story</summary>
+            <div class="acc__body" id="acc-story"></div>
+          </details>
+          <details>
+            <summary>Shipping &amp; returns</summary>
+            <div class="acc__body">
+              <p>Every piece is printed when you order it and ships in 5 days. Free US shipping on orders over $XX. Taxes and shipping are calculated at checkout.</p>
+              <p>Misprints and defects are replaced free: send a photo within XX days of delivery. Printed-to-order items can't be returned or exchanged for size, so check the size guide first.</p>
+              <p><a href="policies.html?p=shipping">Shipping policy</a> · <a href="policies.html?p=refund">Refund policy</a></p>
+            </div>
+          </details>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <section class="sect sect--white" aria-labelledby="look-t" id="look">
+    <div class="wrap look">
+      <div class="look__pics">
+        <span class="ph ph--mock" data-mock="evil-one-tee"></span>
+        <span class="ph ph--mock" data-mock="crew-cap"></span>
+      </div>
+      <div class="look__info">
+        <p class="label muted">Complete the look</p>
+        <h2 class="h2" id="look-t">Crew Pack Bundle</h2>
+        <p class="small muted" style="margin:0">The tee and the cap, one price. You pick the tee size.</p>
+        <ul class="look__list">
+          <li><span>Evil One Tee</span><span class="num">$XX</span></li>
+          <li><span>Crew Cap</span><span class="num">$XX</span></li>
+          <li><span>Bundle</span><span class="num"><b>$XX</b> · save $X</span></li>
+        </ul>
+        <a class="btn btn--ghost" href="product.html?p=crew-pack">Shop the Crew Pack</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sect like" aria-labelledby="like-t">
+    <div class="wrap">
+      <div class="sect-head">
+        <h2 class="h2" id="like-t">You may also like</h2>
+        <a class="link" id="like-all" href="shop.html?cat=tees">View all</a>
+      </div>
+      <div class="pgrid" id="like"></div>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="rev-t" style="padding-bottom:var(--sect)">
+    <div class="rev">
+      <h2 class="h3" id="rev-t">Reviews</h2>
+      <p>No reviews yet. Reviews show up here only from verified buyers, after delivery.</p>
+    </div>
+  </section>
+</main>
+
+<div data-hm-footer></div>
+
+<dialog class="sg" id="size-guide" aria-labelledby="sg-t">
+  <div class="sg__head">
+    <h2 class="label" id="sg-t">Size guide</h2>
+    <button class="icon-btn" type="button" id="sg-close" aria-label="Close size guide"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg></button>
+  </div>
+  <div class="sg__body" id="sg-body"></div>
+</dialog>
+
+<div class="satc" id="satc" aria-hidden="true">
+  <div class="satc__txt"><b id="satc-name">Evil One Tee</b><span id="satc-var">Matte Black · Select a size</span></div>
+  <button class="btn" type="button" id="satc-btn" tabindex="-1">Select a size</button>
+</div>
+
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var CAT = window.HM_CATALOG || [];
+  var SW = window.HM_SW || {};
+  var CATNAME = { tees: 'Tees', sweats: 'Sweatshirts', hats: 'Hats', kids: 'Kids', gear: 'Stickers & gear', bundles: 'Bundles', limited: 'Special edition' };
+  var id = new URLSearchParams(location.search).get('p') || 'evil-one-tee';
+  var p = CAT.filter(function (x) { return x.id === id; })[0] || CAT.filter(function (x) { return x.id === 'evil-one-tee'; })[0];
+
+  /* textos por producto: hechos reales de la historia, sin inventar materiales */
+  var STORY = {
+    'evil-one-tee': ['Chris came up with the idea in 2014 in Tomah, WI. He was a heavy metal fan, so the name was never up for discussion. The nickname stuck: “The Evil One”.'],
+    'lightning-strike-tee': ['In 2026 Chris fired the engine for the first time. At that exact moment, lightning struck, and the power went out.', 'Some would call it a coincidence. We call it a sign. This graphic is that night.'],
+    'full-pull-ls': ['This season the goal is simple: the first full pull, across about 20 competitions on the NTPA and PPL Badger State circuits.', 'We\'ve run a few exhibitions while testing; in competition, every pass is to pull.'],
+    'cat-v8-spec-tee': ['The real spec sheet: CAT 3208 V8, reverse flow, 680 CU IN, single large turbo, 10,000 LB, Challenger 1015 body. Horsepower: Unknown.'],
+    '680-ci-hoodie': ['The Cat 3208 V8 started at 636 cubic inches. The crew took it to 680, a setup you won\'t find on any other tractor on the track.', 'Nothing about it is off the shelf, and nothing about it was quick.'],
+    'evil-one-crewneck': ['The first bolt went in in February 2020, in the family shop in Waterloo, WI. Nights and weekends stolen from work and family built the rest.'],
+    'crew-cap': ['The cap the pit crew wears on pull day: Daniel, Jared, Jim, Tony, Jeff, John and Brad, with Chris F. in the seat.'],
+    'little-evil-one-tee': ['The whole family made the shop a second home while the tractor came together. This one is for the next generation of pullers.']
+  };
+  var STORY_BASE = 'Designed by the crew that built “The Evil One” by hand in Waterloo, WI. Everything on the tractor is custom-built, and so is every graphic.';
+  var cname = CATNAME[p.cat] || 'Shop';
+  var hasSizes = p.sizes.length > 0, hasColors = p.colors.length > 0;
+  var sold = p.sold || [];
+
+  /* cabecera, SEO y breadcrumb */
+  document.title = p.name + ' · Heavy Metal Pro Stock: “The Evil One”';
+  var md = document.querySelector('meta[name="description"]');
+  md.setAttribute('content', p.name + ' (' + p.sub.toLowerCase() + ') from Heavy Metal Pro Stock: “The Evil One”, the pulling tractor from Waterloo, WI. Designed by the crew, printed to order, ships in 5 days.');
+  $('bc-cat').textContent = cname; $('bc-cat').href = p.cat === 'limited' ? 'limited.html' : 'shop.html?cat=' + p.cat;
+  $('bc-name').textContent = p.name;
+  $('p-name').textContent = p.name; $('satc-name').textContent = p.name;
+  $('p-desc').textContent = p.sub + '. Designed by the crew in Waterloo, WI, and printed to order.';
+  var badge = { best: ['', 'Best seller'], 'new': [' badge--ink', 'New'], bundle: [' badge--line', 'Save $X'], limited: [' badge--ink', 'Special edition'] }[p.tag];
+  if (badge) $('p-badge').outerHTML = '<span class="badge' + badge[0] + '">' + badge[1] + '</span>'; else $('p-badge').remove();
+  $('like-all').href = 'shop.html?cat=' + p.cat;
+  if (p.id === 'crew-pack') $('look').remove();
+  else document.querySelectorAll('[data-mock]').forEach(function (el) { var m = CAT.filter(function (x) { return x.id === el.getAttribute('data-mock'); })[0]; if (m) el.innerHTML = window.hmMock(m); });
+
+  /* galería: 1) mockup plano del color elegido (hmMock); 2 a 4) lugar para las fotos de Printify */
+  var SHOTS = [['Frente', ''], ['Espalda', 'estampado de espalda'], ['Puesto', 'modelo o puesto en los pits'], ['Detalle', 'macro del estampado']];
+  function renderGal(color) {
+    var pc = {}; for (var k in p) pc[k] = p[k]; if (color) pc.colors = [color];
+    $('gal').innerHTML = SHOTS.map(function (s, i) {
+      var lab = p.name + (color ? ', ' + color : '');
+      if (i === 0) return '<li><span class="ph ph--mock" role="img" aria-label="' + lab + ', front">' + window.hmMock(pc) + '</span></li>';
+      return '<li><span class="ph" role="img" aria-label="' + lab + ', ' + s[0].toLowerCase() + ' (photo coming soon)"><span class="ph__tag"><b>Foto de Printify · ' + s[0] + '</b>' + s[1] + '</span></span></li>';
+    }).join('');
+  }
+
+  /* color */
+  if (hasColors) {
+    $('colors').innerHTML = p.colors.map(function (c, i) {
+      var cid = 'c-' + i;
+      return '<input type="radio" name="color" id="' + cid + '" value="' + c + '"' + (i === 0 ? ' checked' : '') + '><label class="cswatch" for="' + cid + '" title="' + c + '"><span style="--sw:' + (SW[c] || 'var(--tile)') + '"></span><span class="vh">' + c + '</span></label>';
+    }).join('');
+    $('colors').addEventListener('change', function (e) { $('color-name').textContent = e.target.value; renderGal(e.target.value); markDot(0); sync(); });
+  } else { $('color-set').remove(); }
+
+  /* tallas */
+  if (hasSizes) {
+    if (p.sizes.length === 4) $('sizes').classList.add('sizes--4');
+    $('sizes').innerHTML = p.sizes.map(function (s, i) {
+      var out = sold.indexOf(s) > -1, sid = 's-' + i;
+      return '<input type="radio" name="size" id="' + sid + '" value="' + s + '"' + (out ? ' disabled' : '') + '><label class="size" for="' + sid + '">' + s + (out ? '<span class="vh"> sold out</span>' : '') + '</label>';
+    }).join('');
+    if (sold.length) { $('sold-wrap').hidden = false; $('sold-list').textContent = sold.join(', '); $('notify-email').placeholder = 'Email for ' + sold.join(', ') + ' restock'; }
+    $('sizes').addEventListener('change', function (e) {
+      $('size-name').textContent = e.target.value; $('size-set').classList.remove('is-error'); $('size-msg').textContent = ''; sync();
+    });
+  } else { $('size-set').remove(); $('one-size').hidden = false; }
+
+  function color() { var c = document.querySelector('input[name="color"]:checked'); return c ? c.value : ''; }
+  function size() { var s = document.querySelector('input[name="size"]:checked'); return s ? s.value : null; }
+  function ready() { return !hasSizes || !!size(); }
+  function variant() { return [color(), hasSizes ? size() : 'One size'].filter(Boolean).join(' / '); }
+  function sync() {
+    var label = ready() ? 'Add to cart · $XX' : 'Select a size';
+    $('atc').textContent = label;
+    $('satc-btn').textContent = ready() ? 'Add · $XX' : 'Select a size';
+    $('satc-var').textContent = [color(), hasSizes ? (size() || 'Select a size') : 'One size'].filter(Boolean).join(' · ');
+  }
+
+  /* talla obligatoria: error en línea y foco en la primera talla libre */
+  function need() {
+    if (ready()) return true;
+    $('size-set').classList.add('is-error');
+    $('size-msg').textContent = 'Select a size to continue.';
+    $('size-set').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+    var first = document.querySelector('input[name="size"]:not(:disabled)'); if (first) first.focus({ preventScroll: true });
+    return false;
+  }
+  function qtyN() { return Math.max(1, Math.min(10, parseInt($('qty').value, 10) || 1)); }
+  function add() {
+    if (!need()) return;
+    var n = qtyN();
+    window.hmAdd(p.name, variant() + (n > 1 ? ' · Qty ' + n : ''), '$XX');
+  }
+  $('atc').addEventListener('click', add);
+  $('satc-btn').addEventListener('click', add);
+  $('shoppay').addEventListener('click', function () { if (!need()) return; $('pay-msg').textContent = 'Boceto: aquí abre Shop Pay con ' + p.name + ' (' + variant() + ').'; });
+  $('more-pay').addEventListener('click', function () { if (!need()) return; $('pay-msg').textContent = 'Boceto: aquí va directo al checkout de Shopify.'; });
+
+  function setQty(v) { $('qty').value = Math.max(1, Math.min(10, v)); }
+  $('qty-dn').addEventListener('click', function () { setQty(qtyN() - 1); });
+  $('qty-up').addEventListener('click', function () { setQty(qtyN() + 1); });
+  $('qty').addEventListener('change', function () { setQty(qtyN()); });
+
+  /* avisar cuando vuelva la talla agotada */
+  var nb = $('notify-open'), nf = $('notify');
+  if (nb) nb.addEventListener('click', function () { var o = nf.hidden; nf.hidden = !o; nb.setAttribute('aria-expanded', String(o)); if (o) $('notify-email').focus(); });
+  if (nf) nf.addEventListener('submit', function (e) {
+    e.preventDefault(); var em = $('notify-email');
+    if (!em.value || !em.checkValidity()) { em.setAttribute('aria-invalid', 'true'); em.focus(); return; }
+    nf.outerHTML = '<p class="soldout" role="status">We will email you when ' + sold.join(', ') + ' is back.</p>';
+  });
+
+  /* acordeones */
+  var isKids = p.cat === 'kids', isWear = /tees|sweats|kids|bundles/.test(p.cat);
+  $('acc-details').innerHTML = '<ul>' + [
+    p.sub,
+    hasColors ? 'Colors: ' + p.colors.join(', ') : '',
+    isWear ? 'Fabric: XX% cotton, XX oz (from the print partner)' : 'Material: XX (from the supplier)',
+    isWear ? 'Regular fit. Between sizes? Size up.' : (hasSizes ? '' : 'One size'),
+    isWear ? 'Wash cold inside out, hang dry' : '',
+    isKids ? 'Youth sizes YS to YXL' : ''
+  ].filter(Boolean).map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>';
+  $('acc-story').innerHTML = (STORY[p.id] || []).map(function (t) { return '<p>' + t + '</p>'; }).join('') + '<p>' + STORY_BASE + '</p><p><a href="story.html">Read our story</a></p>';
+
+  /* guía de tallas: tabla según el tipo de talla */
+  var rows = isKids ? ['YS', 'YM', 'YL', 'YXL'] : ['S', 'M', 'L', 'XL', '2XL', '3XL'];
+  $('sg-t').textContent = 'Size guide · ' + (hasSizes ? p.name : 'Tees and sweatshirts');
+  $('sg-body').innerHTML = (hasSizes ? '' : '<p>' + p.name + ' is one size. Here is the guide for tees and sweatshirts.</p>') +
+    '<p>Measured flat, in inches. Regular fit. Printed-to-order items can\'t be returned for size, so compare with a shirt you own.</p>' +
+    '<div class="tbl-wrap"><table class="tbl"><caption class="vh">Measurements in inches</caption><thead><tr><th scope="col">Size</th><th scope="col">Chest width</th><th scope="col">Body length</th><th scope="col">Sleeve</th></tr></thead><tbody>' +
+    rows.map(function (r) { return '<tr><th scope="row">' + r + '</th><td>XX</td><td>XX</td><td>XX</td></tr>'; }).join('') +
+    '</tbody></table></div><p>Chest: armpit to armpit. Length: top of shoulder to hem. Exact measurements come from the print partner.</p>' +
+    '<p><a class="link" href="sizes.html">See full size guide</a></p>';
+  var sg = $('size-guide');
+  function openSG() { if (!sg.open) sg.showModal(); }
+  function closeSG() { if (sg.open) sg.close(); }
+  if ($('sg-open')) $('sg-open').addEventListener('click', openSG);
+  $('sg-open-2').addEventListener('click', openSG);
+  $('sg-close').addEventListener('click', closeSG);
+  sg.addEventListener('click', function (e) { if (e.target === sg) closeSG(); });
+
+  /* galería móvil: puntos */
+  var gal = $('gal'), dots = $('dots');
+  renderGal(p.colors[0] || '');
+  SHOTS.forEach(function (s, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.setAttribute('aria-label', 'Image ' + (i + 1) + ' of ' + SHOTS.length);
+    b.addEventListener('click', function () { var li = gal.children[i]; gal.scrollTo({ left: li.offsetLeft - gal.offsetLeft, behavior: 'smooth' }); });
+    dots.appendChild(b);
+  });
+  function markDot(i) { Array.prototype.forEach.call(dots.children, function (d, j) { d.setAttribute('aria-current', j === i ? 'true' : 'false'); }); }
+  markDot(0);
+  gal.addEventListener('scroll', function () {
+    var w = gal.children[0] ? gal.children[0].offsetWidth : 1;
+    var i = gal.scrollLeft + gal.clientWidth >= gal.scrollWidth - 4 ? SHOTS.length - 1 : Math.round(gal.scrollLeft / w);
+    markDot(i);
+  }, { passive: true });
+
+  /* también te puede gustar: misma categoría primero, con la tarjeta compartida */
+  var pool = CAT.filter(function (x) { return x.id !== p.id && x.id !== 'crew-pack'; });
+  pool.sort(function (a, b) { return (b.cat === p.cat) - (a.cat === p.cat); });
+  $('like').innerHTML = pool.slice(0, 4).map(window.hmCard).join('');
+
+  /* barra sticky móvil: aparece cuando el botón principal sale por arriba */
+  var satc = $('satc'), atc = $('atc');
+  function setBar(on) {
+    if (satc.classList.contains('is-on') === on) return;
+    satc.classList.toggle('is-on', on); satc.setAttribute('aria-hidden', String(!on)); $('satc-btn').tabIndex = on ? 0 : -1;
+  }
+  var tick = false;
+  function check() { setBar(atc.getBoundingClientRect().bottom < 0); }
+  window.addEventListener('scroll', function () { if (tick) return; tick = true; requestAnimationFrame(function () { tick = false; check(); }); }, { passive: true });
+
+  /* datos estructurados: Product (sin aggregateRating) + BreadcrumbList */
+  var base = location.href.split('#')[0].split('?')[0];
+  var url = base + '?p=' + p.id;
+  var ld = [{
+    '@context': 'https://schema.org', '@type': 'Product', name: p.name, description: p.sub + '. Designed by the Heavy Metal crew in Waterloo, WI, printed to order.',
+    sku: p.id, brand: { '@type': 'Brand', name: 'Heavy Metal' }, category: cname, url: url,
+    offers: { '@type': 'Offer', url: url, priceCurrency: 'USD', price: 'XX.XX', availability: 'https://schema.org/InStock', itemCondition: 'https://schema.org/NewCondition' }
+  }, {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: base.replace(/product\.html$/, 'index.html') },
+      { '@type': 'ListItem', position: 2, name: 'Shop', item: base.replace(/product\.html$/, 'shop.html?cat=all') },
+      { '@type': 'ListItem', position: 3, name: cname, item: base.replace(/product\.html$/, 'shop.html?cat=' + p.cat) },
+      { '@type': 'ListItem', position: 4, name: p.name, item: url }
+    ]
+  }];
+  var s = document.createElement('script'); s.type = 'application/ld+json'; s.id = 'ld-product'; s.textContent = JSON.stringify(ld); document.head.appendChild(s);
+
+  sync();
+})();
+</script>
+</body>
+</html>

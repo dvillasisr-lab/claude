@@ -1,0 +1,186 @@
+{%- comment -%}
+  Sponsors · where your logo goes, from the logo_placement metaobject (status active, sorted by order).
+  Package chips come from the "packages" references (in tier order). "package_details" lines look like
+  "pit: shirt sleeve" (key or package name, a colon, the detail).
+{%- endcomment -%}
+{%- liquid
+  assign places = metaobjects.logo_placement.values
+  assign tiers = metaobjects.sponsor_tier.values
+
+  assign pkeys = ''
+  for p in places
+    assign st = p.status.value | default: 'active' | downcase
+    if st == 'hidden'
+      continue
+    endif
+    assign o = p.order.value | default: 999 | plus: 10000
+    assign ix = forloop.index | plus: 100
+    assign pkeys = pkeys | append: o | append: '-' | append: ix | append: ','
+  endfor
+  assign pkeys = pkeys | split: ',' | sort
+  assign n = pkeys.size
+
+  assign tkeys = ''
+  for t in tiers
+    assign tst = t.status.value | default: 'available' | downcase
+    if tst == 'hidden'
+      continue
+    endif
+    assign o = t.order.value | default: 999 | plus: 10000
+    assign ix = forloop.index | plus: 100
+    assign tkeys = tkeys | append: o | append: '-' | append: ix | append: ','
+  endfor
+  assign tkeys = tkeys | split: ',' | sort
+
+  assign words = 'No,One,Two,Three,Four,Five,Six,Seven,Eight,Nine,Ten' | split: ','
+  assign newest = ''
+-%}
+
+{%- if n > 0 -%}
+  <section class="sect sect--white" id="placements" aria-labelledby="PlaceT-{{ section.id }}">
+    <div class="wrap">
+      <div class="sect-head">
+        <h2 class="h2" id="PlaceT-{{ section.id }}">{{ section.settings.title }}</h2>
+        <p class="small muted sp-place__sub">
+          {%- if n > 1 and n <= 10 -%}{{ words[n] }} places. {% endif -%}
+          {{- section.settings.subtitle -}}
+        </p>
+      </div>
+      <ul class="sp-place">
+        {%- for pk in pkeys -%}
+          {%- assign want = pk | split: '-' | last | minus: 100 -%}
+          {%- for p in places -%}
+            {%- if forloop.index == want -%}
+              {%- liquid
+                assign up = p.updated.value | date: '%Y-%m-%d'
+                if up != blank and up > newest
+                  assign newest = up
+                endif
+                assign pk_handles = ''
+                for r in p.packages.value
+                  assign pk_handles = pk_handles | append: '|' | append: r.system.handle | append: '|'
+                endfor
+                assign icon = p.icon.value | default: 'web' | downcase
+              -%}
+              <li>
+                <figure class="sp-place__pic">
+                  <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+                    {%- case icon -%}
+                      {%- when 'tractor' -%}
+                        <circle cx="10" cy="21" r="7"/><circle cx="10" cy="21" r="2"/><circle cx="25.5" cy="24" r="4"/><path d="M5 14.5V7h7l2 7h12l2 5v2.5M17 21h4.5M21 14V8.5M19.5 8.5h3"/>
+                      {%- when 'trailer' -%}
+                        <rect x="2" y="8" width="21" height="13"/><path d="M23 18h7M7 12h11"/><circle cx="9" cy="23.5" r="2.5"/><circle cx="16" cy="23.5" r="2.5"/>
+                      {%- when 'shirt' -%}
+                        <path d="M11.5 5 4 8.5l2.8 6.2 3.2-1.6V27h12V13.1l3.2 1.6L28 8.5 20.5 5c-.7 2-2.4 3.2-4.5 3.2S12.2 7 11.5 5Z"/><path d="M23 10.5h2.5"/>
+                      {%- when 'social' -%}
+                        <path d="M4 5h24v16H14l-6 5.5V21H4z"/><path d="M16 17.5l-3.5-3.3a2.1 2.1 0 0 1 3-3l.5.5.5-.5a2.1 2.1 0 0 1 3 3z"/>
+                      {%- when 'mic' -%}
+                        <rect x="12" y="3" width="8" height="14" rx="4"/><path d="M8 13a8 8 0 0 0 16 0M16 21v6M11 27.5h10M12 9h2M18 9h2"/>
+                      {%- when 'pass' -%}
+                        <path d="M13 3h6v5h-6z"/><rect x="8" y="8" width="16" height="20"/><circle cx="16" cy="15.5" r="3"/><path d="M11.5 24c.9-2 2.5-3 4.5-3s3.6 1 4.5 3"/>
+                      {%- else -%}
+                        <rect x="3" y="5" width="26" height="20"/><path d="M3 10h26M7 15h9M7 19h6M12 29h8M16 25v4"/><rect x="19.5" y="14" width="5.5" height="7"/>
+                    {%- endcase -%}
+                  </svg>
+                </figure>
+                <div>
+                  <h3 class="h3">{{ p.name.value }}</h3>
+                  {%- if p.description.value != blank -%}
+                    <p>{{ p.description.value | newline_to_br }}</p>
+                  {%- endif -%}
+                  {%- capture chips -%}
+                    {%- for tk in tkeys -%}
+                      {%- assign tw = tk | split: '-' | last | minus: 100 -%}
+                      {%- for t in tiers -%}
+                        {%- if forloop.index == tw -%}
+                          {%- assign th_key = '|' | append: t.system.handle | append: '|' -%}
+                          {%- if pk_handles contains th_key -%}
+                            {%- liquid
+                              assign tkey = t.key.value | default: '' | downcase
+                              assign tname = t.name.value | downcase
+                              if tkey != blank
+                                assign short = tkey | capitalize
+                              else
+                                assign short = t.name.value
+                              endif
+                              assign detail = ''
+                              for line in p.package_details.value
+                                assign lk = line | split: ':' | first | strip | downcase
+                                if lk == tkey or lk == tname
+                                  assign raw_k = line | split: ':' | first
+                                  assign detail = line | remove_first: raw_k | remove_first: ':' | strip
+                                endif
+                              endfor
+                            -%}
+                            <li>
+                              <b>{{ short }}</b>
+                              {%- if detail != blank %} · {{ detail }}{% endif -%}
+                            </li>
+                          {%- endif -%}
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                    {%- endfor -%}
+                  {%- endcapture -%}
+                  {%- comment -%} No package references yet: use the "Package details" lines as they are {%- endcomment -%}
+                  {%- if chips == blank and pk_handles == blank and p.package_details.value != blank -%}
+                    {%- capture chips -%}
+                      {%- for line in p.package_details.value -%}
+                        {%- liquid
+                          assign raw_k = line | split: ':' | first
+                          assign detail = line | remove_first: raw_k | remove_first: ':' | strip
+                        -%}
+                        <li><b>{{ raw_k | strip | escape }}</b>{%- if detail != blank %} · {{ detail | escape }}{% endif -%}</li>
+                      {%- endfor -%}
+                    {%- endcapture -%}
+                  {%- endif -%}
+                  {%- if chips != blank -%}
+                    <ul class="sp-chips" aria-label="Included in">
+                      {{ chips }}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              </li>
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </ul>
+      {%- if newest != blank -%}
+        <p class="sp-upd sp-upd--end">Last updated: {{ newest | date: '%B %-d, %Y' }}</p>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endif -%}
+
+{% stylesheet %}
+  .sp-place__sub{margin:0}
+  .sp-place{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 24px}
+  .sp-place>li{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:start;padding:14px 0;border-top:1px solid var(--line)}
+  .sp-place__pic{width:64px;height:64px;background:var(--tile);display:grid;place-items:center;margin:0;color:var(--ink)}
+  .sp-place__pic svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+  .sp-place p{margin:2px 0 0;font-size:var(--t-sm);color:var(--soft)}
+  .sp-chips{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 0;padding:0;list-style:none}
+  .sp-chips li{display:block;padding:2px 7px;border:1px solid var(--line);font-size:11px;color:var(--soft);line-height:1.4}
+  .sp-chips b{color:var(--ink);font-weight:700}
+  .sp-upd--end{margin:12px 0 0;text-align:right;font-size:var(--t-xs);color:var(--mute)}
+  @media (max-width:1024px){.sp-place{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:600px){.sp-place{grid-template-columns:1fr}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Sponsors: logo places",
+  "tag": "div",
+  "class": "hm-sponsors-placements",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Places come from Content > Metaobjects > Logo placement (icon, description, Packages, Package details, Status)."
+    },
+    { "type": "text", "id": "title", "label": "Title", "default": "Where your logo goes" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Every spot we’ve got, and which package gets it." }
+  ],
+  "presets": [{ "name": "Sponsors: logo places" }]
+}
+{% endschema %}

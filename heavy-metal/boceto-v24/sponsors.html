@@ -1,0 +1,819 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sponsorship · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Sponsor Heavy Metal Pro Stock: “The Evil One”, a Pro Stock pulling tractor team from Waterloo, WI. Your brand in front of 100,000+ fans across 20+ pulls a season (est.). Title Partner $25,000, Pit Partner $10,000, Crew Supporter $5,000.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4 */
+/* 1 · primera pantalla: foto + título + 3 paquetes reales */
+/* 1 · banda oscura: foto de la grada a la derecha fundida en negro; texto a la izquierda; cifra gigante en amarillo */
+.sp-band{position:relative;isolation:isolate;overflow:hidden;background:var(--night);color:var(--night-ink);border-bottom:4px solid var(--accent)}
+.sp-band__pic{position:absolute;inset:0 0 0 auto;width:min(64%,1000px);margin:0;z-index:-1}
+.sp-band__pic img{width:100%;height:100%;object-fit:cover;object-position:50% 68%;filter:saturate(.85) contrast(1.05)}
+.sp-band__pic::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(90deg,var(--night) 0%,rgba(18,18,17,.82) 22%,rgba(18,18,17,.25) 55%,rgba(18,18,17,0) 80%),
+  linear-gradient(0deg,rgba(18,18,17,.55) 0%,rgba(18,18,17,0) 35%)}
+.sp-band__in{position:relative;min-height:clamp(480px,40vw,600px);display:flex;align-items:center;padding-block:clamp(40px,5vw,72px)}
+.sp-band__txt{width:100%;min-width:0;display:grid;gap:clamp(16px,1.6vw,22px);justify-items:start;max-width:min(100%,820px)}
+.sp-band__h1{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:800;text-transform:uppercase;line-height:.95;letter-spacing:.01em;font-size:clamp(34px,4.2vw,60px);color:var(--night-ink);text-wrap:balance}
+.sp-pitch{margin:0;display:grid;gap:2px}
+.sp-pitch__pre,.sp-pitch__post{font-size:clamp(17px,1.5vw,21px);font-weight:600;line-height:1.3;color:var(--night-ink)}
+.sp-pitch__big{display:block;font-family:var(--f-head);font-stretch:62%;font-weight:800;text-transform:uppercase;line-height:.86;letter-spacing:-.005em;font-size:clamp(50px,9vw,140px);color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap;margin-block:2px 4px}
+.sp-pitch__big [data-pitch-fans]{white-space:nowrap}
+.sp-pitch__big small{font-size:.4em;font-stretch:78%;letter-spacing:.03em;color:var(--night-ink);margin-left:.1em;white-space:nowrap}
+.sp-facts{margin:0;font-size:var(--t-sm);line-height:1.5;color:#B9B5AB;max-width:56ch}
+.sp-facts i{font-style:normal;color:var(--accent);margin-inline:.55em}
+.sp-cta{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px;margin-top:4px}
+.sp-cta__main{background:var(--accent);border-color:var(--accent);color:var(--ink);min-height:52px;padding:0 1.8em;font-size:var(--t-sm)}
+.sp-cta__main:hover{background:var(--night-ink);border-color:var(--night-ink);color:var(--ink)}
+.sp-band .link{color:var(--night-ink);font-weight:600;text-decoration:underline;text-underline-offset:4px}
+.sp-band .link:hover{color:var(--accent)}
+.sp-band :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media (max-width:860px){
+  .sp-band__pic{position:relative;inset:auto;width:100%;height:clamp(200px,52vw,380px);z-index:0}
+  .sp-band__pic::after{background:linear-gradient(0deg,var(--night) 0%,rgba(18,18,17,.4) 30%,rgba(18,18,17,0) 60%)}
+  .sp-pitch__big{font-size:min(15.5vw,112px)}
+  .sp-band__in{min-height:0;margin-top:clamp(-72px,-12vw,-40px);padding-block:0 36px;z-index:1}
+}
+.sp-top{padding-block:clamp(20px,2.4vw,32px) 32px}
+.sp-tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
+.sp-tier{background:var(--bg);border:1px solid var(--line);padding:18px;display:grid;grid-template-rows:auto auto 1fr auto;gap:12px;min-width:0}
+.sp-tier--main{background:var(--ink);border-color:var(--ink);color:var(--night-ink)}
+.sp-tier--main .h3,.sp-tier--main .sp-price{color:var(--night-ink)}
+.sp-tier--main .sp-ben li{color:var(--line)}
+.sp-tier--main .sp-ben li::before{background:var(--accent)}
+.sp-tier__top{display:flex;justify-content:space-between;align-items:start;gap:8px}
+.sp-price{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h1);line-height:1;color:var(--ink)}
+.sp-price small{display:block;font-family:var(--f-sans);font-stretch:100%;font-size:var(--t-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-top:4px}
+.sp-tier--main .sp-price small{color:var(--line)}
+.sp-ben{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid var(--line);display:grid;gap:6px;font-size:var(--t-sm);align-content:start}
+.sp-tier--main .sp-ben{border-color:#3A3935}
+.sp-ben li{position:relative;padding-left:14px;color:var(--soft);line-height:1.4}
+.sp-ben li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;background:var(--ink)}
+.sp-tier--main .btn{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.sp-tier--main .btn:hover{background:var(--surface);border-color:var(--surface)}
+.sp-tiers{grid-template-columns:repeat(var(--n,3),minmax(0,1fr))}
+.sp-tier__badges{display:flex;flex-wrap:wrap;gap:4px;justify-content:end}
+/* Limited: aviso de cupo */
+.sp-left{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.sp-tier--main .sp-left{box-shadow:none}
+/* Sold out: tarjeta atenuada, sin perder contraste de lectura */
+.sp-tier--out{background:transparent;border-style:dashed;border-color:#C9C6BE}
+.sp-tier--out .h3,.sp-tier--out .sp-price{color:var(--mute)}
+.sp-tier--out .sp-ben{border-top-style:dashed}
+.sp-tier--out .sp-ben li{color:var(--mute)}
+.sp-tier--out .sp-ben li::before{background:#BDBAB2}
+.sp-out{background:transparent;box-shadow:inset 0 0 0 1px var(--mute);color:var(--soft)}
+.sp-wait{margin:0;font-size:var(--t-xs);color:var(--mute)}
+/* Control de boceto (dentro de la nota): no es parte del sitio */
+.sp-owner{max-width:none;margin-top:12px;display:block}
+.sp-seg{display:inline-flex;flex-wrap:wrap;gap:4px;margin:4px 0 0 4px;vertical-align:middle}
+.sp-seg button{font-size:11px;font-weight:700;letter-spacing:.04em;padding:3px 9px;min-height:28px;border:1px dashed var(--ink);background:transparent;color:var(--ink);cursor:pointer}
+.sp-seg button[aria-pressed="true"]{background:var(--ink);color:var(--accent);border-style:solid}
+.sp-adm{margin-top:6px}
+.sp-adm summary{cursor:pointer;font-weight:700;text-decoration:underline;text-underline-offset:2px;width:max-content;max-width:100%}
+.adm{margin-top:8px;display:grid;align-items:start;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:10px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;font-size:12px;letter-spacing:0;text-transform:none;color:#303030}
+.adm__card{background:#fff;border:1px solid #E3E3E3;border-radius:10px;padding:10px 12px;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.adm__crumb{margin:0 0 8px;color:#616161}
+.adm__crumb b{color:#303030}
+.adm__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 10px;margin:0}
+.adm__grid div{display:grid;gap:2px;min-width:0}
+.adm__grid .w{grid-column:1/-1}
+.adm__grid dt{color:#616161}
+.adm__grid dd{margin:0;border:1px solid #8A8A8A;border-radius:6px;padding:3px 7px;background:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adm__grid dd.sel::after{content:" \25BE";color:#616161;float:right}
+.adm__grid dd.tog{border:0;padding:3px 0}
+.adm__grid dd.tog i{display:inline-block;width:26px;height:14px;border-radius:7px;background:#303030;vertical-align:-3px;margin-right:6px;position:relative}
+.adm__grid dd.tog i::after{content:"";position:absolute;right:2px;top:2px;width:10px;height:10px;border-radius:50%;background:#fff}
+.adm__grid dd.tog.off i{background:#B5B5B5}
+.adm__grid dd.tog.off i::after{right:auto;left:2px}
+.adm__bar{display:flex;justify-content:space-between;gap:8px;margin-top:8px}
+.adm__bar span{border-radius:8px;padding:4px 10px;font-weight:600}
+.adm__del{color:#8E1F0B;background:#FEE9E8}
+.adm__save{background:#303030;color:#fff}
+.adm__how{margin:0;padding-left:16px;display:grid;gap:4px}
+.adm__how li{line-height:1.4}
+@media (max-width:760px){.adm{grid-template-columns:1fr}}
+@media (max-width:860px){.sp-tiers{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(260px,84%);overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:thin}.sp-tier{scroll-snap-align:start}.sp-hint{display:block}}
+@media (max-width:480px){.sp-tiers{grid-auto-columns:82%}}
+.sp-hint{display:none;margin:0;font-size:var(--t-xs);color:var(--mute)}
+.sp-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 16px;margin-top:8px}
+.sp-upd{margin:0 0 0 auto;font-size:var(--t-xs);color:var(--mute)}
+.sp-stats-col{display:grid;gap:10px}
+.sp-stats-col .sp-upd{margin:0}
+.sp-upd--end{margin:12px 0 0;text-align:right}
+.sp-seg button[aria-pressed="false"].is-off{text-decoration:line-through;opacity:.7}
+/* editor de boceto de "Where your logo goes": una fila por lugar */
+.pl-ed{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:6px 16px;margin:8px 0 6px}
+.pl-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 8px;padding:4px 0;border-top:1px dashed rgba(28,27,25,.25)}
+.pl-name{display:inline-flex;align-items:center;gap:6px;min-height:32px;padding:2px 4px 2px 0;border:0;background:none;font-size:12px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left}
+.pl-eye{font-size:9px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:1px 5px;background:var(--ink);color:var(--accent)}
+.pl-row.is-off .pl-name{color:var(--mute);text-decoration:line-through}
+.pl-row.is-off .pl-eye{background:transparent;color:var(--mute);box-shadow:inset 0 0 0 1px var(--mute);text-decoration:none}
+.pl-pk{margin:0}
+.pl-pk button{min-width:56px}
+.pl-row.is-off .pl-pk{opacity:.6}
+
+/* 2 · barra de pestañas sticky (dentro de la página) */
+.sp-tabs{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header));z-index:40;background:var(--surface);border-block:1px solid var(--line)}
+.sp-tabs ul{display:flex;gap:clamp(12px,2vw,28px);margin:0;padding:0;list-style:none;overflow-x:auto;scrollbar-width:none}
+.sp-tabs ul::-webkit-scrollbar{display:none}
+.sp-tabs a{display:flex;align-items:center;min-height:44px;white-space:nowrap;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;color:var(--mute);border-bottom:2px solid transparent;margin-bottom:-1px}
+.sp-tabs a:hover{color:var(--ink)}
+.sp-tabs a[aria-current="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+main [id]{scroll-margin-top:calc(var(--header) + 56px)}
+
+/* 3 · cifras (estimadas): exposición grande + 4 contadores */
+.sp-num{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(20px,3vw,48px);align-items:end}
+.sp-big{display:grid;gap:4px;margin:0}
+.sp-big dt{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.sp-big dd{margin:0}
+.sp-big__v{display:block;font-family:var(--f-head);font-stretch:62%;font-weight:800;font-size:clamp(44px,5.4vw,72px);line-height:.95;letter-spacing:-.01em;color:var(--ink);font-variant-numeric:tabular-nums}
+.sp-big__how{display:block;margin-top:6px;font-size:var(--t-sm);color:var(--soft);max-width:44ch}
+.sp-big__how b{color:var(--ink);font-weight:700}
+.sp-est{font-family:var(--f-sans);font-stretch:100%;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-left:6px;vertical-align:.35em;white-space:nowrap}
+.sp-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0}
+.sp-stats .spec dd{font-size:var(--t-h1);white-space:nowrap}
+.sp-stats .sp-est{vertical-align:.25em;margin-left:4px;font-size:10px}
+@media (max-width:900px){.sp-num{grid-template-columns:1fr;align-items:start}}
+@media (max-width:600px){.sp-stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* 4 · dónde sale tu marca: lista desde el metaobjeto "Logo placement" */
+.sp-place{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 24px}
+.sp-place li{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:start;padding:14px 0;border-top:1px solid var(--line)}
+.sp-place__pic{width:64px;height:64px;background:var(--tile);display:grid;place-items:center;margin:0;color:var(--ink)}
+.sp-place__pic svg{width:34px;height:34px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
+.sp-place li.is-new .sp-place__pic{background:var(--accent)}
+.sp-place li.is-new{animation:sp-in .5s ease-out}
+@keyframes sp-in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.sp-place p{margin:2px 0 0;font-size:var(--t-sm);color:var(--soft)}
+.sp-chips{display:flex;flex-wrap:wrap;gap:4px;margin:8px 0 0;padding:0;list-style:none}
+.sp-place .sp-chips li{display:block;padding:2px 7px;border:1px solid var(--line);border-top:1px solid var(--line);font-size:11px;color:var(--soft);line-height:1.4}
+.sp-chips b{color:var(--ink);font-weight:700}
+@media (max-width:1024px){.sp-place{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.sp-place{grid-template-columns:1fr}}
+
+/* 5 · mapa de calcomanías: misma anatomía que The Machine (plano técnico con líneas guía) */
+.dz{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,320px);gap:clamp(20px,3vw,48px);align-items:center}
+.dz-stage{position:relative;aspect-ratio:1120/676;width:100%;max-width:calc((100svh - var(--header) - var(--announce) - 2 * var(--sect) - 90px) * 1120 / 676);min-width:min(100%,560px);margin:0 auto}
+.dz-img{position:absolute;left:0;right:0;top:7.396%;height:85.207%}
+.dz-img>img{width:100%;height:100%;object-fit:contain}
+.dz-lines{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.dz-lines line{stroke:var(--mute);stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke;transition:stroke .15s}
+.dz-lines line.on{stroke:var(--ink);stroke-dasharray:none;stroke-width:1.5}
+.dz-tag{position:absolute;transform:translateX(-50%);display:inline-flex;gap:6px;align-items:center;white-space:nowrap;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);background:var(--surface);border:1px solid var(--line);padding:3px 8px;cursor:pointer;user-select:none}
+.dz-tag--t{top:0}.dz-tag--b{bottom:0}
+.dz-tag i{font-style:normal;color:var(--mute)}
+.dz-tag.on{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.dz-tag.on i{color:var(--accent)}
+.dz-tag.is-sold{text-decoration:line-through;color:var(--mute)}
+.dz-tag.on.is-sold{color:var(--line)}
+.dz-hs{position:absolute;transform:translate(-50%,-50%);width:44px;height:44px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
+.dz-hs span{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--ink);font-size:11px;font-weight:800;box-shadow:0 0 0 2px var(--ink);transition:transform .15s}
+.dz-hs.is-sold span{background:var(--surface);color:var(--mute);box-shadow:0 0 0 2px var(--mute)}
+.dz-hs:hover span{transform:scale(1.12)}
+.dz-hs[aria-pressed="true"] span{background:var(--ink);color:var(--accent);box-shadow:0 0 0 2px var(--accent),0 0 0 6px rgba(28,27,25,.3)}
+.dz-hs:focus-visible{outline:none}
+.dz-hs:focus-visible span{outline:2px solid var(--ink);outline-offset:4px}
+.dz-panel{display:grid;gap:12px;align-content:start}
+.dz-zoom{margin:0;position:relative;aspect-ratio:16/10;background-color:var(--tile);background-image:url(img/hm-tractor-cutout.webp);background-repeat:no-repeat;background-size:300% auto;transition:background-position .3s}
+.dz-zoom::after{content:"";position:absolute;left:50%;top:50%;width:34%;aspect-ratio:3/2;transform:translate(-50%,-50%);border:2px dashed var(--accent);box-shadow:0 0 0 1px var(--ink)}
+.dz-panel__txt{display:grid;gap:4px}
+.dz-panel__txt p{margin:0}
+.dz-panel__val{font-family:var(--f-head);font-stretch:70%;font-weight:800;font-size:var(--t-h1);line-height:1.1;text-transform:uppercase;color:var(--ink)}
+.dz-panel__body{font-size:var(--t-sm);color:var(--soft)}
+.dz-facts{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;margin:0;font-size:var(--t-sm)}
+.dz-facts dt{color:var(--mute);font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;align-self:center}
+.dz-facts dd{margin:0;color:var(--ink);font-weight:600}
+.dz-st{display:inline-flex;align-items:center;gap:6px}
+.dz-st::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 1px var(--ink)}
+.dz-st.is-sold::before{background:var(--surface);box-shadow:0 0 0 1px var(--mute)}
+.dz-nav{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px}
+.dz-nav__btns{display:flex;gap:4px}
+.dz-nav button{width:40px;height:40px;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;color:var(--ink)}
+.dz-nav button:hover{border-color:var(--ink)}
+.dz-nav svg{width:16px;height:16px}
+.dz-hint{font-size:11px;color:var(--mute);margin:0}
+@media (max-width:960px){.dz{grid-template-columns:1fr}.dz-panel{grid-template-columns:minmax(0,220px) minmax(0,1fr);align-items:start}.dz-panel .dz-nav,.dz-panel .btn{grid-column:1/-1}}
+@media (max-width:760px){
+  .dz-stage{aspect-ratio:1120/576;min-width:0}
+  .dz-img{top:0;height:100%}
+  .dz-lines,.dz-tag{display:none}
+  .dz-hs{width:40px;height:40px}
+  .dz-hs span{width:22px;height:22px;font-size:10px}
+  .dz-panel{grid-template-columns:110px minmax(0,1fr);gap:12px}
+  .dz-zoom{aspect-ratio:1}
+}
+
+/* 6 · FAQ + formulario */
+.sp-end{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(20px,3vw,48px);align-items:start}
+.faq details{border-top:1px solid var(--line)}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:48px;cursor:pointer;font-weight:600;font-size:var(--t-sm);list-style:none;color:var(--ink)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:18px;flex:none}
+.faq details[open] summary::after{content:"\2212"}
+.faq details p{margin:0 0 14px;color:var(--soft);font-size:var(--t-sm);max-width:60ch}
+.sp-form{background:var(--surface);border:1px solid var(--line);padding:clamp(16px,2vw,24px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 14px}
+.sp-form .full{grid-column:1/-1}
+.sp-form textarea.input{min-height:96px;padding-block:10px;resize:vertical}
+.input[aria-invalid="true"]{border-color:var(--alert);outline:1px solid var(--alert)}
+.field .opt{font-weight:400;text-transform:none;letter-spacing:0;color:var(--mute)}
+.sp-status{margin:0;font-size:var(--t-sm);font-weight:600;min-height:1.5em}
+.sp-status.is-err{color:var(--alert)}
+.sp-status.is-ok{color:var(--ink);background:var(--bg);border-left:3px solid var(--accent);padding:8px 10px}
+.sp-status:empty{padding:0;border:0}
+.sp-next{margin:0;padding:10px 12px;background:var(--bg);border-left:3px solid var(--accent);font-size:var(--t-sm);color:var(--ink)}
+.sp-next b{display:block;font-size:var(--t-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+/* Contratar al equipo: otra cosa que el patrocinio, así que va como liga discreta bajo el FAQ, no como botón */
+.sp-book{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:4px 16px;margin-top:20px;padding:12px 14px;background:var(--bg);border:1px solid var(--line);text-decoration:none;color:var(--ink);transition:border-color .15s}
+.sp-book:hover{border-color:var(--ink)}
+.sp-book__q{font-size:var(--t-sm);font-weight:600}
+.sp-book__go{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px}
+.sp-book__go svg{width:16px;height:16px;transition:transform .15s}
+.sp-book:hover .sp-book__go svg{transform:translateX(3px)}
+/* "Why are you here?": fila compacta y discreta bajo el hero (no compite con el botón principal) */
+.why{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px 20px;margin:0 0 20px;padding-block:12px;border-block:1px solid var(--line)}
+.why__q{font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:0;color:var(--mute)}
+.why ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.why a{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:0 8px;min-height:44px;height:100%;padding:6px 10px;background:transparent;border:1px solid transparent;text-decoration:none;color:var(--ink);transition:border-color .15s,background-color .15s}
+.why a:hover{border-color:var(--line);background:var(--bg)}
+.why a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.why b{font-size:var(--t-sm);line-height:1.25;font-weight:700}
+.why small{grid-column:1;font-size:var(--t-xs);line-height:1.3;color:var(--mute)}
+.why svg{grid-column:2;grid-row:1/span 2;width:16px;height:16px;color:var(--mute);transition:transform .15s}
+.why a.is-main svg{color:var(--ink)}
+.why a:hover svg{transform:translateX(3px)}
+@media (max-width:1240px){.why{grid-template-columns:1fr}}
+@media (max-width:760px){.why ul{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}.why a{padding:6px 4px}}
+@media (max-width:900px){.sp-end{grid-template-columns:1fr}}
+@media (max-width:480px){.sp-form{grid-template-columns:1fr}}
+</style>
+<!-- Meta y JSON-LD: en Shopify salen de las mismas entradas Sponsor stat (pulls x fans per pull); aquí el JS los vuelve a calcular -->
+<script type="application/ld+json" id="sp-ld">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {"@type": "WebPage", "name": "Sponsorship · Heavy Metal Pro Stock: “The Evil One”", "description": "Sponsorship packages for Heavy Metal Pro Stock: “The Evil One”, a Pro Stock pulling tractor team from Waterloo, WI.",
+     "publisher": {"@type": "SportsTeam", "name": "Heavy Metal Pro Stock: “The Evil One”", "sport": "Tractor pulling", "location": {"@type": "Place", "address": {"@type": "PostalAddress", "addressLocality": "Waterloo", "addressRegion": "WI", "addressCountry": "US"}}}},
+    {"@type": "FAQPage",
+     "mainEntity": [
+      {"@type": "Question", "name": "Which package fits my business?", "acceptedAnswer": {"@type": "Answer", "text": "Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. If you are not sure, pick Not sure yet in the form and we will send you the sponsor info kit."}},
+      {"@type": "Question", "name": "Where does “The Evil One” pull?", "acceptedAnswer": {"@type": "Answer", "text": "On the NTPA and PPL Badger State circuits, 20+ pulls a season (est.), plus exhibitions. Driver and owner Chris F. has 20+ years in the sport."}},
+      {"@type": "Question", "name": "How many people will see my brand?", "acceptedAnswer": {"@type": "Answer", "text": "Your brand in front of 100,000+ fans across 20+ pulls a season (est.), in the stands alone. Streams and social media come on top of that. Current numbers are in our sponsor info kit."}},
+      {"@type": "Question", "name": "How long does a package run?", "acceptedAnswer": {"@type": "Answer", "text": "Packages are built around the pulling season. We confirm the exact dates and terms in writing with you before anything goes on the tractor."}},
+      {"@type": "Question", "name": "What if the package I want is sold out?", "acceptedAnswer": {"@type": "Answer", "text": "Join the waitlist from that package. We will contact you if a spot opens up."}},
+      {"@type": "Question", "name": "What happens after I send the form?", "acceptedAnswer": {"@type": "Answer", "text": "If you asked for the sponsor info kit, we email it within 2 business days: a short PDF with the packages, who sees your logo, the decal map and real photos, so you can decide. If you picked a package, we also reply to set up a call. No commitment: nothing is signed until we agree on the terms in writing."}}
+     ]}
+  ]
+}
+</script>
+</head>
+<body>
+<div data-hm-header data-current="sponsors"></div>
+
+<main id="main">
+
+<!-- 1 · Primera pantalla: banda oscura a todo lo ancho con la foto de la grada; la cifra de fans (calculada) es el gancho visual -->
+<section class="sp-band" aria-labelledby="sp-title">
+  <figure class="sp-band__pic"><img src="img/hm-grandstand.webp" alt="“The Evil One” on the track in front of a full grandstand" width="1050" height="1400" fetchpriority="high"></figure>
+  <div class="wrap sp-band__in">
+    <div class="sp-band__txt">
+      <h1 class="sp-band__h1" id="sp-title">Sponsor “The Evil One”</h1>
+      <!-- Frase de venta: los 3 trozos se llenan desde Sponsor stat (mismo cálculo que [data-pitch]) -->
+      <p class="sp-pitch"><span class="sp-pitch__pre">Your brand in front of</span>
+        <span class="sp-pitch__big"><span data-pitch-fans>100,000+</span><small> fans</small></span>
+        <span class="sp-pitch__post" data-pitch-across>across 20+ pulls a season (est.)</span></p>
+      <p class="sp-facts">Pro Stock tractor built from scratch<i aria-hidden="true">·</i>Waterloo, WI<i aria-hidden="true">·</i>Driver with 20+ years in the sport<i aria-hidden="true">·</i>NTPA and PPL Badger State circuits</p>
+      <div class="sp-cta">
+        <a class="btn sp-cta__main" href="#contact" id="hero-cta">Request a package</a>
+        <a class="link" href="#contact" id="kit-link">Not sure yet? Get the info kit</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Paquetes reales (metaobjeto sponsor_tier) -->
+<section class="sect--white sp-top" id="packages" aria-label="Sponsorship packages">
+  <div class="wrap">
+    <div>
+      <!-- Propuesta (idea dbrand, "Why are you here?"): selector compacto bajo el hero. En Shopify: sección del tema con 4 bloques (texto, subtexto, liga). -->
+      <nav class="why" id="why" aria-labelledby="why-q">
+        <h2 class="why__q" id="why-q">Why are you here?</h2>
+        <ul>
+          <li><a class="is-main" href="#sp-tiers" id="why-logo"><b>I want my logo on “The Evil One”</b><small>Good call. Packages right below.</small><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a></li>
+          <li><a href="shop.html"><b>I just want a shirt</b><small>Fair. No contract needed.</small><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          <li><a href="schedule.html"><b>I'm a pulling fan</b><small>Same. Here's where we pull next.</small><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          <li><a href="story.html"><b>I have no clue</b><small>Honest. Start with the story.</small><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+        </ul>
+      </nav>
+      <!-- En Shopify: un bloque Liquid recorre las entradas del metaobjeto "Sponsor tier". Aquí: array TIERS al final. -->
+      <ul class="sp-tiers" id="sp-tiers" aria-label="Sponsorship packages" tabindex="0"></ul>
+      <div class="sp-foot"><p class="sp-hint" id="sp-hint" aria-hidden="true">Swipe to see all 3 packages</p>
+        <!-- last-updated: sponsor-packages (Metaobjetos > Sponsor tier, campo Updated) -->
+        <p class="sp-upd" id="sp-tiers-upd">Last updated: October 1, 2026</p></div>
+      <div class="note sp-owner" id="sp-owner"><b>Hero más limpio:</b> título, tu frase de venta grande y las demás frases en una fila chica; un solo botón. "Why are you here?" queda abajo, compacto (dime si se queda). La frase se calcula de <b>Sponsor stat</b> (pulls × fans por pull). Prueba Pit Partner:
+        <span class="sp-seg" id="tier-seg" role="group" aria-label="Estado de Pit Partner, solo boceto">
+          <button type="button" data-st="available" aria-pressed="true">Available</button>
+          <button type="button" data-st="limited" aria-pressed="false">Limited</button>
+          <button type="button" data-st="soldout" aria-pressed="false">Sold out</button>
+          <button type="button" data-st="hidden" aria-pressed="false">Hidden</button>
+        </span>
+        <details class="sp-adm">
+          <summary>Así lo editas en Shopify</summary>
+          <div class="adm">
+            <div class="adm__card">
+              <p class="adm__crumb">Contenido › Metaobjetos › Sponsor tier › <b id="adm-name">Pit Partner</b></p>
+              <dl class="adm__grid">
+                <div><dt>Name</dt><dd id="adm-n">Pit Partner</dd></div>
+                <div><dt>Price</dt><dd id="adm-p">$10,000</dd></div>
+                <div><dt>Status</dt><dd class="sel" id="adm-s">Available</dd></div>
+                <div><dt>Spots left</dt><dd id="adm-l">(vacío)</dd></div>
+                <div><dt>Featured</dt><dd class="tog" id="adm-f"><i></i>Sí</dd></div>
+                <div><dt>Tagline</dt><dd id="adm-t">Season package</dd></div>
+                <div><dt>Updated</dt><dd id="adm-u">Oct 1, 2026</dd></div>
+                <div class="w"><dt>Benefits (una línea cada uno)</dt><dd id="adm-b">Logo on the team shirt sleeve · Logo on the trailer · …</dd></div>
+              </dl>
+              <div class="adm__bar"><span class="adm__del">Eliminar entrada</span><span class="adm__save">Guardar</span></div>
+            </div>
+            <ol class="adm__how">
+              <li><b>Precio o beneficios:</b> cambia el campo, pon la fecha en Updated y Guardar. "Last updated" muestra la fecha más nueva.</li>
+              <li><b>Lleno:</b> Status = Sold out. Sale atenuado y el botón pasa a "Join the waitlist".</li>
+              <li><b>Quedan pocos:</b> Status = Limited y escribe Spots left (1 = "1 spot left").</li>
+              <li><b>Esconder sin borrar:</b> Status = Hidden (lo guardas para la próxima temporada).</li>
+              <li><b>Borrar para siempre:</b> Eliminar entrada. <b>Nuevo:</b> Agregar entrada.</li>
+            </ol>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · Pestañas dentro de la página -->
+<nav class="sp-tabs" aria-label="On this page">
+  <div class="wrap"><ul>
+    <li><a href="#packages">Packages</a></li>
+    <li><a href="#placements">Where your logo goes</a></li>
+    <li><a href="#decals">Decal map</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Request</a></li>
+  </ul></div>
+</nav>
+
+<!-- 3 · Cifras estimadas (array STATS: metaobjeto "Sponsor stat") -->
+<section class="sect" style="padding-block:32px" id="numbers" aria-labelledby="stats-t">
+  <div class="wrap sp-num">
+    <h2 class="vh" id="stats-t">The season in numbers</h2>
+    <dl class="sp-big" id="sp-big"></dl>
+    <div class="sp-stats-col">
+      <dl class="sp-stats" id="sp-stats"></dl>
+      <!-- last-updated: sponsor-stats (Metaobjetos > Sponsor stat, campo Updated) -->
+      <p class="sp-upd" id="sp-stats-upd">Last updated: October 1, 2026</p>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · Dónde sale tu marca (array PLACEMENTS: metaobjeto "Logo placement") -->
+<section class="sect sect--white" id="placements" aria-labelledby="place-t">
+  <div class="wrap">
+    <div class="sect-head"><h2 class="h2" id="place-t">Where your logo goes</h2><p class="small muted" style="margin:0" id="place-sub">What each package gets is listed under each place.</p></div>
+    <ul class="sp-place" id="sp-place"></ul>
+    <!-- last-updated: logo-placements (Metaobjetos > Logo placement) -->
+    <p class="sp-upd sp-upd--end" id="place-upd"></p>
+    <div class="note sp-owner" id="place-owner">Esto no sale en el sitio. Cada lugar es una entrada de Contenido &gt; Metaobjetos &gt; <b>Logo placement</b> (nombre, descripción, ícono, Status). Los cuadritos de paquete salen del campo <b>Packages</b>: una lista de referencias a <b>Sponsor tier</b> donde marcas qué paquetes incluyen ese lugar (y, si quieres, <b>Package details</b>: una línea por paquete, como "Pit: shirt sleeve"). <b>Status Hidden</b> esconde el lugar sin borrarlo; <b>Agregar entrada</b> pone uno nuevo. Zonas del mapa: <b>Decal zone</b> (tamaños "XX x XX in" y paquetes "To confirm": confirmar con Chris y las reglas de NTPA / PPL). Pruébalo: clic en el nombre para mostrar/esconder, y en Title / Pit / Crew para marcar paquetes.
+      <span class="pl-ed" id="place-ed" role="group" aria-label="Lugares y paquetes, solo boceto"></span>
+      <span class="sp-seg"><button type="button" id="place-add" aria-pressed="false">+ Add placement</button></span>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · Mapa de calcomanías: anatomía como en The Machine (array ZONES: metaobjeto "Decal zone") -->
+<section class="sect" id="decals" aria-labelledby="map-t">
+  <div class="wrap">
+    <div class="sect-head">
+      <h2 class="h2" id="map-t">Decal map</h2>
+      <p class="dz-hint">Tap a number. On a keyboard, use the arrow keys.</p>
+    </div>
+    <div class="dz">
+      <figure class="dz-stage" id="dz-stage">
+        <svg class="dz-lines" id="dz-lines" viewBox="0 0 1120 676" preserveAspectRatio="none" aria-hidden="true"></svg>
+        <div class="dz-img" id="dz-pts" role="group" aria-label="Decal zones on the tractor">
+          <img src="img/hm-tractor-cutout.webp" alt="“The Evil One” in profile, facing right, with numbered decal zones" width="1120" height="576" loading="lazy">
+        </div>
+      </figure>
+      <div class="dz-panel" id="dz-panel">
+        <div class="dz-zoom" id="dz-zoom" role="img" aria-label="Close-up of the selected zone"></div>
+        <div class="dz-panel__txt">
+          <p class="label muted" id="dz-label" aria-live="polite">01 · Decal zone</p>
+          <p class="dz-panel__val" id="dz-name">Hood</p>
+          <dl class="dz-facts">
+            <dt>Size</dt><dd class="num" id="dz-size">XX x XX in</dd>
+            <dt>Package</dt><dd id="dz-tier">Title Partner</dd>
+            <dt>Status</dt><dd><span class="dz-st" id="dz-status">Available</span></dd>
+          </dl>
+          <p class="dz-panel__body" id="dz-desc"></p>
+        </div>
+        <a class="btn btn--ghost btn--block" href="#contact" id="dz-cta">Ask about this zone</a>
+        <div class="dz-nav">
+          <span class="small muted num" id="dz-count">01 / 06</span>
+          <span class="dz-nav__btns">
+            <button type="button" id="dz-prev" aria-label="Previous zone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+            <button type="button" id="dz-next" aria-label="Next zone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <!-- last-updated: decal-zones (Metaobjetos > Decal zone) -->
+    <p class="sp-upd sp-upd--end" id="dz-upd"></p>
+  </div>
+</section>
+
+<!-- 6 · FAQ y formulario -->
+<section class="sect sect--white" aria-labelledby="faq-t">
+  <div class="wrap sp-end">
+    <div class="faq" id="faq">
+      <h2 class="h2" id="faq-t" style="margin-bottom:12px">FAQ</h2>
+      <details><summary>Which package fits my business?</summary><p>Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. Not sure? Pick "Not sure yet" in the form and we'll send you the info kit.</p></details>
+      <details><summary>Where does “The Evil One” pull?</summary><p>On the NTPA and PPL Badger State circuits, <span data-pulls>20+ pulls a season (est.)</span>, plus exhibitions. Driver and owner Chris F. has 20+ years in the sport. Dates go up on the <a href="schedule.html">Schedule</a>.</p></details>
+      <details><summary>How many people will see my brand?</summary><p><span data-pitch>Your brand in front of 100,000+ fans across 20+ pulls a season (est.)</span>, in the stands alone. Streams and social media come on top of that. Current numbers are in our sponsor info kit.</p></details>
+      <details><summary>How long does a package run?</summary><p>Packages are built around the pulling season. We confirm the exact dates and terms in writing with you before anything goes on the tractor.</p></details>
+      <details><summary>What if the package I want is sold out?</summary><p>Hit "Join the waitlist" on that package. We'll contact you if a spot opens up.</p></details>
+      <details><summary>What happens after I send the form?</summary><p>If you asked for the sponsor info kit, we email it within 2 business days: a short PDF with the packages, who sees your logo, the decal map and real photos, so you can decide. If you picked a package, we also reply to set up a call. No commitment: nothing is signed until we agree on the terms in writing.</p></details>
+      <a class="sp-book" href="book.html"><span class="sp-book__q">Want “The Evil One” at your event?</span><span class="sp-book__go">Book the team<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+    </div>
+
+    <div id="contact">
+      <h2 class="h2" id="form-t">Request a package</h2>
+      <p class="small muted" style="margin:4px 0 12px">Tell us a little about your business and pick a package, or just ask for the info kit.</p>
+      <form class="sp-form" id="sp-form" novalidate aria-labelledby="form-t">
+        <div class="field"><label for="f-company">Company</label><input class="input" id="f-company" name="company" type="text" required autocomplete="organization" placeholder="e.g. Waterloo Ag Supply"></div>
+        <div class="field"><label for="f-name">Your name</label><input class="input" id="f-name" name="name" type="text" required autocomplete="name" placeholder="e.g. Jake Miller"></div>
+        <div class="field"><label for="f-email">Email</label><input class="input" id="f-email" name="email" type="email" required autocomplete="email" spellcheck="false" placeholder="you@company.com"></div>
+        <div class="field"><label for="f-phone">Phone <span class="opt">(optional)</span></label><input class="input" id="f-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="(608) 555-0123"></div>
+        <div class="field full"><label for="f-pkg">Package</label>
+          <select class="input" id="f-pkg" name="package"></select>
+        </div>
+        <div class="field full"><label for="f-msg">Message <span class="opt">(optional)</span></label><textarea class="input" id="f-msg" name="message" placeholder="Tell us about your business and what you'd like to get out of it..."></textarea></div>
+        <p class="sp-next full"><b>Not sure yet?</b>Pick "Not sure yet" above to request our sponsor info kit: a short PDF with the packages, who sees your logo, the decal map and real photos. We email it within 2 business days. No commitment.</p>
+        <p class="consent full">We use your details only to reply about sponsorship. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
+        <div class="full"><button class="btn" type="submit" id="f-submit">Send request</button></div>
+        <p class="sp-status full" id="sp-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+
+  /* Pestañas: scroll dentro de la página y marca la sección visible */
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sp-tabs a'));
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  links.forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var t = document.querySelector(a.getAttribute('href')); if (!t) return;
+      e.preventDefault();
+      t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+      history.replaceState(null, '', a.getAttribute('href'));
+      setCur(a); lockUntil = Date.now() + 1200;
+    });
+  });
+  function setCur(a) { links.forEach(function (x) { if (x === a) x.setAttribute('aria-current', 'true'); else x.removeAttribute('aria-current'); }); }
+  var secs = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  /* lockUntil: tras un clic en una pestaña se respeta esa pestaña (FAQ y Request quedan lado a lado en pantallas anchas) */
+  var lockUntil = 0;
+  function onScroll() {
+    if (Date.now() < lockUntil) return;
+    var y = 140, cur = links[0], best = -Infinity;
+    secs.forEach(function (s, i) { if (!s) return; var t = Math.round(s.getBoundingClientRect().top); if (t <= y && t > best) { best = t; cur = links[i]; } });
+    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 4) cur = links[links.length - 1];
+    setCur(cur);
+  }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  /* Paquetes: simulan las entradas del metaobjeto "Sponsor tier".
+     status: available | limited | soldout | hidden. spots_left solo cuenta con limited. */
+  var SEASON = window.HM_SEASON || new Date().getFullYear();
+  var TIERS = [
+    { handle: 'title', name: 'Title Partner', price: 25000, tagline: 'All season', featured: false, status: 'available', spots_left: null, updated: '2026-10-01',
+      benefits: ['Your name in the team name all season', 'Biggest logo on the tractor itself', 'Top logo on all team gear and the trailer', 'Top billing on the website and every social post', 'Announcer shout-out at every pull', 'VIP pit passes at every pull'] },
+    { handle: 'pit', name: 'Pit Partner', price: 10000, tagline: 'Season package', featured: true, status: 'available', spots_left: null, updated: '2026-10-01',
+      benefits: ['Logo on the team shirt sleeve', 'Logo on the trailer', 'Logo and link on this website', 'Monthly social shout-outs', 'Announcer mention at select pulls', 'Pit passes at select pulls'] },
+    { handle: 'crew', name: 'Crew Supporter', price: 5000, tagline: 'Built for local shops and fans', featured: false, status: 'available', spots_left: null, updated: '2026-09-12',
+      benefits: ['Name on the trailer supporters board', 'Listed on this website', 'Thank-you post on our socials', '“The Evil One” sponsor decal for your shop'] }
+  ];
+  var money = function (n) { return '$' + n.toLocaleString('en-US'); };
+  /* fechas 'AAAA-MM-DD' de los campos Updated: se muestran como "October 1, 2026" */
+  var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  var longDate = function (d) { var p = String(d).split('-'); return MONTHS[+p[1] - 1] + ' ' + (+p[2]) + ', ' + p[0]; };
+  var shortDate = function (d) { var p = String(d).split('-'); return MONTHS[+p[1] - 1].slice(0, 3) + ' ' + (+p[2]) + ', ' + p[0]; };
+  var newest = function (list) { return list.map(function (x) { return x.updated; }).filter(Boolean).sort().pop(); };
+
+  /* Cifras: simulan el metaobjeto "Sponsor stat". Estimadas (est.) hasta tener datos de cierre de temporada.
+     n = número, plus = muestra "+", text = valor en palabras (Social media). La exposición se calcula sola. */
+  var STATS = [
+    { key: 'pulls',  label: 'Pulls per season',  n: 20,   plus: true, est: true },
+    { key: 'states', label: 'States we pull in', n: 10,   plus: true, est: true },
+    { key: 'fans',   label: 'Fans per pull',     n: 5000, plus: true, est: true },
+    { key: 'social', label: 'Social media',      text: 'Growing' }
+  ];
+  var STATS_UPDATED = '2026-10-01'; /* campo Updated del metaobjeto Sponsor stat */
+  var stat = function (k) { for (var i = 0; i < STATS.length; i++) if (STATS[i].key === k) return STATS[i]; return null; };
+  var fmt = function (s) { return s.text ? esc(s.text) : s.n.toLocaleString('en-US') + (s.plus ? '+' : ''); };
+  /* Frase de venta: se CALCULA de Sponsor stat (pulls por temporada × fans por pull), no se escribe a mano.
+     Una sola fuente: hero, FAQ, meta description y JSON-LD. */
+  var PITCH = (function () {
+    var p = stat('pulls'), f = stat('fans'), est = (p && p.est) || (f && f.est);
+    if (!p || !f || !p.n || !f.n) return null;
+    var pulls = p.n + (p.plus ? '+' : ''), fans = (p.n * f.n).toLocaleString('en-US') + '+';
+    return { fans: fans, pulls: pulls, est: est ? ' (est.)' : '',
+      line: 'Your brand in front of ' + fans + ' fans across ' + pulls + ' pulls a season' + (est ? ' (est.)' : '') };
+  })();
+  if (PITCH) {
+    document.querySelectorAll('[data-pitch]').forEach(function (e) { e.textContent = PITCH.line; });
+    document.querySelectorAll('[data-pitch-fans]').forEach(function (e) { e.textContent = PITCH.fans; });
+    document.querySelectorAll('[data-pitch-across]').forEach(function (e) { e.textContent = 'across ' + PITCH.pulls + ' pulls a season' + PITCH.est; });
+    document.querySelectorAll('[data-pulls]').forEach(function (e) { e.textContent = PITCH.pulls + ' pulls a season' + PITCH.est; });
+    var md = document.querySelector('meta[name="description"]');
+    if (md) md.content = md.content.replace(/Your brand in front of [^.]*?a season( \(est\.\))?/, PITCH.line);
+    try {
+      var ld = document.getElementById('sp-ld'), j = JSON.parse(ld.textContent);
+      j['@graph'].forEach(function (g) { (g.mainEntity || []).forEach(function (q) {
+        var a = q.acceptedAnswer;
+        a.text = a.text.replace(/Your brand in front of [^,]*?a season( \(est\.\))?/, PITCH.line)
+                       .replace(/[\dX]+\+? pulls a season( \(est\.\))?, plus/, PITCH.pulls + ' pulls a season' + PITCH.est + ', plus');
+      }); });
+      ld.textContent = JSON.stringify(j, null, 1);
+    } catch (err) { /* el JSON-LD estático ya trae los mismos valores */ }
+  }
+  var esc = function (t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var byHandle = function (h) { for (var i = 0; i < TIERS.length; i++) if (TIERS[i].handle === h) return TIERS[i]; return null; };
+
+  function tierHTML(t) {
+    var out = t.status === 'soldout', main = t.featured && !out, badges = '';
+    if (out) badges = '<span class="badge sp-out">Sold out for ' + SEASON + '</span>';
+    else {
+      if (t.featured) badges += '<span class="badge">Featured</span>';
+      if (t.status === 'limited' && t.spots_left) badges += '<span class="badge sp-left">' + t.spots_left + (t.spots_left === 1 ? ' spot' : ' spots') + ' left</span>';
+    }
+    return '<li class="sp-tier' + (main ? ' sp-tier--main' : '') + (out ? ' sp-tier--out' : '') + '">' +
+      '<div class="sp-tier__top"><h2 class="h3">' + esc(t.name) + '</h2>' + (badges ? '<span class="sp-tier__badges">' + badges + '</span>' : '') + '</div>' +
+      '<p class="sp-price num">' + money(t.price) + '<small>' + esc(t.tagline || '') + '</small></p>' +
+      '<ul class="sp-ben">' + t.benefits.map(function (b) { return '<li>' + esc(b) + '</li>'; }).join('') + '</ul>' +
+      (out
+        ? '<div style="display:grid;gap:6px"><a class="btn btn--ghost btn--block" href="#contact" data-pkg="' + t.handle + '">Join the waitlist</a><p class="sp-wait">We\'ll contact you if a spot opens up.</p></div>'
+        : '<a class="btn' + (main ? '' : ' btn--ghost') + ' btn--block" href="#contact" data-pkg="' + t.handle + '">Request this package</a>') +
+      '</li>';
+  }
+  function render() {
+    var vis = TIERS.filter(function (t) { return t.status !== 'hidden'; });
+    var ul = $('sp-tiers');
+    ul.style.setProperty('--n', vis.length);
+    ul.innerHTML = vis.map(tierHTML).join('');
+    $('sp-hint').textContent = 'Swipe to see all ' + vis.length + ' packages';
+    var up = newest(vis); $('sp-tiers-upd').hidden = !up; if (up) $('sp-tiers-upd').textContent = 'Last updated: ' + longDate(up);
+    /* opciones del formulario, desde los mismos datos */
+    var sel = $('f-pkg'), keep = sel.value || 'pit';
+    sel.innerHTML = vis.map(function (t) {
+      return '<option value="' + t.handle + '">' + esc(t.name) + ' · ' + (t.status === 'soldout' ? 'Waitlist (sold out for ' + SEASON + ')' : money(t.price)) + '</option>';
+    }).join('') + '<option value="unsure">Not sure yet</option>';
+    sel.value = byHandle(keep) && byHandle(keep).status !== 'hidden' ? keep : 'unsure';
+    syncForm();
+    if (PLACEMENTS) renderPlaces();
+  }
+  function syncForm() {
+    var t = byHandle($('f-pkg').value), wait = !!(t && t.status === 'soldout');
+    var unsure = $('f-pkg').value === 'unsure';
+    $('form-t').textContent = wait ? 'Join the waitlist' : unsure ? 'Request the info kit' : 'Request a package';
+    $('f-submit').textContent = wait ? 'Join the waitlist' : unsure ? 'Request the info kit' : 'Send request';
+  }
+  $('f-pkg').addEventListener('change', syncForm);
+
+  /* Botones de paquete (delegado): eligen el paquete en el formulario */
+  $('sp-tiers').addEventListener('click', function (e) {
+    var a = e.target.closest('[data-pkg]'); if (!a) return;
+    e.preventDefault();
+    $('f-pkg').value = a.getAttribute('data-pkg'); syncForm();
+    $('contact').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    setTimeout(function () { $('f-company').focus({ preventScroll: true }); }, reduce ? 0 : 450);
+  });
+  /* Propuesta "Why are you here?": la opción de logo baja a los paquetes y deja el foco ahí */
+  $('why-logo').addEventListener('click', function (e) {
+    e.preventDefault(); var t = $('sp-tiers');
+    t.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    t.focus({ preventScroll: true });
+  });
+  document.querySelectorAll('a[href="#contact"]:not(.sp-tabs a):not(#dz-cta)').forEach(function (a) {
+    a.addEventListener('click', function (e) { e.preventDefault(); if (a.id === 'kit-link') { $('f-pkg').value = 'unsure'; syncForm(); } $('contact').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); });
+  });
+
+  /* Control SOLO de boceto: cambia el estado de Pit Partner y el mock del admin */
+  var ST_LABEL = { available: 'Available', limited: 'Limited', soldout: 'Sold out', hidden: 'Hidden' };
+  function demo(st) {
+    var t = byHandle('pit');
+    t.status = st; t.spots_left = st === 'limited' ? 1 : null;
+    document.querySelectorAll('#tier-seg button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-st') === st ? 'true' : 'false'); });
+    $('adm-n').textContent = t.name; $('adm-p').textContent = money(t.price); $('adm-t').textContent = t.tagline;
+    $('adm-u').textContent = shortDate(t.updated); $('adm-s').textContent = ST_LABEL[st]; $('adm-l').textContent = t.spots_left ? String(t.spots_left) : '(vacío)';
+    $('adm-b').textContent = t.benefits.slice(0, 2).join(' · ') + ' · +' + (t.benefits.length - 2) + ' más';
+    render();
+  }
+  document.querySelectorAll('#tier-seg button').forEach(function (b) { b.addEventListener('click', function () { demo(b.getAttribute('data-st')); }); });
+  demo('available');
+
+  var EST = '<span class="sp-est">(est.)</span>';
+  (function () {
+    var pulls = stat('pulls'), fans = stat('fans');
+    var reach = (pulls.n * fans.n).toLocaleString('en-US') + '+';
+    $('sp-big').innerHTML = '<dt>Fans in the stands per season</dt><dd><span class="sp-big__v">' + reach + EST + '</span>' +
+      '<span class="sp-big__how"><b>How we count it:</b> ' + pulls.n + '+ pulls × ' + fans.n.toLocaleString('en-US') + '+ fans per pull. Streams and social media come on top.</span></dd>';
+    $('sp-stats').innerHTML = STATS.map(function (s) {
+      return '<div class="spec"><dt>' + esc(s.label) + '</dt><dd class="num">' + fmt(s) + (s.est ? EST : '') + '</dd></div>';
+    }).join('');
+    $('sp-stats-upd').textContent = 'Last updated: ' + longDate(STATS_UPDATED);
+  })();
+
+  /* Dónde sale tu marca: simula el metaobjeto "Logo placement".
+     icon = uno de la lista de íconos (sin fotos); tiers = qué paquete lo incluye y qué recibe; status: active | hidden. */
+  var ICONS = {
+    tractor: '<circle cx="10" cy="21" r="7"/><circle cx="10" cy="21" r="2"/><circle cx="25.5" cy="24" r="4"/><path d="M5 14.5V7h7l2 7h12l2 5v2.5M17 21h4.5M21 14V8.5M19.5 8.5h3"/>',
+    trailer: '<rect x="2" y="8" width="21" height="13"/><path d="M23 18h7M7 12h11"/><circle cx="9" cy="23.5" r="2.5"/><circle cx="16" cy="23.5" r="2.5"/>',
+    shirt: '<path d="M11.5 5 4 8.5l2.8 6.2 3.2-1.6V27h12V13.1l3.2 1.6L28 8.5 20.5 5c-.7 2-2.4 3.2-4.5 3.2S12.2 7 11.5 5Z"/><path d="M23 10.5h2.5"/>',
+    web: '<rect x="3" y="5" width="26" height="20"/><path d="M3 10h26M7 15h9M7 19h6M12 29h8M16 25v4"/><rect x="19.5" y="14" width="5.5" height="7"/>',
+    social: '<path d="M4 5h24v16H14l-6 5.5V21H4z"/><path d="M16 17.5l-3.5-3.3a2.1 2.1 0 0 1 3-3l.5.5.5-.5a2.1 2.1 0 0 1 3 3z"/>',
+    mic: '<rect x="12" y="3" width="8" height="14" rx="4"/><path d="M8 13a8 8 0 0 0 16 0M16 21v6M11 27.5h10M12 9h2M18 9h2"/>',
+    pass: '<path d="M13 3h6v5h-6z"/><rect x="8" y="8" width="16" height="20"/><circle cx="16" cy="15.5" r="3"/><path d="M11.5 24c.9-2 2.5-3 4.5-3s3.6 1 4.5 3"/>'
+  };
+  /* packages = campo "Packages" (lista de referencias a Sponsor tier): qué paquetes incluyen este lugar.
+     details = campo opcional "Package details" (una línea por paquete, p. ej. "Title: biggest logo"). Sin detalle, el chip dice solo el paquete. */
+  var PLACEMENTS = [
+    { handle: 'tractor', name: 'On the tractor', icon: 'tractor', status: 'active',
+      description: 'On “The Evil One” itself, in every photo and video.', packages: ['title'], details: { title: 'biggest logo' } },
+    { handle: 'trailer', name: 'Trailer and pit area', icon: 'trailer', status: 'active',
+      description: 'Where fans line up to see the tractor up close.', packages: ['title', 'pit', 'crew'], details: { title: 'top logo', pit: 'logo', crew: 'supporters board' } },
+    { handle: 'gear', name: 'Team shirts and gear', icon: 'shirt', status: 'active',
+      description: 'Shirts and merch the crew and fans wear.', packages: ['title', 'pit'], details: { title: 'top logo', pit: 'shirt sleeve' } },
+    { handle: 'web', name: 'This website', icon: 'web', status: 'active',
+      description: 'Our sponsor list, seen by every fan who shops the merch.', packages: ['title', 'pit', 'crew'], details: { title: 'top billing', pit: 'logo and link', crew: 'listed' } },
+    { handle: 'social', name: 'Social media', icon: 'social', status: 'active',
+      description: 'Posts from the track, the pits and the shop.', packages: ['title', 'pit', 'crew'], details: { title: 'every post', pit: 'monthly', crew: 'thank-you post' } },
+    { handle: 'announcer', name: 'Announcer mentions', icon: 'mic', status: 'active',
+      description: 'Your name over the PA when the tractor hooks.', packages: ['title', 'pit'], details: { title: 'every pull', pit: 'select pulls' } }
+  ];
+  /* Entrada de ejemplo para el botón "+ Add placement" (sale de beneficios reales de los paquetes) */
+  var PLACEMENTS_UPDATED = '2026-10-01'; /* la fecha Updated más nueva de las entradas Logo placement */
+  var EXAMPLE = { handle: 'pits', name: 'Pit passes', icon: 'pass', status: 'active', isNew: true,
+    description: 'Your team in the pits with the crew, up close to the tractor.', packages: ['title', 'pit'], details: { title: 'VIP, every pull', pit: 'select pulls' } };
+  var SHORT = { title: 'Title', pit: 'Pit', crew: 'Crew' };
+  var WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'];
+  function renderPlaces() {
+    var vis = PLACEMENTS.filter(function (p) { return p.status !== 'hidden'; });
+    $('sp-place').innerHTML = vis.map(function (p) {
+      /* chips en el orden de los paquetes (Title, Pit, Crew), solo los marcados y no escondidos */
+      var chips = TIERS.filter(function (x) { return x.status !== 'hidden' && p.packages.indexOf(x.handle) > -1; })
+        .map(function (x) { var d = p.details && p.details[x.handle]; return '<li><b>' + esc(SHORT[x.handle] || x.name) + '</b>' + (d ? ' · ' + esc(d) : '') + '</li>'; }).join('');
+      return '<li' + (p.isNew ? ' class="is-new"' : '') + '><figure class="sp-place__pic"><svg viewBox="0 0 32 32" aria-hidden="true">' + (ICONS[p.icon] || ICONS.web) + '</svg></figure><div><h3 class="h3">' + esc(p.name) + '</h3><p>' + esc(p.description) + '</p>' +
+        (chips ? '<ul class="sp-chips" aria-label="Included in">' + chips + '</ul>' : '') + '</div></li>';
+    }).join('');
+    var n = vis.length;
+    $('place-upd').textContent = 'Last updated: ' + longDate(PLACEMENTS_UPDATED);
+    $('place-sub').textContent = (n > 1 && n <= 10 ? WORDS[n] + ' places. ' : '') + 'What each package gets is listed under each place.';
+    placeSeg();
+  }
+  /* Control SOLO de boceto: por lugar, mostrar/esconder (Status) y marcar Title / Pit / Crew (campo Packages) */
+  function placeSeg() {
+    var ed = $('place-ed'); if (!ed) return;
+    ed.innerHTML = PLACEMENTS.map(function (p, i) {
+      var on = p.status !== 'hidden';
+      return '<div class="pl-row' + (on ? '' : ' is-off') + '" role="group" aria-label="' + esc(p.name) + '">' +
+        '<button type="button" class="pl-name" data-pl="' + i + '" aria-pressed="' + on + '" title="' + (on ? 'Status Active: clic para Hidden' : 'Status Hidden: clic para mostrar') + '"><span class="pl-eye" aria-hidden="true">' + (on ? 'Visible' : 'Hidden') + '</span>' + esc(p.name) + '</button>' +
+        '<span class="sp-seg pl-pk">' + TIERS.map(function (t) {
+          var has = p.packages.indexOf(t.handle) > -1;
+          return '<button type="button" data-pl="' + i + '" data-pk="' + t.handle + '" aria-pressed="' + has + '" aria-label="' + esc(t.name) + ' en ' + esc(p.name) + '">' + (has ? '✓ ' : '+ ') + esc(SHORT[t.handle] || t.name) + '</button>';
+        }).join('') + '</span></div>';
+    }).join('');
+    var added = PLACEMENTS.indexOf(EXAMPLE) > -1, add = $('place-add');
+    add.setAttribute('aria-pressed', added ? 'true' : 'false');
+    add.textContent = added ? 'Eliminar entrada de ejemplo' : '+ Add placement';
+  }
+  $('place-ed').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-pl]'); if (!b) return;
+    var i = b.getAttribute('data-pl'), p = PLACEMENTS[+i], pk = b.getAttribute('data-pk'), sel;
+    if (pk) {
+      var k = p.packages.indexOf(pk);
+      if (k > -1) p.packages.splice(k, 1); else p.packages.push(pk);
+      sel = '[data-pl="' + i + '"][data-pk="' + pk + '"]';
+    } else {
+      p.status = p.status === 'hidden' ? 'active' : 'hidden';
+      sel = '.pl-name[data-pl="' + i + '"]';
+    }
+    renderPlaces();
+    var nb = $('place-ed').querySelector(sel); if (nb) nb.focus();
+  });
+  $('place-add').addEventListener('click', function () {
+    var i = PLACEMENTS.indexOf(EXAMPLE);
+    if (i > -1) PLACEMENTS.splice(i, 1); else { EXAMPLE.status = 'active'; PLACEMENTS.push(EXAMPLE); }
+    renderPlaces();
+  });
+  renderPlaces();
+
+  /* Mapa de calcomanías: simula el metaobjeto "Decal zone". x, y en px del recorte (1120x576);
+     lx = x de la etiqueta; row t/b = arriba o abajo; tier = handle del paquete o null (por confirmar); status: available | sold */
+  var ZONES = [
+    { name: 'Rear fender',      x: 175, y: 165, lx: 130, row: 't', size: 'XX x XX in', tier: null,    status: 'available', desc: 'Above the rear tire, next to the driver.' },
+    { name: 'Roll cage',        x: 320, y: 55,  lx: 385, row: 't', size: 'XX x XX in', tier: null,    status: 'available', desc: 'Around the driver seat. Part of this area may stay reserved for league and class decals.' },
+    { name: 'Hood',             x: 600, y: 128, lx: 620, row: 't', size: 'XX x XX in', tier: 'title', status: 'available', desc: 'Top of the hood, the first thing the grandstand sees as the tractor rolls by.' },
+    { name: 'Nose and grille',  x: 905, y: 215, lx: 930, row: 't', size: 'XX x XX in', tier: null,    status: 'available', desc: 'Front of the hood, in frame when the tractor comes down the track toward the cameras.' },
+    { name: 'Front weight box', x: 1045,y: 430, lx: 965, row: 'b', size: 'XX x XX in', tier: null,    status: 'available', desc: 'The front weight bracket, low and close to the track.' },
+    { name: 'Engine side panel',x: 620, y: 225, lx: 560, row: 'b', size: 'XX x XX in', tier: 'title', status: 'available', desc: 'Both sides of the engine bay, above the exhaust. The biggest flat surface on the tractor.' }
+  ];
+  var ZONES_UPDATED = '2026-10-01'; /* la fecha Updated más nueva de las entradas Decal zone */
+  $('dz-upd').textContent = 'Last updated: ' + longDate(ZONES_UPDATED);
+  var dzPts = $('dz-pts'), dzStage = $('dz-stage'), dzLines = $('dz-lines'), dzCur = 0, NS = 'http://www.w3.org/2000/svg';
+  function nn(i) { return (i < 9 ? '0' : '') + (i + 1); }
+  function tierName(z) { var t = z.tier && byHandle(z.tier); return t ? t.name : 'To confirm'; }
+  ZONES.forEach(function (z, i) {
+    var sold = z.status === 'sold';
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'dz-hs' + (sold ? ' is-sold' : ''); b.dataset.i = i;
+    b.style.left = (z.x / 11.2) + '%'; b.style.top = (z.y / 5.76) + '%';
+    b.setAttribute('aria-label', nn(i) + ', ' + z.name + ': ' + (sold ? 'sold' : 'available'));
+    b.innerHTML = '<span aria-hidden="true">' + (i + 1) + '</span>';
+    dzPts.appendChild(b);
+    var t = document.createElement('span');
+    t.className = 'dz-tag dz-tag--' + z.row + (sold ? ' is-sold' : ''); t.dataset.i = i; t.setAttribute('aria-hidden', 'true');
+    t.style.left = (z.lx / 11.2) + '%';
+    t.innerHTML = '<i>' + nn(i) + '</i>' + esc(z.name);
+    dzStage.appendChild(t);
+    var l = document.createElementNS(NS, 'line');
+    l.setAttribute('x1', z.lx); l.setAttribute('y1', z.row === 't' ? 24 : 652);
+    l.setAttribute('x2', z.x); l.setAttribute('y2', z.y + 50);
+    l.dataset.i = i; dzLines.appendChild(l);
+  });
+  var dzHs = dzPts.querySelectorAll('.dz-hs');
+  function setZone(i, focus) {
+    dzCur = (i + ZONES.length) % ZONES.length; var z = ZONES[dzCur], sold = z.status === 'sold';
+    dzHs.forEach(function (b, j) { b.setAttribute('aria-pressed', j === dzCur ? 'true' : 'false'); b.tabIndex = j === dzCur ? 0 : -1; });
+    dzStage.querySelectorAll('.dz-tag, line').forEach(function (e) { e.classList.toggle('on', +e.dataset.i === dzCur); });
+    $('dz-label').textContent = nn(dzCur) + ' · Decal zone';
+    $('dz-name').textContent = z.name;
+    $('dz-size').textContent = z.size;
+    $('dz-tier').textContent = tierName(z);
+    var st = $('dz-status'); st.textContent = sold ? 'Sold for ' + SEASON : 'Available'; st.classList.toggle('is-sold', sold);
+    $('dz-desc').textContent = z.desc;
+    $('dz-count').textContent = nn(dzCur) + ' / ' + nn(ZONES.length - 1);
+    $('dz-cta').textContent = sold ? 'Join the waitlist for this zone' : 'Ask about this zone';
+    $('dz-zoom').style.backgroundPosition = (z.x / 1120 * 100) + '% ' + (z.y / 576 * 100) + '%';
+    $('dz-zoom').setAttribute('aria-label', 'Close-up of zone ' + nn(dzCur) + ', ' + z.name);
+    if (focus) dzHs[dzCur].focus();
+  }
+  dzStage.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-i]'); if (b) setZone(+b.dataset.i, b.classList.contains('dz-hs'));
+  });
+  dzPts.addEventListener('keydown', function (e) {
+    var k = e.key, d = k === 'ArrowRight' || k === 'ArrowDown' ? 1 : k === 'ArrowLeft' || k === 'ArrowUp' ? -1 : 0;
+    if (k === 'Home') { e.preventDefault(); setZone(0, true); return; }
+    if (k === 'End') { e.preventDefault(); setZone(ZONES.length - 1, true); return; }
+    if (d) { e.preventDefault(); setZone(dzCur + d, true); }
+  });
+  $('dz-prev').addEventListener('click', function () { setZone(dzCur - 1); });
+  $('dz-next').addEventListener('click', function () { setZone(dzCur + 1); });
+  setZone(2);
+  $('dz-cta').addEventListener('click', function (e) {
+    e.preventDefault();
+    var z = ZONES[dzCur], t = z.tier && byHandle(z.tier), sel = $('f-pkg');
+    var m = $('f-msg'); if (!m.value) m.value = (z.status === 'sold' ? 'Please add me to the waitlist for the ' : 'I\'m interested in the ') + z.name + ' decal zone.';
+    sel.value = t && t.status !== 'hidden' ? t.handle : 'unsure'; syncForm();
+    $('contact').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+    setTimeout(function () { $('f-company').focus({ preventScroll: true }); }, reduce ? 0 : 450);
+  });
+
+  /* Formulario: validación y éxito anunciado (en Shopify: form 'contact' con etiqueta "sponsor") */
+  var form = $('sp-form'), st = $('sp-status');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var bad = Array.prototype.filter.call(form.querySelectorAll('[required]'), function (i) {
+      var ok = i.value.trim() !== '' && i.checkValidity(); i.setAttribute('aria-invalid', ok ? 'false' : 'true'); return !ok;
+    });
+    if (bad.length) { st.className = 'sp-status full is-err'; st.textContent = 'Please add your company, your name and a valid email.'; bad[0].focus(); return; }
+    var pkg = $('f-pkg'); var label = pkg.options[pkg.selectedIndex].text.split(' · ')[0];
+    var tw = byHandle(pkg.value), wait = !!(tw && tw.status === 'soldout');
+    st.className = 'sp-status full is-ok';
+    st.textContent = 'Thanks, ' + $('f-name').value.trim().split(' ')[0] + '. ' + (wait ? 'You\'re on the waitlist for ' + label + '.' : (pkg.value === 'unsure' ? 'Your info kit request is in.' : 'Your request for ' + label + ' is in.')) + ' We\'ll email our sponsor info kit (a short PDF to help you decide, no commitment) to ' + $('f-email').value.trim() + ' within 2 business days.';
+    form.querySelector('button[type="submit"]').disabled = true;
+  });
+})();
+</script>
+</body>
+</html>

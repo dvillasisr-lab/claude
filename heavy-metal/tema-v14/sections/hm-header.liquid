@@ -1,0 +1,835 @@
+{%- liquid
+  assign sid = section.id
+  assign brand = settings.hm_brand_name | default: shop.name
+  assign main_menu = section.settings.menu
+  assign mega_title = section.settings.mega_title | downcase | strip
+  assign logo_h = section.settings.logo_height | default: 20
+
+  comment
+    Find the top-level link that opens the mega menu (its title matches the "Mega menu item" setting).
+  endcomment
+  assign mega_link = nil
+  if mega_title != blank
+    for l in main_menu.links
+      assign lt = l.title | downcase | strip
+      if lt == mega_title
+        assign mega_link = l
+        break
+      endif
+    endfor
+  endif
+
+  comment
+    Category links: the categories menu, or the collection links under the mega item when that menu is empty.
+  endcomment
+  assign cat_menu = section.settings.categories_menu
+  assign has_cat_menu = false
+  if cat_menu != blank and cat_menu.links.size > 0
+    comment
+      v14.1: a category collection with no products yet is skipped everywhere (list and photos), so the menu never sends fans to an empty page
+    endcomment
+    for cl in cat_menu.links
+      if cl.type != 'collection_link' or cl.object.products_count > 0
+        assign has_cat_menu = true
+        break
+      endif
+    endfor
+  endif
+
+  assign new_handles = section.settings.new_handles | downcase | split: ','
+  assign ltd_handles = section.settings.ltd_handles | downcase | split: ','
+
+  assign on_shop_template = false
+  if template.name == 'product' or template.name == 'collection' or template.name == 'list-collections'
+    assign on_shop_template = true
+  endif
+
+  assign social_fb = settings.hm_facebook_url
+-%}
+
+{%- capture logo_markup -%}
+  {%- if section.settings.logo != blank -%}
+    {%- assign logo_w2 = logo_h | times: 2 -%}
+    {%- assign logo_alt = brand | append: ', home' -%}
+    {%- comment -%} v14.1: on the home page the hero logo is the LCP image, so the header logo stays at normal priority there {%- endcomment -%}
+    {%- liquid
+      assign logo_prio = 'high'
+      if template.name == 'index'
+        assign logo_prio = 'auto'
+      endif
+    -%}
+    {{- section.settings.logo | image_url: height: logo_w2 | image_tag: height: logo_h, alt: logo_alt, loading: 'eager', fetchpriority: logo_prio -}}
+  {%- else -%}
+    <img src="{{ 'logo-ink.svg' | asset_url }}" alt="{{ brand | escape }}, home" width="138" height="20"{% unless template.name == 'index' %} fetchpriority="high"{% endunless %}>
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- comment -%} One category thumbnail tile (collection or product image, or a neutral tile) {%- endcomment -%}
+{%- capture cat_thumbs_mega -%}
+  {%- if has_cat_menu -%}
+    {%- assign thumb_links = cat_menu.links -%}
+  {%- elsif mega_link -%}
+    {%- assign thumb_links = mega_link.links -%}
+  {%- endif -%}
+  {%- assign shown_thumbs = 0 -%}
+  {%- for l in thumb_links -%}
+    {%- if l.type == 'collection_link' and l.object.products_count == 0 -%}{%- continue -%}{%- endif -%}
+    {%- if shown_thumbs >= section.settings.thumb_count -%}{%- break -%}{%- endif -%}
+    {%- unless has_cat_menu -%}
+      {%- unless l.type == 'collection_link' -%}{%- continue -%}{%- endunless -%}
+    {%- endunless -%}
+    {%- assign shown_thumbs = shown_thumbs | plus: 1 -%}
+    {%- assign h = l.object.handle | default: '' -%}
+    <a href="{{ l.url }}"{% if l.current %} aria-current="page"{% endif %}>
+      <span class="thumb{% unless l.object.image %} thumb--mock{% endunless %}">
+        {%- if l.object.image -%}
+          {% render 'hm-image', image: l.object.image, widths: '72, 144, 216', max_width: 216, sizes: '72px', crop_ratio: 1, alt: '' %}
+        {%- else -%}
+          {% render 'hm-mock', handle: h %}
+        {%- endif -%}
+        {%- if h != blank and new_handles contains h -%}<span class="thumb__new">New</span>{%- elsif h != blank and ltd_handles contains h -%}<span class="thumb__new thumb__new--ink">Ltd</span>{%- endif -%}
+      </span>
+      <span>{{ l.title | escape }}</span>
+    </a>
+  {%- endfor -%}
+{%- endcapture -%}
+
+<header class="hdr{% if section.settings.sticky %} hdr--sticky{% endif %}" id="Hdr-{{ sid }}" data-hm-header>
+  <div class="wrap hdr__in">
+    <button
+      class="icon-btn menu-btn"
+      type="button"
+      data-hm-menu-open
+      aria-controls="Mnav-{{ sid }}"
+      aria-expanded="false"
+      aria-label="Open menu"
+    >
+      {% render 'hm-icon', name: 'menu' %}
+    </button>
+
+    <a class="hdr__logo" href="{{ routes.root_url }}" style="--logo-h: {{ logo_h }}px;">
+      {{- logo_markup -}}
+    </a>
+
+    {%- if main_menu != blank and main_menu.links.size > 0 -%}
+      <nav class="hdr__nav" aria-label="Main">
+        {%- for link in main_menu.links -%}
+          {%- liquid
+            assign is_mega = false
+            if mega_link and link.title == mega_link.title and link.url == mega_link.url
+              assign is_mega = true
+            endif
+            assign cur = ''
+            if link.current
+              assign cur = ' aria-current="page"'
+            elsif link.child_current or link.child_active
+              assign cur = ' aria-current="true"'
+            elsif is_mega and on_shop_template
+              assign cur = ' aria-current="true"'
+            endif
+          -%}
+          {%- if is_mega -%}
+            <a
+              href="{{ link.url }}"
+              {{ cur }}
+              data-hm-mega-trigger
+              aria-haspopup="true"
+              aria-expanded="false"
+              aria-controls="Mega-{{ sid }}"
+            >
+              {{- link.title | escape -}}
+            </a>
+          {%- elsif link.links.size > 0 -%}
+            <div class="hdr__dd" data-hm-dd>
+              <a
+                href="{{ link.url }}"
+                {{ cur }}
+                data-hm-dd-trigger
+                aria-haspopup="true"
+                aria-expanded="false"
+                aria-controls="Dd-{{ sid }}-{{ forloop.index }}"
+              >
+                {{- link.title | escape -}}
+              </a>
+              <div class="sdd" id="Dd-{{ sid }}-{{ forloop.index }}" data-hm-dd-panel hidden>
+                <ul>
+                  {%- for child in link.links -%}
+                    {%- liquid
+                      assign note = nil
+                      assign ct = child.title | downcase | strip
+                      for b in section.blocks
+                        assign m = b.settings.match | downcase | strip
+                        if m == blank
+                          continue
+                        endif
+                        if ct == m or child.url contains m
+                          assign note = b
+                          break
+                        endif
+                      endfor
+                    -%}
+                    <li>
+                      {%- if note and note.settings.featured -%}
+                        <a class="sdd__full" href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>
+                          <span class="sdd__img">
+                            {%- if note.settings.image != blank -%}
+                              {%- render 'hm-image', image: note.settings.image, widths: '112, 168', max_width: 168, sizes: '56px', crop_ratio: 1, alt: '', placeholder: 'none' -%}
+                            {%- else -%}
+                              <img src="{{ 'hm-hero.webp' | asset_url }}" alt="" width="56" height="56" loading="lazy">
+                            {%- endif -%}
+                          </span>
+                          <span>
+                            <span class="sdd__t">{{ child.title | escape }}</span>
+                            {%- if note.settings.subtitle != blank -%}
+                              <span class="sdd__s">{{ note.settings.subtitle | escape }}</span>
+                            {%- endif -%}
+                          </span>
+                        </a>
+                      {%- else -%}
+                        <a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>
+                          <span class="sdd__t">{{ child.title | escape }}</span>
+                          {%- if note and note.settings.subtitle != blank -%}
+                            <span class="sdd__s">{{ note.settings.subtitle | escape }}</span>
+                          {%- endif -%}
+                        </a>
+                      {%- endif -%}
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            </div>
+          {%- else -%}
+            <a href="{{ link.url }}" {{ cur }}>{{ link.title | escape }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
+
+    <div class="hdr__icons">
+      <button
+        class="icon-btn"
+        type="button"
+        data-hm-search-open
+        aria-controls="Search-{{ sid }}"
+        aria-expanded="false"
+        aria-label="Search"
+      >
+        {% render 'hm-icon', name: 'search' %}
+      </button>
+      {%- if shop.customer_accounts_enabled -%}
+        <a class="icon-btn" href="{{ routes.account_url }}" aria-label="{% if customer %}Your account{% else %}Account{% endif %}">
+          {% render 'hm-icon', name: 'user' %}
+        </a>
+      {%- endif -%}
+      {%- liquid
+        comment
+          Same count as the cart drawer: the Feed The Beast tip never counts
+        endcomment
+        assign hm_count = 0
+        assign hm_tip = settings.hm_feed_beast_product
+        for item in cart.items
+          unless hm_tip and item.product_id == hm_tip.id
+            assign hm_count = hm_count | plus: item.quantity
+          endunless
+        endfor
+      -%}
+      <a
+        class="icon-btn"
+        href="{{ routes.cart_url }}"
+        id="HmCartOpen-{{ sid }}"
+        data-hm-cart-open
+        aria-haspopup="dialog"
+        aria-controls="hm-cart"
+        aria-expanded="false"
+        aria-label="Cart, {{ hm_count }} {% if hm_count == 1 %}item{% else %}items{% endif %}"
+      >
+        {% render 'hm-icon', name: 'bag' %}
+        <span class="cart-count" data-hm-cart-count data-n="{{ hm_count }}" aria-hidden="true">
+          {{- hm_count -}}
+        </span>
+      </a>
+    </div>
+  </div>
+
+  {%- if mega_link -%}
+    <div class="mega" id="Mega-{{ sid }}" data-hm-mega hidden>
+      <div class="wrap mega__in">
+        <ul class="mega__big">
+          {%- if mega_link.links.size > 0 -%}
+            {%- for child in mega_link.links -%}
+              <li>
+                <a href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>
+                  {{- child.title | escape -}}
+                </a>
+              </li>
+            {%- endfor -%}
+          {%- else -%}
+            <li><a href="{{ mega_link.url }}">{{ mega_link.title | escape }}</a></li>
+          {%- endif -%}
+        </ul>
+
+        <div>
+          {%- if has_cat_menu -%}
+            {%- if section.settings.mega_label != blank -%}
+              <p class="label">{{ section.settings.mega_label | escape }}</p>
+            {%- endif -%}
+            <ul class="mega__small">
+              {%- for l in cat_menu.links -%}
+                {%- if l.type == 'collection_link' and l.object.products_count == 0 -%}{%- continue -%}{%- endif -%}
+                <li>
+                  <a href="{{ l.url }}"{% if l.current %} aria-current="page"{% endif %}>{{ l.title | escape }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.show_thumbs and cat_thumbs_mega != blank -%}
+          <div class="mega__thumbs">{{ cat_thumbs_mega }}</div>
+        {%- else -%}
+          <div></div>
+        {%- endif -%}
+
+        {%- if section.settings.promo_label != blank or section.settings.promo_image != blank -%}
+          <a class="mega__card" href="{{ section.settings.promo_url | default: routes.all_products_collection_url }}">
+            <span class="thumb">
+              {%- if section.settings.promo_image != blank -%}
+                {%- render 'hm-image',
+                  image: section.settings.promo_image,
+                  widths: '178, 356, 534',
+                  max_width: 534,
+                  sizes: '178px',
+                  crop_ratio: 1,
+                  alt: '',
+                  class: 'photo'
+                -%}
+              {%- else -%}
+                <img class="photo" src="{{ 'hm-hero.webp' | asset_url }}" alt="" width="776" height="1400" loading="lazy" style="object-position:50% 62%">
+              {%- endif -%}
+            </span>
+            <span>
+              {%- if section.settings.promo_label != blank -%}
+                <span class="label">{{ section.settings.promo_label | escape }}</span>
+              {%- endif -%}
+              {%- if section.settings.promo_text != blank -%}
+                <p>{{ section.settings.promo_text | escape }}</p>
+              {%- endif -%}
+              {%- if section.settings.promo_link_label != blank -%}
+                <span class="link">{{ section.settings.promo_link_label | escape }}</span>
+              {%- endif -%}
+            </span>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+</header>
+
+{%- comment -%} Mobile side drawer {%- endcomment -%}
+<div
+  class="mnav"
+  id="Mnav-{{ sid }}"
+  data-hm-mnav
+  hidden
+  role="dialog"
+  aria-modal="true"
+  aria-label="Menu"
+>
+  <div class="mnav__top">
+    {%- if section.settings.logo != blank -%}
+      {{- section.settings.logo | image_url: height: 36 | image_tag: height: 18, alt: brand, loading: 'lazy' -}}
+    {%- else -%}
+      <img src="{{ 'logo-ink.svg' | asset_url }}" alt="{{ brand | escape }}" width="124" height="18" loading="lazy">
+    {%- endif -%}
+    <button class="icon-btn" type="button" data-hm-close aria-label="Close menu">
+      {% render 'hm-icon', name: 'close' %}
+    </button>
+  </div>
+
+  {%- if section.settings.show_thumbs -%}
+    {%- liquid
+      if has_cat_menu
+        assign mthumb_links = cat_menu.links
+      elsif mega_link
+        assign mthumb_links = mega_link.links
+      else
+        assign mthumb_links = nil
+      endif
+    -%}
+    {%- if mthumb_links -%}
+      <ul class="mnav__thumbs" aria-label="Shop by category" data-hm-hs>
+        {%- for l in mthumb_links -%}
+          {%- if l.type == 'collection_link' and l.object.products_count == 0 -%}{%- continue -%}{%- endif -%}
+          {%- if forloop.index > 12 -%}{%- break -%}{%- endif -%}
+          {%- assign h = l.object.handle | default: '' -%}
+          <li>
+            <a href="{{ l.url }}"{% if l.current %} aria-current="page"{% endif %}>
+              <span class="thumb{% unless l.object.image %} thumb--mock{% endunless %}">
+                {%- if l.object.image -%}
+                  {% render 'hm-image', image: l.object.image, widths: '64, 128, 192', max_width: 192, sizes: '64px', crop_ratio: 1, alt: '' %}
+                {%- else -%}
+                  {% render 'hm-mock', handle: h %}
+                {%- endif -%}
+                {%- if h != blank and new_handles contains h -%}<span class="thumb__new">New</span>{%- elsif h != blank and ltd_handles contains h -%}<span class="thumb__new thumb__new--ink">Ltd</span>{%- endif -%}
+              </span>
+              <span>{{ l.title | escape }}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- if main_menu != blank -%}
+    <nav aria-label="Main">
+      <ul class="mnav__list">
+        {%- for link in main_menu.links -%}
+          {%- liquid
+            assign is_mega = false
+            if mega_link and link.title == mega_link.title and link.url == mega_link.url
+              assign is_mega = true
+            endif
+          -%}
+          <li>
+            <a class="mnav__link" href="{{ link.url }}"{% if link.current %} aria-current="page"{% endif %}>
+              <span>{{ link.title | escape }}</span>
+              {% render 'hm-icon', name: 'arrow', size: 18 %}
+            </a>
+            {%- if link.links.size > 0 -%}
+              {%- unless is_mega and section.settings.mobile_mega_children == false -%}
+                {%- for child in link.links -%}
+                  {%- liquid
+                    assign note = nil
+                    assign ct = child.title | downcase | strip
+                    for b in section.blocks
+                      assign m = b.settings.match | downcase | strip
+                      if m == blank
+                        continue
+                      endif
+                      if ct == m or child.url contains m
+                        assign note = b
+                        break
+                      endif
+                    endfor
+                    if child.url == link.url
+                      continue
+                    endif
+                  -%}
+                  <a class="mnav__link mnav__link--sub" href="{{ child.url }}"{% if child.current %} aria-current="page"{% endif %}>
+                    <span>
+                      {{- child.title | escape -}}
+                      {%- if note and note.settings.tag != blank -%}
+                        <span class="mnav__tag">{{ note.settings.tag | escape }}</span>
+                      {%- endif -%}
+                    </span>
+                    {% render 'hm-icon', name: 'arrow', size: 18 %}
+                  </a>
+                {%- endfor -%}
+              {%- endunless -%}
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+  {%- endif -%}
+
+  <div class="mnav__sub">
+    {%- assign small_menu = section.settings.small_menu -%}
+    {%- if small_menu != blank and small_menu.links.size > 0 -%}
+      {%- for l in small_menu.links -%}
+        <a href="{{ l.url }}"{% if l.current %} aria-current="page"{% endif %}>{{ l.title | escape }}</a>
+      {%- endfor -%}
+    {%- else -%}
+      {%- if shop.customer_accounts_enabled -%}<a href="{{ routes.account_url }}">Account</a>{%- endif -%}
+      <a href="/pages/contact">Contact</a>
+      <a href="/pages/faq">FAQ</a>
+      <a href="/pages/evil-list">The Evil List</a>
+      <a href="/policies/shipping-policy">Shipping &amp; returns</a>
+    {%- endif -%}
+    {%- if section.settings.show_facebook and social_fb != blank -%}
+      <a href="{{ social_fb }}" target="_blank" rel="noopener">Facebook ↗<span class="vh"> (opens in a new tab)</span></a>
+    {%- endif -%}
+    {%- if section.settings.show_facebook and settings.hm_instagram_url != blank -%}
+      <a href="{{ settings.hm_instagram_url }}" target="_blank" rel="noopener">Instagram ↗<span class="vh"> (opens in a new tab)</span></a>
+    {%- endif -%}
+  </div>
+</div>
+
+<div class="scrim" data-hm-scrim hidden></div>
+
+{%- comment -%} Predictive search overlay {%- endcomment -%}
+{%- liquid
+  assign best = settings.hm_best_sellers_collection
+  assign trending_limit = section.settings.trending_count
+-%}
+<div
+  class="search"
+  id="Search-{{ sid }}"
+  data-hm-search
+  data-suggest-url="{{ routes.predictive_search_url }}.json"
+  data-search-url="{{ routes.search_url }}"
+  data-currency="{{ cart.currency.iso_code }}"
+  data-locale="{{ request.locale.iso_code }}"
+  hidden
+  role="dialog"
+  aria-modal="true"
+  aria-label="Search"
+>
+  <div class="wrap">
+    <form class="search__bar" action="{{ routes.search_url }}" method="get" role="search" data-hm-search-form>
+      <span aria-hidden="true">{% render 'hm-icon', name: 'search' %}</span>
+      <label class="vh" for="Q-{{ sid }}">Search the store</label>
+      <input
+        id="Q-{{ sid }}"
+        name="q"
+        type="search"
+        placeholder="{{ section.settings.search_placeholder | escape }}"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        aria-describedby="SearchStatus-{{ sid }}"
+        data-hm-search-input
+      >
+      <input type="hidden" name="options[prefix]" value="last">
+      <button class="icon-btn" type="button" data-hm-close aria-label="Close search">
+        {% render 'hm-icon', name: 'close' %}
+      </button>
+    </form>
+
+    <div class="search__body">
+      <div>
+        <div data-hm-recent-wrap hidden>
+          <p class="label muted">Your recent searches</p>
+          <ul data-hm-recent></ul>
+        </div>
+        <p class="label muted" data-hm-sugg-h data-default="Trending">Trending</p>
+        <ul data-hm-sugg>
+          {%- if best != blank -%}
+            {%- for p in best.products limit: trending_limit -%}
+              <li>
+                <a href="{{ routes.search_url }}?q={{ p.title | url_encode }}&amp;options%5Bprefix%5D=last">
+                  {{- p.title | escape -}}
+                </a>
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+        <p class="label muted" data-hm-pages-h>Pages</p>
+        <ul data-hm-pages>
+          {%- assign pages_menu = section.settings.search_pages_menu -%}
+          {%- if pages_menu != blank and pages_menu.links.size > 0 -%}
+            {%- for l in pages_menu.links -%}
+              <li><a href="{{ l.url }}">{{ l.title | escape }}</a></li>
+            {%- endfor -%}
+          {%- else -%}
+            <li><a href="/pages/spec-sheet">The Machine</a></li>
+            <li><a href="/pages/schedule">Schedule</a></li>
+            <li><a href="/pages/sponsors">Sponsors</a></li>
+            <li><a href="/pages/faq">FAQ</a></li>
+          {%- endif -%}
+        </ul>
+      </div>
+      <div>
+        <p class="label muted search__status" id="SearchStatus-{{ sid }}" data-hm-search-h role="status">
+          {%- if best != blank -%}Best sellers{%- endif -%}
+        </p>
+        <div class="search__res" data-hm-search-res>
+          {%- if best != blank -%}
+            {%- for p in best.products limit: 4 -%}
+              <a class="sres" href="{{ p.url }}">
+                <span class="thumb{% unless p.featured_image %} thumb--mock{% endunless %}">
+                  {%- if p.featured_image -%}
+                    {%- render 'hm-image', image: p.featured_image, widths: '180, 360, 540', max_width: 540, sizes: '(min-width: 761px) 22vw, 45vw', alt: '' -%}
+                  {%- else -%}
+                    {%- render 'hm-mock', product: p -%}
+                  {%- endif -%}
+                </span>
+                <span class="sres__n">{{ p.title | escape }}</span>
+                <span class="sres__p num">
+                  {%- if p.price_varies -%}From {% endif -%}
+                  {{- p.price | money -}}
+                </span>
+              </a>
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+        <p style="margin:16px 0 0" data-hm-search-all hidden>
+          <a class="link" href="{{ routes.search_url }}" style="text-decoration:underline">See all results</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{%- comment -%} Cart drawer: built by the COMMERCE agent (snippets/hm-cart-drawer.liquid + assets/hm-cart.js). Opens on the hm:cart:open event. {%- endcomment -%}
+{% render 'hm-cart-drawer' %}
+
+{% stylesheet %}
+  .hm-header-section:has(.hdr--sticky) {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 50;
+  }
+  .hm-header-section .hdr {
+    position: relative;
+    top: auto;
+  }
+  .hm-header-section .mnav__thumbs li {
+    flex: none;
+  }
+  .hm-header-section .mnav__list > li > .mnav__link--sub:last-child {
+    margin-bottom: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hm-header-section .mnav {
+      animation: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM header",
+  "tag": "div",
+  "class": "hm-header-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "max_blocks": 12,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "Leave empty to use the built in Heavy Metal logo (dark)."
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo height",
+      "min": 16,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Sticky header",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Menus"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main menu",
+      "default": "main-menu",
+      "info": "A top level item with child links opens a small dropdown (like Our Story)."
+    },
+    {
+      "type": "text",
+      "id": "mega_title",
+      "label": "Item that opens the mega menu",
+      "default": "Shop",
+      "info": "Title of the main menu item. Its child links become the big links on the left."
+    },
+    {
+      "type": "link_list",
+      "id": "categories_menu",
+      "label": "Categories menu",
+      "info": "Links to collections. Shows as the Category list, the photo tiles in the mega menu and the tiles in the phone menu. The tile photo is each collection's image."
+    },
+    {
+      "type": "text",
+      "id": "mega_label",
+      "label": "Categories label",
+      "default": "Category"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_thumbs",
+      "label": "Show category photo tiles",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "thumb_count",
+      "label": "Photo tiles in the mega menu",
+      "min": 3,
+      "max": 9,
+      "step": 3,
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "new_handles",
+      "label": "Collections with a \"New\" tag",
+      "default": "new,new-drop",
+      "info": "Collection handles, separated by commas."
+    },
+    {
+      "type": "text",
+      "id": "ltd_handles",
+      "label": "Collections with a \"Ltd\" tag",
+      "default": "special-edition",
+      "info": "Collection handles, separated by commas."
+    },
+    {
+      "type": "header",
+      "content": "Mega menu card"
+    },
+    {
+      "type": "image_picker",
+      "id": "promo_image",
+      "label": "Image",
+      "info": "Empty uses the theme photo of the tractor (hm-hero.webp)."
+    },
+    {
+      "type": "text",
+      "id": "promo_label",
+      "label": "Title",
+      "default": "“The Evil One” Drop"
+    },
+    {
+      "type": "text",
+      "id": "promo_text",
+      "label": "Text",
+      "default": "New tees and hoodies. Designed by the crew, not a committee."
+    },
+    {
+      "type": "text",
+      "id": "promo_link_label",
+      "label": "Link text",
+      "default": "Shop the drop"
+    },
+    {
+      "type": "url",
+      "id": "promo_url",
+      "label": "Link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "header",
+      "content": "Phone menu"
+    },
+    {
+      "type": "link_list",
+      "id": "small_menu",
+      "label": "Small links",
+      "info": "Account, Contact, FAQ, The Evil List, Shipping & returns. Empty uses those defaults."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_facebook",
+      "label": "Show social links (Theme settings > HM v14)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_mega_children",
+      "label": "Show the mega menu item's child links in the phone menu",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Search"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Placeholder",
+      "default": "Search tees, hoodies, caps..."
+    },
+    {
+      "type": "range",
+      "id": "trending_count",
+      "label": "Trending searches",
+      "info": "Taken from the Best sellers collection (Theme settings > HM v14).",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "link_list",
+      "id": "search_pages_menu",
+      "label": "Pages list",
+      "info": "Empty shows The Machine, Schedule, Sponsors and FAQ."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_note",
+      "name": "Dropdown link style",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Adds a subtitle or the special photo style to a child link in a dropdown."
+        },
+        {
+          "type": "text",
+          "id": "match",
+          "label": "Link title or part of its URL",
+          "default": "Our Story"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle",
+          "default": "The short version"
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Special style (photo and paper look)",
+          "default": false
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo for the special style",
+          "info": "Empty uses the theme tractor photo."
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag in the phone menu",
+          "info": "For example: Long read"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM header",
+      "blocks": [
+        {
+          "type": "link_note",
+          "settings": {
+            "match": "Our Story",
+            "subtitle": "The short version",
+            "featured": false
+          }
+        },
+        {
+          "type": "link_note",
+          "settings": {
+            "match": "the-full-story",
+            "subtitle": "Long read. Grab a coffee.",
+            "featured": true,
+            "tag": "Long read"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

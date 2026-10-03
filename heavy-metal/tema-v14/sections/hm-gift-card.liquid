@@ -1,0 +1,450 @@
+{%- comment -%}
+  Gift Evil (boceto v29 gift-evil.html): product page for a native Shopify gift card product (template product.gift-card).
+  Card visual (amount follows the selected variant), amount buttons (one per variant), "Send it to me / Email it to them"
+  with Shopify's native gift card recipient properties, add to cart through window.HMCart (assets/hm-cart.js),
+  three steps and the questions (blocks). JS: assets/hm-gift.js.
+  Without JS the form posts to /cart/add and the card goes to the buyer.
+{%- endcomment -%}
+{%- liquid
+  assign p = product
+  assign sid = section.id
+  assign sel = p.selected_variant
+  if sel == blank
+    assign pos = section.settings.default_position | minus: 1
+    for v in p.variants
+      if forloop.index0 == pos and v.available
+        assign sel = v
+      endif
+    endfor
+  endif
+  if sel == blank
+    assign sel = p.selected_or_first_available_variant
+  endif
+
+  assign card_name = section.settings.card_name | default: p.title
+  assign n_amounts = p.variants.size
+  if n_amounts > 4
+    assign n_amounts = 4
+  endif
+  assign symbol = cart.currency.symbol | default: '$'
+  assign sel_amount = sel.price | money_without_currency | remove: '.00'
+  assign sel_price = sel.price | money_without_trailing_zeros | strip_html
+-%}
+<div
+  class="hm-gift"
+  data-hm-gift
+  data-section="{{ sid }}"
+  data-add-label="{{ section.settings.add_label | escape }}"
+>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="{{ routes.root_url }}">Home</a></li>
+        <li><a href="{{ routes.all_products_collection_url }}">Shop</a></li>
+        <li><span aria-current="page">{{ p.title | escape }}</span></li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="wrap ge">
+    <div class="ge-stage" aria-hidden="true">
+      <div class="gcard">
+        <svg class="gcard__bolt" viewBox="0 0 40 64" focusable="false">
+          <path d="M24 0 6 36h12L12 64l22-38H21L30 0z" fill="#F5C400"/>
+        </svg>
+        <div class="gcard__in">
+          <div>
+            <img
+              class="gcard__logo"
+              src="{{ 'logo-bone.svg' | asset_url }}"
+              alt=""
+              width="560"
+              height="81"
+              fetchpriority="high"
+            >
+            {%- if section.settings.card_sub != blank -%}
+              <p class="gcard__sub">{{ section.settings.card_sub | escape }}</p>
+            {%- endif -%}
+          </div>
+          <span></span>
+          <div class="gcard__foot">
+            <p class="gcard__name">{{ card_name | escape }}</p>
+            <p class="gcard__amt">
+              <sup>{{ symbol }}</sup><span data-hm-gift-amt>{{ sel_amount }}</span>
+            </p>
+          </div>
+        </div>
+        <span class="gcard__stripe"></span>
+      </div>
+      {%- if section.settings.caption != blank -%}
+        <p class="ge-cap">{{ section.settings.caption | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    {%- form 'product', p, class: 'gb', novalidate: 'novalidate', data-hm-gift-form: '' -%}
+      <div>
+        {%- if section.settings.label != blank -%}
+          <p class="label">{{ section.settings.label | escape }}</p>
+        {%- endif -%}
+        <h1>{{ p.title | escape }}</h1>
+      </div>
+      {%- if section.settings.lead != blank -%}
+        <p class="gb__lead">{{ section.settings.lead | escape }}</p>
+      {%- endif -%}
+
+      <fieldset>
+        <legend>{{ section.settings.amount_legend | escape }}</legend>
+        <div class="amts" style="--n: {{ n_amounts }}">
+          {%- for v in p.variants -%}
+            {%- assign v_amount = v.price | money_without_currency | remove: '.00' -%}
+            <input
+              type="radio"
+              name="id"
+              id="ga-{{ sid }}-{{ v.id }}"
+              value="{{ v.id }}"
+              data-amount="{{ v_amount }}"
+              data-price="{{ v.price | money_without_trailing_zeros | strip_html }}"
+              {% if v.id == sel.id %}
+                checked
+              {% endif %}
+              {% unless v.available %}
+                disabled
+              {% endunless %}
+            >
+            <label class="amt" for="ga-{{ sid }}-{{ v.id }}">
+              {{- v.price | money_without_trailing_zeros | strip_html -}}
+              {%- unless v.available -%}<span class="vh"> (sold out)</span>{%- endunless -%}
+            </label>
+          {%- endfor -%}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>{{ section.settings.who_legend | escape }}</legend>
+        <div class="who">
+          <input type="radio" name="hm_gift_who" id="gw-me-{{ sid }}" value="me" checked>
+          <label class="whob" for="gw-me-{{ sid }}">{{ section.settings.me_label | escape }}</label>
+          <input
+            type="radio"
+            name="hm_gift_who"
+            id="gw-them-{{ sid }}"
+            value="them"
+            aria-controls="rcp-{{ sid }}"
+            aria-expanded="false"
+          >
+          <label class="whob" for="gw-them-{{ sid }}">{{ section.settings.them_label | escape }}</label>
+        </div>
+
+        <input
+          type="hidden"
+          name="properties[__shopify_send_gift_card_to_recipient]"
+          value="on"
+          data-hm-gift-flag
+          disabled
+        >
+        <input type="hidden" name="properties[__shopify_offset]" value="" data-hm-gift-offset disabled>
+
+        <div class="rcp" id="rcp-{{ sid }}" data-hm-gift-rcp hidden>
+          <div class="fld fld--wide">
+            <label for="r-email-{{ sid }}">Their email</label>
+            <input
+              class="input"
+              id="r-email-{{ sid }}"
+              type="email"
+              name="properties[Recipient email]"
+              autocomplete="off"
+              required
+              disabled
+              aria-describedby="r-email-err-{{ sid }}"
+              data-hm-gift-email
+            >
+            <p class="err" id="r-email-err-{{ sid }}" aria-live="polite" data-hm-gift-email-err></p>
+          </div>
+          <div class="fld">
+            <label for="r-name-{{ sid }}">Their name <span class="opt">(optional)</span></label>
+            <input
+              class="input"
+              id="r-name-{{ sid }}"
+              type="text"
+              name="properties[Recipient name]"
+              autocomplete="off"
+              maxlength="60"
+              disabled
+              data-hm-gift-name
+            >
+          </div>
+          <div class="fld">
+            <label for="r-date-{{ sid }}">Send on <span class="opt">(optional)</span></label>
+            <input
+              class="input"
+              id="r-date-{{ sid }}"
+              type="date"
+              name="properties[Send on]"
+              pattern="\d{4}-\d{2}-\d{2}"
+              disabled
+              aria-describedby="r-date-hint-{{ sid }} r-date-err-{{ sid }}"
+              data-hm-gift-date
+            >
+          </div>
+          <p class="hint fld--wide" id="r-date-hint-{{ sid }}">{{ section.settings.date_hint | escape }}</p>
+          <p class="err fld--wide" id="r-date-err-{{ sid }}" aria-live="polite" data-hm-gift-date-err></p>
+          <div class="fld fld--wide">
+            <label for="r-msg-{{ sid }}">Your message <span class="opt">(optional)</span></label>
+            <textarea
+              class="input"
+              id="r-msg-{{ sid }}"
+              name="properties[Message]"
+              maxlength="200"
+              rows="3"
+              disabled
+              aria-describedby="r-msg-cnt-{{ sid }}"
+              placeholder="{{ section.settings.message_placeholder | escape }}"
+              data-hm-gift-msg
+            ></textarea>
+            <span class="cnt" id="r-msg-cnt-{{ sid }}" data-hm-gift-cnt>0 / 200</span>
+          </div>
+        </div>
+      </fieldset>
+
+      <input type="hidden" name="quantity" value="1">
+      <button class="btn" type="submit" data-hm-gift-add{% unless p.available %} disabled{% endunless %}>
+        {%- if p.available -%}
+          {{ section.settings.add_label | escape }} · <span data-hm-gift-price>{{ sel_price }}</span>
+        {%- else -%}
+          Sold out
+        {%- endif -%}
+      </button>
+      <p class="gb__msg" role="status" aria-live="polite" data-hm-gift-status></p>
+
+      {%- if section.settings.fact_1 != blank
+        or section.settings.fact_2 != blank
+        or section.settings.fact_3 != blank
+      -%}
+        <ul class="gb__facts">
+          {%- if section.settings.fact_1 != blank -%}<li>{{ section.settings.fact_1 | escape }}</li>{%- endif -%}
+          {%- if section.settings.fact_2 != blank -%}<li>{{ section.settings.fact_2 | escape }}</li>{%- endif -%}
+          {%- if section.settings.fact_3 != blank -%}<li>{{ section.settings.fact_3 | escape }}</li>{%- endif -%}
+        </ul>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+
+  {%- if section.settings.step_1_title != blank
+    or section.settings.step_2_title != blank
+    or section.settings.step_3_title != blank
+  -%}
+    <section class="wrap steps" aria-labelledby="steps-h-{{ sid }}">
+      <h2 class="vh" id="steps-h-{{ sid }}">{{ section.settings.steps_heading | escape }}</h2>
+      <ol class="steps__list">
+        {%- assign step_n = 0 -%}
+        {%- for i in (1..3) -%}
+          {%- liquid
+            assign t_key = 'step_' | append: i | append: '_title'
+            assign x_key = 'step_' | append: i | append: '_text'
+            assign st = section.settings[t_key]
+            assign sx = section.settings[x_key]
+          -%}
+          {%- if st != blank -%}
+            {%- assign step_n = step_n | plus: 1 -%}
+            <li>
+              <span class="steps__n" aria-hidden="true">{{ step_n }}</span>
+              <h3>{{ st | escape }}</h3>
+              {%- if sx != blank -%}<p>{{ sx | escape }}</p>{%- endif -%}
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ol>
+    </section>
+  {%- endif -%}
+
+  {%- if section.blocks.size > 0 -%}
+    <section class="wrap gq" aria-labelledby="gq-h-{{ sid }}">
+      <div class="gq__side">
+        <h2 id="gq-h-{{ sid }}">{{ section.settings.faq_heading | escape }}</h2>
+        {%- if section.settings.faq_text != blank -%}
+          <div class="gq__text">{{ section.settings.faq_text }}</div>
+        {%- endif -%}
+      </div>
+      <div class="gq__list">
+        {%- for block in section.blocks -%}
+          <details {{ block.shopify_attributes }}>
+            <summary>{{ block.settings.question | escape }}</summary>
+            <div class="gq__a">{{ block.settings.answer }}</div>
+          </details>
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  <script type="application/ld+json">
+    {{ p | structured_data }}
+  </script>
+</div>
+
+<script src="{{ 'hm-gift.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .hm-gift { overflow-x: clip; }
+  .hm-gift .crumbs { padding-block: 14px 12px; }
+  .hm-gift .crumbs ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 2px 8px; font-size: var(--t-xs); color: var(--mute); }
+  .hm-gift .crumbs li { white-space: nowrap; }
+  .hm-gift .crumbs li + li::before { content: "/"; margin-right: 8px; color: #B6B1AD; }
+  .hm-gift .crumbs a { text-decoration: none; }
+  .hm-gift .crumbs a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .hm-gift .crumbs [aria-current] { color: var(--ink); }
+
+  /* 1 · card + buy box */
+  .hm-gift .ge { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; padding-block: 8px var(--sect); }
+  @media (min-width: 900px) { .hm-gift .ge { grid-template-columns: minmax(0, 1fr) minmax(0, 480px); gap: clamp(28px, 3.4vw, 56px); align-items: start; } }
+  .hm-gift .ge-stage { background: var(--tile); display: grid; place-items: center; padding: clamp(28px, 6vw, 96px) clamp(20px, 5vw, 72px); min-height: clamp(300px, 52vw, 620px); position: relative; overflow: hidden; }
+  @media (min-width: 900px) { .hm-gift .ge-stage { position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--header, 56px) + 16px); height: clamp(440px, calc(100svh - 180px), 680px); min-height: 0; } }
+  .hm-gift .ge-stage::after { content: ""; position: absolute; left: 12%; right: 12%; bottom: clamp(20px, 5vw, 60px); height: 24px; background: radial-gradient(50% 50% at 50% 50%, rgba(28, 27, 25, .28), transparent 70%); filter: blur(6px); }
+
+  .hm-gift .gcard { position: relative; z-index: 1; width: min(100%, 560px); aspect-ratio: 85.6 / 54; border-radius: clamp(10px, 1.4vw, 18px); overflow: hidden; isolation: isolate; color: var(--night-ink);
+    background: radial-gradient(60% 80% at 82% 30%, rgba(170, 178, 190, .30), transparent 70%), radial-gradient(70% 60% at 10% 0%, rgba(100, 110, 126, .35), transparent 70%), linear-gradient(160deg, #16191E 0%, #23282F 55%, #3A414B 100%);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .08) inset, 0 18px 40px -18px rgba(18, 18, 17, .55);
+    transform: rotate(-3deg); transition: transform .5s cubic-bezier(.2, .7, .2, 1); }
+  .hm-gift .ge-stage:hover .gcard { transform: rotate(-1deg) translateY(-4px); }
+  @media (prefers-reduced-motion: reduce) { .hm-gift .gcard, .hm-gift .ge-stage:hover .gcard { transition: none; transform: rotate(-3deg); } }
+  .hm-gift .gcard__in { position: absolute; inset: 0; padding: 7% 7.5%; display: grid; grid-template-rows: auto 1fr auto; }
+  .hm-gift .gcard__logo { width: 58%; height: auto; display: block; }
+  .hm-gift .gcard__sub { margin: 6px 0 0; font-family: var(--f-head); font-size: clamp(9px, 1.1vw, 13px); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; opacity: .75; }
+  .hm-gift .gcard__bolt { position: absolute; right: 7%; top: 9%; width: 16%; height: auto; opacity: .95; }
+  .hm-gift .gcard__foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; }
+  .hm-gift .gcard__name { margin: 0; font-family: var(--f-head); font-stretch: 70%; font-weight: 800; font-size: clamp(18px, 2.4vw, 30px); text-transform: uppercase; letter-spacing: .02em; line-height: 1; }
+  .hm-gift .gcard__amt { margin: 0; font-family: var(--f-head); font-stretch: 62%; font-weight: 800; font-size: clamp(44px, 7vw, 92px); line-height: .85; font-variant-numeric: tabular-nums; letter-spacing: -.01em; white-space: nowrap; }
+  .hm-gift .gcard__amt sup { font-size: .42em; vertical-align: .95em; margin-right: 2px; font-weight: 700; }
+  .hm-gift .gcard__stripe { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: var(--accent); }
+  .hm-gift .ge-cap { margin: 0; font-size: var(--t-xs); color: var(--mute); text-align: center; position: absolute; left: 0; right: 0; bottom: 12px; z-index: 1; padding-inline: 12px; }
+
+  .hm-gift .gb { display: grid; gap: 18px; align-content: start; }
+  .hm-gift .gb .label { color: var(--mute); }
+  .hm-gift .gb h1 { margin: 4px 0 0; font-family: var(--f-head); font-stretch: 75%; font-weight: 800; text-transform: uppercase; font-size: var(--t-hero); line-height: 1; color: var(--ink); }
+  .hm-gift .gb__lead { margin: 0; max-width: 44ch; color: var(--soft); }
+  .hm-gift .gb fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  .hm-gift .gb legend { padding: 0; margin-bottom: 8px; font-size: var(--t-xs); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); }
+  .hm-gift .amts { display: grid; grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr)); gap: 6px; }
+  .hm-gift .amts input, .hm-gift .who input { position: absolute; opacity: 0; width: 1px; height: 1px; margin: 0; }
+  .hm-gift .amt { display: grid; place-items: center; min-height: 52px; border: 1px solid var(--line); background: var(--surface); font-family: var(--f-head); font-stretch: 80%; font-weight: 800; font-size: 20px; color: var(--ink); cursor: pointer; font-variant-numeric: tabular-nums; transition: border-color .15s; }
+  .hm-gift .amt:hover { border-color: var(--ink); }
+  .hm-gift .amts input:checked + .amt { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+  .hm-gift .amts input:disabled + .amt { color: var(--mute); text-decoration: line-through; cursor: not-allowed; }
+  .hm-gift .amts input:focus-visible + .amt, .hm-gift .who input:focus-visible + .whob { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+  .hm-gift .who { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .hm-gift .whob { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; border: 1px solid var(--line); background: var(--surface); font-size: var(--t-sm); font-weight: 600; color: var(--ink); cursor: pointer; text-align: center; padding: 0 10px; }
+  .hm-gift .whob:hover { border-color: var(--ink); }
+  .hm-gift .who input:checked + .whob { border-color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+
+  .hm-gift .rcp { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 10px; margin-top: 12px; }
+  .hm-gift .rcp[hidden] { display: none; }
+  .hm-gift .rcp .fld { display: grid; gap: 4px; min-width: 0; }
+  .hm-gift .rcp .fld--wide { grid-column: 1 / -1; }
+  .hm-gift .rcp label { font-size: var(--t-xs); font-weight: 600; color: var(--ink); }
+  .hm-gift .rcp .opt { font-weight: 400; color: var(--mute); }
+  .hm-gift .rcp textarea.input { min-height: 88px; padding: 10px 12px; resize: vertical; line-height: 1.45; }
+  .hm-gift .rcp .hint { margin: 0; font-size: var(--t-xs); color: var(--mute); }
+  .hm-gift .rcp .err { margin: 0; font-size: var(--t-xs); color: var(--alert); font-weight: 600; }
+  .hm-gift .rcp .err:empty { display: none; }
+  .hm-gift .rcp .input[aria-invalid="true"] { border-color: var(--alert); }
+  .hm-gift .cnt { font-size: var(--t-xs); color: var(--mute); justify-self: end; font-variant-numeric: tabular-nums; }
+  @media (max-width: 480px) { .hm-gift .rcp { grid-template-columns: minmax(0, 1fr); } }
+
+  .hm-gift .gb .btn { width: 100%; min-height: 52px; }
+  .hm-gift .gb .btn[aria-busy="true"] { opacity: .7; }
+  .hm-gift .gb__facts { list-style: none; margin: 0; padding: 14px 0 0; border-top: 1px solid var(--line); display: grid; gap: 8px; font-size: var(--t-sm); color: var(--soft); }
+  .hm-gift .gb__facts li { display: flex; gap: 10px; align-items: baseline; }
+  .hm-gift .gb__facts li::before { content: ""; flex: none; width: 7px; height: 7px; background: var(--ink); transform: translateY(-1px) rotate(45deg); }
+  .hm-gift .gb__msg { margin: 0; font-size: var(--t-sm); }
+  .hm-gift .gb__msg:empty { display: none; }
+
+  /* 2 · three steps */
+  .hm-gift .steps { border-top: 1px solid var(--line); padding-block: var(--sect); }
+  .hm-gift .steps__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 3vw, 48px); }
+  .hm-gift .steps__list li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 16px; align-items: baseline; }
+  .hm-gift .steps__n { grid-row: span 2; font-family: var(--f-head); font-stretch: 62%; font-weight: 800; font-size: clamp(48px, 5vw, 72px); line-height: .8; color: var(--ink); }
+  .hm-gift .steps__list h3 { margin: 0; font-family: var(--f-head); font-stretch: 80%; font-weight: 800; text-transform: uppercase; font-size: var(--t-h2); line-height: 1.1; color: var(--ink); }
+  .hm-gift .steps__list p { margin: 0; color: var(--soft); max-width: 36ch; }
+  @media (max-width: 760px) { .hm-gift .steps__list { grid-template-columns: minmax(0, 1fr); gap: 24px; } }
+
+  /* 3 · questions */
+  .hm-gift .gq { border-top: 1px solid var(--line); padding-block: var(--sect); display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px 48px; }
+  @media (min-width: 900px) { .hm-gift .gq { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); } }
+  .hm-gift .gq h2 { margin: 0; font-family: var(--f-head); font-stretch: 80%; font-weight: 800; text-transform: uppercase; font-size: var(--t-h1); line-height: 1.05; color: var(--ink); }
+  .hm-gift .gq__text p { margin: 8px 0 0; color: var(--soft); }
+  .hm-gift .gq__list { border-top: 1px solid var(--ink); }
+  .hm-gift .gq details { border-bottom: 1px solid var(--line); }
+  .hm-gift .gq summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; gap: 16px; align-items: center; min-height: 52px; padding: 10px 0; font-weight: 700; color: var(--ink); }
+  .hm-gift .gq summary::-webkit-details-marker { display: none; }
+  .hm-gift .gq summary::after { content: "+"; flex: none; font-size: 22px; font-weight: 400; line-height: 1; }
+  .hm-gift .gq details[open] summary::after { content: "\2212"; }
+  .hm-gift .gq__a { padding-bottom: 16px; }
+  .hm-gift .gq__a p { margin: 0 0 8px; max-width: 64ch; color: var(--soft); }
+  .hm-gift .gq__a p:last-child { margin-bottom: 0; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Gift card",
+  "tag": "section",
+  "class": "hm-gift-section",
+  "settings": [
+    { "type": "header", "content": "Card" },
+    { "type": "text", "id": "card_name", "label": "Name on the card", "info": "Empty = the product title." },
+    { "type": "text", "id": "card_sub", "label": "Small line under the logo", "default": "Pro Stock · “The Evil One”" },
+    { "type": "text", "id": "caption", "label": "Caption under the card", "default": "Sent by email. Print it or keep it on your phone." },
+    { "type": "header", "content": "Buy box" },
+    { "type": "text", "id": "label", "label": "Label above the title", "default": "Gift card" },
+    { "type": "textarea", "id": "lead", "label": "Intro", "default": "Not sure of their size? Give them the whole shop and let them pick their own evil." },
+    { "type": "text", "id": "amount_legend", "label": "Amount heading", "default": "Amount" },
+    {
+      "type": "range",
+      "id": "default_position",
+      "label": "Amount selected when the page opens",
+      "info": "Position of the variant in the product (1 = first).",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2
+    },
+    { "type": "text", "id": "who_legend", "label": "Recipient heading", "default": "Who gets it?" },
+    { "type": "text", "id": "me_label", "label": "Option: to me", "default": "Send it to me" },
+    { "type": "text", "id": "them_label", "label": "Option: to them", "default": "Email it to them" },
+    { "type": "text", "id": "date_hint", "label": "Send date hint", "default": "Leave the date empty to send it right after checkout. You can pick a day up to 90 days out." },
+    { "type": "text", "id": "message_placeholder", "label": "Message placeholder", "default": "Happy birthday. Full pull or nothing." },
+    { "type": "text", "id": "add_label", "label": "Add to cart button", "default": "Add to cart" },
+    { "type": "text", "id": "fact_1", "label": "Fact 1", "default": "Never expires." },
+    { "type": "text", "id": "fact_2", "label": "Fact 2", "default": "Good for anything in the shop, special edition included." },
+    { "type": "text", "id": "fact_3", "label": "Fact 3", "default": "Delivered by email, so it never gets lost in the mail." },
+    { "type": "header", "content": "How it works" },
+    { "type": "text", "id": "steps_heading", "label": "Heading (screen readers)", "default": "How it works" },
+    { "type": "text", "id": "step_1_title", "label": "Step 1 title", "default": "Pick an amount" },
+    { "type": "textarea", "id": "step_1_text", "label": "Step 1 text", "default": "$25, $50 or $100. Add it to the cart with anything else or check out on its own." },
+    { "type": "text", "id": "step_2_title", "label": "Step 2 title", "default": "We email it" },
+    { "type": "textarea", "id": "step_2_text", "label": "Step 2 text", "default": "To you, so you can print it, or straight to them on the day you choose, with your note." },
+    { "type": "text", "id": "step_3_title", "label": "Step 3 title", "default": "They gear up" },
+    { "type": "textarea", "id": "step_3_text", "label": "Step 3 text", "default": "They enter the code at checkout. Whatever they don't spend stays on the card." },
+    { "type": "header", "content": "Questions" },
+    { "type": "text", "id": "faq_heading", "label": "Heading", "default": "Gift card questions" },
+    { "type": "richtext", "id": "faq_text", "label": "Text under the heading", "default": "<p>Anything else? <a href=\"/pages/faq\">See the FAQ</a> or <a href=\"/pages/contact?topic=order\">send us a note</a>.</p>" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Does it expire?" },
+        { "type": "richtext", "id": "answer", "label": "Answer", "default": "<p>No. The balance stays on the card until it's used up.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gift card",
+      "blocks": [
+        { "type": "question" }
+      ]
+    }
+  ]
+}
+{% endschema %}

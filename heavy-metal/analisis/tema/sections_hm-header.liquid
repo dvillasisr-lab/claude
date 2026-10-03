@@ -1,0 +1,93 @@
+<header class="hm hm-header" role="banner">
+  <a class="hm-header__logo" href="{{ routes.root_url }}" aria-label="Heavy Metal home">{% render 'hm-logo-line', color: '#F2F0E9' %}</a>
+  <nav class="hm-header__nav" aria-label="Main">
+    {%- for i in (1..4) -%}
+      {%- capture lk %}link_{{ i }}_label{% endcapture -%}{%- capture lu %}link_{{ i }}_url{% endcapture -%}
+      {%- assign label = section.settings[lk] -%}{%- assign url = section.settings[lu] -%}
+      {%- if label != blank -%}<a href="{{ url }}"{% if request.path == url %} aria-current="page"{% endif %}>{{ label }}</a>{%- endif -%}
+    {%- endfor -%}
+  </nav>
+  <div class="hm-header__actions">
+    <details class="hm-burger">
+      <summary aria-label="Open menu"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="#F2F0E9" stroke-width="2"/></svg></summary>
+      <div class="hm-burger__panel">
+        {%- for i in (1..4) -%}
+          {%- capture lk %}link_{{ i }}_label{% endcapture -%}{%- capture lu %}link_{{ i }}_url{% endcapture -%}
+          {%- if section.settings[lk] != blank -%}<a href="{{ section.settings[lu] }}">{{ section.settings[lk] }}</a>{%- endif -%}
+        {%- endfor -%}
+        <a href="{{ section.settings.shop_url }}">{{ section.settings.shop_label }}</a>
+      </div>
+    </details>
+    <a class="hm-cart" href="{{ routes.cart_url }}" aria-label="Cart, {{ cart.item_count }} items"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 8Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="hm-cart__count">{{ cart.item_count }}</span></a>
+    <a class="hm-btn hm-btn--solid hm-btn--sm hm-header__shop" href="{{ section.settings.shop_url }}"><span>{{ section.settings.shop_label }}</span></a>
+  </div>
+</header>
+{% schema %}
+{
+  "name": "HM Header",
+  "class": "hm-section-header",
+  "settings": [
+    {
+      "type": "text",
+      "id": "link_1_label",
+      "label": "Link 1 text",
+      "default": "THE MACHINE"
+    },
+    {
+      "type": "text",
+      "id": "link_1_url",
+      "label": "Link 1 URL",
+      "default": "/pages/spec-sheet"
+    },
+    {
+      "type": "text",
+      "id": "link_2_label",
+      "label": "Link 2 text",
+      "default": "THE TEAM"
+    },
+    {
+      "type": "text",
+      "id": "link_2_url",
+      "label": "Link 2 URL",
+      "default": "/pages/about"
+    },
+    {
+      "type": "text",
+      "id": "link_3_label",
+      "label": "Link 3 text",
+      "default": "SCHEDULE"
+    },
+    {
+      "type": "text",
+      "id": "link_3_url",
+      "label": "Link 3 URL",
+      "default": "/pages/schedule"
+    },
+    {
+      "type": "text",
+      "id": "link_4_label",
+      "label": "Link 4 text",
+      "default": "SPONSORS"
+    },
+    {
+      "type": "text",
+      "id": "link_4_url",
+      "label": "Link 4 URL",
+      "default": "/pages/sponsors"
+    },
+    {
+      "type": "text",
+      "id": "shop_label",
+      "label": "Button text",
+      "default": "SHOP MERCH"
+    },
+    {
+      "type": "text",
+      "id": "shop_url",
+      "label": "Button URL",
+      "default": "/collections/all"
+    }
+  ]
+}
+{% endschema %}
+

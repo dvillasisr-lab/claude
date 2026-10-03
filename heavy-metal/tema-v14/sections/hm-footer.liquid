@@ -1,0 +1,414 @@
+{%- liquid
+  assign sid = section.id
+  assign brand = settings.hm_brand_name | default: shop.name
+
+  comment
+    The Evil List column is hidden on pages whose handle is in the list (default: evil-list, schedule).
+    On the sign up page itself a short note replaces the form.
+  endcomment
+  assign show_news = section.settings.show_news
+  assign on_signup = false
+  if request.page_type == 'page'
+    assign hide_handles = section.settings.news_hide_handles | remove: ' ' | downcase | split: ','
+    if hide_handles contains page.handle
+      assign show_news = false
+    endif
+    assign signup_handle = section.settings.signup_handle | strip | downcase
+    if signup_handle != blank and page.handle == signup_handle and show_news == false
+      assign on_signup = true
+    endif
+  endif
+
+  assign privacy_url = shop.privacy_policy.url | default: '/policies/privacy-policy'
+-%}
+
+<footer class="ftr" data-hm-footer>
+  <div class="wrap">
+    <div class="ftr__cols">
+      <details class="ftr__acc" open data-hm-acc>
+        <summary><h2 class="ftr__h">{{ section.settings.help_heading | escape }}</h2></summary>
+        <ul class="ftr__list">
+          {%- assign help = section.settings.help_menu -%}
+          {%- if help != blank and help.links.size > 0 -%}
+            {%- for l in help.links -%}
+              <li><a href="{{ l.url }}"{% if l.current %} aria-current="page"{% endif %}>{{ l.title | escape }}</a></li>
+            {%- endfor -%}
+          {%- else -%}
+            <li><a href="/pages/contact">Contact us</a></li>
+            <li><a href="/policies/shipping-policy">Shipping</a></li>
+            <li><a href="/policies/refund-policy">Returns &amp; exchanges</a></li>
+            <li><a href="/pages/sizes">Size guide</a></li>
+            <li><a href="{{ routes.account_url }}">Track my order</a></li>
+            <li><a href="/pages/faq">FAQ</a></li>
+            <li><a href="/pages/evil-list">The Evil List</a></li>
+          {%- endif -%}
+        </ul>
+      </details>
+
+      {%- if on_signup -%}
+        <div class="ftr__news">
+          <h2 class="ftr__h">{{ section.settings.news_heading | escape }}</h2>
+          <p style="margin:0" class="muted">{{ section.settings.signup_note | escape }}</p>
+        </div>
+      {%- elsif show_news -%}
+        <div class="ftr__news">
+          <h2 class="ftr__h" id="EvilH-{{ sid }}">{{ section.settings.news_heading | escape }}</h2>
+          {%- if section.settings.news_text != blank -%}
+            <p style="margin:0" class="muted">{{ section.settings.news_text }}</p>
+          {%- endif -%}
+          {%- liquid
+            assign news_posted = false
+            assign news_errors = false
+          -%}
+          {%- form 'customer', id: 'HmEvilFooter', class: 'ftr__form', novalidate: 'novalidate' -%}
+            {%- liquid
+              if form.posted_successfully?
+                assign news_posted = true
+              endif
+              if form.errors
+                assign news_errors = true
+                assign news_error_text = form.errors | default_errors
+              endif
+            -%}
+            <input type="hidden" name="contact[tags]" value="{{ section.settings.news_tags | default: 'evil-list' | escape }}">
+            <label class="vh" for="EvilEmail-{{ sid }}">Email</label>
+            <input
+              class="input"
+              id="EvilEmail-{{ sid }}"
+              type="email"
+              name="contact[email]"
+              required
+              autocomplete="email"
+              placeholder="Email address"
+              aria-describedby="EvilMsg-{{ sid }} EvilConsent-{{ sid }}"
+              {% if form.errors %}
+                aria-invalid="true"
+              {% endif %}
+              data-hm-news-email
+            >
+            <button type="submit" aria-label="Sign up for {{ section.settings.news_heading | escape }}">
+              {% render 'hm-icon', name: 'arrow', size: 18 %}
+            </button>
+          {%- endform -%}
+          <p
+            class="form-msg{% if news_errors %} form-msg--error{% endif %}"
+            id="EvilMsg-{{ sid }}"
+            role="status"
+            aria-live="polite"
+            data-hm-news-msg
+            data-error="{{ section.settings.error_text | escape }}"
+          >
+            {%- if news_posted -%}
+              <b>{{ section.settings.success_text | escape }}</b>
+            {%- elsif news_errors -%}
+              {{ news_error_text }}
+            {%- endif -%}
+          </p>
+          <p class="consent" id="EvilConsent-{{ sid }}">{{ section.settings.consent }}</p>
+        </div>
+      {%- else -%}
+        {%- comment -%} v14.1: without The Evil List column the middle holds the logo, so the footer keeps three balanced columns {%- endcomment -%}
+        <div class="ftr__mark">
+          <a href="{{ routes.root_url }}" aria-label="{{ brand | escape }}, home">
+            <img src="{{ 'logo-stack-ink.svg' | asset_url }}" alt="" width="200" height="111" loading="lazy">
+          </a>
+        </div>
+      {%- endif -%}
+
+      <details class="ftr__acc" open data-hm-acc>
+        <summary><h2 class="ftr__h">{{ section.settings.team_heading | escape }}</h2></summary>
+        <ul class="ftr__list">
+          {%- assign team = section.settings.team_menu -%}
+          {%- if team != blank and team.links.size > 0 -%}
+            {%- for l in team.links -%}
+              <li><a href="{{ l.url }}"{% if l.current %} aria-current="page"{% endif %}>{{ l.title | escape }}</a></li>
+            {%- endfor -%}
+          {%- else -%}
+            <li><a href="/pages/spec-sheet">The Machine</a></li>
+            <li><a href="/pages/about">Our Story</a></li>
+            <li><a href="/pages/the-full-story">The full story</a></li>
+            <li><a href="/pages/about#crew">The crew</a></li>
+            <li><a href="/pages/schedule">Schedule</a></li>
+            <li><a href="/blogs/pit-log">Pit Log</a></li>
+            <li><a href="/pages/gallery">Gallery</a></li>
+            <li><a href="/pages/sponsors">Sponsors</a></li>
+            <li><a href="/pages/book">Book the team</a></li>
+          {%- endif -%}
+        </ul>
+      </details>
+    </div>
+
+    <script>
+      (function () {
+        if (!window.matchMedia('(max-width: 860px)').matches) return;
+        var s = document.currentScript, f = s && s.closest('[data-hm-footer]');
+        if (f) f.querySelectorAll('[data-hm-acc]').forEach(function (d) { d.open = false; });
+      })();
+    </script>
+
+    {%- if section.settings.show_social -%}
+      {%- if settings.hm_facebook_url != blank or settings.hm_instagram_url != blank -%}
+        <div class="ftr__social">
+          {%- if settings.hm_facebook_url != blank -%}
+            <a href="{{ settings.hm_facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook (opens in a new tab)">
+              {%- render 'hm-icon', name: 'facebook', size: 20 -%}
+            </a>
+          {%- endif -%}
+          {%- if settings.hm_instagram_url != blank -%}
+            <a href="{{ settings.hm_instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram (opens in a new tab)">
+              {%- render 'hm-icon', name: 'instagram', size: 20 -%}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+
+    <p class="ftr__biz">
+      © <span data-hm-year>{{ 'now' | date: '%Y' }}</span> {{ brand | escape -}}
+      {%- if section.settings.biz_suffix != blank %} · {{ section.settings.biz_suffix | escape }}{% endif -%}
+    </p>
+
+    <nav class="ftr__legal" aria-label="Legal">
+      {%- assign legal = section.settings.legal_menu -%}
+      {%- if legal != blank and legal.links.size > 0 -%}
+        {%- for l in legal.links -%}
+          <a href="{{ l.url }}"{% if l.current %} aria-current="page"{% endif %}>{{ l.title | escape }}</a>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for policy in shop.policies -%}
+          <a href="{{ policy.url }}">{{ policy.title | escape }}</a>
+        {%- endfor -%}
+      {%- endif -%}
+      {%- if section.settings.show_cookie_link -%}
+        <button type="button" class="linklike" data-hm-cookie-prefs data-fallback="{{ privacy_url }}">
+          {{- section.settings.cookie_label | escape -}}
+        </button>
+      {%- endif -%}
+    </nav>
+  </div>
+</footer>
+
+{%- if section.settings.show_totop -%}
+  <button class="totop" type="button" data-hm-totop aria-label="Back to top" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5"/></svg>
+  </button>
+  <script>
+    (function () {
+      var b = document.querySelector('[data-hm-totop]');
+      if (!b || b.__hm) return;
+      b.__hm = true;
+      var root = document.documentElement, rm = window.matchMedia('(prefers-reduced-motion: reduce)'), raf = 0;
+      /* things fixed to the bottom of the screen: the button sits above whichever is showing */
+      function lift() {
+        var h = 0, vh = window.innerHeight;
+        /* sticky add to cart bar: use its layout height, it may still be sliding in */
+        var bar = document.querySelector('.satc.is-on');
+        if (bar && getComputedStyle(bar).display !== 'none') h = bar.offsetHeight;
+        [ '#shopify-pc__banner', '.shopify-pc__banner__dialog'].forEach(function (sel) {
+          var el = document.querySelector(sel);
+          if (!el || !el.getClientRects().length) return;
+          var r = el.getBoundingClientRect(), cs = getComputedStyle(el);
+          if (cs.visibility === 'hidden' || cs.display === 'none' || r.height === 0 || r.bottom < vh - 4 || r.top >= vh) return;
+          h = Math.max(h, vh - r.top);
+        });
+        b.style.setProperty('--totop-lift', Math.round(h) + 'px');
+      }
+      function blocked() {
+        return root.classList.contains('hm-locked') || !!document.querySelector('dialog[open]');
+      }
+      function update() {
+        raf = 0;
+        /* about 1.5 screens down; on a shorter page, once the visitor reaches the bottom (and is at least a screen down) */
+        var vh = window.innerHeight, max = document.documentElement.scrollHeight - vh;
+        var on = window.scrollY > Math.min(vh * 1.5, Math.max(vh, max - 40)) && !blocked();
+        if (on) lift();
+        if (b.hidden === on) b.hidden = !on;
+      }
+      function queue() { if (!raf) raf = requestAnimationFrame(update); }
+      window.addEventListener('scroll', queue, { passive: true });
+      window.addEventListener('resize', queue);
+      document.addEventListener('click', function () { setTimeout(queue, 350); });
+      document.addEventListener('hm:dialog:open', queue);
+      document.addEventListener('hm:dialog:close', queue);
+      if ('MutationObserver' in window) {
+        var mo = new MutationObserver(queue);
+        mo.observe(root, { attributes: true, attributeFilter: ['class'] });
+        var sb = document.querySelector('[data-satc]');
+        if (sb) mo.observe(sb, { attributes: true, attributeFilter: ['class'] });
+      }
+      b.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: rm.matches ? 'auto' : 'smooth' });
+        var main = document.getElementById('MainContent');
+        if (main) { try { main.focus({ preventScroll: true }); } catch (e) {} }
+      });
+      update();
+    })();
+  </script>
+{%- endif -%}
+
+{% stylesheet %}
+  .totop { position: fixed; z-index: 45; right: calc(16px + env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px) + var(--totop-lift, 0px)); width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: rgba(255, 255, 255, .94); color: var(--ink); display: grid; place-items: center; padding: 0; cursor: pointer; box-shadow: 0 10px 24px -14px rgba(28, 27, 25, .45); transition: bottom .2s, border-color .15s; }
+  .totop:hover { border-color: var(--ink); }
+  .totop svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  @media (min-width: 761px) { .totop { right: calc(24px + env(safe-area-inset-right, 0px)); bottom: calc(24px + env(safe-area-inset-bottom, 0px) + var(--totop-lift, 0px)); } }
+  @media (prefers-reduced-motion: reduce) { .totop { transition: none; } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM footer",
+  "tag": "div",
+  "class": "hm-footer-section",
+  "enabled_on": {
+    "groups": ["footer"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "Help column"
+    },
+    {
+      "type": "text",
+      "id": "help_heading",
+      "label": "Heading",
+      "default": "Help"
+    },
+    {
+      "type": "link_list",
+      "id": "help_menu",
+      "label": "Menu",
+      "info": "Empty shows Contact us, Shipping, Returns & exchanges, Size guide, Track my order, FAQ and The Evil List."
+    },
+    {
+      "type": "header",
+      "content": "The Evil List"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_news",
+      "label": "Show The Evil List sign up",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "news_heading",
+      "label": "Heading",
+      "default": "The Evil List"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "news_text",
+      "label": "Text",
+      "default": "First dibs on drops and a heads-up before every pull. We’re too busy wrenching to spam you. <a href=\"/pages/evil-list\" title=\"The Evil List\">What you get</a>"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "consent",
+      "label": "Consent line",
+      "default": "By signing up you agree to receive marketing emails. Unsubscribe anytime. See our <a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a>."
+    },
+    {
+      "type": "text",
+      "id": "success_text",
+      "label": "Message after signing up",
+      "default": "You’re in. Check your inbox to confirm. Yes, really."
+    },
+    {
+      "type": "text",
+      "id": "error_text",
+      "label": "Message for an invalid email",
+      "default": "That email looks off. Fix it and you’re in."
+    },
+    {
+      "type": "text",
+      "id": "news_tags",
+      "label": "Customer tags",
+      "default": "evil-list"
+    },
+    {
+      "type": "text",
+      "id": "news_hide_handles",
+      "label": "Hide the sign up on pages with handle",
+      "default": "evil-list,schedule",
+      "info": "Page handles separated by commas."
+    },
+    {
+      "type": "text",
+      "id": "signup_handle",
+      "label": "Sign up page handle",
+      "default": "evil-list",
+      "info": "On this page the column shows the note below instead of the form."
+    },
+    {
+      "type": "text",
+      "id": "signup_note",
+      "label": "Note on the sign up page",
+      "default": "You’re already on the sign up page. It’s right up there."
+    },
+    {
+      "type": "header",
+      "content": "The team column"
+    },
+    {
+      "type": "text",
+      "id": "team_heading",
+      "label": "Heading",
+      "default": "The team"
+    },
+    {
+      "type": "link_list",
+      "id": "team_menu",
+      "label": "Menu",
+      "info": "Empty shows The Machine, Our Story, The full story, The crew, Schedule, Pit Log, Gallery, Sponsors and Book the team."
+    },
+    {
+      "type": "header",
+      "content": "Bottom"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "label": "Show social icons",
+      "info": "Links come from Theme settings > HM v14. Empty links are hidden.",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "biz_suffix",
+      "label": "Text after the copyright",
+      "default": "Waterloo, WI"
+    },
+    {
+      "type": "link_list",
+      "id": "legal_menu",
+      "label": "Legal menu",
+      "info": "Empty shows the store policies from Settings > Policies."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cookie_link",
+      "label": "Show Cookie Preferences link",
+      "info": "Opens Shopify's cookie banner preferences (Settings > Customer privacy).",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cookie_label",
+      "label": "Cookie link text",
+      "default": "Cookie Preferences"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_totop",
+      "label": "Show the Back to top button",
+      "info": "Round button, bottom right. Shows after scrolling about a screen and a half.",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM footer"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,231 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hm-sponsors-hero",
+      "blocks": {
+        "phrase_1": {
+          "type": "phrase",
+          "settings": {
+            "text": "Pro Stock tractor built from scratch"
+          }
+        },
+        "phrase_2": {
+          "type": "phrase",
+          "settings": {
+            "text": "Waterloo, WI"
+          }
+        },
+        "phrase_3": {
+          "type": "phrase",
+          "settings": {
+            "text": "Driver with 20+ years in the sport"
+          }
+        },
+        "phrase_4": {
+          "type": "phrase",
+          "settings": {
+            "text": "NTPA and PPL Badger State circuits"
+          }
+        },
+        "states_5": {
+          "type": "states",
+          "settings": {
+            "text": "States we pull in: [states]"
+          }
+        }
+      },
+      "block_order": [
+        "phrase_1",
+        "phrase_2",
+        "phrase_3",
+        "phrase_4",
+        "states_5"
+      ],
+      "settings": {}
+    },
+    "why": {
+      "type": "hm-sponsors-why",
+      "blocks": {
+        "option_1": {
+          "type": "option",
+          "settings": {
+            "title": "I want my logo on “The Evil One”",
+            "text": "Good call. Packages right below.",
+            "main": true
+          }
+        },
+        "option_2": {
+          "type": "option",
+          "settings": {
+            "title": "I just want a shirt",
+            "text": "Fair. No contract needed.",
+            "link": "/collections/all",
+            "main": false
+          }
+        },
+        "option_3": {
+          "type": "option",
+          "settings": {
+            "title": "I’m a pulling fan",
+            "text": "Same. Here’s where we pull next.",
+            "link": "/pages/schedule",
+            "main": false
+          }
+        },
+        "option_4": {
+          "type": "option",
+          "settings": {
+            "title": "I have no clue",
+            "text": "Honest. Start with the story.",
+            "link": "/pages/about",
+            "main": false
+          }
+        }
+      },
+      "block_order": [
+        "option_1",
+        "option_2",
+        "option_3",
+        "option_4"
+      ],
+      "settings": {}
+    },
+    "packages": {
+      "type": "hm-sponsors-packages",
+      "settings": {}
+    },
+    "tabs": {
+      "type": "hm-sponsors-tabs",
+      "blocks": {
+        "tab_1": {
+          "type": "tab",
+          "settings": {
+            "label": "Packages",
+            "anchor": "packages"
+          }
+        },
+        "tab_2": {
+          "type": "tab",
+          "settings": {
+            "label": "Where your logo goes",
+            "anchor": "placements"
+          }
+        },
+        "tab_3": {
+          "type": "tab",
+          "settings": {
+            "label": "Decal map",
+            "anchor": "decals"
+          }
+        },
+        "tab_4": {
+          "type": "tab",
+          "settings": {
+            "label": "FAQ",
+            "anchor": "faq"
+          }
+        },
+        "tab_5": {
+          "type": "tab",
+          "settings": {
+            "label": "Request",
+            "anchor": "contact"
+          }
+        }
+      },
+      "block_order": [
+        "tab_1",
+        "tab_2",
+        "tab_3",
+        "tab_4",
+        "tab_5"
+      ],
+      "settings": {}
+    },
+    "backers": {
+      "type": "hm-sponsors-backers",
+      "settings": {}
+    },
+    "numbers": {
+      "type": "hm-sponsors-stats",
+      "settings": {}
+    },
+    "placements": {
+      "type": "hm-sponsors-placements",
+      "settings": {}
+    },
+    "decals": {
+      "type": "hm-sponsors-decals",
+      "settings": {}
+    },
+    "request": {
+      "type": "hm-sponsors-request",
+      "blocks": {
+        "question_1": {
+          "type": "question",
+          "settings": {
+            "question": "Which package fits my business?",
+            "answer": "<p>Title Partner puts your name in the team name and the biggest logo on the tractor. Pit Partner covers the shirt sleeve, the trailer, the website and monthly social posts. Crew Supporter is built for local shops and fans. Still stuck? Pick “Not sure yet” in the form and ask us.</p>"
+          }
+        },
+        "question_2": {
+          "type": "question",
+          "settings": {
+            "question": "Where does “The Evil One” pull?",
+            "answer": "<p>On the NTPA and PPL Badger State circuits, [pulls], plus exhibitions. Driver and owner Chris F. has 20+ years in the sport. Dates go up on the <a href=\"/pages/schedule\" title=\"Schedule\">Schedule</a>.</p>"
+          }
+        },
+        "question_3": {
+          "type": "question",
+          "settings": {
+            "question": "How many people will see my brand?",
+            "answer": "<p>[pitch], in the stands alone. Streams and social media come on top of that. Want the latest numbers? Ask us in the form.</p>"
+          }
+        },
+        "question_4": {
+          "type": "question",
+          "settings": {
+            "question": "How long does a package run?",
+            "answer": "<p>Packages are built around the pulling season. We confirm the exact dates and terms in writing with you before anything goes on the tractor.</p>"
+          }
+        },
+        "question_5": {
+          "type": "question",
+          "settings": {
+            "question": "What if the package I want is sold out?",
+            "answer": "<p>Hit “Join the waitlist” on that package. We’ll contact you if a spot opens up.</p>"
+          }
+        },
+        "question_6": {
+          "type": "question",
+          "settings": {
+            "question": "What happens after I send the form?",
+            "answer": "<p>A human reads it and replies within 2 business days. Picked a package? We set up a call. Picked “Not sure yet”? We answer your questions. No commitment: nothing is signed until we agree on the terms in writing.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question_1",
+        "question_2",
+        "question_3",
+        "question_4",
+        "question_5",
+        "question_6"
+      ],
+      "settings": {
+        "book_url": "/pages/book"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "why",
+    "packages",
+    "tabs",
+    "backers",
+    "numbers",
+    "placements",
+    "decals",
+    "request"
+  ]
+}

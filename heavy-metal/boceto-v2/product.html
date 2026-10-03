@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Evil One Tee · Heavy Metal</title>
+<meta name="description" content="Evil One Tee. Heavy Metal The Evil One Pro Stock pulling tractor merch, designed by the team and printed on demand.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* PDP boceto v2: galería + buy box sticky (rhode / SKIMS). Solo variables de hm.css. */
+.crumbs{padding-block:18px 14px}
+.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 8px;font-size:var(--t-xs);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.crumbs li+li::before{content:"/";margin-right:8px;color:var(--line)}
+.crumbs a{text-decoration:none}
+.crumbs a:hover{text-decoration:underline;text-underline-offset:3px}
+.crumbs [aria-current]{color:var(--ink)}
+
+.pdp{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;padding-bottom:var(--sect)}
+@media (min-width:900px){
+  .pdp{grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:clamp(32px,4vw,64px);align-items:start}
+  .buy{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header) + 24px)}
+}
+
+/* galería: grid 2 columnas en desktop, carrusel con scroll-snap en móvil */
+.gal{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+.gal__dots{display:none}
+@media (max-width:899px){
+  .gal-wrap{margin-inline:calc(-1 * var(--gutter))}
+  .gal{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:0;scrollbar-width:none;overscroll-behavior-x:contain}
+  .gal::-webkit-scrollbar{display:none}
+  .gal>li{flex:0 0 100%;scroll-snap-align:start}
+  .gal__dots{display:flex;justify-content:center;gap:4px;padding-top:12px}
+  .gal__dots button{width:28px;height:28px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center}
+  .gal__dots button::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--line);transition:background .15s,transform .15s}
+  .gal__dots button[aria-current="true"]::before{background:var(--ink);transform:scale(1.15)}
+}
+
+/* buy box */
+.buy{display:grid;gap:22px;align-content:start;min-width:0}
+.buy__head{display:grid;gap:10px;justify-items:start}
+.buy__name{font-stretch:112%;font-weight:700;font-size:clamp(1.75rem,2.6vw,2.25rem);line-height:1.02;letter-spacing:.01em;text-transform:uppercase;margin:0}
+.buy__price{margin:0;font-size:var(--t-lg);font-weight:500}
+.buy__desc{margin:0;color:var(--soft);max-width:46ch}
+
+.opt{border:0;margin:0;padding:0;min-width:0}
+.opt__legend{padding:0;margin-bottom:12px;display:flex;align-items:baseline;gap:8px;font-size:var(--t-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.opt__legend b{color:var(--ink);font-weight:600;letter-spacing:.06em}
+.opt input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.colors{display:flex;gap:10px}
+.cswatch{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;cursor:pointer;border:1px solid transparent}
+.cswatch span{width:28px;height:28px;border-radius:50%;background:var(--sw);box-shadow:inset 0 0 0 1px rgba(17,17,16,.25)}
+.opt input:checked+.cswatch{border-color:var(--ink)}
+.opt input:focus-visible+.cswatch,.opt input:focus-visible+.size{outline:2px solid var(--ink);outline-offset:3px}
+
+.opt__legend--full{width:100%;justify-content:space-between;align-items:center}
+.sg-link{padding-block:4px}
+.linkbtn{background:none;border:0;padding:6px 0;font-size:var(--t-xs);font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:underline;text-underline-offset:4px;cursor:pointer;color:var(--ink)}
+.sizes{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.size{display:grid;place-items:center;min-height:48px;background:var(--surface);border:1px solid var(--line);cursor:pointer;font-size:var(--t-sm);font-weight:600;letter-spacing:.04em;transition:border-color .15s}
+.size:hover{border-color:var(--ink)}
+.opt input:checked+.size{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.opt input:disabled+.size{background:transparent;color:var(--mute);cursor:not-allowed;text-decoration:line-through}
+.opt.is-error .size{border-color:var(--sale)}
+.opt__msg{margin:8px 0 0;font-size:var(--t-sm);font-weight:600;color:var(--sale)}
+.opt__msg:empty{display:none}
+.soldout{margin:10px 0 0;font-size:var(--t-sm);color:var(--mute)}
+.notify{display:flex;gap:0;margin-top:8px}
+.notify .btn{flex:none}
+
+.qty-row{display:flex;align-items:center;gap:16px}
+.qty-row>label{font-size:var(--t-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.qty{display:grid;grid-template-columns:44px 52px 44px;height:44px;border:1px solid var(--line);background:var(--surface)}
+.qty button{border:0;background:none;cursor:pointer;display:grid;place-items:center}
+.qty button svg{width:14px;height:14px;stroke:currentColor;stroke-width:1.6;fill:none}
+.qty input{border:0;border-inline:1px solid var(--line);background:none;text-align:center;font:inherit;font-weight:600;font-variant-numeric:tabular-nums;width:100%;-moz-appearance:textfield;appearance:textfield}
+.qty input::-webkit-inner-spin-button,.qty input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+
+.ctas{display:grid;gap:10px}
+.btn--big{min-height:56px;font-size:var(--t-sm)}
+.ship-wrap{display:grid;gap:8px;margin-top:-8px}
+.ship{margin:0;display:flex;align-items:center;gap:8px;font-size:var(--t-sm);color:var(--soft)}
+.ship svg,.trust svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+.trust{list-style:none;margin:0;padding:16px 0 0;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.trust li{display:grid;gap:6px;justify-items:start;font-size:var(--t-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;line-height:1.35;color:var(--soft)}
+
+.acc{border-top:1px solid var(--line)}
+.acc details{border-bottom:1px solid var(--line)}
+.acc summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:56px;cursor:pointer;font-size:var(--t-sm);font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary::after{content:"";width:10px;height:10px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-3px);transition:transform .15s}
+.acc details[open] summary::after{transform:rotate(-135deg) translateY(-3px)}
+.acc__body{padding-bottom:18px;font-size:var(--t-sm);color:var(--soft);display:grid;gap:10px}
+.acc__body p,.acc__body ul{margin:0}
+.acc__body ul{padding-left:18px;display:grid;gap:4px}
+
+/* size guide */
+.sg{width:min(560px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:0;border:0;background:var(--surface);color:var(--ink)}
+.sg::backdrop{background:rgba(17,17,16,.45)}
+.sg__head{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line)}
+.sg__body{padding:20px;display:grid;gap:16px}
+.sg__body p{margin:0;font-size:var(--t-sm);color:var(--soft)}
+.tbl-wrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:var(--t-sm);font-variant-numeric:tabular-nums}
+.tbl caption{text-align:left;padding-bottom:8px}
+.tbl th,.tbl td{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl thead th{font-size:var(--t-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.icon-btn svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.6}
+
+/* secciones inferiores */
+.sect-head{display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap;margin-bottom:28px}
+.look{display:grid;gap:var(--gap);align-items:center}
+@media (min-width:900px){.look{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}}
+.look__pics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+.look__info{display:grid;gap:14px;justify-items:start}
+.look__list{list-style:none;margin:0;padding:0;width:100%;border-top:1px solid var(--line)}
+.look__list li{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);font-size:var(--t-sm)}
+.look__list li span:first-child{font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.card .card__sub{margin-top:-6px}
+
+.rev{display:grid;gap:14px;justify-items:center;text-align:center;padding-block:clamp(32px,5vw,56px);border-block:1px solid var(--line)}
+.rev p{margin:0}
+
+.strip{padding-block:clamp(28px,4vw,40px)}
+.strip__in{display:flex;justify-content:space-between;align-items:center;gap:16px 32px;flex-wrap:wrap}
+.strip__t{margin:0;font-stretch:112%;font-weight:700;font-size:var(--t-xl);text-transform:uppercase;line-height:1.1;max-width:28ch}
+.strip .link{color:var(--accent)}
+
+/* barra sticky móvil */
+.satc{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);border-top:1px solid var(--line);padding:10px var(--gutter) calc(10px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:12px;transform:translateY(110%);transition:transform .2s;visibility:hidden}
+.satc.is-on{transform:none;visibility:visible}
+.satc__txt{min-width:0;flex:1;display:grid;line-height:1.25}
+.satc__txt b{font-size:var(--t-sm);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.satc__txt span{font-size:var(--t-xs);color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.satc .btn{flex:none;padding-inline:1.2em}
+@media (min-width:900px){.satc{display:none}}
+@media (max-width:899px){body{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
+@media (max-width:420px){.sizes{gap:4px}.trust{gap:8px}}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="shop"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html">Shop</a></li>
+        <li><a href="shop.html#tees">Tees</a></li>
+        <li><span aria-current="page">Evil One Tee</span></li>
+      </ol>
+    </nav>
+
+    <div class="pdp">
+      <!-- galería -->
+      <section class="gal-wrap" aria-label="Product images">
+        <ul class="gal" id="gal">
+          <li><div class="ph"><div class="ph__tag"><b>Foto 1 · 4:5 · Frente</b>Tee Matte Black plana sobre fondo hueso, logo del frente centrado</div></div></li>
+          <li><div class="ph"><div class="ph__tag"><b>Foto 2 · 4:5 · Espalda</b>Estampado de espalda completo, The Evil One en la pista</div></div></li>
+          <li><div class="ph"><div class="ph__tag"><b>Foto 3 · 4:5 · En modelo</b>Miembro del equipo con la tee en los pits, tractor al fondo el día de la jalada</div></div></li>
+          <li><div class="ph"><div class="ph__tag"><b>Foto 4 · 4:5 · Detalle</b>Macro del estampado y la etiqueta del cuello</div></div></li>
+          <li><div class="ph"><div class="ph__tag"><b>Foto 5 · 4:5 · Flat lay</b>Tee doblada con Crew Cap y Sticker Pack</div></div></li>
+          <li><div class="ph"><div class="ph__tag"><b>Foto 6 · 4:5 · Lifestyle</b>Fan en las gradas con la tee, luz de tarde</div></div></li>
+        </ul>
+        <div class="gal__dots" id="gal-dots" role="group" aria-label="Choose image"></div>
+      </section>
+
+      <!-- buy box -->
+      <section class="buy" id="buy" aria-labelledby="p-name">
+        <div class="buy__head">
+          <span class="badge">Best seller</span>
+          <h1 class="buy__name" id="p-name">Evil One Tee</h1>
+          <p class="buy__price num">$XX</p>
+          <p class="buy__desc">Heavyweight tee with The Evil One on the back. Designed by the team, printed on demand.</p>
+        </div>
+
+        <fieldset class="opt" id="color-set">
+          <legend class="opt__legend">Color: <b id="color-name">Matte Black</b></legend>
+          <div class="colors">
+            <input type="radio" name="color" id="c-black" value="Matte Black" checked><label class="cswatch" for="c-black" title="Matte Black"><span style="--sw:var(--ink)"></span><span class="vh">Matte Black</span></label>
+            <input type="radio" name="color" id="c-gray" value="Smoke Gray"><label class="cswatch" for="c-gray" title="Smoke Gray"><span style="--sw:#8C8A82"></span><span class="vh">Smoke Gray</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="opt" id="size-set" aria-describedby="size-msg">
+          <legend class="opt__legend opt__legend--full"><span>Size: <b id="size-name">Select a size</b></span><button class="linkbtn sg-link" type="button" id="sg-open" aria-haspopup="dialog" aria-controls="sg">Size guide</button></legend>
+          <div class="sizes">
+            <input type="radio" name="size" id="s-s" value="S"><label class="size" for="s-s">S</label>
+            <input type="radio" name="size" id="s-m" value="M"><label class="size" for="s-m">M</label>
+            <input type="radio" name="size" id="s-l" value="L"><label class="size" for="s-l">L</label>
+            <input type="radio" name="size" id="s-xl" value="XL"><label class="size" for="s-xl">XL</label>
+            <input type="radio" name="size" id="s-2xl" value="2XL"><label class="size" for="s-2xl">2XL</label>
+            <input type="radio" name="size" id="s-3xl" value="3XL" disabled aria-describedby="soldout-t"><label class="size" for="s-3xl">3XL<span class="vh"> sold out</span></label>
+          </div>
+          <p class="opt__msg" id="size-msg" aria-live="polite"></p>
+          <p class="soldout" id="soldout-t">3XL is sold out. <button class="linkbtn" type="button" id="notify-open" aria-expanded="false" aria-controls="notify">Notify me</button></p>
+          <form class="notify" id="notify" hidden>
+            <label class="vh" for="notify-email">Email for 3XL restock</label>
+            <input class="input" id="notify-email" type="email" autocomplete="email" placeholder="Email for 3XL restock" required>
+            <button class="btn" type="submit">Notify</button>
+          </form>
+        </fieldset>
+
+        <div class="qty-row">
+          <label for="qty">Quantity</label>
+          <div class="qty">
+            <button type="button" id="qty-dn" aria-label="Decrease quantity"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10"/></svg></button>
+            <input type="number" id="qty" name="qty" value="1" min="1" max="10" inputmode="numeric">
+            <button type="button" id="qty-up" aria-label="Increase quantity"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M7 2v10"/></svg></button>
+          </div>
+        </div>
+
+        <div class="ctas">
+          <button class="btn btn--block btn--big" type="button" id="atc">Select a size</button>
+          <button class="btn btn--ghost btn--block btn--big" type="button" id="bin">Buy it now</button>
+        </div>
+
+        <div class="ship-wrap"><p class="ship"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg>Free US shipping on orders over $XX</p><p class="ship"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/></svg>Easy returns and exchanges within XX days</p></div>
+
+        <ul class="trust">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8"/><path d="M7 14h10v7H7z"/></svg>Printed on demand</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20l4-1 11-11-3-3L5 16l-1 4Z"/><path d="M14 7l3 3"/></svg>Designed by the team</li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Secure checkout</li>
+        </ul>
+
+        <div class="acc">
+          <details open>
+            <summary>Details</summary>
+            <div class="acc__body">
+              <ul>
+                <li>XX% cotton, XX oz heavyweight jersey</li>
+                <li>Regular fit, ribbed crew neck</li>
+                <li>Front: Heavy Metal wordmark. Back: The Evil One</li>
+                <li>Wash cold inside out, hang dry</li>
+              </ul>
+            </div>
+          </details>
+          <details>
+            <summary>Print &amp; design story</summary>
+            <div class="acc__body">
+              <p>Drawn by the crew that built the tractor by hand in a family shop in Waterloo, WI. The back print is the Evil One itself: Challenger matte black body, Cat 3208 V8, the only Cat V8 in a class of John Deere straight sixes.</p>
+              <p>First start in 2026, lightning hit and the power went out. Some would call it a coincidence. We call it a sign.</p>
+              <a class="link" href="story.html">Read our story</a>
+            </div>
+          </details>
+          <details>
+            <summary>Shipping &amp; returns</summary>
+            <div class="acc__body">
+              <p>Printed on demand when you order. Ships in X to X business days. Free US shipping on orders over $XX.</p>
+              <p>Returns and exchanges within XX days. <a href="#">See our policy</a></p>
+            </div>
+          </details>
+        </div>
+        <p class="note">Tela, medidas y días de envío van en XX hasta confirmar con el proveedor de impresión bajo demanda. En Shopify cada talla es una variante; 3XL agotada muestra "Notify me".</p>
+      </section>
+    </div>
+  </div>
+
+  <!-- complete the look -->
+  <section class="sect sect--white" aria-labelledby="look-t">
+    <div class="wrap">
+      <div class="sect-head">
+        <h2 class="h2" id="look-t">Complete the look</h2>
+        <a class="link" href="shop.html">Shop all</a>
+      </div>
+      <div class="look">
+        <div class="look__pics">
+          <div class="ph"><div class="ph__tag"><b>Foto · 4:5</b>Evil One Tee Matte Black, plana</div></div>
+          <div class="ph"><div class="ph__tag"><b>Foto · 4:5</b>Crew Cap negra, vista 3/4</div></div>
+        </div>
+        <div class="look__info">
+          <span class="badge badge--ink">Save $X</span>
+          <h3 class="h2" style="font-size:var(--t-xl)">Crew Pack</h3>
+          <p class="muted" style="margin:0">The tee and the cap the crew wears on pull day.</p>
+          <ul class="look__list">
+            <li><span>Evil One Tee</span><span class="num">$XX</span></li>
+            <li><span>Crew Cap</span><span class="num">$XX</span></li>
+            <li><span>Bundle</span><span class="num"><b>$XX</b></span></li>
+          </ul>
+          <button class="btn btn--block" type="button" data-add="Crew Pack bundle|Evil One Tee + Crew Cap|$XX">Add Crew Pack · $XX</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- you may also like -->
+  <section class="sect" aria-labelledby="like-t">
+    <div class="wrap">
+      <div class="sect-head">
+        <h2 class="h2" id="like-t">You may also like</h2>
+        <a class="link" href="shop.html">View all</a>
+      </div>
+      <div class="grid g4" style="row-gap:32px">
+        <article class="card">
+          <div class="card__media">
+            <a href="product.html" tabindex="-1" aria-hidden="true"><div class="ph"><div class="ph__tag"><b>Foto · 4:5</b>Tee con rayo, plana</div></div></a>
+            <div class="card__badges"><span class="badge">New</span></div>
+            <button class="btn btn--light card__add" type="button" data-add="Lightning Strike Tee|Matte Black / M|$XX">Quick add</button>
+          </div>
+          <h3 class="card__name"><a href="product.html">Lightning Strike Tee</a></h3>
+          <p class="card__sub">The first start</p>
+          <div class="card__meta"><span class="num">$XX</span><span class="swatches"><span class="swatch" style="--sw:var(--ink)"></span></span></div>
+        </article>
+        <article class="card">
+          <div class="card__media">
+            <a href="product.html" tabindex="-1" aria-hidden="true"><div class="ph"><div class="ph__tag"><b>Foto · 4:5</b>Hoodie con 680 CI en la espalda</div></div></a>
+            <div class="card__badges"><span class="badge">Best seller</span></div>
+            <button class="btn btn--light card__add" type="button" data-add="680 CI Hoodie|Matte Black / M|$XX">Quick add</button>
+          </div>
+          <h3 class="card__name"><a href="product.html">680 CI Hoodie</a></h3>
+          <p class="card__sub">Heavy fleece hoodie</p>
+          <div class="card__meta"><span class="num">$XX</span><span class="swatches"><span class="swatch" style="--sw:var(--ink)"></span><span class="swatch" style="--sw:#8C8A82"></span></span></div>
+        </article>
+        <article class="card">
+          <div class="card__media">
+            <a href="product.html" tabindex="-1" aria-hidden="true"><div class="ph"><div class="ph__tag"><b>Foto · 4:5</b>Crew Cap negra de frente</div></div></a>
+            <button class="btn btn--light card__add" type="button" data-add="Crew Cap|Black|$XX">Quick add</button>
+          </div>
+          <h3 class="card__name"><a href="product.html">Crew Cap</a></h3>
+          <p class="card__sub">Pull day cap</p>
+          <div class="card__meta"><span class="num">$XX</span><span class="swatches"><span class="swatch" style="--sw:var(--ink)"></span></span></div>
+        </article>
+        <article class="card">
+          <div class="card__media">
+            <a href="product.html" tabindex="-1" aria-hidden="true"><div class="ph"><div class="ph__tag"><b>Foto · 4:5</b>Manga larga, texto en la manga</div></div></a>
+            <button class="btn btn--light card__add" type="button" data-add="Full Pull or Nothing Long Sleeve|Matte Black / M|$XX">Quick add</button>
+          </div>
+          <h3 class="card__name"><a href="product.html">Full Pull or Nothing Long Sleeve</a></h3>
+          <p class="card__sub">Long sleeve tee</p>
+          <div class="card__meta"><span class="num">$XX</span><span class="swatches"><span class="swatch" style="--sw:var(--ink)"></span><span class="swatch" style="--sw:#E9E6DC"></span></span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- reviews -->
+  <section class="wrap" aria-labelledby="rev-t" id="reviews" style="padding-bottom:var(--sect)">
+    <div class="rev">
+      <p class="label muted">Reviews</p>
+      <h2 class="h2" id="rev-t">Be the first to review</h2>
+      <p class="muted" style="max-width:44ch">Got the Evil One Tee? Tell the crew how it fits and wears.</p>
+      <a class="btn btn--ghost" href="#">Write a review</a>
+    </div>
+    <p class="note">Sin reseñas inventadas: el bloque de estrellas aparece solo cuando la app de reseñas tenga reseñas reales de compradores.</p>
+  </section>
+
+  <!-- brand strip -->
+  <section class="sect--night strip" aria-label="Our story">
+    <div class="wrap strip__in">
+      <p class="strip__t">Designed by the crew that built the Evil One</p>
+      <a class="link" href="story.html">Our story</a>
+    </div>
+  </section>
+</main>
+
+<div data-hm-footer></div>
+
+<!-- guía de tallas -->
+<dialog class="sg" id="sg" aria-labelledby="sg-t">
+  <div class="sg__head">
+    <h2 class="label" id="sg-t">Size guide · Evil One Tee</h2>
+    <button class="icon-btn" type="button" id="sg-close" aria-label="Close size guide"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg></button>
+  </div>
+  <div class="sg__body">
+    <p>Regular fit. Measured flat, in inches. Between sizes? Size up for a looser fit.</p>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <caption class="vh">Evil One Tee measurements in inches</caption>
+        <thead><tr><th scope="col">Size</th><th scope="col">Chest width (in)</th><th scope="col">Body length (in)</th><th scope="col">Sleeve (in)</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">S</th><td>XX</td><td>XX</td><td>XX</td></tr>
+          <tr><th scope="row">M</th><td>XX</td><td>XX</td><td>XX</td></tr>
+          <tr><th scope="row">L</th><td>XX</td><td>XX</td><td>XX</td></tr>
+          <tr><th scope="row">XL</th><td>XX</td><td>XX</td><td>XX</td></tr>
+          <tr><th scope="row">2XL</th><td>XX</td><td>XX</td><td>XX</td></tr>
+          <tr><th scope="row">3XL</th><td>XX</td><td>XX</td><td>XX</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Chest: armpit to armpit. Length: top of shoulder to hem.</p>
+  </div>
+</dialog>
+
+<!-- barra sticky móvil -->
+<div class="satc" id="satc" aria-hidden="true">
+  <div class="satc__txt"><b>Evil One Tee</b><span id="satc-var">Matte Black · Select a size</span></div>
+  <button class="btn" type="button" id="satc-btn" tabindex="-1">Select a size</button>
+</div>
+
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var sizeSet = $('size-set'), msg = $('size-msg'), sizeName = $('size-name'), qty = $('qty');
+
+  function color() { return document.querySelector('input[name="color"]:checked').value; }
+  function size() { var s = document.querySelector('input[name="size"]:checked'); return s ? s.value : null; }
+  function syncBar() {
+    $('satc-var').textContent = color() + ' · ' + (size() || 'Select a size');
+    $('atc').textContent = size() ? 'Add to cart · $XX' : 'Select a size';
+    $('satc-btn').textContent = size() ? 'Add · $XX' : 'Select a size';
+  }
+
+  document.querySelectorAll('input[name="color"]').forEach(function (r) {
+    r.addEventListener('change', function () { $('color-name').textContent = r.value; syncBar(); });
+  });
+  document.querySelectorAll('input[name="size"]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      sizeName.textContent = r.value; sizeSet.classList.remove('is-error'); msg.textContent = ''; syncBar();
+    });
+  });
+
+  /* talla obligatoria: error claro en línea y foco en la primera talla */
+  function need() {
+    if (size()) return true;
+    sizeSet.classList.add('is-error');
+    msg.textContent = 'Please select a size to continue.';
+    sizeSet.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.querySelector('input[name="size"]:not(:disabled)').focus({ preventScroll: true });
+    return false;
+  }
+  function add() {
+    if (!need()) return;
+    var n = Math.max(1, Math.min(10, parseInt(qty.value, 10) || 1));
+    window.hmAdd('Evil One Tee|' + color() + ' / ' + size() + (n > 1 ? ' · Qty ' + n : '') + '|$XX');
+  }
+  $('atc').addEventListener('click', add);
+  $('bin').addEventListener('click', add);
+  $('satc-btn').addEventListener('click', add);
+
+  /* cantidad */
+  function setQty(v) { qty.value = Math.max(1, Math.min(10, v)); }
+  $('qty-dn').addEventListener('click', function () { setQty((parseInt(qty.value, 10) || 1) - 1); });
+  $('qty-up').addEventListener('click', function () { setQty((parseInt(qty.value, 10) || 1) + 1); });
+  qty.addEventListener('change', function () { setQty(parseInt(qty.value, 10) || 1); });
+
+  /* avisar cuando vuelva 3XL */
+  var nb = $('notify-open'), nf = $('notify');
+  nb.addEventListener('click', function () {
+    var open = nf.hidden; nf.hidden = !open; nb.setAttribute('aria-expanded', String(open));
+    if (open) $('notify-email').focus();
+  });
+  nf.addEventListener('submit', function (e) {
+    e.preventDefault(); nf.innerHTML = '<p style="margin:0;font-size:var(--t-sm)">You are on the list for 3XL.</p>';
+  });
+
+  /* guía de tallas */
+  var sg = $('sg');
+  $('sg-open').addEventListener('click', function () { sg.showModal(); });
+  $('sg-close').addEventListener('click', function () { sg.close(); });
+  sg.addEventListener('click', function (e) { if (e.target === sg) sg.close(); });
+
+  /* galería móvil: puntos */
+  var gal = $('gal'), dots = $('gal-dots'), items = gal.children;
+  Array.prototype.forEach.call(items, function (li, i) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.setAttribute('aria-label', 'Image ' + (i + 1) + ' of ' + items.length);
+    b.addEventListener('click', function () { gal.scrollTo({ left: li.offsetLeft - gal.offsetLeft, behavior: 'smooth' }); });
+    dots.appendChild(b);
+  });
+  function markDot(i) { Array.prototype.forEach.call(dots.children, function (d, j) { d.setAttribute('aria-current', j === i ? 'true' : 'false'); }); }
+  markDot(0);
+  gal.addEventListener('scroll', function () { markDot(Math.round(gal.scrollLeft / Math.max(1, gal.clientWidth))); }, { passive: true });
+
+  /* barra sticky móvil: aparece cuando el botón principal sale por arriba */
+  var satc = $('satc'), satcBtn = $('satc-btn');
+  function setBar(on) {
+    if (satc.classList.contains('is-on') === on) return;
+    satc.classList.toggle('is-on', on);
+    satc.setAttribute('aria-hidden', String(!on));
+    satcBtn.tabIndex = on ? 0 : -1;
+  }
+  var atc = $('atc');
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (en) {
+      setBar(!en[0].isIntersecting && en[0].boundingClientRect.top < 0);
+    }).observe(atc);
+  }
+  /* respaldo para saltos grandes (anclas) donde el observer no cruza el umbral */
+  var tick = false;
+  window.addEventListener('scroll', function () {
+    if (tick) return; tick = true;
+    requestAnimationFrame(function () { tick = false; setBar(atc.getBoundingClientRect().bottom < 0); });
+  }, { passive: true });
+  syncBar();
+})();
+</script>
+</body>
+</html>

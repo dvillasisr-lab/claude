@@ -1,0 +1,35 @@
+[
+  {
+    "handle": "main",
+    "fields": [
+      {
+        "key": "pulls_per_season",
+        "value": "20"
+      },
+      {
+        "key": "states",
+        "value": "10"
+      },
+      {
+        "key": "fans_per_pull",
+        "value": "5000"
+      },
+      {
+        "key": "social_text",
+        "value": "Growing"
+      },
+      {
+        "key": "show_plus",
+        "value": "true"
+      },
+      {
+        "key": "estimated",
+        "value": "true"
+      },
+      {
+        "key": "updated",
+        "value": "2026-10-01"
+      }
+    ]
+  }
+]

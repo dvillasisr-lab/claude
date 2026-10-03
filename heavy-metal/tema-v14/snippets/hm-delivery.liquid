@@ -1,0 +1,113 @@
+{% doc %}
+  Delivery timeline: Order placed, Printed, Shipped, Delivered.
+  Dates are computed in the visitor's browser (assets/hm-delivery.js), counting business days only (no Saturdays or Sundays).
+  Without JavaScript the steps still show the business day ranges.
+  Renders nothing for products that don't ship (gift cards, the Feed The Beast tip, anything with "requires shipping" off).
+
+  @param {product} product - The product
+  @param {string} [heading] - Label before the date range (default "Estimated delivery")
+  @param {number} [prod_min] - Production business days, minimum (default 2)
+  @param {number} [prod_max] - Production business days, maximum (default 5)
+  @param {number} [ship_min] - Shipping business days, minimum (default 2)
+  @param {number} [ship_max] - Shipping business days, maximum (default 5)
+  @param {number} [cutoff] - Order cut off hour, 1 to 23 in the visitor's time; 0 = none (default 0)
+  @param {string} [attrs] - Extra attributes for the wrapper (block.shopify_attributes)
+
+  @example
+  {% render 'hm-delivery', product: product, prod_min: 2, prod_max: 5 %}
+{% enddoc %}
+{%- liquid
+  assign ships = false
+  for v in product.variants
+    if v.requires_shipping
+      assign ships = true
+      break
+    endif
+  endfor
+  if product.gift_card? or product.tags contains 'hidden'
+    assign ships = false
+  endif
+
+  assign pmin = prod_min | default: 2 | at_least: 0
+  assign pmax = prod_max | default: 5 | at_least: pmin
+  assign smin = ship_min | default: 2 | at_least: 1
+  assign smax = ship_max | default: 5 | at_least: smin
+  assign tmin = pmin | plus: smin
+  assign tmax = pmax | plus: smax
+  assign label = heading | default: 'Estimated delivery'
+-%}
+{%- if ships -%}
+  <div
+    class="dlv"
+    data-hm-delivery
+    data-prod-min="{{ pmin }}"
+    data-prod-max="{{ pmax }}"
+    data-ship-min="{{ smin }}"
+    data-ship-max="{{ smax }}"
+    data-cutoff="{{ cutoff | default: 0 }}"
+    {{ attrs }}
+  >
+    <p class="dlv__head">
+      <span class="dlv__label">{{ label | escape }}</span>
+      <b class="dlv__eta num" data-dlv-eta>{{ tmin }} to {{ tmax }} business days</b>
+    </p>
+    <ol class="dlv__steps">
+      <li class="dlv__step is-done">
+        <span class="dlv__ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7"/></svg>
+        </span>
+        <span class="dlv__t">Order placed</span>
+        <span class="dlv__d" data-dlv-order>Today</span>
+      </li>
+      <li class="dlv__step">
+        <span class="dlv__ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M8 4 4 6.5 5.5 10 7 9.5V20h10V9.5l1.5.5L20 6.5 16 4c-.6 1.6-2.2 2.5-4 2.5S8.6 5.6 8 4Z"/></svg>
+        </span>
+        <span class="dlv__t">Printed</span>
+        <span class="dlv__d">Made to order, up to {{ pmax }} business days</span>
+      </li>
+      <li class="dlv__step">
+        <span class="dlv__ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg>
+        </span>
+        <span class="dlv__t">Shipped</span>
+        <span class="dlv__d">{{ smin }} to {{ smax }} business days</span>
+      </li>
+      <li class="dlv__step">
+        <span class="dlv__ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 20V10l8-6 8 6v10"/><path d="M9.5 20v-5.5h5V20"/></svg>
+        </span>
+        <span class="dlv__t">Delivered</span>
+        <span class="dlv__d num" data-dlv-range>{{ tmin }} to {{ tmax }} business days</span>
+      </li>
+    </ol>
+    <p class="dlv__note" data-dlv-note hidden></p>
+  </div>
+  <script src="{{ 'hm-delivery.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% stylesheet %}
+  .dlv { container-type: inline-size; display: grid; gap: 12px; padding: 14px 16px 16px; background: var(--surface); border: 1px solid var(--line); }
+  .dlv__head { margin: 0; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 12px; font-size: var(--t-xs); }
+  .dlv__label { font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--mute); }
+  .dlv__eta { font-size: var(--t-sm); font-weight: 700; color: var(--ink); }
+  .dlv__steps { list-style: none; margin: 0; padding: 0; position: relative; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .dlv__steps::before { content: ""; position: absolute; top: 14px; left: 12.5%; right: 12.5%; height: 0; border-top: 1px dashed #B9B5AD; }
+  .dlv__steps::after { content: ""; position: absolute; top: 14px; left: 12.5%; width: 25%; height: 0; border-top: 1px solid var(--ink); }
+  .dlv__step { position: relative; display: grid; justify-items: center; align-content: start; gap: 2px; text-align: center; min-width: 0; }
+  .dlv__ic { position: relative; z-index: 1; width: 28px; height: 28px; margin-bottom: 6px; border-radius: 50%; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--ink); color: var(--ink); }
+  .dlv__ic svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .dlv__step.is-done .dlv__ic { background: var(--ink); color: var(--surface); }
+  .dlv__t { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); line-height: 1.3; }
+  .dlv__d { font-size: 11px; line-height: 1.35; color: var(--soft); overflow-wrap: anywhere; }
+  .dlv__step:last-child .dlv__d { color: var(--ink); font-weight: 700; }
+  .dlv__note { margin: 0; font-size: 11px; color: var(--mute); }
+  @container (max-width: 400px) {
+    .dlv__steps { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+    .dlv__steps::before { top: 14px; bottom: 14px; left: 14px; right: auto; width: 0; height: auto; border-top: 0; border-left: 1px dashed #B9B5AD; }
+    .dlv__steps::after { content: none; }
+    .dlv__step { grid-template-columns: 28px minmax(0, 1fr); column-gap: 12px; row-gap: 0; justify-items: start; text-align: left; }
+    .dlv__ic { grid-row: span 2; margin: 0; }
+    .dlv__t { align-self: end; }
+  }
+{% endstylesheet %}

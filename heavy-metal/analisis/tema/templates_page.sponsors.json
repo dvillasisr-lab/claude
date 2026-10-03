@@ -1,0 +1,139 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "hm-sponsor-hero",
+      "settings": {}
+    },
+    "body": {
+      "type": "hm-sponsor-body",
+      "blocks": {
+        "st0": {
+          "type": "stat",
+          "settings": {
+            "number": "20",
+            "label": "PULLS PER SEASON"
+          }
+        },
+        "st1": {
+          "type": "stat",
+          "settings": {
+            "number": "5,000+",
+            "label": "FANS IN THE STANDS"
+          }
+        },
+        "st2": {
+          "type": "stat",
+          "settings": {
+            "number": "NEW",
+            "label": "ON SOCIAL MEDIA"
+          }
+        },
+        "st3": {
+          "type": "stat",
+          "settings": {
+            "number": "10",
+            "label": "STATES WE PULL IN"
+          }
+        },
+        "pl0": {
+          "type": "placement",
+          "settings": {
+            "title": "TEAM GEAR",
+            "text": "On the crew shirts and on the merch fans buy and wear to every pull."
+          }
+        },
+        "pl1": {
+          "type": "placement",
+          "settings": {
+            "title": "TRAILER AND PIT AREA",
+            "text": "Parked at every pull, right where fans come to meet the team."
+          }
+        },
+        "pl2": {
+          "type": "placement",
+          "settings": {
+            "title": "THIS WEBSITE",
+            "text": "Your logo and a link on heavymetalprostock.com."
+          }
+        },
+        "pl3": {
+          "type": "placement",
+          "settings": {
+            "title": "SOCIAL MEDIA",
+            "text": "Shout outs and tags in front of our followers all season."
+          }
+        },
+        "ti0": {
+          "type": "tier",
+          "settings": {
+            "name": "TITLE PARTNER",
+            "price": "$25,000",
+            "benefits": "Your name in the team name all season\nBiggest logo on the tractor itself\nTop logo on all team gear and the trailer\nTop billing on the website and every social post\nAnnouncer shout-out at every pull\nVIP pit passes at every pull",
+            "featured": false
+          }
+        },
+        "ti1": {
+          "type": "tier",
+          "settings": {
+            "name": "PIT PARTNER",
+            "price": "$10,000",
+            "benefits": "Logo on the team shirt sleeve\nLogo on the trailer\nLogo and link on this website\nMonthly social shout outs\nAnnouncer mention at select pulls\nPit passes at select pulls",
+            "featured": true
+          }
+        },
+        "ti2": {
+          "type": "tier",
+          "settings": {
+            "name": "CREW SUPPORTER",
+            "price": "$5,000",
+            "benefits": "Built for local shops and fans\nName on the trailer supporters board\nListed on this website\nThank you post on our socials\nHeavy Metal sponsor decal for your shop",
+            "featured": false
+          }
+        },
+        "pl4": {
+          "type": "placement",
+          "settings": {
+            "title": "ON THE TRACTOR",
+            "text": "Front and center on Heavy Metal itself, seen by every crowd we pull for."
+          }
+        },
+        "pl5": {
+          "type": "placement",
+          "settings": {
+            "title": "ANNOUNCER MENTIONS",
+            "text": "Called out by name over the PA at every pull."
+          }
+        }
+      },
+      "block_order": [
+        "st0",
+        "st1",
+        "st2",
+        "st3",
+        "pl0",
+        "pl1",
+        "pl2",
+        "pl3",
+        "pl4",
+        "pl5",
+        "ti0",
+        "ti1",
+        "ti2"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "body"
+  ]
+}

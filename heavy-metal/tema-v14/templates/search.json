@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "hm-main-search",
+      "settings": {
+        "heading": "Search",
+        "placeholder": "Search the store",
+        "per_page": 24,
+        "none_heading": "Try something else",
+        "popular": "tee, hoodie, cap, kids, sticker, special edition",
+        "best_heading": "Best sellers"
+      }
+    }
+  },
+  "order": ["main"]
+}

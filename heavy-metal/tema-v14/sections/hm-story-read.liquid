@@ -1,0 +1,74 @@
+{%- comment -%}
+  Our Story · 3 · The light "Read the full story" card (cream paper, sepia print that turns to color on hover).
+  Links to the full story page (page setting).
+{%- endcomment -%}
+{%- liquid
+  assign fs_page = section.settings.page
+  if fs_page == blank
+    assign fs_page = pages['the-full-story']
+  endif
+  if fs_page == blank
+    assign fs_page = pages['full-story']
+  endif
+-%}
+{%- if fs_page != blank or request.design_mode -%}
+<section class="st-read" aria-labelledby="read-h-{{ section.id }}">
+  <div class="wrap">
+    <a class="st-read__card" href="{% if fs_page != blank %}{{ fs_page.url }}{% else %}#{% endif %}">
+      <figure class="st-photo">
+        {%- if section.settings.image != blank -%}
+          {%- assign stl = 'object-position:' | append: section.settings.position -%}
+          {{ section.settings.image | image_url: width: 1200 | image_tag: widths: '400, 600, 800, 1200', sizes: '(max-width: 760px) 100vw, 45vw', class: 'photo', style: stl, loading: 'lazy', alt: '' }}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'photo' }}
+        {%- endif -%}
+      </figure>
+      <div class="st-read__txt">
+        <p class="st-read__k">{% if section.settings.badge != blank %}<span class="badge">{{ section.settings.badge | escape }}</span>{% endif %}<span>{{ section.settings.kicker | escape }}</span></p>
+        <h2 class="st-read__h" id="read-h-{{ section.id }}">{{ section.settings.heading | escape }}{% if section.settings.heading_mark != blank %} <em>{{ section.settings.heading_mark | escape }}</em>{% endif %}</h2>
+        {%- if section.settings.text != blank -%}<p class="st-read__d">{{ section.settings.text | escape }}</p>{%- endif -%}
+        <p class="st-read__go">{{ section.settings.go | escape }}&nbsp;<span aria-hidden="true">→</span></p>
+      </div>
+    </a>
+  </div>
+</section>
+{%- endif -%}
+
+{% stylesheet %}
+.st-read{padding-block:0 clamp(32px,4vw,52px)}
+.st-read__card{--paper:#F3EBDA;--paper-ink:#2B2620;--paper-mute:#6A5F50;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(20px,3vw,48px);align-items:center;padding:clamp(18px,2.6vw,40px);color:var(--paper-ink);text-decoration:none;border:1px solid #E2D5BC;min-height:clamp(300px,34vw,440px);background-color:var(--paper);background-image:radial-gradient(rgba(120,86,40,.07) .7px,transparent 1.3px),radial-gradient(rgba(255,255,255,.45) .8px,transparent 1.4px),radial-gradient(ellipse 70% 50% at 12% 10%,rgba(255,250,236,.75),transparent 70%),radial-gradient(ellipse 60% 60% at 92% 80%,rgba(214,190,146,.25),transparent 70%);background-size:5px 5px,7px 7px,100% 100%,100% 100%;background-position:0 0,3px 2px,0 0,0 0}
+.st-read__card .st-photo{align-self:stretch;min-height:260px;background:#FFFDF7;padding:10px 10px 12px;box-shadow:0 1px 2px rgba(60,40,10,.16),0 14px 28px -12px rgba(60,40,10,.42);transform:rotate(-1.4deg)}
+.st-read__card .st-photo img,.st-read__card .st-photo svg{inset:10px 10px 12px;width:calc(100% - 20px);height:calc(100% - 22px);filter:sepia(.42) saturate(.78) contrast(.94) brightness(1.04) hue-rotate(-6deg);transition:filter .6s ease}
+.st-read__txt{display:grid;align-content:center;gap:14px;min-width:0}
+.st-read__txt p{margin:0}
+.st-read__k{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;font-size:var(--t-xs);font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-mute)}
+.st-read__h{font-family:var(--f-head);font-stretch:66%;font-weight:800;text-transform:uppercase;font-size:clamp(40px,5.6vw,84px);line-height:.92;color:var(--ink);text-wrap:balance;margin:0}
+.st-read__h em{font-style:normal;padding:0 .06em;-webkit-box-decoration-break:clone;box-decoration-break:clone;background:linear-gradient(transparent 52%,var(--accent) 52%,var(--accent) 90%,transparent 90%)}
+.st-read__d{font-family:'Source Serif 4','Iowan Old Style',Georgia,Charter,'Times New Roman',serif;font-size:clamp(17px,1.2vw,20px);line-height:1.55;color:var(--paper-ink);max-width:46ch}
+.st-read__go{font-family:var(--f-head);font-stretch:72%;font-weight:800;text-transform:uppercase;font-size:clamp(22px,2vw,30px);line-height:1.25;color:var(--ink);text-decoration:underline;text-decoration-color:var(--ink);text-decoration-thickness:3px;text-underline-offset:6px;text-wrap:balance}
+.st-read__card:hover .st-read__go{text-decoration-color:var(--paper-mute)}
+.st-read__card:hover .st-photo img,.st-read__card:focus-visible .st-photo img{filter:none}
+.st-read__card:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.st-read__card .st-photo img{transition:none}}
+@media (max-width:760px){.st-read__card{grid-template-columns:1fr}.st-read__card .st-photo{aspect-ratio:16/10;min-height:0;transform:rotate(-1deg)}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Story: full story card",
+  "tag": "div",
+  "class": "hm-story-read",
+  "settings": [
+    { "type": "page", "id": "page", "label": "Full story page", "info": "Empty = the page with handle the-full-story or full-story." },
+    { "type": "image_picker", "id": "image", "label": "Photo (shown as an old print)" },
+    { "type": "text", "id": "position", "label": "Photo focus (x% y%)", "default": "50% 30%" },
+    { "type": "text", "id": "badge", "label": "Badge", "default": "Long read" },
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "In our own words" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Twelve years" },
+    { "type": "text", "id": "heading_mark", "label": "Heading, highlighted part", "default": "in the making" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "The sketches, the nights and weekends, the family shop, and the night the engine fired and lightning struck. The whole story. Long, loud, ours." },
+    { "type": "text", "id": "go", "label": "Link text", "default": "Read the full story" }
+  ],
+  "presets": [{ "name": "Story: full story card" }]
+}
+{% endschema %}

@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ride With The Evil One · Your name on the tractor · Heavy Metal</title>
+<meta name="description" content="Put your name on The Evil One, the Pro Stock pulling tractor from Waterloo, WI, for the 2026 season. Every name is checked, and you get a photo of it on the tractor.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4
+   Ficha del micro patrocinio: fotos reales + formulario con vista previa del panel. Compacta. */
+:root{--panel:#0E0E0D;--panel-edge:#2A2A27;--panel-ink:#F4F2EC;--panel-dim:#5F5D57}
+html,body{overflow-x:clip}
+.crumbs{padding-block:14px 12px}
+.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:2px 8px;font-size:var(--t-xs);color:var(--mute)}
+.crumbs li{white-space:nowrap}
+.crumbs li+li::before{content:"/";margin-right:8px;color:#B6B1AD}
+.crumbs a{text-decoration:none}
+.crumbs a:hover{text-decoration:underline;text-underline-offset:3px}
+.crumbs [aria-current]{color:var(--ink)}
+
+.pdp{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;padding-bottom:var(--sect)}
+@media (min-width:900px){
+  .pdp{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(28px,3.4vw,56px);align-items:start}
+  .gal-wrap,.buy{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header) + 16px)}
+  .gal-wrap{position:sticky}
+}
+
+/* galería real: miniaturas + foto principal (escritorio), carrusel con puntos (móvil) */
+.rgal{display:grid;grid-template-columns:64px minmax(0,1fr);gap:8px;align-items:start}
+.thumbs{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.thumbs button{display:block;width:64px;aspect-ratio:3/4;padding:0;border:1px solid transparent;background:var(--tile);cursor:pointer;overflow:hidden}
+.thumbs button[aria-current="true"]{border-color:var(--ink)}
+.thumbs img{width:100%;height:100%;object-fit:cover}
+.slides{list-style:none;margin:0;padding:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain;max-width:min(100%,calc((100svh - var(--header) - 48px) * .75))}
+.slides::-webkit-scrollbar{display:none}
+.slides li{flex:0 0 100%;scroll-snap-align:start;aspect-ratio:3/4;background:var(--tile)}
+.dots{display:none}
+@media (max-width:899px){
+  .gal-wrap{margin-inline:calc(-1 * var(--gutter))}
+  .rgal{display:block}
+  .thumbs{display:none}
+  .slides{max-width:none;gap:2px}
+  .slides li{flex-basis:86%;aspect-ratio:4/5}
+  .slides li:last-child{scroll-snap-align:end}
+  .dots{display:flex;justify-content:center;padding-top:6px}
+  .dots button{width:24px;height:24px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center}
+  .dots button::before{content:"";width:6px;height:6px;border-radius:50%;background:#B6B1AD}
+  .dots button[aria-current="true"]::before{background:var(--ink)}
+}
+
+/* buy box */
+.buy{display:grid;gap:16px;align-content:start;min-width:0}
+.buy__head{display:grid;gap:6px;justify-items:start}
+.buy__name{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:24px;line-height:1.1;letter-spacing:.01em;text-transform:uppercase;margin:0;color:var(--ink)}
+.buy__price{margin:0;font-size:var(--t-md);font-weight:600;color:var(--ink)}
+.buy__desc{margin:0;font-size:var(--t-sm);color:var(--soft);max-width:50ch}
+.lbl{font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:0 0 8px;padding:0}
+
+.opts{border:0;margin:0;padding:0;min-width:0}
+.ropts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.ropt{position:relative}
+.ropt input{position:absolute;opacity:0;width:1px;height:1px}
+.ropt label{display:grid;gap:2px;height:100%;padding:10px 12px;background:var(--surface);border:1px solid var(--line);cursor:pointer;font-size:var(--t-xs);color:var(--soft);line-height:1.4}
+.ropt label b{display:flex;justify-content:space-between;gap:8px;font-size:var(--t-xs);font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink)}
+.ropt label:hover{border-color:var(--ink)}
+.ropt input:checked+label{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.ropt input:focus-visible+label{outline:2px solid var(--ink);outline-offset:2px}
+@media (max-width:360px){.ropts{grid-template-columns:1fr}}
+
+.field label{display:flex;justify-content:space-between;gap:8px}
+.count{font-weight:500;letter-spacing:0;text-transform:none;color:var(--mute);font-variant-numeric:tabular-nums}
+.hint{margin:0;font-size:11px;color:var(--mute)}
+.input[aria-invalid="true"],.select[aria-invalid="true"]{border-color:var(--alert)}
+.err{margin:0;font-size:var(--t-xs);font-weight:600;color:var(--alert)}
+.err:empty{display:none}
+.select{min-height:44px;padding:0 10px;background:var(--surface);border:1px solid #9E9B94;color:var(--ink);font:inherit;font-size:var(--t-sm);width:100%;border-radius:0}
+
+/* vista previa: placa negra mate con letras blancas condensadas */
+.preview{display:grid;gap:6px}
+.panel{position:relative;background:var(--panel);border:1px solid var(--panel-edge);min-height:76px;display:grid;place-items:center;align-content:center;padding:12px 28px;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),inset 0 -8px 16px rgba(0,0,0,.5)}
+.panel::before,.panel::after{content:"";position:absolute;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:var(--panel-edge);box-shadow:inset 0 0 0 1px #3A3A36}
+.panel::before{left:10px}.panel::after{right:10px}
+.panel__pre{font-size:9px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--panel-ink);opacity:.75;margin:0 0 2px}
+.panel__name{margin:0;font-family:var(--f-head);font-stretch:62%;font-weight:800;font-size:28px;line-height:1;letter-spacing:.04em;text-transform:uppercase;color:var(--panel-ink);text-align:center;overflow-wrap:anywhere;max-width:100%}
+.panel.is-empty .panel__name{color:var(--panel-dim)}
+.panel.is-big .panel__name{font-size:40px}
+@media (max-width:400px){.panel__name{font-size:24px}.panel.is-big .panel__name{font-size:32px}}
+
+.consent-row{display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:start;font-size:var(--t-xs);color:var(--soft)}
+.consent-row input{width:18px;height:18px;margin:1px 0 0;accent-color:var(--ink)}
+.btn--big{min-height:48px}
+
+.facts{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid var(--line);display:grid;gap:6px;font-size:var(--t-xs);color:var(--soft)}
+.facts li{display:grid;grid-template-columns:16px minmax(0,1fr);gap:8px;align-items:start}
+.facts svg{width:16px;height:16px;margin-top:1px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.facts b{color:var(--ink)}
+
+/* FAQ compacto en 2 columnas */
+.faq{display:grid;grid-template-columns:minmax(0,1fr);gap:0 32px}
+@media (min-width:900px){.faq{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.faq details{border-top:1px solid var(--line)}
+.faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:48px;cursor:pointer;font-size:var(--t-sm);font-weight:600;color:var(--ink)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:18px;font-weight:400;flex:none}
+.faq details[open] summary::after{content:"\2212"}
+.faq p{margin:0 0 14px;font-size:var(--t-xs);line-height:1.6;color:var(--soft);max-width:60ch}
+</style>
+</head>
+<body>
+<div data-hm-header data-current=""></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html?cat=all">Shop</a></li>
+        <li><a href="shop.html?cat=ride">Ride with us</a></li>
+        <li><span aria-current="page">Ride With The Evil One</span></li>
+      </ol>
+    </nav>
+
+    <div class="pdp">
+      <section class="gal-wrap" aria-label="Photos of The Evil One">
+        <div class="rgal">
+          <ul class="thumbs" id="thumbs">
+            <li><button type="button" aria-label="Photo 1: front with smoke"><img src="img/hm-front-smoke.webp" alt="" width="64" height="85"></button></li>
+            <li><button type="button" aria-label="Photo 2: side profile"><img src="img/hm-side.webp" alt="" width="64" height="85" loading="lazy"></button></li>
+            <li><button type="button" aria-label="Photo 3: rear three quarter"><img src="img/hm-rear.webp" alt="" width="64" height="85" loading="lazy"></button></li>
+          </ul>
+          <ul class="slides" id="slides">
+            <li><img class="photo" src="img/hm-front-smoke.webp" alt="The Evil One from the front, driver in a gold helmet, black smoke and the crew in team shirts" width="1050" height="1400"></li>
+            <li><img class="photo" src="img/hm-side.webp" alt="The Evil One in side profile on grass under a blue sky" width="1050" height="1400" loading="lazy"></li>
+            <li><img class="photo" src="img/hm-rear.webp" alt="The Evil One from the rear three quarter on the track, grandstands behind" width="1050" height="1400" loading="lazy"></li>
+          </ul>
+        </div>
+        <div class="dots" id="dots" role="group" aria-label="Choose photo"></div>
+      </section>
+
+      <section class="buy" aria-labelledby="r-name">
+        <div class="buy__head">
+          <span class="badge badge--ink">Limited</span>
+          <h1 class="buy__name" id="r-name">Ride With The Evil One</h1>
+          <p class="buy__price num" id="r-price">$XX</p>
+          <p class="buy__desc">Put your name on the tractor for the 2026 season. It rides on a matte black panel to every pull The Evil One makes this year.</p>
+        </div>
+
+        <form id="ride" novalidate>
+          <div style="display:grid;gap:16px">
+            <fieldset class="opts">
+              <legend class="lbl">Choose your spot</legend>
+              <div class="ropts">
+                <div class="ropt"><input type="radio" name="opt" id="o-crew" value="Crew name" data-pre="" checked><label for="o-crew"><b><span>Crew name</span><span class="num">$XX</span></b>Your name on the crew panel.</label></div>
+                <div class="ropt"><input type="radio" name="opt" id="o-tee" value="Crew name + tee" data-pre=""><label for="o-tee"><b><span>Crew name + tee</span><span class="num">$XX</span></b>Your name plus an Evil One Tee.</label></div>
+                <div class="ropt"><input type="radio" name="opt" id="o-big" value="Big name" data-pre="" data-big="1"><label for="o-big"><b><span>Big name</span><span class="num">$XX</span></b>Larger letters. Limited spots.</label></div>
+                <div class="ropt"><input type="radio" name="opt" id="o-mem" value="In memory of" data-pre="In memory of"><label for="o-mem"><b><span>In memory of</span><span class="num">$XX</span></b>Honor someone who loved the pull.</label></div>
+              </div>
+            </fieldset>
+
+            <div class="field" id="tee-field" hidden>
+              <label for="tee-size">Tee size</label>
+              <select class="select" id="tee-size" aria-describedby="tee-err">
+                <option value="">Select a size</option>
+                <option>S</option><option>M</option><option>L</option><option>XL</option><option>2XL</option>
+              </select>
+              <p class="err" id="tee-err" aria-live="polite"></p>
+            </div>
+
+            <div class="field">
+              <label for="r-input"><span>Name for the panel</span><span class="count" id="r-count" aria-hidden="true">0/24</span></label>
+              <input class="input" id="r-input" name="name" type="text" maxlength="24" required autocomplete="off" spellcheck="false" placeholder="e.g. Jake M. or The Millers" aria-describedby="r-hint r-err">
+              <p class="hint" id="r-hint">Up to 24 characters: letters, numbers, spaces and . &amp; ' -. First names or nicknames only for kids under 13.</p>
+              <p class="err" id="r-err" aria-live="polite"></p>
+            </div>
+
+            <div class="preview" aria-hidden="true">
+              <p class="lbl" style="margin:0">Panel preview</p>
+              <div class="panel is-empty" id="panel"><p class="panel__pre" id="panel-pre" hidden>In memory of</p><p class="panel__name" id="panel-name">Your name</p></div>
+              <p class="hint">Final lettering and placement are set by the crew.</p>
+            </div>
+
+            <div>
+              <div class="consent-row">
+                <input type="checkbox" id="r-agree" aria-describedby="agree-err">
+                <label for="r-agree">I agree to the <a href="policies.html?p=ride">Ride With rules</a>, including name checks and refunds.</label>
+              </div>
+              <p class="err" id="agree-err" aria-live="polite" style="margin-top:6px"></p>
+            </div>
+
+            <button class="btn btn--block btn--big" type="submit" id="r-add">Add your name · $XX</button>
+          </div>
+        </form>
+
+        <ul class="facts">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span><b>Lasts the 2026 season.</b></span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Every name is checked by the crew before it goes on.</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>If a name is rejected, you get a full refund.</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>You get a photo of your name on the tractor.</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><span>Nothing ships (the tee option ships the tee). It's a sponsorship, not a tax-deductible donation.</span></li>
+        </ul>
+        <p class="note">Precios $XX y cupo de "Big name" por definir con la dueña. En Shopify: producto sin envío con la propiedad properties[Name on panel]; la opción con tee sí lleva envío y talla.</p>
+      </section>
+    </div>
+  </div>
+
+  <section class="sect sect--white" aria-labelledby="faq-t">
+    <div class="wrap">
+      <div class="sect-head"><h2 class="h2" id="faq-t">Ride With FAQ</h2><a class="link" href="policies.html?p=ride">Full rules</a></div>
+      <div class="faq">
+        <details>
+          <summary>When does my name go on?</summary>
+          <p>After the crew checks it. Once it's on the tractor, we email you a photo of your name on The Evil One.</p>
+        </details>
+        <details>
+          <summary>What names get rejected?</summary>
+          <p>Anything offensive or hateful, brand or business names, and full names of kids under 13 (first names or nicknames are fine). If we reject a name, you get a full refund. Businesses can see <a href="sponsors.html">Sponsors</a>.</p>
+        </details>
+        <details>
+          <summary>Can I give it as a gift?</summary>
+          <p>Yes. Type their name for the panel and check out as usual. The photo of the name on the tractor goes to your email, so you can pass it on.</p>
+        </details>
+        <details>
+          <summary>Is it tax-deductible?</summary>
+          <p>No. Ride With is a sponsorship of a race team, not a donation to a charity.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-hm-footer></div>
+
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var form = $('ride'), input = $('r-input'), agree = $('r-agree'), tee = $('tee-size');
+  var OK = /^[A-Za-z0-9 .&'\-]*$/;
+
+  function opt() { return form.querySelector('input[name="opt"]:checked'); }
+
+  /* vista previa en vivo */
+  function preview() {
+    var v = input.value.trim(), o = opt();
+    $('r-count').textContent = input.value.length + '/24';
+    $('panel-name').textContent = v || 'Your name';
+    $('panel').classList.toggle('is-empty', !v);
+    $('panel').classList.toggle('is-big', !!o.getAttribute('data-big'));
+    var pre = o.getAttribute('data-pre');
+    $('panel-pre').hidden = !pre;
+    $('tee-field').hidden = o.value !== 'Crew name + tee';
+    if (input.getAttribute('aria-invalid') === 'true' && v && OK.test(v)) { input.removeAttribute('aria-invalid'); $('r-err').textContent = ''; }
+  }
+  input.addEventListener('input', preview);
+  form.addEventListener('change', function (e) {
+    if (e.target.name === 'opt') preview();
+    if (e.target === agree && agree.checked) $('agree-err').textContent = '';
+    if (e.target === tee && tee.value) { tee.removeAttribute('aria-invalid'); $('tee-err').textContent = ''; }
+  });
+
+  /* validación con errores en línea; solo agrega si todo es válido */
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var o = opt(), name = input.value.trim().replace(/\s+/g, ' '), first = null;
+    var needTee = o.value === 'Crew name + tee';
+    if (needTee && !tee.value) { tee.setAttribute('aria-invalid', 'true'); $('tee-err').textContent = 'Choose a tee size.'; first = first || tee; }
+    if (!name) { input.setAttribute('aria-invalid', 'true'); $('r-err').textContent = 'Type the name for the panel.'; first = first || input; }
+    else if (!OK.test(name)) { input.setAttribute('aria-invalid', 'true'); $('r-err').textContent = "Use letters, numbers, spaces and . & ' - only."; first = first || input; }
+    if (!agree.checked) { agree.setAttribute('aria-invalid', 'true'); $('agree-err').textContent = 'Check the box to agree to the Ride With rules.'; first = first || agree; }
+    else agree.removeAttribute('aria-invalid');
+    if (first) { first.focus(); return; }
+    var label = needTee ? o.value + ' (' + tee.value + ')' : o.value;
+    window.hmAdd('Ride With The Evil One', label + ' · "' + name + '"', '$XX');
+  });
+
+  /* galería: miniaturas (escritorio) y puntos (móvil) */
+  var slides = $('slides'), thumbs = $('thumbs').querySelectorAll('button'), dots = $('dots'), n = slides.children.length;
+  function go(i) { var li = slides.children[i]; slides.scrollTo({ left: li.offsetLeft - slides.offsetLeft, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }
+  for (var i = 0; i < n; i++) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.setAttribute('aria-label', 'Photo ' + (i + 1) + ' of ' + n);
+    b.addEventListener('click', go.bind(null, i)); dots.appendChild(b);
+    thumbs[i].addEventListener('click', go.bind(null, i));
+  }
+  function mark(i) {
+    Array.prototype.forEach.call(dots.children, function (d, j) { d.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+    Array.prototype.forEach.call(thumbs, function (d, j) { d.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+  }
+  mark(0);
+  slides.addEventListener('scroll', function () {
+    var w = slides.children[0].offsetWidth || 1;
+    mark(slides.scrollLeft + slides.clientWidth >= slides.scrollWidth - 4 ? n - 1 : Math.round(slides.scrollLeft / w));
+  }, { passive: true });
+
+  /* datos estructurados */
+  var url = location.href.split('#')[0].split('?')[0];
+  var s = document.createElement('script'); s.type = 'application/ld+json';
+  s.textContent = JSON.stringify([{
+    '@context': 'https://schema.org', '@type': 'Product', name: 'Ride With The Evil One', sku: 'ride-with-the-evil-one',
+    description: 'Your name on The Evil One Pro Stock pulling tractor for the 2026 season. Sponsorship, not a tax-deductible donation.',
+    brand: { '@type': 'Brand', name: 'Heavy Metal' }, image: [url.replace(/ride\.html$/, 'img/hm-front-smoke.webp')], url: url,
+    offers: { '@type': 'Offer', priceCurrency: 'USD', price: 'XX.XX', availability: 'https://schema.org/LimitedAvailability', url: url }
+  }, {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: url.replace(/ride\.html$/, 'index.html') },
+      { '@type': 'ListItem', position: 2, name: 'Shop', item: url.replace(/ride\.html$/, 'shop.html?cat=all') },
+      { '@type': 'ListItem', position: 3, name: 'Ride With The Evil One', item: url }
+    ]
+  }]);
+  document.head.appendChild(s);
+  preview();
+})();
+</script>
+</body>
+</html>

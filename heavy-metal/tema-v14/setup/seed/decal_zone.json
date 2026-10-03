@@ -1,0 +1,248 @@
+[
+  {
+    "handle": "rear-fender",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Rear fender"
+      },
+      {
+        "key": "pos_x",
+        "value": "175"
+      },
+      {
+        "key": "pos_y",
+        "value": "165"
+      },
+      {
+        "key": "label_x",
+        "value": "130"
+      },
+      {
+        "key": "row",
+        "value": "top"
+      },
+      {
+        "key": "status",
+        "value": "available"
+      },
+      {
+        "key": "description",
+        "value": "Above the rear tire, next to the driver."
+      },
+      {
+        "key": "order",
+        "value": "1"
+      },
+      {
+        "key": "updated",
+        "value": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "handle": "roll-cage",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Roll cage"
+      },
+      {
+        "key": "pos_x",
+        "value": "320"
+      },
+      {
+        "key": "pos_y",
+        "value": "55"
+      },
+      {
+        "key": "label_x",
+        "value": "385"
+      },
+      {
+        "key": "row",
+        "value": "top"
+      },
+      {
+        "key": "status",
+        "value": "available"
+      },
+      {
+        "key": "description",
+        "value": "Around the driver seat. Part of this area may stay reserved for league and class decals."
+      },
+      {
+        "key": "order",
+        "value": "2"
+      },
+      {
+        "key": "updated",
+        "value": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "handle": "hood",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Hood"
+      },
+      {
+        "key": "pos_x",
+        "value": "600"
+      },
+      {
+        "key": "pos_y",
+        "value": "128"
+      },
+      {
+        "key": "label_x",
+        "value": "620"
+      },
+      {
+        "key": "row",
+        "value": "top"
+      },
+      {
+        "key": "status",
+        "value": "available"
+      },
+      {
+        "key": "description",
+        "value": "Top of the hood, the first thing the grandstand sees as the tractor rolls by."
+      },
+      {
+        "key": "order",
+        "value": "3"
+      },
+      {
+        "key": "updated",
+        "value": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "handle": "nose-and-grille",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Nose and grille"
+      },
+      {
+        "key": "pos_x",
+        "value": "905"
+      },
+      {
+        "key": "pos_y",
+        "value": "215"
+      },
+      {
+        "key": "label_x",
+        "value": "930"
+      },
+      {
+        "key": "row",
+        "value": "top"
+      },
+      {
+        "key": "status",
+        "value": "available"
+      },
+      {
+        "key": "description",
+        "value": "Front of the hood, in frame when the tractor comes down the track toward the cameras."
+      },
+      {
+        "key": "order",
+        "value": "4"
+      },
+      {
+        "key": "updated",
+        "value": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "handle": "front-weight-box",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Front weight box"
+      },
+      {
+        "key": "pos_x",
+        "value": "1045"
+      },
+      {
+        "key": "pos_y",
+        "value": "430"
+      },
+      {
+        "key": "label_x",
+        "value": "965"
+      },
+      {
+        "key": "row",
+        "value": "bottom"
+      },
+      {
+        "key": "status",
+        "value": "available"
+      },
+      {
+        "key": "description",
+        "value": "The front weight bracket, low and close to the track."
+      },
+      {
+        "key": "order",
+        "value": "5"
+      },
+      {
+        "key": "updated",
+        "value": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "handle": "engine-side-panel",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Engine side panel"
+      },
+      {
+        "key": "pos_x",
+        "value": "620"
+      },
+      {
+        "key": "pos_y",
+        "value": "225"
+      },
+      {
+        "key": "label_x",
+        "value": "560"
+      },
+      {
+        "key": "row",
+        "value": "bottom"
+      },
+      {
+        "key": "status",
+        "value": "available"
+      },
+      {
+        "key": "description",
+        "value": "Both sides of the engine bay, above the exhaust. The biggest flat surface on the tractor."
+      },
+      {
+        "key": "order",
+        "value": "6"
+      },
+      {
+        "key": "updated",
+        "value": "2026-10-01"
+      }
+    ]
+  }
+]

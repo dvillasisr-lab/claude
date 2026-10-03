@@ -1,0 +1,370 @@
+{%- comment -%}
+  Policies hub (boceto policies.html, SKIMS pattern). "Store policy" blocks print the text the
+  owner writes in Settings > Policies (policy.body). "Page" blocks hold extra policies
+  (Accessibility, Your Privacy Choices, Cookie Preferences) as rich text, with optional actions
+  that use Shopify's Customer Privacy API. Tabs (?p=key), anchors (#bsg) and the
+  "On this page" rail run in assets/hm-policies.js.
+{%- endcomment -%}
+{%- liquid
+  assign sid = section.id
+  assign first_key = ''
+  for block in section.blocks
+    assign first_key = block.settings.key | handleize
+    break
+  endfor
+-%}
+
+<div class="hm-policies" data-hm-policies data-default="{{ first_key }}">
+  <section class="pol-banner">
+    <div class="wrap">
+      <h1 class="h1">{{ section.settings.heading | escape }}</h1>
+      <nav class="pol-crumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="{{ routes.root_url }}">Home</a></li>
+          <li><a href="{{ request.path }}">{{ section.settings.heading | escape }}</a></li>
+          <li aria-current="page" data-pol-crumb></li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+
+  <div class="wrap pol">
+    <nav class="pol-nav" aria-label="{{ section.settings.nav_label | escape }}">
+      <ul data-pol-list>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign key = block.settings.key | handleize
+            assign label = block.settings.title
+            if block.type == 'shop_policy' and label == blank
+              case block.settings.policy
+                when 'privacy'
+                  assign label = 'Privacy Policy'
+                when 'terms'
+                  assign label = 'Terms of Service'
+                when 'refund'
+                  assign label = 'Refund Policy'
+                when 'shipping'
+                  assign label = 'Shipping Policy'
+                when 'contact'
+                  assign label = 'Contact Information'
+                when 'subscription'
+                  assign label = 'Subscription Policy'
+                when 'legal'
+                  assign label = 'Legal Notice'
+              endcase
+            endif
+          -%}
+          <li><a href="?p={{ key }}" data-p="{{ key }}">{{ label | escape }}</a></li>
+        {%- endfor -%}
+      </ul>
+    </nav>
+
+    <div class="pol-body" tabindex="-1" data-pol-main>
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign key = block.settings.key | handleize
+          assign pol = nil
+          assign title = block.settings.title
+          if block.type == 'shop_policy'
+            case block.settings.policy
+              when 'privacy'
+                assign handle = 'privacy-policy'
+              when 'terms'
+                assign handle = 'terms-of-service'
+              when 'refund'
+                assign handle = 'refund-policy'
+              when 'shipping'
+                assign handle = 'shipping-policy'
+              when 'contact'
+                assign handle = 'contact-information'
+              when 'subscription'
+                assign handle = 'subscription-policy'
+              when 'legal'
+                assign handle = 'legal-notice'
+            endcase
+            for p in shop.policies
+              if p.url contains handle
+                assign pol = p
+                break
+              endif
+            endfor
+            if title == blank and pol
+              assign title = pol.title
+            endif
+          endif
+        -%}
+        <article
+          class="pol-doc"
+          data-p="{{ key }}"
+          data-name="{{ title | escape }}"
+          aria-labelledby="t-{{ key }}-{{ sid }}"
+          {% unless key == first_key %}
+            hidden
+          {% endunless %}
+          {{ block.shopify_attributes }}
+        >
+          <header>
+            <h2 class="h2" id="t-{{ key }}-{{ sid }}">{{ title | escape }}</h2>
+            <p class="lu" data-pol-lu {% if block.settings.updated == blank %}hidden{% endif %}>
+              Last updated:
+              <time datetime="{{ block.settings.updated | escape }}">{{ block.settings.updated | escape }}</time>
+            </p>
+          </header>
+
+          {%- if block.type == 'shop_policy' -%}
+            {%- if pol and pol.body != blank -%}
+              <div class="pol-rte" data-pol-text>{{ pol.body }}</div>
+            {%- else -%}
+              <p class="pol-missing">{{ section.settings.missing_text | escape }}</p>
+              {%- if request.design_mode -%}
+                <p class="pol-missing">Write this policy in Settings &gt; Policies. It shows here and on the checkout automatically.</p>
+              {%- endif -%}
+            {%- endif -%}
+          {%- else -%}
+            {%- if block.settings.lede != blank -%}
+              <p class="lede-l">{{ block.settings.lede }}</p>
+            {%- endif -%}
+
+            {%- case block.settings.action -%}
+              {%- when 'privacy_choices' -%}
+                <div class="pol-action" data-pol-optout>
+                  <p class="gpc" data-gpc data-on="{{ block.settings.gpc_on | escape }}">{{ block.settings.gpc_off | escape }}</p>
+                  <div class="prefs">
+                    <div class="pref">
+                      <label for="opt-{{ block.id }}">{{ block.settings.switch_label | escape }}</label>
+                      <span class="switch">
+                        <input type="checkbox" id="opt-{{ block.id }}" role="switch" aria-describedby="opt-d-{{ block.id }}" data-optout-input>
+                        <span aria-hidden="true"></span>
+                      </span>
+                      <p id="opt-d-{{ block.id }}">{{ block.settings.switch_text | escape }}</p>
+                    </div>
+                  </div>
+                  <div class="save-row">
+                    <button class="btn" type="button" data-optout-save>{{ block.settings.button_label | escape }}</button>
+                    <p
+                      class="status"
+                      role="status"
+                      aria-live="polite"
+                      data-status
+                      data-saved-on="{{ block.settings.saved_on | escape }}"
+                      data-saved-off="{{ block.settings.saved_off | escape }}"
+                      data-unavailable="{{ block.settings.unavailable | escape }}"
+                    ></p>
+                  </div>
+                </div>
+              {%- when 'cookie_preferences' -%}
+                <div class="pol-action" data-pol-cookies>
+                  <div class="save-row">
+                    <button class="btn" type="button" data-cookie-open>{{ block.settings.button_label | escape }}</button>
+                    <p class="status" role="status" aria-live="polite" data-status data-unavailable="{{ block.settings.unavailable | escape }}"></p>
+                  </div>
+                </div>
+            {%- endcase -%}
+
+            {%- if block.settings.body != blank -%}
+              <div class="pol-rte" data-pol-text>{{ block.settings.body }}</div>
+            {%- endif -%}
+          {%- endif -%}
+        </article>
+      {%- endfor -%}
+    </div>
+
+    <aside class="pol-rail" aria-label="{{ section.settings.toc_heading | escape }}">
+      <nav class="pol-toc" aria-labelledby="pol-toc-t-{{ sid }}" data-pol-toc hidden>
+        <h2 id="pol-toc-t-{{ sid }}">{{ section.settings.toc_heading | escape }}</h2>
+        <ol data-pol-toc-list></ol>
+      </nav>
+      <div class="pol-card">
+        <p data-pol-rail-lu-wrap hidden><b>Last updated</b><br><span data-pol-rail-lu></span></p>
+        {%- if section.settings.card_text != blank -%}
+          <p>
+            <b>{{ section.settings.card_heading | escape }}</b><br>
+            {{- section.settings.card_text -}}
+          </p>
+        {%- endif -%}
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script src="{{ 'hm-policies.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .hm-policies .pol-banner{background:var(--surface);border-bottom:1px solid var(--line)}
+  .hm-policies .pol-banner .wrap{padding-block:28px 20px;display:grid;gap:8px}
+  .hm-policies .pol-banner .h1{margin:0}
+  .hm-policies .pol-crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px;font-size:var(--t-xs);color:var(--mute)}
+  .hm-policies .pol-crumbs li+li::before{content:"/";margin-right:4px}
+  .hm-policies .pol-crumbs a{color:var(--soft);text-underline-offset:3px}
+  .hm-policies .pol-crumbs [aria-current]{color:var(--ink);font-weight:600}
+
+  .hm-policies .pol{display:grid;grid-template-columns:240px minmax(0,1fr);gap:clamp(32px,5vw,96px);padding-block:32px var(--sect);align-items:start}
+  .hm-policies .pol-rail{display:none}
+  @media (min-width:1200px){
+    .hm-policies .pol{grid-template-columns:240px minmax(0,640px) minmax(240px,300px);justify-content:space-between;column-gap:48px}
+    .hm-policies .pol-rail{display:grid;gap:20px;align-content:start;position:sticky;top:calc(var(--header) + 24px);max-height:calc(100svh - var(--header) - 48px);overflow:auto}
+  }
+  .hm-policies .pol-rail h2{margin:0 0 6px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);font-family:var(--f-sans)}
+  .hm-policies .pol-toc ol{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+  .hm-policies .pol-toc a{display:block;padding:7px 0;border-bottom:1px solid var(--line);font-size:var(--t-xs);line-height:1.4;color:var(--soft);text-decoration:none}
+  .hm-policies .pol-toc a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+  .hm-policies .pol-card{background:var(--surface);border:1px solid var(--line);padding:14px 16px;display:grid;gap:6px;font-size:var(--t-xs);color:var(--soft)}
+  .hm-policies .pol-card p{margin:0}
+  .hm-policies .pol-card b{color:var(--ink)}
+  .hm-policies .pol-card a{color:var(--ink);font-weight:700;text-underline-offset:3px}
+
+  .hm-policies .pol-nav ul{list-style:none;margin:0;padding:0;display:grid}
+  .hm-policies .pol-nav a{display:inline-block;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.03em;line-height:36px;text-decoration:none;color:var(--soft);white-space:nowrap}
+  .hm-policies .pol-nav a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:6px}
+  .hm-policies .pol-nav a[aria-current="page"]{color:var(--ink);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+  @media (min-width:861px){.hm-policies .pol-nav{position:sticky;top:calc(var(--header) + 24px)}}
+
+  .hm-policies .pol-body{min-width:0;font-size:14px;line-height:1.6;color:var(--text)}
+  .hm-policies .pol-body:focus{outline:none}
+  .hm-policies .pol-doc>header{border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:20px}
+  .hm-policies .pol-doc>header .h2{margin:0}
+  .hm-policies .pol-doc>header p{margin:4px 0 0;font-size:var(--t-xs);color:var(--mute)}
+  .hm-policies .pol-doc>header .lu time{color:var(--ink);font-weight:600}
+  .hm-policies .pol-rte h2,.hm-policies .pol-rte h3,.hm-policies .pol-rte h4{font-family:var(--f-sans);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin:24px 0 6px;scroll-margin-top:calc(var(--header) + 24px)}
+  .hm-policies .pol-rte [id="bsg"]{scroll-margin-top:calc(var(--header) + 72px)}
+  .hm-policies .pol-doc p,.hm-policies .pol-doc ul,.hm-policies .pol-doc ol{margin:0 0 10px;max-width:80ch;overflow-wrap:break-word}
+  .hm-policies .pol-doc ul,.hm-policies .pol-doc ol{padding-left:18px}
+  .hm-policies .pol-doc li{margin-bottom:4px}
+  .hm-policies .pol-doc a{color:var(--ink);text-underline-offset:3px}
+  .hm-policies .pol-doc b,.hm-policies .pol-doc strong{color:var(--ink)}
+  .hm-policies .pol-rte>p:first-child{font-size:var(--t-md);color:var(--soft)}
+  .hm-policies .lede-l{font-size:var(--t-md);color:var(--soft)}
+  .hm-policies .pol-missing{padding:12px;background:var(--surface);border:1px solid var(--line)}
+  .hm-policies .pol-rte ul.facts{list-style:none;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line);margin:0 0 16px;max-width:none}
+  .hm-policies .pol-rte ul.facts li{border-bottom:1px solid var(--line);padding:10px 12px 10px 0;margin:0;font-weight:600;color:var(--ink);overflow-wrap:anywhere}
+  .hm-policies .pol-rte ul.facts li strong,.hm-policies .pol-rte ul.facts li b{display:block;font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+  @media (max-width:480px){.hm-policies .pol-rte ul.facts{grid-template-columns:1fr}}
+
+  .hm-policies .pol-action{margin:0 0 16px}
+  .hm-policies .prefs{border-top:1px solid var(--line);margin:8px 0 16px;max-width:80ch}
+  .hm-policies .pref{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 16px;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
+  .hm-policies .pref p{margin:0;font-size:var(--t-xs);color:var(--mute);grid-column:1}
+  .hm-policies .pref label{font-weight:700;color:var(--ink);grid-column:1}
+  .hm-policies .switch{grid-column:2;grid-row:1 / span 2;position:relative;width:44px;height:26px;flex:none}
+  .hm-policies .switch input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;z-index:1;width:100%;height:100%}
+  .hm-policies .switch span{position:absolute;inset:0;background:#B9B6AF;border-radius:13px;transition:background .15s}
+  .hm-policies .switch span::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:var(--surface);transition:transform .15s}
+  .hm-policies .switch input:checked+span{background:var(--ink)}
+  .hm-policies .switch input:checked+span::after{transform:translateX(18px)}
+  .hm-policies .switch input:focus-visible+span{outline:2px solid var(--ink);outline-offset:2px}
+  .hm-policies .switch input:disabled{cursor:not-allowed}
+  .hm-policies .switch input:disabled+span{opacity:.55}
+  @media (prefers-reduced-motion:reduce){.hm-policies .switch span,.hm-policies .switch span::after{transition:none}}
+  .hm-policies .save-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+  .hm-policies .status{font-size:var(--t-xs);color:var(--soft);margin:0}
+  .hm-policies .gpc{font-size:var(--t-xs);padding:8px 10px;background:var(--bg);border:1px solid var(--line);margin:0 0 12px;max-width:80ch}
+
+  @media (max-width:860px){
+    .hm-policies .pol{grid-template-columns:minmax(0,1fr);gap:20px;padding-top:0}
+    .hm-policies .pol-nav{position:sticky;top:var(--header);z-index:5;background:var(--bg);margin-inline:calc(var(--gutter) * -1);border-bottom:1px solid var(--line)}
+    .hm-policies .pol-nav ul{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:10px var(--gutter)}
+    .hm-policies .pol-nav ul::-webkit-scrollbar{display:none}
+    .hm-policies .pol-nav li{flex:none}
+    .hm-policies .pol-nav a{font-size:var(--t-xs);line-height:1;padding:15px 12px;border:1px solid var(--line);background:var(--surface)}
+    .hm-policies .pol-nav a[aria-current="page"]{border-color:var(--ink)}
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM Policies",
+  "tag": "section",
+  "class": "hm-section hm-section--policies",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Policies" },
+    { "type": "text", "id": "nav_label", "label": "Tab list label (screen readers)", "default": "Store policies" },
+    { "type": "text", "id": "missing_text", "label": "Text when a store policy is empty", "default": "This policy is being updated." },
+    { "type": "header", "content": "Right rail (wide screens)" },
+    { "type": "text", "id": "toc_heading", "label": "Contents heading", "default": "On this page" },
+    { "type": "text", "id": "card_heading", "label": "Card heading", "default": "Questions?" },
+    { "type": "inline_richtext", "id": "card_text", "label": "Card text", "default": "Send us a message on the <a href=\"/pages/contact\">contact form</a>. We reply within 2 business days." }
+  ],
+  "blocks": [
+    {
+      "type": "shop_policy",
+      "name": "Store policy",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "The text comes from Settings > Policies, the same text Shopify links at checkout."
+        },
+        {
+          "type": "select",
+          "id": "policy",
+          "label": "Policy",
+          "options": [
+            { "value": "privacy", "label": "Privacy policy" },
+            { "value": "terms", "label": "Terms of service" },
+            { "value": "refund", "label": "Refund policy" },
+            { "value": "shipping", "label": "Shipping policy" },
+            { "value": "contact", "label": "Contact information" },
+            { "value": "subscription", "label": "Cancellation policy (subscriptions)" },
+            { "value": "legal", "label": "Legal notice" }
+          ],
+          "default": "privacy"
+        },
+        { "type": "text", "id": "key", "label": "Tab key (for links like /pages/policies?p=privacy)", "default": "privacy" },
+        { "type": "text", "id": "title", "label": "Title", "info": "Empty = the policy name from Shopify" },
+        {
+          "type": "text",
+          "id": "updated",
+          "label": "Last updated (YYYY-MM-DD)",
+          "info": "Empty = uses the “Last updated: …” line at the top of the policy text."
+        }
+      ]
+    },
+    {
+      "type": "page",
+      "name": "Extra policy",
+      "settings": [
+        { "type": "text", "id": "key", "label": "Tab key (for links like /pages/policies?p=accessibility)", "default": "accessibility" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Accessibility" },
+        { "type": "text", "id": "updated", "label": "Last updated (YYYY-MM-DD)", "default": "2026-10-01" },
+        { "type": "inline_richtext", "id": "lede", "label": "Intro", "default": "We want every fan to be able to shop this store, read about the team and follow the season." },
+        { "type": "richtext", "id": "body", "label": "Text", "info": "For a section title, write a paragraph in bold that starts with a number, like 1. Our goal. It shows as a heading and in On this page.", "default": "<p><strong>1. Our goal</strong></p><p>We aim to meet the <strong>Web Content Accessibility Guidelines (WCAG) 2.1, level AA</strong>.</p>" },
+        { "type": "header", "content": "Action" },
+        {
+          "type": "select",
+          "id": "action",
+          "label": "Action under the intro",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "privacy_choices", "label": "Opt-out switch (Your Privacy Choices)" },
+            { "value": "cookie_preferences", "label": "Open Shopify cookie preferences" }
+          ],
+          "default": "none"
+        },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Save choice" },
+        { "type": "text", "id": "switch_label", "label": "Opt-out switch label", "default": "Opt out of sale and sharing" },
+        { "type": "text", "id": "switch_text", "label": "Opt-out switch help", "default": "When on, we turn off marketing cookies and do not share your activity with ad partners." },
+        { "type": "text", "id": "gpc_off", "label": "Text without GPC signal", "default": "Your browser is not sending a Global Privacy Control signal. If it does, we treat it as an opt-out automatically." },
+        { "type": "text", "id": "gpc_on", "label": "Text with GPC signal", "default": "Global Privacy Control signal detected. You are opted out of sale and sharing on this browser." },
+        { "type": "text", "id": "saved_on", "label": "Saved message (opted out)", "default": "Saved. You are opted out of sale and sharing." },
+        { "type": "text", "id": "saved_off", "label": "Saved message (not opted out)", "default": "Saved. You have not opted out." },
+        {
+          "type": "text",
+          "id": "unavailable",
+          "label": "Message when Shopify privacy tools are not available",
+          "default": "Privacy settings are not available on this page right now. Please try again later or use the contact form."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Policies",
+      "blocks": [
+        { "type": "shop_policy", "settings": { "policy": "privacy", "key": "privacy" } },
+        { "type": "shop_policy", "settings": { "policy": "terms", "key": "terms" } },
+        { "type": "shop_policy", "settings": { "policy": "refund", "key": "refund" } },
+        { "type": "shop_policy", "settings": { "policy": "shipping", "key": "shipping" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

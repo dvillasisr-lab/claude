@@ -1,0 +1,250 @@
+{% doc %}
+  Heavy Metal product card (port of boceto `hmCard`).
+  Front / back / other color views come from the product media (first 3 images, in the order the owner drags them).
+  Badges come from tags: `new`, `best-seller`, `bundle` (Save $X from custom.bundle_savings), `special-edition`.
+  State: `coming-soon` tag = Coming soon + Notify me; not available = Sold out + Notify me;
+  tracked inventory 1 to 5 = "Almost gone!".
+  Add to cart opens the quick add sheet (hm-quick-add) when the product has options, or adds the only variant directly.
+  Behavior lives in `assets/hm-quick-add.js` (arrows, add, notify) and `assets/hm-cart.js`.
+
+  @param {product} product - The product to render
+  @param {boolean} [lazy] - Lazy load the image (default true)
+  @param {string} [sizes] - The `sizes` attribute for the image (default: 4 columns desktop, 2 on mobile)
+  @param {boolean} [priority] - Set fetchpriority high on the first image (LCP)
+
+  @example
+  {% render 'hm-card', product: product, lazy: true %}
+{% enddoc %}
+{%- comment -%} v14.1: products tagged "hidden" (like the Feed The Beast tip) never show as a card in the shop, search or home {%- endcomment -%}
+{%- unless product.tags contains 'hidden' -%}
+{%- liquid
+  assign p = product
+  assign img_sizes = sizes | default: '(min-width: 1200px) 300px, (min-width: 761px) 25vw, 50vw'
+  assign load = 'lazy'
+  if lazy == false
+    assign load = 'eager'
+  endif
+
+  assign is_soon = false
+  if p.tags contains 'coming-soon'
+    assign is_soon = true
+  endif
+  assign is_special = false
+  if p.tags contains 'special-edition'
+    assign is_special = true
+  endif
+  assign is_sold = false
+  unless is_soon or p.available
+    assign is_sold = true
+  endunless
+
+  assign state = 'live'
+  if is_soon
+    assign state = 'soon'
+  elsif is_sold
+    assign state = 'soldout'
+  endif
+
+  comment
+    Almost gone: only counts variants whose inventory Shopify tracks and that stop selling at 0.
+  endcomment
+  assign tracked = false
+  assign left = 0
+  for v in p.variants
+    if v.inventory_management == 'shopify' and v.inventory_policy == 'deny'
+      assign tracked = true
+      if v.inventory_quantity > 0
+        assign left = left | plus: v.inventory_quantity
+      endif
+    endif
+  endfor
+  assign almost = false
+  if tracked and state == 'live' and left > 0 and left <= 5
+    assign almost = true
+  endif
+
+  comment
+    Options: size option decides if the quick add sheet is needed.
+  endcomment
+  assign color_option = nil
+  for opt in p.options_with_values
+    assign oname = opt.name | downcase
+    if oname contains 'color' or oname contains 'colour'
+      assign color_option = opt
+    endif
+  endfor
+
+  assign price = p.price | money_without_trailing_zeros
+  if p.price_varies
+    assign price = p.price_min | money_without_trailing_zeros | prepend: 'From '
+  endif
+
+  assign sub = p.metafields.custom.card_note.value | default: p.type
+
+  assign images = p.media | where: 'media_type', 'image'
+  assign view_count = 0
+-%}
+<article
+  class="card{% if state != 'live' %} card--{{ state }}{% endif %}"
+  data-hm-card
+  data-status="{{ state }}"
+  data-handle="{{ p.handle }}"
+  {% if is_special %}
+    data-tag="limited"
+  {% endif %}
+>
+  <div class="card__media">
+    <a href="{{ p.url }}" tabindex="-1" aria-hidden="true">
+      {%- if images.size > 0 -%}
+        {%- for media in images limit: 3 -%}
+          {%- assign view_count = forloop.length -%}
+          <span class="ph ph--mock card__slide"{% unless forloop.first %} hidden{% endunless %}>
+            {%- liquid
+              assign alt = media.alt | default: p.title
+              if forloop.first and priority
+                echo media | image_url: width: 900 | image_tag: widths: '240, 360, 480, 600, 720, 900', sizes: img_sizes, class: 'photo', alt: alt, fetchpriority: 'high', loading: 'eager'
+              else
+                echo media | image_url: width: 900 | image_tag: widths: '240, 360, 480, 600, 720, 900', sizes: img_sizes, class: 'photo', alt: alt, loading: load
+              endif
+            -%}
+          </span>
+        {%- endfor -%}
+      {%- else -%}
+        <span class="ph ph--mock card__slide">
+          {% render 'hm-mock', product: p %}
+        </span>
+      {%- endif -%}
+    </a>
+
+    {%- if view_count > 1 -%}
+      <button type="button" class="card__arw card__arw--prev" data-arw="-1" aria-label="Previous image of {{ p.title | escape }}">‹</button>
+      <button type="button" class="card__arw card__arw--next" data-arw="1" aria-label="Next image of {{ p.title | escape }}">›</button>
+      <span class="card__dots" aria-hidden="true">
+        {%- for i in (1..view_count) -%}
+          <i{% if forloop.first %} class="on"{% endif %}></i>
+        {%- endfor -%}
+      </span>
+    {%- endif -%}
+
+    {%- capture badges -%}
+      {%- if almost -%}
+        <span class="badge badge--alert">Almost gone!</span>
+      {%- endif -%}
+      {%- if is_special -%}
+        <span class="badge badge--ink">Special edition</span>
+      {%- endif -%}
+      {%- if state == 'soon' -%}
+        <span class="badge badge--line">Coming soon</span>
+      {%- elsif state == 'soldout' -%}
+        <span class="badge badge--line">Sold out</span>
+      {%- elsif is_special == false -%}
+        {%- if p.tags contains 'best-seller' -%}
+          <span class="badge">Best seller</span>
+        {%- elsif p.tags contains 'new' -%}
+          <span class="badge badge--ink">New</span>
+        {%- elsif p.tags contains 'bundle' and p.metafields.custom.bundle_savings.value != blank -%}
+          <span class="badge badge--line">Save ${{ p.metafields.custom.bundle_savings.value }}</span>
+        {%- endif -%}
+      {%- endif -%}
+    {%- endcapture -%}
+    {%- assign badges = badges | strip -%}
+    {%- if badges != blank -%}
+      <div class="card__badges">{{ badges }}</div>
+    {%- endif -%}
+
+    {%- if state == 'soon' -%}
+      <button
+        class="btn card__add"
+        type="button"
+        data-notify="{{ p.handle }}"
+        data-notify-state="soon"
+        data-name="{{ p.title | escape }}"
+        data-url="{{ p.url }}"
+        aria-haspopup="dialog"
+      >
+        Notify me<span class="vh"> when {{ p.title | escape }} drops</span>
+      </button>
+    {%- elsif state == 'soldout' -%}
+      <button
+        class="btn card__add"
+        type="button"
+        data-notify="{{ p.handle }}"
+        data-notify-state="soldout"
+        data-name="{{ p.title | escape }}"
+        data-url="{{ p.url }}"
+        aria-haspopup="dialog"
+      >
+        Sold out · Notify me<span class="vh"> about {{ p.title | escape }}</span>
+      </button>
+    {%- else -%}
+      <button
+        class="btn card__add"
+        type="button"
+        data-quick="{{ p.handle }}"
+        data-url="{{ p.url }}"
+        {% if p.has_only_default_variant %}
+          data-variant-id="{{ p.selected_or_first_available_variant.id }}"
+        {% else %}
+          aria-haspopup="dialog"
+        {% endif %}
+      >
+        Add to cart · {{ price }}<span class="vh"> {{ p.title | escape }}</span>
+      </button>
+    {%- endif -%}
+  </div>
+
+  <div class="card__txt">
+    <h3 class="card__name"><a href="{{ p.url }}">{{ p.title | escape }}</a></h3>
+    {%- if sub != blank -%}
+      <p class="card__sub">{{ sub | escape }}</p>
+    {%- endif -%}
+    <div class="card__meta">
+      <span class="num">
+        {%- if p.compare_at_price > p.price -%}
+          <span class="vh">Sale price </span>{{ price }} <s class="muted">{{ p.compare_at_price | money_without_trailing_zeros }}</s>
+        {%- else -%}
+          {{ price }}
+        {%- endif -%}
+      </span>
+      {%- if color_option and color_option.values.size > 0 -%}
+        <span class="swatches">
+          {%- for value in color_option.values limit: 6 -%}
+            {%- liquid
+              assign sw = value.swatch.color
+              if sw == blank
+                assign vname = value.name | downcase
+                case vname
+                  when 'matte black', 'black', 'jet black', 'vintage black'
+                    assign sw = '#1C1B19'
+                  when 'smoke gray', 'smoke grey', 'gray', 'grey', 'heather gray', 'heather grey', 'sport grey', 'sport gray', 'dark heather'
+                    assign sw = '#8C8A82'
+                  when 'bone', 'natural', 'cream', 'sand', 'ivory', 'oatmeal'
+                    assign sw = '#E9E6DC'
+                  when 'safety yellow', 'yellow', 'gold'
+                    assign sw = '#F5C400'
+                  when 'white'
+                    assign sw = '#FFFFFF'
+                  when 'charcoal', 'asphalt'
+                    assign sw = '#3A3936'
+                  when 'navy'
+                    assign sw = '#1F2A44'
+                  when 'red', 'cardinal'
+                    assign sw = '#A3261C'
+                  when 'military green', 'olive', 'army'
+                    assign sw = '#5B5E3C'
+                  when 'brown', 'coyote brown'
+                    assign sw = '#5C4433'
+                  else
+                    assign sw = 'var(--tile)'
+                endcase
+              endif
+            -%}
+            <span class="swatch" style="--sw:{{ sw }}" title="{{ value.name | escape }}"></span>
+          {%- endfor -%}
+          <span class="vh">Colors: {{ color_option.values | join: ', ' }}</span>
+        </span>
+      {%- endif -%}
+    </div>
+  </div>
+</article>
+{%- endunless -%}

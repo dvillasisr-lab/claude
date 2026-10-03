@@ -1,0 +1,118 @@
+{%- comment -%}
+  HM Product grid: every product of one collection as regular shop cards (snippets/hm-card.liquid).
+  Made for the Best sellers page under the carousel. Products tagged "hidden" never show (hm-card skips them).
+  With fewer than 4 products the cards stay shop size and centered, so no empty column is left on the right.
+{%- endcomment -%}
+{%- liquid
+  assign coll = section.settings.collection
+  assign src = coll
+  assign shown = 0
+  if coll != blank
+    for x in coll.products
+      unless x.tags contains 'hidden'
+        assign shown = shown | plus: 1
+      endunless
+    endfor
+  endif
+  if shown == 0 and section.settings.fallback_all
+    assign src = collections.all
+    assign shown = 0
+    for x in src.products limit: 50
+      unless x.tags contains 'hidden'
+        assign shown = shown | plus: 1
+      endunless
+    endfor
+  endif
+  assign limit = section.settings.limit
+  assign cols = shown | at_most: limit | at_most: 4
+  assign link = section.settings.link_url | default: routes.all_products_collection_url
+-%}
+
+<section class="sect cfg{% if section.settings.band %} sect--white{% endif %}" aria-labelledby="hm-cfg-t-{{ section.id }}">
+  <div class="wrap">
+    <div class="sect-head">
+      <h2 class="h2" id="hm-cfg-t-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.link_label != blank -%}
+        <a class="link" href="{{ link }}">{{ section.settings.link_label | escape }}</a>
+      {%- endif -%}
+    </div>
+    {%- if shown > 0 -%}
+      <div class="pgrid{% if cols < 4 %} cfg--few{% endif %}{% if cols == 1 %} cfg--one{% endif %}" style="--cfg-n:{{ cols }}">
+        {%- for product in src.products limit: limit -%}
+          {%- render 'hm-card', product: product, lazy: true -%}
+        {%- endfor -%}
+      </div>
+    {%- elsif request.design_mode -%}
+      <p class="small muted" style="margin:0">Pick a collection with products in this section’s settings. This hint is only visible in the theme editor.</p>
+    {%- else -%}
+      <p class="muted" style="margin:0">Nothing here yet. The crew is still deciding what you like.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .cfg { border-top: 1px solid var(--line); }
+  @media (max-width: 760px) { .cfg .pgrid.cfg--one { grid-template-columns: minmax(0, 280px); justify-content: center; } }
+  @media (min-width: 761px) {
+    .cfg .pgrid.cfg--few { grid-template-columns: repeat(var(--cfg-n), minmax(0, 300px)); justify-content: center; column-gap: 12px; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM Product grid",
+  "tag": "div",
+  "class": "hm-section hm-carousel-grid-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The whole lineup"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link text",
+      "default": "Shop all"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "fallback_all",
+      "label": "Show all products when the collection is empty",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Products",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "band",
+      "label": "White background",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Product grid"
+    }
+  ]
+}
+{% endschema %}

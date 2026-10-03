@@ -1,0 +1,199 @@
+{%- comment -%}
+  HM Home Lightning ("First fire"): la historia en un momento + el video de la duena.
+  Video = archivo de Shopify (setting video) o YouTube (fachada: el iframe se carga solo al dar play).
+  Sin video: el boton muestra "Video coming soon". El poster "se va la luz" una vez al entrar en pantalla.
+{%- endcomment -%}
+{%- liquid
+  assign vid = section.settings.video
+  assign yt = section.settings.youtube
+  assign poster = section.settings.poster
+  if poster == blank and vid != blank
+    assign poster = vid.preview_image
+  endif
+  assign has_video = false
+  if vid != blank
+    assign has_video = true
+  elsif yt != blank and yt.type == 'youtube'
+    assign has_video = true
+  endif
+-%}
+
+<section class="home-sect" aria-labelledby="fire-title-{{ section.id }}">
+  <div class="wrap fire">
+    <div class="fire__copy">
+      {%- if section.settings.label != blank -%}<p class="label muted">{{ section.settings.label | escape }}</p>{%- endif -%}
+      <h2 class="h1 fire__quote" id="fire-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.sign != blank -%}
+        <p class="fire__sign"><svg class="fire__bolt" viewBox="0 0 24 32" aria-hidden="true" focusable="false"><path d="M15 0 3 18h8l-3 14L21 12h-8l4-12Z"/></svg>{{ section.settings.sign | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}<p class="body">{{ section.settings.text | escape }}</p>{%- endif -%}
+      {%- if section.settings.link_label != blank -%}
+        <a class="link" href="{{ section.settings.link_url | default: routes.root_url }}">{{ section.settings.link_label | escape }}</a>
+      {%- endif -%}
+    </div>
+    <figure class="vid" data-hm-fire{% if yt != blank and yt.type == 'youtube' and vid == blank %} data-yt="{{ yt.id | escape }}"{% endif %}>
+      <div class="vid__frame" data-fire-frame>
+        {%- if poster != blank -%}
+          {%- capture pos -%}object-position:{{ poster.presentation.focal_point }}{%- endcapture -%}
+          {{
+            poster
+            | image_url: width: 1600
+            | image_tag:
+              class: 'photo',
+              alt: '',
+              widths: '480, 720, 960, 1280, 1600',
+              sizes: '(max-width: 860px) 100vw, 58vw',
+              loading: 'lazy',
+              style: pos
+          }}
+        {%- else -%}
+          <img class="photo" src="{{ 'hm-driver.webp' | asset_url }}" alt="" loading="lazy" width="788" height="1400" style="object-position:50% 38%">
+        {%- endif -%}
+        <button class="vid__play" type="button" data-fire-play aria-describedby="fire-cap-{{ section.id }}">
+          <svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2 1l9 5-9 5z"/></svg>
+          <span class="vh">{{ section.settings.play_label | escape }}</span>
+        </button>
+        {%- unless has_video -%}
+          <p class="vid__msg" data-fire-msg aria-live="polite" hidden>{{ section.settings.soon_msg | escape }}</p>
+        {%- endunless -%}
+        {%- if section.settings.meta_left != blank or section.settings.duration != blank -%}
+          <div class="vid__meta" aria-hidden="true"><span>{{ section.settings.meta_left | escape }}</span><span class="num">{{ section.settings.duration | escape }}</span></div>
+        {%- endif -%}
+      </div>
+      {%- if vid != blank -%}
+        <template data-fire-video>
+          {{ vid | video_tag: controls: true, autoplay: true, playsinline: true, class: 'vid__media', image_size: '1600x' }}
+        </template>
+      {%- endif -%}
+      <figcaption id="fire-cap-{{ section.id }}">{{ section.settings.caption | escape }}</figcaption>
+    </figure>
+  </div>
+</section>
+
+{% stylesheet %}
+  .home-sect { padding-block: var(--sect); }
+  .fire { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(24px, 4vw, 64px); align-items: center; }
+  .fire__copy { display: grid; gap: 14px; justify-items: start; max-width: 480px; }
+  .fire__copy .label { margin: 0; }
+  .fire__quote { font-size: var(--t-h1); line-height: 1.12; margin: 0; }
+  .fire__sign { margin: 0; font-family: var(--f-head); font-stretch: 78%; font-weight: 700; font-size: var(--t-h2); text-transform: uppercase; letter-spacing: .01em; color: var(--ink); display: inline-flex; align-items: center; gap: 10px; }
+  .fire__bolt { width: 22px; height: 30px; flex: none; fill: var(--accent); stroke: var(--ink); stroke-width: 1.5; stroke-linejoin: round; transform: rotate(8deg); }
+  .fire__copy p.body { margin: 0; font-size: var(--t-sm); }
+  .vid { margin: 0; display: grid; gap: 8px; width: min(100%, calc((100svh - var(--header) - 2 * var(--sect) - 28px) * 16 / 9)); justify-self: end; }
+  .vid__frame { position: relative; aspect-ratio: 16/9; overflow: hidden; background: var(--night); isolation: isolate; }
+  .vid__frame .photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .vid__frame img { filter: brightness(.42) contrast(1.1) grayscale(.25); }
+  .vid__frame::after { content: ""; position: absolute; inset: 0; background: var(--surface); opacity: 0; pointer-events: none; mix-blend-mode: overlay; }
+  .vid.is-lit .vid__frame::after { animation: fireFlash 1.6s steps(1, end) 1; }
+  .vid.is-lit .vid__frame img { animation: fireDim 1.6s steps(1, end) 1; }
+  @keyframes fireFlash { 0% { opacity: 0; } 8% { opacity: .9; } 12% { opacity: 0; } 18% { opacity: .7; } 22% { opacity: 0; } 100% { opacity: 0; } }
+  @keyframes fireDim {
+    0% { filter: brightness(.42) contrast(1.1) grayscale(.25); }
+    8% { filter: brightness(1.4) contrast(1.2) grayscale(.6); }
+    22% { filter: brightness(1.1) grayscale(.6); }
+    26% { filter: brightness(.08); }
+    70% { filter: brightness(.08); }
+    100% { filter: brightness(.42) contrast(1.1) grayscale(.25); }
+  }
+  .vid__play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: grid; place-items: center; width: 72px; height: 72px; border-radius: 50%; border: 0; background: var(--accent); color: var(--ink); cursor: pointer; transition: transform .15s; }
+  .vid__play:hover { transform: translate(-50%, -50%) scale(1.06); }
+  .vid__play svg { width: 24px; height: 24px; margin-left: 4px; fill: currentColor; }
+  .vid__play:focus-visible { outline: 2px solid var(--surface); outline-offset: 4px; }
+  .vid__meta { position: absolute; left: 12px; right: 12px; bottom: 10px; display: flex; justify-content: space-between; gap: 12px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--night-ink); }
+  .vid__msg { position: absolute; left: 50%; top: calc(50% + 48px); transform: translateX(-50%); margin: 0; font-size: var(--t-xs); color: var(--night-ink); white-space: nowrap; }
+  .vid__media,
+  .vid__frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; filter: none; }
+  .vid.is-playing .vid__frame::after { display: none; }
+  .vid figcaption { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--mute); }
+  @media (max-width: 860px) {
+    .fire { grid-template-columns: 1fr; }
+    .vid { width: 100%; justify-self: stretch; order: -1; }
+    .vid__play { width: 60px; height: 60px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .vid.is-lit .vid__frame::after,
+    .vid.is-lit .vid__frame img { animation: none; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    if (window.HMFire) return;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    function flash(v) { v.classList.remove('is-lit'); void v.offsetWidth; v.classList.add('is-lit'); }
+    function init(v) {
+      if (v.__hmFire) return;
+      var frame = v.querySelector('[data-fire-frame]'), b = v.querySelector('[data-fire-play]'), m = v.querySelector('[data-fire-msg]');
+      var tpl = v.querySelector('template[data-fire-video]'), yt = v.getAttribute('data-yt');
+      var io = null;
+      if ('IntersectionObserver' in window && !reduce.matches) {
+        io = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { v.classList.add('is-lit'); io.disconnect(); io = null; } }, { threshold: .6 });
+        io.observe(v);
+      }
+      var onPlay = function () {
+        if (tpl) {
+          var node = tpl.content.firstElementChild ? tpl.content.firstElementChild.cloneNode(true) : null;
+          if (!node) return;
+          frame.innerHTML = ''; frame.appendChild(node); v.classList.add('is-playing');
+          if (node.play) { var p = node.play(); if (p && p.catch) p.catch(function () {}); }
+          if (node.focus) node.focus();
+          return;
+        }
+        if (yt) {
+          var f = document.createElement('iframe');
+          f.src = 'https://www.youtube-nocookie.com/embed/' + encodeURIComponent(yt) + '?autoplay=1&rel=0&playsinline=1';
+          f.title = (b.querySelector('.vh') || {}).textContent || 'Video';
+          f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+          f.allowFullscreen = true;
+          frame.innerHTML = ''; frame.appendChild(f); v.classList.add('is-playing'); f.focus();
+          return;
+        }
+        if (!reduce.matches) flash(v);
+        if (m) m.hidden = false;
+      };
+      if (b) b.addEventListener('click', onPlay);
+      v.__hmFire = { destroy: function () { if (io) io.disconnect(); if (b) b.removeEventListener('click', onPlay); v.__hmFire = null; } };
+    }
+    function initAll(scope) { [].slice.call((scope || document).querySelectorAll('[data-hm-fire]')).forEach(init); }
+    window.HMFire = { init: init };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { initAll(); });
+    else initAll();
+    document.addEventListener('shopify:section:load', function (e) { initAll(e.target); });
+    document.addEventListener('shopify:section:unload', function (e) {
+      [].slice.call(e.target.querySelectorAll('[data-hm-fire]')).forEach(function (v) { if (v.__hmFire) v.__hmFire.destroy(); });
+    });
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "HM Home Lightning",
+  "tag": "div",
+  "class": "hm-home-lightning-section",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Etiqueta", "default": "Our Story · 2026" },
+    { "type": "text", "id": "heading", "label": "Frase grande", "default": "The night it first fired, lightning struck and the power went out." },
+    { "type": "text", "id": "sign", "label": "Línea con rayo", "default": "We call it a sign." },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Texto",
+      "default": "Twelve years from an idea in Tomah, WI to that night in the family shop in Waterloo. This is how it sounded."
+    },
+    { "type": "text", "id": "link_label", "label": "Link: texto", "default": "Read our story" },
+    { "type": "url", "id": "link_url", "label": "Link: destino" },
+    { "type": "header", "content": "Video" },
+    { "type": "video", "id": "video", "label": "Video (archivo de Shopify)", "info": "Tiene prioridad sobre YouTube." },
+    { "type": "video_url", "id": "youtube", "label": "O link de YouTube", "accept": ["youtube"] },
+    { "type": "image_picker", "id": "poster", "label": "Póster (16:9)", "info": "Vacío = imagen del video o la foto del tema." },
+    { "type": "text", "id": "play_label", "label": "Texto del botón play (lectores de pantalla)", "default": "Play video: the first fire" },
+    { "type": "text", "id": "meta_left", "label": "Texto abajo a la izquierda", "default": "First fire" },
+    { "type": "text", "id": "duration", "label": "Duración (por ejemplo 0:42)", "info": "Vacío = no sale." },
+    { "type": "text", "id": "caption", "label": "Pie del video", "default": "Engine fires for the first time · Waterloo, WI" },
+    { "type": "text", "id": "soon_msg", "label": "Aviso sin video", "default": "Video coming soon" }
+  ],
+  "presets": [
+    { "name": "HM Home Lightning" }
+  ]
+}
+{% endschema %}

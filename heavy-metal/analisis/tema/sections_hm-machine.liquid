@@ -1,0 +1,161 @@
+<section class="hm hm-machine" id="machine" aria-labelledby="hm-machine-title">
+  <div class="hm-machine__banner">
+    {% render 'hm-img', image: section.settings.banner, fallback: 'hm-grandstand.jpg', alt: 'Heavy Metal in front of a packed grandstand', class: 'hm-cover hm-kb', sizes: '100vw' %}
+    <div class="hm-shade"></div>
+    <div class="hm-machine__head">
+      <div style="display:flex;flex-direction:column;gap:14px"><p class="hm-eyebrow">{{ section.settings.eyebrow }}</p><h2 class="hm-h2" id="hm-machine-title" style="font-size:clamp(56px,7.8vw,112px)">{{ section.settings.title_1 }}<br><span class="hm-outline">{{ section.settings.title_2 }}</span></h2><p>{{ section.settings.text }}</p></div>
+      {%- if section.settings.spec_url != blank -%}<a class="hm-btn hm-btn--solid" href="{{ section.settings.spec_url }}"><span>FULL SPEC SHEET →</span></a>{%- endif -%}
+    </div>
+  </div>
+  <div class="hm-machine__grid">
+    <div class="hm-tile hm-machine__engine">
+      {% render 'hm-img', image: section.settings.engine, fallback: 'hm-engine.jpg', alt: 'The Heavy Metal engine', sizes: '(min-width: 1100px) 42vw, 100vw' %}
+      <div class="hm-machine__cap"><span class="hm-eyebrow" style="font-size:14px;letter-spacing:3px">THE HEART</span><strong>{{ section.settings.engine_label }}</strong></div>
+    </div>
+    <div class="hm-machine__right">
+      <div class="hm-tile hm-machine__side">{% render 'hm-img', image: section.settings.side, fallback: 'hm-side.jpg', alt: 'Heavy Metal side view', sizes: '(min-width: 1100px) 58vw, 100vw' %}</div>
+      <div class="hm-specs">
+        {%- for block in section.blocks -%}
+        <div class="hm-spec" {{ block.shopify_attributes }}><span class="hm-spec__label">{{ block.settings.label }}</span><span class="hm-spec__value{% if block.settings.accent %} is-accent{% endif %}">{{ block.settings.value }}</span></div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "HM The Machine",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner",
+      "label": "Banner photo (default: grandstand)"
+    },
+    {
+      "type": "image_picker",
+      "id": "engine",
+      "label": "Engine photo"
+    },
+    {
+      "type": "image_picker",
+      "id": "side",
+      "label": "Side photo"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "02 / THE MACHINE"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Title line 1",
+      "default": "FULL PULL"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Title line 2 (outline)",
+      "default": "OR NOTHING"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Built in Wisconsin to do one thing: drag the sled to the end of the track."
+    },
+    {
+      "type": "text",
+      "id": "spec_url",
+      "label": "Full spec sheet link",
+      "default": "/pages/spec-sheet"
+    },
+    {
+      "type": "text",
+      "id": "engine_label",
+      "label": "Engine label",
+      "default": "CAT V8"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "spec",
+      "name": "Spec",
+      "limit": 9,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "CLASS"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "PRO STOCK"
+        },
+        {
+          "type": "checkbox",
+          "id": "accent",
+          "label": "Yellow value",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM The Machine",
+      "blocks": [
+        {
+          "type": "spec",
+          "settings": {
+            "label": "CLASS",
+            "value": "PRO STOCK"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "label": "ENGINE",
+            "value": "CAT 3208 V8"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "label": "HORSEPOWER",
+            "value": "UNKNOWN",
+            "accent": false
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "label": "WEIGHT",
+            "value": "10,000 LB",
+            "accent": true
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "label": "TIRES",
+            "value": "24.5-32"
+          }
+        },
+        {
+          "type": "spec",
+          "settings": {
+            "label": "HOME BASE",
+            "value": "WISCONSIN"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

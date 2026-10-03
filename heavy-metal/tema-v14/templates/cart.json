@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "hm-main-cart",
+      "settings": {
+        "heading": "Your cart",
+        "show_dynamic": true
+      }
+    }
+  },
+  "order": ["main"]
+}

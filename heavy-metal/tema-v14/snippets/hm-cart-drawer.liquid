@@ -1,0 +1,299 @@
+{% doc %}
+  Heavy Metal cart drawer (replaces Dawn cart-drawer). Rendered once by sections/hm-header.liquid (do not render it again in the layout).
+  Everything inside is painted by `assets/hm-cart.js` from the AJAX cart (/cart.js), starting from the cart JSON printed here.
+  Free shipping tiers: theme settings `hm_free_shipping`, `hm_gift_threshold`, `hm_gift_label`.
+  Add to your order: `hm_addons_collection`. Crew Pack upgrade: `hm_crew_pack_product` + `hm_crew_cap_product`.
+  Feed The Beast: `hm_feed_beast_product` + `hm_feed_beast_amounts`.
+  Opens on the `hm:cart:open` event or a click on any `[data-hm-cart-open]`.
+  Updates every `[data-hm-cart-count]` with the number of items (the tip never counts).
+
+  @example
+  {% render 'hm-cart-drawer' %}
+{% enddoc %}
+{%- liquid
+  assign beast = settings.hm_feed_beast_product
+  assign pack = settings.hm_crew_pack_product
+  assign cap = settings.hm_crew_cap_product
+  assign addons = settings.hm_addons_collection
+  assign best = settings.hm_best_sellers_collection
+
+  assign count = 0
+  for item in cart.items
+    unless beast and item.product_id == beast.id
+      assign count = count | plus: item.quantity
+    endunless
+  endfor
+
+  assign best_url = routes.all_products_collection_url | append: '?sort_by=best-selling'
+  if best
+    assign best_url = best.url
+  endif
+-%}
+<div class="scrim hm-cart-scrim" data-hm-cart-scrim hidden></div>
+<aside
+  class="drawer hm-cart"
+  id="hm-cart"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="hm-cart-t"
+  tabindex="-1"
+  hidden
+  data-hm-cart
+  data-money-format="{{ shop.money_format | escape }}"
+  data-free="{{ settings.hm_free_shipping }}"
+  data-gift="{{ settings.hm_gift_threshold }}"
+  data-gift-label="{{ settings.hm_gift_label | default: 'Free sticker' | escape }}"
+  data-cart-url="{{ routes.cart_url }}"
+  data-gift-logo="{{ 'logo-bone.svg' | asset_url }}"
+  data-root="{{ routes.root_url }}"
+  {% if beast %}
+    data-tip-product="{{ beast.id }}"
+  {% endif %}
+  {% if pack and cap %}
+    data-cap-product="{{ cap.id }}" data-pack-product="{{ pack.id }}"
+  {% endif %}
+>
+  <div class="drawer__head">
+    <p class="h3" id="hm-cart-t">Cart (<span data-hm-cart-drawer-count>{{ count }}</span>)</p>
+    <button class="icon-btn" type="button" data-hm-cart-close aria-label="Close cart">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+    </button>
+  </div>
+
+  {%- if settings.hm_free_shipping != blank -%}
+    <div class="tiers" data-hm-tiers hidden>
+      <p class="tiers__msg" data-hm-tiers-msg></p>
+      <div class="tiers__track" aria-hidden="true">
+        <span class="tiers__fill" data-hm-tiers-fill></span>
+        <span class="tiers__stop" data-hm-stop="free"><i></i>Free shipping</span>
+        {%- if settings.hm_gift_threshold != blank and settings.hm_gift_threshold > settings.hm_free_shipping -%}
+          <span class="tiers__stop" data-hm-stop="gift" style="left:100%">
+            <i></i>{{- settings.hm_gift_label | default: 'Free sticker' | escape -}}
+          </span>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="drawer__body">
+    <div class="cempty" data-hm-cart-empty{% if count > 0 %} hidden{% endif %}>
+      <p style="margin:0">Your cart is empty. Bold strategy.</p>
+      <p class="cempty__links">
+        <a href="{{ routes.all_products_collection_url }}">Shop the drop</a>
+        <a href="{{ best_url }}">Best sellers</a>
+      </p>
+    </div>
+
+    <ul class="lines" data-hm-lines aria-label="Items in your cart"></ul>
+    <p class="small hm-cart__err" data-hm-cart-error role="alert"></p>
+
+    {%- if pack and cap -%}
+      {%- assign cap_variant = cap.selected_or_first_available_variant -%}
+      <div class="upgrade" data-hm-upgrade hidden>
+        <a class="thumb" href="{{ pack.url }}" tabindex="-1" aria-hidden="true">
+          {%- if pack.featured_media -%}
+            {{- pack.featured_media | image_url: width: 120 | image_tag: width: 56, height: 56, loading: 'lazy', class: 'photo', alt: '' -}}
+          {%- endif -%}
+        </a>
+        <span>
+          <b>Make it a Crew Pack</b><br>
+          <span class="muted">
+            Add the {{ cap.title | escape }}
+            {%- if pack.metafields.custom.bundle_savings.value != blank %} and save ${{ pack.metafields.custom.bundle_savings.value }}{% endif -%}
+            .</span
+          >
+        </span>
+        {%- if cap.available -%}
+          <button
+            class="btn btn--ghost btn--sm"
+            type="button"
+            data-quick="{{ cap.handle }}"
+            data-url="{{ cap.url }}"
+            {% if cap.has_only_default_variant %}
+              data-variant-id="{{ cap_variant.id }}"
+            {% endif %}
+          >
+            Add · {{ cap.price | money_without_trailing_zeros }}
+          </button>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if beast and settings.hm_free_shipping != blank -%}
+      {%- assign amounts = settings.hm_feed_beast_amounts | default: '1,2,5' | split: ',' -%}
+      <div class="beast" data-hm-beast hidden>
+        <p class="beast__t"><b>Feed The Beast</b> <span class="muted">· optional fuel tip</span></p>
+        <p class="small muted" style="margin:2px 0 8px">
+          A buck or two short of free shipping? Toss the crew a fuel tip and get there. Not extortion. Mostly.
+        </p>
+        <div class="beast__row" role="group" aria-label="Fuel tip">
+          {%- for raw in amounts -%}
+            {%- liquid
+              assign amount = raw | strip | plus: 0
+              assign cents = amount | times: 100
+              assign tip_variant = nil
+              for v in beast.variants
+                if v.price == cents
+                  assign tip_variant = v
+                  break
+                endif
+              endfor
+              if tip_variant == nil
+                assign idx = forloop.index0
+                assign tip_variant = beast.variants[idx]
+              endif
+            -%}
+            {%- if tip_variant -%}
+              <button
+                class="chip"
+                type="button"
+                data-tip="{{ tip_variant.id }}"
+                aria-pressed="false"
+              >
+                {{ tip_variant.price | money_without_trailing_zeros }}
+              </button>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        <p class="consent" style="margin:8px 0 0">A tip to the team, not a donation. Not tax deductible.</p>
+      </div>
+    {%- endif -%}
+
+    {%- if addons and addons.products_count > 0 -%}
+      <div class="addons" data-hm-addons hidden>
+        <p class="label">Add to your order</p>
+        <div class="addons__row">
+          {%- for a in addons.products limit: 8 -%}
+            {%- if a.available and beast.id != a.id -%}
+              {%- unless a.tags contains 'coming-soon' -%}
+                <div class="addon" data-addon-product="{{ a.id }}">
+                  <a href="{{ a.url }}" class="thumb" tabindex="-1" aria-hidden="true">
+                    {%- if a.featured_media -%}
+                      {{-
+                        a.featured_media
+                        | image_url: width: 260
+                        | image_tag: widths: '128, 256', sizes: '128px', loading: 'lazy', class: 'photo', alt: ''
+                      -}}
+                    {%- endif -%}
+                  </a>
+                  <a href="{{ a.url }}" class="addon__n">{{ a.title | escape }}</a>
+                  <span class="num">{{ a.price | money_without_trailing_zeros }}</span>
+                  <button
+                    class="btn btn--ghost btn--sm"
+                    type="button"
+                    data-quick="{{ a.handle }}"
+                    data-url="{{ a.url }}"
+                    {% if a.has_only_default_variant %}
+                      data-variant-id="{{ a.selected_or_first_available_variant.id }}"
+                    {% endif %}
+                  >
+                    + Add<span class="vh"> {{ a.title | escape }}</span>
+                  </button>
+                </div>
+              {%- endunless -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <details class="giftnote" data-hm-discount-wrap{% if count == 0 %} hidden{% endif %}>
+      <summary>Discount code</summary>
+      <form class="coupon" data-hm-discount-form novalidate>
+        <label class="vh" for="hm-cart-coupon">Discount code</label>
+        <input class="input" id="hm-cart-coupon" name="discount" autocomplete="off" placeholder="Enter code" spellcheck="false">
+        <button class="btn btn--ghost btn--sm" type="submit">Apply</button>
+      </form>
+      <ul class="hm-codes" data-hm-codes></ul>
+      <p class="small muted" data-hm-discount-msg role="status" style="margin:6px 0 0"></p>
+    </details>
+
+    <details class="giftnote" data-hm-note-wrap{% if count == 0 %} hidden{% endif %}>
+      <summary>Add a note or gift message</summary>
+      <label class="vh" for="hm-cart-note">Order note</label>
+      <textarea
+        class="input"
+        id="hm-cart-note"
+        rows="3"
+        maxlength="200"
+        placeholder="Gift message, or a note for the crew"
+        data-hm-note
+      >{{ cart.note | escape }}</textarea>
+    </details>
+  </div>
+
+  <div class="drawer__foot" data-hm-cart-foot{% if count == 0 %} hidden{% endif %}>
+    <div data-hm-cart-discounts></div>
+    <p class="drawer__sub">
+      <span>Subtotal</span><span class="num" data-hm-cart-total>{{ cart.total_price | money }}</span>
+    </p>
+    {%- liquid
+      comment
+        v14.1: a cart with only gift cards ships nothing, so the printed/shipping line swaps for the email line (hm-cart.js toggles it live)
+      endcomment
+      assign gift_only = false
+      if cart.item_count > 0
+        assign gift_only = true
+        for item in cart.items
+          unless item.gift_card
+            assign gift_only = false
+            break
+          endunless
+        endfor
+      endif
+    -%}
+    <p class="small muted" style="margin:0" data-hm-ship-note{% if gift_only %} hidden{% endif %}>
+      {%- if settings.hm_ships_line != blank %}{{ settings.hm_ships_line | escape }}. {% endif -%}
+      Taxes and shipping at checkout.
+    </p>
+    <p class="small muted" style="margin:0" data-hm-gift-note{% unless gift_only %} hidden{% endunless %}>
+      Gift cards arrive by email. No shipping, no wait.
+    </p>
+    <form action="{{ routes.cart_url }}" method="post" class="hm-cart__checkout">
+      <button class="btn btn--block" type="submit" name="checkout">Checkout</button>
+    </form>
+    {%- if shop.enabled_payment_types.size > 0 -%}
+      <ul class="paybadges hm-paybadges" aria-label="Payment methods">
+        {%- for type in shop.enabled_payment_types -%}
+          <li>{{ type | payment_type_svg_tag }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+    <p class="small muted" style="margin:0;text-align:center">Secure checkout by Shopify</p>
+  </div>
+  <p class="vh" data-hm-cart-status role="status" aria-live="polite"></p>
+  <script type="application/json" data-hm-cart-json>
+    {{ cart | json }}
+  </script>
+</aside>
+<script src="{{ 'hm-cart.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .hm-cart .thumb { display: block; overflow: hidden; background: var(--tile); }
+  .hm-cart .thumb .photo, .hm-cart .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hm-cart .line .thumb { width: 72px; height: 90px; }
+  .hm-cart .thumb--gift { display: grid; place-items: center; }
+  .hm-cart .gthumb { display: grid; place-items: end start; width: 84%; aspect-ratio: 85.6 / 54; border-radius: 4px; padding: 4px 6px; background: linear-gradient(160deg, #16191E, #3A414B); box-shadow: inset 0 -2px 0 var(--accent); color: var(--night-ink); font-family: var(--f-head); font-stretch: 70%; font-size: 13px; line-height: 1; }
+  .hm-cart .gthumb { position: relative; }
+  .hm-cart .gthumb__logo { position: absolute; top: 6px; left: 6px; width: 58%; height: auto; }
+  .hm-cart .gthumb__bolt { position: absolute; top: 5px; right: 6px; width: 9px; height: auto; fill: var(--accent); }
+  .hm-cart .line__price { margin: 0; text-align: right; }
+  .hm-cart .line__price s { display: block; color: var(--mute); font-size: 11px; }
+  .hm-cart .line__disc { margin: 0 0 6px; color: var(--soft); font-size: 11px; }
+  .hm-cart .line.is-busy { opacity: .5; pointer-events: none; }
+  .hm-cart .qty button { min-width: 32px; min-height: 32px; }
+  .hm-cart__err { margin: 0; color: var(--alert); font-weight: 600; }
+  .hm-cart__err:empty { display: none; }
+  .hm-codes { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .hm-codes:empty { display: none; }
+  .hm-codes button { display: inline-flex; align-items: center; gap: 6px; min-height: 28px; padding: 0 8px; border: 1px solid var(--line); background: var(--surface); font: inherit; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; color: var(--ink); }
+  .hm-codes button:hover { border-color: var(--ink); }
+  .hm-cart__disc { display: flex; justify-content: space-between; margin: 0 0 4px; font-size: var(--t-xs); color: var(--soft); }
+  .hm-paybadges { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; }
+  .hm-paybadges li { display: flex; }
+  .hm-paybadges svg { width: 38px; height: 24px; }
+  .hm-cart .tiers__stop[data-hm-stop="free"] { left: 100%; }
+  .hm-cart .beast__can { width: 72px; height: 72px; display: grid; place-items: center; background: var(--accent); color: var(--ink); }
+  .hm-cart .addon .thumb { width: 128px; height: 128px; }
+  .hm-cart .upgrade .thumb { width: 56px; height: 56px; }
+{% endstylesheet %}

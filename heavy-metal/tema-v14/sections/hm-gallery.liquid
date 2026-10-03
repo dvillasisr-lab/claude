@@ -1,0 +1,328 @@
+{%- comment -%}
+  Gallery. Every album metaobject entry (one per event) is printed as JSON; assets/hm-gallery.js builds the
+  wall (lazy 400 px thumbs), the Filter / Events side panel, the All / Photos / Videos switch and the viewer
+  (which loads the large photo only when it opens). ?event=<album handle>, ?year=, ?kind=, ?type= work in the URL.
+  Albums are read in pages of 250; older ones get an "Older albums" link.
+{%- endcomment -%}
+{%- assign gid = 'Gallery-' | append: section.id -%}
+<div class="hm-gallery" data-hm-gallery data-page="{{ section.settings.per_page }}" data-season="{{ settings.hm_season | default: 0 }}" data-schedule="{{ section.settings.empty_url | default: pages.schedule.url | escape }}">
+  <section aria-labelledby="{{ gid }}-title">
+    <div class="gw g-head">
+      <div class="g-head__t">
+        <h1 class="h1" id="{{ gid }}-title">{{ section.settings.title }}</h1>
+        {%- if section.settings.text != blank -%}<p>{{ section.settings.text }}</p>{%- endif -%}
+      </div>
+      <p class="g-n" role="status" aria-live="polite" data-g-count></p>
+    </div>
+    <div class="g-bar" data-g-barwrap>
+      <div class="gw g-bar__in" data-g-bar>
+        <button class="g-tool" type="button" data-open="filter" aria-haspopup="dialog" aria-controls="{{ gid }}-drawer" aria-expanded="false" data-g-filter>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg
+          ><span>Filter</span><span class="g-tool__v" data-g-filter-v></span>
+        </button>
+        <button class="g-tool" type="button" data-open="event" aria-haspopup="dialog" aria-controls="{{ gid }}-drawer" aria-expanded="false" data-g-events>
+          <span>Events</span><span class="g-tool__v g-tool__v--ev" data-g-events-v></span>
+        </button>
+        <div class="g-media" role="group" aria-label="Show">
+          <button type="button" data-type="all" aria-pressed="true">All</button>
+          <button type="button" data-type="photos" aria-pressed="false">Photos</button>
+          <button type="button" data-type="videos" aria-pressed="false">Videos</button>
+        </div>
+      </div>
+    </div>
+    <div class="gw"><div class="g-chips" role="group" aria-label="Active filters" data-g-chips hidden></div></div>
+  </section>
+
+  <section class="g-main" aria-label="Photos and videos">
+    <div class="gw">
+      <div data-g-evhead></div>
+      <div class="g-wallw"><ul class="g-wall" data-g-wall></ul></div>
+      <div data-g-rest></div>
+      <div class="g-more" data-g-more></div>
+      <noscript>
+        <ul class="g-plain">
+          {%- for a in metaobjects.album.values limit: 50 -%}
+            <li><a href="{{ a.system.url }}">{{ a.event_name.value }}</a></li>
+          {%- endfor -%}
+        </ul>
+      </noscript>
+      {%- paginate metaobjects.album.values by 250 -%}
+        <script type="application/json" data-g-data>
+          [
+          {%- for a in metaobjects.album.values -%}
+            {%- liquid
+              assign d = a.date.value | date: '%Y-%m-%d'
+              assign yr = a.season.value
+              if yr == blank and d != blank
+                assign yr = a.date.value | date: '%Y' | plus: 0
+              endif
+              if yr == blank
+                assign yr = settings.hm_season | default: 0
+              endif
+              assign kind = a.kind.value | default: 'competition' | downcase | capitalize
+              assign cover_t = ''
+              if a.cover.value != blank
+                assign cover_t = a.cover.value | image_url: width: 400
+              endif
+            -%}
+            {%- unless forloop.first -%},{%- endunless -%}
+            {"id":{{ a.system.handle | json }},"url":{{ a.system.url | json }},"event":{{ a.event_name.value | default: 'Untitled event' | json }},"year":{{ yr | plus: 0 }},"date":{{ d | json }},"seq":{{ a.order.value | default: 0 }},"kind":{{ kind | json }},"city":{{ a.city.value | default: '' | json }},"league":{{ a.league.value | default: '' | json }},"log":{{ a.pit_log_url.value | default: '' | json }},"cover":{{ cover_t | json }},
+            "photos":[
+              {%- for p in a.photos.value -%}
+                {%- unless forloop.first -%},{%- endunless -%}
+                {"t":{{ p | image_url: width: 400 | json }},"m":{{ p | image_url: width: 800 | json }},"l":{{ p | image_url: width: 1800 | json }},"w":{{ p.width | default: 1050 }},"h":{{ p.height | default: 1400 }},"alt":{{ p.alt | default: a.event_name.value | json }}}
+              {%- endfor -%}
+            ],
+            "videos":[
+              {%- for v in a.videos.value -%}
+                {%- unless forloop.first -%},{%- endunless -%}
+                {"url":{{ v | json }}}
+              {%- endfor -%}
+            ]}
+          {%- endfor -%}
+          ]
+        </script>
+        {%- if paginate.next -%}
+          <p class="g-older"><a class="link" href="{{ paginate.next.url }}">Older albums</a></p>
+        {%- endif -%}
+      {%- endpaginate -%}
+      <p class="g-upd" data-g-updwrap hidden>Last updated: <span data-g-updated></span></p>
+    </div>
+  </section>
+
+  {%- if section.settings.cta_title != blank -%}
+    <section class="g-cta" aria-labelledby="{{ gid }}-cta">
+      <div class="gw g-cta__in">
+        <div>
+          <h2 class="h3" id="{{ gid }}-cta">{{ section.settings.cta_title }}</h2>
+          {%- if section.settings.cta_text != blank -%}<p>{{ section.settings.cta_text }}</p>{%- endif -%}
+        </div>
+        {%- assign fb = section.settings.cta_url | default: settings.hm_facebook_url -%}
+        {%- if fb != blank -%}
+          <a class="btn" href="{{ fb }}" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9h3l.5-4h-3.5V9c0-.6.4-1 1-1Z"/></svg>
+            {{- section.settings.cta_label -}}
+            <span class="g-ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span>
+          </a>
+        {%- endif -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  <div class="g-scrim" data-g-scrim hidden></div>
+  <aside class="g-drawer" id="{{ gid }}-drawer" role="dialog" aria-modal="true" aria-labelledby="{{ gid }}-dt" data-g-drawer hidden>
+    <div class="g-drawer__head">
+      <div>
+        <p class="h3" id="{{ gid }}-dt">Filter</p>
+        <p class="small muted" data-g-dsub></p>
+      </div>
+      <button class="icon-btn" type="button" aria-label="Close filters" data-g-close>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg>
+      </button>
+    </div>
+    <div class="g-drawer__body" data-g-dbody>
+      <fieldset class="g-sec"><legend>Season</legend><div class="g-seg" data-g-year></div></fieldset>
+      <fieldset class="g-sec"><legend>Event type</legend><div class="g-seg" data-g-kind></div></fieldset>
+      <fieldset class="g-sec" data-g-secev>
+        <legend>Event</legend>
+        <div class="g-find">
+          <label class="vh" for="{{ gid }}-find">Find an event (searches every season)</label>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+          <input class="input" id="{{ gid }}-find" type="search" placeholder="Event, town or year" autocomplete="off" spellcheck="false" aria-describedby="{{ gid }}-evh" data-g-find>
+        </div>
+        <p class="g-evh" id="{{ gid }}-evh" aria-live="polite" data-g-evh></p>
+        <div class="g-evl" data-g-evl></div>
+      </fieldset>
+    </div>
+    <div class="g-drawer__foot">
+      <button class="btn btn--ghost" type="button" data-g-clear>Clear all</button>
+      <button class="btn" type="button" data-g-view>View</button>
+    </div>
+  </aside>
+</div>
+
+<script src="{{ 'hm-gallery.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+  .gw{padding-inline:var(--gutter)}
+  .g-head{padding-block:18px 14px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:4px 24px}
+  .g-head__t{min-width:0;max-width:100%}
+  .g-head p{margin:2px 0 0;font-size:var(--t-sm);color:var(--soft)}
+  .g-head .g-n{margin:0;font-size:var(--t-xs);color:var(--mute);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .g-bar{border-block:1px solid var(--line);background:var(--bg)}
+  .g-bar__in{display:flex;align-items:center;gap:4px;min-height:52px;overflow-x:auto;scrollbar-width:none}
+  .g-bar__in::-webkit-scrollbar{display:none}
+  .g-tool{flex:none;min-height:44px;padding:0 12px;background:none;border:0;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+  .g-tool:first-child{padding-left:0}
+  .g-tool:hover>span:not(.g-tool__v){text-decoration:underline;text-underline-offset:4px}
+  .g-tool__v{font-weight:600;color:var(--mute);text-transform:none;letter-spacing:.02em;max-width:22ch;overflow:hidden;text-overflow:ellipsis}
+  .g-tool svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8}
+  @media (max-width:600px){.g-tool__v--ev{display:none}}
+  .g-media{margin-left:auto;flex:none;display:flex;align-items:center}
+  .g-media button{min-height:44px;padding:0 10px;background:none;border:0;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);cursor:pointer;white-space:nowrap}
+  .g-media button:last-child{padding-right:0}
+  .g-media button:hover{color:var(--ink)}
+  .g-media button[aria-pressed="true"]{color:var(--ink);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+  .g-chips{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding-top:12px}
+  .g-chip{display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:0 10px 0 12px;border:1px solid var(--line);background:var(--surface);font-size:var(--t-xs);font-weight:600;color:var(--ink);cursor:pointer}
+  .g-chip:hover{border-color:var(--ink)}
+  .g-chip svg{width:12px;height:12px;stroke:currentColor;stroke-width:2;fill:none}
+  .g-chips__clear{background:none;border:0;font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px;cursor:pointer;min-height:32px;padding:0 4px;color:var(--ink)}
+  .g-upd{margin:12px 0 0;font-size:11px;color:var(--mute);text-align:center}
+  .g-older{text-align:center;margin:12px 0 0}
+  .g-scrim{position:fixed;inset:0;z-index:79;background:rgba(28,27,25,.4)}
+  .g-drawer{position:fixed;top:0;right:0;bottom:0;z-index:80;width:min(450px,100vw);background:var(--surface);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:-24px 0 48px -32px rgba(0,0,0,.4)}
+  .g-drawer[hidden],.g-scrim[hidden]{display:none}
+  .g-drawer__head{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:64px;padding:0 12px 0 20px;border-bottom:1px solid var(--line)}
+  .g-drawer__head p{margin:0}
+  .g-drawer__head .icon-btn{width:44px;height:44px}
+  .g-drawer__body{flex:1;overflow-y:auto;overscroll-behavior:contain;padding:0 20px 8px}
+  .g-sec{border:0;margin:0;padding:20px 0;border-bottom:1px solid var(--line);min-width:0}
+  .g-sec:last-child{border-bottom:0}
+  .g-sec legend{float:left;width:100%;padding:0;margin-bottom:12px;font-size:var(--t-md);font-weight:600;color:var(--ink)}
+  .g-sec legend+*{clear:both}
+  .g-seg{display:flex;flex-wrap:wrap;gap:6px}
+  .g-seg label{position:relative}
+  .g-seg input,.g-evl input{position:absolute;opacity:0;width:1px;height:1px}
+  .g-seg span{display:grid;place-items:center;min-height:40px;min-width:64px;padding:0 14px;border:1px solid var(--line);font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;background:var(--surface)}
+  .g-seg span:hover{border-color:var(--ink)}
+  .g-seg input:checked+span{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+  .g-seg input:focus-visible+span,.g-evl input:focus-visible+span{outline:2px solid var(--ink);outline-offset:2px}
+  .g-find{position:relative;margin-bottom:8px}
+  .g-find svg{position:absolute;left:12px;top:50%;width:14px;height:14px;transform:translateY(-50%);fill:none;stroke:var(--mute);stroke-width:2;pointer-events:none}
+  .g-find .input{padding-left:34px;border-color:var(--line)}
+  .g-find .input:focus{border-color:var(--ink);outline:1px solid var(--ink)}
+  .g-evh{margin:4px 0 6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+  .g-evl{display:grid}
+  .g-evl label{position:relative;display:block}
+  .g-evl label>span{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;align-items:center;padding:6px 8px;margin-inline:-8px;cursor:pointer}
+  .g-evl label>span:hover{background:var(--bg)}
+  .g-evl input:checked+span{background:var(--bg);box-shadow:inset 3px 0 0 var(--ink)}
+  .g-evl__img{width:34px;height:44px;overflow:hidden;background:var(--tile);position:relative}
+  .g-evl__img img{width:100%;height:100%;object-fit:cover}
+  .g-evl__all{display:grid;grid-template-columns:1fr 1fr;gap:1px;width:34px;height:44px}
+  .g-evl__all i{background:var(--tile);overflow:hidden;position:relative}
+  .g-evl__all img{width:100%;height:100%;object-fit:cover}
+  .g-evl b{display:block;font-size:var(--t-sm);font-weight:600;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .g-evl input:checked+span b{font-weight:700}
+  .g-evl small{display:block;font-size:11px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .g-evl mark{background:#FFE680;color:inherit}
+  .g-evl__none{margin:8px 0;font-size:var(--t-xs);color:var(--soft)}
+  .g-drawer__foot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:8px;padding:12px 20px;border-top:1px solid var(--line)}
+  .g-drawer__foot .btn{min-height:52px;padding-inline:12px;white-space:nowrap}
+  .g-main{padding-block:16px 0}
+  .g-wallw{container-type:inline-size}
+  .g-wall{--cols:2;--gap:4px;list-style:none;margin:0;padding:0;display:grid;gap:var(--gap);grid-template-columns:repeat(var(--cols),minmax(0,1fr));grid-auto-rows:calc((100cqw - (var(--cols) - 1) * var(--gap)) / var(--cols) * 4 / 3)}
+  @media (min-width:761px){.g-wall{--gap:6px}}
+  .g-wall>li{min-width:0;min-height:0}
+  .g-t{position:relative;display:block;width:100%;height:100%;padding:0;border:0;background:var(--tile);overflow:hidden;cursor:zoom-in;color:var(--night-ink);text-decoration:none;text-align:left}
+  .g-t .photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+  .g-t:hover .photo,.g-t:focus-visible .photo{transform:scale(1.06)}
+  .g-t:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .g-cap{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:40px 14px 12px;background:linear-gradient(180deg,rgba(18,18,17,0),rgba(18,18,17,.82));display:grid;gap:1px;opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s}
+  .g-t:hover .g-cap,.g-t:focus-visible .g-cap{opacity:1;transform:none}
+  .g-cap b{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-sm);text-transform:uppercase;letter-spacing:.03em;line-height:1.2}
+  .g-cap span{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#CFCCC3}
+  @media (hover:none){.g-cap{opacity:1;transform:none;padding:32px 10px 8px;background:linear-gradient(180deg,rgba(18,18,17,0),rgba(18,18,17,.62) 45%,rgba(18,18,17,.9));text-shadow:0 1px 2px rgba(0,0,0,.5)}.g-cap b{font-size:12px}.g-cap span{font-size:10px}}
+  .g-zoom{position:absolute;right:10px;top:10px;z-index:2;width:30px;height:30px;border-radius:50%;background:rgba(18,18,17,.55);display:grid;place-items:center;opacity:0;transition:opacity .2s}
+  .g-zoom svg{width:14px;height:14px;fill:none;stroke:var(--night-ink);stroke-width:2}
+  .g-t:hover .g-zoom{opacity:1}
+  .g-t--vid{cursor:pointer}
+  .g-t--vid::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,18,17,.15),rgba(18,18,17,0) 35%,rgba(18,18,17,.85))}
+  .g-t--vid .g-cap{opacity:1;transform:none;background:none;padding:16px clamp(14px,2cqw,28px) clamp(14px,2cqw,24px)}
+  .g-t--vid .g-cap b{font-size:clamp(18px,2.2cqw,30px);line-height:1.1;max-width:22ch}
+  .g-t--vid .g-cap span{color:var(--accent)}
+  .g-kind{position:absolute;left:12px;top:12px;z-index:3}
+  .g-play{position:absolute;left:50%;top:44%;z-index:3;width:clamp(64px,7cqw,96px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--accent);display:grid;place-items:center;box-shadow:0 12px 30px -10px rgba(0,0,0,.6);transition:transform .2s}
+  .g-play svg{width:34%;height:34%;fill:var(--ink);margin-left:6%}
+  .g-t--vid:hover .g-play{transform:translate(-50%,-50%) scale(1.08)}
+  .g-wall--few{grid-auto-rows:clamp(360px,70vh,760px)}
+  .g-t .bg{position:absolute;inset:-40px;width:calc(100% + 80px);height:calc(100% + 80px);max-width:none;object-fit:cover;filter:blur(28px) brightness(.55);transform:scale(1.1)}
+  .g-wall--few .g-t:not(.g-t--vid) .photo{object-fit:contain}
+  @media (max-width:760px){.g-wall--few{grid-template-columns:minmax(0,1fr)!important;grid-auto-rows:auto}.g-wall--few .g-t{aspect-ratio:4/5;height:auto}}
+  .g-ev{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 24px;padding-block:20px 14px}
+  .g-ev__k{margin:0 0 4px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+  .g-ev__m{margin:4px 0 0;font-size:var(--t-xs);color:var(--soft)}
+  .g-ev__a{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px}
+  .g-ev__a a{font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-underline-offset:3px;white-space:nowrap;min-height:44px;display:inline-flex;align-items:center}
+  .g-ev__a .btn svg{width:12px;height:12px;fill:currentColor}
+  .g-ev__a .linklike{min-height:44px;font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .g-sub{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 16px;padding-block:28px 12px}
+  .g-sub .linklike{min-height:44px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+  .g-empty{padding-block:36px;display:grid;gap:8px;justify-items:start;max-width:56ch}
+  .g-empty p{margin:0;color:var(--soft)}
+  .g-more{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 16px;padding-block:22px 6px;text-align:center}
+  .g-more p{margin:0;font-size:var(--t-xs);color:var(--mute);width:100%}
+  .g-meter{width:160px;height:3px;background:var(--line)}
+  .g-meter span{display:block;height:100%;background:var(--ink)}
+  .g-cta{margin-top:clamp(20px,2vw,28px);padding-block:22px;background:var(--surface);border-top:1px solid var(--line)}
+  .g-cta__in{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px 24px}
+  .g-cta p{margin:2px 0 0;font-size:var(--t-sm);color:var(--soft)}
+  .g-cta .btn svg{width:16px;height:16px;fill:currentColor}
+  .g-ext{font-size:.85em;margin-left:2px}
+  .g-plain{margin:16px 0;padding-left:18px}
+  @media (prefers-reduced-motion:reduce){.g-t .photo,.g-cap,.g-zoom,.g-play{transition:none}.g-t:hover .photo,.g-t:focus-visible .photo{transform:none}}
+
+  /* viewer (shared with the album page) */
+  .glb{position:fixed;inset:0;z-index:95;background:#0B0B0A;color:var(--night-ink);display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+  .glb[hidden]{display:none}
+  .glb__top{display:flex;align-items:center;gap:10px;min-height:60px;padding:6px 8px 6px var(--gutter)}
+  .glb__tt{flex:1;min-width:0}
+  .glb__t{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .glb__n{margin:0;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;color:#CFCCC3;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .glb__tool{min-height:36px;padding:0 12px;border:1px solid #3A3936;border-radius:999px;background:none;color:var(--night-ink);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+  .glb__tool:hover{border-color:var(--night-ink)}
+  .glb__tool[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+  .glb__tool svg{width:11px;height:11px;fill:currentColor}
+  .glb .icon-btn{color:var(--night-ink);width:44px;height:44px;flex:none}
+  .glb :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .glb__stage{position:relative;min-height:0;display:grid;place-items:center;padding:0 76px;touch-action:pan-y;user-select:none}
+  .glb__img{position:absolute;top:0;bottom:0;left:76px;right:76px;width:calc(100% - 152px);height:100%;max-width:none;object-fit:contain;-webkit-user-drag:none;transition:opacity .25s}
+  .glb__img.is-loading{opacity:0}
+  .glb__arw{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:50%;display:grid;place-items:center;background:rgba(242,240,233,.08);border:1px solid #3A3936;color:var(--night-ink);cursor:pointer}
+  .glb__arw svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2}
+  .glb__arw:hover{background:rgba(242,240,233,.18)}
+  .glb__arw--prev{left:14px}.glb__arw--next{right:14px}
+  .glb__bot{display:grid;gap:10px;padding:12px var(--gutter) 14px}
+  .glb__cap{margin:0;font-size:var(--t-xs);color:#CFCCC3;text-align:center;min-height:36px}
+  .glb__cap b{color:var(--night-ink);font-weight:600}
+  .glb__thumbs{list-style:none;margin:0 auto;padding:2px;display:flex;gap:6px;overflow-x:auto;max-width:100%;scrollbar-width:none}
+  .glb__thumbs::-webkit-scrollbar{display:none}
+  .glb__thumbs button{display:block;width:44px;height:58px;padding:0;border:0;background:#222;opacity:.45;cursor:pointer;overflow:hidden;transition:opacity .2s}
+  .glb__thumbs button img{width:100%;height:100%;object-fit:cover}
+  .glb__thumbs button:hover{opacity:.8}
+  .glb__thumbs button[aria-current="true"]{opacity:1;outline:2px solid var(--accent);outline-offset:1px}
+  @media (max-width:760px){
+    .glb__stage{padding:0}
+    .glb__img{left:0;right:0;width:100%}
+    .glb__arw{width:44px;height:44px;background:rgba(11,11,10,.55)}
+    .glb__arw--prev{left:6px}.glb__arw--next{right:6px}
+    .glb__tool .tl{display:none}
+    .glb__thumbs button{width:36px;height:48px}
+  }
+  @media (prefers-reduced-motion:reduce){.glb__img,.glb__thumbs button{transition:none}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Gallery",
+  "tag": "div",
+  "class": "hm-gallery-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Each event is an Album in Content > Metaobjects > Album (event, date, season, kind, city, league, cover, photos, videos, Pit Log link, order). Drag photos to order them."
+    },
+    { "type": "text", "id": "title", "label": "Title", "default": "Gallery" },
+    { "type": "text", "id": "text", "label": "Text", "default": "Every pull, exhibition and test day of “The Evil One”. Smoke included." },
+    { "type": "url", "id": "empty_url", "label": "Link while there are no albums yet", "info": "Empty = the Schedule page." },
+    { "type": "range", "id": "per_page", "label": "Photos per batch (Load more)", "min": 12, "max": 48, "step": 6, "default": 24 },
+    { "type": "header", "content": "Call to action" },
+    { "type": "text", "id": "cta_title", "label": "Title (empty = hide)", "default": "Shot “The Evil One” at a pull?" },
+    { "type": "text", "id": "cta_text", "label": "Text", "default": "Tag it #HEAVYMETALPULLING on Facebook. The best ones end up here." },
+    { "type": "text", "id": "cta_label", "label": "Button", "default": "Share on Facebook" },
+    { "type": "url", "id": "cta_url", "label": "Button link", "info": "Empty = the Facebook link from Theme settings." }
+  ],
+  "presets": [{ "name": "Gallery" }]
+}
+{% endschema %}

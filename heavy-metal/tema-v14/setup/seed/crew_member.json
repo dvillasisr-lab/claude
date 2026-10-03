@@ -1,0 +1,287 @@
+[
+  {
+    "handle": "chris-f",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Chris F."
+      },
+      {
+        "key": "role",
+        "value": "Owner, Driver & Crew Chief"
+      },
+      {
+        "key": "group",
+        "value": "driver"
+      },
+      {
+        "key": "bio",
+        "value": "Had the idea in 2014, turned the first bolt in 2020 and was in the shop the night the lightning hit."
+      },
+      {
+        "key": "order",
+        "value": "1"
+      }
+    ]
+  },
+  {
+    "handle": "isela-f",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Isela F."
+      },
+      {
+        "key": "role",
+        "value": "Manager & PR"
+      },
+      {
+        "key": "group",
+        "value": "team"
+      },
+      {
+        "key": "order",
+        "value": "2"
+      }
+    ]
+  },
+  {
+    "handle": "cindy-f",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Cindy F."
+      },
+      {
+        "key": "role",
+        "value": "Operations & Accounting"
+      },
+      {
+        "key": "group",
+        "value": "team"
+      },
+      {
+        "key": "order",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "handle": "daniela-v",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Daniela V."
+      },
+      {
+        "key": "role",
+        "value": "Social Media & Marketing"
+      },
+      {
+        "key": "group",
+        "value": "team"
+      },
+      {
+        "key": "order",
+        "value": "4"
+      }
+    ]
+  },
+  {
+    "handle": "cricket-f",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Cricket F."
+      },
+      {
+        "key": "role",
+        "value": "Team mascot"
+      },
+      {
+        "key": "group",
+        "value": "team"
+      },
+      {
+        "key": "note",
+        "value": "white"
+      },
+      {
+        "key": "order",
+        "value": "5"
+      }
+    ]
+  },
+  {
+    "handle": "daniel",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Daniel"
+      },
+      {
+        "key": "role",
+        "value": "Pit crew"
+      },
+      {
+        "key": "group",
+        "value": "pit_crew"
+      },
+      {
+        "key": "order",
+        "value": "6"
+      }
+    ]
+  },
+  {
+    "handle": "jared-f",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Jared F."
+      },
+      {
+        "key": "role",
+        "value": "Pit crew"
+      },
+      {
+        "key": "group",
+        "value": "pit_crew"
+      },
+      {
+        "key": "order",
+        "value": "7"
+      }
+    ]
+  },
+  {
+    "handle": "jim-f",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Jim F."
+      },
+      {
+        "key": "role",
+        "value": "Pit crew"
+      },
+      {
+        "key": "group",
+        "value": "pit_crew"
+      },
+      {
+        "key": "order",
+        "value": "8"
+      }
+    ]
+  },
+  {
+    "handle": "tony-b",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Tony B."
+      },
+      {
+        "key": "role",
+        "value": "Pit crew"
+      },
+      {
+        "key": "group",
+        "value": "pit_crew"
+      },
+      {
+        "key": "order",
+        "value": "9"
+      }
+    ]
+  },
+  {
+    "handle": "jeff-l",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Jeff L."
+      },
+      {
+        "key": "role",
+        "value": "Pit crew"
+      },
+      {
+        "key": "group",
+        "value": "pit_crew"
+      },
+      {
+        "key": "order",
+        "value": "10"
+      }
+    ]
+  },
+  {
+    "handle": "john-w",
+    "fields": [
+      {
+        "key": "name",
+        "value": "John W."
+      },
+      {
+        "key": "role",
+        "value": "Pit crew"
+      },
+      {
+        "key": "group",
+        "value": "pit_crew"
+      },
+      {
+        "key": "order",
+        "value": "11"
+      }
+    ]
+  },
+  {
+    "handle": "brad-s",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Brad S."
+      },
+      {
+        "key": "role",
+        "value": "Pit crew"
+      },
+      {
+        "key": "group",
+        "value": "pit_crew"
+      },
+      {
+        "key": "order",
+        "value": "12"
+      }
+    ]
+  },
+  {
+    "handle": "turbo",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Turbo"
+      },
+      {
+        "key": "role",
+        "value": "Team mascot"
+      },
+      {
+        "key": "group",
+        "value": "pit_crew"
+      },
+      {
+        "key": "note",
+        "value": "black"
+      },
+      {
+        "key": "order",
+        "value": "13"
+      }
+    ]
+  }
+]

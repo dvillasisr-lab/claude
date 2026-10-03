@@ -1,0 +1,127 @@
+{%- liquid
+  assign season = settings.hm_season | default: 2026 | append: ''
+  assign seconds = section.settings.seconds | default: 4
+  assign free_ship = ''
+  if settings.hm_free_shipping != blank
+    assign free_ship = settings.hm_free_shipping | times: 100 | money_without_trailing_zeros
+  endif
+  assign msg_count = 0
+  for block in section.blocks
+    if block.settings.text contains '[free_shipping]' and free_ship == ''
+      continue
+    endif
+    assign msg_count = msg_count | plus: 1
+  endfor
+-%}
+{%- if msg_count > 0 -%}
+  <div
+    class="announce"
+    role="region"
+    aria-label="{{ section.settings.region_label | default: 'Announcements' | escape }}"
+    data-hm-announce
+    data-interval="{{ seconds | times: 1000 }}"
+  >
+    {%- assign shown = 0 -%}
+    {%- for block in section.blocks -%}
+      {%- if block.settings.text contains '[free_shipping]' and free_ship == '' -%}
+        {%- continue -%}
+      {%- endif -%}
+      {%- assign shown = shown | plus: 1 -%}
+      <div
+        class="announce__msg"
+        data-hm-announce-msg
+        {% if shown > 1 %}
+          hidden
+        {% endif %}
+        {{ block.shopify_attributes }}
+      >
+        {{- block.settings.text | replace: '[season]', season | replace: '[free_shipping]', free_ship -}}
+      </div>
+    {%- endfor -%}
+    {%- if msg_count > 1 -%}
+      <button
+        class="announce__pause"
+        type="button"
+        data-hm-announce-toggle
+        aria-label="Pause announcements"
+        aria-pressed="false"
+      >
+        <span data-icon-pause>{% render 'hm-icon', name: 'pause', size: 12 %}</span>
+        <span data-icon-play hidden>{% render 'hm-icon', name: 'play', size: 12 %}</span>
+      </button>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "HM announcement bar",
+  "tag": "section",
+  "class": "hm-announce-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "max_blocks": 3,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Write [season] to show the season and [free_shipping] to show the free shipping amount (Theme settings > HM v14). A message with [free_shipping] hides itself while that amount is empty."
+    },
+    {
+      "type": "range",
+      "id": "seconds",
+      "label": "Seconds per message",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 4
+    },
+    {
+      "type": "text",
+      "id": "region_label",
+      "label": "Screen reader label",
+      "default": "Announcements"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "message",
+      "name": "Message",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "Testing season [season]. Get on <a href=\"/pages/evil-list\" title=\"The Evil List\">The Evil List</a>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM announcement bar",
+      "blocks": [
+        {
+          "type": "message",
+          "settings": {
+            "text": "Testing season [season]. Get on <a href=\"/pages/evil-list\" title=\"The Evil List\">The Evil List</a>"
+          }
+        },
+        {
+          "type": "message",
+          "settings": {
+            "text": "Free US shipping over [free_shipping]. You’re welcome."
+          }
+        },
+        {
+          "type": "message",
+          "settings": {
+            "text": "Printed when you order · ships in 5 days"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

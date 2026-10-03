@@ -1,0 +1,134 @@
+{%- comment -%}
+  Article (Pit Log entry and any other blog post): date, tags, title, featured image, the post text,
+  "Photos & video" to the gallery album (metafield custom.gallery_album), distance (custom.distance_ft),
+  older / newer entries and BlogPosting JSON-LD.
+{%- endcomment -%}
+{%- liquid
+  assign album = article.metafields.custom.gallery_album.value
+  assign dist = article.metafields.custom.distance_ft.value
+  assign brand = settings.hm_brand_name | default: shop.name
+-%}
+<article class="sect--white ar" aria-labelledby="ar-h-{{ section.id }}">
+  <div class="wrap ar-wrap">
+    <p class="ar-back"><a class="link" href="{{ blog.url }}"><span aria-hidden="true">← </span>{{ section.settings.back_text | default: blog.title | escape }}</a></p>
+    <header class="ar-head">
+      <p class="ar-meta">
+        <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%B %-d, %Y' }}</time>
+        {%- for t in article.tags -%}
+          {%- assign tl = t | downcase -%}
+          {%- unless tl == 'featured' -%}
+            <a class="badge pl-t-{{ t | handleize }}" href="{{ blog.url }}/tagged/{{ t | handleize }}">{{ t | escape }}</a>
+          {%- endunless -%}
+        {%- endfor -%}
+        {%- if dist != blank -%}<span class="badge badge--line num">{{ dist }} ft</span>{%- endif -%}
+      </p>
+      <h1 class="h-hero" id="ar-h-{{ section.id }}">{{ article.title | escape }}</h1>
+    </header>
+
+    {%- if article.image -%}
+      <figure class="ar-img">
+        {{ article.image | image_url: width: 2000 | image_tag: widths: '480, 720, 960, 1280, 1600, 2000', sizes: '(max-width: 1100px) 100vw, 1100px', fetchpriority: 'high', alt: article.image.alt | default: article.title }}
+      </figure>
+    {%- endif -%}
+
+    <div class="ar-body">
+      <div class="ar-content">{{ article.content }}</div>
+      {%- if album != blank and album.system.url != blank -%}
+        <aside class="ar-album" aria-label="Photos and video">
+          {%- assign cover = album.cover.value -%}
+          {%- if cover != blank -%}
+            <span class="ar-album__pic">{{ cover | image_url: width: 600 | image_tag: widths: '300, 450, 600', sizes: '280px', class: 'photo', loading: 'lazy', alt: '' }}</span>
+          {%- endif -%}
+          <p class="label muted">{{ section.settings.album_label | escape }}</p>
+          <p class="h3">{{ album.event_name.value | default: article.title | escape }}</p>
+          <a class="btn" href="{{ album.system.url }}">Photos &amp; video<span class="vh"> from {{ article.title | escape }}</span></a>
+        </aside>
+      {%- endif -%}
+    </div>
+
+    {%- if blog.previous_article or blog.next_article -%}
+      <nav class="ar-nav" aria-label="More from {{ blog.title | escape }}">
+        {%- if blog.next_article -%}<a class="ar-nav__a" href="{{ blog.next_article.url }}" rel="next"><span class="label muted">Newer entry</span><b>{{ blog.next_article.title | escape }}</b></a>{%- endif -%}
+        {%- if blog.previous_article -%}<a class="ar-nav__a ar-nav__a--old" href="{{ blog.previous_article.url }}" rel="prev"><span class="label muted">Older entry</span><b>{{ blog.previous_article.title | escape }}</b></a>{%- endif -%}
+      </nav>
+    {%- endif -%}
+  </div>
+</article>
+
+{%- liquid
+  assign ld_img = ''
+  if article.image
+    assign ld_img = article.image | image_url: width: 1600 | prepend: 'https:'
+  elsif page_image
+    assign ld_img = page_image | image_url: width: 1600 | prepend: 'https:'
+  endif
+  if settings.hm_logo != blank
+    assign ld_logo = settings.hm_logo | image_url: width: 600 | prepend: 'https:'
+  else
+    assign ld_logo = 'logo-ink.svg' | asset_url | prepend: 'https:'
+  endif
+  assign ld_team = request.origin | append: '/#team'
+-%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": {{ article.title | truncate: 110 | json }},
+  "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }},
+  "dateModified": {{ article.updated_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }},
+  {%- if ld_img != '' %}"image": {{ ld_img | json }},{% endif %}
+  "url": {{ request.origin | append: article.url | json }},
+  "mainEntityOfPage": {{ request.origin | append: article.url | json }},
+  "inLanguage": "en-US",
+  {%- if article.tags.size > 0 %}"keywords": {{ article.tags | join: ', ' | json }},{% endif %}
+  "author": { "@type": "SportsTeam", "@id": {{ ld_team | json }}, "name": {{ brand | json }}, "url": {{ request.origin | append: routes.root_url | json }} },
+  "publisher": { "@type": "Organization", "@id": {{ ld_team | json }}, "name": {{ brand | json }}, "logo": { "@type": "ImageObject", "url": {{ ld_logo | json }} } },
+  "isPartOf": { "@type": "Blog", "name": {{ blog.title | json }}, "url": {{ request.origin | append: blog.url | json }} },
+  "description": {{ article.excerpt_or_content | strip_html | strip_newlines | truncatewords: 40 | json }}
+}
+</script>
+
+{% stylesheet %}
+.ar{padding-block:clamp(24px,3vw,40px) clamp(40px,5vw,64px)}
+.ar-wrap.ar-wrap{max-width:1100px}
+.ar-back{margin:0 0 18px}
+.ar-back .link{text-decoration:none}
+.ar-back .link:hover{text-decoration:underline}
+.ar-head{display:grid;gap:10px;margin-bottom:20px}
+.ar-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;margin:0;font-size:var(--t-xs);color:var(--mute);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.ar-meta time{margin-right:6px}
+.ar-meta a.badge{text-decoration:none}
+.ar-img{margin:0 0 28px;background:var(--tile)}
+.ar-img img{width:100%;height:auto;max-height:70svh;object-fit:cover}
+.ar-body{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:clamp(24px,4vw,56px);align-items:start}
+.ar-content{font-size:var(--t-md);line-height:1.7;color:var(--text);max-width:68ch}
+.ar-content>*:first-child{margin-top:0}
+.ar-content h2,.ar-content h3{font-family:var(--f-head);font-stretch:78%;text-transform:uppercase;color:var(--ink);line-height:1.15;margin:1.6em 0 .5em}
+.ar-content a{color:var(--ink);text-underline-offset:3px}
+.ar-content img{height:auto;margin-block:1em}
+.ar-content iframe{max-width:100%;aspect-ratio:16/9;height:auto;width:100%;border:0}
+.ar-album{display:grid;gap:8px;padding:16px;border:1px solid var(--line);border-top:3px solid var(--ink);background:var(--bg);position:sticky;top:calc(var(--header) + 16px)}
+.ar-album p{margin:0}
+.ar-album__pic{position:relative;display:block;aspect-ratio:4/3;overflow:hidden;background:var(--tile);margin-bottom:4px}
+.ar-album__pic .photo{position:absolute;inset:0}
+.ar-album .btn{justify-self:start}
+.ar-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:clamp(32px,4vw,48px);border-top:1px solid var(--line);padding-top:16px}
+.ar-nav__a{display:grid;gap:4px;text-decoration:none;color:var(--ink);min-height:44px}
+.ar-nav__a b{font-family:var(--f-head);font-stretch:78%;text-transform:uppercase;font-size:var(--t-md)}
+.ar-nav__a:hover b{text-decoration:underline;text-underline-offset:3px}
+.ar-nav__a--old{text-align:right;grid-column:2}
+@media (max-width:860px){.ar-body{grid-template-columns:1fr}.ar-album{position:static}}
+@media (max-width:560px){.ar-nav{grid-template-columns:1fr}.ar-nav__a--old{text-align:left;grid-column:auto}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Article",
+  "tag": "div",
+  "class": "hm-article",
+  "settings": [
+    { "type": "text", "id": "back_text", "label": "Back link", "info": "Empty = the blog title." },
+    { "type": "text", "id": "album_label", "label": "Gallery box label", "default": "From the gallery" }
+  ]
+}
+{% endschema %}

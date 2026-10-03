@@ -1,0 +1,126 @@
+{%- comment -%}
+  HM Home Sponsor: banda a todo el ancho = pitch a la izquierda, alcance al centro, un boton a la derecha.
+  Alcance = Metaobjetos > Sponsor stats (entrada "main"): pulls_per_season x fans_per_pull. "+" con show_plus, "(est.)" con estimated.
+  Sin datos: no salen las cifras (nunca "XX").
+{%- endcomment -%}
+{%- liquid
+  assign ss = shop.metaobjects.sponsor_stats.main
+  assign pulls = 0
+  assign fpp = 0
+  assign plus = ''
+  assign est = ''
+  if ss != blank
+    assign pulls = ss.pulls_per_season.value | plus: 0
+    assign fpp = ss.fans_per_pull.value | plus: 0
+    if ss.show_plus.value
+      assign plus = '+'
+    endif
+    if ss.estimated.value
+      assign est = ' (est.)'
+    endif
+  endif
+  assign fans = pulls | times: fpp
+  assign fans_str = fans | append: ''
+  assign fans_len = fans_str.size
+  assign fans_fmt = ''
+  for i in (1..fans_len)
+    assign idx = fans_len | minus: i
+    assign ch = fans_str | slice: idx
+    if i > 1
+      assign grp = i | minus: 1 | modulo: 3
+      if grp == 0
+        assign fans_fmt = ',' | append: fans_fmt
+      endif
+    endif
+    assign fans_fmt = ch | append: fans_fmt
+  endfor
+  assign has_stats = false
+  if pulls > 0
+    assign has_stats = true
+  endif
+-%}
+
+<section class="sp" aria-labelledby="sp-title-{{ section.id }}">
+  <div class="wrap sp__in{% unless has_stats %} sp__in--nostats{% endunless %}">
+    <div class="sp__copy">
+      {%- if section.settings.label != blank -%}<p class="label muted">{{ section.settings.label | escape }}</p>{%- endif -%}
+      <h2 class="h1" id="sp-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.text != blank -%}<p class="sp__line">{{ section.settings.text | escape }}</p>{%- endif -%}
+    </div>
+    {%- if has_stats -%}
+      <dl class="sp__stats">
+        {%- if fans > 0 -%}
+          <div><dt>{{ section.settings.fans_label | escape }}{{ est }}</dt><dd class="num">{{ fans_fmt }}{{ plus }}</dd></div>
+        {%- endif -%}
+        <div><dt>{{ section.settings.pulls_label | escape }}{% if fans <= 0 %}{{ est }}{% endif %}</dt><dd class="num">{{ pulls }}{{ plus }}</dd></div>
+      </dl>
+    {%- endif -%}
+    <div class="sp__cta">
+      {%- if section.settings.button_label != blank -%}
+        <a class="btn" href="{{ section.settings.button_url | default: routes.root_url }}">{{ section.settings.button_label | escape }}</a>
+      {%- endif -%}
+      {%- if section.settings.alt_label != blank -%}
+        <a class="sp__alt" href="{{ section.settings.alt_url | default: routes.root_url }}">{{ section.settings.alt_label | escape }}<span aria-hidden="true"> →</span></a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .sp { background: var(--surface); border-bottom: 1px solid var(--line); }
+  .sp__in { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr) auto; align-items: center; gap: 20px clamp(24px, 3.5vw, 56px); padding-block: clamp(28px, 3.4vw, 44px); }
+  .sp__in--nostats { grid-template-columns: minmax(0, 1fr) auto; }
+  .sp__copy { display: grid; gap: 6px; min-width: 0; max-width: 52ch; }
+  .sp__copy .h1 { margin: 0; }
+  .sp__line { margin: 0; font-size: var(--t-sm); color: var(--soft); }
+  .sp__stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; margin: 0; padding-left: clamp(16px, 2.4vw, 40px); border-left: 1px solid var(--line); }
+  .sp__stats div { display: grid; gap: 2px; }
+  .sp__stats dd { order: -1; margin: 0; font-family: var(--f-head); font-stretch: 78%; font-weight: 800; font-size: clamp(30px, 3vw, 44px); line-height: 1; }
+  .sp__stats dt { font-size: var(--t-xs); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--soft); }
+  .sp__cta { display: grid; justify-items: center; gap: 10px; }
+  .sp__alt { font-size: var(--t-sm); font-weight: 600; color: var(--soft); text-decoration: underline; text-underline-offset: 3px; padding: 4px 2px; }
+  .sp__alt:hover { color: var(--ink); }
+  @media (max-width: 1024px) {
+    .sp__in { grid-template-columns: minmax(0, 1fr) auto; }
+    .sp__stats { grid-column: 1/-1; grid-row: 2; padding-left: 0; border-left: 0; border-top: 1px solid var(--line); padding-top: 14px; max-width: 520px; }
+  }
+  @media (max-width: 600px) {
+    .sp__in { grid-template-columns: 1fr; align-items: start; }
+    .sp__stats { grid-row: auto; }
+    .sp__cta { justify-items: stretch; }
+    .sp__in .btn { width: 100%; }
+    .sp__alt { justify-self: center; }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM Home Sponsor",
+  "tag": "div",
+  "class": "hm-home-sponsor-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Las cifras salen de Contenido > Metaobjetos > Sponsor stats (entrada main): fans por temporada = pulls por temporada x fans por pull."
+    },
+    { "type": "text", "id": "label", "label": "Etiqueta", "default": "Sponsorship" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Put your name on “The Evil One”" },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Texto",
+      "default": "Pick a package. Pick your spot on the tractor. Then watch your logo disappear into black smoke all season."
+    },
+    { "type": "text", "id": "fans_label", "label": "Etiqueta de fans", "default": "Fans a season" },
+    { "type": "text", "id": "pulls_label", "label": "Etiqueta de pulls", "default": "Pulls a season" },
+    { "type": "header", "content": "Botón y link" },
+    { "type": "text", "id": "button_label", "label": "Botón: texto", "default": "See sponsor packages" },
+    { "type": "url", "id": "button_url", "label": "Botón: destino" },
+    { "type": "text", "id": "alt_label", "label": "Link debajo: texto", "default": "Book the team for your event" },
+    { "type": "url", "id": "alt_url", "label": "Link debajo: destino" }
+  ],
+  "presets": [
+    { "name": "HM Home Sponsor" }
+  ]
+}
+{% endschema %}

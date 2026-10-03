@@ -1,0 +1,63 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "hm-team-page",
+      "blocks": {
+        "m0": { "type": "milestone", "settings": { "year": "2014", "label": "Idea is born (Tomah, WI)" } },
+        "m1": { "type": "milestone", "settings": { "year": "2026", "label": "Engine fires, lightning strikes" } },
+        "m2": { "type": "milestone", "settings": { "year": "2026", "label": "First pull attempt" } },
+        "m3": { "type": "milestone", "settings": { "year": "TODAY", "label": "2026 \u00b7 in testing" } },
+        "p0": { "type": "member", "settings": { "name": "Chris F.", "role": "Owner, Driver &amp; Crew Chief", "initials": "CF" } },
+        "p1": { "type": "member", "settings": { "name": "Isela F.", "role": "Manager, Marketing &amp; PR", "initials": "IF" } },
+        "p2": { "type": "member", "settings": { "name": "Cindy F.", "role": "Operations &amp; Accounting", "initials": "CF" } },
+        "p3": { "type": "member", "settings": { "name": "Daniel", "role": "Pit Crew", "initials": "D" } },
+        "p4": { "type": "member", "settings": { "name": "Daniela V.", "role": "Social Media &amp; Marketing", "initials": "DV" } },
+        "p6": { "type": "member", "settings": { "name": "Jared F.", "role": "Pit Crew", "initials": "JF" } },
+        "p7": { "type": "member", "settings": { "name": "Jim F.", "role": "Pit Crew", "initials": "JF" } },
+        "p8": { "type": "member", "settings": { "name": "Tony B.", "role": "Pit Crew", "initials": "TB" } },
+        "p9": { "type": "member", "settings": { "name": "Jeff L.", "role": "Pit Crew", "initials": "JL" } },
+        "p10": { "type": "member", "settings": { "name": "John W.", "role": "Pit Crew", "initials": "JW" } },
+        "p11": { "type": "member", "settings": { "name": "Brad S.", "role": "Pit Crew", "initials": "BS" } },
+        "p5": { "type": "member", "settings": { "name": "Cricket F.", "role": "Team Mascot", "is_mascot": true, "mascot_color": "white" } },
+        "p12": { "type": "member", "settings": { "name": "Turbo", "role": "Team Mascot", "is_mascot": true, "mascot_color": "black" } }
+      },
+      "block_order": ["m0", "m1", "m2", "m3", "p0", "p1", "p2", "p3", "p4", "p6", "p7", "p8", "p9", "p10", "p11", "p5", "p12"],
+      "settings": {
+        "eyebrow": "THE TEAM",
+        "title_1": "BUILT IN WISCONSIN.",
+        "title_2": "BUILT TO PULL.",
+        "story_title_1": "THE EVIL",
+        "story_title_2": "ONE",
+        "story_text": "<p>It started in 2014 in Tomah, Wisconsin, with one idea. Chris had always been a heavy metal fan, so when he decided to build a pulling tractor, the name was never up for debate. That idea became a Pro Stock tractor. And that tractor was nicknamed The Evil One.</p>",
+        "ch1_title": "TWELVE YEARS IN THE MAKING",
+        "ch1_text": "Heavy Metal wasn't built overnight. The idea was born in 2014, and it took twelve years to turn it into a running machine, because when almost everything on a tractor is custom built, nothing about it is quick.",
+        "ch1b_text": "Twelve years of nights and weekends stolen from work and family. Twelve years of sketches redrawn more times than anyone can count. A shop in Waterloo, Wisconsin that the whole family turned into a second home, because building Heavy Metal was never a solo job.",
+        "ch2_text": "Then, in 2026, the moment came. Chris stood in the shop and turned the engine over for the first time.",
+        "ch2_title": "AT THAT EXACT MOMENT, LIGHTNING STRUCK, AND THE POWER WENT OUT.",
+        "pull_quote": "This thing is f#cking evil.",
+        "pull_quote_by": "CHRIS, OWNER &amp; DRIVER",
+        "ch2b_text": "Some would call it a coincidence. We call it a sign. From that night on, there was no doubt about what we had built.",
+        "ch3_text": "The first pull didn't go the way anyone hoped. A small, unexpected issue came up and the run ended before it should have. It was a disappointing day. We won't sugarcoat it.",
+        "ch3b_text": "But getting Heavy Metal onto a real track at all, after twelve years of building it with our own hands, was already something to be proud of. The pull didn't finish that day. The story was just getting started.",
+        "ch5_text": "What makes Heavy Metal different is under the hood: a Caterpillar 3208 V8, reverse flow, a setup you won't find on any other tractor on the track. Stock, it measures 636 cubic inches. Ours doesn't: we built it out to 680.",
+        "ch5b_text": "And that's really the whole philosophy behind this build. Nearly everything on Heavy Metal is custom-built. Nothing about it is off the shelf, and nothing about it was quick.",
+        "season_text": "This season, we're chasing our first full pull: about 20 competitions on the NTPA and PPL Badger State circuits. No exhibitions. Every time it hits the track, it's there to pull.",
+        "brothers_eyebrow": "FRIENDS ON THE CIRCUIT",
+        "brothers_title": "TRACTOR BROTHERS",
+        "brothers_text": "<p>Heavy Metal has a little brother across the ocean: Diesel Ross, a Pro Stock tractor in Europe owned by Gert Stessens from Belgium. We met Gert at a pull in the Netherlands, and between the look of the two tractors and the friendship between Gert and Chris, Heavy Metal and Diesel Ross are considered tractor brothers.</p>",
+        "anthem": "Walk-up song: Fear of the Dark \u00b7 Iron Maiden"
+      }
+    }
+  },
+  "order": ["main"]
+}
+

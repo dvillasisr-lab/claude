@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "egg": {
+      "type": "hm-3208",
+      "settings": {
+        "discount": "5% off",
+        "fine": "Use it at checkout. One per customer. Takes 5% off your gear and stacks with other codes that allow it. Finders keepers."
+      }
+    }
+  },
+  "order": [
+    "egg"
+  ]
+}

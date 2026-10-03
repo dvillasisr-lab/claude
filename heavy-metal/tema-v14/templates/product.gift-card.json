@@ -1,0 +1,81 @@
+{
+  "sections": {
+    "main": {
+      "type": "hm-gift-card",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Does it expire?",
+            "answer": "<p>No. The balance stays on the card until it’s used up.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "What can they buy with it?",
+            "answer": "<p>Anything in the shop, special edition included. It can’t be used to buy another gift card.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "Can I schedule it for a birthday?",
+            "answer": "<p>Yes. Pick “Email it to them”, choose the date and we send it that day. You get a copy of the receipt right away.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "How do they check the balance?",
+            "answer": "<p>The link in the gift card email always shows what’s left. Their balance also shows at checkout when they enter the code.</p>"
+          }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "question": "They lost the email. Now what?",
+            "answer": "<p><a href=\"/pages/contact?topic=order\">Send us a note</a> with your order number and we’ll send it again.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5"
+      ],
+      "settings": {
+        "card_name": "",
+        "card_sub": "Pro Stock · “The Evil One”",
+        "caption": "Sent by email. Print it or keep it on your phone.",
+        "label": "Gift card",
+        "lead": "Not sure of their size? Give them the whole shop and let them pick their own evil.",
+        "amount_legend": "Amount",
+        "default_position": 2,
+        "who_legend": "Who gets it?",
+        "me_label": "Send it to me",
+        "them_label": "Email it to them",
+        "date_hint": "Leave the date empty to send it right after checkout. You can pick a day up to 90 days out.",
+        "message_placeholder": "Happy birthday. Full pull or nothing.",
+        "add_label": "Add to cart",
+        "fact_1": "Never expires.",
+        "fact_2": "Good for anything in the shop, special edition included.",
+        "fact_3": "Delivered by email, so it never gets lost in the mail.",
+        "steps_heading": "How it works",
+        "step_1_title": "Pick an amount",
+        "step_1_text": "$25, $50 or $100. Add it to the cart with anything else or check out on its own.",
+        "step_2_title": "We email it",
+        "step_2_text": "To you, so you can print it, or straight to them on the day you choose, with your note.",
+        "step_3_title": "They gear up",
+        "step_3_text": "They enter the code at checkout. Whatever they don’t spend stays on the card.",
+        "faq_heading": "Gift card questions",
+        "faq_text": "<p>Anything else? <a href=\"/pages/faq\">See the FAQ</a> or <a href=\"/pages/contact?topic=order\">send us a note</a>.</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

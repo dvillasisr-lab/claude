@@ -1,0 +1,157 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hm-hero",
+      "settings": {
+        "tagline": "“The Evil One”",
+        "intro": "“The Evil One” is a Pro Stock pulling tractor out of Waterloo, Wisconsin. Merch by the crew that built it.",
+        "cta1_label": "Shop the drop",
+        "cta1_link": "shopify://collections/all",
+        "cta2_label": "Meet the machine",
+        "cta2_link": "/pages/spec-sheet",
+        "target_ft": 300,
+        "sim_label": "Pull sim",
+        "sim_class": "Pro Stock · WI",
+        "distance_label": "Distance",
+        "logo_invert": true,
+        "tractor_clip": false
+      }
+    },
+    "marquee": {
+      "type": "hm-marquee",
+      "blocks": {
+        "phrase_1": {
+          "type": "phrase",
+          "settings": {
+            "text": "Full pull or nothing"
+          }
+        },
+        "phrase_2": {
+          "type": "phrase",
+          "settings": {
+            "text": "This thing is f#ck!ng evil"
+          }
+        },
+        "phrase_3": {
+          "type": "phrase",
+          "settings": {
+            "text": "Born in a lightning storm"
+          }
+        }
+      },
+      "block_order": [
+        "phrase_1",
+        "phrase_2",
+        "phrase_3"
+      ],
+      "settings": {}
+    },
+    "shop": {
+      "type": "hm-home-shop",
+      "settings": {
+        "heading": "“The Evil One” Drop",
+        "link_label": "Shop all",
+        "link_url": "shopify://collections/all",
+        "cats_label": "Shop by category",
+        "products_count": 4,
+        "swipe_label": "Swipe for more",
+        "soon_label": "Merch",
+        "soon_heading": "Coming soon",
+        "soon_text": "The first drop from the crew behind “The Evil One” is on its way. Leave your email. We’ll yell when it lands.",
+        "soon_button": "Notify me"
+      }
+    },
+    "machine": {
+      "type": "hm-home-machine",
+      "blocks": {
+        "spec_engine": {
+          "type": "spec",
+          "settings": {
+            "label": "Engine",
+            "value": "Cat 3208 V8",
+            "highlight": false
+          }
+        },
+        "spec_displacement": {
+          "type": "spec",
+          "settings": {
+            "label": "Displacement",
+            "value": "636 to 680 ci",
+            "highlight": false
+          }
+        },
+        "spec_hp": {
+          "type": "spec",
+          "settings": {
+            "label": "Horsepower",
+            "value": "Unknown",
+            "highlight": true
+          }
+        }
+      },
+      "block_order": [
+        "spec_engine",
+        "spec_displacement",
+        "spec_hp"
+      ],
+      "settings": {
+        "label": "The Machine",
+        "heading": "The only Cat V8 in the class",
+        "text": "A Cat 3208 V8, reverse flow, in a Pro Stock tractor. Nobody else on the track runs this setup. Probably for a reason. Everything on it is custom-built.",
+        "link_label": "Meet the machine",
+        "caption_1": "On the track",
+        "caption_2": "Cat 3208 V8 · in the shop",
+        "link_url": "/pages/spec-sheet"
+      }
+    },
+    "lightning": {
+      "type": "hm-home-lightning",
+      "settings": {
+        "label": "Our Story · 2026",
+        "heading": "The night it first fired, lightning struck and the power went out.",
+        "sign": "We call it a sign.",
+        "text": "Twelve years from an idea in Tomah, WI to that night in the family shop in Waterloo. This is how it sounded.",
+        "link_label": "Read our story",
+        "play_label": "Play video: the first fire",
+        "meta_left": "First fire",
+        "duration": "",
+        "caption": "Engine fires for the first time · Waterloo, WI",
+        "soon_msg": "Video coming soon",
+        "link_url": "/pages/about"
+      }
+    },
+    "next_pull": {
+      "type": "hm-home-next-pull",
+      "settings": {
+        "kicker": "Next pull",
+        "empty_title": "Next pull: dates coming soon",
+        "empty_text": "New [season] dates go on the schedule and on",
+        "facebook_label": "Facebook first",
+        "link1_label": "See the schedule",
+        "link2_label": "Read the Pit Log",
+        "link2_url": "/blogs/pit-log",
+        "link1_url": "/pages/schedule"
+      }
+    },
+    "sponsor": {
+      "type": "hm-home-sponsor",
+      "settings": {
+        "label": "Sponsorship",
+        "heading": "Put your name on “The Evil One”",
+        "button_label": "See sponsor packages",
+        "button_url": "/pages/sponsors",
+        "alt_label": "Book the team for your event",
+        "alt_url": "/pages/book"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "marquee",
+    "shop",
+    "machine",
+    "lightning",
+    "next_pull",
+    "sponsor"
+  ]
+}

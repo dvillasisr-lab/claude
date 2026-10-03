@@ -1,0 +1,154 @@
+[
+  {
+    "type": "tractor_part",
+    "handle": "engine",
+    "key": "image",
+    "target_type": "file",
+    "target_handles": [
+      "hm-engine.webp"
+    ]
+  },
+  {
+    "type": "tractor_part",
+    "handle": "displacement",
+    "key": "image",
+    "target_type": "file",
+    "target_handles": [
+      "hm-engine.webp"
+    ]
+  },
+  {
+    "type": "tractor_part",
+    "handle": "turbo",
+    "key": "image",
+    "target_type": "file",
+    "target_handles": [
+      "hm-engine.webp"
+    ]
+  },
+  {
+    "type": "tractor_part",
+    "handle": "body",
+    "key": "image",
+    "target_type": "file",
+    "target_handles": [
+      "hm-front-white.webp"
+    ]
+  },
+  {
+    "type": "tractor_part",
+    "handle": "weight",
+    "key": "image",
+    "target_type": "file",
+    "target_handles": [
+      "hm-side.webp"
+    ]
+  },
+  {
+    "type": "tractor_part",
+    "handle": "tires",
+    "key": "image",
+    "target_type": "file",
+    "target_handles": [
+      "hm-rear.webp"
+    ]
+  },
+  {
+    "type": "logo_placement",
+    "handle": "tractor",
+    "key": "packages",
+    "target_type": "sponsor_tier",
+    "target_handles": [
+      "title-partner"
+    ]
+  },
+  {
+    "type": "logo_placement",
+    "handle": "trailer",
+    "key": "packages",
+    "target_type": "sponsor_tier",
+    "target_handles": [
+      "title-partner",
+      "pit-partner",
+      "crew-supporter"
+    ]
+  },
+  {
+    "type": "logo_placement",
+    "handle": "gear",
+    "key": "packages",
+    "target_type": "sponsor_tier",
+    "target_handles": [
+      "title-partner",
+      "pit-partner"
+    ]
+  },
+  {
+    "type": "logo_placement",
+    "handle": "web",
+    "key": "packages",
+    "target_type": "sponsor_tier",
+    "target_handles": [
+      "title-partner",
+      "pit-partner",
+      "crew-supporter"
+    ]
+  },
+  {
+    "type": "logo_placement",
+    "handle": "social",
+    "key": "packages",
+    "target_type": "sponsor_tier",
+    "target_handles": [
+      "title-partner",
+      "pit-partner",
+      "crew-supporter"
+    ]
+  },
+  {
+    "type": "logo_placement",
+    "handle": "announcer",
+    "key": "packages",
+    "target_type": "sponsor_tier",
+    "target_handles": [
+      "title-partner",
+      "pit-partner"
+    ]
+  },
+  {
+    "type": "decal_zone",
+    "handle": "hood",
+    "key": "tier",
+    "target_type": "sponsor_tier",
+    "target_handles": [
+      "title-partner"
+    ]
+  },
+  {
+    "type": "decal_zone",
+    "handle": "engine-side-panel",
+    "key": "tier",
+    "target_type": "sponsor_tier",
+    "target_handles": [
+      "title-partner"
+    ]
+  },
+  {
+    "type": "pull_event",
+    "handle": "green-county-fall-nationals-2026",
+    "key": "gallery_album",
+    "target_type": "album",
+    "target_handles": [
+      "monroe-2026"
+    ]
+  },
+  {
+    "type": "pull_event",
+    "handle": "first-pull-attempt-2026",
+    "key": "gallery_album",
+    "target_type": "album",
+    "target_handles": [
+      "first-pull-2026"
+    ]
+  }
+]

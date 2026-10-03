@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Hallmark · v4: storytelling del tema en vivo, el rayo como clímax -->
+<title>Our Story · Heavy Metal, The Evil One</title>
+<meta name="description" content="From one idea in Tomah, Wisconsin to a Pro Stock pulling tractor built by a family in Waterloo. The first bolt, the night lightning struck, the first pull and the crew behind The Evil One.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Story v4: hero compacto, capítulos con foto alternada, el rayo como clímax, hermanos + canción con peso propio. */
+html,body{overflow-x:clip}
+.st-photo{position:relative;overflow:hidden;background:var(--tile);margin:0}
+.st-photo img{position:absolute;inset:0}
+.st-tag{position:absolute;left:8px;bottom:8px;background:rgba(255,255,255,.92);color:var(--ink);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px}
+.st-eyebrow{font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:0;display:flex;align-items:center;gap:8px}
+.st-eyebrow b{display:inline-grid;place-items:center;min-width:26px;height:20px;padding:0 5px;background:var(--ink);color:var(--surface);font-size:11px;letter-spacing:.04em}
+.bolt{fill:var(--accent)}
+
+/* 1 · hero compacto: texto + díptico que se mide por la altura, nunca deja hueco a lo ancho */
+.st-hero{--hh:clamp(300px,calc(70svh - 2 * 28px),540px);padding-block:28px}
+.st-hero .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:clamp(24px,3.4vw,56px);align-items:center}
+.st-hero__txt{display:grid;gap:14px;max-width:540px}
+.st-hero__txt .lede{max-width:46ch}
+.st-hero__pics{display:flex;gap:4px;height:var(--hh)}
+.st-hero__pics .st-photo{height:100%;aspect-ratio:4/5}
+.st-hero__pics .st-photo:nth-child(2){aspect-ratio:3/5}
+.st-facts{display:flex;flex-wrap:wrap;gap:0;margin:6px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.st-facts li{display:grid;gap:2px;padding:10px 18px 0 0;margin-right:18px;font-size:var(--t-xs);color:var(--mute)}
+.st-facts li+li{padding-left:18px;border-left:1px solid var(--line)}
+.st-facts b{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h2);line-height:1;color:var(--ink);text-transform:uppercase}
+
+/* 2 · hitos del tema: índice de capítulos */
+.st-tl{background:var(--surface);border-block:1px solid var(--line)}
+.st-tl ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.st-tl a{display:grid;gap:3px;padding:14px 14px 14px 0;text-decoration:none;height:100%}
+.st-tl li+li a{padding-left:14px;border-left:1px solid var(--line)}
+.st-tl a:hover .ev{text-decoration:underline;text-underline-offset:3px}
+.st-tl .yr{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h2);line-height:1;color:var(--ink);text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.st-tl .yr::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ink);flex:none}
+.st-tl .bolt-li .yr::before{display:none}
+.st-tl .yr svg{width:10px;height:16px;flex:none}
+.st-tl .now .yr::before{background:var(--accent);box-shadow:0 0 0 2px var(--ink)}
+.st-tl .ev{font-size:var(--t-sm);font-weight:600;color:var(--ink)}
+.st-tl .pl{font-size:var(--t-xs);color:var(--mute)}
+@media (max-width:900px){
+  .st-tl .wrap{padding-inline:0}
+  .st-tl ol{display:flex;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin;padding-inline:var(--gutter);scroll-padding-inline:var(--gutter)}
+  .st-tl li{flex:0 0 168px;scroll-snap-align:start}
+}
+
+/* 3 · capítulos con foto alternada */
+.st-chs{display:grid;gap:clamp(28px,3.4vw,44px);max-width:1120px;margin-inline:auto}
+.st-ch{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:center;scroll-margin-top:calc(var(--header) + 16px)}
+.st-ch:nth-child(even){grid-template-columns:minmax(0,1fr) minmax(0,300px)}
+.st-ch:nth-child(even) .st-photo{order:2}
+.st-ch .st-photo{aspect-ratio:4/5}
+.st-ch__txt{display:grid;gap:12px;max-width:62ch}
+.st-ch__txt p{margin:0;color:var(--soft)}
+.st-ch__txt .st-lead{font-size:var(--t-md);color:var(--ink);font-weight:600}
+
+/* 4 · EL RAYO: la única banda oscura, clímax de la página */
+.st-bolt{position:relative;overflow:hidden;scroll-margin-top:var(--header)}
+.st-bolt::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 80% at 18% 30%,rgba(245,196,0,.10),transparent 70%);pointer-events:none}
+.st-bolt .wrap{position:relative;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);align-items:center}
+.st-bolt__txt{display:grid;gap:16px}
+.st-bolt__txt p{margin:0}
+.st-bolt .st-eyebrow{color:#A8A59A}
+.st-bolt .st-eyebrow b{background:var(--accent);color:var(--ink)}
+.st-bolt__pre{color:#CFCCC3;font-size:var(--t-md);max-width:46ch}
+.st-bolt__head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start}
+.st-bolt__head svg{width:clamp(36px,3.4vw,52px);height:auto;filter:drop-shadow(0 0 14px rgba(245,196,0,.55))}
+.st-bolt__head h2{font-family:var(--f-head);font-stretch:72%;font-weight:800;text-transform:uppercase;font-size:var(--t-hero);line-height:1.04;letter-spacing:.005em;color:var(--night-ink);margin:0;text-wrap:balance}
+.st-bolt__head h2 em{font-style:normal;color:var(--accent)}
+.st-bolt__post{color:#CFCCC3;max-width:46ch;border-top:1px solid #2E2E2B;padding-top:14px}
+.st-bolt__post b{color:var(--night-ink)}
+.st-bolt.is-on .st-bolt__head svg{animation:flick 1.1s steps(1) 1}
+@keyframes flick{0%,100%{opacity:1}12%{opacity:.15}20%{opacity:1}32%{opacity:.3}40%{opacity:1}}
+
+/* player de video placeholder */
+.st-vid{margin:0;display:grid;gap:8px}
+.st-vid__box{position:relative;aspect-ratio:16/9;background:#1E1E1C;overflow:hidden;border:1px solid #2E2E2B}
+.st-vid__box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 38%;filter:saturate(.85) brightness(.72)}
+.st-vid__box::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,18,17,.1) 40%,rgba(18,18,17,.85));pointer-events:none}
+.st-vid__play{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;border:0;background:var(--accent);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:0 0 0 8px rgba(245,196,0,.22);transition:transform .15s,box-shadow .15s}
+.st-vid__play:hover{transform:translate(-50%,-50%) scale(1.06);box-shadow:0 0 0 12px rgba(245,196,0,.28)}
+.st-vid__play:focus-visible{outline:2px solid var(--night-ink);outline-offset:4px}
+.st-vid__play svg{width:26px;height:26px;margin-left:4px;fill:currentColor}
+.st-vid__bar{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:10px 14px 12px;display:grid;gap:8px;color:var(--night-ink);font-size:var(--t-xs)}
+.st-vid__row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.st-vid__row b{font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.st-vid__track{height:3px;background:rgba(242,240,233,.28)}
+.st-vid__track span{display:block;width:0;height:100%;background:var(--accent)}
+.st-vid__sound{display:inline-flex;align-items:center;gap:6px;opacity:.85}
+.st-vid__sound svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+.st-vid figcaption{font-size:var(--t-xs);color:#A8A59A}
+.st-vid__msg{color:var(--accent);font-weight:700}
+.st-bolt .note{margin-top:4px}
+
+/* 5 · primer pull + esta temporada */
+.st-pull{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:center;max-width:1120px;margin-inline:auto}
+.st-pull .st-photo{aspect-ratio:4/5}
+.st-pull__txt{display:grid;gap:12px;max-width:62ch}
+.st-pull__txt p{margin:0;color:var(--soft)}
+.st-quote{margin:2px 0;padding:2px 0 2px 16px;border-left:4px solid var(--accent)}
+.st-quote p{font-family:var(--f-head);font-stretch:78%;font-weight:700;text-transform:uppercase;font-size:var(--t-h1);line-height:1.12;color:var(--ink)!important;margin:0}
+.st-season{margin-top:clamp(24px,3vw,36px);max-width:1120px;margin-inline:auto;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,2fr);gap:16px 32px;align-items:center;padding:20px 24px;background:var(--accent);color:var(--ink)}
+.st-season p{margin:0}
+.st-season__h{display:grid;gap:6px}
+.st-season__h .label{opacity:.75}
+.st-season__h .h2{color:var(--ink)}
+.st-season dl{margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+.st-season dl div{padding:2px 16px;border-left:1px solid rgba(28,27,25,.35)}
+.st-season dt{font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;text-transform:uppercase;opacity:.75}
+.st-season dd{margin:2px 0 0;font-family:var(--f-head);font-stretch:78%;font-weight:700;text-transform:uppercase;font-size:var(--t-h2);line-height:1.1}
+.st-season__foot{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;border-top:1px solid rgba(28,27,25,.35);padding-top:12px;font-size:var(--t-sm)}
+.st-season__foot .link{color:var(--ink)}
+
+/* 6 · hermanos + canción, lado a lado con el mismo peso */
+.st-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:stretch}
+.st-card{display:grid;gap:14px;align-content:start;padding:clamp(18px,2vw,24px);border:1px solid var(--line);background:var(--surface)}
+.st-card p{margin:0}
+.st-bros{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:center}
+.st-bros .st-photo,.st-bros .ph{aspect-ratio:4/3;height:auto}
+.st-bros__amp{font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:var(--t-h1);color:var(--ink)}
+.st-bros .ph{--ar:4/3}
+.st-route{display:flex;flex-wrap:wrap;gap:6px 16px;margin:0;padding:0;list-style:none;font-size:var(--t-xs);color:var(--mute)}
+.st-route b{color:var(--ink)}
+/* reproductor */
+.st-song{background:var(--night);color:var(--night-ink);border-color:var(--night)}
+.st-song .st-eyebrow{color:#A8A59A}
+.st-song .st-eyebrow b{background:var(--accent);color:var(--ink)}
+.st-song__main{display:grid;grid-template-columns:clamp(112px,11vw,148px) minmax(0,1fr);gap:18px;align-items:center}
+.st-song__art{aspect-ratio:1/1;background:#1E1E1C;border:1px solid #2E2E2B;display:grid;place-items:center;position:relative;overflow:hidden}
+.st-song__art::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(245,196,0,.22),transparent 62%)}
+.st-song__art svg{position:relative;width:34%;height:auto;filter:drop-shadow(0 0 10px rgba(245,196,0,.6))}
+.st-song__t{font-family:var(--f-head);font-stretch:72%;font-weight:800;text-transform:uppercase;font-size:var(--t-hero);line-height:1;margin:0;color:var(--night-ink)}
+.st-song__a{font-size:var(--t-md);font-weight:600;color:#CFCCC3;margin-top:6px!important}
+.st-wave{display:flex;align-items:center;gap:3px;height:34px}
+.st-wave i{flex:1;background:#3A3A34;border-radius:1px;height:var(--h)}
+.st-wave i:nth-child(-n+14){background:var(--accent)}
+.st-song__ctrl{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px}
+.st-song__go{display:inline-flex;align-items:center;gap:10px;color:var(--night-ink);font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;min-height:44px}
+.st-song__go span.pb{width:44px;height:44px;border-radius:50%;background:var(--night-ink);color:var(--ink);display:grid;place-items:center;flex:none;transition:background .15s}
+.st-song__go span.pb svg{width:16px;height:16px;margin-left:3px;fill:currentColor}
+.st-song__go:hover span.pb{background:var(--accent)}
+.st-song__go:hover .st-song__lbl{text-decoration:underline;text-underline-offset:4px}
+.st-song__go:focus-visible{outline:2px solid var(--night-ink);outline-offset:3px}
+.st-song small{font-size:var(--t-xs);color:#A8A59A}
+
+/* 7 · crew compacto */
+.st-crew{display:grid;grid-template-columns:minmax(0,280px) minmax(0,1fr);gap:clamp(20px,3vw,40px);align-items:start}
+.st-chief{display:grid;gap:8px;justify-items:start;padding:18px;background:var(--bg);border:1px solid var(--line)}
+.st-chief .av{width:84px;height:84px;font-size:26px}
+.st-chief p{margin:0}
+.st-grid{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 16px}
+.st-m{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:center}
+.av{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--ink);color:var(--surface);font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:15px;letter-spacing:.04em;flex:none}
+.av--paw-w{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.av svg{width:20px;height:20px;fill:currentColor}
+.st-m__n{margin:0;font-weight:700;color:var(--ink);font-size:var(--t-sm);line-height:1.25}
+.st-m__r{margin:0;font-size:var(--t-xs);color:var(--mute);line-height:1.35}
+.st-grid .pet .st-m__r::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:6px;vertical-align:1px}
+.st-sub{grid-column:1/-1;margin:4px 0 -4px;font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);border-top:1px solid var(--line);padding-top:10px}
+.st-sub:first-child{margin-top:0}
+
+/* 8 · CTA único */
+.st-cta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px 32px}
+.st-cta__l{display:flex;align-items:center;gap:16px}
+.st-cta__l svg{width:22px;height:auto;flex:none}
+.st-cta p{margin:0}
+
+/* responsive */
+@media (max-width:1200px){.st-hero__pics .st-photo:nth-child(2){display:none}}
+@media (max-width:1100px){.st-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:1000px){
+  .st-bolt .wrap{grid-template-columns:1fr}
+  .st-bolt__txt{max-width:640px}
+  .st-pair{grid-template-columns:1fr}
+  .st-season{grid-template-columns:1fr}
+}
+@media (max-width:860px){.st-crew{grid-template-columns:1fr}.st-chief{grid-template-columns:64px minmax(0,1fr);align-items:center;column-gap:14px}.st-chief .av{width:64px;height:64px;font-size:20px;grid-row:span 3}}
+@media (max-width:760px){
+  .st-hero{--hh:auto;padding-block:20px 24px}
+  .st-hero .wrap{grid-template-columns:1fr;gap:18px}
+  .st-hero__pics{height:auto;order:-1}
+  .st-hero__pics .st-photo{flex:1;height:auto;aspect-ratio:16/10}
+  .st-ch,.st-ch:nth-child(even),.st-pull{grid-template-columns:1fr;gap:16px}
+  .st-ch:nth-child(even) .st-photo{order:0}
+  .st-ch .st-photo,.st-pull .st-photo{aspect-ratio:16/10}
+  .st-season dl{grid-template-columns:1fr}
+  .st-season dl div{border-left:0;border-top:1px solid rgba(28,27,25,.35);padding:8px 0}
+}
+@media (max-width:560px){
+  .st-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px}
+  .st-m{grid-template-columns:38px minmax(0,1fr);gap:8px}
+  .st-grid .av{width:38px;height:38px;font-size:13px}
+  .st-song__main{grid-template-columns:92px minmax(0,1fr);gap:14px}
+  .st-vid__play{width:60px;height:60px}
+  .st-facts li{padding-right:12px;margin-right:12px}
+  .st-facts li+li{padding-left:12px}
+}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="story"></div>
+<main id="main">
+
+<!-- 1 · hero compacto -->
+<section class="st-hero" aria-labelledby="st-h1">
+  <div class="wrap">
+    <div class="st-hero__txt">
+      <p class="label muted">Our Story · Tomah to Waterloo, WI</p>
+      <h1 class="h-hero" id="st-h1">Built in Wisconsin. Built to pull.</h1>
+      <p class="lede">It started in 2014 with one idea. That idea became a Pro Stock tractor, built by a family in its own shop. And that tractor was nicknamed The Evil One.</p>
+      <ul class="st-facts">
+        <li><b>12 years</b>idea to engine fire</li>
+        <li><b>Chris F.</b>owner &amp; driver</li>
+        <li><b>11 + 2</b>crew and mascots</li>
+      </ul>
+    </div>
+    <div class="st-hero__pics">
+      <figure class="st-photo">
+        <img class="photo" style="object-position:50% 40%" src="img/hm-driver.webp" alt="Chris F. in the driver's seat of Heavy Metal, gold helmet on" width="788" height="1400" fetchpriority="high">
+        <figcaption class="st-tag">Chris in the seat</figcaption>
+      </figure>
+      <figure class="st-photo" aria-hidden="true">
+        <img class="photo" style="object-position:50% 30%" src="img/hm-hero.webp" alt="" width="776" height="1400">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- 2 · hitos (del tema en vivo) -->
+<nav class="st-tl" aria-label="Story milestones">
+  <div class="wrap">
+    <ol>
+      <li><a href="#ch-2014"><span class="yr">2014</span><span class="ev">Idea is born</span><span class="pl">Tomah, WI</span></a></li>
+      <li><a href="#ch-2020"><span class="yr">Feb 2020</span><span class="ev">First bolt</span><span class="pl">Family shop, Waterloo</span></a></li>
+      <li class="bolt-li"><a href="#bolt"><span class="yr"><svg viewBox="0 0 12 16" aria-hidden="true"><polygon class="bolt" points="8,0 1,9 5,9 3,16 11,6 7,6"/></svg>2026</span><span class="ev">Engine fires, lightning strikes</span><span class="pl">Watch the video</span></a></li>
+      <li><a href="#first-pull"><span class="yr">2026</span><span class="ev">First pull attempt</span><span class="pl">A real track, a short run</span></a></li>
+      <li class="now"><a href="#season"><span class="yr">Today</span><span class="ev">2026 · in testing</span><span class="pl">Chasing the first full pull</span></a></li>
+    </ol>
+  </div>
+</nav>
+
+<!-- 3 · capítulos -->
+<section class="sect" aria-label="How it all started">
+  <div class="wrap st-chs">
+    <article class="st-ch" id="ch-2014" aria-labelledby="ch1-h">
+      <figure class="st-photo"><img class="photo" src="img/hm-side.webp" alt="Heavy Metal in profile on the grass under a blue sky" width="1050" height="1400" loading="lazy"><figcaption class="st-tag">Tomah, WI</figcaption></figure>
+      <div class="st-ch__txt">
+        <p class="st-eyebrow"><b>01</b>2014 · Tomah, WI</p>
+        <h2 class="h1" id="ch1-h">The name was never up for debate</h2>
+        <p class="st-lead">It started in 2014 in Tomah, Wisconsin, with one idea.</p>
+        <p>Chris had always been a heavy metal fan, so when he decided to build a pulling tractor, the name was never up for debate. That idea became a Pro Stock tractor. And that tractor was nicknamed The Evil One.</p>
+      </div>
+    </article>
+
+    <article class="st-ch" id="ch-2020" aria-labelledby="ch2-h">
+      <figure class="st-photo"><img class="photo" src="img/hm-crew.webp" alt="The family crew talking next to Heavy Metal on the grass" width="1050" height="1400" loading="lazy"><figcaption class="st-tag">Never a solo job</figcaption></figure>
+      <div class="st-ch__txt">
+        <p class="st-eyebrow"><b>02</b>February 2020 · First bolt</p>
+        <h2 class="h1" id="ch2-h">Twelve years in the making</h2>
+        <p class="st-lead">Heavy Metal wasn't built overnight. The first bolt went in in February 2020.</p>
+        <p>Then came nights and weekends stolen from work and family. Sketches redrawn more times than anyone can count. A shop in Waterloo, Wisconsin that the whole family turned into a second home, because building Heavy Metal was never a solo job.</p>
+      </div>
+    </article>
+
+    <article class="st-ch" id="ch-shop" aria-labelledby="ch3-h">
+      <figure class="st-photo"><img class="photo" src="img/hm-engine.webp" alt="The Cat 3208 V8 with its turbo, in the Waterloo shop" width="787" height="1400" loading="lazy" style="object-position:50% 45%"><figcaption class="st-tag">Cat 3208 · 680 ci</figcaption></figure>
+      <div class="st-ch__txt">
+        <p class="st-eyebrow"><b>03</b>The shop · Waterloo, WI</p>
+        <h2 class="h1" id="ch3-h">Nothing off the shelf</h2>
+        <p class="st-lead">What makes Heavy Metal different is under the hood: a Caterpillar 3208 V8, reverse flow, a setup you won't find on any other tractor on the track.</p>
+        <p>Stock, it measures 636 cubic inches. Ours doesn't: we built it out to 680. That's the whole philosophy behind this build. Nearly everything on Heavy Metal is custom-built. Nothing about it is off the shelf, and nothing about it was quick.</p>
+        <p><a class="link" href="machine.html">See the full spec sheet</a></p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- 4 · EL RAYO -->
+<section class="sect sect--night st-bolt" id="bolt" aria-labelledby="bolt-h">
+  <div class="wrap">
+    <div class="st-bolt__txt">
+      <p class="st-eyebrow"><b>04</b>2026 · The night it fired</p>
+      <p class="st-bolt__pre">Then, in 2026, the moment came. Chris stood in the shop and turned the engine over for the first time.</p>
+      <div class="st-bolt__head">
+        <svg viewBox="0 0 140 280" aria-hidden="true"><polygon class="bolt" points="88,0 20,150 58,150 30,280 122,105 78,105"/></svg>
+        <h2 id="bolt-h">At that exact moment, <em>lightning struck</em>, and the power went out.</h2>
+      </div>
+      <p class="st-bolt__post">Some would call it a coincidence. <b>We call it a sign.</b> From that night on, there was no doubt about what we had built.</p>
+    </div>
+
+    <figure class="st-vid">
+      <div class="st-vid__box">
+        <img src="img/hm-front-smoke.webp" alt="" width="1050" height="1400" loading="lazy">
+        <button class="st-vid__play" type="button" id="vid-play" aria-describedby="vid-cap">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5v17l14-8.5z"/></svg>
+          <span class="vh">Play video: the night it fired, 0:XX</span>
+        </button>
+        <div class="st-vid__bar">
+          <div class="st-vid__row">
+            <b>The night it fired</b>
+            <span class="st-vid__sound"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span class="num">0:00 / 0:XX</span></span>
+          </div>
+          <div class="st-vid__track" aria-hidden="true"><span></span></div>
+        </div>
+      </div>
+      <figcaption id="vid-cap">Sound on. This is how it sounded in the shop when the engine fired and the lightning hit. <span class="st-vid__msg" id="vid-msg" role="status"></span></figcaption>
+      <p class="note">Video: súbelo en Shopify en Contenido &gt; Archivos (MP4) o pega el link de YouTube. El póster es esta foto (o un cuadro del video) y cambia "0:XX" por la duración real.</p>
+    </figure>
+  </div>
+</section>
+
+<!-- 5 · primer pull + esta temporada -->
+<section class="sect sect--white" aria-labelledby="pull-h">
+  <div class="wrap">
+    <article class="st-pull" id="first-pull">
+      <figure class="st-photo"><img class="photo" src="img/hm-rear.webp" alt="Heavy Metal from the rear three quarters on the track, grandstands full behind it" width="1050" height="1400" loading="lazy"><figcaption class="st-tag">First pull attempt</figcaption></figure>
+      <div class="st-pull__txt">
+        <p class="st-eyebrow"><b>05</b>2026 · First pull</p>
+        <h2 class="h1" id="pull-h">The pull didn't finish that day</h2>
+        <p>The first pull didn't go the way anyone hoped. A small, unexpected issue came up and the run ended before it should have. It was a disappointing day.</p>
+        <blockquote class="st-quote"><p>We won't sugarcoat it.</p></blockquote>
+        <p>But getting Heavy Metal onto a real track at all, after twelve years of building it with our own hands, was already something to be proud of. <b style="color:var(--ink)">The story was just getting started.</b></p>
+      </div>
+    </article>
+
+    <div class="st-season" id="season">
+      <div class="st-season__h">
+        <p class="label">Today · 2026 season</p>
+        <h3 class="h2" id="season-h">Chasing our first full pull</h3>
+      </div>
+      <dl>
+        <div><dt>Competitions</dt><dd>About 20</dd></div>
+        <div><dt>Circuits</dt><dd>NTPA &amp; PPL Badger State</dd></div>
+        <div><dt>Exhibitions</dt><dd>None</dd></div>
+      </dl>
+      <div class="st-season__foot">
+        <p>Every time it hits the track, it's there to pull.</p>
+        <a class="link" href="schedule.html">See the schedule</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · tractor brothers + walk-up song -->
+<section class="sect" aria-label="Friends and the song">
+  <div class="wrap st-pair">
+    <article class="st-card" aria-labelledby="bro-h">
+      <p class="st-eyebrow"><b>06</b>Friends on the circuit</p>
+      <div class="st-bros">
+        <figure class="st-photo"><img class="photo" src="img/hm-front-white.webp" alt="Heavy Metal on the track in white smoke" width="1050" height="1400" loading="lazy" style="object-position:50% 55%"><figcaption class="st-tag">Heavy Metal</figcaption></figure>
+        <span class="st-bros__amp" aria-hidden="true">+</span>
+        <div class="ph ph--dark" role="img" aria-label="Photo of Diesel Ross coming soon"><span class="ph__tag"><b>Diesel Ross</b>Photo soon</span></div>
+      </div>
+      <h2 class="h1" id="bro-h">Tractor brothers</h2>
+      <p class="lede">Heavy Metal has a little brother across the ocean: <b style="color:var(--ink)">Diesel Ross</b>, a Pro Stock tractor in Europe owned by Gert Stessens from Belgium.</p>
+      <p class="body" style="margin:0">We met Gert at a pull in the Netherlands. Between the look of the two tractors and the friendship between Gert and Chris, Heavy Metal and Diesel Ross are considered tractor brothers.</p>
+      <ul class="st-route">
+        <li><b>Owner</b> Gert Stessens</li>
+        <li><b>Home</b> Belgium</li>
+        <li><b>Met</b> at a pull in the Netherlands</li>
+      </ul>
+    </article>
+
+    <article class="st-card st-song" aria-labelledby="song-h">
+      <p class="st-eyebrow"><b>07</b>Walk-up song</p>
+      <h2 class="vh" id="song-h">Walk-up song: Fear of the Dark by Iron Maiden</h2>
+      <div class="st-song__main">
+        <div class="st-song__art" aria-hidden="true"><svg viewBox="0 0 140 280"><polygon class="bolt" points="88,0 20,150 58,150 30,280 122,105 78,105"/></svg></div>
+        <div>
+          <p class="st-song__t">Fear of the Dark</p>
+          <p class="st-song__a">Iron Maiden</p>
+        </div>
+      </div>
+      <div class="st-wave" aria-hidden="true">
+        <i style="--h:30%"></i><i style="--h:55%"></i><i style="--h:40%"></i><i style="--h:70%"></i><i style="--h:50%"></i><i style="--h:85%"></i><i style="--h:60%"></i><i style="--h:35%"></i><i style="--h:75%"></i><i style="--h:95%"></i><i style="--h:65%"></i><i style="--h:45%"></i><i style="--h:80%"></i><i style="--h:55%"></i><i style="--h:30%"></i><i style="--h:60%"></i><i style="--h:90%"></i><i style="--h:70%"></i><i style="--h:40%"></i><i style="--h:65%"></i><i style="--h:85%"></i><i style="--h:50%"></i><i style="--h:35%"></i><i style="--h:75%"></i><i style="--h:55%"></i><i style="--h:45%"></i><i style="--h:30%"></i><i style="--h:60%"></i><i style="--h:40%"></i><i style="--h:25%"></i>
+      </div>
+      <p style="color:#CFCCC3">The song The Evil One rolls up to the line with. Turn it up before the next pull.</p>
+      <div class="st-song__ctrl">
+        <a class="st-song__go" href="https://open.spotify.com/search/Fear%20of%20the%20Dark%20Iron%20Maiden" target="_blank" rel="noopener">
+          <span class="pb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5v17l14-8.5z"/></svg></span>
+          <span class="st-song__lbl">Find it on Spotify <span aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></span>
+        </a>
+        <small>#HEAVYMETALPULLING</small>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- 7 · crew -->
+<section class="sect sect--white" aria-labelledby="crew-h">
+  <div class="wrap">
+    <div class="sect-head">
+      <h2 class="h1" id="crew-h">The people behind the pull</h2>
+      <p class="small muted" style="margin:0">Family, friends and two mascots.</p>
+    </div>
+    <div class="st-crew">
+      <div class="st-chief">
+        <span class="av" aria-hidden="true">CF</span>
+        <p class="h2">Chris F.</p>
+        <p class="small muted">Owner, Driver &amp; Crew Chief</p>
+        <p class="small" style="color:var(--soft)">Had the idea in 2014, turned the first bolt in 2020 and was in the shop the night the lightning hit.</p>
+      </div>
+      <ul class="st-grid" aria-label="Crew members">
+        <li class="st-sub">Team</li>
+        <li class="st-m"><span class="av" aria-hidden="true">IF</span><div><p class="st-m__n">Isela F.</p><p class="st-m__r">Manager, Marketing &amp; PR</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">CF</span><div><p class="st-m__n">Cindy F.</p><p class="st-m__r">Operations &amp; Accounting</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">DV</span><div><p class="st-m__n">Daniela V.</p><p class="st-m__r">Social Media &amp; Marketing</p></div></li>
+        <li class="st-m pet"><span class="av av--paw-w" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="16" rx="5" ry="4"/><circle cx="6" cy="10" r="2"/><circle cx="18" cy="10" r="2"/><circle cx="9.5" cy="6" r="2"/><circle cx="14.5" cy="6" r="2"/></svg></span><div><p class="st-m__n">Cricket F.</p><p class="st-m__r">Team mascot · white</p></div></li>
+        <li class="st-sub">Pit crew</li>
+        <li class="st-m"><span class="av" aria-hidden="true">D</span><div><p class="st-m__n">Daniel</p><p class="st-m__r">Pit Crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">JF</span><div><p class="st-m__n">Jared F.</p><p class="st-m__r">Pit Crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">JF</span><div><p class="st-m__n">Jim F.</p><p class="st-m__r">Pit Crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">TB</span><div><p class="st-m__n">Tony B.</p><p class="st-m__r">Pit Crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">JL</span><div><p class="st-m__n">Jeff L.</p><p class="st-m__r">Pit Crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">JW</span><div><p class="st-m__n">John W.</p><p class="st-m__r">Pit Crew</p></div></li>
+        <li class="st-m"><span class="av" aria-hidden="true">BS</span><div><p class="st-m__n">Brad S.</p><p class="st-m__r">Pit Crew</p></div></li>
+        <li class="st-m pet"><span class="av" aria-hidden="true"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="16" rx="5" ry="4"/><circle cx="6" cy="10" r="2"/><circle cx="18" cy="10" r="2"/><circle cx="9.5" cy="6" r="2"/><circle cx="14.5" cy="6" r="2"/></svg></span><div><p class="st-m__n">Turbo</p><p class="st-m__r">Team mascot · black</p></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 8 · CTA único -->
+<section class="sect" aria-labelledby="cta-h" style="padding-block:clamp(28px,3.4vw,40px)">
+  <div class="wrap st-cta">
+    <div class="st-cta__l">
+      <svg viewBox="0 0 140 280" aria-hidden="true"><polygon points="88,0 20,150 58,150 30,280 122,105 78,105" fill="var(--ink)"/></svg>
+      <div>
+        <h2 class="h2" id="cta-h">Born in a lightning storm. Built to pull.</h2>
+        <p class="muted" style="margin-top:4px">Merch designed by the crew. Every order fuels the team.</p>
+      </div>
+    </div>
+    <a class="btn" href="shop.html?cat=new">Shop the drop</a>
+  </div>
+</section>
+
+</main>
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  /* el video lo sube la dueña: mientras tanto el botón avisa */
+  var b = document.getElementById('vid-play'), m = document.getElementById('vid-msg');
+  if (b) b.addEventListener('click', function () { m.textContent = 'Video coming soon.'; });
+  /* el rayo parpadea una vez al entrar en pantalla */
+  var s = document.getElementById('bolt');
+  if (s && 'IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { s.classList.add('is-on'); io.disconnect(); } }); }, { threshold: .45 });
+    io.observe(s);
+  }
+})();
+</script>
+</body>
+</html>

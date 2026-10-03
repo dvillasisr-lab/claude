@@ -1,0 +1,6 @@
+{%- comment -%} Params: image (image setting), fallback (asset file name), alt, class, sizes {%- endcomment -%}
+{%- if image != blank -%}
+{{ image | image_url: width: 2000 | image_tag: class: class, alt: alt, loading: loading, widths: '600, 900, 1200, 1600, 2000', sizes: sizes }}
+{%- else -%}
+<img class="{{ class }}" src="{{ fallback | asset_url }}" alt="{{ alt | escape }}" loading="{{ loading | default: 'lazy' }}">
+{%- endif -%}

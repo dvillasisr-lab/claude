@@ -1,0 +1,132 @@
+{
+  "sections": {
+    "main": {
+      "type": "hm-policies",
+      "blocks": {
+        "privacy": {
+          "type": "shop_policy",
+          "settings": {
+            "policy": "privacy",
+            "key": "privacy",
+            "title": "Privacy Policy",
+            "updated": ""
+          }
+        },
+        "terms": {
+          "type": "shop_policy",
+          "settings": {
+            "policy": "terms",
+            "key": "terms",
+            "title": "Terms of Service",
+            "updated": ""
+          }
+        },
+        "refund": {
+          "type": "shop_policy",
+          "settings": {
+            "policy": "refund",
+            "key": "refund",
+            "title": "Refund Policy",
+            "updated": ""
+          }
+        },
+        "shipping": {
+          "type": "shop_policy",
+          "settings": {
+            "policy": "shipping",
+            "key": "shipping",
+            "title": "Shipping Policy",
+            "updated": ""
+          }
+        },
+        "contact": {
+          "type": "shop_policy",
+          "settings": {
+            "policy": "contact",
+            "key": "contact",
+            "title": "Contact Information",
+            "updated": ""
+          }
+        },
+        "accessibility": {
+          "type": "page",
+          "settings": {
+            "key": "accessibility",
+            "title": "Accessibility",
+            "updated": "2026-10-01",
+            "lede": "We want every fan to be able to shop this store, read about the team and follow the season.",
+            "body": "<p><strong>1. Our goal</strong></p><p>We aim to meet the <strong>Web Content Accessibility Guidelines (WCAG) 2.1, level AA</strong>. That includes keyboard navigation, visible focus, text alternatives for images, enough color contrast, and respecting reduced-motion settings.</p><p><strong>2. What we are doing</strong></p><ul><li>Reviewing pages when we add new products or sections.</li><li>Writing alt text for team and tractor photos.</li><li>Letting you pause any moving content.</li></ul><p><strong>3. Known limits</strong></p><p>Some content comes from third parties, such as embedded videos, checkout and payment screens, which we do not fully control.</p><p><strong>4. Need help?</strong></p><p>If something on the store is hard to use, send us a message on the <a href=\"/pages/contact\">contact form</a> or use the details in <a href=\"/pages/policies?p=contact\">Contact Information</a>. Tell us the page and the problem and we will help you place your order another way. We reply within 2 business days.</p>",
+            "action": "none",
+            "button_label": "Save choice",
+            "switch_label": "Opt out of sale and sharing",
+            "switch_text": "When on, we turn off marketing cookies and do not share your activity with ad partners.",
+            "gpc_off": "Your browser is not sending a Global Privacy Control signal. If it does, we treat it as an opt-out automatically.",
+            "gpc_on": "Global Privacy Control signal detected. You are opted out of sale and sharing on this browser.",
+            "saved_on": "Saved. You are opted out of sale and sharing.",
+            "saved_off": "Saved. You have not opted out.",
+            "unavailable": "Privacy settings are not available on this page right now. Please try again later or use the contact form."
+          }
+        },
+        "choices": {
+          "type": "page",
+          "settings": {
+            "key": "choices",
+            "title": "Your Privacy Choices",
+            "updated": "2026-10-01",
+            "lede": "Opt out of the sale or sharing of your personal information for targeted advertising. This choice is saved on this browser and device.",
+            "body": "<p><strong>Signed-in customers</strong></p><p>To apply your choice to your account on every device, or to ask us to access, delete or correct your data, send a request on the <a href=\"/pages/contact?topic=other\">contact form</a> or use the details in <a href=\"/pages/policies?p=contact\">Contact Information</a>. See the <a href=\"/pages/policies?p=privacy\">Privacy Policy</a> for details.</p>",
+            "action": "privacy_choices",
+            "button_label": "Save choice",
+            "switch_label": "Opt out of sale and sharing",
+            "switch_text": "When on, we turn off marketing cookies and do not share your activity with ad partners.",
+            "gpc_off": "Your browser is not sending a Global Privacy Control signal. If it does, we treat it as an opt-out automatically.",
+            "gpc_on": "Global Privacy Control signal detected. You are opted out of sale and sharing on this browser.",
+            "saved_on": "Saved. You are opted out of sale and sharing.",
+            "saved_off": "Saved. You have not opted out.",
+            "unavailable": "Privacy settings are not available on this page right now. Please try again later or use the contact form."
+          }
+        },
+        "cookies": {
+          "type": "page",
+          "settings": {
+            "key": "cookies",
+            "title": "Cookie Preferences",
+            "updated": "2026-10-01",
+            "lede": "Cookies are small files your browser saves when you visit. Some keep the store working. The rest are optional, and you decide.",
+            "body": "<p><strong>1. The cookie banner</strong></p><p>On your first visit, a banner from Shopify, the platform that runs our store, asks what you allow. Choose <strong>Accept</strong>, <strong>Decline</strong> or <strong>Manage preferences</strong> to pick each type. Until you choose, only necessary cookies are used.</p><p><strong>2. Types of cookies</strong></p><ul><li><strong>Necessary:</strong> always on. Cart, checkout, login and security.</li><li><strong>Analytics:</strong> shows us which pages and products fans use.</li><li><strong>Marketing:</strong> lets ad partners like Facebook and Google measure ads.</li><li><strong>Preferences:</strong> remembers choices like your region.</li></ul><p><strong>3. Where your choice is saved</strong></p><p>Your choice is saved <strong>in this browser on this device</strong>, whether or not you have an account. If you use another browser or device, or clear your cookies, the banner asks again.</p><p><strong>4. Change your choice</strong></p><p>Use the button above, or click <strong>Cookie Preferences</strong> at the bottom of any page to open the banner again. Changes apply right away.</p><p><strong>5. Global Privacy Control (GPC)</strong></p><p>If your browser sends a <strong>Global Privacy Control</strong> signal, we treat it as a request to opt out of sale and sharing: marketing cookies stay off and we do not ask again. See <a href=\"/pages/policies?p=choices\">Your Privacy Choices</a> and the <a href=\"/pages/policies?p=privacy\">Privacy Policy</a>.</p>",
+            "action": "cookie_preferences",
+            "button_label": "Cookie preferences",
+            "switch_label": "Opt out of sale and sharing",
+            "switch_text": "When on, we turn off marketing cookies and do not share your activity with ad partners.",
+            "gpc_off": "Your browser is not sending a Global Privacy Control signal. If it does, we treat it as an opt-out automatically.",
+            "gpc_on": "Global Privacy Control signal detected. You are opted out of sale and sharing on this browser.",
+            "saved_on": "Saved. You are opted out of sale and sharing.",
+            "saved_off": "Saved. You have not opted out.",
+            "unavailable": "Privacy settings are not available on this page right now. Please try again later or use the contact form."
+          }
+        }
+      },
+      "block_order": [
+        "privacy",
+        "terms",
+        "refund",
+        "shipping",
+        "contact",
+        "accessibility",
+        "choices",
+        "cookies"
+      ],
+      "settings": {
+        "heading": "Policies",
+        "nav_label": "Store policies",
+        "missing_text": "This policy is being updated.",
+        "toc_heading": "On this page",
+        "card_heading": "Questions?",
+        "card_text": "Send us a message on the <a href=\"/pages/contact\">contact form</a>. We reply within 2 business days."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

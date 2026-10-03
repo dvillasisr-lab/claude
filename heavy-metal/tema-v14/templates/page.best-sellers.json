@@ -1,0 +1,33 @@
+{
+  "sections": {
+    "carousel": {
+      "type": "hm-carousel",
+      "settings": {
+        "label": "The usual suspects",
+        "heading": "Best sellers",
+        "as_page_title": true,
+        "text": "The stuff people actually buy. Turns out you have taste.",
+        "collection": "top-merch",
+        "fallback_all": true,
+        "limit": 10,
+        "show_add": true,
+        "autoplay": true,
+        "seconds": 5,
+        "band": false
+      }
+    },
+    "grid": {
+      "type": "hm-carousel-grid",
+      "settings": {
+        "heading": "The whole lineup",
+        "link_label": "Shop all",
+        "link_url": "/collections/all",
+        "collection": "top-merch",
+        "fallback_all": true,
+        "limit": 12,
+        "band": true
+      }
+    }
+  },
+  "order": ["carousel", "grid"]
+}

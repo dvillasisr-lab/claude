@@ -1,0 +1,94 @@
+{%- comment -%}
+  The Machine · 5 · FAQ "Questions from the fence line". Questions are "FAQ item" metaobjects whose Pages list
+  includes "machine", sorted by Order. Also prints the FAQPage JSON-LD.
+{%- endcomment -%}
+{%- liquid
+  assign page_key = section.settings.page_key | default: 'machine' | strip | downcase
+  assign keys = ''
+-%}
+{%- comment -%} paginate: a plain loop over metaobject values stops at 50 entries {%- endcomment -%}
+{%- paginate metaobjects.faq_item.values by 250 -%}
+  {%- for e in metaobjects.faq_item.values -%}
+    {%- liquid
+      assign pg = e.pages.value | join: ',' | downcase
+      if pg contains page_key
+        assign o = e.order.value | default: 999 | plus: 10000
+        assign keys = keys | append: o | append: '|' | append: e.system.handle | append: ','
+      endif
+    -%}
+  {%- endfor -%}
+{%- endpaginate -%}
+{%- assign keys = keys | split: ',' | sort -%}
+{%- if keys.size > 0 or request.design_mode -%}
+<section class="sect" aria-labelledby="faq-h-{{ section.id }}">
+  <div class="wrap mx-faq">
+    <div>
+      <h2 class="h1" id="faq-h-{{ section.id }}">{{ section.settings.title | escape }}</h2>
+      {%- if section.settings.text != blank -%}<p class="muted" style="margin:10px 0 0;max-width:36ch">{{ section.settings.text | escape }}</p>{%- endif -%}
+    </div>
+    <div class="mx-faq__list">
+      {%- if keys.size == 0 -%}
+        <p class="muted">Add FAQ items in Content &gt; Metaobjects &gt; FAQ item and include “machine” in Pages.</p>
+      {%- endif -%}
+      {%- for k in keys -%}
+        {%- assign h = k | split: '|' | last -%}
+        {%- assign q = metaobjects.faq_item[h] -%}
+        <details{% if forloop.first and section.settings.open_first %} open{% endif %}>
+          <summary>{{ q.question.value | escape }}</summary>
+          <div class="mx-faq__a">{{ q.answer | metafield_tag }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- if keys.size > 0 -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "name": {{ page.title | append: ' · ' | append: settings.hm_brand_name | default: shop.name | json }},
+  "mainEntity": [
+    {%- for k in keys -%}
+      {%- assign h = k | split: '|' | last -%}
+      {%- assign q = metaobjects.faq_item[h] -%}
+      {
+        "@type": "Question",
+        "name": {{ q.question.value | json }},
+        "acceptedAnswer": { "@type": "Answer", "text": {{ q.answer | metafield_text | json }} }
+      }{% unless forloop.last %},{% endunless %}
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+{%- endif -%}
+
+{% stylesheet %}
+.mx-faq{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,7fr);gap:clamp(20px,4vw,56px)}
+.mx-faq__list details{border-top:1px solid var(--line)}
+.mx-faq__list details:last-child{border-bottom:1px solid var(--line)}
+.mx-faq__list summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;align-items:center;min-height:50px;padding-block:8px;font-weight:600;font-size:var(--t-md);color:var(--ink)}
+.mx-faq__list summary::-webkit-details-marker{display:none}
+.mx-faq__list summary::after{content:"+";font-size:20px;font-weight:400;line-height:1;flex:none}
+.mx-faq__list details[open] summary::after{content:"\2212"}
+.mx-faq__a{margin:0 0 14px;max-width:62ch;color:var(--soft);font-size:var(--t-sm)}
+.mx-faq__a p{margin:0 0 8px}
+.mx-faq__a a{color:var(--ink);text-underline-offset:3px}
+@media (max-width:960px){.mx-faq{grid-template-columns:1fr}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Machine: FAQ",
+  "tag": "div",
+  "class": "hm-machine-faq",
+  "settings": [
+    { "type": "paragraph", "content": "Questions come from Content > Metaobjects > FAQ item. Add “machine” to an item’s Pages to show it here." },
+    { "type": "text", "id": "title", "label": "Title", "default": "Questions from the fence line" },
+    { "type": "text", "id": "text", "label": "Text", "default": "What people ask us at the fence. Usually yelling." },
+    { "type": "text", "id": "page_key", "label": "Pages value to show", "default": "machine" },
+    { "type": "checkbox", "id": "open_first", "label": "Open the first question", "default": true }
+  ],
+  "presets": [{ "name": "Machine: FAQ" }]
+}
+{% endschema %}
