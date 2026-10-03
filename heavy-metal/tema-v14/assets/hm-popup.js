@@ -196,7 +196,7 @@
   function pt(e) { var r = canvas.getBoundingClientRect(); return { x: e.clientX - r.left, y: e.clientY - r.top }; }
   function scratchTo(p) {
     if (!ctx) return;
-    ctx.strokeStyle = '#000'; ctx.lineWidth = 34; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#000'; ctx.lineWidth = 26; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     ctx.beginPath();
     var a = lastPt || p;
     ctx.moveTo(a.x, a.y); ctx.lineTo(p.x + 0.01, p.y);
@@ -208,7 +208,7 @@
     try {
       var d = ctx.getImageData(0, 0, canvas.width, canvas.height).data, clear = 0, n = 0;
       for (var i = 3; i < d.length; i += 64) { n++; if (d[i] < 128) clear++; }
-      if (n && clear / n > 0.45) reveal(false);
+      if (n && clear / n > 0.7) reveal(false);
     } catch (e) { reveal(false); }
   }
 

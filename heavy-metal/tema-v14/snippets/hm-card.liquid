@@ -111,7 +111,7 @@
         {%- endfor -%}
       {%- else -%}
         <span class="ph ph--mock card__slide">
-          {{- 'product-apparel-1' | placeholder_svg_tag: 'hm-card__ph' -}}
+          {% render 'hm-mock', product: p %}
         </span>
       {%- endif -%}
     </a>

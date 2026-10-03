@@ -42,13 +42,13 @@
               assign thumb = blank
               assign obj_handle = ''
               if link.type == 'collection_link'
-                assign thumb = link.object.featured_image
+                assign thumb = link.object.image
                 assign obj_handle = link.object.handle
               endif
             -%}
             <li>
               <a class="cat" href="{{ link.url }}">
-                <span class="thumb">
+                <span class="thumb{% if thumb == blank %} thumb--mock{% endif %}">
                   {%- if thumb != blank -%}
                     {{
                       thumb
@@ -61,7 +61,7 @@
                         loading: 'lazy'
                     }}
                   {%- else -%}
-                    {{ 'collection-1' | placeholder_svg_tag: 'photo hm-ph-svg' }}
+                    {% render 'hm-mock', handle: obj_handle %}
                   {%- endif -%}
                   {%- if badge_new != blank and obj_handle == badge_new.handle -%}
                     <span class="thumb__new">New</span>

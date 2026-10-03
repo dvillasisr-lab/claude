@@ -81,13 +81,11 @@
     {%- assign shown_thumbs = shown_thumbs | plus: 1 -%}
     {%- assign h = l.object.handle | default: '' -%}
     <a href="{{ l.url }}"{% if l.current %} aria-current="page"{% endif %}>
-      <span class="thumb">
-        {%- if l.object.featured_image -%}
-          {% render 'hm-image', image: l.object.featured_image, widths: '72, 144, 216', max_width: 216, sizes: '72px', crop_ratio: 1, alt: '' %}
-        {%- elsif l.object.image -%}
+      <span class="thumb{% unless l.object.image %} thumb--mock{% endunless %}">
+        {%- if l.object.image -%}
           {% render 'hm-image', image: l.object.image, widths: '72, 144, 216', max_width: 216, sizes: '72px', crop_ratio: 1, alt: '' %}
         {%- else -%}
-          {{- 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' -}}
+          {% render 'hm-mock', handle: h %}
         {%- endif -%}
         {%- if h != blank and new_handles contains h -%}<span class="thumb__new">New</span>{%- elsif h != blank and ltd_handles contains h -%}<span class="thumb__new thumb__new--ink">Ltd</span>{%- endif -%}
       </span>
@@ -366,13 +364,11 @@
           {%- assign h = l.object.handle | default: '' -%}
           <li>
             <a href="{{ l.url }}"{% if l.current %} aria-current="page"{% endif %}>
-              <span class="thumb">
-                {%- if l.object.featured_image -%}
-                  {% render 'hm-image', image: l.object.featured_image, widths: '64, 128, 192', max_width: 192, sizes: '64px', crop_ratio: 1, alt: '' %}
-                {%- elsif l.object.image -%}
+              <span class="thumb{% unless l.object.image %} thumb--mock{% endunless %}">
+                {%- if l.object.image -%}
                   {% render 'hm-image', image: l.object.image, widths: '64, 128, 192', max_width: 192, sizes: '64px', crop_ratio: 1, alt: '' %}
                 {%- else -%}
-                  {{- 'product-apparel-1' | placeholder_svg_tag: 'placeholder-svg' -}}
+                  {% render 'hm-mock', handle: h %}
                 {%- endif -%}
                 {%- if h != blank and new_handles contains h -%}<span class="thumb__new">New</span>{%- elsif h != blank and ltd_handles contains h -%}<span class="thumb__new thumb__new--ink">Ltd</span>{%- endif -%}
               </span>

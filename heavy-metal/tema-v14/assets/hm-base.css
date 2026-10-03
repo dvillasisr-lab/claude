@@ -110,6 +110,9 @@ img,video{max-width:100%;display:block}
 .ph::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 16px,rgba(28,27,25,.035) 16px 17px)}
 /* v14.1: the stripes are only for empty placeholders, never over a real photo */
 .ph:has(> img)::before,.ph:has(> picture)::before{content:none}
+.ph:has(> .mock)::before{content:none}
+.ph:has(> .mock){align-items:center;justify-content:center}
+.ph > .mock{width:62%}
 .ph--dark{background:#1E1E1C}
 .ph .placeholder-svg{position:absolute;inset:0;width:100%;height:100%;fill:var(--mute)}
 .ph--dark .placeholder-svg{fill:#55524c}
