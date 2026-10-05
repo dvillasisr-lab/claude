@@ -6,7 +6,7 @@
         "all_title": "Shop all",
         "all_text": "Tees, hoodies, hats and stickers from the crew behind “The Evil One”. Printed when you order it, not before.",
         "show_description": true,
-        "category_menu": "",
+        "category_menu": "shop-categories-v14",
         "per_page": 24,
         "enable_filtering": true,
         "enable_sorting": true,
@@ -24,5 +24,7 @@
       }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
