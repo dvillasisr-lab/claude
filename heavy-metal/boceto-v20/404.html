@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Page not found · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="This page isn't on the track. Search the Heavy Metal Pro Stock store, see the schedule or read the story of “The Evil One”.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* 404 v10 · "Pull ended at 404 ft". Fondo de tormenta como el hero de la home; el rig real (sled + recorte del tractor)
+   se quedó antes de la bandera. Buscador, 4 salidas y "Pull again" (avanza unos pies). Cabe en una pantalla. */
+html,body{overflow-x:clip}
+.nf{
+  --rigw:min(54vw,calc((100svh - 300px) * 3.2),1000px);
+  --righ:calc(var(--rigw) * .21333);
+  --dirt:clamp(30px,2.6vw,44px);
+  --nf-ink:#F2F0E9;--nf-soft:#D6D3CA;--nf-mute:#ABA79D;--nf-line:rgba(242,240,233,.22);--nf-panel:rgba(14,15,17,.62);
+  position:relative;isolation:isolate;overflow:hidden;color:var(--nf-ink);background:#1A1D22;
+  display:grid;grid-template-rows:1fr auto;min-height:calc(100svh - var(--hdr-top,148px));border-bottom:1px solid var(--ink)}
+.nf :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* cielo */
+.nf__sky{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.nf__sky>*{position:absolute}
+.nf__storm,.nf__flash{inset:0}
+.nf__storm{background:
+  radial-gradient(34% 52% at 70% 40%,rgba(178,184,192,.34),rgba(150,158,168,.14) 55%,transparent 80%),
+  radial-gradient(70% 45% at 18% 8%,rgba(112,122,138,.32),transparent 70%),
+  radial-gradient(55% 40% at 78% 16%,rgba(92,102,118,.38),transparent 70%),
+  radial-gradient(80% 50% at 60% 100%,rgba(140,146,152,.30),transparent 70%),
+  linear-gradient(180deg,#14171C 0%,#20252C 38%,#363D47 72%,#525963 100%)}
+.nf__clouds{inset:-10% -20% auto;height:62%;opacity:.6;background:
+  radial-gradient(30% 45% at 15% 40%,#3B414B,transparent 70%),radial-gradient(28% 40% at 45% 30%,#323842,transparent 70%),
+  radial-gradient(30% 45% at 80% 45%,#3B414B,transparent 70%);animation:nfClouds 40s linear infinite alternate}
+.nf__flash{background:#E9EEF6;opacity:0;mix-blend-mode:screen}
+.nf__bolt{right:calc(var(--gutter) + 6%);top:0;height:70%;width:auto;opacity:0;filter:drop-shadow(0 0 10px rgba(230,238,255,.9))}
+.nf.is-strike .nf__flash{animation:nfFlash 1.4s steps(1,end) 1}
+.nf.is-strike .nf__bolt{animation:nfBolt 1.4s steps(1,end) 1}
+@keyframes nfClouds{to{transform:translateX(12%)}}
+@keyframes nfFlash{0%{opacity:0}6%{opacity:.85}10%{opacity:.1}16%{opacity:.7}22%{opacity:0}100%{opacity:0}}
+@keyframes nfBolt{0%{opacity:0}5%{opacity:1}24%{opacity:1}30%{opacity:0}36%{opacity:.8}42%{opacity:0}100%{opacity:0}}
+
+/* contenido */
+.nf__top{position:relative;z-index:3;width:100%;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:24px clamp(24px,4vw,72px);align-items:end;align-self:center;padding-block:clamp(20px,3.2vh,44px) 12px}
+.nf__copy{display:grid;gap:12px;justify-items:start;min-width:0}
+.nf__k{margin:0;font-size:var(--t-xs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--nf-mute)}
+.nf__k b{color:var(--accent);font-weight:700}
+.nf__h1{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:800;text-transform:uppercase;line-height:.86;letter-spacing:.005em;color:var(--nf-ink);text-shadow:0 2px 18px rgba(0,0,0,.45)}
+.nf__h1 .a{display:block;font-size:clamp(26px,min(3.4vw,5.4vh),52px);letter-spacing:.03em;line-height:1}
+.nf__h1 .b{display:block;font-size:clamp(88px,min(14vw,19vh),232px);color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap}
+.nf__h1 .b small{font-size:.36em;margin-left:.08em;color:var(--nf-ink);letter-spacing:.04em}
+.nf__lede{margin:0;max-width:44ch;font-size:var(--t-md);color:var(--nf-soft);text-shadow:0 1px 2px rgba(0,0,0,.8)}
+.nf__lede b{color:var(--nf-ink)}
+.nf__form{display:flex;width:100%;max-width:460px;margin-top:4px}
+.nf__form .input{background:rgba(14,15,17,.72);border-color:rgba(242,240,233,.42);border-right:0;color:var(--nf-ink)}
+.nf__form .input::placeholder{color:var(--nf-mute)}
+.nf__form .input:focus{border-color:var(--accent);outline:1px solid var(--accent);outline-offset:0}
+.nf__form .btn{flex:none;background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.nf__form .btn:hover{background:#FFD83D;border-color:#FFD83D}
+
+/* 4 salidas */
+.nf__exits{display:grid;gap:8px;min-width:0}
+.nf__exits h2{margin:0 0 2px;font-size:var(--t-xs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--nf-mute)}
+.nf__exits ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.nf__go{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:2px 10px;min-height:68px;padding:12px 14px;text-decoration:none;color:var(--nf-ink);background:var(--nf-panel);border:1px solid var(--nf-line);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background .15s,border-color .15s,color .15s}
+.nf__go b{font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:clamp(18px,1.6vw,24px);letter-spacing:.03em;text-transform:uppercase;line-height:1}
+.nf__go small{grid-column:1;font-size:var(--t-xs);color:var(--nf-mute);line-height:1.3}
+.nf__go svg{grid-row:1/span 2;grid-column:2;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;transition:transform .15s}
+.nf__go:hover,.nf__go:focus-visible{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.nf__go:hover small,.nf__go:focus-visible small{color:var(--ink)}
+.nf__go:hover svg{transform:translateX(3px)}
+.nf__go--main{background:var(--nf-ink);border-color:var(--nf-ink);color:var(--ink)}
+.nf__go--main small{color:var(--soft)}
+
+/* pista + rig */
+.nf__track{position:relative;z-index:2;height:calc(var(--righ) + var(--dirt) + 46px)}
+.nf__dirt{position:absolute;left:0;right:0;bottom:0;height:var(--dirt);background:repeating-linear-gradient(90deg,#5C4E3A 0 6px,#514431 6px 14px)}
+.nf__dirt::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:rgba(0,0,0,.3)}
+.nf__rail{position:absolute;left:0;bottom:var(--dirt);height:4px;width:var(--railw,0px);background:var(--accent);box-shadow:0 1px 0 rgba(0,0,0,.5);transition:width 1.3s cubic-bezier(.3,.6,.2,1)}
+.nf__tick{position:absolute;bottom:calc(var(--dirt) * .3);transform:translateX(-50%);font-size:10px;font-weight:800;letter-spacing:.12em;color:#F7F3E8;white-space:nowrap;text-shadow:0 1px 0 rgba(0,0,0,.35)}
+.nf__tick::before{content:"";position:absolute;left:50%;top:-9px;width:2px;height:7px;background:#F7F3E8;opacity:.8}
+.nf__flag{position:absolute;bottom:var(--dirt);width:6px;height:calc(var(--righ) * 1.12);box-shadow:0 0 0 1px var(--ink);background:repeating-linear-gradient(180deg,var(--ink) 0 12px,var(--accent) 12px 24px)}
+.nf__flag::after{content:"";position:absolute;left:6px;top:0;width:clamp(22px,calc(var(--rigw) * .04),40px);aspect-ratio:3/2;background:conic-gradient(var(--ink) 25%,#fff 0 50%,var(--ink) 0 75%,#fff 0) 0 0/50% 50%;border:1px solid var(--ink);transform-origin:left center}
+.nf__flag span{position:absolute;left:3px;bottom:calc(100% + 8px);transform:translateX(-50%);font-size:10px;font-weight:800;letter-spacing:.12em;color:var(--nf-ink);white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.9)}
+.nf.is-full .nf__flag::after{animation:nfWave .5s ease-in-out infinite alternate}
+@keyframes nfWave{from{transform:skewY(-8deg) scaleX(.92)}to{transform:skewY(6deg) scaleX(1)}}
+.nf__rig{position:absolute;left:0;bottom:calc(var(--dirt) - var(--rigw) * .0104);width:var(--rigw);height:auto;aspect-ratio:2700/576;overflow:visible;transform:translate3d(var(--x,0px),0,0);transition:transform 1.3s cubic-bezier(.3,.6,.2,1);pointer-events:none}
+.nf__rig image{filter:drop-shadow(0 0 1.5px rgba(242,240,233,.5))}
+.nf.is-pulling .nf__shake{animation:nfShake .11s linear infinite}
+@keyframes nfShake{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.nf__rig.no-anim,.nf__rail.no-anim{transition:none}
+
+/* lectura y "Pull again" (arriba a la izquierda de la pista) */
+.nf__read{position:absolute;left:max(var(--gutter),calc((100% - var(--maxw)) / 2 + var(--gutter)));right:var(--gutter);top:0;z-index:3;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;font-size:var(--t-xs)}
+.nf__dist{font-family:var(--f-head);font-stretch:78%;font-weight:800;font-size:22px;line-height:1;font-variant-numeric:tabular-nums;color:var(--nf-ink);text-shadow:0 1px 3px rgba(0,0,0,.8)}
+.nf__dist small{font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--nf-mute);margin-right:6px}
+.nf__again{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border:1px solid var(--nf-line);border-radius:999px;background:var(--nf-panel);color:var(--nf-ink);font:inherit;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.nf__again:hover{border-color:var(--accent);color:var(--accent)}
+.nf__again svg{width:13px;height:13px;fill:none;stroke:currentColor;stroke-width:2.2}
+.nf__again[disabled]{opacity:.55;cursor:default}
+.nf__msg{margin:0;color:var(--nf-soft);text-shadow:0 1px 3px rgba(0,0,0,.9);max-width:46ch}
+.nf__evil{margin:0;max-width:44ch;padding-left:12px;border-left:3px solid var(--accent);font-size:var(--t-sm);font-style:italic;color:var(--nf-soft);text-shadow:0 1px 2px rgba(0,0,0,.8)}
+.nf__evil span{display:block;font-style:normal;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--nf-mute)}
+.nf__psst{justify-self:end;padding:8px 0;font-size:11px;letter-spacing:.08em;color:var(--nf-mute);text-decoration:none;opacity:.7}
+.nf__psst:hover,.nf__psst:focus-visible{color:var(--accent);opacity:1}
+
+.nf-note{padding-block:6px 14px}
+
+@media (max-width:860px){
+  .nf{--rigw:118vw;--dirt:30px}
+  .nf__top{grid-template-columns:minmax(0,1fr);align-items:start;gap:18px}
+  .nf__go{min-height:58px;padding:10px 12px}
+  .nf__track{height:calc(var(--righ) + var(--dirt) + 52px)}
+}
+@media (max-width:600px){
+  .nf__h1 .a{font-size:24px}
+  .nf__h1 .b{font-size:clamp(88px,30vw,128px)}
+  .nf__lede{font-size:var(--t-sm)}
+  .nf__msg{flex-basis:100%}
+}
+</style>
+</head>
+<body>
+<div data-hm-header data-current=""></div>
+<main id="main">
+  <!-- En Shopify: plantilla 404 del tema (responde con estado 404). Textos, distancia y salidas = ajustes de la sección. -->
+  <section class="nf" id="nf" aria-labelledby="nf-title">
+    <div class="nf__sky" aria-hidden="true">
+      <i class="nf__storm"></i><i class="nf__clouds"></i>
+      <svg class="nf__bolt" viewBox="0 0 120 420"><path d="M70 0 L38 150 L66 150 L22 300 L52 300 L8 420 L96 250 L64 250 L104 120 L74 120 L98 0 Z" fill="#F7F9FF"/></svg>
+      <i class="nf__flash"></i>
+    </div>
+
+    <div class="wrap nf__top">
+      <div class="nf__copy">
+        <p class="nf__k"><b>Error 404</b> · Page not found</p>
+        <h1 class="nf__h1" id="nf-title"><span class="a">Pull ended at</span> <span class="b">404<small>ft</small></span></h1>
+        <p class="nf__lede"><b>This pull ended early.</b> The page you want isn't on the track: it moved, or it never made the run.</p>
+        <p class="nf__evil"><span>“The Evil One” says</span>You pulled off the track. Happens to the best of us. I once took out a fence post.</p>
+        <form class="nf__form" action="search.html" method="get" role="search">
+          <label class="vh" for="nf-q">Search the site</label>
+          <input class="input" id="nf-q" name="q" type="search" placeholder="Search tees, hoodies..." autocomplete="off" enterkeyhint="search">
+          <button class="btn" type="submit">Search</button>
+        </form>
+      </div>
+
+      <nav class="nf__exits" aria-labelledby="nf-go-h">
+        <h2 id="nf-go-h">Get back on track</h2>
+        <ul>
+          <li><a class="nf__go nf__go--main" href="shop.html"><b>Shop</b><small>Tees, hoodies, caps</small><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          <li><a class="nf__go" href="schedule.html"><b>Schedule</b><small>Where we pull next</small><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          <li><a class="nf__go" href="story.html"><b>Our Story</b><small>How it got built</small><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+          <li><a class="nf__go" href="index.html"><b>Home</b><small>Back to the start line</small><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></li>
+        </ul>
+        <a class="nf__psst" href="3208.html">Psst... 3208</a>
+      </nav>
+    </div>
+
+    <div class="nf__track" id="nf-track">
+      <div class="nf__read">
+        <p class="nf__dist" aria-hidden="true"><small>Distance</small><span id="nf-ft">404</span> ft</p>
+        <button class="nf__again" type="button" id="nf-again"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 4v5h-5"/></svg><span id="nf-again-t">Pull again</span></button>
+        <p class="nf__msg" id="nf-msg" role="status" aria-live="polite"></p>
+      </div>
+      <div class="nf__dirt" aria-hidden="true"></div>
+      <div class="nf__rail" id="nf-rail" aria-hidden="true"></div>
+      <div id="nf-ticks" aria-hidden="true"></div>
+      <div class="nf__flag" id="nf-flag" aria-hidden="true"><span>Full pull</span></div>
+      <svg class="nf__rig" id="nf-rig" viewBox="0 0 2700 576" overflow="visible" focusable="false" role="img" aria-label="“The Evil One” stopped on the track, short of the full pull flag">
+      <!-- el recorte del tractor trae un árbol y gente al fondo: se recortan (en Shopify, mejor exportar el PNG limpio) -->
+      <clipPath id="nfCut"><polygon points="1580,576 1580,195 1668,188 1688,170 1713,154 1738,143 1763,137 1788,134 1826,133 1826,0 2700,0 2700,576"/></clipPath>
+      <ellipse cx="1500" cy="551" rx="1190" ry="12" fill="rgba(0,0,0,.35)"/>
+      <!-- SLED de transferencia de peso (v9: 80% del tamaño de v8, escalado desde el gancho a nivel del piso). Atrás: cabina alta con operador y ruedas dobles;
+           arriba: caja de pesas que avanza sobre los rieles; al frente: la placa (pan) que se clava en la tierra; gancho y cadena. -->
+      <g class="fp__sled" transform="translate(1492 548) scale(.8) translate(-1492 -548)">
+        <!-- llanta de atrás de cada par (rueda doble) -->
+        <circle cx="200" cy="443" r="105" fill="#121211"/><circle cx="440" cy="443" r="105" fill="#121211"/>
+        <!-- chasis, rieles y armadura -->
+        <path d="M560 362 L640 404 L740 362 L840 404 L940 362 L1040 404 L1110 372" fill="none" stroke="#2C2C2A" stroke-width="12" stroke-linejoin="round"/>
+        <rect x="24" y="318" width="1420" height="44" fill="#232321" stroke="#3A3936" stroke-width="4"/>
+        <rect x="24" y="338" width="1420" height="6" fill="#F5C400"/>
+        <rect x="290" y="304" width="1120" height="14" fill="#34332F"/>
+        <line x1="290" y1="307" x2="1410" y2="307" stroke="#A9A59B" stroke-width="3"/>
+        <rect x="1398" y="276" width="16" height="42" fill="#3A3936"/>
+        <!-- pan (placa) al frente -->
+        <path d="M1100 362 H1440 L1470 420 L1452 540 H1150 L1112 468 Z" fill="#1B1B1A" stroke="#3A3936" stroke-width="4" stroke-linejoin="round"/>
+        <line x1="1150" y1="537" x2="1452" y2="537" stroke="#6B6862" stroke-width="6"/>
+        <line x1="1124" y1="468" x2="1460" y2="468" stroke="#2C2C2A" stroke-width="4"/>
+        <path class="fp__pile" d="M1452 550 Q1494 506 1546 550 Z" fill="#6A5A42"/>
+        <!-- lengua y gancho del sled -->
+        <path d="M1430 396 L1484 430" stroke="#2A2A28" stroke-width="20" stroke-linecap="round"/>
+        <circle cx="1492" cy="434" r="12" fill="none" stroke="#9C9A92" stroke-width="6"/>
+        <!-- llanta del frente de cada par (gira) -->
+        <g class="fp__sw" data-c="184 443"><circle cx="184" cy="443" r="105" fill="#1C1C1A"/><circle cx="184" cy="443" r="93" fill="none" stroke="#33322E" stroke-width="14" stroke-dasharray="12 9"/><circle cx="184" cy="443" r="50" fill="#8C8F92"/><circle cx="184" cy="443" r="18" fill="#3A3936"/><rect x="179" y="397" width="10" height="92" fill="#5E605F"/><rect x="138" y="438" width="92" height="10" fill="#5E605F"/></g>
+        <g class="fp__sw" data-c="424 443"><circle cx="424" cy="443" r="105" fill="#1C1C1A"/><circle cx="424" cy="443" r="93" fill="none" stroke="#33322E" stroke-width="14" stroke-dasharray="12 9"/><circle cx="424" cy="443" r="50" fill="#8C8F92"/><circle cx="424" cy="443" r="18" fill="#3A3936"/><rect x="419" y="397" width="10" height="92" fill="#5E605F"/><rect x="378" y="438" width="92" height="10" fill="#5E605F"/></g>
+        <!-- cabina alta del operador (atrás), con escalera y torreta -->
+        <path d="M30 318 V120 M50 318 V120 M30 300 H50 M30 270 H50 M30 240 H50 M30 210 H50 M30 180 H50 M30 150 H50" stroke="#46454F" stroke-width="5" fill="none"/>
+        <rect x="56" y="98" width="232" height="220" fill="#1E1E1C" stroke="#3A3936" stroke-width="4"/>
+        <rect x="88" y="120" width="184" height="118" fill="#5B6873"/>
+        <polygon points="196,120 236,120 170,238 130,238" fill="#fff" opacity=".1"/>
+        <!-- operador sentado, de cara al tractor: chaleco de alta visibilidad, gorra, mano en la palanca -->
+        <g class="fp__op">
+          <rect x="112" y="150" width="16" height="88" fill="#2A2C30"/>
+          <path d="M150 238 H206" stroke="#2B2E33" stroke-width="18" stroke-linecap="round"/>
+          <path d="M132 236 L138 178 Q140 168 152 168 H164 Q176 168 178 180 L182 236 Z" fill="#F5C400"/>
+          <rect x="135" y="204" width="46" height="6" fill="#E9E6DC"/>
+          <path d="M168 182 L196 206 L214 196" fill="none" stroke="#F5C400" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="158" cy="150" r="16" fill="#B48C6C"/>
+          <path d="M141 148 Q143 130 160 130 Q176 131 176 146 L190 148 Q190 152 186 152 H141 Z" fill="#141413"/>
+          <line x1="222" y1="238" x2="218" y2="196" stroke="#9C9A92" stroke-width="5"/>
+          <circle cx="217" cy="194" r="7" fill="#A3261C"/>
+          <circle cx="214" cy="197" r="6" fill="#B48C6C"/>
+        </g>
+        <path d="M88 120 H272 V238 H88 Z M180 120 V238" fill="none" stroke="#3A3936" stroke-width="6"/>
+        <rect x="40" y="82" width="264" height="22" fill="#141413"/>
+        <rect x="40" y="100" width="264" height="6" fill="#F5C400"/>
+        <rect x="150" y="62" width="30" height="20" rx="5" fill="#F5C400"/>
+        <rect x="56" y="270" width="232" height="8" fill="#F5C400"/>
+        <!-- caja de pesas grande: avanza sobre los rieles hacia el pan -->
+        <g class="fp__box">
+          <rect x="336" y="80" width="40" height="18" fill="#2A2A28"/><rect x="600" y="80" width="40" height="18" fill="#2A2A28"/>
+          <rect x="300" y="96" width="380" height="200" fill="#1F1F1D" stroke="#3A3936" stroke-width="4"/>
+          <rect x="300" y="96" width="380" height="18" fill="#F5C400"/>
+          <line x1="300" y1="152" x2="680" y2="152" stroke="#3A3936" stroke-width="4"/><line x1="300" y1="198" x2="680" y2="198" stroke="#3A3936" stroke-width="4"/><line x1="300" y1="244" x2="680" y2="244" stroke="#3A3936" stroke-width="4"/>
+          <rect x="470" y="124" width="40" height="160" fill="#2A2A28"/>
+          <circle cx="332" cy="300" r="11" fill="#9C9A92"/><circle cx="490" cy="300" r="11" fill="#9C9A92"/><circle cx="648" cy="300" r="11" fill="#9C9A92"/>
+        </g>
+      </g>
+      <!-- barra de tiro del tractor y cadena al gancho del sled -->
+      <rect x="1532" y="430" width="160" height="20" fill="#141413"/>
+      <circle cx="1540" cy="440" r="11" fill="none" stroke="#9C9A92" stroke-width="6"/>
+      <line x1="1500" y1="456" x2="1530" y2="441" stroke="#9C9A92" stroke-width="10" stroke-dasharray="12 4"/>
+      <line x1="1500" y1="456" x2="1530" y2="441" stroke="#2A2A28" stroke-width="3" stroke-dasharray="12 4"/>
+      <!-- tractor real (recorte) -->
+      <g class="nf__wheelie"><g class="nf__shake"><image clip-path="url(#nfCut)" href="img/hm-tractor-cutout.webp" x="1580" y="0" width="1120" height="576"/></g></g>
+      </svg>
+    </div>
+  </section>
+  <div class="wrap nf-note"><p class="note">Plantilla 404 del tema. El buscador usa la búsqueda de la tienda; las 4 salidas y los textos se cambian en el editor de temas. "Pull again" es solo un guiño: avanza unos pies y no carga nada. La línea de “The Evil One” es la voz del tractor; el “Psst... 3208” lleva a la página escondida del código.</p></div>
+</main>
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var nf = document.getElementById('nf'), track = document.getElementById('nf-track'), rig = document.getElementById('nf-rig');
+  var flag = document.getElementById('nf-flag'), rail = document.getElementById('nf-rail'), ticks = document.getElementById('nf-ticks');
+  var ftEl = document.getElementById('nf-ft'), msg = document.getElementById('nf-msg'), btn = document.getElementById('nf-again'), btnT = document.getElementById('nf-again-t');
+  var START = 404, FULL = 440, dist = START, pulls = 0, busy = null;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)');
+  var LINES = ['Gained {n} ft. Still no page out here.', 'Another {n} ft. The page is still a no-show.', '{n} more ft. The crew checked: nothing on the track.', 'Up {n} ft. Almost at the flag.'];
+
+  /* alto real de anuncio + barra de boceto + header: la sección llena el resto de la pantalla */
+  function fitTop() { var t = nf.getBoundingClientRect().top + window.scrollY; nf.style.setProperty('--hdr-top', Math.max(0, Math.round(t)) + 'px'); }
+
+  function geo() { var w = track.clientWidth, padR = Math.max(44, Math.min(140, w * .07)); return { w: w, span: w - padR }; }
+  function xOf(ft, g) { return ft / FULL * g.span; }
+  function place(instant) {
+    var g = geo(), rw = rig.getBoundingClientRect().width || 1;
+    if (instant) { rig.classList.add('no-anim'); rail.classList.add('no-anim'); }
+    rig.style.setProperty('--x', Math.round(xOf(dist, g) - rw * .996) + 'px');
+    rail.style.setProperty('--railw', Math.round(xOf(dist, g) - rw * .58) > 0 ? Math.round(xOf(dist, g) - rw * .58) + 'px' : '0px');
+    flag.style.left = Math.round(xOf(FULL, g)) + 'px';
+    var step = g.w < 600 ? 200 : 100, h = '';
+    for (var f = step; f < FULL - 20; f += step) h += '<span class="nf__tick" style="left:' + Math.round(xOf(f, g)) + 'px">' + f + ' FT</span>';
+    ticks.innerHTML = h;
+    if (instant) { rig.getBoundingClientRect(); rail.getBoundingClientRect(); rig.classList.remove('no-anim'); rail.classList.remove('no-anim'); }
+  }
+
+  function setBtn() { btnT.textContent = dist >= FULL ? 'Reset to 404' : 'Pull again'; }
+  btn.addEventListener('click', function () {
+    if (busy) return;
+    var still = reduce.matches;
+    if (dist >= FULL) {
+      dist = START; pulls = 0; nf.classList.remove('is-full');
+      msg.textContent = 'Back at 404 ft. Same page, same problem.';
+    } else {
+      var n = Math.min(FULL - dist, 6 + Math.floor(Math.random() * 7));
+      if (pulls >= 3) n = FULL - dist;                        /* el cuarto jalón siempre llega a la bandera */
+      dist += n; pulls++;
+      if (dist >= FULL) {
+        msg.textContent = 'Full pull! This thing is f#ck!ng evil. The page still isn\'t here, but the shop is open.';
+        if (!still) { nf.classList.remove('is-strike'); void nf.offsetWidth; nf.classList.add('is-strike'); }
+        nf.classList.add('is-full');
+      } else msg.textContent = LINES[(pulls - 1) % LINES.length].replace('{n}', n);
+    }
+    ftEl.textContent = dist;
+    place(still);
+    setBtn();
+    if (!still) { nf.classList.add('is-pulling'); busy = setTimeout(function () { nf.classList.remove('is-pulling'); busy = null; }, 1300); }
+  });
+
+  fitTop(); place(true); setBtn();
+  var rz = null; window.addEventListener('resize', function () { clearTimeout(rz); rz = setTimeout(function () { fitTop(); place(true); }, 120); });
+  window.addEventListener('load', function () { fitTop(); place(true); });
+})();
+</script>
+</body>
+</html>

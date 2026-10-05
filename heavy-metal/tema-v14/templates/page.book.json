@@ -1,0 +1,78 @@
+{
+  "sections": {
+    "book": {
+      "type": "hm-book",
+      "blocks": {
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "title": "Tell us about it",
+            "text": "Fill in the form below: date, place, kind of event. That’s the hard part."
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "title": "Get a quote",
+            "text": "We check the date and reply with availability and a quote within 2 business days."
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "title": "Lock the date",
+            "text": "We confirm the details in writing, then haul “The Evil One” in. Earplugs recommended."
+          }
+        },
+        "requirement_4": {
+          "type": "requirement",
+          "settings": {
+            "label": "Space"
+          }
+        },
+        "requirement_5": {
+          "type": "requirement",
+          "settings": {
+            "label": "Trailer access"
+          }
+        },
+        "requirement_6": {
+          "type": "requirement",
+          "settings": {
+            "label": "Notice"
+          }
+        },
+        "requirement_7": {
+          "type": "requirement",
+          "settings": {
+            "label": "For a pull",
+            "value": "A pulling track and sled on site, cleared for an exhibition run"
+          }
+        },
+        "requirement_8": {
+          "type": "requirement",
+          "settings": {
+            "label": "Travel"
+          }
+        }
+      },
+      "block_order": [
+        "step_1",
+        "step_2",
+        "step_3",
+        "requirement_4",
+        "requirement_5",
+        "requirement_6",
+        "requirement_7",
+        "requirement_8"
+      ],
+      "settings": {
+        "sponsor_url": "/pages/sponsors",
+        "log_url": "/blogs/pit-log"
+      }
+    }
+  },
+  "order": [
+    "book"
+  ]
+}

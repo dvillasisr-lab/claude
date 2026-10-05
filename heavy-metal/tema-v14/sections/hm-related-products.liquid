@@ -1,0 +1,103 @@
+{%- liquid
+  assign view_all = routes.all_products_collection_url
+  if collection
+    assign view_all = collection.url
+  elsif product.collections.size > 0
+    assign view_all = product.collections.first.url
+  endif
+-%}
+<section
+  class="sect hm-related"
+  aria-labelledby="hm-like-t-{{ section.id }}"
+  {% unless recommendations.performed? and recommendations.products_count > 0 %}
+    data-hm-pending
+  {% endunless %}
+>
+  <div
+    class="wrap"
+    data-hm-related
+    data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.limit }}&intent=related"
+  >
+    {%- if recommendations.performed? and recommendations.products_count > 0 -%}
+      <div class="sect-head">
+        <h2 class="h2" id="hm-like-t-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+        <a class="link" href="{{ view_all }}">View all</a>
+      </div>
+      <div class="pgrid">
+        {%- for rec in recommendations.products -%}
+          {%- render 'hm-card', product: rec, lazy: true -%}
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <h2 class="vh" id="hm-like-t-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+  </div>
+</section>
+
+{% javascript %}
+  (function () {
+    function load(el) {
+      if (!el || el.hmLoaded) return;
+      el.hmLoaded = true;
+      var go = function () {
+        fetch(el.getAttribute('data-url'))
+          .then(function (r) { return r.text(); })
+          .then(function (html) {
+            var doc = new DOMParser().parseFromString(html, 'text/html');
+            var next = doc.querySelector('[data-hm-related]');
+            var s = el.closest('.hm-related');
+            if (next && next.querySelector('.pgrid')) { el.innerHTML = next.innerHTML; if (s) s.removeAttribute('data-hm-pending'); }
+          })
+          .catch(function () {});
+      };
+      if (!('IntersectionObserver' in window)) { go(); return; }
+      var io = new IntersectionObserver(function (en) {
+        if (en[0].isIntersecting) { io.disconnect(); go(); }
+      }, { rootMargin: '0px 0px 400px 0px' });
+      io.observe(el.closest('.shopify-section') || el.parentNode);
+    }
+    function init(scope) {
+      [].forEach.call((scope || document).querySelectorAll('[data-hm-related]'), load);
+    }
+    document.addEventListener('shopify:section:load', function (e) { init(e.target); });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { init(); });
+    else init();
+  })();
+{% endjavascript %}
+
+{% stylesheet %}
+  .hm-related[data-hm-pending] { display: none; }
+  .hm-related .sect-head .h2 { font-size: min(var(--t-h2), 24px); }
+  @media (max-width: 1024px) { .hm-related .pgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM You may also like",
+  "tag": "div",
+  "class": "hm-section hm-related-products",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "You may also like"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Products",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM You may also like"
+    }
+  ]
+}
+{% endschema %}

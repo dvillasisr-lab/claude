@@ -1,0 +1,200 @@
+[
+  {
+    "handle": "tractor",
+    "fields": [
+      {
+        "key": "name",
+        "value": "On the tractor"
+      },
+      {
+        "key": "icon",
+        "value": "tractor"
+      },
+      {
+        "key": "description",
+        "value": "On “The Evil One” itself, in every photo and video."
+      },
+      {
+        "key": "package_details",
+        "value": "[\"Title: biggest logo\"]"
+      },
+      {
+        "key": "status",
+        "value": "active"
+      },
+      {
+        "key": "order",
+        "value": "1"
+      },
+      {
+        "key": "updated",
+        "value": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "handle": "trailer",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Trailer and pit area"
+      },
+      {
+        "key": "icon",
+        "value": "trailer"
+      },
+      {
+        "key": "description",
+        "value": "Where fans line up to see the tractor up close."
+      },
+      {
+        "key": "package_details",
+        "value": "[\"Title: top logo\", \"Pit: logo\", \"Crew: supporters board\"]"
+      },
+      {
+        "key": "status",
+        "value": "active"
+      },
+      {
+        "key": "order",
+        "value": "2"
+      },
+      {
+        "key": "updated",
+        "value": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "handle": "gear",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Team shirts and gear"
+      },
+      {
+        "key": "icon",
+        "value": "shirt"
+      },
+      {
+        "key": "description",
+        "value": "Shirts and merch the crew and fans wear."
+      },
+      {
+        "key": "package_details",
+        "value": "[\"Title: top logo\", \"Pit: shirt sleeve\"]"
+      },
+      {
+        "key": "status",
+        "value": "active"
+      },
+      {
+        "key": "order",
+        "value": "3"
+      },
+      {
+        "key": "updated",
+        "value": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "handle": "web",
+    "fields": [
+      {
+        "key": "name",
+        "value": "This website"
+      },
+      {
+        "key": "icon",
+        "value": "web"
+      },
+      {
+        "key": "description",
+        "value": "Our sponsor list, seen by every fan who shops the merch."
+      },
+      {
+        "key": "package_details",
+        "value": "[\"Title: top billing\", \"Pit: logo and link\", \"Crew: listed\"]"
+      },
+      {
+        "key": "status",
+        "value": "active"
+      },
+      {
+        "key": "order",
+        "value": "4"
+      },
+      {
+        "key": "updated",
+        "value": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "handle": "social",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Social media"
+      },
+      {
+        "key": "icon",
+        "value": "social"
+      },
+      {
+        "key": "description",
+        "value": "Posts from the track, the pits and the shop."
+      },
+      {
+        "key": "package_details",
+        "value": "[\"Title: every post\", \"Pit: monthly\", \"Crew: thank-you post\"]"
+      },
+      {
+        "key": "status",
+        "value": "active"
+      },
+      {
+        "key": "order",
+        "value": "5"
+      },
+      {
+        "key": "updated",
+        "value": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "handle": "announcer",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Announcer mentions"
+      },
+      {
+        "key": "icon",
+        "value": "mic"
+      },
+      {
+        "key": "description",
+        "value": "Your name over the PA when the tractor hooks."
+      },
+      {
+        "key": "package_details",
+        "value": "[\"Title: every pull\", \"Pit: select pulls\"]"
+      },
+      {
+        "key": "status",
+        "value": "active"
+      },
+      {
+        "key": "order",
+        "value": "6"
+      },
+      {
+        "key": "updated",
+        "value": "2026-10-01"
+      }
+    ]
+  }
+]

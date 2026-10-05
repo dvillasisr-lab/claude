@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cómo editas todo · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Manual de la dueña: dónde se edita en Shopify cada cosa dinámica de la tienda, el año de temporada, la tabla de Last updated, el calendario anual y los íconos de prenda.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Manual de la dueña: mismo sistema que la tienda (banner corto, secciones pegadas), pensado para consultar rápido.
+   Mapa filtrable de tarjetas, demo del ajuste Temporada, checklist anual y galería de íconos. */
+html,body{overflow-x:clip}
+.ed-banner{background:var(--surface);border-bottom:1px solid var(--line)}
+.ed-banner .wrap{padding-block:28px 24px;display:grid;gap:10px}
+.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px;font-size:var(--t-xs);color:var(--mute)}
+.crumbs li+li::before{content:"/";margin-right:4px}
+.crumbs a{color:var(--soft);text-underline-offset:3px}
+.crumbs [aria-current]{color:var(--ink);font-weight:600}
+.ed-only{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--accent);padding:3px 8px;justify-self:start}
+
+.asks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:8px;max-width:1400px}
+@media (max-width:1100px){.asks{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ask{border:1px solid var(--line);background:var(--bg);padding:14px 16px;display:grid;gap:6px;align-content:start}
+.ask q{font-size:var(--t-sm);color:var(--soft);font-style:italic;quotes:"“" "”"}
+.ask p{margin:0;font-size:var(--t-sm);color:var(--ink)}
+.ask b{font-weight:700}
+@media (max-width:760px){.asks{grid-template-columns:minmax(0,1fr)}}
+
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.toc a{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border:1px solid var(--line);background:var(--surface);font-size:var(--t-xs);font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-decoration:none;color:var(--ink)}
+.toc a:hover{border-color:var(--ink)}
+.toc a span{color:var(--mute);margin-right:6px;font-variant-numeric:tabular-nums}
+
+section[id]{scroll-margin-top:calc(var(--header) + 12px)}
+.kick{display:flex;align-items:baseline;gap:10px}
+.kick i{font-style:normal;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h2);color:var(--mute)}
+.sect-head p{margin:0;color:var(--soft);font-size:var(--t-sm);max-width:70ch;flex-basis:100%}
+
+/* las 3 puertas */
+.doors{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.door{background:var(--surface);border:1px solid var(--line);padding:18px;display:grid;gap:8px;align-content:start}
+.door__n{width:28px;height:28px;display:grid;place-items:center;background:var(--accent);color:var(--ink);font-weight:800;font-size:var(--t-xs)}
+.door p{margin:0;font-size:var(--t-sm);color:var(--soft)}
+.door ul{margin:0;padding-left:18px;font-size:var(--t-xs);color:var(--soft);display:grid;gap:2px}
+@media (max-width:860px){.doors{grid-template-columns:minmax(0,1fr)}}
+
+/* rutas del admin */
+.path{display:inline-flex;flex-wrap:wrap;align-items:center;gap:2px 0;font-size:var(--t-xs);font-weight:600;color:var(--ink)}
+.path span{background:var(--tile);padding:2px 6px;border-radius:3px;white-space:nowrap}
+.path span+span{margin-left:16px;position:relative}
+.path span+span::before{content:"›";position:absolute;left:-11px;top:1px;color:var(--mute);font-weight:400}
+.path{row-gap:6px}
+
+/* temporada */
+.season{display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:clamp(20px,4vw,56px);align-items:start}
+.adm{background:var(--surface);border:1px solid var(--line);box-shadow:0 18px 40px -30px rgba(0,0,0,.4)}
+.adm__bar{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:8px 12px;background:#1A1A1A;color:#E6E3DA;font-size:11px}
+.adm__bar b{color:#fff}
+.adm__body{padding:16px;display:grid;gap:10px}
+.adm__body .field label{color:var(--ink)}
+.adm__hint{margin:0;font-size:var(--t-xs);color:var(--mute)}
+.yr-in{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-h1);font-weight:700;max-width:160px;font-variant-numeric:tabular-nums}
+.preview{display:grid;gap:8px}
+.preview h3{margin:0}
+.pv{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.pv li{display:grid;grid-template-columns:150px minmax(0,1fr);gap:4px 16px;padding:10px 0;border-bottom:1px solid var(--line);font-size:var(--t-sm);align-items:baseline}
+.pv li>span:first-child{font-size:var(--t-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.pv b{color:var(--ink)}
+.yr{background:var(--accent);color:var(--ink);padding:0 3px;font-weight:700;font-variant-numeric:tabular-nums;transition:background .3s}
+.yr.flash{background:var(--ink);color:var(--accent)}
+.pv .fixed{background:var(--tile);padding:0 3px;font-weight:700}
+.keep{margin:0;font-size:var(--t-xs);color:var(--soft)}
+@media (max-width:860px){.season{grid-template-columns:minmax(0,1fr)}.pv li{grid-template-columns:minmax(0,1fr)}}
+
+/* mapa */
+.tools{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin-bottom:16px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{min-height:36px;padding:0 12px;border:1px solid var(--line);background:var(--surface);font-size:var(--t-xs);font-weight:700;letter-spacing:.04em;cursor:pointer;color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.chip i{font-style:normal;font-weight:600;opacity:.7}
+.find{position:relative;flex:1 1 240px;max-width:340px}
+.find .input{padding-left:36px}
+.find svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:16px;height:16px;fill:none;stroke:var(--mute);stroke-width:2;pointer-events:none}
+.count{margin:0 0 12px;font-size:var(--t-xs);color:var(--mute)}
+.map{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;list-style:none;margin:0;padding:0}
+@media (min-width:1600px){.map{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:860px){.map{grid-template-columns:minmax(0,1fr)}}
+.ec{background:var(--surface);border:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr);align-content:start;min-width:0}
+.ec__head .h3{min-width:0}
+@media (max-width:600px){.path span{white-space:normal}}
+.ec__head{display:flex;justify-content:space-between;align-items:start;gap:10px;padding:14px 16px 10px}
+.ec__head .h3{font-size:var(--t-md)}
+.tag{flex:none;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border:1px solid var(--line);color:var(--soft);white-space:nowrap}
+.tag--lista{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+.tag--tema{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.tag--auto{border-style:dashed}
+.ec__what{margin:0;padding:0 16px 10px;font-size:var(--t-sm);color:var(--soft)}
+.ec__where{padding:0 16px 12px}
+.ec__acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+.ec__acts div{padding:10px 12px;font-size:var(--t-xs);line-height:1.5;color:var(--soft)}
+.ec__acts div+div{border-left:1px solid var(--line)}
+.ec__acts dt{display:flex;align-items:center;gap:6px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);margin-bottom:4px;font-size:11px}
+.ec__acts dt svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;flex:none}
+.ec__acts dd{margin:0}
+.ec__pages{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center;border-top:1px solid var(--line);padding:8px 16px;font-size:var(--t-xs);color:var(--mute)}
+.ec__pages a{color:var(--ink);font-weight:600;text-underline-offset:3px}
+@media (max-width:600px){.ec__acts{grid-template-columns:minmax(0,1fr)}.ec__acts div+div{border-left:0;border-top:1px solid var(--line)}}
+.empty{padding:20px;border:1px dashed var(--line);font-size:var(--t-sm);color:var(--soft)}
+
+/* calendario anual */
+.cal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.phase{background:var(--surface);border:1px solid var(--line);display:grid;align-content:start}
+.phase header{padding:14px 16px;border-bottom:1px solid var(--line);display:grid;gap:2px}
+.phase header .label{color:var(--mute)}
+.phase--hot header{background:var(--ink)}
+.phase--hot header .h3{color:var(--surface)}
+.phase--hot header .label{color:var(--accent)}
+.todo{list-style:none;margin:0;padding:6px 16px 12px}
+.todo li{border-bottom:1px solid var(--line)}
+.todo li:last-child{border-bottom:0}
+.todo label{display:grid;grid-template-columns:18px minmax(0,1fr);gap:10px;align-items:start;padding:10px 0;cursor:pointer;font-size:var(--t-sm);color:var(--ink)}
+.todo input{margin-top:2px}
+.todo small{display:block;font-size:var(--t-xs);color:var(--mute);margin-top:2px}
+.todo input:checked+span{color:var(--mute);text-decoration:line-through}
+.todo input:checked+span small{text-decoration:none}
+.cal-foot{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin-top:12px}
+.cal-foot p{margin:0;font-size:var(--t-xs);color:var(--mute)}
+@media (max-width:1024px){.cal{grid-template-columns:minmax(0,1fr)}}
+
+/* íconos */
+.icons-in{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
+.icons-txt{display:grid;gap:10px;font-size:var(--t-sm);color:var(--soft)}
+.icons-txt p{margin:0}
+.icons-txt ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.icons-txt b{color:var(--ink)}
+.icons-txt code{font-size:var(--t-xs);background:var(--tile);padding:1px 5px}
+.igrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;list-style:none;margin:0;padding:0}
+.ig{background:var(--surface);border:1px solid var(--line);padding:10px;display:grid;gap:8px}
+.ig h3{margin:0;font-size:var(--t-sm)}
+.ig__row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.ig figure{margin:0;display:grid;gap:4px}
+.ig img{width:100%;height:auto;aspect-ratio:1/1;border-radius:3px}
+.ig figcaption{font-size:10px;color:var(--mute);overflow-wrap:anywhere;line-height:1.3}
+@media (max-width:1024px){.icons-in{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:760px){.igrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:420px){.igrid{grid-template-columns:minmax(0,1fr)}}
+/* 03 · Last updated */
+.lu-how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.lu-how__i{background:var(--surface);border:1px solid var(--line);padding:14px 16px;display:grid;gap:8px;align-content:start}
+.lu-how__i p{margin:0;font-size:var(--t-sm);color:var(--soft)}
+.lu-how__i b{color:var(--ink)}
+.lu-k{justify-self:start;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 6px;border:1px solid var(--line);color:var(--soft);background:var(--bg)}
+.lu-k--auto{background:var(--ink);border-color:var(--ink);color:var(--accent)}
+.lu-k--ok{background:var(--accent);border-color:var(--accent);color:var(--ink)}
+@media (max-width:1024px){.lu-how{grid-template-columns:minmax(0,1fr)}}
+.lu-today{display:flex;align-items:center;gap:8px;font-size:var(--t-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--soft)}
+.lu-today .input{width:auto;min-height:36px}
+.lu-wrap{background:var(--surface);border:1px solid var(--line)}
+.lu{width:100%;border-collapse:collapse;font-size:var(--t-sm)}
+.lu th,.lu td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--line)}
+.lu thead th{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);background:var(--bg);white-space:nowrap}
+.lu tbody tr:last-child>*{border-bottom:0}
+.lu tbody th{font-weight:700;color:var(--ink);min-width:150px}
+.lu tbody th small{display:block;font-weight:400;font-size:var(--t-xs);color:var(--mute);margin-top:2px}
+.lu td{color:var(--soft)}
+.lu td a{color:var(--ink);font-weight:600;text-underline-offset:3px;margin-right:8px;white-space:nowrap}
+.lu .path span{white-space:normal}
+.lu .fq{white-space:nowrap;font-weight:600;color:var(--ink)}
+.lu .dt{white-space:nowrap;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
+.lu .dt small{display:block;font-weight:400;color:var(--mute);font-size:var(--t-xs)}
+.lu .src{display:inline-block;margin-top:4px;font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.lu .src--auto{color:var(--ink)}
+.light{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-xs);font-weight:700;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;padding:3px 8px;border:1px solid var(--line);color:var(--ink);background:var(--bg)}
+.light::before{content:"";width:10px;height:10px;border-radius:50%;flex:none}
+.light--ok::before{background:#2F7A4A}
+.light--soon{background:#FFF6CC;border-color:#EFE1A0}
+.light--soon::before{background:var(--accent);box-shadow:inset 0 0 0 1px rgba(28,27,25,.35)}
+.light--late{background:#FBE9E7;border-color:#E8B4AE;color:var(--alert)}
+.light--late::before{background:var(--alert)}
+.lu-key{display:inline-block;margin-top:4px;font-size:10px;font-weight:400;color:var(--mute);background:var(--tile);padding:1px 5px;overflow-wrap:anywhere}
+.lu .due{display:block;margin:6px 0 8px;font-size:var(--t-xs);color:var(--mute);white-space:nowrap}
+.lu-done{min-height:30px;padding:0 10px;font-size:10px}
+@media (max-width:1100px){
+  .lu,.lu tbody,.lu tr,.lu th,.lu td{display:block}
+  .lu thead{display:none}
+  .lu tr{border-bottom:1px solid var(--line);padding:12px 14px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 16px}
+  .lu tbody tr:last-child{border-bottom:0}
+  .lu th,.lu td{border:0;padding:0}
+  .lu tbody th{grid-column:1/-1;min-width:0}
+  .lu td::before{content:attr(data-l);display:block;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:2px}
+  .lu td[data-l="Estado"]{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+  .lu td[data-l="Estado"]::before{display:none}
+  .lu .due{margin:0}
+}
+@media (max-width:520px){.lu tr{grid-template-columns:minmax(0,1fr)}}
+</style>
+</head>
+<body>
+<div data-hm-header data-current=""></div>
+<main id="main">
+  <section class="ed-banner" aria-labelledby="ed-title">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Migas"><ol><li><a href="index.html">Home</a></li><li aria-current="page">Cómo editas todo</li></ol></nav>
+      <span class="ed-only">Solo para la dueña · no sale en la tienda</span>
+      <h1 class="h1" id="ed-title">Cómo editas todo (sin código)</h1>
+      <p class="lede">Todo lo que cambia en la tienda (pulls, contadores, paquetes, bitácora, ediciones especiales, anuncios) se llena en formularios del admin de Shopify. Tú agregas, editas u ocultas; el tema lo pinta solo en cada página.</p>
+      <div class="asks">
+        <div class="ask"><q>¿Cómo hago que todo lo dinámico se pueda editar fácil para agregar, borrar o editar?</q><p><b>Cada lista es un formulario.</b> Pulls, contadores, paquetes, lugares del logo y crew son entradas de <b>Metaobjetos</b>; productos, status y cupones salen del admin; la bitácora es un <b>blog</b>; anuncios y frases son <b>bloques</b> del editor. Abajo está el mapa completo.</p></div>
+        <div class="ask"><q>¿Cómo tengo una sección en Editar tema con todos los 2026 que cada año se actualizan?</q><p><b>Es un solo ajuste:</b> Personalizar &gt; Ajustes del tema &gt; <b>Temporada</b>. Cambias el número una vez al año y todos los “2026” de la temporada cambian juntos. El copyright se pone solo con el año actual.</p></div>
+        <div class="ask"><q>Last updated tal vez debería estar en más lados; necesito una sección para saber dónde están todos esos y nunca se me pase actualizarlo.</q><p><b>Ya está en una sola tabla</b> (sección 03): cada cosa que cambia, en qué página sale, dónde se edita, cada cuánto revisarla y un <b>semáforo</b> que te dice qué está vencido hoy.</p></div>
+      </div>
+      <nav class="toc" aria-label="En esta página">
+        <a href="#puertas"><span>01</span>Las 3 puertas</a>
+        <a href="#temporada"><span>02</span>Año de temporada</a>
+        <a href="#al-dia"><span>03</span>Last updated</a>
+        <a href="#mapa"><span>04</span>Mapa de todo</a>
+        <a href="#calendario"><span>05</span>Calendario anual</a>
+        <a href="#iconos"><span>06</span>Íconos de prenda</a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- 01 · Las 3 puertas -->
+  <section class="sect" id="puertas" aria-labelledby="pu-t">
+    <div class="wrap">
+      <div class="sect-head"><h2 class="h2 kick" id="pu-t"><i>01</i>Las 3 puertas del admin</h2><p>Casi todo se edita desde uno de estos tres lugares. Si no sabes dónde está algo, búscalo en el mapa (sección 04).</p></div>
+      <div class="doors">
+        <article class="door">
+          <span class="door__n">1</span>
+          <h3 class="h3">Listas: Metaobjetos</h3>
+          <p class="path"><span>Contenido</span><span>Metaobjetos</span></p>
+          <p>Cada lista es un tipo y cada renglón una entrada con campos fijos. Llenas, guardas y la página se actualiza.</p>
+          <ul><li>Pull event, Season stats, Sponsor tier, Sponsor stat</li><li>Logo placement, Decal zone, Crew member, Tractor part</li></ul>
+        </article>
+        <article class="door">
+          <span class="door__n">2</span>
+          <h3 class="h3">Textos y bloques: Personalizar</h3>
+          <p class="path"><span>Tienda online</span><span>Temas</span><span>Personalizar</span></p>
+          <p>Lo que ves en pantalla se edita ahí mismo. Cada anuncio, frase o pregunta es un bloque: agregas, arrastras, ocultas con el ojo.</p>
+          <ul><li>Ajustes del tema: Temporada, contacto, carrito</li><li>Anuncios, cinta, FAQ, Spotify, Spec sheet, Spec tee</li></ul>
+        </article>
+        <article class="door">
+          <span class="door__n">3</span>
+          <h3 class="h3">Tienda: Productos, Blog, Menús</h3>
+          <p class="path"><span>Productos</span><span>Colecciones</span></p>
+          <p>Prendas, colecciones y la Special edition. Del mismo menú lateral salen:</p>
+          <ul><li>Contenido &gt; Entradas de blog (Pit Log), Menús, Archivos</li><li>Descuentos (cupones) · Configuración &gt; Políticas, envíos</li></ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 · Temporada -->
+  <section class="sect sect--white" id="temporada" aria-labelledby="te-t">
+    <div class="wrap">
+      <div class="sect-head"><h2 class="h2 kick" id="te-t"><i>02</i>Año de temporada: un solo ajuste</h2><p>Pruébalo: cambia el número y mira qué se actualiza en la tienda. En los textos del editor puedes escribir <b>[season]</b> y el tema pone el año de este ajuste.</p></div>
+      <div class="season">
+        <figure class="adm" style="margin:0">
+          <figcaption class="adm__bar"><span>Personalizar &gt; Ajustes del tema &gt; <b>Temporada</b></span><span>Vista previa</span></figcaption>
+          <div class="adm__body">
+            <div class="field"><label for="yr-in">Año de la temporada actual</label><input class="input yr-in" id="yr-in" type="number" inputmode="numeric" min="2020" max="2099" step="1"></div>
+            <p class="adm__hint">Cámbialo en enero, antes del primer pull, y dale Guardar arriba a la derecha.</p>
+            <button class="btn btn--ghost btn--sm" type="button" id="yr-reset" style="justify-self:start">Volver al año actual</button>
+          </div>
+        </figure>
+        <div class="preview">
+          <h3 class="h3">Qué cambia con este ajuste</h3>
+          <ul class="pv" id="pv">
+            <li><span>Anuncio de arriba</span><span>Testing season <span class="yr">2026</span>: join The Evil List</span></li>
+            <li><span>Schedule</span><span><span class="yr">2026</span> pulls · filtro de año abre en <span class="yr">2026</span></span></li>
+            <li><span>Contadores</span><span>Season <span class="yr">2026</span>: competitions, exhibitions, wins</span></li>
+            <li><span>Pit Log</span><span>Filtro de año abre en <span class="yr">2026</span></span></li>
+            <li><span>Sponsors</span><span><span class="yr">2026</span> sponsorship packages</span></li>
+            <li><span>Buscador</span><span>Testing season <span class="yr">2026</span> on the NTPA and PPL Badger State circuits</span></li>
+          </ul>
+          <h3 class="h3" style="margin-top:10px">Qué NO cambia (a propósito)</h3>
+          <ul class="pv">
+            <li><span>Copyright</span><span>© <span class="fixed" id="yr-now">2026</span> Heavy Metal Pro Stock: “The Evil One”. Usa el año de hoy, solo.</span></li>
+            <li><span>Historia</span><span><span class="fixed">2014</span> la idea, <span class="fixed">Feb 2020</span> el primer tornillo: fechas fijas.</span></li>
+            <li><span>Historial</span><span>Pulls, contadores y entradas del Pit Log de años pasados se quedan en su año.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · Last updated: todo lo que se debe mantener al día -->
+  <section class="sect" id="al-dia" aria-labelledby="lu-t">
+    <div class="wrap">
+      <div class="sect-head"><h2 class="h2 kick" id="lu-t"><i>03</i>Last updated: todo lo que se debe mantener al día</h2><p>Cada cosa que cambia en la tienda, en qué página sale su “Last updated”, dónde se edita y cada cuánto revisarla. El semáforo se calcula contra la fecha de hoy: vencidos primero.</p></div>
+      <div class="lu-how">
+        <div class="lu-how__i"><span class="lu-k lu-k--auto">Automática</span><p><b>Metaobjetos y Pit Log:</b> Shopify guarda sola la fecha cada vez que das <b>Guardar</b> en una entrada (pull, contador, paquete) o en un post del blog. El tema la toma de ahí y pinta “Last updated: Oct 1, 2026”. No hay fecha que escribir.</p></div>
+        <div class="lu-how__i"><span class="lu-k">A mano</span><p><b>Políticas y textos de Personalizar</b> (FAQ, playlist, anuncios, año) no guardan fecha propia. Ahí cambias la fecha tú: arriba del texto de la política o en el campo “Last updated” de la sección.</p></div>
+        <div class="lu-how__i"><span class="lu-k lu-k--ok">Semáforo</span><p><b>Al día</b>: dentro del plazo. <b>Revisar</b>: le queda poco (último cuarto del plazo). <b>Vencido</b>: ya pasó. De noviembre a abril no hay pulls, así que lo de “después de cada pull” se mide por temporada.</p></div>
+      </div>
+      <div class="tools lu-tools">
+        <div class="chips" role="group" aria-label="Filtrar por estado" id="lu-chips"></div>
+        <div class="lu-today"><label for="lu-date">Fecha de hoy</label><input class="input" id="lu-date" type="date"><button class="btn btn--ghost btn--sm" type="button" id="lu-now">Hoy</button></div>
+      </div>
+      <p class="count" id="lu-count" role="status" aria-live="polite"></p>
+      <div class="lu-wrap">
+        <table class="lu">
+          <caption class="vh">Contenido con fecha Last updated y su estado</caption>
+          <thead><tr><th scope="col">Qué cambia</th><th scope="col">Dónde sale</th><th scope="col">Dónde se edita</th><th scope="col">Cada cuánto</th><th scope="col">Last updated</th><th scope="col">Estado</th></tr></thead>
+          <tbody id="lu-body"></tbody>
+        </table>
+      </div>
+      <div class="cal-foot"><button class="btn btn--ghost btn--sm" type="button" id="lu-reset">Volver a las fechas de ejemplo</button><p>Fechas de ejemplo. “Ya lo actualicé” simula darle Guardar en el admin (se guarda en este navegador).</p></div>
+    </div>
+  </section>
+
+  <!-- 04 · Mapa -->
+  <section class="sect sect--white" id="mapa" aria-labelledby="ma-t">
+    <div class="wrap">
+      <div class="sect-head"><h2 class="h2 kick" id="ma-t"><i>04</i>Mapa de todo lo editable</h2><p>Qué es, dónde está en el admin, cómo agregar, editar y borrar u ocultar, y en qué páginas se ve. Filtra por tipo o busca.</p></div>
+      <div class="tools">
+        <div class="chips" role="group" aria-label="Filtrar por tipo" id="chips"></div>
+        <div class="find"><label class="vh" for="find">Buscar en el mapa</label><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input class="input" id="find" type="search" placeholder="Buscar: pulls, sold out, menú..." autocomplete="off"></div>
+      </div>
+      <p class="count" id="count" role="status" aria-live="polite"></p>
+      <ul class="map" id="map"></ul>
+      <p class="empty" id="map-empty" hidden>Nada coincide. Prueba otra palabra o elige “Todo”.</p>
+      <p class="note">Los tipos de metaobjeto (Pull event, Season stats, Sponsor tier, Sponsor stat, Logo placement, Decal zone, Crew member, Tractor part), los metacampos de Special edition y las colecciones automáticas los dejamos creados al montar el tema. Tú solo llenas entradas; no tienes que tocar Configuración &gt; Datos personalizados.</p>
+    </div>
+  </section>
+
+  <!-- 05 · Calendario anual -->
+  <section class="sect" id="calendario" aria-labelledby="ca-t">
+    <div class="wrap">
+      <div class="sect-head"><h2 class="h2 kick" id="ca-t"><i>05</i>Calendario anual del dueño</h2><p>Lo que toca actualizar cada temporada. Las palomitas se guardan en este navegador para que lleves la cuenta.</p></div>
+      <div class="cal" id="cal"></div>
+      <div class="cal-foot"><button class="btn btn--ghost btn--sm" type="button" id="cal-reset">Empezar temporada nueva (borrar palomitas)</button><p id="cal-status" role="status" aria-live="polite"></p></div>
+    </div>
+  </section>
+
+  <!-- 06 · Íconos -->
+  <section class="sect sect--white" id="iconos" aria-labelledby="ic-t">
+    <div class="wrap">
+      <div class="sect-head"><h2 class="h2 kick" id="ic-t"><i>06</i>Íconos de prenda</h2><p>Placeholders para productos y colecciones mientras no hay mockups o fotos reales.</p></div>
+      <div class="icons-in">
+        <div class="icons-txt">
+          <p><b>Son genéricos: sin logo, sin texto y sin “Heavy Metal”.</b> Solo la silueta de la prenda en tres colores, sobre el mismo fondo hueso de las tarjetas de la tienda.</p>
+          <ul>
+            <li>6 prendas: playera, sudadera, gorra, gorro, sticker y koozie.</li>
+            <li>3 colores: negro, gris y hueso.</li>
+            <li>SVG cuadrado de 1000 × 1000 px: se ve nítido en cualquier tamaño.</li>
+          </ul>
+          <p><b>Dónde están:</b> en la carpeta <code>img/icons</code> del proyecto (18 archivos). Este visor no deja descargar, así que tómalos de esa carpeta.</p>
+          <p><b>Cómo usarlos:</b> súbelos en Contenido &gt; Archivos y elígelos como imagen de un producto o colección que todavía no tiene foto. Cuando Printify genere el mockup real, cambias la imagen y listo.</p>
+        </div>
+        <ul class="igrid" id="igrid"></ul>
+      </div>
+    </div>
+  </section>
+</main>
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var NOW = new Date().getFullYear(), SEASON = window.HM_SEASON || NOW;
+
+  /* ---------- 02 · Temporada (demo del ajuste global) ---------- */
+  var yin = $('yr-in'); yin.value = SEASON; $('yr-now').textContent = NOW;
+  function setYr(v) {
+    v = parseInt(v, 10); if (!(v >= 2020 && v <= 2099)) return;
+    document.querySelectorAll('#pv .yr').forEach(function (el) { if (el.textContent !== String(v)) { el.textContent = v; el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 350); } });
+  }
+  yin.addEventListener('input', function () { setYr(this.value); });
+  $('yr-reset').addEventListener('click', function () { yin.value = SEASON; setYr(SEASON); yin.focus(); });
+  setYr(SEASON);
+
+  /* ---------- 03 · Last updated: todo lo que se debe mantener al día ----------
+     Un renglón por cosa con fecha. En Shopify: src 'auto' = fecha de edición del metaobjeto, metacampo o post (la guarda Shopify al dar Guardar);
+     'mano' = fecha que la dueña escribe (políticas y textos de Personalizar). Cada página marca el lugar con un comentario last-updated: k (k = la llave de cada renglón) */
+  var FQ = { pull: ['Después de cada pull', 14], mes: ['Mensual', 31], temp: ['Cada temporada', 365] };
+  var LU = [
+    { n: 'Calendario de pulls', k: 'schedule', s: 'Pull event: fechas, estado y resultado', p: [['Schedule', 'schedule.html'], ['Home', 'index.html']], w: ['Contenido', 'Metaobjetos', 'Pull event'], f: 'pull', d: '2026-09-21', src: 'auto' },
+    { n: 'Galería', k: 'gallery', s: 'Un álbum por evento: fotos y videos de YouTube. La fecha es la del álbum más nuevo', p: [['Gallery', 'gallery.html']], w: ['Contenido', 'Metaobjetos', 'Album'], f: 'pull', d: '2026-10-01', src: 'auto' },
+    { n: 'Book the team', k: 'book', s: 'Opciones (Booking option), requisitos [pending] y número de exhibiciones', p: [['Book the team', 'book.html']], w: ['Personalizar', 'Book the team'], f: 'temp', d: '2026-10-01', src: 'mano' },
+    { n: 'Pit Log', k: 'pit-log', s: 'Un post por pull, exhibición o prueba', p: [['Pit Log', 'log.html'], ['Home', 'index.html']], w: ['Contenido', 'Entradas de blog', 'Pit Log'], f: 'pull', d: '2026-09-22', src: 'auto' },
+    { n: 'Contadores de temporada', k: 'season-stats', s: 'Competitions, exhibitions y wins (0 sale como “Coming soon”); en Pit Log también test days', p: [['Home', 'index.html'], ['Our Story', 'story.html']], w: ['Contenido', 'Metaobjetos', 'Season stats'], f: 'pull', d: '2026-09-08', src: 'auto' },
+    { n: 'Paquetes de patrocinio', k: 'sponsor-packages', s: 'Title Partner, Pit Partner, Crew Supporter: precio y beneficios', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Sponsor tier'], f: 'temp', d: '2026-02-10', src: 'auto' },
+    { n: 'Stats de patrocinio', k: 'sponsor-stats', s: 'Cifras estimadas (est.): pulls, estados y fans por pull. De aquí se calcula sola la frase de venta (pulls × fans)', p: [['Sponsors', 'sponsors.html'], ['Home', 'index.html']], w: ['Contenido', 'Metaobjetos', 'Sponsor stat'], f: 'temp', d: '2026-10-01', src: 'auto' },
+    { n: 'Lugares del logo', k: 'logo-placements', s: 'Team gear, tráiler, sitio, redes, tractor, locutor', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Logo placement'], f: 'temp', d: '2026-02-10', src: 'auto' },
+    { n: 'Calcomanías', k: 'decal-zones', s: 'Zonas del mapa de calcomanías del tractor', p: [['Sponsors', 'sponsors.html']], w: ['Contenido', 'Metaobjetos', 'Decal zone'], f: 'temp', d: '2025-10-05', src: 'auto' },
+    { n: 'Playlist', k: 'playlist', s: 'Walk-up song: Fear of the Dark, o la playlist del equipo', p: [['Our Story', 'story.html'], ['FAQ', 'faq.html']], w: ['Personalizar', 'Our Story', 'Walk-up song'], f: 'mes', d: '2026-08-20', src: 'mano' },
+    { n: 'Ficha técnica', k: 'spec-sheet', s: 'Motor, cilindrada, peso, llantas, carrocería', p: [['The Machine', 'machine.html']], w: ['Personalizar', 'The Machine', 'Spec sheet'], f: 'temp', d: '2026-03-15', src: 'mano' },
+    { n: 'Políticas', k: 'policy-*', s: 'Privacy, Terms, Refund, Shipping, Contact, Accessibility, Choices, Cookies', p: [['Policies', 'policies.html?p=privacy']], w: ['Configuración', 'Políticas'], f: 'temp', d: '2026-10-01', src: 'mano' },
+    { n: 'FAQ', k: 'faq', s: 'Preguntas del Help Center', p: [['FAQ', 'faq.html']], w: ['Personalizar', 'FAQ', 'Last updated'], f: 'mes', d: '2026-09-25', src: 'mano' },
+    { n: 'Edición especial', k: 'special-edition', s: 'Fechas, historia y si sigue a la venta', p: [['Special edition', 'limited.html'], ['Shop', 'shop.html?cat=limited']], w: ['Productos', 'el producto', 'Metacampos'], f: 'mes', d: '2026-09-05', src: 'auto' },
+    { n: 'Anuncios', k: 'announcements', s: 'Mensajes de la barra negra de arriba', p: [['Todas las páginas', 'index.html']], w: ['Personalizar', 'Encabezado', 'Barra de anuncios'], f: 'mes', d: '2026-09-12', src: 'mano' },
+    { n: 'Año de temporada', k: 'season', s: 'Un solo número para todos los “' + SEASON + '”', p: [['Todas las páginas', 'index.html']], w: ['Personalizar', 'Ajustes del tema', 'Temporada'], f: 'temp', d: '2026-01-12', src: 'mano' }
+  ];
+  var LUKEY = 'hm-lu', luOver = {};
+  try { luOver = JSON.parse(localStorage.getItem(LUKEY) || '{}') || {}; } catch (e) { luOver = {}; }
+  function iso(dt) { return dt.getFullYear() + '-' + ('0' + (dt.getMonth() + 1)).slice(-2) + '-' + ('0' + dt.getDate()).slice(-2); }
+  function parse(v) { var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || ''); return m ? new Date(+m[1], +m[2] - 1, +m[3], 12) : null; }
+  function fmtEs(dt) { return dt.toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' }); }
+  var DAY = 864e5, luCur = 'all', luFocus = null;
+  $('lu-date').value = iso(new Date());
+  function luState(it, today) {
+    var last = parse(luOver[it.n] || it.d), k = it.f, mo = today.getMonth();
+    if (k === 'pull' && (mo >= 10 || mo <= 3)) k = 'temp'; /* noviembre a abril: sin pulls */
+    var days = FQ[k][1], due = new Date(last.getTime() + days * DAY), warn = Math.max(3, Math.round(days / 4));
+    var left = Math.round((due - today) / DAY), age = Math.round((today - last) / DAY);
+    var st = left < 0 ? 'late' : left <= warn ? 'soon' : 'ok';
+    return { last: last, due: due, left: left, age: age, st: st, off: k !== it.f };
+  }
+  var LBL = { late: 'Vencido', soon: 'Revisar', ok: 'Al día' };
+  function luRender() {
+    var today = parse($('lu-date').value) || parse(iso(new Date()));
+    var rows = LU.map(function (it, i) { return { it: it, i: i, r: luState(it, today) }; });
+    var cnt = { late: 0, soon: 0, ok: 0 }; rows.forEach(function (x) { cnt[x.r.st]++; });
+    var ORD = { late: 0, soon: 1, ok: 2 };
+    rows.sort(function (a, b) { return ORD[a.r.st] - ORD[b.r.st] || a.r.due - b.r.due; });
+    var list = rows.filter(function (x) { return luCur === 'all' || x.r.st === luCur; });
+    $('lu-chips').innerHTML = [['all', 'Todo', LU.length], ['late', 'Vencido', cnt.late], ['soon', 'Revisar', cnt.soon], ['ok', 'Al día', cnt.ok]].map(function (c) {
+      return '<button class="chip" type="button" data-lu="' + c[0] + '" aria-pressed="' + (c[0] === luCur) + '">' + c[1] + ' <i>' + c[2] + '</i></button>';
+    }).join('');
+    $('lu-body').innerHTML = list.map(function (x) {
+      var it = x.it, r = x.r;
+      var when = r.left < 0 ? 'Venció hace ' + (-r.left) + (r.left === -1 ? ' día' : ' días') : r.left === 0 ? 'Vence hoy' : 'Vence en ' + r.left + (r.left === 1 ? ' día' : ' días');
+      return '<tr data-n="' + esc(it.n) + '"><th scope="row" tabindex="-1">' + esc(it.n) + '<small>' + esc(it.s) + '</small><code class="lu-key" title="Comentario en el código de la página">last-updated: ' + esc(it.k) + '</code></th>' +
+        '<td data-l="Dónde sale">' + it.p.map(function (q) { return '<a href="' + q[1] + '">' + esc(q[0]) + '</a>'; }).join(' ') + '</td>' +
+        '<td data-l="Dónde se edita"><span class="path">' + it.w.map(function (q) { return '<span>' + esc(q) + '</span>'; }).join('') + '</span></td>' +
+        '<td data-l="Cada cuánto"><span class="fq">' + FQ[it.f][0] + '</span>' + (r.off ? '<small class="src" style="display:block">Fuera de temporada</small>' : '') + '</td>' +
+        '<td data-l="Last updated"><span class="dt">' + fmtEs(r.last) + '<small>' + (r.age <= 0 ? 'hoy' : 'hace ' + r.age + (r.age === 1 ? ' día' : ' días')) + '</small></span><span class="src' + (it.src === 'auto' ? ' src--auto' : '') + '">' + (it.src === 'auto' ? 'Fecha automática' : 'Fecha a mano') + '</span></td>' +
+        '<td data-l="Estado"><span class="light light--' + r.st + '">' + LBL[r.st] + '</span><span class="due">' + when + ' · ' + fmtEs(r.due) + '</span><button class="btn btn--ghost lu-done" type="button" data-done="' + esc(it.n) + '">Ya lo actualicé<span class="vh">: ' + esc(it.n) + '</span></button></td></tr>';
+    }).join('') || '<tr><td colspan="6">Nada con este estado. Elige “Todo”.</td></tr>';
+    $('lu-count').textContent = cnt.late + (cnt.late === 1 ? ' vencido' : ' vencidos') + ' · ' + cnt.soon + ' por revisar · ' + cnt.ok + ' al día, al ' + fmtEs(today) + '.';
+    if (luFocus) { var row = [].filter.call($('lu-body').querySelectorAll('tr[data-n]'), function (tr) { return tr.getAttribute('data-n') === luFocus; })[0]; if (row) row.querySelector('th').focus(); luFocus = null; }
+  }
+  $('lu-chips').addEventListener('click', function (e) { var b = e.target.closest('[data-lu]'); if (!b) return; luCur = b.getAttribute('data-lu'); luRender(); var nb = this.querySelector('[data-lu="' + luCur + '"]'); if (nb) nb.focus(); });
+  $('lu-body').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-done]'); if (!b) return;
+    var n = b.getAttribute('data-done'); luOver[n] = $('lu-date').value || iso(new Date());
+    try { localStorage.setItem(LUKEY, JSON.stringify(luOver)); } catch (err) {}
+    luFocus = n; luRender();
+  });
+  $('lu-date').addEventListener('change', luRender);
+  $('lu-date').addEventListener('input', luRender);
+  $('lu-now').addEventListener('click', function () { $('lu-date').value = iso(new Date()); luRender(); });
+  $('lu-reset').addEventListener('click', function () { luOver = {}; try { localStorage.removeItem(LUKEY); } catch (e) {} luRender(); $('lu-count').focus && $('lu-count').setAttribute('tabindex', '-1'); $('lu-count').focus(); });
+  luRender();
+
+  /* ---------- 04 · Mapa: un renglón por cosa editable ---------- */
+  var TYPES = [['all', 'Todo'], ['lista', 'Listas (Metaobjetos)'], ['tema', 'Personalizar'], ['admin', 'Admin'], ['auto', 'Automático']];
+  var TAGS = { lista: 'Metaobjeto', tema: 'Personalizar', admin: 'Admin', auto: 'Automático' };
+  var IC = {
+    add: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+    edit: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/></svg>',
+    hide: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6Z"/><path d="M4 4l16 16"/></svg>'
+  };
+  var ITEMS = [
+    { n: 'Año de temporada', t: 'tema', q: 'UN ajuste que cambia todos los “2026” de la temporada actual: anuncio, Schedule, contadores, Pit Log, Sponsors y buscador. El copyright usa el año de hoy, solo.',
+      w: [['Tienda online', 'Temas', 'Personalizar', 'Ajustes del tema', 'Temporada']],
+      a: 'No se agrega: es un solo número.', e: 'Cámbialo una vez al año, en enero, y Guardar. En textos escribe [season] y sale el año.', d: 'No aplica. Los años pasados quedan en el historial.',
+      p: [['Todas', 'index.html']] },
+    { n: 'Pull events (calendario)', t: 'lista', q: 'Cada pull: nombre, fecha, ciudad, liga (NTPA o PPL Badger State), estado, link del evento y resultado. De aquí salen la tabla del Schedule, el próximo pull de la home, “Add to calendar” y el filtro por año.',
+      w: [['Contenido', 'Metaobjetos', 'Pull event']],
+      a: 'Agregar entrada, llena los campos y Guardar. Aparece sola en su año.', e: 'Abre la entrada y cambia fecha, estado (Upcoming, Done, Cancelled) o resultado.', d: 'Estado Hidden lo oculta sin perder el historial. Eliminar solo si fue un error.',
+      p: [['Schedule', 'schedule.html'], ['Home', 'index.html'], ['Pit Log', 'log.html']] },
+    { n: 'Season stats (contadores)', t: 'lista', q: 'Los números de la temporada: competencias, exhibiciones y wins (ya no hay contador de full pulls). Una entrada por año, así el historial queda y el filtro por año funciona.',
+      w: [['Contenido', 'Metaobjetos', 'Season stats']],
+      a: 'Al arrancar la temporada: Agregar entrada con el año nuevo y todo en 0.', e: 'Después de cada pull súmale 1 al contador que toque y Guardar. Un contador en 0 nunca sale como “0”: la tienda muestra “Coming soon”. Pit Log y Schedule cuentan solos (etiquetas y pulls): si cambias un número aquí, revisa que cuadre con ellos.', d: 'No borres años pasados. Desmarca Visible si no quieres mostrar uno.',
+      p: [['Home', 'index.html'], ['Our Story', 'story.html']] },
+    { n: 'Pit Log (bitácora)', t: 'admin', q: 'Lo que pasó en cada pull, exhibición o día de pruebas: texto, distancia, qué se rompió, fotos. Es un blog de Shopify llamado Pit Log. La página muestra 10 entradas con “Load more”, buscador y filtros; las etiquetas arman solas los contadores, los filtros y la franja Wins & milestones.',
+      w: [['Contenido', 'Entradas de blog'], ['Blog: Pit Log']],
+      a: 'Crear entrada, elige el blog Pit Log, título, texto, foto y etiquetas: Test, Exhibition, Competition, Win, Full pull, Milestone o Shop. La fecha pone el año del filtro. Imagen destacada: el cuadro “Imagen” (a la derecha, al crear o editar la entrada) es la imagen destacada; la foto que subas ahí es la que se ve en la bitácora. Si lo dejas vacío, se usa la foto de su tipo (Test, Exhibition, Competition, Win).', e: 'Abre la entrada, cambia y Guardar. Agrega la etiqueta Featured a un Win o Milestone para que salga en la franja Wins & milestones (máximo 6; quítala para sacarlo). Puedes programar la publicación.', d: 'Visibilidad: Oculta. O Eliminar entrada.',
+      p: [['Pit Log', 'log.html'], ['Home', 'index.html'], ['FAQ', 'faq.html']] },
+    { n: 'Sponsor tiers (paquetes)', t: 'lista', q: 'Title Partner, Pit Partner y Crew Supporter: nombre, precio, beneficios, cuál va destacado, orden y la casilla Sold out.',
+      w: [['Contenido', 'Metaobjetos', 'Sponsor tier']],
+      a: 'Agregar entrada para un paquete nuevo. El campo Orden decide su lugar.', e: 'Cambia precio o beneficios. Marca Sold out cuando ya no haya lugar: la tarjeta lo muestra sola.', d: 'Desmarca Visible para ocultarlo; Eliminar si ya no existe. El FAQ ya no repite precios: manda a Sponsors.',
+      p: [['Sponsors', 'sponsors.html']] },
+    { n: 'Logo placements (dónde sale tu marca)', t: 'lista', q: 'Los lugares donde sale el logo de un patrocinador: tractor, tráiler y pits, team gear, este sitio, redes y menciones del locutor. Sin fotos: cada lugar lleva un ícono elegido de una lista, y los paquetes que lo incluyen.',
+      w: [['Contenido', 'Metaobjetos', 'Logo placement']],
+      a: 'Agregar entrada con nombre, descripción corta, ícono (de la lista), paquetes y Status Active.', e: 'Cambia el ícono, el texto o los paquetes que lo incluyen.', d: 'Status Hidden lo oculta sin borrarlo; Eliminar si ya no existe.',
+      p: [['Sponsors', 'sponsors.html']] },
+    { n: 'Sponsor stat (cifras de patrocinio)', t: 'lista', q: 'Las cifras estimadas de la página de patrocinio: pulls por temporada, estados y fans, marcadas “est.”, con su campo Updated. Es otro metaobjeto, distinto de Season stats (contadores de temporada).',
+      w: [['Contenido', 'Metaobjetos', 'Sponsor stat']],
+      a: 'Agregar entrada con la cifra, su etiqueta y si es estimada.', e: 'Al cerrar la temporada cambia los números por los reales y la fecha Updated.', d: 'Status Hidden o Eliminar.',
+      p: [['Sponsors', 'sponsors.html']] },
+    { n: 'Frase de venta (se calcula sola)', t: 'auto', q: 'La frase “Your brand in front of 100,000+ fans across 20+ pulls a season (est.)” de Sponsors y de la home. Ya no se escribe ni tiene ajuste propio: se calcula sola desde el metaobjeto Sponsor stat (pulls por temporada × fans por pull).',
+      w: [['Automático'], ['Contenido', 'Metaobjetos', 'Sponsor stat']],
+      a: 'Nada que agregar: sale de las cifras de Sponsor stat.', e: 'Cambia “Pulls per season” o “Fans per pull” en Sponsor stat y Guardar: la frase se recalcula en Sponsors y en la home.', d: 'Status Hidden en esas cifras quita el número de la frase.',
+      p: [['Sponsors', 'sponsors.html'], ['Home', 'index.html']] },
+    { n: 'Decal zones (mapa de calcomanías)', t: 'lista', q: 'Las zonas marcadas sobre la foto del tractor: nombre, posición, tamaño de guía y paquete al que pertenece.',
+      w: [['Contenido', 'Metaobjetos', 'Decal zone']],
+      a: 'Agregar entrada. Posición: x = % desde la izquierda, y = % desde arriba de la foto.', e: 'Mueve x y y hasta que el punto quede en su lugar; cambia el paquete si se vendió.', d: 'Desmarca Visible o Eliminar.',
+      p: [['Sponsors', 'sponsors.html']] },
+    { n: 'Special edition', t: 'admin', q: 'Una prenda para un momento de la temporada (hoy: Lightning Night Tee), a la venta por tiempo limitado. No se numera. Es un producto normal en la colección Special edition, más metacampos: Start date, End date y Story.',
+      w: [['Productos', 'Colecciones', 'Special edition'], ['Producto', 'Metacampos (al final de la ficha)']],
+      a: 'Crea la prenda en Printify y publícala. En Shopify ponle la etiqueta special-edition (entra sola a la colección) y llena Start date, End date y Story.', e: 'Historia y fechas: en los metacampos. Diseño y precio: en Printify.', d: 'Al pasar End date sale sola de la venta y pasa a “Past editions”. Para quitarla de la tienda: Estado Borrador.',
+      p: [['Edición especial', 'limited.html'], ['Shop', 'shop.html?cat=limited'], ['Home', 'index.html']] },
+    { n: 'Productos (alta, fotos, precio)', t: 'admin', q: 'Todas las prendas: tees, hoodies, gorras, kids, stickers y bundles. Printify crea el producto con fotos, tallas, colores y precio, y lo publica a Shopify.',
+      w: [['Printify', 'My products', 'Publish'], ['Productos', 'Todos los productos']],
+      a: 'Diseño, colores, tallas y precio se crean en Printify y se publican a Shopify. Si es nuevo, etiqueta “new”.', e: 'Fotos, precio y tallas: en Printify y vuelve a publicar. Etiquetas y estado: en Shopify.', d: 'Estado Borrador lo oculta sin borrarlo. Best sellers se arma solo con las ventas.',
+      p: [['Shop', 'shop.html'], ['Producto', 'product.html'], ['Home', 'index.html'], ['Search', 'search.html']] },
+    { n: 'Status por producto: Coming soon, Live, Sold out', t: 'admin', q: 'Live: precio y “Add to cart”. Coming soon: etiqueta gris “Coming soon”, tarjeta atenuada y botón “Notify me”. Sold out: etiqueta “Sold out”, tarjeta atenuada y botón “Sold out · Notify me”.',
+      w: [['Productos', 'el producto', 'Inventario'], ['Productos', 'el producto', 'Etiquetas: coming-soon']],
+      a: 'Coming soon: producto en Estado Activo, con la etiqueta coming-soon (o el metacampo Status = Coming soon) e inventario en 0 para que nadie lo compre antes.', e: 'Sold out sale solo cuando el inventario llega a 0. Para pasar de Coming soon a Live: quita la etiqueta y pon inventario. Con Printify el inventario no se cuenta (es sobre pedido): activa “Rastrear cantidad” solo en lo que quieras que se agote.', d: 'Live de nuevo: sube el inventario. “Notify me” guarda el correo con la etiqueta del producto; cuando sale, mándales un correo con Shopify Email a ese segmento.',
+      p: [['Shop', 'shop.html'], ['Producto', 'product.html'], ['Home', 'index.html']] },
+    { n: '“Almost gone!”', t: 'auto', q: 'La etiqueta roja “Almost gone!” en la tarjeta. Sale sola cuando quedan 5 piezas o menos.',
+      w: [['Automático'], ['Productos', 'el producto', 'Inventario']],
+      a: 'Nada que agregar: sale sola con inventario de 5 o menos.', e: 'Solo funciona en productos con “Rastrear cantidad” activo (la Special edition, por ejemplo). El número 5 es un ajuste del tema.', d: 'Se quita sola al reponer o al agotarse (pasa a Sold out).',
+      p: [['Shop', 'shop.html'], ['Home', 'index.html']] },
+    { n: 'Tienda vacía: “Coming soon”', t: 'auto', q: 'Si una colección no tiene productos activos (por ejemplo, antes del primer drop), la tienda muestra sola el bloque “Coming soon” con un campo “Notify me”, en lugar de un grid vacío.',
+      w: [['Automático']],
+      a: 'Nada: sale solo. Pruébalo abriendo la tienda con ?empty=1 al final del link.', e: 'El texto del bloque: Personalizar > Colección > Coming soon.', d: 'Desaparece solo en cuanto publicas el primer producto.',
+      p: [['Shop vacío', 'shop.html?empty=1'], ['Shop normal', 'shop.html?cat=all']] },
+    { n: 'Categorías desde Printify', t: 'auto', q: 'Tees, Sweatshirts, Hats, Kids, Stickers & gear: colecciones automáticas que se llenan solas con el Tipo de producto que manda Printify (T-Shirt, Hoodie, Hat...). New drop por etiqueta “new”, Special edition por “special-edition”, Best sellers ordenada por ventas.',
+      w: [['Productos', 'Colecciones', 'Crear colección', 'Automática']],
+      a: 'Crear colección > Automática > condición “Tipo de producto es igual a T-Shirt” (y así cada categoría). Una vez.', e: 'Producto nuevo de Printify: entra solo a su categoría. Si quedó mal, cambia su Tipo de producto.', d: 'Borra la colección o quítala del menú. Los productos no se borran.',
+      p: [['Shop', 'shop.html?cat=all'], ['Menú', 'index.html']] },
+    { n: 'Cupones (códigos de descuento)', t: 'admin', q: 'Códigos como CREW10. Sin app: el carrito ya tiene el campo “Discount code” y el checkout también.',
+      w: [['Descuentos', 'Crear descuento', 'Código de descuento']],
+      a: 'Elige tipo (porcentaje, monto fijo, envío gratis o compra X lleva Y), escribe el código, fechas y límites, y Guardar.', e: 'Cambia monto, fechas o límite de usos en el mismo descuento. Shopify también te da un link que lo aplica solo.', d: 'Desactivar o Eliminar en Descuentos. Pon fecha de fin para que se apague solo.',
+      p: [['Carrito (todas)', 'shop.html'], ['FAQ', 'faq.html']] },
+    { n: 'Menús (renombrar “The Machine”)', t: 'admin', q: 'Los links del encabezado, del menú del celular y del footer.',
+      w: [['Contenido', 'Menús', 'Main menu'], ['Contenido', 'Menús', 'Footer']],
+      a: 'Agregar elemento del menú: nombre y link (página, colección o blog).', e: 'Clic en “The Machine”, cambia el Nombre y Guardar. El link no cambia. Arrastra para reordenar.', d: 'Eliminar el elemento. La página sigue existiendo, solo sale del menú.',
+      p: [['Todas (header y footer)', 'index.html']] },
+    { n: 'Spec sheet (ficha técnica de The Machine)', t: 'tema', q: 'La ficha del tractor: motor, cilindrada, turbo, peso, llantas, carrocería, liga y su “Last updated”. Horsepower: Unknown. Una fila sin valor no sale.',
+      w: [['Personalizar', 'The Machine', 'Spec sheet']],
+      a: 'Agregar bloque Spec: nombre y valor.', e: 'Clic en la fila y cambia el valor. Cambia también la fecha “Last updated” de la sección.', d: 'Ojo para ocultar una fila; Eliminar bloque para quitarla.',
+      p: [['The Machine', 'machine.html']] },
+    { n: 'Anatomía de The Machine (Tractor part)', t: 'lista', q: 'Las partes numeradas sobre la foto del tractor (Engine, Displacement, Turbo, Body, Weight, Tires): nombre, valor, texto del panel, foto y posición del número.',
+      w: [['Contenido', 'Metaobjetos', 'Tractor part']],
+      a: 'Agregar entrada con nombre, valor, texto, foto y posición (x, y sobre la foto del tractor).', e: 'Cambia el texto o el valor y Guardar. Si un dato cambia, cambia también la Spec sheet.', d: 'Desmarca Visible o Eliminar.',
+      p: [['The Machine', 'machine.html']] },
+    { n: 'Quitar la playera de The Machine (Spec tee)', t: 'tema', q: 'La sección “The spec sheet, on a tee” con la Cat V8 Spec Tee al final de The Machine. Es un bloque de sección: se quita sin código.',
+      w: [['Personalizar', 'The Machine', 'Spec tee']],
+      a: 'Agregar sección Spec tee y elegir el producto.', e: 'Cambia el producto en el ajuste de la sección. Si la playera queda Sold out, la tarjeta cambia sola a “Notify me”.', d: 'El ojo la oculta; el bote la elimina. Si despublicas la playera, la sección no sale.',
+      p: [['The Machine', 'machine.html']] },
+    { n: 'Anuncios rotativos (barra negra)', t: 'tema', q: 'Los mensajes que rotan arriba de todo: Testing season, envío gratis, printed to order.',
+      w: [['Personalizar', 'Encabezado', 'Barra de anuncios']],
+      a: 'Agregar bloque Anuncio: texto y link opcional.', e: 'Clic en el bloque y cambia el texto. Escribe [season] donde vaya el año.', d: 'Ojo para ocultar; Eliminar bloque para quitarlo.',
+      p: [['Todas', 'index.html']] },
+    { n: 'Frases de la cinta amarilla', t: 'tema', q: 'La cinta que corre en la home: “Full pull or nothing · This thing is f#ck!ng evil · Born in a lightning storm” (máximo 3 frases, sin repetir el nombre).',
+      w: [['Personalizar', 'Inicio', 'Cinta']],
+      a: 'Agregar bloque Frase y escríbela.', e: 'Clic en la frase y cambia el texto. Arrastra para el orden.', d: 'Ojo para ocultar una frase; Eliminar bloque para quitarla.',
+      p: [['Home', 'index.html']] },
+    { n: 'Búsquedas', t: 'auto', q: 'Trending sale de los más vendidos, las sugerencias mientras escriben las pone Shopify y “recent searches” se guarda en el navegador de cada cliente. Ya no se escriben a mano.',
+      w: [['Automático'], ['Apps', 'Search & Discovery', 'Sinónimos']],
+      a: 'Solo sinónimos (hoodie = sweatshirt) en Search & Discovery.', e: 'Nada que mantener: Trending cambia solo con las ventas.', d: 'Quitar un sinónimo en la misma app.',
+      p: [['Buscador (lupa)', 'search.html'], ['Search', 'search.html'], ['404', '404.html']] },
+    { n: 'Banner de cookies', t: 'admin', q: 'El aviso con Accept all, Decline y Manage, y el link Cookie Preferences del footer que lo vuelve a abrir.',
+      w: [['Configuración', 'Privacidad del cliente', 'Banner de cookies']],
+      a: 'Ya viene con Shopify: lo activas por región (EE. UU. y otras).', e: 'Textos, posición y regiones en esa misma pantalla.', d: 'Se apaga por región. Si usas anuncios de Facebook o Google, déjalo prendido.',
+      p: [['Todas', 'index.html'], ['Cookie Preferences', 'policies.html?p=cookies']] },
+    { n: 'Políticas', t: 'admin', q: 'Privacy, Terms, Refund, Shipping y Contact Information. Shopify las enlaza solas en el footer y en el checkout. Accessibility y Cookie Preferences son páginas normales.',
+      w: [['Configuración', 'Políticas'], ['Tienda online', 'Páginas']],
+      a: 'Las 5 ya existen. Una política extra se crea como página en Tienda online > Páginas.', e: 'Cambia el texto y la fecha “Last updated”.', d: 'No se borran; una página extra sí se puede ocultar o eliminar.',
+      p: [['Policies', 'policies.html'], ['Footer', 'index.html']] },
+    { n: 'Email, teléfono y dirección', t: 'admin', q: 'heavymetalevil72@gmail.com, (920) 650-4374 y P.O. Box 42, Waterloo, WI 53594. Por regla solo salen en las políticas (lo pide la ley); en todo lo demás el cliente usa los formularios.',
+      w: [['Configuración', 'Detalles de la tienda'], ['Personalizar', 'Ajustes del tema', 'Contacto']],
+      a: 'Ya están cargados.', e: 'Cambia el dato en los dos lugares y Guardar. Revisa Contact Information en Políticas.', d: 'Deja vacío el campo del tema para no mostrar el teléfono.',
+      p: [['Contact', 'contact.html'], ['Policies', 'policies.html?p=contact'], ['FAQ', 'faq.html']] },
+    { n: 'Gallery (Album)', t: 'lista', q: 'Cada evento es un álbum: nombre del evento, fecha, liga, link al pull, fotos y videos. La página Gallery arma sola el mosaico a todo lo ancho, la tira de eventos con portada, los filtros (Season, Event, Photos / Videos), el visor de pantalla completa y “Load more”. Schedule y Pit Log ligan a gallery.html?event=<handle del álbum>.',
+      w: [['Contenido', 'Metaobjetos', 'Album'], ['Contenido', 'Archivos']],
+      a: 'Fotos: Contenido > Archivos > Subir. Luego abre el álbum, “Agregar fotos” y elígelas (varias a la vez). Evento nuevo: Agregar entrada en Album con nombre, fecha, liga y link al pull. Videos: pega el link de YouTube.', e: 'El orden se arrastra dentro del álbum (la primera foto es la portada). Guardar. “Last updated” toma sola la fecha del álbum más nuevo.', d: 'Para quitar una foto, quítala del álbum (sigue en Archivos). Para borrar un álbum: Eliminar, o Status Hidden para ocultarlo sin perderlo.',
+      p: [['Gallery', 'gallery.html']] },
+    { n: 'Book the team (formulario, avisos al correo heavymetalevil72@gmail.com)', t: 'tema', q: 'La página para promotores, ferias y negocios: opciones (Static display, Exhibition pull, Meet Chris F., Social shout-out) sin precios, requisitos y el formulario “Ask for a quote”. Cada solicitud llega como correo a heavymetalevil72@gmail.com.',
+      w: [['Personalizar', 'Book the team'], ['Contenido', 'Metaobjetos', 'Booking option'], ['Configuración', 'Notificaciones', 'Correo del remitente']],
+      a: 'Una opción nueva: Agregar entrada en Booking option (nombre, ícono, texto, “Needs” y orden). Un requisito: Agregar bloque en Personalizar > Book the team.', e: 'Cambia textos, requisitos [pending], número de exhibiciones y la fecha “Last updated” en Personalizar. El correo que recibe los avisos: Configuración > Detalles de la tienda (correo de la tienda). Las solicitudes llegan con la etiqueta “booking”.', d: 'Status Hidden en una opción la quita de la página y del formulario; Ojo para ocultar un bloque de requisito.',
+      p: [['Book the team', 'book.html'], ['Footer', 'index.html']] },
+    { n: 'The Evil List (página y suscriptores)', t: 'admin', q: 'La página de la lista de correo: título, qué reciben, la muestra de correo y 3 preguntas. El formulario es el de newsletter nativo de Shopify: cada correo queda como cliente con “acepta marketing por correo electrónico”. Solo correo, sin SMS. Los correos se mandan con Shopify Email.',
+      w: [['Tienda online', 'Páginas', 'The Evil List'], ['Personalizar', 'The Evil List'], ['Clientes', 'Segmentos', 'Suscriptores de correo electrónico'], ['Marketing', 'Shopify Email']],
+      a: 'Los suscriptores llegan solos (esta página, el footer y “Notify me”). Un correo nuevo: Marketing > Crear campaña > Shopify Email, elige una plantilla y el segmento de suscriptores. Activa la doble confirmación en Configuración > Notificaciones de clientes (el “Check your inbox to confirm”).', e: 'Textos, tarjetas y preguntas en Personalizar > The Evil List. La estrategia de correos (cuántos, cuándo, plantillas) está en pendientes.', d: 'Ojo para ocultar una sección. Un cliente se da de baja solo con el link del correo; también puedes quitarle “acepta marketing” en Clientes.',
+      p: [['The Evil List', 'evil-list.html'], ['Footer', 'index.html'], ['FAQ', 'faq.html#alerts']] },
+    { n: 'Fotos y videos', t: 'admin', q: 'Todas las fotos del tractor, del crew y los logos de patrocinadores. Los videos de YouTube van como link en su sección.',
+      w: [['Contenido', 'Archivos']],
+      a: 'Subir archivos y luego elegirlos en Personalizar o en el metaobjeto.', e: 'Reemplazar archivo conserva el mismo link: se cambia en todas las páginas a la vez.', d: 'Eliminar solo si ya no se usa en ninguna parte.',
+      p: [['Todas', 'index.html']] },
+    { n: 'Crew (equipo)', t: 'lista', q: 'Cada persona del equipo y las mascotas: nombre, rol, foto opcional (sin foto salen sus iniciales) y orden.',
+      w: [['Contenido', 'Metaobjetos', 'Crew member']],
+      a: 'Agregar entrada con nombre, rol y orden.', e: 'Cambia el rol o sube su foto cuando la tengas.', d: 'Desmarca Visible o Eliminar.',
+      p: [['Our Story', 'story.html']] },
+    { n: 'Playlist de Spotify', t: 'tema', q: 'El walk-up song: Fear of the Dark, Iron Maiden. Puede ser la canción o una playlist del equipo.',
+      w: [['Personalizar', 'Our Story', 'Walk-up song', 'Link de Spotify']],
+      a: 'En Spotify: Compartir > Copiar enlace, y pégalo en el campo.', e: 'Pega otro link (canción o playlist) y Guardar.', d: 'Ojo para ocultar la sección.',
+      p: [['Our Story', 'story.html'], ['FAQ', 'faq.html']] },
+    { n: 'Preguntas del FAQ', t: 'tema', q: 'Cada pregunta y respuesta del Help Center, agrupadas por tema, y la fecha “Last updated” de arriba.',
+      w: [['Personalizar', 'FAQ', 'bloques Pregunta']],
+      a: 'Agregar bloque Pregunta dentro de su tema.', e: 'Clic en la pregunta y cambia el texto. Arrastra para el orden. Cambia la fecha “Last updated” de la sección.', d: 'Ojo para ocultar; Eliminar bloque para quitarla.',
+      p: [['FAQ', 'faq.html']] },
+    { n: 'Envío gratis y barra del carrito', t: 'admin', q: 'El monto de envío gratis ($XX) y los escalones de la barra del carrito (envío gratis, sticker de regalo).',
+      w: [['Configuración', 'Envío y entrega'], ['Personalizar', 'Ajustes del tema', 'Carrito']],
+      a: 'Crea la tarifa gratis con mínimo de compra en Envío y entrega.', e: 'Pon el mismo monto en el ajuste del carrito para que la barra cuadre.', d: 'Apaga la barra en Ajustes del tema > Carrito.',
+      p: [['Carrito (todas)', 'shop.html'], ['Shipping Policy', 'policies.html?p=shipping']] },
+    { n: 'Correo de envío y rastreo', t: 'auto', q: 'Cómo le llega la guía al cliente. Printify no le escribe al cliente: cuando envía, marca el pedido como enviado (preparado) en Shopify con el número de guía, y Shopify manda su propio correo “Shipping confirmation” desde la tienda, con tu nombre y el link de rastreo. En la tienda decimos solo “we email you a tracking link”, sin mencionar a Printify.',
+      w: [['Configuración', 'Notificaciones', 'Notificaciones para clientes', 'Confirmación de envío']],
+      a: 'Ya viene activo en Shopify. Revísalo con un pedido de prueba: compra algo barato con un código de 100%, espera a que Printify lo envíe y confirma que te llega el correo “Shipping confirmation” con el link y que la guía sale en Account > Orders.', e: 'Cambia el texto o el logo del correo en Notificaciones > Confirmación de envío.', d: 'Se activa o desactiva en Configuración > Notificaciones. Si lo apagas, el cliente no recibe la guía por correo (solo la ve en su página de estado del pedido).',
+      p: [['Account', 'account.html'], ['FAQ', 'faq.html#orders'], ['Shipping Policy', 'policies.html?p=shipping']] },
+    { n: 'Reseñas (Judge.me)', t: 'admin', q: 'Las estrellas junto al nombre del producto y en las tarjetas, y la sección Reviews de la ficha: promedio, barras de 5 a 1 estrellas, filtros, fotos, “Verified buyer”, talla y fit, “Helpful” y el formulario “Write a review”. Las pone la app Judge.me (plan gratis); en el boceto las reseñas son de ejemplo.',
+      w: [['Apps', 'Judge.me', 'Instalar'], ['Personalizar', 'Producto', 'Agregar bloque', 'Reviews (Judge.me)'], ['Apps', 'Judge.me', 'Reviews']],
+      a: 'Instalar: Apps > Shopify App Store > Judge.me > Instalar (plan Free). En Personalizar > Producto agrega el bloque de app “Reviews” bajo el producto y el de estrellas junto al título. Pedir reseñas: Judge.me > Settings > Review request emails, actívalo para que salga X días después de la entrega (con Printify, cuenta desde que Shopify marca el pedido como entregado).', e: 'Moderar: Judge.me > Reviews; pon “Auto publish” solo en 4 y 5 estrellas, o todo en manual, y aprueba cada una. Responder: abre la reseña > Reply; la respuesta sale pública debajo con el nombre de la tienda. Las estrellas en Google salen solas (Judge.me agrega los datos estructurados).', d: 'Ocultar una reseña: Judge.me > Reviews > la reseña > Unpublish (no se borra). Spam: Delete. Quitar todo: borra el bloque en Personalizar o desinstala la app. Sin reseñas, el producto muestra “No reviews yet. Be the first.”',
+      p: [['Producto con reseñas', 'product.html?p=evil-one-tee#reviews'], ['Producto sin reseñas', 'product.html?p=cat-v8-spec-tee#reviews'], ['Shop', 'shop.html']] },
+    { n: 'Esqueleto de carga', t: 'auto', q: 'Las tarjetas grises que se ven un instante mientras carga la tienda, la búsqueda o una ficha de producto. Sale solo y no se edita; sin animación si el teléfono tiene “reducir movimiento”.',
+      w: [['Automático']],
+      a: 'Nada: lo pinta el tema mientras llegan los productos.', e: 'No se edita.', d: 'No se quita; si la tienda carga rápido, casi ni se ve. Para verlo lento: shop.html?loading=slow.',
+      p: [['Shop (lento)', 'shop.html?loading=slow'], ['Search', 'search.html?q=tee'], ['Producto', 'product.html']] }
+  ];
+
+  var cur = 'all';
+  $('chips').innerHTML = TYPES.map(function (t) {
+    var n = t[0] === 'all' ? ITEMS.length : ITEMS.filter(function (i) { return i.t === t[0]; }).length;
+    return '<button class="chip" type="button" data-t="' + t[0] + '" aria-pressed="' + (t[0] === cur) + '">' + t[1] + ' <i>' + n + '</i></button>';
+  }).join('');
+  function path(w) { return w.map(function (seg) { return '<span class="path">' + seg.map(function (s) { return '<span>' + esc(s) + '</span>'; }).join('') + '</span>'; }).join('<br>'); }
+  function card(i) {
+    return '<li class="ec"><div class="ec__head"><h3 class="h3">' + esc(i.n) + '</h3><span class="tag tag--' + i.t + '">' + TAGS[i.t] + '</span></div>' +
+      '<p class="ec__what">' + esc(i.q) + '</p>' +
+      '<div class="ec__where"><p class="label muted" style="margin-bottom:4px">Dónde se edita</p>' + path(i.w) + '</div>' +
+      '<dl class="ec__acts"><div><dt>' + IC.add + 'Agregar</dt><dd>' + esc(i.a) + '</dd></div><div><dt>' + IC.edit + 'Editar</dt><dd>' + esc(i.e) + '</dd></div><div><dt>' + IC.hide + 'Borrar u ocultar</dt><dd>' + esc(i.d) + '</dd></div></dl>' +
+      '<p class="ec__pages" style="margin:0"><span>Se ve en:</span>' + i.p.map(function (x) { return '<a href="' + x[1] + '">' + esc(x[0]) + '</a>'; }).join('') + '</p></li>';
+  }
+  function hay(i) { return [i.n, i.q, i.a, i.e, i.d, TAGS[i.t]].concat(i.w.map(function (s) { return s.join(' '); })).concat(i.p.map(function (x) { return x[0]; })).join(' ').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+  function render() {
+    var words = $('find').value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').split(/\s+/).filter(Boolean);
+    var list = ITEMS.filter(function (i) { return (cur === 'all' || i.t === cur) && words.every(function (w) { return hay(i).indexOf(w) > -1; }); });
+    $('map').innerHTML = list.map(card).join('');
+    $('map-empty').hidden = !!list.length;
+    $('count').textContent = list.length === ITEMS.length ? ITEMS.length + ' cosas editables' : list.length + ' de ' + ITEMS.length + ' cosas editables';
+  }
+  $('chips').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-t]'); if (!b) return;
+    cur = b.getAttribute('data-t');
+    [].forEach.call(this.children, function (c) { c.setAttribute('aria-pressed', c === b); });
+    render();
+  });
+  $('find').addEventListener('input', render);
+  render();
+
+  /* ---------- 05 · Calendario anual ---------- */
+  var CAL = [
+    { k: 'pre', when: 'Enero a marzo', t: 'Antes de arrancar la temporada', hot: true, items: [
+      ['Cambiar el año de Temporada', 'Personalizar > Ajustes del tema > Temporada. Un solo número.'],
+      ['Contadores en 0', 'Season stats: entrada nueva del año con competencias, exhibiciones y wins en 0.'],
+      ['Cargar el calendario', 'Pull event: una entrada por pull conforme NTPA y Badger State confirmen fechas.'],
+      ['Paquetes y precios', 'Sponsor tier: revisar precios y beneficios, quitar Sold out. Si cambian, corregir el FAQ.'],
+      ['Logos de patrocinadores', 'Logo placement y Decal zone: agregar los nuevos, Status Hidden a los que no renovaron.'],
+      ['Cifras de patrocinio', 'Sponsor stat: números reales del año que cerró (la frase de venta se recalcula sola).'],
+      ['Políticas', 'Configuración > Políticas: revisar y cambiar la fecha “Last updated”.'],
+      ['Cupones de la temporada', 'Descuentos: apagar los del año pasado, crear los nuevos.'],
+      ['Anuncios y cinta', 'Personalizar: revisar las frases de la barra negra y de la cinta amarilla.']
+    ] },
+    { k: 'pull', when: 'Cada fin de semana de pull', t: 'Después de cada pull', items: [
+      ['Marcar el pull como hecho', 'Pull event: Estado Done y el resultado.'],
+      ['Sumar al contador', 'Season stats: +1 competencia o exhibición, +1 win si ganó.'],
+      ['Escribir en el Pit Log', 'Entrada de blog con lo que pasó, 2 o 3 fotos y su etiqueta (Competition, Exhibition, Test; Win o Full pull si toca). Featured si va en la franja de wins.'],
+      ['Avisar el siguiente', 'The Evil List: correo con Shopify Email antes del próximo pull.'],
+      ['Special edition (si hubo momento)', 'Producto nuevo con etiqueta special-edition y sus metacampos.'],
+      ['Revisar Last updated', 'Sección 03 de esta página: lo que esté en rojo, actualízalo.']
+    ] },
+    { k: 'post', when: 'Octubre a diciembre', t: 'Al cerrar la temporada', items: [
+      ['Cerrar la Special edition', 'Revisa que su End date ya pasó: sale sola de la venta.'],
+      ['Resumen en el Pit Log', 'Una entrada con lo mejor y lo peor del año.'],
+      ['Limpiar el calendario', 'Pulls sin fecha o cancelados: Estado Hidden.'],
+      ['Revisar productos', 'Diseños que ya no van: Estado Borrador. Best sellers se acomoda solo.'],
+      ['Pensar paquetes del año que viene', 'Anotar cambios de precios y lugares para enero.']
+    ] }
+  ];
+  var KEY = 'hm-owner-cal', done = {};
+  try { done = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { done = {}; }
+  $('cal').innerHTML = CAL.map(function (ph) {
+    return '<article class="phase' + (ph.hot ? ' phase--hot' : '') + '"><header><p class="label">' + ph.when + '</p><h3 class="h3">' + ph.t + '</h3></header><ul class="todo">' +
+      ph.items.map(function (it, j) { var id = 'cal-' + ph.k + '-' + j; return '<li><label for="' + id + '"><input type="checkbox" id="' + id + '"' + (done[id] ? ' checked' : '') + '><span>' + esc(it[0]) + '<small>' + esc(it[1]) + '</small></span></label></li>'; }).join('') +
+      '</ul></article>';
+  }).join('');
+  function saveCal() { try { localStorage.setItem(KEY, JSON.stringify(done)); } catch (e) {} }
+  $('cal').addEventListener('change', function (e) { if (e.target.type !== 'checkbox') return; if (e.target.checked) done[e.target.id] = 1; else delete done[e.target.id]; saveCal(); });
+  var armed = false;
+  $('cal-reset').addEventListener('click', function () {
+    if (!armed) { armed = true; this.textContent = 'Confirmar: borrar todas las palomitas'; $('cal-status').textContent = 'Da clic otra vez para confirmar.'; return; }
+    armed = false; done = {}; saveCal();
+    document.querySelectorAll('#cal input').forEach(function (i) { i.checked = false; });
+    this.textContent = 'Empezar temporada nueva (borrar palomitas)'; $('cal-status').textContent = 'Listo: checklist en blanco para la temporada nueva.';
+  });
+
+  /* ---------- 06 · Íconos de prenda (img/icons) ---------- */
+  var KINDS = [['tee', 'Playera'], ['hoodie', 'Sudadera'], ['cap', 'Gorra'], ['beanie', 'Gorro'], ['sticker', 'Sticker'], ['koozie', 'Koozie']];
+  var COLS = [['black', 'negro'], ['gray', 'gris'], ['bone', 'hueso']];
+  $('igrid').innerHTML = KINDS.map(function (k) {
+    return '<li class="ig"><h3 class="h3">' + k[1] + '</h3><div class="ig__row">' + COLS.map(function (c) {
+      var f = k[0] + '-' + c[0] + '.svg';
+      return '<figure><img src="img/icons/' + f + '" alt="Ícono genérico: ' + k[1].toLowerCase() + ', color ' + c[1] + '" width="1000" height="1000" loading="lazy"><figcaption>' + f + '</figcaption></figure>';
+    }).join('') + '</div></li>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

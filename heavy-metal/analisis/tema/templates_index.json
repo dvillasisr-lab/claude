@@ -1,0 +1,176 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "hm-hero",
+      "settings": {
+        "tagline": "THE EVIL ONE",
+        "cta1_label": "SHOP THE DROP",
+        "cta1_url": "shopify://collections/all",
+        "cta2_label": "WATCH IT PULL",
+        "cta2_url": "#watch",
+        "telemetry_right": "PRO STOCK · WI",
+        "target": 300,
+        "show_marquee": true,
+        "marquee": "HEAVY METAL ● PRO STOCK ● WISCONSIN ● FULL PULL OR NOTHING ●"
+      }
+    },
+    "drop": {
+      "type": "hm-drop",
+      "settings": {
+        "trust_1_title": "FREE US SHIPPING",
+        "trust_1_sub": "On orders over $[X]",
+        "trust_2_title": "SHIPS IN 5 DAYS",
+        "trust_2_sub": "Printed to order in the USA",
+        "trust_3_title": "SECURE CHECKOUT",
+        "trust_3_sub": "Cards, Apple Pay, Shop Pay",
+        "trust_4_title": "FUELS THE TEAM",
+        "trust_4_sub": "Every order keeps us pulling",
+        "eyebrow": "01 / THE DROP",
+        "title_1": "WEAR THE",
+        "title_2": "METAL",
+        "collection": "top-merch",
+        "show_bundle": true,
+        "bundle_product": "",
+        "bundle_name": "CREW PACK",
+        "bundle_title": "BOTH TEES, ONE PRICE",
+        "bundle_text": "Get the Evil One tee and the Team tee together and save."
+      }
+    },
+    "machine": {
+      "type": "hm-machine",
+      "blocks": {
+        "s0": {
+          "type": "spec",
+          "settings": {
+            "label": "CLASS",
+            "value": "PRO STOCK",
+            "accent": false
+          }
+        },
+        "s1": {
+          "type": "spec",
+          "settings": {
+            "label": "ENGINE",
+            "value": "CAT 3208 V8",
+            "accent": false
+          }
+        },
+        "s2": {
+          "type": "spec",
+          "settings": {
+            "label": "HORSEPOWER",
+            "value": "UNKNOWN",
+            "accent": false
+          }
+        },
+        "s3": {
+          "type": "spec",
+          "settings": {
+            "label": "WEIGHT",
+            "value": "10,000 LB",
+            "accent": true
+          }
+        },
+        "s4": {
+          "type": "spec",
+          "settings": {
+            "label": "TIRES",
+            "value": "24.5-32",
+            "accent": false
+          }
+        },
+        "s5": {
+          "type": "spec",
+          "settings": {
+            "label": "HOME BASE",
+            "value": "WISCONSIN",
+            "accent": false
+          }
+        }
+      },
+      "block_order": [
+        "s0",
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "s5"
+      ],
+      "settings": {
+        "eyebrow": "02 / THE MACHINE",
+        "title_1": "FULL PULL",
+        "title_2": "OR NOTHING",
+        "text": "Built in Wisconsin to do one thing: drag the sled to the end of the track.",
+        "spec_url": "/pages/spec-sheet",
+        "engine_label": "CAT V8"
+      }
+    },
+    "video": {
+      "type": "hm-video",
+      "settings": {
+        "eyebrow": "03 / WATCH IT PULL",
+        "title_1": "SEE THE",
+        "title_2": "EVIL ONE",
+        "title_3": "RUN",
+        "video_url": "https://www.youtube.com/watch?v=HfJ5FAJJ5Ac&themeRefresh=1",
+        "poster": "shopify://shop_images/rear-black-smoke.jpg",
+        "caption": "Badger State Tractor Pullers 2026: Green County Fall Nationals in Monroe, WI!"
+      }
+    },
+    "gallery": {
+      "type": "hm-gallery",
+      "settings": {
+        "eyebrow": "04 / FROM THE TRACK",
+        "hashtag": "#HEAVYMETALPULLING",
+        "instagram": "",
+        "facebook": ""
+      }
+    },
+    "team": {
+      "type": "hm-team",
+      "settings": {
+        "eyebrow": "05 / THE TEAM",
+        "title_1": "BUILT IN WISCONSIN.",
+        "title_2": "BUILT TO PULL.",
+        "story": "<p>[STORY: 2 or 3 sentences on how Heavy Metal started, who is behind it and what drives the team.]</p>",
+        "btn1_label": "MEET THE CREW",
+        "btn1_url": "/pages/about",
+        "btn2_label": "SHOP TEAM GEAR",
+        "btn2_url": "shopify://collections/all"
+      }
+    },
+    "cards": {
+      "type": "hm-cta-cards",
+      "settings": {
+        "sched_eyebrow": "06 / PULL SCHEDULE",
+        "sched_title": "NEXT SEASON IS LOADING",
+        "sched_text": "Be the first to know where Heavy Metal pulls next, plus new merch drops.",
+        "spon_image": "shopify://shop_images/side-profile.jpg",
+        "spon_eyebrow": "07 / SPONSORS",
+        "spon_title_1": "RIDE WITH",
+        "spon_title_2": "THE EVIL ONE",
+        "spon_text": "Your logo on our team gear, the trailer, this website and our socials, in front of every crowd we pull for.",
+        "spon_url": "/pages/sponsors"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "drop",
+    "machine",
+    "video",
+    "gallery",
+    "team",
+    "cards"
+  ]
+}
+

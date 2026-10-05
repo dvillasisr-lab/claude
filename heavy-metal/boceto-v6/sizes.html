@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Size Guide · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Size charts for Heavy Metal Pro Stock tees, long sleeves, hoodies, crewnecks, kids styles and hats, in inches or centimeters, plus how to measure.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Size Guide: mismo patrón que policies.html (banner corto, lista lateral, texto de 880px) */
+html,body{overflow-x:clip}
+.sz-banner{background:var(--surface);border-bottom:1px solid var(--line)}
+.sz-banner .wrap{padding-block:28px 20px;display:grid;gap:8px}
+.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px;font-size:var(--t-xs);color:var(--mute)}
+.crumbs li+li::before{content:"/";margin-right:4px}
+.crumbs a{color:var(--soft);text-underline-offset:3px}
+.crumbs [aria-current]{color:var(--ink);font-weight:600}
+
+.sz{display:grid;grid-template-columns:260px minmax(0,880px);gap:clamp(32px,6vw,120px);padding-block:32px var(--sect);align-items:start}
+.sz-nav ul{list-style:none;margin:0;padding:0;display:grid}
+.sz-nav a{display:inline-block;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.03em;line-height:36px;text-decoration:none;color:var(--soft);white-space:nowrap}
+.sz-nav a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:6px}
+.sz-nav a[aria-current="page"]{color:var(--ink);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:6px}
+@media (min-width:861px){.sz-nav{position:sticky;top:calc(var(--header) + 24px)}}
+
+.sz-body{min-width:0;font-size:14px;line-height:1.6;color:var(--text)}
+.sz-body .note{margin:0 0 20px}
+.sz-doc>header{display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:16px}
+.sz-doc>header p{margin:2px 0 0;font-size:var(--t-xs);color:var(--mute)}
+.ico{flex:none;width:56px;height:56px;background:var(--tile);display:grid;place-items:center}
+.ico .mock{width:80%}
+.sz-doc p{margin:0 0 10px;max-width:80ch}
+.sz-doc a{color:var(--ink);text-underline-offset:3px}
+.pend{background:var(--tile);padding:0 4px;font-weight:600;color:var(--ink)}
+
+.fit{display:flex;gap:10px;align-items:baseline;background:var(--surface);border:1px solid var(--line);padding:10px 12px;margin:0 0 16px;font-size:var(--t-sm);max-width:80ch}
+.fit b{font-size:var(--t-xs);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);flex:none}
+
+.tools{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 16px;margin-bottom:8px}
+.tools .label{color:var(--mute)}
+.units{display:inline-flex;border:1px solid var(--ink);margin:0;padding:0}
+.units legend{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.units input{position:absolute;opacity:0;width:1px;height:1px}
+.units label{min-width:52px;min-height:36px;display:grid;place-items:center;padding:0 12px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;color:var(--ink);background:var(--surface)}
+.units input:checked+label{background:var(--ink);color:var(--surface)}
+.units input:focus-visible+label{outline:2px solid var(--ink);outline-offset:2px}
+
+.chart{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:24px;align-items:start;margin-bottom:16px}
+.tbl-wrap{overflow-x:auto;border-top:1px solid var(--ink)}
+.tbl{width:100%;border-collapse:collapse;font-size:var(--t-sm);font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{text-align:left;padding:10px 12px 10px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl thead th{font-size:var(--t-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.tbl tbody th{font-weight:700;color:var(--ink)}
+.tbl td{color:var(--soft)}
+.tbl .u{font-weight:400;text-transform:none;letter-spacing:0}
+.fig{margin:0;background:var(--surface);border:1px solid var(--line);padding:12px}
+.fig svg{width:100%;height:auto;display:block}
+.fig figcaption{font-size:11px;color:var(--mute);margin-top:6px}
+.how{list-style:none;margin:0 0 16px;padding:0;border-top:1px solid var(--line);max-width:80ch}
+.how li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.how .k{width:24px;height:24px;display:grid;place-items:center;background:var(--accent);color:var(--ink);font-size:11px;font-weight:800}
+.how b{color:var(--ink)}
+.small-links{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:var(--t-xs);margin-top:4px}
+.how-wrap{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:24px;align-items:start}
+
+/* dibujo de medidas */
+.m-line{fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linejoin:round}
+.m-arrow{stroke:var(--alert);stroke-width:1.5;fill:none}
+.m-dot{fill:var(--alert)}
+.m-txt{font:700 9px var(--f-sans);fill:var(--alert);letter-spacing:.04em}
+
+@media (max-width:1100px){.chart,.how-wrap{grid-template-columns:minmax(0,1fr)}.fig{max-width:300px}}
+@media (max-width:860px){
+  .sz{grid-template-columns:minmax(0,1fr);gap:20px;padding-top:0}
+  .sz-nav{position:sticky;top:var(--header);z-index:5;background:var(--bg);margin-inline:calc(var(--gutter) * -1);border-bottom:1px solid var(--line)}
+  .sz-nav ul{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:10px var(--gutter)}
+  .sz-nav ul::-webkit-scrollbar{display:none}
+  .sz-nav li{flex:none}
+  .sz-nav a{font-size:var(--t-xs);line-height:1;padding:9px 12px;border:1px solid var(--line);background:var(--surface)}
+  .sz-nav a[aria-current="page"]{border-color:var(--ink)}
+}
+</style>
+</head>
+<body>
+<div data-hm-header data-current=""></div>
+<main id="main">
+  <section class="sz-banner">
+    <div class="wrap">
+      <h1 class="h1">Size Guide</h1>
+      <nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="sizes.html?s=tees">Size Guide</a></li><li aria-current="page" id="crumb-cur">Tees</li></ol></nav>
+    </div>
+  </section>
+
+  <div class="wrap sz">
+    <nav class="sz-nav" aria-label="Size charts">
+      <ul id="sz-list">
+        <li><a href="sizes.html?s=tees" data-s="tees">Tees</a></li>
+        <li><a href="sizes.html?s=longsleeve" data-s="longsleeve">Long sleeves</a></li>
+        <li><a href="sizes.html?s=sweats" data-s="sweats">Hoodies &amp; crewnecks</a></li>
+        <li><a href="sizes.html?s=kids" data-s="kids">Kids</a></li>
+        <li><a href="sizes.html?s=hats" data-s="hats">Hats</a></li>
+        <li><a href="sizes.html?s=measure" data-s="measure">How to measure</a></li>
+      </ul>
+    </nav>
+
+    <div class="sz-body" id="sz-main" tabindex="-1">
+      <p class="note">Las medidas vienen de la tabla de product.html, que todavía está en XX. Cada producto de Printify trae su tabla de medidas en la ficha del catálogo: copiarla por estilo (tee, long sleeve, hoodie, crewneck, kids, gorra) y cambiar solo los números.</p>
+      <div id="sz-docs"></div>
+
+      <!-- HOW TO MEASURE -->
+      <article class="sz-doc" data-s="measure" aria-labelledby="t-measure" hidden>
+        <header><span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="8" width="20" height="8"/><path d="M6 8v3M10 8v4M14 8v3M18 8v4"/></svg></span><div><h2 class="h2" id="t-measure">How to measure</h2><p>Measure a shirt you already like, laid flat</p></div></header>
+        <div class="how-wrap">
+          <div>
+            <ol class="how">
+              <li><span class="k">1</span><span><b>Lay it flat.</b> Use a shirt or hoodie that fits the way you like. Smooth out wrinkles, sleeves to the side.</span></li>
+              <li><span class="k">A</span><span><b>Chest width.</b> Straight across, armpit to armpit.</span></li>
+              <li><span class="k">B</span><span><b>Body length.</b> From the highest point of the shoulder, next to the collar, down to the hem.</span></li>
+              <li><span class="k">C</span><span><b>Sleeve.</b> From the shoulder seam to the end of the cuff.</span></li>
+              <li><span class="k">2</span><span><b>Compare.</b> Find the size in the chart closest to your numbers. Between sizes? Size up for a relaxed fit.</span></li>
+            </ol>
+            <p>Hats: measure around your head, just above the ears and eyebrows. Printed-to-order items can't be returned for size, so it's worth the two minutes. See the <a href="policies.html?p=refund">Refund Policy</a>.</p>
+          </div>
+          <figure class="fig" data-fig></figure>
+        </div>
+      </article>
+    </div>
+  </div>
+</main>
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  /* Medidas en pulgadas (prenda en plano). Tomadas de la tabla de product.html: todas XX hasta copiar las reales de la ficha de Printify.
+     Para publicar: cambia null por el número en pulgadas; la vista en cm se calcula sola. */
+  var ADULT = ['S', 'M', 'L', 'XL', '2XL', '3XL'], YOUTH = ['YS', 'YM', 'YL', 'YXL'];
+  var COLS = ['Chest width', 'Body length', 'Sleeve'];
+  function blank(rows) { return rows.map(function (r) { return [r, null, null, null]; }); }
+  var DOCS = [
+    { s: 'tees', name: 'Tees', mock: 'evil-one-tee', sub: 'Short sleeve tees · S to 3XL', cat: 'tees', rows: blank(ADULT) },
+    { s: 'longsleeve', name: 'Long sleeves', mock: 'full-pull-ls', sub: 'Long sleeve tees · S to 3XL', cat: 'tees', rows: blank(ADULT), pend: true },
+    { s: 'sweats', name: 'Hoodies & crewnecks', mock: '680-ci-hoodie', sub: 'Pullover hoodies and crewnecks · S to 3XL', cat: 'sweats', rows: blank(ADULT), pend: true },
+    { s: 'kids', name: 'Kids', mock: 'little-evil-one-tee', sub: 'Youth tees and hoodies · YS to YXL', cat: 'kids', rows: blank(YOUTH) },
+    { s: 'hats', name: 'Hats', mock: 'crew-cap', sub: 'Crew Cap and Evil One Beanie · One size', cat: 'hats', hat: true }
+  ];
+  var NAMES = { measure: 'How to measure' };
+  DOCS.forEach(function (d) { NAMES[d.s] = d.name; });
+  var P = {}; (window.HM_CATALOG || []).forEach(function (p) { P[p.id] = p; });
+
+  var FIG = '<svg viewBox="0 0 200 190" role="img" aria-labelledby="fig-t"><title id="fig-t">Flat shirt with three measurements: A chest width armpit to armpit, B body length shoulder to hem, C sleeve shoulder seam to cuff</title>' +
+    '<path class="m-line" d="M74 22 44 34 14 74l26 12 12-22v108h96V64l12 22 26-12-30-40-30-12c-4 10-14 16-26 16s-22-6-26-16Z"/>' +
+    '<path class="m-line" d="M74 22c4 8 14 13 26 13s22-5 26-13" />' +
+    '<path class="m-arrow" d="M54 80h92"/><circle class="m-dot" cx="54" cy="80" r="2.5"/><circle class="m-dot" cx="146" cy="80" r="2.5"/><text class="m-txt" x="96" y="75">A</text>' +
+    '<path class="m-arrow" d="M80 28v142"/><circle class="m-dot" cx="80" cy="28" r="2.5"/><circle class="m-dot" cx="80" cy="170" r="2.5"/><text class="m-txt" x="84" y="130">B</text>' +
+    '<path class="m-arrow" d="M150 36l32 42"/><circle class="m-dot" cx="150" cy="36" r="2.5"/><circle class="m-dot" cx="182" cy="78" r="2.5"/><text class="m-txt" x="170" y="50">C</text></svg>' +
+    '<figcaption>A: chest width · B: body length · C: sleeve</figcaption>';
+
+  var FIT = '<p class="fit"><b>Fit</b><span>Unisex fit. Between sizes? Size up for a relaxed fit.</span></p>';
+  var PEND = ' <span class="pend">[pending, confirm with Printify]</span>';
+
+  $('sz-docs').innerHTML = DOCS.map(function (d) {
+    var head = '<header><span class="ico" aria-hidden="true">' + (P[d.mock] ? hmMock(P[d.mock]) : '') + '</span><div><h2 class="h2" id="t-' + d.s + '">' + d.name.replace('&', '&amp;') + '</h2><p>' + d.sub + '</p></div></header>';
+    var shop = '<p class="small-links"><a href="shop.html?cat=' + d.cat + '">Shop ' + d.name.replace('&', '&amp;').toLowerCase() + '</a><a href="sizes.html?s=measure" data-s="measure">How to measure</a><a href="policies.html?p=refund">Refund Policy</a></p>';
+    if (d.hat) {
+      return '<article class="sz-doc" data-s="hats" aria-labelledby="t-hats" hidden>' + head +
+        '<p class="fit"><b>Fit</b><span>One size.' + PEND + '</span></p>' +
+        '<div class="tbl-wrap"><table class="tbl"><caption class="vh">Hat sizes</caption><thead><tr><th scope="col">Style</th><th scope="col">Size</th><th scope="col">Fits head <span class="u" data-u></span></th></tr></thead><tbody>' +
+        '<tr><th scope="row">Crew Cap</th><td>One size</td><td data-v>XX to XX</td></tr><tr><th scope="row">Evil One Beanie</th><td>One size</td><td data-v>XX to XX</td></tr></tbody></table></div>' +
+        '<p style="margin-top:10px">Head circumference measurements' + PEND + '. Measure around your head, just above the ears and eyebrows.</p>' + shop + '</article>';
+    }
+    return '<article class="sz-doc" data-s="' + d.s + '" aria-labelledby="t-' + d.s + '" hidden>' + head + FIT +
+      '<div class="tools"><p class="label">Measured flat, garment size' + (d.pend ? PEND : '') + '</p></div>' +
+      '<div class="chart"><div class="tbl-wrap"><table class="tbl"><caption class="vh">' + d.name.replace('&', '&amp;') + ' measurements</caption><thead><tr><th scope="col">Size</th>' +
+      COLS.map(function (c) { return '<th scope="col">' + c + ' <span class="u" data-u></span></th>'; }).join('') + '</tr></thead><tbody>' +
+      d.rows.map(function (r) { return '<tr><th scope="row">' + r[0] + '</th>' + r.slice(1).map(function (v) { return '<td data-v data-in="' + (v == null ? '' : v) + '">XX</td>'; }).join('') + '</tr>'; }).join('') +
+      '</tbody></table></div><figure class="fig" data-fig></figure></div>' +
+      '<p>Chest: armpit to armpit. Length: top of shoulder to hem. Printed-to-order items can\'t be returned for size, so compare with a shirt you own.</p>' + shop + '</article>';
+  }).join('');
+  document.querySelectorAll('[data-fig]').forEach(function (f, i) { f.innerHTML = FIG.replace(/fig-t/g, 'fig-t' + i); });
+
+  /* in / cm: un solo control arriba de cada tabla, sincronizado */
+  var unit = 'in';
+  try { unit = localStorage.getItem('hm-unit') === 'cm' ? 'cm' : 'in'; } catch (e) {}
+  document.querySelectorAll('.sz-doc .tools, .sz-doc[data-s="hats"] .fit').forEach(function (t, i) {
+    var f = document.createElement('fieldset'); f.className = 'units';
+    f.innerHTML = '<legend>Units</legend><input type="radio" name="u' + i + '" id="u' + i + 'in" value="in"><label for="u' + i + 'in">in</label><input type="radio" name="u' + i + '" id="u' + i + 'cm" value="cm"><label for="u' + i + 'cm">cm</label>';
+    if (t.classList.contains('fit')) { var w = document.createElement('div'); w.className = 'tools'; w.innerHTML = '<p class="label">Units</p>'; w.appendChild(f); t.after(w); } else t.appendChild(f);
+  });
+  function setUnit(u) {
+    unit = u;
+    try { localStorage.setItem('hm-unit', u); } catch (e) {}
+    document.querySelectorAll('.units input').forEach(function (r) { r.checked = r.value === u; });
+    document.querySelectorAll('[data-u]').forEach(function (s) { s.textContent = '(' + u + ')'; });
+    document.querySelectorAll('td[data-in]').forEach(function (td) {
+      var v = parseFloat(td.getAttribute('data-in'));
+      td.textContent = isNaN(v) ? 'XX' : (u === 'cm' ? (Math.round(v * 2.54 * 2) / 2) : v);
+    });
+  }
+  document.addEventListener('change', function (e) { if (e.target.closest('.units')) setUnit(e.target.value); });
+  setUnit(unit);
+
+  /* lista lateral: igual que policies.html (?s=) */
+  var docs = document.querySelectorAll('.sz-doc'), links = document.querySelectorAll('#sz-list a'), list = $('sz-list'), body = $('sz-main');
+  function show(s, fromClick) {
+    if (!NAMES[s]) s = 'tees';
+    docs.forEach(function (d) { d.hidden = d.getAttribute('data-s') !== s; });
+    links.forEach(function (a) {
+      var on = a.getAttribute('data-s') === s;
+      if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+      if (on && list.scrollWidth > list.clientWidth) list.scrollLeft = a.parentNode.offsetLeft - 16;
+    });
+    $('crumb-cur').textContent = NAMES[s];
+    document.title = NAMES[s] + ' · Size Guide · Heavy Metal Pro Stock: “The Evil One”';
+    if (fromClick) {
+      history.replaceState(null, '', 'sizes.html?s=' + s);
+      var nav = document.querySelector('.sz-nav');
+      var off = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header'), 10) + (innerWidth <= 860 ? nav.offsetHeight : 0) + 12;
+      var top = body.getBoundingClientRect().top;
+      if (top < off) scrollBy(0, top - off);
+      body.focus({ preventScroll: true });
+    }
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="sizes.html?s="]');
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault();
+    show(new URL(a.href).searchParams.get('s'), true);
+  });
+  show(new URLSearchParams(location.search).get('s'), false);
+})();
+</script>
+</body>
+</html>

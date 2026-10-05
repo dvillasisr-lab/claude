@@ -1,0 +1,226 @@
+{%- comment -%}
+  Easter egg page /pages/3208 (template page.3208). Not in any menu. The page must be hidden from search and
+  the sitemap with the page metafield seo.hidden = 1 (set by the coordinator), plus noindex from the layout.
+  The code itself is created in Discounts (one use per customer).
+{%- endcomment -%}
+{%- assign xid = 'Egg-' | append: section.id -%}
+<section class="egg" aria-labelledby="{{ xid }}-t" data-egg>
+  <div class="egg__sky" aria-hidden="true"><i class="egg__storm"></i><i class="egg__flash"></i></div>
+  <div class="wrap egg__in">
+    <div>
+      <p class="egg__k">
+        {%- if section.settings.kicker_strong != blank -%}<b>{{ section.settings.kicker_strong }}</b> · {% endif -%}
+        {{- section.settings.kicker -}}
+      </p>
+      <h1 class="egg__h1" id="{{ xid }}-t">
+        {{ section.settings.title_before }}
+        {% if section.settings.title_accent != blank %}<span>{{ section.settings.title_accent }}</span>{% endif %}
+      </h1>
+      {%- if section.settings.voice != blank -%}
+        <div class="egg__voice">{{ section.settings.voice }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.code != blank -%}
+        <div class="code" role="group" aria-labelledby="{{ xid }}-lbl">
+          <p class="code__lbl" id="{{ xid }}-lbl">
+            <span>{{ section.settings.code_label }}</span>
+            {%- if section.settings.discount != blank -%}<b>{{ section.settings.discount }}</b>{%- endif -%}
+          </p>
+          <div class="code__row">
+            <span class="code__val" data-egg-code>{{ section.settings.code }}</span>
+            <button class="btn code__copy" type="button" data-egg-copy>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12"/><path d="M16 8V4H4v12h4"/></svg>
+              <span>{{ section.settings.copy_label }}</span>
+            </button>
+          </div>
+          <p class="code__msg" role="status" aria-live="polite" data-egg-msg></p>
+          <div class="code__go">
+            {%- if section.settings.shop_label != blank -%}
+              <a class="eg-link" href="{{ section.settings.shop_url | default: routes.all_products_collection_url }}">
+                {{- section.settings.shop_label }}
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            {%- endif -%}
+            {%- if section.settings.fine != blank -%}<p class="code__fine">{{ section.settings.fine }}</p>{%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <figure class="egg__pic">
+      {%- if section.settings.image != blank -%}
+        {%- assign img_alt = section.settings.image.alt | default: section.settings.image_alt -%}
+        {{
+          section.settings.image
+          | image_url: width: 1200
+          | image_tag: widths: '500, 800, 1200', sizes: '(max-width: 900px) 100vw, 42vw', fetchpriority: 'high', alt: img_alt
+        }}
+      {%- else -%}
+        {{ 'image' | placeholder_svg_tag: 'egg__ph' }}
+      {%- endif -%}
+      <figcaption>
+        <span>{{ section.settings.cap_left }}</span>
+        {%- if section.settings.cap_badge != blank -%}<b>{{ section.settings.cap_badge }}</b>{%- endif -%}
+      </figcaption>
+    </figure>
+  </div>
+  <script type="application/json" data-egg-copy-text>
+    {
+      "copy": {{ section.settings.copy_label | json }},
+      "copied": {{ section.settings.copied_msg | json }},
+      "manual": {{ section.settings.manual_msg | json }}
+    }
+  </script>
+</section>
+
+{% stylesheet %}
+  .egg{position:relative;isolation:isolate;overflow:hidden;background:#1A1D22;color:var(--night-ink);padding-block:clamp(28px,3.2vw,48px)}
+  .egg :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .egg__sky{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+  .egg__sky i{position:absolute;inset:0}
+  .egg__storm{background:radial-gradient(34% 52% at 72% 42%,rgba(178,184,192,.26),rgba(150,158,168,.1) 55%,transparent 80%),radial-gradient(70% 45% at 18% 8%,rgba(112,122,138,.32),transparent 70%),radial-gradient(80% 50% at 60% 100%,rgba(140,146,152,.22),transparent 70%),linear-gradient(180deg,#14171C 0%,#20252C 45%,#363D47 100%)}
+  .egg__flash{background:#E9EEF6;opacity:0;mix-blend-mode:screen}
+  .egg.is-strike .egg__flash{animation:eggFlash 1.2s steps(1,end) 1}
+  @keyframes eggFlash{0%{opacity:0}6%{opacity:.6}10%{opacity:.08}16%{opacity:.45}22%{opacity:0}100%{opacity:0}}
+  .egg__in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,clamp(300px,42vw,620px));gap:clamp(24px,3.2vw,48px);align-items:stretch}
+  @media (max-width:900px){.egg__in{grid-template-columns:minmax(0,1fr)}}
+  .egg__k{margin:0 0 12px;font-size:var(--t-xs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#ABA79D}
+  .egg__k b{color:var(--accent);font-weight:700}
+  .egg__h1{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:800;text-transform:uppercase;line-height:.9;letter-spacing:.01em;font-size:clamp(46px,min(6.6vw,11vh),96px);color:var(--night-ink);text-shadow:0 2px 18px rgba(0,0,0,.45);text-wrap:balance}
+  .egg__h1 span{color:var(--accent)}
+  .egg__voice{margin:16px 0 0;display:grid;gap:8px;max-width:56ch;font-size:var(--t-md);line-height:1.5;color:#D6D3CA}
+  .egg__voice p{margin:0}
+  .egg__voice strong,.egg__voice b{color:var(--night-ink)}
+  .code{margin-top:22px;max-width:560px;border:1px solid rgba(242,240,233,.22);border-top:3px solid var(--accent);background:rgba(14,15,17,.7);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:clamp(16px,2vw,22px);display:grid;gap:12px}
+  .code__lbl{margin:0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;font-size:var(--t-xs);font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#ABA79D}
+  .code__lbl b{color:var(--accent)}
+  .code__row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:stretch}
+  .code__val{display:flex;align-items:center;min-width:0;padding:6px 14px;border:2px dashed rgba(245,196,0,.7);background:#0E0F11;font-family:var(--f-head);font-stretch:100%;font-weight:800;font-size:clamp(34px,6vw,56px);line-height:1;letter-spacing:.06em;color:var(--accent);font-variant-numeric:tabular-nums;user-select:all;-webkit-user-select:all;overflow-wrap:anywhere}
+  .code__copy.code__copy{min-height:56px;background:var(--accent);border-color:var(--accent);color:var(--ink)}
+  .code__copy.code__copy:hover{background:#FFD83D;border-color:#FFD83D;color:var(--ink)}
+  .code__copy svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
+  .code__msg{margin:0;font-size:var(--t-sm);color:#D6D3CA}
+  .code__msg:empty{margin-top:-12px}
+  .code__go{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+  .code__fine{margin:0;font-size:var(--t-xs);color:#ABA79D}
+  @media (max-width:480px){.code__row{grid-template-columns:minmax(0,1fr)}.code__val{justify-content:center}}
+  .eg-link{display:inline-flex;align-items:center;gap:6px;min-height:44px;color:inherit;font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:14px;text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:6px}
+  .eg-link svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
+  .eg-link:hover{color:var(--accent)}
+  .egg__pic{margin:0;position:relative;width:100%;min-height:0;background:#0E0F11}
+  .egg__pic img,.egg__pic svg{display:block;width:100%;height:100%;min-height:360px;position:absolute;inset:0;object-fit:cover;object-position:50% 60%;box-shadow:0 30px 60px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.08)}
+  .egg__pic svg{fill:#2A2D33}
+  .egg__pic figcaption{position:absolute;left:12px;bottom:12px;right:12px;display:flex;justify-content:space-between;gap:8px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--night-ink);text-shadow:0 1px 3px rgba(0,0,0,.9)}
+  .egg__pic figcaption b{background:var(--accent);color:var(--ink);padding:2px 6px;text-shadow:none}
+  @media (max-width:900px){.egg__pic{max-width:520px}.egg__pic img,.egg__pic svg{position:static;height:auto;min-height:0;aspect-ratio:4/3;object-position:50% 55%}}
+  @media (prefers-reduced-motion:reduce){.egg.is-strike .egg__flash{animation:none}}
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    function init(root) {
+      if (!root || root.dataset.ready) return;
+      root.dataset.ready = '1';
+      var btn = root.querySelector('[data-egg-copy]');
+      var val = root.querySelector('[data-egg-code]');
+      var msg = root.querySelector('[data-egg-msg]');
+      if (!btn || !val) return;
+      var txt = {};
+      try { txt = JSON.parse(root.querySelector('[data-egg-copy-text]').textContent); } catch (e) { txt = {}; }
+      var CODE = val.textContent.trim();
+      var label = btn.querySelector('span');
+      var timer = null;
+      function selectCode() {
+        try {
+          var r = document.createRange();
+          r.selectNodeContents(val);
+          var s = window.getSelection();
+          s.removeAllRanges();
+          s.addRange(r);
+        } catch (e) { /* nothing to select */ }
+      }
+      function legacyCopy() {
+        var ok = false;
+        try {
+          var ta = document.createElement('textarea');
+          ta.value = CODE;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+        } catch (e) { ok = false; }
+        return ok;
+      }
+      function done(ok) {
+        if (ok) {
+          msg.textContent = (txt.copied || 'Copied. [code] is in your clipboard.').replace('[code]', CODE);
+          label.textContent = 'Copied';
+          if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            root.classList.remove('is-strike');
+            void root.offsetWidth;
+            root.classList.add('is-strike');
+          }
+          clearTimeout(timer);
+          timer = setTimeout(function () { label.textContent = txt.copy || 'Copy code'; }, 2400);
+        } else {
+          selectCode();
+          msg.textContent = txt.manual || 'Code selected. Press Ctrl+C (or long press and Copy).';
+        }
+      }
+      btn.addEventListener('click', function () {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(CODE).then(function () { done(true); }, function () { done(legacyCopy()); });
+        } else done(legacyCopy());
+      });
+      root._eggOff = function () { clearTimeout(timer); };
+    }
+    function initAll(scope) { (scope || document).querySelectorAll('[data-egg]').forEach(init); }
+    document.addEventListener('shopify:section:load', function (e) { initAll(e.target); });
+    document.addEventListener('shopify:section:unload', function (e) {
+      e.target.querySelectorAll('[data-egg]').forEach(function (r) { if (r._eggOff) r._eggOff(); });
+    });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { initAll(); });
+    else initAll();
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "3208 easter egg",
+  "tag": "div",
+  "class": "hm-3208",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Hidden page: keep it out of menus. Create the code in Discounts (one use per customer)."
+    },
+    { "type": "text", "id": "kicker_strong", "label": "Small label (yellow part)", "default": "Page 3208" },
+    { "type": "text", "id": "kicker", "label": "Small label (rest)", "default": "for people who dig" },
+    { "type": "text", "id": "title_before", "label": "Title", "default": "You found the" },
+    { "type": "text", "id": "title_accent", "label": "Yellow end of the title", "default": "V8." },
+    {
+      "type": "richtext",
+      "id": "voice",
+      "label": "Text",
+      "default": "<p>Most folks see the smoke. You looked under the hood. Take this, and don’t tell the grandstand.</p>"
+    },
+    { "type": "text", "id": "code_label", "label": "Code label", "default": "Your code" },
+    { "type": "text", "id": "code", "label": "Discount code (empty = hide the box)", "default": "EVIL3208" },
+    { "type": "text", "id": "discount", "label": "Discount text", "placeholder": "15% off", "info": "Write the real amount when the discount is set, like 15% off. Empty = hidden." },
+    { "type": "text", "id": "copy_label", "label": "Copy button", "default": "Copy code" },
+    { "type": "text", "id": "copied_msg", "label": "Message after copying", "default": "Copied. [code] is in your clipboard. Go get some gear." },
+    { "type": "text", "id": "manual_msg", "label": "Message when copy is blocked", "default": "Code selected. Press Ctrl+C (or long press and Copy)." },
+    { "type": "text", "id": "shop_label", "label": "Shop link", "default": "Shop the drop" },
+    { "type": "url", "id": "shop_url", "label": "Shop link goes to", "info": "Empty = all products." },
+    { "type": "text", "id": "fine", "label": "Fine print", "default": "Use it at checkout. One per customer." },
+    { "type": "image_picker", "id": "image", "label": "Engine photo" },
+    { "type": "text", "id": "image_alt", "label": "Photo description (if the file has no alt text)", "default": "The Cat 3208 V8 in the shop, turbo up top" },
+    { "type": "text", "id": "cap_left", "label": "Photo caption", "default": "The heart of it" },
+    { "type": "text", "id": "cap_badge", "label": "Photo badge", "default": "3208" }
+  ],
+  "presets": [{ "name": "3208 easter egg" }]
+}
+{% endschema %}

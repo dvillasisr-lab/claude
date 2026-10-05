@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pull Schedule 2026 · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Where “The Evil One” pulls next: upcoming pulls, past results and a calendar of competitions and exhibitions, plus where to watch NTPA and PPL Badger State.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<!-- En Shopify este bloque lo genera la sección a partir de cada entrada del metaobjeto pull_event (Status distinto de Hidden). -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SportsEvent",
+  "name": "Green County Fall Nationals",
+  "description": "Badger State Tractor Pullers 2026: Green County Fall Nationals in Monroe, WI. “The Evil One” ran in Pro Stock.",
+  "startDate": "2026",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "sport": "Tractor pulling",
+  "url": "https://greencountyfair.net/",
+  "location": {"@type": "Place", "name": "Green County Fair", "url": "https://greencountyfair.net/", "address": {"@type": "PostalAddress", "addressLocality": "Monroe", "addressRegion": "WI", "addressCountry": "US"}},
+  "organizer": {"@type": "Organization", "name": "Badger State Tractor Pullers", "url": "https://bstponline.com/"},
+  "competitor": {"@type": "SportsTeam", "name": "Heavy Metal Pro Stock: “The Evil One”", "sport": "Tractor pulling", "url": "https://www.facebook.com/heavymetalprostock/"},
+  "subjectOf": {"@type": "VideoObject", "name": "Badger State Tractor Pullers 2026: Green County Fall Nationals in Monroe, WI", "url": "https://www.youtube.com/watch?v=HfJ5FAJJ5Ac", "thumbnailUrl": "img/hm-hero.webp", "uploadDate": "2026"}
+}
+</script>
+<style>
+/* Una sola columna de lectura: 1 pulls (lista o calendario, por temporada) · 2 dónde verlo · 3 primera vez · 4 The Evil List · (dueña) */
+.ext{font-size:.85em;margin-left:2px;text-decoration:none;display:inline-block}
+.sc-h{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 14px;margin-bottom:14px}
+.sc-h p{margin:0;font-size:var(--t-xs);color:var(--mute)}
+
+/* encabezado tranquilo: h1 + una línea de contexto */
+.sc-top{padding-block:32px 0}
+.sc-sub{margin:6px 0 0;font-size:var(--t-sm);color:var(--soft);max-width:110ch}
+#view-cal{padding-top:16px}
+.sc-sub a{color:var(--ink);text-underline-offset:3px}
+
+/* pulls */
+.sc-pulls{padding-block:20px clamp(32px,4vw,44px)}
+.sc-sect{padding-block:clamp(32px,4vw,44px)}
+
+/* barra tranquila: Upcoming / Past a la izquierda; temporada y vista como texto chico a la derecha */
+.sc-bar{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 24px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+.sc-tabs{display:flex;gap:24px;margin-bottom:-1px}
+.sc-tabs[hidden]{display:none!important}
+.sc-tab{min-height:40px;padding:0;background:none;border:0;border-bottom:1px solid transparent;font-size:var(--t-sm);font-weight:500;color:var(--mute);cursor:pointer}
+.sc-tab:hover{color:var(--ink)}
+.sc-tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+.sc-tab .n{font-weight:400;color:var(--mute);margin-left:4px;font-variant-numeric:tabular-nums}
+.sc-ctl{display:flex;align-items:center;gap:20px;margin-left:auto;min-height:40px}
+.sc-year{display:flex;align-items:center;gap:6px;margin:0}
+.sc-year label{font-size:var(--t-xs);color:var(--mute)}
+.sc-year select.input{min-height:32px;width:auto;padding:0 16px 0 0;border:0;outline:0;background:transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23111' stroke-width='1.3'/%3E%3C/svg%3E") no-repeat right center/9px 6px;-webkit-appearance:none;appearance:none;font-size:var(--t-xs);font-weight:600;color:var(--ink);cursor:pointer}
+.sc-year select.input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.seg{display:inline-flex;gap:14px}
+.seg button{min-height:32px;padding:0;background:none;border:0;border-bottom:1px solid transparent;font-size:var(--t-xs);font-weight:500;color:var(--mute);cursor:pointer}
+.seg button[aria-pressed="true"]{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
+.seg button:not([aria-pressed="true"]):hover{color:var(--ink)}
+.sc-ctl .sep{width:1px;height:14px;background:var(--line)}
+.sc-upd{margin:14px 0 0;font-size:var(--t-xs);color:var(--mute)}
+@media (max-width:640px){
+  .sc-bar{gap:0 16px}
+  .sc-ctl{margin-left:0;width:100%;order:-1;justify-content:space-between;gap:16px;min-height:36px}
+  .sc-ctl .sep{display:none}
+  .sc-year select.input{font-size:16px}
+}
+.sc-sum{margin:12px 0 0;font-size:var(--t-xs);color:var(--soft);display:flex;flex-wrap:wrap;gap:4px 14px}
+.sc-sum b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* tabla */
+.sc-table-wrap{overflow-x:auto}
+.sc-table{width:100%;border-collapse:collapse;font-size:var(--t-sm)}
+.sc-table th{text-align:left;font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+.sc-table td{padding:14px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.sc-table th:first-child,.sc-table td:first-child{padding-left:0}
+.sc-table td b{display:block;color:var(--ink);font-family:var(--f-head);font-stretch:78%;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.02em;line-height:1.2}
+.sub{display:block;font-size:var(--t-xs);color:var(--mute)}
+.links{display:flex;flex-wrap:wrap;gap:4px 14px}
+.links a{font-weight:600;text-underline-offset:3px;white-space:nowrap}
+.res{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px}
+.res .dist{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-md);color:var(--ink)}
+.sc-empty td{padding-block:20px;color:var(--soft)}
+.sc-empty td b{margin-bottom:4px}
+.sc-empty a{color:var(--ink);font-weight:600}
+.sc-linkbtn{background:none;border:0;padding:0;font:inherit;font-weight:600;color:var(--ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.sc-ics{min-height:24px;font-size:var(--t-xs);font-weight:500;white-space:nowrap}
+.tt{display:inline-block;padding:1px 6px;border:1px solid var(--line);font-size:11px;color:var(--soft);white-space:nowrap}
+.dash{color:var(--mute)}
+/* tipo de evento: competition = negro, exhibition = amarillo (siempre con texto) */
+.tb{white-space:nowrap}
+/* marca solo para la dueña (se esconde con "Ocultar notas") */
+.own-tag{display:inline-block;margin-left:6px;padding:0 5px;border:1px dashed var(--ink);background:#FFF6CC;color:var(--ink);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;vertical-align:2px;font-family:var(--f-sans);font-stretch:100%}
+/* los ejemplos siempre se marcan (también con "Ocultar notas"): nunca deben pasar por datos reales */
+.sc-table tr.is-example td{background:repeating-linear-gradient(135deg,transparent 0 10px,rgba(245,196,0,.07) 10px 20px)}
+.ex-date{font-style:italic}
+@media (max-width:760px){
+  .sc-table thead{display:none}
+  .sc-table,.sc-table tbody,.sc-table tr,.sc-table td{display:block;width:100%}
+  .sc-table tr{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px 16px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .sc-table td{padding:0;border:0}
+  .sc-table td[data-label]::before{content:attr(data-label);display:block;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:2px}
+  .sc-table td.wide{grid-column:1/-1;order:-1}
+  .sc-empty td{grid-column:1/-1}
+}
+
+/* calendario */
+.cal-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,320px);gap:20px 28px;align-items:start}
+@media (max-width:1024px){.cal-wrap{grid-template-columns:1fr}}
+.cal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+.cal-head .h3{font-size:var(--t-md)}
+.cal-nav{display:flex;gap:6px}
+.cal-nav button{width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--ink);background:var(--surface);color:var(--ink);font-size:18px;line-height:1;cursor:pointer}
+.cal-nav button:hover{background:var(--ink);color:var(--surface)}
+.cal-nav button:disabled{border-color:var(--line);color:var(--line);background:var(--surface);cursor:default}
+.cal{width:100%;border-collapse:collapse;table-layout:fixed}
+.cal th{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding:0 0 6px 8px;text-align:left}
+.cal td{border:1px solid var(--line);height:84px;vertical-align:top;padding:0;background:var(--surface)}
+.cal td.out{background:transparent;border:none}
+.cal .d{display:inline-grid;place-items:center;min-width:22px;height:22px;margin:5px 0 0 5px;padding:0 3px;font-size:var(--t-xs);font-variant-numeric:tabular-nums;color:var(--soft)}
+.cal td.today .d{background:var(--surface);box-shadow:inset 0 0 0 1.5px var(--ink);color:var(--ink);font-weight:700}
+.cal td.has{background:#FBFAF7}
+.cal .day{display:flex;flex-direction:column;align-items:stretch;gap:4px;width:100%;height:100%;min-height:84px;padding:0 0 6px;background:none;border:0;text-align:left;cursor:pointer;color:inherit}
+.cal .day__top{display:flex;justify-content:space-between;align-items:flex-start;gap:2px}
+.cal .day .d{color:var(--ink);font-weight:700}
+.cal .own-tag{margin:6px 5px 0 0;padding:0 3px;font-size:9px;vertical-align:0}
+.own-tag .s{display:none}
+.cal .day:hover{background:var(--bg)}
+.cal .day:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+.cal td.sel{box-shadow:inset 0 0 0 2px var(--ink)}
+/* chip del evento: nombre corto + color por tipo (negro = competition, amarillo = exhibition; próximos con contorno) */
+.ev{display:block;margin:0 5px;padding:4px 6px;border-radius:2px;font-family:var(--f-head);font-stretch:78%;font-size:12px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ev small{display:block;font-family:var(--f-sans);font-stretch:100%;font-size:9px;font-weight:600;letter-spacing:.06em;opacity:.85}
+.ev--c{background:var(--ink);color:var(--surface)}
+.ev--e{background:var(--accent);color:var(--ink)}
+.ev--up{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink),inset 4px 0 0 var(--ink)}
+.ev--up.ev--e{box-shadow:inset 0 0 0 1.5px #B38F00,inset 4px 0 0 var(--accent)}
+.ev--x{text-decoration:line-through;opacity:.6}
+.cal-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:10px 0 0;padding:0;list-style:none;font-size:var(--t-xs);color:var(--soft)}
+.cal-legend li{display:flex;align-items:center;gap:6px}
+.cal-legend i{display:inline-block;width:18px;height:12px;border-radius:2px}
+.cal-legend .k-c{background:var(--ink)} .cal-legend .k-e{background:var(--accent)} .cal-legend .k-u{box-shadow:inset 0 0 0 1.5px var(--ink),inset 4px 0 0 var(--ink);background:var(--surface)}
+.cal-legend .k-t{border:1.5px solid var(--ink);border-radius:50%;width:12px;height:12px}
+@media (max-width:600px){
+  .cal td{height:60px}
+  .cal .day{min-height:60px;gap:3px;padding-bottom:4px}
+  .cal th{padding-left:3px}
+  .cal .d{margin:3px 0 0 3px;min-width:18px;height:18px}
+  .ev{margin:0 2px;padding:3px 3px;font-size:10px;letter-spacing:0}
+  .ev small{display:none}
+  .ev--up{box-shadow:inset 0 0 0 1.5px var(--ink),inset 3px 0 0 var(--ink);padding-left:5px}
+  .ev--up.ev--e{box-shadow:inset 0 0 0 1.5px #B38F00,inset 3px 0 0 var(--accent)}
+  .cal .own-tag{margin:3px 2px 0 0;padding:0 2px;font-size:8px}
+}
+@media (max-width:400px){
+  /* iPhone SE: la etiqueta del día se parte en dos renglones en vez de cortarse con "…" */
+  .ev{padding:2px;font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.15}
+  .own-tag .l{display:none}.own-tag .s{display:inline}
+}
+
+/* panel lateral: agenda del mes y detalle del pull */
+.cal-side{border-top:2px solid var(--ink);padding-top:10px;display:grid;gap:12px;align-content:start}
+.cal-side:focus{outline:none}
+.cal-side:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.side-h .sc-linkbtn{font-size:var(--t-xs);white-space:nowrap}
+#pulls-t{scroll-margin-top:calc(var(--header) + 16px)}
+.sc-pulls{scroll-margin-top:calc(var(--header) + 16px)}
+.side-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin:0}
+.side-list{list-style:none;margin:0;padding:0;display:grid}
+.side-list li{border-bottom:1px solid var(--line)}
+.side-item{display:grid;grid-template-columns:58px minmax(0,1fr);gap:10px;align-items:start;width:100%;padding:10px 0;background:none;border:0;text-align:left;cursor:pointer;color:inherit}
+.side-item:hover .side-n{text-decoration:underline;text-underline-offset:3px}
+.side-dt{font-size:var(--t-xs);font-weight:700;color:var(--ink);line-height:1.3;text-transform:uppercase;letter-spacing:.04em}
+.side-n{display:block;font-weight:700;color:var(--ink);font-size:var(--t-sm);line-height:1.3}
+.side-empty{margin:0;font-size:var(--t-sm);color:var(--soft)}
+.side-months{display:flex;flex-wrap:wrap;gap:6px}
+.side-sub{margin:4px 0 0;font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.pd{display:grid;gap:8px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.pd__top{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pd h4{margin:0}
+.pd dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 14px;margin:0;font-size:var(--t-sm)}
+.pd dt{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);padding-top:3px}
+.pd dd{margin:0;color:var(--text)}
+
+/* 2 · dónde verlo */
+.sc-watch{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.wcard{background:var(--surface);border:1px solid var(--line);padding:16px 18px 6px;display:grid;align-content:start;gap:4px}
+.wcard p{margin:0 0 6px;font-size:var(--t-xs);color:var(--mute)}
+.wlist{list-style:none;margin:0;padding:0}
+.wlist li{border-top:1px solid var(--line);padding:9px 0;display:grid;gap:1px}
+.wlist a{font-size:var(--t-sm);font-weight:700;color:var(--ink);text-underline-offset:3px}
+.wlist span{font-size:var(--t-xs);color:var(--mute)}
+.wtag{display:inline-block;margin-left:6px;vertical-align:1px}
+.sc-inperson{margin:12px 0 0;font-size:var(--t-xs);color:var(--soft)}
+@media (max-width:1024px){.sc-watch{grid-template-columns:repeat(2,minmax(0,1fr))}.wcard--hm{grid-column:1/-1}}
+@media (max-width:640px){.sc-watch{grid-template-columns:1fr}}
+.sc-watchsec{padding-block:28px}
+.sc-watchsec .sc-h .h2{font-size:var(--t-md)}
+.sc-watchsec .sc-h p{font-size:var(--t-xs)}
+/* v16: "Where to watch" discreto, debajo del horario en jerarquía: sin cajas, listas de links compactas */
+.sc-watch{gap:8px 40px;border-top:1px solid var(--line);padding-top:14px}
+.wcard{background:none;border:0;padding:0;gap:2px}
+.wcard .h3{font-size:var(--t-xs);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-weight:700}
+.wcard > p{display:none}
+.wlist li{border-top:0;padding:4px 0;display:block}
+.wlist a{font-size:var(--t-sm);font-weight:600;color:var(--text);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.wlist a:hover{text-decoration-color:var(--ink);color:var(--ink)}
+.wlist > li > span{display:inline;margin-left:6px;font-size:var(--t-xs);color:var(--mute)}
+.wlist > li > span::before{content:"· "}
+.wtag{margin-left:4px;font-size:9px;padding:1px 5px;background:none!important;border:1px solid var(--line)!important;color:var(--mute)!important}
+@media (max-width:1024px){.wcard--hm{grid-column:auto}}
+@media (max-width:640px){.wlist > li > span{display:block;margin-left:0}.wlist > li > span::before{content:none}}
+/* v17: punto medio. Presente pero sin competir con el horario: columnas blancas suaves, títulos oscuros, links en tinta con subrayado amarillo */
+.sc-watchsec .sc-h .h2{font-size:var(--t-h2)}
+.sc-watch{border-top:0;padding-top:0;gap:12px}
+.wcard{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--ink);padding:14px 16px 10px;gap:6px}
+.wcard .h3{font-size:var(--t-sm);letter-spacing:.06em;color:var(--ink);font-weight:800}
+.wlist li{padding:5px 0}
+.wlist a{font-weight:700;color:var(--ink);text-decoration-color:var(--accent);text-decoration-thickness:2px}
+.wlist a:hover{text-decoration-color:var(--ink)}
+.wtag{color:var(--ink)!important;border-color:var(--ink)!important}
+.wtag.badge:not(.badge--line){background:var(--accent)!important;border-color:var(--accent)!important}
+/* v27: links en tinta (el subrayado amarillo casi no se ve sobre claro). Desktop: NTPA arriba de nuestros canales, PPL a dos columnas, sin tarjetas medio vacías */
+.wlist a{text-decoration-color:var(--ink);text-decoration-thickness:1px}
+.wlist a:hover{text-decoration-thickness:2px}
+@media (min-width:1025px){
+  .sc-watch{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:"ntpa ppl ppl" "hm ppl ppl"}
+  .sc-watch > :nth-child(1){grid-area:ntpa}
+  .sc-watch > :nth-child(2){grid-area:ppl}
+  .sc-watch > :nth-child(3){grid-area:hm}
+  .sc-watch > :nth-child(2) .wlist{columns:2;column-gap:32px}
+  .sc-watch > :nth-child(2) .wlist li{break-inside:avoid}
+}
+.sc-tips .h3{text-wrap:balance}
+
+/* 3 · primera vez */
+.sc-tips{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px 20px;counter-reset:tip}
+.sc-tips li{border-top:2px solid var(--ink);padding-top:10px;counter-increment:tip}
+.sc-tips li::before{content:"0" counter(tip);display:block;font-size:var(--t-xs);font-weight:700;color:var(--mute);margin-bottom:2px}
+.sc-tips p{margin:4px 0 0;color:var(--soft);font-size:var(--t-sm)}
+@media (max-width:1100px){.sc-tips{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){.sc-tips{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){.sc-tips{grid-template-columns:1fr}}
+
+/* 4 · The Evil List (solo email): única banda oscura */
+.sc-alerts{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(20px,3vw,48px);align-items:center}
+.sc-alerts .lede{color:#CFCCC3;margin-top:6px}
+.sc-form{display:grid;gap:8px}
+.sc-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:end}
+.sc-form .field label{color:#CFCCC3}
+.sc-form .consent{color:#B5B2AA}
+.sc-form .consent a{color:var(--night-ink)}
+.input[aria-invalid="true"]{border-color:var(--alert);outline:2px solid var(--alert)}
+.sc-msg{margin:0;font-size:var(--t-xs);font-weight:600;min-height:1.5em;color:var(--night-ink)}
+.sc-msg.is-err{color:#FFB4A8}
+@media (max-width:860px){.sc-alerts{grid-template-columns:1fr}}
+@media (max-width:420px){.sc-row{grid-template-columns:1fr}}
+
+/* Dueña: nota + mock chico. Se esconde con "Ocultar notas" igual que las .note */
+.no-notes .sc-owner{display:none!important}
+.sc-owner{padding-block:32px 40px;border-top:3px dashed var(--accent)}
+.sc-owner .note{margin:0 0 12px}
+.adm{margin:0;border:1px solid var(--line);background:var(--surface);max-width:920px}
+.adm__bar{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);font-size:11px;color:var(--mute)}
+.adm__bar b{color:var(--ink)}
+.adm__only{background:var(--accent);color:var(--ink);font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 6px}
+.adm__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 10px;padding:12px}
+.adm__grid .field{gap:3px;align-content:start}
+.adm__grid .field label{font-size:10px}
+.adm__grid .input{min-height:34px;font-size:var(--t-xs);padding:0 8px}
+.adm__grid .span2{grid-column:span 2}
+.adm__grid .span3{grid-column:span 3}
+.adm__grid .hint{font-size:10px;color:var(--mute);line-height:1.3}
+.adm__new{background:var(--accent);color:var(--ink);font-size:9px;font-weight:800;padding:0 4px;margin-left:4px;letter-spacing:.06em}
+.adm__foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:8px 12px;border-top:1px solid var(--line);background:var(--bg)}
+.adm__foot .grow{flex:1}
+.adm__del{background:none;border:1px solid var(--alert);color:var(--alert);min-height:34px;padding:0 12px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.adm__del:hover{background:var(--alert);color:var(--surface)}
+.adm__msg{margin:0;padding:0 12px 10px;font-size:var(--t-xs);color:var(--soft)}
+.adm__msg:empty{display:none}
+.adm-prev{padding:0 12px 12px}
+.adm-prev .sc-table{font-size:var(--t-xs)}
+@media (max-width:760px){.adm__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.adm__grid .span3{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="schedule"></div>
+
+<main id="main">
+
+<section class="sect--white" aria-labelledby="sc-title">
+  <div class="wrap sc-top">
+    <h1 class="h1" id="sc-title">Schedule <span id="h1-year" class="num">2026</span></h1>
+    <p class="sc-sub"><span id="st-year" class="num">2026</span> testing season. Pro Stock, NTPA and PPL Badger State, all times Central. New dates on <a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a> first.</p>
+  </div>
+
+  <!-- Pulls: una sola barra (vista List o Calendar, temporada, Upcoming / Past) -->
+  <div class="wrap sc-pulls">
+    <h2 class="vh" id="pulls-t" tabindex="-1">Pulls</h2>
+
+    <div class="sc-bar">
+      <div class="sc-tabs" id="sc-tabs" role="tablist" aria-label="Pulls">
+        <button class="sc-tab" type="button" role="tab" id="tab-up" aria-controls="panel-up" aria-selected="true">Upcoming<span class="n" id="n-up"></span></button>
+        <button class="sc-tab" type="button" role="tab" id="tab-past" aria-controls="panel-past" aria-selected="false" tabindex="-1">Past results<span class="n" id="n-past"></span></button>
+      </div>
+      <div class="sc-ctl">
+        <div class="sc-year">
+          <label for="year">Season</label>
+          <select class="input num" id="year" aria-describedby="year-hint"></select>
+          <span class="vh" id="year-hint">Changes the list, the calendar and past results.</span>
+        </div>
+        <span class="sep" aria-hidden="true"></span>
+        <div class="seg" role="group" aria-label="View pulls as">
+          <button type="button" id="v-list" aria-pressed="true" aria-controls="view-list">List</button>
+          <button type="button" id="v-cal" aria-pressed="false" aria-controls="view-cal">Calendar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vista lista: próximos e historial -->
+    <div id="view-list">
+      <div role="tabpanel" id="panel-up" aria-labelledby="tab-up" class="sc-table-wrap" tabindex="0"></div>
+      <div role="tabpanel" id="panel-past" aria-labelledby="tab-past" tabindex="0" hidden></div>
+    </div>
+
+    <!-- Vista calendario: mes con navegación, días marcados, detalle al lado -->
+    <div id="view-cal" hidden>
+      <div class="cal-wrap">
+        <div>
+          <div class="cal-head">
+            <h3 class="h3" id="cal-title" aria-live="polite">October 2026</h3>
+            <div class="cal-nav">
+              <button type="button" id="cal-prev"><span aria-hidden="true">‹</span><span class="vh">Previous month</span></button>
+              <button type="button" id="cal-next"><span aria-hidden="true">›</span><span class="vh">Next month</span></button>
+            </div>
+          </div>
+          <div id="cal-grid"></div>
+          <ul class="cal-legend" aria-label="Legend">
+            <li><i class="k-c" aria-hidden="true"></i>Competition</li>
+            <li><i class="k-e" aria-hidden="true"></i>Exhibition</li>
+            <li><i class="k-u" aria-hidden="true"></i>Upcoming (outline)</li>
+            <li><i class="k-t" aria-hidden="true"></i>Today</li>
+          </ul>
+        </div>
+        <div class="cal-side" id="cal-side" tabindex="-1" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <!-- last-updated: schedule -->
+    <p class="sc-upd">Updated <time class="upd num" datetime=""></time></p>
+
+    <p class="note">Monroe es el pull del video de YouTube (Green County Fall Nationals, Badger State): confírmanos fecha y resultado. Todo lo marcado “Example” (con rayado amarillo) lleva fechas inventadas solo para que veas cómo se llena el calendario; existe únicamente en el boceto y se quita solo en cuanto guardas un pull con fecha real de la temporada. Pásanos fecha, lugar y resultado de las 3 o 4 exhibiciones. El primer pull (agosto 2026, del Pit Log y The full story) ya sale en Past results: falta el día, el lugar y la liga.</p>
+  </div>
+</section>
+
+<!-- 2 · Dónde verlo: una tarjeta por liga, links oficiales -->
+<section class="sect sc-sect sc-watchsec" aria-labelledby="watch-t">
+  <div class="wrap">
+    <div class="sc-h"><h2 class="h2" id="watch-t">Where to watch</h2><p>Each league posts its own dates and streams. All links open in a new tab.</p></div>
+    <div class="sc-watch">
+      <article class="wcard" aria-labelledby="w-ntpa">
+        <h3 class="h3" id="w-ntpa">NTPA</h3>
+        <p>National Tractor Pullers Association</p>
+        <ul class="wlist">
+          <li><a href="https://ntpapull.com/" target="_blank" rel="noopener">ntpapull.com<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Official site, rules and results</span></li>
+          <li><a href="https://ntpapull.com/pullresults/Schedule/NTPA_ScheduleDynamic.php" target="_blank" rel="noopener"><span class="season">2026</span> NTPA calendar<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Every NTPA pull this season</span></li>
+          <li><a href="https://fullpull.live/" target="_blank" rel="noopener">Full Pull LIVE<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Official live stream <span class="badge badge--line wtag">Paid</span> · also the Full Pull app on iOS and Android</span></li>
+        </ul>
+      </article>
+      <article class="wcard" aria-labelledby="w-bst">
+        <h3 class="h3" id="w-bst">PPL Badger State</h3>
+        <p>Badger State Tractor Pullers is a PPL member. PPL is now the IHRA Pro Pulling Series.</p>
+        <ul class="wlist">
+          <li><a href="https://bstponline.com/" target="_blank" rel="noopener">bstponline.com<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Badger State Tractor Pullers, Wisconsin</span></li>
+          <li><a href="https://bstponline.com/events/" target="_blank" rel="noopener">Badger State events<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Dates and places for this season</span></li>
+          <li><a href="https://www.facebook.com/badgerstatetractors/" target="_blank" rel="noopener">Badger State on Facebook<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Day-of updates and weather calls</span></li>
+          <li><a href="https://www.ihra.com/pulling" target="_blank" rel="noopener">IHRA Pro Pulling live<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span><span class="season">2026</span> Pro Pulling broadcasts <span class="badge wtag">Free</span></span></li>
+          <li><a href="https://www.youtube.com/@ProPullingTV" target="_blank" rel="noopener">ProPullingTV on YouTube<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>Streams and replays <span class="badge wtag">Free</span></span></li>
+        </ul>
+      </article>
+      <article class="wcard wcard--hm" aria-labelledby="w-hm">
+        <h3 class="h3" id="w-hm">Heavy Metal Pro Stock: “The Evil One”</h3>
+        <p>Our own channels</p>
+        <ul class="wlist">
+          <li><a href="https://www.facebook.com/heavymetalprostock/" target="_blank" rel="noopener">Facebook<span class="ext" aria-hidden="true">↗</span><span class="vh"> (opens in a new tab)</span></a><span>New dates first, pit photos and our runs</span></li>
+        </ul>
+      </article>
+    </div>
+    <p class="sc-inperson"><b>In person:</b> tickets are sold by each fair or venue.</p>
+  </div>
+</section>
+
+<!-- 3 · Primera vez en un pull -->
+<section class="sect sect--white sc-sect" aria-labelledby="tips-t">
+  <div class="wrap">
+    <div class="sc-h"><h2 class="h2" id="tips-t">First time at a pull?</h2></div>
+    <ol class="sc-tips">
+      <li><span class="h3">What is Pro Stock</span><p>A diesel class with limits on engine and turbo. “The Evil One” runs a Cat 3208 V8, 680 CI, at 10,000 lb.</p></li>
+      <li><span class="h3">What is a full pull</span><p>The sled gets harder to drag the farther it goes. Reach the end of the track and it’s a full pull.</p></li>
+      <li><span class="h3">Competition or exhibition</span><p>A competition counts for the class standings. An exhibition is a run for the crowd, no points on the line.</p></li>
+      <li><span class="h3">Arrive early</span><p>Grandstands fill before the first class. Come early for a good seat and a look at the pits.</p></li>
+      <li><span class="h3">Bring ear protection</span><p>Pro Stock tractors are loud. Ear plugs or muffs for everyone, kids first.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 4 · The Evil List: solo email, la única acción de la página -->
+<section class="sect sect--night sc-sect" aria-labelledby="alerts-t">
+  <div class="wrap sc-alerts">
+    <div>
+      <h2 class="h2" id="alerts-t">The Evil List</h2>
+      <p class="lede">One email before every pull, plus new drops. Nothing else.</p>
+    </div>
+    <form class="sc-form" id="alerts" novalidate aria-labelledby="alerts-t">
+      <div class="sc-row">
+        <div class="field"><label for="al-email">Email</label><input class="input" id="al-email" name="email" type="email" required autocomplete="email" spellcheck="false" placeholder="you@example.com" aria-describedby="al-msg al-consent"></div>
+        <button class="btn btn--light" type="submit">Join The Evil List</button>
+      </div>
+      <p class="consent" id="al-consent">Email only. By signing up you agree to receive marketing emails from Heavy Metal Pro Stock: “The Evil One”. Unsubscribe anytime. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
+      <p class="sc-msg" id="al-msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<!-- Solo para la dueña: cómo se actualiza sin código. No se ve en el sitio real. -->
+<section class="sc-owner" aria-labelledby="own-t">
+  <div class="wrap">
+    <h2 class="label" id="own-t" style="margin-bottom:8px">Solo para la dueña · no se ve en el sitio</h2>
+    <p class="note">El calendario NO se edita aparte: se genera solo desde las entradas de Contenido &gt; Metaobjetos &gt; Pull event. ¿Un error? Abre esa entrada, corrige fecha, nombre o tipo y guarda: calendario, lista, historial, contadores y .ics se actualizan solos. Status “Hidden” lo esconde sin borrarlo. Cada pull con Status Done liga solo a su evento en la Galería (“Photos &amp; video”). Al guardar, cambia también “Last updated” en Personalizar &gt; Schedule.</p>
+    <figure class="adm" aria-labelledby="adm-cap">
+      <figcaption class="adm__bar" id="adm-cap"><span>Contenido &gt; Metaobjetos &gt; <b>Pull event</b> &gt; Green County Fall Nationals</span><span class="adm__only">Solo para la dueña</span></figcaption>
+      <form id="adm-form" novalidate>
+        <div class="adm__grid">
+          <div class="field"><label for="adm-date">Date</label><input class="input" id="adm-date" type="date"></div>
+          <div class="field span2"><label for="adm-event">Event</label><input class="input" id="adm-event" type="text" value="Green County Fall Nationals"></div>
+          <div class="field"><label for="adm-short">Calendar label <span class="adm__new">Nuevo</span></label><input class="input" id="adm-short" type="text" value="Monroe" maxlength="12" aria-describedby="adm-sh-hint"><span class="hint" id="adm-sh-hint">Nombre corto del cuadrito del calendario; hasta 8 letras se lee completo en el celular</span></div>
+          <div class="field"><label for="adm-city">City</label><input class="input" id="adm-city" type="text" value="Monroe, WI"></div>
+          <div class="field"><label for="adm-league">League</label><select class="input" id="adm-league"><option>NTPA</option><option selected>Badger State Tractor Pullers</option><option>IHRA Pro Pulling (PPL)</option><option>Other</option></select></div>
+          <div class="field"><label for="adm-type">Type</label><select class="input" id="adm-type" aria-describedby="adm-ty-hint"><option selected>Competition</option><option>Exhibition</option></select><span class="hint" id="adm-ty-hint">Exhibition: corrida para el público, sin puntos</span></div>
+          <div class="field"><label for="adm-status">Status</label><select class="input" id="adm-status" aria-describedby="adm-st-hint"><option>Upcoming</option><option selected>Done</option><option>Cancelled</option><option>Hidden</option></select><span class="hint" id="adm-st-hint">Hidden: se guarda pero no sale en el sitio</span></div>
+          <div class="field"><label for="adm-dist">Distance</label><input class="input" id="adm-dist" type="text" placeholder="e.g. 312.4 ft"></div>
+          <div class="field span3"><label for="adm-result">Result</label><input class="input" id="adm-result" type="text" placeholder="e.g. 3rd place, or Full pull" aria-describedby="adm-res-hint"><span class="hint" id="adm-res-hint">“Full pull” saca la etiqueta amarilla; “1st place” o “Win” suma un win</span></div>
+          <div class="field span2"><label for="adm-video">Video URL (YouTube)</label><input class="input" id="adm-video" type="url" value="https://www.youtube.com/watch?v=HfJ5FAJJ5Ac" aria-describedby="adm-vid-hint"><span class="hint" id="adm-vid-hint">Las fotos van en la Galería: con Status Done sale solo “Photos &amp; video”</span></div>
+          <div class="field span2"><label for="adm-site">Event website / tickets</label><input class="input" id="adm-site" type="url" value="https://greencountyfair.net/"></div>
+        </div>
+        <div class="adm__foot">
+          <button class="adm__del" type="button" id="adm-del">Delete</button>
+          <span class="grow"></span>
+          <button class="btn btn--sm" type="submit">Save y ver arriba</button>
+        </div>
+      </form>
+      <p class="adm__msg" id="adm-msg" role="status" aria-live="polite"></p>
+      <div class="adm-prev sc-table-wrap" id="adm-prev" hidden></div>
+    </figure>
+  </div>
+</section>
+
+</main>
+
+<div data-hm-footer data-no-news></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function ext(href, label, extra) { return '<a href="' + esc(href) + '" target="_blank" rel="noopener">' + label + '<span class="ext" aria-hidden="true">↗</span><span class="vh">' + (extra || '') + ' (opens in a new tab)</span></a>'; }
+  var SEASON = window.HM_SEASON || new Date().getFullYear();
+  var TODAY = new Date(); TODAY.setHours(12, 0, 0, 0);
+  var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  /* temporada actual (ajuste global del tema) en los textos de la página */
+  if ($('h1-year')) $('h1-year').textContent = SEASON; if ($('st-year')) $('st-year').textContent = SEASON;
+  [].forEach.call(document.querySelectorAll('.season'), function (n) { n.textContent = SEASON; });
+
+  /* "Last updated" del schedule: en Shopify es un ajuste de la sección (Personalizar > Schedule > Last updated) */
+  var SCHEDULE = { updated: '2026-10-01' };
+
+  /* Entradas del metaobjeto "Pull event" (en Shopify las pinta Liquid). El calendario NO tiene datos propios:
+     sale solo de estas entradas, igual que la lista, el historial, los contadores y el .ics.
+     Campos: date, event, short (Calendar label, opcional), city, league, type (Competition | Exhibition),
+     status (Upcoming | Done | Cancelled | Hidden), result, distance, video, website, gallery (handle del Gallery event). Sin fecha, cuenta en la temporada actual.
+     example / sample: solo en el boceto. Si la temporada no tiene ningún pull real con fecha, los ejemplos reciben fechas de muestra
+     (sábados del mes pasado y el próximo sábado) para que el calendario se vea lleno. */
+  var EVENTS = [
+    { date: '', event: 'Green County Fall Nationals', short: 'Monroe', city: 'Monroe, WI', league: 'Badger State Tractor Pullers', type: 'Competition', status: 'Done', result: '', distance: '', video: 'https://www.youtube.com/watch?v=HfJ5FAJJ5Ac', website: 'https://greencountyfair.net/', gallery: 'monroe-' + SEASON },
+    { date: '', month: '2026-08', event: 'First pull attempt', short: 'First', city: '[pending]', league: '[pending]', type: 'Competition', status: 'Done', result: 'Ended early, minor issue', distance: '', video: '', website: '', gallery: 'first-pull-' + SEASON },
+    { date: '', event: 'Exhibition run', short: 'Exhib.', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 0, gallery: 'exhibition-1' },
+    { date: '', event: 'Exhibition run', short: 'Exhib.', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 1, gallery: 'exhibition-2' },
+    { date: '', event: 'Exhibition run', short: 'Exhib.', city: '[pending]', league: '[pending]', type: 'Exhibition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sample: 2, gallery: 'exhibition-3' },
+    { date: '', event: 'County fair pull', short: 'County', city: '[pending]', league: '[pending]', type: 'Competition', status: 'Done', result: '', distance: '', video: '', website: '', example: true, sampleOnly: true, sample: 3 },
+    { date: '', event: 'Season finale pull', short: 'Finale', city: '[pending]', league: '[pending]', type: 'Competition', status: 'Upcoming', result: '', distance: '', video: '', website: '', example: true, sampleOnly: true, sample: 'next' }
+  ];
+
+  function key(y, m, d) { return y + '-' + String(m + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0'); }
+  function isoOf(dt) { return key(dt.getFullYear(), dt.getMonth(), dt.getDate()); }
+  /* fechas de muestra: los 4 sábados del mes anterior a hoy (o septiembre) y el próximo sábado si cae en la temporada */
+  function sampleDate(e) {
+    var inSeason = TODAY.getFullYear() === SEASON;
+    if (e.sample === 'next') {
+      if (!inSeason) return '';
+      var n = new Date(TODAY); n.setDate(n.getDate() + 2); while (n.getDay() !== 6) n.setDate(n.getDate() + 1);
+      return n.getFullYear() === SEASON ? isoOf(n) : '';
+    }
+    var m = inSeason && TODAY.getMonth() > 0 ? TODAY.getMonth() - 1 : 8;
+    var d = new Date(SEASON, m, 1, 12); while (d.getDay() !== 6) d.setDate(d.getDate() + 1);
+    d.setDate(d.getDate() + 7 * e.sample);
+    return isoOf(d);
+  }
+  var samplesOn = false;
+  function applySamples() {
+    var real = EVENTS.some(function (e) { return !e.example && e.date && e.status !== 'Hidden' && yearOf(e) === SEASON; });
+    samplesOn = !real;
+    EVENTS.forEach(function (e) {
+      if (!e.example) return;
+      e.date = real ? '' : sampleDate(e);
+      e.off = e.sampleOnly && (real || !e.date);
+    });
+  }
+
+  function yearOf(e) { return e.date ? +e.date.slice(0, 4) : SEASON; }
+  function dObj(iso) { return new Date(iso + 'T12:00:00'); }
+  function fmtDate(iso, long) { return dObj(iso).toLocaleDateString('en-US', long ? { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' } : { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }); }
+  function isExh(e) { return e.type === 'Exhibition'; }
+  function isYT(u) { return /youtube\.com|youtu\.be/.test(u || ''); }
+  /* handle del evento en la Galería: campo "Gallery" del Pull event (referencia al metaobjeto Gallery event); si está vacío, nombre + año */
+  function slug(t) { return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+  function galleryOf(e) { return e.gallery || slug((e.event || 'pull') + ' ' + yearOf(e)); }
+  function isFull(e) { return /full pull/i.test(e.result || ''); }
+  function isWin(e) { return e.status === 'Done' && /^\s*(1st|first place|win)/i.test(e.result || ''); }
+  function shortOf(e) { return e.short || (e.event || 'Pull').split(/\s+/)[0]; }
+  function typeBadge(e) { return '<span class="badge tb' + (isExh(e) ? '' : ' badge--ink') + '">' + esc(e.type || 'Competition') + '</span>'; }
+  function typeTag(e) { return '<span class="tt">' + esc(e.type || 'Competition') + '</span>'; }
+  function ownTags(e) { return e.example ? '<span class="own-tag">Example</span>' : ''; }
+  /* month: mes conocido sin día (p. ej. el primer pull, agosto 2026) */
+  function dateText(e) { return e.date ? fmtDate(e.date) : e.month ? MONTHS[+e.month.slice(5, 7) - 1] + ' ' + e.month.slice(0, 4) : 'Date pending'; }
+  function dateSub(e) { return e.example && e.date ? '<span class="sub ex-date">Sample date</span>' : !e.date && e.month ? '<span class="sub">Day pending</span>' : ''; }
+  function linksOf(e) {
+    var up = e.status === 'Upcoming', l = [];
+    /* pull pasado (Done): liga a su evento en la Galería (gallery.html?event=handle) */
+    if (e.status === 'Done' && !e.sampleOnly) l.push('<a href="gallery.html?event=' + encodeURIComponent(galleryOf(e)) + '">Photos &amp; video<span class="vh"> from ' + esc(e.event) + ' in the gallery</span></a>');
+    if (e.video) l.push(ext(e.video, 'Video of the run', ' of ' + e.event));
+    if (e.website) l.push(ext(e.website, up ? 'Tickets and info' : 'Event site', ' for ' + e.event));
+    return l;
+  }
+  function resultHtml(e) {
+    if (e.status === 'Cancelled') return '<span class="badge badge--ink">Cancelled</span>';
+    var p = [];
+    if (e.distance) p.push('<span class="dist num">' + esc(e.distance) + '</span>');
+    if (e.result && !isFull(e)) p.push('<span>' + esc(e.result) + '</span>');
+    if (isFull(e)) p.push('<span class="badge">Full pull</span>');
+    if (!p.length) return e.status === 'Done' ? '<span class="badge badge--line">Result pending</span>' : '<span class="dash">-</span>';
+    return '<span class="res">' + p.join('') + '</span>';
+  }
+  function eventCell(e) {
+    return '<b>' + esc(e.event || 'Untitled pull') + ownTags(e) + '</b><span class="sub">' + esc(e.city) + '</span>';
+  }
+  function icsBtn(e, k) { return '<button class="sc-linkbtn sc-ics" type="button" data-ics="' + k + '">Add to calendar<span class="vh">: ' + esc(e.event) + '</span></button>'; }
+
+  var HEAD_UP = '<thead><tr><th scope="col">Date</th><th scope="col">Event</th><th scope="col">Type</th><th scope="col">League</th><th scope="col">Links</th><th scope="col">Calendar</th></tr></thead>';
+  var HEAD_PAST = '<thead><tr><th scope="col">Date</th><th scope="col">Event</th><th scope="col">Type</th><th scope="col">League</th><th scope="col">Result</th><th scope="col">Video, photos</th></tr></thead>';
+  function rowUp(e, k) {
+    var l = linksOf(e);
+    return '<tr' + (e.example ? ' class="is-example"' : '') + '><td data-label="Date"><span class="num">' + esc(dateText(e)) + '</span>' + dateSub(e) + '</td>' +
+      '<td data-label="Event" class="wide">' + eventCell(e) + '</td>' +
+      '<td data-label="Type">' + typeTag(e) + '</td>' +
+      '<td data-label="League">' + esc(e.league) + '</td>' +
+      '<td data-label="Links">' + (l.length ? '<span class="links">' + l.join('') + '</span>' : '<span class="dash">TBA</span>') + '</td>' +
+      '<td data-label="Calendar">' + (e.date ? icsBtn(e, k) : '<span class="dash">Date TBA</span>') + '</td></tr>';
+  }
+  function rowPast(e) {
+    var l = linksOf(e);
+    return '<tr' + (e.example ? ' class="is-example"' : '') + '><td data-label="Date"><span class="num">' + esc(dateText(e)) + '</span>' + (dateSub(e) || (e.date ? '' : '<span class="sub">Season ' + yearOf(e) + '</span>')) + '</td>' +
+      '<td data-label="Event" class="wide">' + eventCell(e) + '</td>' +
+      '<td data-label="Type">' + typeTag(e) + '</td>' +
+      '<td data-label="League">' + esc(e.league) + '</td>' +
+      '<td data-label="Result">' + resultHtml(e) + '</td>' +
+      '<td data-label="Video, photos">' + (l.length ? '<span class="links">' + l.join('') + '</span>' : '<span class="dash">' + (e.status === 'Cancelled' ? '-' : 'Coming soon') + '</span>') + '</td></tr>';
+  }
+
+  /* estado de la vista */
+  var S = { year: SEASON, view: 'list', tab: 'up', month: TODAY.getMonth(), sel: null };
+
+  function live() { return EVENTS.filter(function (e) { return !e.off && e.status !== 'Hidden' && yearOf(e) === S.year; }); }
+  function dated() { return live().filter(function (e) { return e.date; }); }
+  function inMonth(m) { return dated().filter(function (e) { return +e.date.slice(5, 7) === m + 1; }); }
+  function byDateAsc(a, b) { return (a.date || '9999') < (b.date || '9999') ? -1 : (a.date || '9999') > (b.date || '9999') ? 1 : 0; }
+  function byDateDesc(a, b) { if (!a.date && !b.date) return 0; if (!a.date) return 1; if (!b.date) return -1; return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; }
+
+  /* mes que abre el calendario: el que tiene más pulls (empate: el más cercano a hoy) */
+  function bestMonth() {
+    var c = {}, ref = S.year === TODAY.getFullYear() ? TODAY.getMonth() : 11, best = null;
+    dated().forEach(function (e) { var m = +e.date.slice(5, 7) - 1; c[m] = (c[m] || 0) + 1; });
+    Object.keys(c).forEach(function (k) {
+      var m = +k;
+      if (best === null || c[m] > c[best] || (c[m] === c[best] && Math.abs(m - ref) < Math.abs(best - ref))) best = m;
+    });
+    return best === null ? (S.year === TODAY.getFullYear() ? TODAY.getMonth() : 0) : best;
+  }
+  /* día que queda seleccionado: el próximo pull del mes, o el último que ya pasó */
+  function bestDay(m) {
+    var L = inMonth(m);
+    var up = L.filter(function (e) { return e.status === 'Upcoming'; }).sort(byDateAsc);
+    if (up.length) return up[0].date;
+    L.sort(byDateDesc); return L.length ? L[0].date : null;
+  }
+  /* al abrir Calendar: si el mes visible está vacío, salta al mes con pulls y deja un día abierto */
+  function openCal() {
+    if (!inMonth(S.month).length) S.month = bestMonth();
+    if (!S.sel) { var d = bestDay(S.month); if (d) S.sel = { day: d }; }
+  }
+
+  /* selector de temporada: la temporada del tema más cada año que tenga pulls */
+  function fillYears() {
+    var ys = [SEASON];
+    EVENTS.forEach(function (e) { if (e.off || e.status === 'Hidden') return; var y = yearOf(e); if (ys.indexOf(y) < 0) ys.push(y); });
+    ys.sort(function (a, b) { return b - a; });
+    if (ys.indexOf(S.year) < 0) S.year = SEASON;
+    $('year').innerHTML = ys.map(function (y) { return '<option value="' + y + '"' + (y === S.year ? ' selected' : '') + '>' + y + '' + '</option>'; }).join('');
+  }
+
+  function renderUpdated() {
+    [].forEach.call(document.querySelectorAll('.upd'), function (t) { t.setAttribute('datetime', SCHEDULE.updated); t.textContent = dObj(SCHEDULE.updated).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }); });
+  }
+
+  /* lista: próximos e historial */
+  function stat(label, n) { return '<span>' + label + ' <b>' + n + '</b></span>'; }
+  function renderList() {
+    var L = live();
+    var up = L.filter(function (e) { return e.status === 'Upcoming'; }).sort(byDateAsc);
+    var past = L.filter(function (e) { return e.status !== 'Upcoming'; }).sort(byDateDesc);
+    $('n-up').textContent = '(' + up.length + ')';
+    $('n-past').textContent = '(' + past.length + ')';
+    var cur = S.year === SEASON;
+    $('panel-up').innerHTML = up.length
+      ? '<table class="sc-table">' + HEAD_UP + '<tbody>' + up.map(function (e) { return rowUp(e, EVENTS.indexOf(e)); }).join('') + '</tbody></table>'
+      : '<table class="sc-table"><tbody><tr class="sc-empty"><td colspan="6"><b>' + (cur ? 'Dates coming soon' : 'No upcoming pulls in ' + S.year) + '</b>' +
+        (cur ? 'New ' + SEASON + ' dates go here and on ' + ext('https://www.facebook.com/heavymetalprostock/', 'Facebook') + ' first. <a href="#alerts">Join The Evil List</a> to hear before every pull.' : '') +
+        (past.length ? '<span class="sub" style="margin-top:6px">' + past.length + ' past pull' + (past.length > 1 ? 's' : '') + ' in ' + S.year + '. <button type="button" class="sc-linkbtn" data-go="past">See past results</button></span>' : '') + '</td></tr></tbody></table>';
+    var done = past.filter(function (e) { return e.status === 'Done' && !e.sampleOnly; });
+    var nC = done.filter(function (e) { return !isExh(e); }).length;
+    var nE = done.filter(isExh).length;
+    var nW = done.filter(isWin).length;
+    /* testing: el contador de wins en 0 dice "Coming soon", nunca "0" (sin contador de full pulls) */
+    $('panel-past').innerHTML = past.length
+      ? '<p class="sc-sum"><span>' + S.year + (cur ? ' so far:' : ':') + '</span>' + stat('Competitions', nC) + stat('Exhibitions', nE) +
+        stat('Wins', nW || 'Coming soon') + '</p>' +
+        '<div class="sc-table-wrap"><table class="sc-table">' + HEAD_PAST + '<tbody>' + past.map(rowPast).join('') + '</tbody></table></div>'
+      : '<div class="sc-table-wrap"><table class="sc-table"><tbody><tr class="sc-empty"><td colspan="6">No past pulls in ' + S.year + '.</td></tr></tbody></table></div>';
+  }
+
+  /* calendario: mes con días marcados (botones con aria-label), chip por pull, detalle en el panel */
+  function evLabel(e) { return esc(e.event) + ', ' + esc(e.type) + (e.status === 'Upcoming' ? ', upcoming' : e.status === 'Cancelled' ? ', cancelled' : '') + (e.example ? ' (example)' : ''); }
+  function chip(e) {
+    return '<span class="ev ' + (isExh(e) ? 'ev--e' : 'ev--c') + (e.status === 'Upcoming' ? ' ev--up' : '') + (e.status === 'Cancelled' ? ' ev--x' : '') + '" aria-hidden="true">' +
+      esc(shortOf(e)) + (e.status === 'Upcoming' ? '<small>Upcoming</small>' : e.status === 'Cancelled' ? '<small>Cancelled</small>' : shortOf(e) === e.type ? '' : '<small>' + esc(e.type) + '</small>') + '</span>';
+  }
+  function renderCal() {
+    var y = S.year, m = S.month;
+    $('cal-title').textContent = MONTHS[m] + ' ' + y;
+    $('cal-prev').disabled = m === 0; $('cal-next').disabled = m === 11;
+    $('cal-prev').querySelector('.vh').textContent = m === 0 ? 'Previous month' : 'Previous month, ' + MONTHS[m - 1];
+    $('cal-next').querySelector('.vh').textContent = m === 11 ? 'Next month' : 'Next month, ' + MONTHS[m + 1];
+    var map = {};
+    dated().forEach(function (e) { (map[e.date] = map[e.date] || []).push(e); });
+    var first = new Date(y, m, 1).getDay(), days = new Date(y, m + 1, 0).getDate();
+    var todayK = isoOf(TODAY);
+    var h = '<table class="cal" aria-labelledby="cal-title"><thead><tr>' + ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(function (d, i) {
+      return '<th scope="col"><abbr title="' + ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][i] + '" style="text-decoration:none">' + d + '</abbr></th>'; }).join('') + '</tr></thead><tbody><tr>';
+    var cells = 0;
+    for (var i = 0; i < first; i++) { h += '<td class="out"></td>'; cells++; }
+    for (var d = 1; d <= days; d++) {
+      var k = key(y, m, d), list = map[k], cls = [], on = S.sel && S.sel.day === k;
+      if (k === todayK) cls.push('today');
+      if (list) cls.push('has');
+      if (on) cls.push('sel');
+      h += '<td' + (cls.length ? ' class="' + cls.join(' ') + '"' : '') + '>';
+      if (list) {
+        var lab = fmtDate(k, true) + ': ' + list.length + ' pull' + (list.length > 1 ? 's' : '') + ', ' + list.map(evLabel).join('; ') + (k === todayK ? ' (today)' : '');
+        var ex = list.some(function (e) { return e.example; });
+        h += '<button type="button" class="day" data-day="' + k + '" aria-label="' + lab + '" aria-pressed="' + (on ? 'true' : 'false') + '"><span class="day__top"><span class="d" aria-hidden="true">' + d + '</span>' +
+          (ex ? '<span class="own-tag" aria-hidden="true"><span class="l">Example</span><span class="s">e.g.</span></span>' : '') + '</span>' +
+          list.map(chip).join('') + '</button>';
+      } else {
+        h += '<span class="d"' + (k === todayK ? ' aria-label="' + d + ', today"' : '') + '>' + d + '</span>';
+      }
+      h += '</td>'; cells++;
+      if (cells % 7 === 0 && d < days) h += '</tr><tr>';
+    }
+    while (cells % 7) { h += '<td class="out"></td>'; cells++; }
+    $('cal-grid').innerHTML = h + '</tr></tbody></table>';
+    renderSide(map);
+  }
+
+  function detail(e, idx) {
+    var l = linksOf(e), up = e.status === 'Upcoming';
+    return '<article class="pd"><div class="pd__top">' + typeBadge(e) + (up ? '<span class="badge badge--line">Upcoming</span>' : '') + ownTags(e) + '</div>' +
+      '<h4 class="h3">' + esc(e.event) + '</h4>' +
+      '<dl><dt>Date</dt><dd class="num">' + esc(e.date ? fmtDate(e.date, true) + (e.example ? ' (sample date)' : '') : dateText(e)) + '</dd>' +
+      '<dt>Place</dt><dd>' + esc(e.city) + '</dd><dt>League</dt><dd>' + esc(e.league) + '</dd>' +
+      (up ? '' : '<dt>Result</dt><dd>' + resultHtml(e) + '</dd>') +
+      (l.length ? '<dt>Links</dt><dd><span class="links">' + l.join('') + '</span></dd>' : '') + '</dl>' +
+      (up && e.date ? '<div>' + icsBtn(e, idx) + '</div>' : '') + '</article>';
+  }
+  function sideItem(e, attr) {
+    var dt = e.date ? dObj(e.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : e.month ? MONTHS[+e.month.slice(5, 7) - 1].slice(0, 3) : 'TBA';
+    return '<li><button type="button" class="side-item" ' + attr + '><span class="side-dt num">' + esc(dt) + '</span><span><span class="side-n">' + esc(e.event) + ownTags(e) + '</span><span class="sub">' + esc(e.type) + (e.status === 'Upcoming' ? ' · Upcoming' : '') + ' · ' + esc(e.city) + '</span></span></button></li>';
+  }
+  function renderSide(map) {
+    var side = $('cal-side'), L = live(), y = S.year, m = S.month, h = '';
+    if (S.sel) {
+      var list = S.sel.day ? map[S.sel.day] || [] : [EVENTS[S.sel.i]];
+      h += '<p class="side-h"><span class="label">' + (S.sel.day ? esc(fmtDate(S.sel.day, true)) : 'Date pending') + '</span><button type="button" class="sc-linkbtn small" data-back>All of ' + MONTHS[m] + '</button></p>' +
+        list.map(function (e) { return detail(e, EVENTS.indexOf(e)); }).join('');
+    } else {
+      var ms = inMonth(m).sort(byDateAsc);
+      h += '<p class="side-h"><span class="label">' + MONTHS[m] + ' ' + y + '</span><span class="small muted">' + ms.length + ' pull' + (ms.length === 1 ? '' : 's') + '</span></p>';
+      if (ms.length) h += '<ul class="side-list">' + ms.map(function (e) { return sideItem(e, 'data-day="' + e.date + '"'); }).join('') + '</ul>';
+      else {
+        h += '<p class="side-empty">No pulls marked in ' + MONTHS[m] + '.</p>';
+        var mm = []; dated().forEach(function (e) { var x = +e.date.slice(5, 7) - 1; if (mm.indexOf(x) < 0) mm.push(x); });
+        mm.sort(function (a, b) { return a - b; });
+        if (mm.length) h += '<div><p class="side-sub">Months with pulls</p><div class="side-months">' + mm.map(function (x) { return '<button type="button" class="btn btn--ghost btn--sm" data-month="' + x + '">' + MONTHS[x].slice(0, 3) + '<span class="vh">' + MONTHS[x].slice(3) + '</span></button>'; }).join('') + '</div></div>';
+      }
+    }
+    var pend = L.filter(function (e) { return !e.date; });
+    if (pend.length && !(S.sel && S.sel.i != null)) h += '<div><p class="side-sub">' + y + ' · date pending (' + pend.length + ')</p><ul class="side-list">' + pend.map(function (e) { return sideItem(e, 'data-ev="' + EVENTS.indexOf(e) + '"'); }).join('') + '</ul></div>';
+    side.innerHTML = h;
+  }
+
+  function pickTab() { S.tab = live().some(function (e) { return e.status === 'Upcoming'; }) ? 'up' : 'past'; }
+
+  function render() {
+    if (S.view === 'cal') openCal();
+    renderUpdated();
+    renderList(); selectTab(S.tab === 'up' ? tabs[0] : tabs[1]);
+    renderCal();
+    $('view-list').hidden = S.view !== 'list'; $('view-cal').hidden = S.view !== 'cal';
+    if ($('sc-tabs')) $('sc-tabs').hidden = S.view !== 'list';
+    $('v-list').setAttribute('aria-pressed', S.view === 'list'); $('v-cal').setAttribute('aria-pressed', S.view === 'cal');
+  }
+
+  /* pestañas con teclado (flechas, Home, End) */
+  var tabs = [$('tab-up'), $('tab-past')];
+  function selectTab(t, focus) {
+    tabs.forEach(function (x) {
+      var on = x === t;
+      x.setAttribute('aria-selected', on ? 'true' : 'false');
+      x.tabIndex = on ? 0 : -1;
+      $(x.getAttribute('aria-controls')).hidden = !on;
+    });
+    S.tab = t === tabs[0] ? 'up' : 'past';
+    if (focus) t.focus();
+  }
+  tabs.forEach(function (t, i) {
+    t.addEventListener('click', function () { selectTab(t); });
+    t.addEventListener('keydown', function (e) {
+      var j = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : null;
+      if (j === null) return; e.preventDefault(); selectTab(tabs[(j + tabs.length) % tabs.length], true);
+    });
+  });
+
+  /* vista y temporada */
+  $('v-list').addEventListener('click', function () { S.view = 'list'; render(); });
+  $('v-cal').addEventListener('click', function () { S.view = 'cal'; render(); });
+  $('year').addEventListener('change', function () { S.year = +this.value; S.month = bestMonth(); S.sel = null; pickTab(); render(); });
+  function moveMonth(dir) { var n = S.month + dir; if (n < 0 || n > 11) return; S.month = n; S.sel = null; renderCal(); }
+  $('cal-prev').addEventListener('click', function () { moveMonth(-1); });
+  $('cal-next').addEventListener('click', function () { moveMonth(1); });
+  /* teclado en el calendario: PageUp / PageDown cambian de mes */
+  $('view-cal').addEventListener('keydown', function (e) {
+    if (e.key !== 'PageUp' && e.key !== 'PageDown') return;
+    e.preventDefault(); moveMonth(e.key === 'PageUp' ? -1 : 1);
+    var b = $(e.key === 'PageUp' ? 'cal-prev' : 'cal-next'); (b.disabled ? $(e.key === 'PageUp' ? 'cal-next' : 'cal-prev') : b).focus();
+  });
+
+  document.addEventListener('click', function (ev) {
+    var t = ev.target;
+    var g = t.closest('[data-go]'); if (g) { selectTab(tabs[1], true); return; }
+    var dy = t.closest('[data-day]');
+    if (dy) { var k = dy.getAttribute('data-day'); S.month = +k.slice(5, 7) - 1; S.sel = { day: k }; renderCal(); $('cal-side').focus(); return; }
+    var ei = t.closest('[data-ev]'); if (ei) { S.sel = { i: +ei.getAttribute('data-ev') }; renderCal(); $('cal-side').focus(); return; }
+    var mo = t.closest('[data-month]'); if (mo) { S.month = +mo.getAttribute('data-month'); S.sel = null; renderCal(); $('cal-side').focus(); return; }
+    if (t.closest('[data-back]')) {
+      var back = S.sel && S.sel.day; S.sel = null; renderCal();
+      var b = back && $('cal-grid').querySelector('[data-day="' + back + '"]'); (b || $('cal-side')).focus(); return;
+    }
+  });
+
+  /* .ics por pull próximo (en Shopify: misma lógica, datos del metaobjeto) */
+  function icsTxt(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/([,;])/g, '\\$1'); }
+  function ics(e) {
+    var d = e.date.replace(/-/g, '');
+    var next = dObj(e.date); next.setDate(next.getDate() + 1);
+    var d2 = isoOf(next).replace(/-/g, '');
+    var desc = icsTxt('“The Evil One” · Pro Stock · ' + e.type + ' · ' + e.league) + (e.website ? '\\n' + icsTxt('Info: ' + e.website) : '');
+    return ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Heavy Metal Pro Stock The Evil One//Schedule//EN', 'BEGIN:VEVENT',
+      'UID:' + d + '-' + (e.event || 'pull').replace(/\W+/g, '-').toLowerCase() + '@heavymetalprostock',
+      'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z',
+      'DTSTART;VALUE=DATE:' + d, 'DTEND;VALUE=DATE:' + d2,
+      'SUMMARY:' + icsTxt((e.event || 'Tractor pull') + ' · “The Evil One”'), 'LOCATION:' + icsTxt(e.city), 'DESCRIPTION:' + desc,
+      'END:VEVENT', 'END:VCALENDAR'].join('\r\n');
+  }
+  var preview = null;
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest('[data-ics]'); if (!b) return;
+    var e = b.getAttribute('data-ics') === 'preview' ? preview : EVENTS[+b.getAttribute('data-ics')];
+    if (!e || !e.date) return;
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([ics(e)], { type: 'text/calendar;charset=utf-8' }));
+    a.download = (e.event || 'pull').replace(/\W+/g, '-').toLowerCase() + '.ics';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 4000);
+  });
+
+  /* The Evil List: solo email */
+  var em = $('al-email'), msg = $('al-msg');
+  $('alerts').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var ok = em.value.trim() !== '' && em.checkValidity();
+    em.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    if (!ok) { msg.className = 'sc-msg is-err'; msg.textContent = 'Enter a valid email to join The Evil List.'; em.focus(); return; }
+    msg.className = 'sc-msg'; msg.textContent = "You're on the list. Check your inbox to confirm.";
+  });
+
+  /* Mock del admin: Save corrige la entrada de Monroe y la página se repinta sola (lista, calendario, contadores, año) */
+  var amsg = $('adm-msg'), box = $('adm-prev');
+  $('adm-form').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var e = EVENTS[0], had = samplesOn;
+    e.date = $('adm-date').value; e.event = $('adm-event').value.trim() || 'County Fair Pull'; e.short = $('adm-short').value.trim();
+    e.city = $('adm-city').value.trim() || 'City, WI';
+    e.league = $('adm-league').value; e.type = $('adm-type').value; e.status = $('adm-status').value;
+    e.distance = $('adm-dist').value.trim(); e.result = $('adm-result').value.trim();
+    e.video = $('adm-video').value.trim(); e.website = $('adm-site').value.trim();
+    SCHEDULE.updated = isoOf(TODAY);
+    preview = e;
+    applySamples(); fillYears();
+    if (e.status !== 'Hidden') { S.year = yearOf(e); $('year').value = S.year; S.month = e.date ? +e.date.slice(5, 7) - 1 : bestMonth(); }
+    S.sel = e.date && e.status !== 'Hidden' ? { day: e.date } : null; pickTab(); render();
+    var gone = had && !samplesOn ? ' Los “Example” se quitaron porque la temporada ya tiene un pull con fecha real.' : '';
+    if (e.status === 'Hidden') { box.hidden = true; amsg.textContent = 'Guardado con Status Hidden: la entrada sigue en el admin pero ya no sale arriba.' + gone; return; }
+    amsg.innerHTML = 'Guardado. Ya cambió arriba: lista, calendario, contadores y filtro de año.' + gone +
+      (e.date ? ' <button type="button" class="sc-linkbtn" id="adm-see">Verlo en el calendario</button>' : ' Sin fecha sale en la lista como “date pending”.') +
+      ' Así se ve la fila en ' + (e.status === 'Upcoming' ? 'Upcoming' : 'Past results') + ':';
+    box.innerHTML = '<table class="sc-table">' + (e.status === 'Upcoming' ? HEAD_UP + '<tbody>' + rowUp(e, 'preview') : HEAD_PAST + '<tbody>' + rowPast(e)) + '</tbody></table>';
+    box.hidden = false;
+  });
+  amsg.addEventListener('click', function (ev) {
+    if (!ev.target.closest('#adm-see')) return;
+    var e = EVENTS[0]; if (!e.date) return;
+    S.year = yearOf(e); $('year').value = S.year; S.month = +e.date.slice(5, 7) - 1; S.sel = { day: e.date }; S.view = 'cal'; render();
+    ($('pulls-t').closest('.sc-pulls') || $('pulls-t')).scrollIntoView(); $('cal-side').focus({ preventScroll: true });
+  });
+  $('adm-del').addEventListener('click', function () {
+    box.hidden = true;
+    amsg.textContent = 'En Shopify, Delete borra la entrada para siempre y el pull desaparece del sitio. Si solo quieres esconderlo, usa Status: Hidden.';
+  });
+
+  applySamples(); fillYears(); S.month = bestMonth(); pickTab(); render();
+})();
+</script>
+</body>
+</html>

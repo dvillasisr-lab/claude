@@ -1,0 +1,93 @@
+{
+  "sections": {
+    "main": {
+      "type": "hm-main-product",
+      "blocks": {
+        "coupon": {
+          "type": "coupon",
+          "settings": {
+            "code": "",
+            "headline": "Extra 10% off",
+            "text": "Paste it at checkout. We won’t tell anyone.",
+            "fine_print": "One per customer. Your discount shows at checkout.",
+            "starts": "",
+            "ends": ""
+          }
+        },
+        "delivery": {
+          "type": "delivery",
+          "settings": {
+            "heading": "Estimated delivery",
+            "prod_min": 2,
+            "prod_max": 5,
+            "ship_min": 2,
+            "ship_max": 5,
+            "cutoff": 0
+          }
+        },
+        "details": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Details",
+            "source": "details",
+            "content": "",
+            "open": false
+          }
+        },
+        "story": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Design story",
+            "source": "design_story",
+            "content": "<p>Designed by the crew that built “The Evil One” by hand in Waterloo, WI. Everything on the tractor is custom-built, and so is every graphic.</p><p><a href=\"/pages/about\">Read our story</a></p>",
+            "open": false
+          }
+        },
+        "shipping": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Shipping & returns",
+            "source": "shipping",
+            "content": "<p>Every piece is printed when you order it and ships in 5 days. Taxes and shipping are calculated at checkout.</p><p>Misprints and defects are replaced free: send a photo within 30 days of delivery. Printed-to-order items can’t be returned or exchanged for size, so check the size guide first.</p>",
+            "open": false
+          }
+        }
+      },
+      "block_order": ["coupon", "delivery", "details", "story", "shipping"],
+      "settings": {
+        "enable_zoom": true,
+        "show_short_description": true,
+        "short_description_words": 25,
+        "max_qty": 10,
+        "show_dynamic_checkout": true,
+        "sizes_page_url": "",
+        "show_guarantee": true,
+        "guarantee_label": "The Black Smoke Guarantee:",
+        "guarantee_text": "if [noun] shows up less than evil, we replace it.",
+        "notify_soon_heading": "Coming soon",
+        "notify_soon_text": "Not out yet. Patience is not evil, we know. One email the second it drops.",
+        "notify_soldout_heading": "Notify me if it comes back",
+        "notify_soldout_text": "Sold out. Leave your email and we’ll tell you if it comes back from the dead.",
+        "reviews_heading": "Reviews"
+      }
+    },
+    "look": {
+      "type": "hm-complete-look",
+      "settings": {
+        "use_crew_pack": true,
+        "label": "Complete the look",
+        "text": "The tee and the cap, one price. You pick the tee size.",
+        "bundle_row": "Bundle",
+        "link_text": "Shop the Crew Pack"
+      }
+    },
+    "related": {
+      "type": "hm-related-products",
+      "settings": {
+        "heading": "You may also like",
+        "limit": 4
+      }
+    }
+  },
+  "order": ["main", "look", "related"]
+}

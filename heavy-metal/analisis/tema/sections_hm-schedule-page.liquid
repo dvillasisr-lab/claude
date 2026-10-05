@@ -1,0 +1,49 @@
+{%- comment -%} Schedule page (/pages/schedule) {%- endcomment -%}
+<style>
+  .hm-sc-hero{position:relative;height:480px;overflow:hidden}
+  .hm-sc-hero__text{position:absolute;left:64px;right:64px;bottom:56px;display:flex;align-items:flex-end;justify-content:space-between;gap:32px;flex-wrap:wrap}
+  .hm-sc-soon{border:1px dashed #45443F;background:#121210;padding:64px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px}
+  @media (max-width:760px){
+    .hm-sc-hero{height:340px}.hm-sc-hero__text{left:20px;right:20px;bottom:28px}
+    .hm-sc-soon{padding:36px 20px}
+  }
+</style>
+<section class="hm hm-sc-hero">
+  {% render 'hm-img', image: section.settings.hero_image, fallback: 'hm-grandstand.jpg', alt: 'Heavy Metal in front of a packed grandstand', class: 'hm-cover', sizes: '100vw' %}
+  <div class="hm-shade"></div>
+  <div class="hm-sc-hero__text">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <p class="hm-eyebrow">SEASON {{ "now" | date: "%Y" }} &middot; PULL SCHEDULE</p>
+      <h1 style="margin:0;font-family:'Anton',Impact,sans-serif;font-size:clamp(40px,6.6vw,104px);line-height:.9;transform:skewX(-8deg);transform-origin:left bottom;text-transform:uppercase">WHERE WE <span class="hm-chrome">PULL NEXT</span></h1>
+    </div>
+    <a class="hm-btn hm-btn--solid" href="/#schedule"><span>GET SCHEDULE UPDATES</span></a>
+  </div>
+</section>
+<section style="padding:90px 64px 60px;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;flex-direction:column;gap:10px"><p class="hm-eyebrow">01 / UPCOMING PULLS</p><h2 class="hm-h2" style="font-size:clamp(36px,4vw,64px)">ON THE ROAD</h2></div>
+  <div class="hm-sc-soon">
+    <div style="font-family:'Anton',Impact,sans-serif;font-size:40px;color:#F5C400">COMING SOON</div>
+    <p style="margin:0;max-width:460px;font-size:16px;line-height:1.6;color:#A8A59A">We're locking in the season schedule. Sign up below and we'll email you the moment dates are posted.</p>
+  </div>
+</section>
+<section style="padding:60px 64px 100px;display:flex;flex-direction:column;gap:28px">
+  <div style="display:flex;flex-direction:column;gap:10px"><p class="hm-eyebrow">02 / SEASON RESULTS</p><h2 class="hm-h2" style="font-size:clamp(36px,4vw,64px)">WINS <span class="hm-chrome">SO FAR</span></h2></div>
+  <div class="hm-sc-soon">
+    <div style="font-family:'Anton',Impact,sans-serif;font-size:40px;color:#F5C400">COMING SOON</div>
+    <p style="margin:0;max-width:460px;font-size:16px;line-height:1.6;color:#A8A59A">First season, first results. Once Heavy Metal hits the track, wins show up here.</p>
+  </div>
+</section>
+<section style="padding:0 64px 110px;display:flex;align-items:center;justify-content:space-between;gap:32px;border-top:1px solid #2A2A26;padding-top:56px;flex-wrap:wrap">
+  <div style="display:flex;flex-direction:column;gap:10px"><div style="font-family:'Anton',Impact,sans-serif;font-size:40px;line-height:1">NEVER MISS A PULL</div><div style="font-size:17px;color:#A8A59A">Get an email the moment a new date is added.</div></div>
+  <a class="hm-btn hm-btn--solid" href="/#schedule"><span>NOTIFY ME</span></a>
+</section>
+{% schema %}
+{
+  "name": "HM Schedule page",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Hero photo" }
+  ],
+  "presets": [ { "name": "HM Schedule page" } ]
+}
+{% endschema %}
+

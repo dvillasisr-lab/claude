@@ -1,0 +1,211 @@
+{%- comment -%}
+  The Machine · 2 · Anatomy. Numbered hotspots from the "Tractor part" metaobjects (sorted by order).
+  Coordinates are pixels on the 1120 x 576 tractor cutout; a 50 px label band sits above and below (stage 1120 x 676).
+  Keyboard: one Tab stop (roving tabindex), arrows / Home / End move between parts. A text list repeats every part.
+{%- endcomment -%}
+{%- liquid
+  assign keys = ''
+  for e in shop.metaobjects.tractor_part.values
+    assign o = e.order.value | default: 999 | plus: 10000
+    assign keys = keys | append: o | append: '|' | append: e.system.handle | append: ','
+  endfor
+  assign keys = keys | split: ',' | sort
+  assign total = keys.size
+-%}
+{%- if total > 0 or request.design_mode -%}
+<section class="sect sect--white mx-anat-sect" aria-labelledby="anat-h-{{ section.id }}" data-hm-anatomy>
+  <div class="wrap">
+    <div class="sect-head">
+      <h2 class="h1" id="anat-h-{{ section.id }}">{{ section.settings.title | escape }}</h2>
+      {%- if section.settings.hint != blank -%}<p class="mx-hint">{{ section.settings.hint | escape }}</p>{%- endif -%}
+    </div>
+    {%- if total == 0 -%}
+      <p class="muted">Add entries in Content &gt; Metaobjects &gt; Tractor part to fill the anatomy.</p>
+    {%- else -%}
+    <div class="mx-anat">
+      <figure class="mx-stage">
+        <svg class="mx-lines" viewBox="0 0 1120 676" preserveAspectRatio="none" aria-hidden="true">
+          {%- for k in keys -%}
+            {%- liquid
+              assign h = k | split: '|' | last
+              assign p = shop.metaobjects.tractor_part[h]
+              assign px = p.pos_x.value | default: 560
+              assign py = p.pos_y.value | default: 288 | plus: 50
+              assign lx = p.label_x.value | default: px
+              if p.row.value == 'bottom'
+                assign ly = 651
+              else
+                assign ly = 25
+              endif
+            -%}
+            <line data-i="{{ forloop.index0 }}" x1="{{ lx }}" y1="{{ ly }}" x2="{{ px }}" y2="{{ py }}"{% if forloop.first %} class="on"{% endif %}/>
+          {%- endfor -%}
+        </svg>
+        {%- for k in keys -%}
+          {%- liquid
+            assign h = k | split: '|' | last
+            assign p = shop.metaobjects.tractor_part[h]
+            assign px = p.pos_x.value | default: 560
+            assign lx = p.label_x.value | default: px
+            assign lxp = lx | times: 100.0 | divided_by: 1120 | round: 3
+            if p.row.value == 'bottom'
+              assign row = 'b'
+            else
+              assign row = 't'
+            endif
+          -%}
+          <span class="mx-tag mx-tag--{{ row }}{% if forloop.first %} on{% endif %}" data-i="{{ forloop.index0 }}" aria-hidden="true" style="left:{{ lxp }}%"><i>{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</i>{{ p.name.value | escape }}</span>
+        {%- endfor -%}
+        <div class="mx-img" role="group" aria-label="{{ section.settings.group_label | escape }}" data-anat-pts>
+          {%- if section.settings.cutout != blank -%}
+            {{ section.settings.cutout | image_url: width: 1600 | image_tag: widths: '560, 840, 1120, 1600', sizes: '(max-width: 960px) 100vw, 70vw', loading: 'lazy' }}
+          {%- else -%}
+            <img src="{{ 'hm-tractor-cutout.webp' | asset_url }}" alt="" width="1120" height="576" loading="lazy" class="mx-cut">
+          {%- endif -%}
+          {%- for k in keys -%}
+            {%- liquid
+              assign h = k | split: '|' | last
+              assign p = shop.metaobjects.tractor_part[h]
+              assign px = p.pos_x.value | default: 560 | times: 100.0 | divided_by: 1120 | round: 3
+              assign py = p.pos_y.value | default: 288 | times: 100.0 | divided_by: 576 | round: 3
+            -%}
+            <button type="button" class="mx-hs" data-i="{{ forloop.index0 }}" style="left:{{ px }}%;top:{{ py }}%" aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" tabindex="{% if forloop.first %}0{% else %}-1{% endif %}" aria-label="{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}, {{ p.name.value | escape }}: {{ p.value.value | escape }}" data-name="{{ p.name.value | escape }}" data-value="{{ p.value.value | escape }}" data-text="{{ p.text.value | escape }}"><span aria-hidden="true">{{ forloop.index }}</span></button>
+          {%- endfor -%}
+        </div>
+      </figure>
+
+      {%- liquid
+        assign h = keys.first | split: '|' | last
+        assign p0 = shop.metaobjects.tractor_part[h]
+        assign imgs = 0
+        for k in keys
+          assign hh = k | split: '|' | last
+          if shop.metaobjects.tractor_part[hh].image.value != blank
+            assign imgs = imgs | plus: 1
+          endif
+        endfor
+      -%}
+      <div class="mx-panel{% if imgs == 0 %} mx-panel--noimg{% endif %}">
+        {%- if imgs > 0 -%}
+        <figure class="mx-photo">
+          {%- for k in keys -%}
+            {%- liquid
+              assign h = k | split: '|' | last
+              assign p = shop.metaobjects.tractor_part[h]
+              assign img = p.image.value
+              assign pos = p.image_position.value | default: '50% 50%'
+              assign style = 'object-position:' | append: pos
+            -%}
+            {%- if img != blank -%}
+              <span class="mx-panel__img" data-i="{{ forloop.index0 }}"{% unless forloop.first %} hidden{% endunless %}>{{ img | image_url: width: 900 | image_tag: widths: '300, 450, 600, 900', sizes: '(max-width: 760px) 110px, 320px', class: 'photo', style: style, loading: 'lazy' }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+        </figure>
+        {%- endif -%}
+        <div class="mx-panel__txt">
+          <p class="label muted" data-anat-label aria-live="polite">01 · {{ p0.name.value | escape }}</p>
+          <p class="mx-panel__val" data-anat-val>{{ p0.value.value | escape }}</p>
+          <p class="mx-panel__body" data-anat-body>{{ p0.text.value | escape }}</p>
+        </div>
+        <div class="mx-nav">
+          <span class="small muted mx-n" data-anat-count>01 / {% if total < 10 %}0{% endif %}{{ total }}</span>
+          <span class="mx-nav__btns">
+            <button type="button" data-anat-prev aria-label="Previous part"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></button>
+            <button type="button" data-anat-next aria-label="Next part"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <details class="mx-alt">
+      <summary>{{ section.settings.list_label | escape }}</summary>
+      <dl>
+        {%- for k in keys -%}
+          {%- liquid
+            assign h = k | split: '|' | last
+            assign p = shop.metaobjects.tractor_part[h]
+          -%}
+          <div><dt><b class="mx-n">{% if forloop.index < 10 %}0{% endif %}{{ forloop.index }}</b> {{ p.name.value | escape }}: {{ p.value.value | escape }}</dt><dd>{{ p.text.value | escape }}</dd></div>
+        {%- endfor -%}
+      </dl>
+    </details>
+    {%- endif -%}
+  </div>
+</section>
+<script src="{{ 'hm-machine.js' | asset_url }}" defer></script>
+{%- endif -%}
+
+{% stylesheet %}
+.mx-hint{font-size:11px;color:var(--mute);margin:0}
+.mx-anat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,320px);gap:clamp(20px,3vw,48px);align-items:center}
+.mx-stage{--band:50;--img-h:576;--stage-h:676;position:relative;margin:0 auto;width:100%;aspect-ratio:1120/676;max-width:calc((100svh - var(--header) - var(--announce) - 2 * var(--sect) - 90px) * 1120 / 676)}
+.mx-img{position:absolute;left:0;right:0;top:calc(var(--band) / var(--stage-h) * 100%);height:calc(var(--img-h) / var(--stage-h) * 100%)}
+.mx-img>img,.mx-img>.mx-ph{width:100%;height:100%;object-fit:cover;display:block}
+.mx-img>img.mx-cut{object-fit:contain}
+.mx-lines{position:absolute;inset:0;z-index:1;width:100%;height:100%;pointer-events:none;overflow:visible;filter:drop-shadow(0 0 1px rgba(255,255,255,.95))}
+.mx-lines line{stroke:var(--mute);stroke-width:1;stroke-dasharray:3 3;vector-effect:non-scaling-stroke;transition:stroke .15s}
+.mx-lines line.on{stroke:var(--ink);stroke-dasharray:none;stroke-width:1.5}
+.mx-tag{position:absolute;z-index:1;transform:translateX(-50%);display:inline-flex;gap:6px;align-items:center;white-space:nowrap;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);background:var(--surface);border:1px solid var(--line);padding:3px 8px;cursor:pointer;user-select:none}
+.mx-tag--t{top:0}
+.mx-tag--b{bottom:0}
+.mx-tag i{font-style:normal;color:var(--mute)}
+.mx-tag:hover{border-color:var(--ink);color:var(--ink)}
+.mx-tag.on{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.mx-tag.on i{color:var(--accent)}
+.mx-hs{position:absolute;z-index:2;transform:translate(-50%,-50%);width:44px;height:44px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}
+.mx-hs span{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent);color:var(--ink);font-size:11px;font-weight:800;box-shadow:0 0 0 2px var(--ink);transition:transform .15s}
+.mx-hs:hover span{transform:scale(1.12)}
+.mx-hs[aria-pressed="true"] span{background:var(--ink);color:var(--accent);box-shadow:0 0 0 2px var(--accent),0 0 0 6px rgba(28,27,25,.3)}
+.mx-hs:focus-visible{outline:none;box-shadow:none}
+.mx-hs:focus-visible span{outline:2px solid var(--ink);outline-offset:4px}
+.mx-panel{display:grid;gap:14px;align-content:start}
+.mx-panel .mx-photo{aspect-ratio:4/3;position:relative;overflow:hidden;background:var(--tile);margin:0}
+.mx-panel__img{position:absolute;inset:0}
+.mx-panel__img img{width:100%;height:100%;object-fit:cover}
+.mx-panel__txt{display:grid;gap:4px}
+.mx-panel__txt p{margin:0}
+.mx-panel__val{font-family:var(--f-head);font-stretch:70%;font-weight:800;font-size:var(--t-h1);line-height:1.1;text-transform:uppercase;color:var(--ink)}
+.mx-panel__body{font-size:var(--t-sm);color:var(--soft);min-height:4.5em}
+.mx-nav{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px}
+.mx-nav__btns{display:flex;gap:4px}
+.mx-nav button{width:40px;height:40px;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center;color:var(--ink)}
+.mx-nav button:hover{border-color:var(--ink)}
+.mx-nav svg{width:16px;height:16px}
+.mx-alt{margin-top:20px;border-top:1px solid var(--line);padding-top:10px;font-size:var(--t-sm)}
+.mx-alt summary{cursor:pointer;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);min-height:24px}
+.mx-alt dl{margin:10px 0 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px 24px}
+.mx-alt dt{font-weight:700;color:var(--ink)}
+.mx-alt dd{margin:2px 0 0;color:var(--soft)}
+@media (max-width:960px){
+  .mx-anat{grid-template-columns:1fr}
+  .mx-panel{grid-template-columns:minmax(0,200px) minmax(0,1fr);align-items:start}
+  .mx-panel .mx-photo{aspect-ratio:3/4}
+}
+@media (max-width:760px){
+  .mx-stage{aspect-ratio:1120/576}
+  .mx-img{top:0;height:100%}
+  .mx-lines,.mx-tag{display:none}
+  .mx-hs{width:40px;height:40px}
+  .mx-hs span{width:22px;height:22px;font-size:10px}
+  .mx-panel{grid-template-columns:110px minmax(0,1fr);gap:12px}
+  .mx-panel .mx-nav{grid-column:1/-1}
+}
+@media (max-width:960px){.mx-panel--noimg{grid-template-columns:1fr}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Machine: anatomy",
+  "tag": "div",
+  "class": "hm-machine-anatomy",
+  "settings": [
+    { "type": "paragraph", "content": "The parts come from Content > Metaobjects > Tractor part (sorted by Order). X, Y and Label X are pixels on the 1120 x 576 cutout." },
+    { "type": "text", "id": "title", "label": "Title", "default": "Anatomy" },
+    { "type": "text", "id": "hint", "label": "Hint", "default": "Tap a number. On a keyboard, use the arrow keys." },
+    { "type": "image_picker", "id": "cutout", "label": "Tractor cutout (1120 x 576)", "info": "Profile photo of the tractor, facing right. Empty = the cutout that ships with the theme (hotspot positions match it)." },
+    { "type": "text", "id": "group_label", "label": "Parts label (screen readers)", "default": "Parts of the tractor" },
+    { "type": "text", "id": "list_label", "label": "Text list toggle", "default": "All parts as a list" }
+  ],
+  "presets": [{ "name": "Machine: anatomy" }]
+}
+{% endschema %}

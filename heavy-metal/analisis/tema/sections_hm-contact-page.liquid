@@ -1,0 +1,78 @@
+{%- comment -%} Custom Contact page (/pages/contact) {%- endcomment -%}
+<style>
+  .hm-ct-hero{position:relative;height:400px;overflow:hidden}
+  .hm-ct-hero__text{position:absolute;left:64px;right:64px;bottom:56px}
+  .hm-ct-body{padding:80px 64px 100px;display:grid;grid-template-columns:5fr 7fr;gap:48px}
+  .hm-ct-info{display:flex;flex-direction:column;gap:24px}
+  .hm-ct-form{border:1px solid #2A2A26;background:#121210;padding:40px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .hm-ct-field{display:flex;flex-direction:column;gap:8px}
+  .hm-ct-field.is-wide{grid-column:span 2}
+  .hm-ct-field label{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:13px;letter-spacing:3px;color:#D8D5CB;text-transform:uppercase}
+  .hm-ct-field input,.hm-ct-field textarea{height:50px;border:1px solid #45443F;background:#0B0B0A;color:#F2F0E9;padding:0 14px;font-family:'Barlow',sans-serif;font-size:16px}
+  .hm-ct-field textarea{height:120px;padding:12px 14px;resize:vertical}
+  @media (max-width:760px){
+    .hm-ct-hero{height:300px}.hm-ct-hero__text{left:20px;right:20px;bottom:32px}
+    .hm-ct-body{padding:48px 20px 70px;grid-template-columns:1fr;gap:32px}
+    .hm-ct-form{grid-template-columns:1fr;padding:24px}
+    .hm-ct-field.is-wide{grid-column:auto}
+  }
+</style>
+<section class="hm hm-ct-hero">
+  {% render 'hm-img', image: section.settings.hero_image, fallback: 'hm-rear.jpg', alt: '', class: 'hm-cover', sizes: '100vw' %}
+  <div class="hm-shade" style="opacity:.72"></div>
+  <div class="hm-ct-hero__text">
+    <p class="hm-eyebrow">{{ section.settings.eyebrow }}</p>
+    <h1 style="margin:0;font-family:'Anton',Impact,sans-serif;font-size:clamp(40px,6vw,80px);line-height:.92;transform:skewX(-8deg);transform-origin:left bottom;text-transform:uppercase">{{ section.settings.title_1 }} <span class="hm-chrome">{{ section.settings.title_2 }}</span></h1>
+  </div>
+</section>
+<section class="hm hm-ct-body">
+  <div class="hm-ct-info">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <p class="hm-eyebrow">{{ section.settings.info_eyebrow }}</p>
+      <p style="margin:0;font-size:18px;line-height:1.6;color:#D8D5CB">{{ section.settings.info_text }}</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px;border-top:1px solid #2A2A26;padding-top:22px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:3px;color:#F5C400;text-transform:uppercase">EMAIL</div>
+      <div style="font-size:17px">{{ section.settings.email }}</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:3px;color:#F5C400;text-transform:uppercase">FOLLOW</div>
+      <div style="font-size:17px">
+        {%- if settings.social_instagram_link != blank -%}<a href="{{ settings.social_instagram_link }}" style="color:#F2F0E9">Instagram</a>{%- endif -%}
+        {%- if settings.social_facebook_link != blank %} &middot; <a href="{{ settings.social_facebook_link }}" style="color:#F2F0E9">Facebook</a>{%- endif -%}
+        {%- if settings.social_tiktok_link != blank %} &middot; <a href="{{ settings.social_tiktok_link }}" style="color:#F2F0E9">TikTok</a>{%- endif -%}
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:3px;color:#F5C400;text-transform:uppercase">SPONSOR THE TEAM?</div>
+      <a class="hm-btn hm-btn--ghost hm-btn--sm" href="/pages/sponsors" style="align-self:flex-start"><span>GO TO THE SPONSOR PAGE &rarr;</span></a>
+    </div>
+  </div>
+  {%- form 'contact', id: 'hm-contact-form', class: 'hm-ct-form' -%}
+    {%- if form.posted_successfully? -%}
+      <p class="hm-form-msg is-wide" style="grid-column:1/-1">THANKS. WE'LL GET BACK TO YOU SOON.</p>
+    {%- else -%}
+      <div class="hm-ct-field"><label for="ct-name">Your name</label><input id="ct-name" type="text" name="contact[name]" required autocomplete="name" placeholder="Jane Smith"></div>
+      <div class="hm-ct-field"><label for="ct-email">Email</label><input id="ct-email" type="email" name="contact[email]" required autocomplete="email" placeholder="jane@email.com"></div>
+      <div class="hm-ct-field is-wide"><label for="ct-subject">Subject</label><input id="ct-subject" type="text" name="contact[subject]" placeholder="Question about my order"></div>
+      <div class="hm-ct-field is-wide"><label for="ct-msg">Message</label><textarea id="ct-msg" name="contact[body]" placeholder="How can we help?"></textarea></div>
+      <div class="hm-ct-field is-wide"><button type="submit" class="hm-btn hm-btn--solid hm-btn--full"><span>SEND MESSAGE</span></button>{%- if form.errors -%}<p class="hm-form-msg">{{ form.errors | default_errors }}</p>{%- endif -%}</div>
+    {%- endif -%}
+  {%- endform -%}
+</section>
+{% schema %}
+{
+  "name": "HM Contact page",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Hero photo" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "GET IN TOUCH" },
+    { "type": "text", "id": "title_1", "label": "Title", "default": "TALK TO" },
+    { "type": "text", "id": "title_2", "label": "Title (chrome)", "default": "THE TEAM" },
+    { "type": "text", "id": "info_eyebrow", "label": "Info eyebrow", "default": "QUESTIONS ABOUT MERCH OR SPONSORSHIP?" },
+    { "type": "textarea", "id": "info_text", "label": "Info text", "default": "Send us a message and we'll get back to you within 2 business days." },
+    { "type": "text", "id": "email", "label": "Contact email", "default": "[EMAIL PENDING]" }
+  ],
+  "presets": [ { "name": "HM Contact page" } ]
+}
+{% endschema %}
+

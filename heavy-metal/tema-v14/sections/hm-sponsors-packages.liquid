@@ -1,0 +1,177 @@
+{%- comment -%}
+  Sponsors · packages from the sponsor_tier metaobject, sorted by "order".
+  status: available | limited (shows spots_left) | soldout (waitlist) | hidden (not shown).
+  "Request this package" links preselect the package in the request form (JS in hm-sponsors-request).
+{%- endcomment -%}
+{%- liquid
+  assign season = settings.hm_season | default: 'this season'
+  assign all = metaobjects.sponsor_tier.values
+  assign keys = ''
+  for t in all
+    assign st = t.status.value | default: 'available' | downcase
+    if st == 'hidden'
+      continue
+    endif
+    assign o = t.order.value | default: 999 | plus: 10000
+    assign ix = forloop.index | plus: 100
+    assign keys = keys | append: o | append: '-' | append: ix | append: ','
+  endfor
+  assign keys = keys | split: ',' | sort
+  assign n = keys.size
+  assign newest = ''
+-%}
+
+<section class="sect--white sp-top" id="packages" aria-label="{{ section.settings.aria_label | escape }}">
+  <div class="wrap">
+    {%- if n > 0 -%}
+      <ul class="sp-tiers" id="sp-tiers" style="--n: {{ n }};" tabindex="0" aria-label="{{ section.settings.aria_label | escape }}">
+        {%- for k in keys -%}
+          {%- assign want = k | split: '-' | last | minus: 100 -%}
+          {%- for t in all -%}
+            {%- if forloop.index == want -%}
+              {%- liquid
+                assign st = t.status.value | default: 'available' | downcase
+                assign out = false
+                if st == 'soldout'
+                  assign out = true
+                endif
+                assign main = false
+                if t.featured.value and out == false
+                  assign main = true
+                endif
+                assign up = t.updated.value | date: '%Y-%m-%d'
+                if up != blank and up > newest
+                  assign newest = up
+                endif
+                assign left = t.spots_left.value | default: 0
+              -%}
+              <li class="sp-tier{% if main %} sp-tier--main{% endif %}{% if out %} sp-tier--out{% endif %}">
+                <div class="sp-tier__top">
+                  <h2 class="h3">{{ t.name.value }}</h2>
+                  {%- capture badges -%}
+                    {%- if out -%}
+                      <span class="badge sp-out">Sold out for {{ season }}</span>
+                    {%- else -%}
+                      {%- if t.featured.value -%}<span class="badge">{{ section.settings.featured_label }}</span>{%- endif -%}
+                      {%- if st == 'limited' and left > 0 -%}
+                        <span class="badge sp-left">{{ left }} {% if left == 1 %}spot{% else %}spots{% endif %} left</span>
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endcapture -%}
+                  {%- if badges != blank -%}<span class="sp-tier__badges">{{ badges }}</span>{%- endif -%}
+                </div>
+                <p class="sp-price num">
+                  {%- if t.price.value != blank -%}
+                    {{- t.price.value | times: 100 | money_without_trailing_zeros -}}
+                  {%- endif -%}
+                  {%- if t.tagline.value != blank -%}<small>{{ t.tagline.value }}</small>{%- endif -%}
+                </p>
+                <ul class="sp-ben">
+                  {%- for b in t.benefits.value -%}
+                    <li>{{ b }}</li>
+                  {%- endfor -%}
+                </ul>
+                {%- if out -%}
+                  <div class="sp-waitbox">
+                    <a class="sp-go" href="#contact" data-sp-pkg="{{ t.system.handle }}">
+                      {{- section.settings.waitlist_label -}}
+                      <span aria-hidden="true"> →</span><span class="vh">: {{ t.name.value }}</span></a
+                    >
+                    <p class="sp-wait">{{ section.settings.waitlist_note }}</p>
+                  </div>
+                {%- else -%}
+                  <a class="sp-go" href="#contact" data-sp-pkg="{{ t.system.handle }}">
+                    {{- section.settings.request_label -}}
+                    <span aria-hidden="true"> →</span><span class="vh">: {{ t.name.value }}</span></a
+                  >
+                {%- endif -%}
+              </li>
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endfor -%}
+      </ul>
+      <div class="sp-foot">
+        <p class="sp-hint" aria-hidden="true">Swipe to see all {{ n }} packages</p>
+        {%- if newest != blank -%}
+          <p class="sp-upd">Last updated: {{ newest | date: '%B %-d, %Y' }}</p>
+        {%- endif -%}
+      </div>
+    {%- else -%}
+      <div class="sp-none">
+        <p class="h3">{{ section.settings.empty_title }}</p>
+        <p class="muted">{{ section.settings.empty_text }}</p>
+        <a class="sp-go" href="#contact" data-sp-pkg="unsure">{{ section.settings.empty_link }}</a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .sp-top{padding-block:clamp(20px,2.4vw,32px) 32px;scroll-margin-top:calc(var(--header) + 56px)}
+  .sp-tiers{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:12px;margin:0;padding:0;list-style:none}
+  .sp-tiers:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+  .sp-tier{background:var(--bg);border:1px solid var(--line);padding:18px;display:grid;grid-template-rows:auto auto 1fr auto;gap:12px;min-width:0}
+  .sp-tier--main{background:var(--ink);border-color:var(--ink);color:var(--night-ink)}
+  .sp-tier--main .h3,.sp-tier--main .sp-price.sp-price{color:var(--night-ink)}
+  .sp-tier--main .sp-ben li{color:var(--line)}
+  .sp-tier--main .sp-ben li::before{background:var(--accent)}
+  .sp-tier__top{display:flex;justify-content:space-between;align-items:start;gap:8px}
+  .sp-tier__badges{display:flex;flex-wrap:wrap;gap:4px;justify-content:end}
+  .sp-price.sp-price{margin:0;font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:var(--t-h1);line-height:1;color:var(--ink)}
+  .sp-price small{display:block;font-family:var(--f-sans);font-stretch:100%;font-size:var(--t-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-top:4px}
+  .sp-tier--main .sp-price small{color:var(--line)}
+  .sp-ben{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid var(--line);display:grid;gap:6px;font-size:var(--t-sm);align-content:start}
+  .sp-tier--main .sp-ben{border-color:#3A3935}
+  .sp-ben li{position:relative;padding-left:14px;color:var(--soft);line-height:1.4}
+  .sp-ben li::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;background:var(--ink)}
+  .sp-go{position:relative;justify-self:start;display:inline-flex;align-items:center;gap:.4em;min-height:44px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}
+  .sp-go:hover{text-decoration-thickness:3px}
+  .sp-tier--main .sp-go{color:var(--night-ink);text-decoration-color:var(--accent)}
+  .sp-tier--main .sp-go:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+  .sp-left.sp-left{background:var(--surface);color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+  .sp-tier--main .sp-left{box-shadow:none}
+  .sp-tier--out{background:transparent;border-style:dashed;border-color:#C9C6BE}
+  .sp-tier--out .h3,.sp-tier--out .sp-price.sp-price{color:var(--mute)}
+  .sp-tier--out .sp-ben{border-top-style:dashed}
+  .sp-tier--out .sp-ben li{color:var(--mute)}
+  .sp-tier--out .sp-ben li::before{background:#BDBAB2}
+  .sp-out.sp-out{background:transparent;box-shadow:inset 0 0 0 1px var(--mute);color:var(--soft)}
+  .sp-waitbox{display:grid;gap:6px;justify-items:start}
+  .sp-wait{margin:0;font-size:var(--t-xs);color:var(--mute)}
+  .sp-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 16px;margin-top:8px}
+  .sp-hint{display:none;margin:0;font-size:var(--t-xs);color:var(--mute)}
+  .sp-upd{margin:0 0 0 auto;font-size:var(--t-xs);color:var(--mute)}
+  .sp-none{display:grid;gap:6px;justify-items:start;padding:20px;border:1px dashed var(--line)}
+  .sp-none p{margin:0}
+  @media (max-width:860px){
+    .sp-tiers{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(260px,84%);overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:thin}
+    .sp-tier{scroll-snap-align:start}
+    .sp-hint{display:block}
+  }
+  @media (max-width:480px){.sp-tiers{grid-auto-columns:82%}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Sponsors: packages",
+  "tag": "div",
+  "class": "hm-sponsors-packages",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Packages come from Content > Metaobjects > Sponsor tier. Status: Available, Limited (shows Spots left), Sold out (waitlist) or Hidden."
+    },
+    { "type": "text", "id": "aria_label", "label": "Section name for screen readers", "default": "Sponsorship packages" },
+    { "type": "text", "id": "featured_label", "label": "Featured badge", "default": "Featured" },
+    { "type": "text", "id": "request_label", "label": "Package link", "default": "Request this package" },
+    { "type": "text", "id": "waitlist_label", "label": "Sold out link", "default": "Join the waitlist" },
+    { "type": "text", "id": "waitlist_note", "label": "Sold out note", "default": "We’ll contact you if a spot opens up." },
+    { "type": "header", "content": "No packages yet" },
+    { "type": "text", "id": "empty_title", "label": "Title", "default": "Packages for the season are on the way" },
+    { "type": "text", "id": "empty_text", "label": "Text", "default": "Got questions before then? Ask, we don’t bite." },
+    { "type": "text", "id": "empty_link", "label": "Link", "default": "Ask us anything" }
+  ],
+  "presets": [{ "name": "Sponsors: packages" }]
+}
+{% endschema %}

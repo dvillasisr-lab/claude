@@ -1,0 +1,263 @@
+{%- comment -%}
+  HM Carousel: products from one collection as a moving coverflow (assets/hm-carousel.js + .css).
+  Center card big, side cards smaller and turned. Moves on its own, pauses on hover, focus or the pause button.
+  Arrows, swipe, arrow keys and dots. With reduced motion, or a single product, it is a plain scroll row.
+  Two to four products are repeated in the ring (copies made by the script) so both sides stay filled.
+  Products tagged "hidden" (the Feed The Beast tip) never show.
+{%- endcomment -%}
+{%- liquid
+  assign coll = section.settings.collection
+  assign src = coll
+  assign shown = 0
+  if coll != blank
+    for x in coll.products
+      unless x.tags contains 'hidden'
+        assign shown = shown | plus: 1
+      endunless
+    endfor
+  endif
+  if shown == 0 and section.settings.fallback_all
+    assign src = collections.all
+  endif
+  assign limit = section.settings.limit
+  assign n = 0
+  if src != blank
+    for x in src.products limit: 50
+      if x.tags contains 'hidden'
+        continue
+      endif
+      assign n = n | plus: 1
+      if n >= limit
+        break
+      endif
+    endfor
+  endif
+  assign hid = 'hm-cf-t-' | append: section.id
+  assign seconds = section.settings.seconds | times: 1000
+-%}
+
+<section
+  class="cf{% if section.settings.band %} cf--band{% endif %}"
+  data-hm-cf
+  data-interval="{{ seconds }}"
+  data-autoplay="{{ section.settings.autoplay }}"
+  aria-labelledby="{{ hid }}"
+>
+  <div class="wrap cf__head">
+    {%- if section.settings.label != blank -%}
+      <p class="label muted">{{ section.settings.label | escape }}</p>
+    {%- endif -%}
+    {%- if section.settings.as_page_title -%}
+      <h1 class="h-hero" id="{{ hid }}">{{ section.settings.heading | escape }}</h1>
+    {%- else -%}
+      <h2 class="h1" id="{{ hid }}">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <p class="lede">{{ section.settings.text | escape }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- if n > 0 -%}
+    <div class="cf__stage" data-cf-stage aria-roledescription="carousel" aria-label="{{ section.settings.heading | escape }}">
+      <ul class="cf__track" data-cf-track>
+        {%- assign i = 0 -%}
+        {%- for p in src.products limit: 50 -%}
+          {%- if p.tags contains 'hidden' -%}{%- continue -%}{%- endif -%}
+          {%- liquid
+            assign i = i | plus: 1
+            if i > n
+              break
+            endif
+            assign img = p.featured_media
+            assign price = p.price | money_without_trailing_zeros
+            if p.price_varies
+              assign price = p.price_min | money_without_trailing_zeros | prepend: 'From '
+            endif
+            assign state = 'live'
+            if p.tags contains 'coming-soon'
+              assign state = 'soon'
+            elsif p.available == false
+              assign state = 'soldout'
+            endif
+          -%}
+          <li class="cf__slide" data-cf-slide role="group" aria-roledescription="slide" aria-label="{{ i }} of {{ n }}: {{ p.title | escape }}">
+            <article class="cf__card">
+              <a class="cf__media" href="{{ p.url }}" tabindex="-1" aria-hidden="true" draggable="false">
+                <span class="ph">
+                  {%- if img -%}
+                    {{- img | image_url: width: 900 | image_tag: widths: '320, 480, 640, 900', sizes: '(min-width: 761px) 340px, 66vw', class: 'photo', alt: '', loading: 'lazy', draggable: 'false' -}}
+                  {%- else -%}
+                    {%- render 'hm-mock', product: p -%}
+                  {%- endif -%}
+                </span>
+                {%- if state == 'soon' -%}
+                  <span class="badge badge--line cf__badge">Coming soon</span>
+                {%- elsif state == 'soldout' -%}
+                  <span class="badge badge--line cf__badge">Sold out</span>
+                {%- elsif p.tags contains 'best-seller' -%}
+                  <span class="badge cf__badge">Best seller</span>
+                {%- elsif p.tags contains 'new' -%}
+                  <span class="badge badge--ink cf__badge">New</span>
+                {%- endif -%}
+              </a>
+              <div class="cf__txt">
+                <h3 class="cf__name"><a href="{{ p.url }}" draggable="false">{{ p.title | escape }}</a></h3>
+                <p class="cf__price num">
+                  {%- if p.compare_at_price > p.price -%}
+                    <span class="vh">Sale price </span>{{ price }} <s class="muted">{{ p.compare_at_price | money_without_trailing_zeros }}</s>
+                  {%- else -%}
+                    {{ price }}
+                  {%- endif -%}
+                </p>
+                {%- if section.settings.show_add and state == 'live' and p.gift_card? == false -%}
+                  <button
+                    class="btn btn--ghost btn--sm cf__add"
+                    type="button"
+                    data-quick="{{ p.handle }}"
+                    data-url="{{ p.url }}"
+                    {% if p.has_only_default_variant %}
+                      data-variant-id="{{ p.selected_or_first_available_variant.id }}"
+                    {% else %}
+                      aria-haspopup="dialog"
+                    {% endif %}
+                  >
+                    Add to cart<span class="vh"> {{ p.title | escape }}</span>
+                  </button>
+                {%- else -%}
+                  <a class="link cf__add" href="{{ p.url }}" draggable="false">
+                    {%- if p.gift_card? -%}Pick an amount{%- elsif state == 'live' -%}Take a look{%- else -%}Notify me{%- endif -%}
+                    <span class="vh"> {{ p.title | escape }}</span>
+                  </a>
+                {%- endif -%}
+              </div>
+            </article>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <button class="cf__arw cf__arw--prev" type="button" data-cf-prev aria-label="Previous product" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7"/></svg>
+      </button>
+      <button class="cf__arw cf__arw--next" type="button" data-cf-next aria-label="Next product" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="cf__ctrl" data-cf-ctrl hidden>
+      <div class="cf__dots" role="group" aria-label="Choose a product" data-cf-dots>
+        {%- for k in (1..n) -%}
+          <button type="button" data-i="{{ k | minus: 1 }}" aria-label="Product {{ k }} of {{ n }}" aria-current="{% if k == 1 %}true{% else %}false{% endif %}"></button>
+        {%- endfor -%}
+      </div>
+      <button class="cf__pause" type="button" data-cf-pause aria-pressed="false">
+        <svg class="cf__i-pause" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1h3v10H2zM7 1h3v10H7z"/></svg>
+        <svg class="cf__i-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg>
+        <span data-cf-pause-label>Pause</span>
+      </button>
+    </div>
+    <p class="vh" aria-live="polite" data-cf-live></p>
+  {%- elsif request.design_mode -%}
+    <div class="wrap">
+      <p class="small muted cf__hint">Pick a collection with products in this section’s settings. This hint is only visible in the theme editor.</p>
+    </div>
+  {%- else -%}
+    <div class="wrap">
+      <p class="muted cf__hint">Nothing here yet. The crew is still deciding what you like.</p>
+    </div>
+  {%- endif -%}
+</section>
+
+{{ 'hm-carousel.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'hm-carousel.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "HM Carousel",
+  "tag": "div",
+  "class": "hm-section hm-carousel-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Small label",
+      "default": "The usual suspects"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Best sellers"
+    },
+    {
+      "type": "checkbox",
+      "id": "as_page_title",
+      "label": "Heading is the page title",
+      "info": "On for a page of its own. Off when the section sits on the home page.",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "The stuff people actually buy. Turns out you have taste."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "fallback_all",
+      "label": "Show all products when the collection is empty",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Products",
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "default": 10
+    },
+    {
+      "type": "checkbox",
+      "id": "show_add",
+      "label": "Show Add to cart",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Move on its own",
+      "info": "Pauses on hover, on focus and with the pause button. Never moves for visitors who turned motion off.",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "seconds",
+      "label": "Seconds per product",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "band",
+      "label": "White background",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Carousel",
+      "settings": {
+        "label": "The usual suspects",
+        "heading": "Best sellers",
+        "text": "The stuff people actually buy. Turns out you have taste."
+      }
+    }
+  ]
+}
+{% endschema %}

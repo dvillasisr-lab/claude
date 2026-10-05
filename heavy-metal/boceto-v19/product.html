@@ -1,0 +1,1163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Evil One Tee · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Evil One Tee from Heavy Metal Pro Stock: “The Evil One”, the pulling tractor from Waterloo, WI. Designed by the crew, printed to order, ships in 5 days.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R4 V3
+   PDP v6 al estilo SKIMS: galería de foto grande con miniaturas + buy box sticky, texto 12 a 16px, nombre 24px condensado. */
+:root{--shoppay:#5A31F4;--shoppay-hover:#4A26D6}
+html,body{overflow-x:clip}
+.crumbs{padding-block:14px 12px}
+.crumbs ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:2px 8px;font-size:var(--t-xs);color:var(--mute)}
+.crumbs li{white-space:nowrap}
+.crumbs li+li::before{content:"/";margin-right:8px;color:#B6B1AD}
+.crumbs a{text-decoration:none}
+.crumbs a:hover{text-decoration:underline;text-underline-offset:3px}
+.crumbs [aria-current]{color:var(--ink)}
+
+.pdp{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;padding-bottom:var(--sect)}
+@media (min-width:900px){
+  /* la foto grande nunca pasa de una pantalla: el ancho de la galería sale del alto disponible */
+  .pdp{grid-template-columns:minmax(0,min(58%,calc((100svh - 300px) * .8))) minmax(0,1fr);gap:clamp(28px,3.4vw,56px);align-items:start}
+  .buy{max-width:520px}
+  .buy{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header) + 16px)}
+}
+
+/* galería v6: foto grande + flechas + contador, tira de miniaturas, swipe con puntos en móvil, lightbox con zoom.
+   Aguanta 15 fotos o más: nunca se ven todas al mismo tiempo. */
+.pg{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;min-width:0;align-content:start}
+.pg__stage{min-width:0}
+.pg__stage{position:relative;background:var(--tile)}
+.pg__track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;overscroll-behavior-x:contain}
+.pg__track::-webkit-scrollbar{display:none}
+.pg__track:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+.pg__slide{flex:0 0 100%;min-width:0;scroll-snap-align:center;scroll-snap-stop:always;cursor:zoom-in}
+.pg__slide .ph{--ar:4/5}
+.pg__slide .ph--mock .mock{width:62%}
+.pg__slide .ph__tag{font-size:11px}
+.pg__arw,.lb__arw{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:44px;height:44px;border:1px solid var(--line);background:rgba(255,255,255,.92);color:var(--ink);font-size:26px;line-height:1;display:grid;place-items:center;cursor:pointer;padding:0 0 3px}
+.pg__arw:hover,.lb__arw:hover{background:var(--surface);border-color:var(--ink)}
+.pg__arw--prev{left:10px}.pg__arw--next{right:10px}
+.pg__count{position:absolute;right:10px;bottom:10px;z-index:3;margin:0;background:rgba(255,255,255,.92);padding:3px 8px;font-size:var(--t-xs);font-weight:700;letter-spacing:.04em;font-variant-numeric:tabular-nums;color:var(--ink)}
+.pg__zoom{position:absolute;right:10px;top:10px;z-index:3;width:40px;height:40px;border:1px solid var(--line);background:rgba(255,255,255,.92);display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+.pg__zoom svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6}
+.pg__thumbs{display:flex;gap:4px;overflow-x:auto;list-style:none;margin:0;padding:2px;scrollbar-width:thin;scroll-behavior:smooth}
+.pg__thumbs li{flex:0 0 64px}
+.pg__thumb{display:grid;place-items:center;width:100%;aspect-ratio:4/5;padding:0;border:1px solid transparent;background:var(--tile);cursor:pointer;overflow:hidden;position:relative;color:var(--mute);font-size:10px;font-weight:700;line-height:1.2}
+.pg__thumb .mock{width:74%}
+.pg__thumb:hover{border-color:var(--line)}
+.pg__thumb[aria-current="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.pg__thumb--ph{background:repeating-linear-gradient(135deg,var(--tile) 0 8px,#E4E2DC 8px 9px)}
+.pg__dots{display:none}
+@media (max-width:899px){
+  .pg{margin-inline:calc(-1 * var(--gutter))}
+  .pg__thumbs{display:none}
+  .pg .note{margin-inline:var(--gutter)}
+  .pg__arw{width:36px;height:36px;font-size:22px}
+  .pg__dots{display:flex;flex-wrap:wrap;justify-content:center;padding:0 var(--gutter)}
+  .pg__dots button{width:16px;height:24px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center}
+  .pg__dots button::before{content:"";width:6px;height:6px;border-radius:50%;background:#B6B1AD}
+  .pg__dots button[aria-current="true"]::before{background:var(--ink)}
+}
+/* lightbox con zoom */
+.lb{width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:#121211;color:var(--night-ink);overflow:hidden}
+.lb::backdrop{background:#121211}
+.lb__bar{position:absolute;left:0;right:0;top:0;z-index:4;display:flex;justify-content:space-between;align-items:center;padding:8px 8px 8px 16px;padding-top:calc(8px + env(safe-area-inset-top,0px))}
+.lb__count{margin:0;font-size:var(--t-xs);font-weight:700;letter-spacing:.06em;font-variant-numeric:tabular-nums}
+.lb__close{color:var(--night-ink)}
+.lb__fig{position:absolute;inset:56px 0 56px;display:grid;place-items:center;margin:0}
+.lb__img{width:min(92vw,calc((100dvh - 112px) * .8));aspect-ratio:4/5;overflow:hidden;background:var(--tile);cursor:zoom-in;touch-action:pan-y pinch-zoom}
+.lb__img>*{transition:transform .2s;transform-origin:var(--ox,50%) var(--oy,50%)}
+.lb__img.is-zoom{cursor:zoom-out;touch-action:none}
+.lb__img.is-zoom>*{transform:scale(2.2)}
+.lb__img .ph{--ar:4/5;height:100%}
+.lb__img .ph--mock .mock{width:62%}
+.lb__arw{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:var(--night-ink)}
+.lb__arw:hover{background:rgba(255,255,255,.22);border-color:var(--night-ink)}
+.lb__arw--prev{left:12px}.lb__arw--next{right:12px}
+.lb__hint{position:absolute;left:0;right:0;bottom:calc(16px + env(safe-area-inset-bottom,0px));margin:0;text-align:center;font-size:11px;color:#B5B2AA}
+.lb__hint-t{display:none}
+@media (hover:none){.lb__hint-k{display:none}.lb__hint-t{display:inline}.lb__arw{background:rgba(18,18,17,.62);border-color:rgba(255,255,255,.35)}}
+
+/* buy box */
+.buy{display:grid;gap:16px;align-content:start;min-width:0}
+.buy__head{display:grid;gap:6px;justify-items:start}
+.buy__name{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:24px;line-height:1.1;letter-spacing:.01em;text-transform:uppercase;margin:0;color:var(--ink);overflow-wrap:anywhere}
+.buy__price{margin:0;font-size:var(--t-md);font-weight:600;color:var(--ink)}
+.buy__desc{margin:0;font-size:var(--t-sm);color:var(--soft);max-width:48ch}
+
+.opt{border:0;margin:0;padding:0;min-width:0}
+.opt__legend{padding:0;margin-bottom:8px;font-size:var(--t-xs);font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.opt__legend b{color:var(--ink);font-weight:600;letter-spacing:.04em}
+.opt input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.colors{display:flex;gap:6px;flex-wrap:wrap}
+.cswatch{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;cursor:pointer;border:1px solid transparent}
+.cswatch span{width:24px;height:24px;border-radius:50%;background:var(--sw);box-shadow:inset 0 0 0 1px rgba(28,27,25,.25)}
+.cswatch:hover{border-color:var(--line)}
+.opt input:checked+.cswatch{border-color:var(--ink)}
+.opt input:focus-visible+.cswatch,.opt input:focus-visible+.size{outline:2px solid var(--ink);outline-offset:2px}
+
+.linkbtn{background:none;border:0;padding:4px 0;font-size:var(--t-xs);font-weight:600;letter-spacing:.04em;text-decoration:underline;text-underline-offset:3px;cursor:pointer;color:var(--ink);text-transform:none}
+.sizes{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.size{display:grid;place-items:center;min-height:40px;background:var(--surface);border:1px solid var(--line);cursor:pointer;font-size:var(--t-xs);font-weight:700;letter-spacing:.04em}
+.size:hover{border-color:var(--ink)}
+.opt input:checked+.size{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.opt input:disabled+.size{background:transparent;color:var(--mute);cursor:not-allowed;text-decoration:line-through}
+.opt.is-error .size{border-color:var(--alert)}
+.msg{margin:6px 0 0;font-size:var(--t-xs);font-weight:600;color:var(--alert)}
+.msg:empty{display:none}
+.soldout{margin:6px 0 0;font-size:var(--t-xs);color:var(--mute)}
+.notify{display:flex;margin-top:6px}
+.notify .input{min-height:40px}
+.notify .btn{flex:none;min-height:40px}
+.one-size{margin:0;font-size:var(--t-xs);color:var(--soft)}
+/* estado del producto: Live / Coming soon / Sold out, y "Almost gone!" */
+.buy__badges{display:flex;flex-wrap:wrap;gap:4px}
+.buy__badges:empty{display:none}
+.buy__left{margin-left:10px;font-size:var(--t-xs);font-weight:700;letter-spacing:.04em;color:var(--alert)}
+.nbox{display:grid;gap:8px;padding:14px 16px;background:var(--surface);border:1px solid var(--ink);scroll-margin-top:calc(env(safe-area-inset-top,0px) + var(--header) + 16px)}
+.nbox .h3,.nbox p{margin:0}
+.nbox p{font-size:var(--t-xs);color:var(--soft)}
+.nbox__row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}
+.nbox__row .input{min-height:44px}
+.nbox__msg{font-weight:600;color:var(--ink)!important}
+.nbox__msg:empty{display:none}
+.nbox__msg.is-err{color:var(--alert)!important}
+.nbox .input[aria-invalid="true"]{border-color:var(--alert);outline:1px solid var(--alert)}
+@media (max-width:420px){.nbox__row{grid-template-columns:1fr}}
+.btn:disabled{background:var(--tile);border-color:var(--line);color:var(--mute);cursor:not-allowed}
+
+.buyrow{display:grid;grid-template-columns:112px minmax(0,1fr);gap:6px}
+.qty{display:grid;grid-template-columns:36px minmax(0,1fr) 36px;height:48px;border:1px solid var(--line);background:var(--surface)}
+.qty button{border:0;background:none;cursor:pointer;display:grid;place-items:center}
+.qty button svg{width:12px;height:12px;stroke:currentColor;stroke-width:1.6;fill:none}
+.qty input{border:0;background:none;text-align:center;font:inherit;font-size:var(--t-sm);font-weight:700;font-variant-numeric:tabular-nums;width:100%;min-width:0;-moz-appearance:textfield;appearance:textfield}
+.qty input::-webkit-inner-spin-button,.qty input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+.btn--big{min-height:48px}
+
+/* botón de pago dinámico (simulado) */
+.dyn{display:grid;gap:6px;justify-items:center}
+.shoppay{width:100%;min-height:44px;border:0;background:var(--shoppay);color:var(--surface);font-size:var(--t-sm);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.shoppay:hover{background:var(--shoppay-hover)}
+.shoppay b{font-weight:800;letter-spacing:-.01em;font-size:var(--t-md)}
+.dyn .linkbtn{font-weight:500}
+
+.facts{list-style:none;margin:0;padding:12px 0 0;border-top:1px solid var(--line);display:grid;gap:8px;font-size:var(--t-xs);color:var(--soft)}
+.facts li{display:grid;grid-template-columns:18px minmax(0,1fr);gap:8px;align-items:start}
+.facts svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.facts b{color:var(--ink)}
+/* The Black Smoke Guarantee (idea dbrand): promesa corta junto a envío */
+.bsg{display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:start;margin:10px 0 0;padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--ink);font-size:var(--t-xs);color:var(--soft)}
+.bsg svg{width:32px;height:32px;fill:none;stroke:var(--ink);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.bsg p{margin:0;line-height:1.45}
+.bsg b{display:block;color:var(--ink);font-size:var(--t-sm);letter-spacing:.02em}
+.bsg a{color:var(--ink);font-weight:700;white-space:nowrap}
+
+.acc{border-top:1px solid var(--line)}
+.acc details{border-bottom:1px solid var(--line)}
+.acc summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:44px;cursor:pointer;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary::after{content:"+";font-size:18px;font-weight:400}
+.acc details[open] summary::after{content:"\2212"}
+.acc__body{padding-bottom:14px;font-size:var(--t-xs);line-height:1.6;color:var(--soft);display:grid;gap:8px}
+.acc__body p,.acc__body ul{margin:0}
+.acc__body ul{padding-left:16px;display:grid;gap:2px}
+
+/* guía de tallas */
+.sg{width:min(520px,calc(100vw - 32px));max-height:calc(100dvh - 32px);padding:0;border:0;background:var(--surface);color:var(--ink)}
+.sg::backdrop{background:rgba(28,27,25,.45)}
+.sg__head{display:flex;justify-content:space-between;align-items:center;padding:8px 8px 8px 20px;border-bottom:1px solid var(--line)}
+.sg__body{padding:16px 20px 20px;display:grid;gap:12px}
+.sg__body p{margin:0;font-size:var(--t-xs);color:var(--soft)}
+.tbl-wrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:var(--t-xs);font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{text-align:left;padding:8px 10px 8px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl thead th{font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+
+/* complete the look */
+.look{display:grid;gap:20px;align-items:center;grid-template-columns:minmax(0,1fr)}
+@media (min-width:760px){.look{grid-template-columns:minmax(0,420px) minmax(0,1fr)}}
+.look__pics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+.look__pics .ph__tag{display:none}
+.look__pics .ph{--ar:1/1}
+.look__info{display:grid;gap:10px;justify-items:start;max-width:420px}
+.look__list{list-style:none;margin:0;padding:0;width:100%;border-top:1px solid var(--line)}
+.look__list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:var(--t-xs)}
+.look__list li span:first-child{font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+
+@media (max-width:1024px){.like .pgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* v10 · estrellas junto al título */
+.buy__rv{display:inline-flex;align-items:center;gap:6px;font-size:var(--t-xs);color:var(--ink);text-decoration:none;min-height:24px}
+.buy__rv .stars{font-size:14px}
+.buy__rv b{font-weight:700}
+.buy__rv u{color:var(--mute);text-underline-offset:3px}
+.buy__rv:hover u{color:var(--ink)}
+
+/* v10 · esqueleto de la ficha (galería + título + precio) */
+.pdp-skel .skel--img{width:100%}
+.pdp-skel__buy{display:grid;gap:12px;align-content:start;max-width:520px}
+.pdp-skel__buy .skel{margin:0}
+.pdp-skel__sizes{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px}
+.pdp-skel__sizes .skel{height:40px}
+
+/* v10 · reseñas (en Shopify: bloque de la app Judge.me) */
+.rv{scroll-margin-top:calc(env(safe-area-inset-top,0px) + var(--header) + 8px);border-top:1px solid var(--line)}
+.rv h2:focus{outline:none}
+.rv__grid{display:grid;grid-template-columns:minmax(0,1fr);gap:28px;align-items:start}
+@media (min-width:900px){.rv__grid{grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:clamp(32px,4vw,64px)}}
+.rv__sum{display:grid;gap:16px;align-content:start}
+.rv__avg{display:flex;align-items:center;gap:14px}
+.rv__big{font-family:var(--f-head);font-stretch:78%;font-weight:700;font-size:48px;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+.rv__avg .stars{font-size:20px}
+.rv__avg p{margin:4px 0 0;font-size:var(--t-xs);color:var(--mute)}
+.rv__dist{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.rv__bar{display:grid;grid-template-columns:44px minmax(0,1fr) 28px;gap:10px;align-items:center;width:100%;min-height:30px;padding:0 4px;border:1px solid transparent;background:none;cursor:pointer;font-size:var(--t-xs);color:var(--soft);text-align:left}
+.rv__bar:hover{border-color:var(--line);background:var(--surface)}
+.rv__bar[aria-pressed="true"]{border-color:var(--ink);background:var(--surface);color:var(--ink)}
+.rv__bar:disabled{cursor:default;opacity:.55}
+.rv__bar:disabled:hover{border-color:transparent;background:none}
+.rv__track{height:8px;background:var(--line);position:relative}
+.rv__track i{position:absolute;left:0;top:0;bottom:0;background:var(--ink)}
+.rv__bar .num{text-align:right}
+.rv__fit{display:grid;gap:6px;font-size:var(--t-xs);color:var(--soft)}
+.rv__fit p{margin:0}
+.rv__scale{position:relative;height:6px;background:var(--line);margin:6px 0 2px}
+.rv__scale i{position:absolute;top:-4px;width:14px;height:14px;border-radius:50%;background:var(--ink);transform:translateX(-50%);border:2px solid var(--surface)}
+.rv__scale-l{display:flex;justify-content:space-between;font-size:11px;color:var(--mute)}
+.rv__tools{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.rv__chips{display:flex;flex-wrap:wrap;gap:6px}
+.rv__chip{min-height:34px;padding:0 12px;border:1px solid var(--line);background:var(--surface);font-size:var(--t-xs);font-weight:600;cursor:pointer;color:var(--ink)}
+.rv__chip:hover{border-color:var(--ink)}
+.rv__chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.rv__chip:disabled{color:var(--mute);cursor:default;border-color:var(--line);background:var(--bg)}
+.rv__sort{display:flex;align-items:center;gap:8px;font-size:var(--t-xs)}
+.rv__sort label{font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--soft)}
+.rv__sort select{min-height:36px;width:auto;padding-right:28px}
+.rv__count{margin:12px 0 0;font-size:var(--t-xs);color:var(--mute)}
+.rv__list{list-style:none;margin:0;padding:0}
+.rvi{display:grid;gap:8px;padding-block:20px;border-bottom:1px solid var(--line)}
+.rvi:focus{outline:none}
+.rvi:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.rvi__top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:4px 12px}
+.rvi__top .stars{font-size:14px}
+.rvi__date{font-size:var(--t-xs);color:var(--mute)}
+.rvi__who{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:var(--t-xs)}
+.rvi__who b{color:var(--ink)}
+.rvi__ver{display:inline-flex;align-items:center;gap:4px;color:var(--soft)}
+.rvi__ver svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+.rv__ex{display:inline-block;padding:1px 6px;background:#FFF6CC;border:1px dashed #C9A800;color:var(--ink);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.no-notes .rv__ex{display:none}
+.rvi__t{margin:0;font-size:var(--t-sm);font-weight:700;color:var(--ink)}
+.rvi__txt{margin:0;font-size:var(--t-sm);color:var(--text);max-width:65ch}
+.rvi__meta{display:flex;flex-wrap:wrap;gap:4px 18px;margin:0;font-size:var(--t-xs)}
+.rvi__meta div{display:flex;gap:4px}
+.rvi__meta dt{color:var(--mute)}
+.rvi__meta dd{margin:0;font-weight:600;color:var(--ink)}
+.rvi__pics{display:flex;flex-wrap:wrap;gap:6px}
+.rvi__pic{width:72px;height:72px;padding:0;border:1px solid var(--line);background:var(--tile);cursor:zoom-in;display:grid;place-items:center;overflow:hidden}
+.rvi__pic:hover{border-color:var(--ink)}
+.rvi__pic .mock{width:70%}
+.rvi__help{justify-self:start;min-height:32px;padding:0 10px;border:1px solid var(--line);background:var(--surface);font-size:var(--t-xs);font-weight:600;cursor:pointer;color:var(--ink);display:inline-flex;align-items:center;gap:6px}
+.rvi__help svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.6}
+.rvi__help:hover{border-color:var(--ink)}
+.rvi__help[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.rv__more{display:flex;justify-content:center;padding-top:20px}
+.rv__none{display:grid;gap:10px;justify-items:start;padding:20px 0}
+.rv__none p{margin:0;color:var(--soft);font-size:var(--t-sm)}
+.rv__empty{display:grid;gap:10px;justify-items:center;text-align:center;padding:40px 16px;border:1px dashed var(--line);background:var(--surface)}
+.rv__empty .stars{font-size:22px}
+.rv__empty p{margin:0}
+.rv__msg{font-size:var(--t-md);font-weight:700;color:var(--ink)}
+
+/* formulario "Write a review" */
+.rf{display:grid;gap:14px;padding:20px;margin-bottom:24px;background:var(--surface);border:1px solid var(--ink);max-width:720px}
+.rf .h3{margin:0}
+.rf__row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start}
+@media (max-width:600px){.rf__row{grid-template-columns:minmax(0,1fr)}}
+.rf fieldset{border:0;margin:0;padding:0;min-width:0}
+.rf legend{padding:0;margin-bottom:6px;font-size:var(--t-xs);font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--soft)}
+.rf textarea.input{min-height:120px;padding:10px 12px;resize:vertical}
+.rf select.input{padding-right:28px}
+.rf .input[aria-invalid="true"]{border-color:var(--alert);outline:1px solid var(--alert)}
+.rf__hint{margin:0;font-size:11px;color:var(--mute)}
+.rf__err{margin:0;font-size:var(--t-xs);font-weight:600;color:var(--alert)}
+.rf__err:empty{display:none}
+.rstars{display:flex;align-items:center;gap:2px;position:relative}
+.rstars input{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none}
+.rstars label{font-size:30px;line-height:1;width:40px;height:40px;display:grid;place-items:center;cursor:pointer;color:#C9C6BE;text-transform:none;letter-spacing:0}
+.rstars label.on{color:var(--ink)}
+.rstars input:focus-visible+label{outline:2px solid var(--ink);outline-offset:-2px}
+.rstars.is-err label{color:#D9A9A4}
+.rstars__txt{margin-left:8px;font-size:var(--t-xs);font-weight:600;color:var(--soft)}
+.rf__fits{display:flex;flex-wrap:wrap;gap:6px}
+.rf__fits label{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 12px;border:1px solid var(--line);font-size:var(--t-xs);font-weight:600;cursor:pointer;text-transform:none;letter-spacing:0;color:var(--ink)}
+.rf__fits label:has(input:checked){border-color:var(--ink)}
+.rf__file{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.rf__file input{position:absolute;opacity:0;width:1px;height:1px}
+.rf__file label{cursor:pointer}
+.rf__file input:focus-visible+label{outline:2px solid var(--ink);outline-offset:2px}
+.rf__files{font-size:var(--t-xs);color:var(--soft)}
+.rf__ok{display:grid;gap:8px;padding:20px;margin-bottom:24px;background:var(--surface);border:1px solid var(--ink);max-width:720px}
+.rf__ok p{margin:0}
+.rf__ok:focus{outline:none}
+/* foto de reseña ampliada */
+.rvlb{width:min(560px,calc(100vw - 32px));padding:0;border:0;background:var(--surface);color:var(--ink)}
+.rvlb::backdrop{background:rgba(28,27,25,.6)}
+.rvlb__head{display:flex;justify-content:space-between;align-items:center;padding:6px 6px 6px 16px;border-bottom:1px solid var(--line);font-size:var(--t-xs);font-weight:600}
+.rvlb__img .ph{--ar:1/1}
+.rvlb__img .ph--mock .mock{width:60%}
+
+/* barra sticky móvil */
+.satc{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--surface);border-top:1px solid var(--line);padding:8px var(--gutter) calc(8px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:12px;transform:translateY(110%);transition:transform .2s;visibility:hidden}
+.satc.is-on{transform:none;visibility:visible}
+.satc__txt{min-width:0;flex:1;display:grid;line-height:1.3}
+.satc__txt b{font-size:var(--t-xs);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.satc__txt span{font-size:11px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.satc .btn{flex:none;padding-inline:1.1em}
+@media (min-width:900px){.satc{display:none}}
+@media (max-width:899px){body{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))}}
+@media (max-width:400px){.sizes{grid-template-columns:repeat(3,minmax(0,1fr))}.sizes.sizes--4{grid-template-columns:repeat(4,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="shop"></div>
+
+<main id="main">
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop.html?cat=all">Shop</a></li>
+        <li><a id="bc-cat" href="shop.html?cat=tees">Tees</a></li>
+        <li><span aria-current="page" id="bc-name">Evil One Tee</span></li>
+      </ol>
+    </nav>
+
+    <!-- esqueleto fantasma: sale mientras carga la ficha (en Shopify lo pinta el tema, no se edita) -->
+    <div class="pdp pdp-skel" id="pdp-skel" aria-hidden="true" hidden>
+      <span class="skel skel--img"></span>
+      <div class="pdp-skel__buy">
+        <span class="skel" style="width:90px;height:18px"></span>
+        <span class="skel" style="width:75%;height:28px"></span>
+        <span class="skel" style="width:140px;height:14px"></span>
+        <span class="skel" style="width:60px;height:18px"></span>
+        <span class="skel" style="width:90%;height:12px"></span>
+        <span class="skel" style="width:70%;height:12px"></span>
+        <span class="skel" style="width:120px;height:34px;margin-top:8px"></span>
+        <div class="pdp-skel__sizes"><span class="skel"></span><span class="skel"></span><span class="skel"></span><span class="skel"></span><span class="skel"></span><span class="skel"></span></div>
+        <span class="skel" style="width:100%;height:48px"></span>
+      </div>
+    </div>
+    <p class="vh" id="pdp-loading" role="status"></p>
+
+    <div class="pdp" id="pdp">
+      <section class="pg" id="pg" aria-roledescription="carousel" aria-label="Product images">
+        <div class="pg__stage">
+          <div class="pg__track" id="pg-track" tabindex="0" aria-label="Product images. Use the arrow keys to browse, Enter to zoom."></div>
+          <button class="pg__arw pg__arw--prev" type="button" id="pg-prev" aria-label="Previous image">‹</button>
+          <button class="pg__arw pg__arw--next" type="button" id="pg-next" aria-label="Next image">›</button>
+          <button class="pg__zoom" type="button" id="pg-zoom" aria-label="Zoom image" aria-haspopup="dialog" aria-controls="lb"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4M11 8v6M8 11h6"/></svg></button>
+          <p class="pg__count" id="pg-count" aria-hidden="true">1 / 1</p>
+          <p class="vh" id="pg-live" aria-live="polite"></p>
+        </div>
+        <ul class="pg__thumbs" id="pg-thumbs" aria-label="Image thumbnails"></ul>
+        <div class="pg__dots" id="pg-dots" role="group" aria-label="Choose image"></div>
+      </section>
+
+      <section class="buy" aria-labelledby="p-name">
+        <div class="buy__head">
+          <div class="buy__badges" id="p-badges"></div>
+          <h1 class="buy__name" id="p-name">Evil One Tee</h1>
+          <a class="buy__rv" id="p-rv" href="#reviews" hidden></a>
+          <p class="buy__price"><span class="num" id="p-price">$XX</span><span class="buy__left" id="p-left" hidden></span></p>
+          <p class="buy__desc" id="p-desc">Front logo tee. Designed by the crew in Waterloo, WI, and printed to order.</p>
+        </div>
+
+        <fieldset class="opt" id="color-set">
+          <legend class="opt__legend"><span>Color: <b id="color-name">Matte Black</b></span></legend>
+          <div class="colors" id="colors"></div>
+        </fieldset>
+
+        <fieldset class="opt" id="size-set" aria-describedby="size-msg">
+          <legend class="opt__legend"><span>Size: <b id="size-name">Select a size</b></span><button class="linkbtn" type="button" id="sg-open" aria-haspopup="dialog" aria-controls="size-guide">Size guide</button></legend>
+          <div class="sizes" id="sizes"></div>
+          <p class="msg" id="size-msg" aria-live="polite"></p>
+          <div id="sold-wrap" hidden>
+            <p class="soldout"><span id="sold-list">3XL</span> sold out. <button class="linkbtn" type="button" id="notify-open" aria-expanded="false" aria-controls="size-notify">Notify me</button></p>
+            <form class="notify" id="size-notify" hidden novalidate>
+              <label class="vh" for="size-notify-email">Email for restock alert</label>
+              <input class="input" id="size-notify-email" type="email" autocomplete="email" spellcheck="false" placeholder="Email for restock" required>
+              <button class="btn" type="submit">Notify me</button>
+            </form>
+          </div>
+        </fieldset>
+        <p class="one-size" id="one-size" hidden><span id="one-size-t">One size.</span> <button class="linkbtn" type="button" id="sg-open-2" aria-haspopup="dialog" aria-controls="size-guide">Size guide</button></p>
+
+        <div id="buy-live">
+        <div class="buyrow">
+          <div class="qty" role="group" aria-label="Quantity">
+            <button type="button" id="qty-dn" aria-label="Decrease quantity"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10"/></svg></button>
+            <label class="vh" for="qty">Quantity</label>
+            <input type="number" id="qty" name="qty" value="1" min="1" max="10" inputmode="numeric">
+            <button type="button" id="qty-up" aria-label="Increase quantity"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7h10M7 2v10"/></svg></button>
+          </div>
+          <button class="btn btn--block btn--big" type="button" id="atc">Select a size</button>
+        </div>
+
+        <div class="dyn">
+          <button class="shoppay" type="button" id="shoppay">Buy with <b>Shop Pay</b></button>
+          <button class="linkbtn" type="button" id="more-pay">More payment options</button>
+          <p class="msg" id="pay-msg" aria-live="polite" style="color:var(--soft)"></p>
+        </div>
+        </div>
+
+        <button class="btn btn--block btn--big" type="button" id="soldout-btn" disabled hidden>Sold out</button>
+        <section class="nbox" id="notify" aria-labelledby="notify-t" hidden>
+          <h2 class="h3" id="notify-t">Notify me</h2>
+          <p id="notify-p">One email the moment this drops. Nothing else.</p>
+          <form class="nbox__row" id="notify-form" novalidate>
+            <label class="vh" for="notify-email">Email</label>
+            <input class="input" id="notify-email" type="email" required autocomplete="email" spellcheck="false" placeholder="Email address" aria-describedby="notify-msg">
+            <button class="btn" type="submit">Notify me</button>
+          </form>
+          <p class="consent">Email only. Unsubscribe anytime. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
+          <p class="nbox__msg small" id="notify-msg" role="status"></p>
+        </section>
+
+        <ul class="facts">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h11v10H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg><span><b>Printed to order · ships in 5 days.</b> Free US shipping over $XX.</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.5-5.8"/><path d="M4 4v4h4"/></svg><span>Misprints and defects replaced free. Check the size guide: printed-to-order items can't be returned for size. <a href="policies.html?p=refund">Refund policy</a></span></li>
+        </ul>
+        <aside class="bsg" aria-labelledby="bsg-t">
+          <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3l10 4v8c0 7-4.4 11.6-10 14-5.6-2.4-10-7-10-14V7z"/><path d="M12 19c0-2.5 2-3 2-5.5M16 20c0-3 2.5-3.5 2.5-6.5M20 19c0-2 1.5-2.5 1.5-4.5"/></svg>
+          <p><b id="bsg-t">The Black Smoke Guarantee</b>If the print cracks or peels in the first year, we replace it. Free. <a href="policies.html?p=refund#bsg">Details</a></p>
+        </aside>
+        <p class="note"><b>Black Smoke Guarantee (idea dbrand):</b> términos por confirmar con la dueña y con lo que cubra Printify (proveedor de impresión) antes de publicar. Galería: las fotos del producto en Shopify (Printify sube un mockup por vista y color; agrega fotos reales y ordénalas arrastrando). Aquí hay 15 de prueba; con pocas: <a href="product.html?p=crew-cap&amp;imgs=3">3 fotos</a> · <a href="product.html?imgs=1">1 foto</a>. Estado (Productos &gt; el producto): Live = activo con inventario; Coming soon = etiqueta <b>coming-soon</b>; Sold out = inventario en 0 con "Seguir vendiendo" apagado; "Almost gone!" sale solo con 5 o menos. Shop Pay lo pinta Shopify y va directo al checkout. "Notify me" guarda el email como suscriptor con etiqueta; el aviso automático de reposición necesita una app (las hay con plan gratis). Prueba: <a href="product.html?p=evil-one-beanie#notify">Coming soon</a> · <a href="product.html?p=full-pull-ls#notify">Sold out</a> · <a href="product.html?p=evil-one-tee">Only 4 left</a>. Confirmar con Printify devoluciones, 5 días y "printed in the USA".</p>
+
+        <div class="acc">
+          <details>
+            <summary>Details</summary>
+            <div class="acc__body" id="acc-details"></div>
+          </details>
+          <details>
+            <summary>Design story</summary>
+            <div class="acc__body" id="acc-story"></div>
+          </details>
+          <details>
+            <summary>Shipping &amp; returns</summary>
+            <div class="acc__body">
+              <p>Every piece is printed when you order it and ships in 5 days. Free US shipping on orders over $XX. Taxes and shipping are calculated at checkout.</p>
+              <p>Misprints and defects are replaced free: send a photo within 30 days of delivery. Printed-to-order items can't be returned or exchanged for size, so check the size guide first.</p>
+              <p><a href="policies.html?p=shipping">Shipping policy</a> · <a href="policies.html?p=refund">Refund policy</a></p>
+            </div>
+          </details>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <section class="sect sect--white" aria-labelledby="look-t" id="look">
+    <div class="wrap look">
+      <div class="look__pics">
+        <span class="ph ph--mock" data-mock="evil-one-tee"></span>
+        <span class="ph ph--mock" data-mock="crew-cap"></span>
+      </div>
+      <div class="look__info">
+        <p class="label muted">Complete the look</p>
+        <h2 class="h2" id="look-t">Crew Pack Bundle</h2>
+        <p class="small muted" style="margin:0">The tee and the cap, one price. You pick the tee size.</p>
+        <ul class="look__list">
+          <li><span>Evil One Tee</span><span class="num">$XX</span></li>
+          <li><span>Crew Cap</span><span class="num">$XX</span></li>
+          <li><span>Bundle</span><span class="num"><b>$XX</b> · save $X</span></li>
+        </ul>
+        <a class="btn btn--ghost" href="product.html?p=crew-pack">Shop the Crew Pack</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- reseñas: en Shopify es el bloque de la app Judge.me (Personalizar > Producto > bloque "Reviews"); aquí son de ejemplo -->
+  <section class="sect rv" id="reviews" aria-labelledby="rv-t">
+    <div class="wrap">
+      <div class="sect-head">
+        <h2 class="h2" id="rv-t" tabindex="-1">Reviews</h2>
+        <button class="btn btn--ghost" type="button" id="rv-write" aria-expanded="false" aria-controls="rf">Write a review</button>
+      </div>
+
+      <form class="rf" id="rf" novalidate hidden aria-labelledby="rf-t">
+        <h3 class="h3" id="rf-t">Write a review</h3>
+        <fieldset id="rf-rating-set" aria-describedby="rf-rating-err">
+          <legend>Your rating</legend>
+          <div class="rstars" id="rstars"></div>
+          <p class="rf__err" id="rf-rating-err"></p>
+        </fieldset>
+        <div class="field"><label for="rf-title">Review title</label><input class="input" id="rf-title" maxlength="80" autocomplete="off" aria-describedby="rf-title-err"><p class="rf__err" id="rf-title-err"></p></div>
+        <div class="field"><label for="rf-body">Your review</label><textarea class="input" id="rf-body" maxlength="2000" aria-describedby="rf-body-hint rf-body-err"></textarea><p class="rf__hint" id="rf-body-hint">How is the fit, the print and the shipping? At least 20 characters.</p><p class="rf__err" id="rf-body-err"></p></div>
+        <div class="rf__row" id="rf-wear">
+          <div class="field"><label for="rf-size">Size you bought</label><select class="input" id="rf-size"></select></div>
+          <fieldset><legend>How does it fit?</legend><div class="rf__fits" id="rf-fits"></div></fieldset>
+        </div>
+        <div class="field">
+          <span class="label" style="color:var(--soft);letter-spacing:.06em">Photos (optional)</span>
+          <div class="rf__file"><input type="file" id="rf-photo" accept="image/*" multiple aria-describedby="rf-photo-hint rf-photo-err"><label class="btn btn--ghost btn--sm" for="rf-photo">Add photos</label><span class="rf__files" id="rf-files">No photos added</span></div>
+          <p class="rf__hint" id="rf-photo-hint">Up to 3 images, 10 MB each.</p><p class="rf__err" id="rf-photo-err"></p>
+        </div>
+        <div class="rf__row">
+          <div class="field"><label for="rf-name">Name</label><input class="input" id="rf-name" autocomplete="name" maxlength="40" aria-describedby="rf-name-hint rf-name-err"><p class="rf__hint" id="rf-name-hint">Shown on your review. First name and last initial works.</p><p class="rf__err" id="rf-name-err"></p></div>
+          <div class="field"><label for="rf-email">Email</label><input class="input" id="rf-email" type="email" autocomplete="email" spellcheck="false" aria-describedby="rf-email-hint rf-email-err"><p class="rf__hint" id="rf-email-hint">Never shown. We use it to confirm you bought it.</p><p class="rf__err" id="rf-email-err"></p></div>
+        </div>
+        <div class="btn-row"><button class="btn" type="submit">Submit review</button><button class="btn btn--ghost" type="button" id="rf-cancel">Cancel</button></div>
+        <p class="consent">Reviews are checked before they go live. See our <a href="policies.html?p=privacy">Privacy Policy</a>.</p>
+      </form>
+      <div class="rf__ok" id="rf-ok" tabindex="-1" role="status" hidden></div>
+
+      <div class="rv__grid" id="rv-has">
+        <aside class="rv__sum" aria-label="Rating summary">
+          <div class="rv__avg"><span class="rv__big" id="rv-big">4.8</span><div><span id="rv-big-stars"></span><p id="rv-based">Based on 23 reviews</p></div></div>
+          <ul class="rv__dist" id="rv-dist" aria-label="Filter by star rating"></ul>
+          <div class="rv__fit" id="rv-fit"></div>
+        </aside>
+        <div>
+          <div class="rv__tools">
+            <div class="rv__chips" id="rv-chips" role="group" aria-label="Filter reviews"></div>
+            <div class="rv__sort"><label for="rv-sort">Sort</label><select class="input" id="rv-sort"><option value="recent">Most recent</option><option value="helpful">Most helpful</option></select></div>
+          </div>
+          <p class="rv__count" id="rv-count" role="status" aria-live="polite"></p>
+          <ul class="rv__list" id="rv-list"></ul>
+          <div class="rv__none" id="rv-none" hidden><p>No reviews match these filters.</p><button class="btn btn--ghost btn--sm" type="button" id="rv-clear">Show all reviews</button></div>
+          <div class="rv__more" id="rv-more-wrap"><button class="btn btn--ghost" type="button" id="rv-more">Load more reviews</button></div>
+        </div>
+      </div>
+
+      <div class="rv__empty" id="rv-empty" hidden>
+        <span aria-hidden="true"><span class="stars stars--big"><span class="stars__bg">★★★★★</span></span></span>
+        <p class="rv__msg">No reviews yet. Be the first.</p>
+        <p class="small muted">Bought this one? Tell other fans how it fits.</p>
+        <button class="btn" type="button" id="rv-first" aria-controls="rf">Write a review</button>
+      </div>
+
+      <p class="note">Reseñas: en Shopify las pone una app; recomendada <b>Judge.me</b> (plan gratis: reseñas con foto, correo automático pidiendo reseña después de la entrega, moderación y estrellas en Google). Se instala en Apps, se agrega el bloque "Reviews" en el tema (Personalizar &gt; Producto) y se activa el correo de solicitud. Las reseñas de aquí son <b>de ejemplo</b>, no de clientes reales; las de verdad llegan solas al conectar la app. Ver <a href="product.html?p=cat-v8-spec-tee#reviews">producto sin reseñas</a> · <a href="product.html?p=evil-one-tee#reviews">con reseñas</a>.</p>
+    </div>
+  </section>
+
+  <section class="sect like" aria-labelledby="like-t">
+    <div class="wrap">
+      <div class="sect-head">
+        <h2 class="h2" id="like-t">You may also like</h2>
+        <a class="link" id="like-all" href="shop.html?cat=tees">View all</a>
+      </div>
+      <div class="pgrid" id="like"></div>
+    </div>
+  </section>
+
+</main>
+
+<div data-hm-footer></div>
+
+<dialog class="sg" id="size-guide" aria-labelledby="sg-t">
+  <div class="sg__head">
+    <h2 class="label" id="sg-t">Size guide</h2>
+    <button class="icon-btn" type="button" id="sg-close" aria-label="Close size guide"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg></button>
+  </div>
+  <div class="sg__body" id="sg-body"></div>
+</dialog>
+
+<dialog class="lb" id="lb" aria-label="Image zoom">
+  <div class="lb__bar"><p class="lb__count" id="lb-count">1 / 1</p><button class="icon-btn lb__close" type="button" id="lb-close" aria-label="Close zoom"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg></button></div>
+  <figure class="lb__fig"><div class="lb__img" id="lb-img"></div></figure>
+  <button class="lb__arw lb__arw--prev" type="button" id="lb-prev" aria-label="Previous image">‹</button>
+  <button class="lb__arw lb__arw--next" type="button" id="lb-next" aria-label="Next image">›</button>
+  <p class="lb__hint"><span class="lb__hint-k">Click or tap the image to zoom · arrow keys to browse · Esc to close</span><span class="lb__hint-t">Tap the image to zoom · swipe to browse</span></p>
+</dialog>
+
+<dialog class="rvlb" id="rvlb" aria-labelledby="rvlb-t">
+  <div class="rvlb__head"><span id="rvlb-t">Photo from a review</span><button class="icon-btn" type="button" id="rvlb-close" aria-label="Close photo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19"/></svg></button></div>
+  <div class="rvlb__img" id="rvlb-img"></div>
+</dialog>
+
+<div class="satc" id="satc" aria-hidden="true">
+  <div class="satc__txt"><b id="satc-name">Evil One Tee</b><span id="satc-var">Matte Black · Select a size</span></div>
+  <button class="btn" type="button" id="satc-btn" tabindex="-1">Select a size</button>
+</div>
+
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var CAT = window.HM_CATALOG || [];
+  var SW = window.HM_SW || {};
+  var CATNAME = { tees: 'Tees', sweats: 'Sweatshirts', hats: 'Hats', kids: 'Kids', gear: 'Stickers & gear', bundles: 'Bundles', limited: 'Special edition' };
+  var id = new URLSearchParams(location.search).get('p') || 'evil-one-tee';
+  var p = CAT.filter(function (x) { return x.id === id; })[0] || CAT.filter(function (x) { return x.id === 'evil-one-tee'; })[0];
+  /* tienda sin productos activos (boceto: ?empty=1): en lugar de la ficha sale "Coming soon" */
+  /* la edición especial tiene su propia página (limited.html): ahí manda el estado del drop */
+  if (p && p.page) { location.replace(p.page); return; }
+  if (!p) { document.querySelector('main').innerHTML = '<div class="wrap" style="padding-block:var(--sect)"><h1 class="vh">Merch coming soon</h1>' + (window.hmComingSoon ? window.hmComingSoon() : '') + '</div>'; ['satc'].forEach(function (k) { var e = $(k); if (e) e.hidden = true; }); return; }
+
+  /* esqueleto fantasma: galería + título + precio grises unos 600 ms mientras carga (?loading=slow lo deja 3 s para verlo).
+     Sin brillo animado con "reducir movimiento" (hm.css). Los enlaces con #ancla esperan a que termine. */
+  var SKEL_MS = /[?&]loading=slow/.test(location.search) ? 3000 : 600, afterSkel = [], skelOn = true;
+  $('pdp-skel').hidden = false; $('pdp').hidden = true; $('main').setAttribute('aria-busy', 'true'); $('pdp-loading').textContent = 'Loading product';
+  function whenReady(fn) { if (skelOn) afterSkel.push(fn); else fn(); }
+  setTimeout(function () {
+    skelOn = false; $('pdp-skel').hidden = true; $('pdp').hidden = false; $('main').removeAttribute('aria-busy'); $('pdp-loading').textContent = '';
+    track.scrollTo({ left: cur * track.clientWidth });
+    afterSkel.splice(0).forEach(function (fn) { fn(); });
+  }, SKEL_MS);
+
+  /* textos por producto: hechos reales de la historia, sin inventar materiales */
+  var STORY = {
+    'evil-one-tee': ['Chris came up with the idea in 2014 in Tomah, WI. He was a heavy metal fan, so the name was never up for discussion. The nickname stuck: “The Evil One”.'],
+    'lightning-strike-tee': ['In 2026 Chris fired the engine for the first time. At that exact moment, lightning struck, and the power went out.', 'Some would call it a coincidence. We call it a sign. This graphic is that night.'],
+    'full-pull-ls': ['A full pull is dragging the sled all the way to the end of the track. This season the goal is simple: our first one, on the NTPA and PPL Badger State circuits.', 'We\'ve run a few exhibitions while testing; in competition, every pass is to pull.'],
+    'cat-v8-spec-tee': ['The real spec sheet: CAT 3208 V8, reverse flow, 680 CU IN, single large turbo, 10,000 LB, Challenger 1015 body. Horsepower: Unknown.'],
+    '680-ci-hoodie': ['The Cat 3208 V8 started at 636 cubic inches. The crew took it to 680, a setup you won\'t find on any other tractor on the track.', 'Nothing about it is off the shelf, and nothing about it was quick.'],
+    'evil-one-crewneck': ['The first bolt went in in February 2020, in the family shop in Waterloo, WI. Nights and weekends stolen from work and family built the rest.'],
+    'crew-cap': ['The cap the pit crew wears on pull day: Daniel, Jared, Jim, Tony, Jeff, John and Brad, with Chris F. in the seat.'],
+    'little-evil-one-tee': ['The whole family made the shop a second home while the tractor came together. This one is for the next generation of pullers.']
+  };
+  var STORY_BASE = 'Designed by the crew that built “The Evil One” by hand in Waterloo, WI. Everything on the tractor is custom-built, and so is every graphic.';
+  var cname = CATNAME[p.cat] || 'Shop';
+  var hasSizes = p.sizes.length > 0, hasColors = p.colors.length > 0;
+  var sold = p.sold || [];
+
+  /* cabecera, SEO y breadcrumb */
+  document.title = p.name + ' · Heavy Metal Pro Stock: “The Evil One”';
+  var md = document.querySelector('meta[name="description"]');
+  md.setAttribute('content', p.name + ' (' + p.sub.toLowerCase() + ') from Heavy Metal Pro Stock: “The Evil One”, the pulling tractor from Waterloo, WI. Designed by the crew, printed to order, ships in 5 days.');
+  $('bc-cat').textContent = cname; $('bc-cat').href = p.cat === 'limited' ? 'limited.html' : 'shop.html?cat=' + p.cat;
+  $('bc-name').textContent = p.name;
+  $('p-name').textContent = p.name; $('satc-name').textContent = p.name;
+  $('p-desc').textContent = p.sub + '. Designed by the crew in Waterloo, WI, and printed to order.';
+  /* estado: p.status del catálogo ('live' | 'soon' | 'soldout') y p.left (5 o menos = "Almost gone!") */
+  var status = p.status === 'soon' || p.status === 'soldout' ? p.status : 'live', live = status === 'live';
+  var low = live && p.left && p.left <= 5;
+  var badge = { best: ['', 'Best seller'], 'new': [' badge--ink', 'New'], bundle: [' badge--line', 'Save $X'], limited: [' badge--ink', 'Special edition'] }[p.tag];
+  var badges = status === 'soon' ? '<span class="badge badge--line">Coming soon</span>' : status === 'soldout' ? '<span class="badge badge--line">Sold out</span>' :
+    (low ? '<span class="badge badge--alert">Almost gone!</span>' : '') + (badge ? '<span class="badge' + badge[0] + '">' + badge[1] + '</span>' : '');
+  $('p-badges').innerHTML = badges;
+  if (low) { $('p-left').hidden = false; $('p-left').textContent = 'Only ' + p.left + ' left'; }
+  $('like-all').href = 'shop.html?cat=' + p.cat;
+  if (p.id === 'crew-pack') $('look').remove();
+  else document.querySelectorAll('[data-mock]').forEach(function (el) { var m = CAT.filter(function (x) { return x.id === el.getAttribute('data-mock'); })[0]; if (m) el.innerHTML = window.hmMock(m); });
+
+  /* galería: en Shopify son las fotos del producto (el proveedor de impresión sube un mockup por vista y color).
+     Boceto: frente y espalda de cada color con hmMock y "Foto del producto" hasta completar 15 (?imgs=N para probar otra cantidad). */
+  var N = Math.max(1, Math.min(30, parseInt(new URLSearchParams(location.search).get('imgs'), 10) || 15));
+  var hasBack = /^(tees|sweats|kids|limited|bundles)$/.test(p.cat);
+  var SHOTS = ['Puesto', 'Detalle del estampado', 'En los pits', 'Modelo', 'Espalda puesta', 'Etiqueta', 'Doblada', 'Tela de cerca', 'En las gradas', 'Manga', 'Grupo', 'Flat lay', 'Con el tractor'];
+  var IMGS = [];
+  (hasColors ? p.colors : ['']).forEach(function (c) {
+    IMGS.push({ mock: true, color: c, view: '', label: (c ? c + ', ' : '') + 'front' });
+    if (hasBack) IMGS.push({ mock: true, color: c, view: 'back', label: (c ? c + ', ' : '') + 'back' });
+  });
+  for (var k = 0; IMGS.length < N; k++) IMGS.push({ mock: false, label: SHOTS[k % SHOTS.length] });
+  IMGS = IMGS.slice(0, N);
+  function imgHTML(m, i) {
+    if (m.mock) return '<span class="ph ph--mock">' + window.hmMock(p, '', m.view, m.color || undefined) + '</span>';
+    return '<span class="ph"><span class="ph__tag"><b>Foto del producto · ' + (i + 1) + '</b>' + m.label + '</span></span>';
+  }
+  function imgAlt(m) { return p.name + ', ' + m.label.toLowerCase() + (m.mock ? '' : ' (photo coming soon)'); }
+
+  /* color */
+  if (hasColors) {
+    $('colors').innerHTML = p.colors.map(function (c, i) {
+      var cid = 'c-' + i;
+      return '<input type="radio" name="color" id="' + cid + '" value="' + c + '"' + (i === 0 ? ' checked' : '') + '><label class="cswatch" for="' + cid + '" title="' + c + '"><span style="--sw:' + (SW[c] || 'var(--tile)') + '"></span><span class="vh">' + c + '</span></label>';
+    }).join('');
+    $('colors').addEventListener('change', function (e) {
+      $('color-name').textContent = e.target.value; sync();
+      /* al elegir color, la foto grande salta al frente de ese color */
+      for (var i = 0; i < IMGS.length; i++) if (IMGS[i].mock && IMGS[i].color === e.target.value) { go(i); break; }
+    });
+  } else { $('color-set').remove(); }
+
+  /* tallas */
+  if (hasSizes) {
+    if (p.sizes.length === 4) $('sizes').classList.add('sizes--4');
+    $('sizes').innerHTML = p.sizes.map(function (s, i) {
+      var out = sold.indexOf(s) > -1, sid = 's-' + i;
+      return '<input type="radio" name="size" id="' + sid + '" value="' + s + '"' + (out ? ' disabled' : '') + '><label class="size" for="' + sid + '">' + s + (out ? '<span class="vh"> sold out</span>' : '') + '</label>';
+    }).join('');
+    if (sold.length) { $('sold-wrap').hidden = false; $('sold-list').textContent = sold.join(', '); $('size-notify-email').placeholder = 'Email for ' + sold.join(', ') + ' restock'; }
+    $('sizes').addEventListener('change', function (e) {
+      $('size-name').textContent = e.target.value; $('size-set').classList.remove('is-error'); $('size-msg').textContent = ''; sync();
+    });
+  } else { $('size-set').remove(); $('one-size').hidden = false; }
+
+  function color() { var c = document.querySelector('input[name="color"]:checked'); return c ? c.value : ''; }
+  function size() { var s = document.querySelector('input[name="size"]:checked'); return s ? s.value : null; }
+  function ready() { return !hasSizes || !!size(); }
+  function variant() { return [color(), hasSizes ? size() : 'One size'].filter(Boolean).join(' / '); }
+  function sync() {
+    if (!live) { $('satc-btn').textContent = 'Notify me'; $('satc-var').textContent = status === 'soon' ? 'Coming soon' : 'Sold out'; return; }
+    var label = ready() ? 'Add to cart · $XX' : 'Select a size';
+    $('atc').textContent = label;
+    $('satc-btn').textContent = ready() ? 'Add · $XX' : 'Select a size';
+    $('satc-var').textContent = [color(), hasSizes ? (size() || 'Select a size') : 'One size'].filter(Boolean).join(' · ');
+  }
+
+  /* talla obligatoria: error en línea y foco en la primera talla libre */
+  function need() {
+    if (ready()) return true;
+    $('size-set').classList.add('is-error');
+    $('size-msg').textContent = 'Select a size to continue.';
+    $('size-set').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+    var first = document.querySelector('input[name="size"]:not(:disabled)'); if (first) first.focus({ preventScroll: true });
+    return false;
+  }
+  function qtyN() { return Math.max(1, Math.min(10, parseInt($('qty').value, 10) || 1)); }
+  function add() {
+    if (!need()) return;
+    var n = qtyN();
+    window.hmAdd(p.name, variant(), '$XX', n);
+  }
+  $('atc').addEventListener('click', add);
+  $('satc-btn').addEventListener('click', function () { if (live) add(); else toNotify(true); });
+  $('shoppay').addEventListener('click', function () { if (!need()) return; $('pay-msg').textContent = 'Boceto: aquí abre Shop Pay con ' + p.name + ' (' + variant() + ').'; });
+  $('more-pay').addEventListener('click', function () { if (!need()) return; $('pay-msg').textContent = 'Boceto: aquí va directo al checkout de Shopify.'; });
+
+  function setQty(v) { $('qty').value = Math.max(1, Math.min(10, v)); }
+  $('qty-dn').addEventListener('click', function () { setQty(qtyN() - 1); });
+  $('qty-up').addEventListener('click', function () { setQty(qtyN() + 1); });
+  $('qty').addEventListener('change', function () { setQty(qtyN()); });
+
+  /* avisar cuando vuelva la talla agotada */
+  var nb = $('notify-open'), nf = $('size-notify');
+  if (nb) nb.addEventListener('click', function () { var o = nf.hidden; nf.hidden = !o; nb.setAttribute('aria-expanded', String(o)); if (o) $('size-notify-email').focus(); });
+  if (nf) nf.addEventListener('submit', function (e) {
+    e.preventDefault(); var em = $('size-notify-email');
+    if (!em.value || !em.checkValidity()) { em.setAttribute('aria-invalid', 'true'); em.focus(); return; }
+    nf.outerHTML = '<p class="soldout" role="status">We will email you when ' + sold.join(', ') + ' is back.</p>';
+  });
+
+  /* Coming soon / Sold out: sin compra; "Notify me" con email (las tarjetas llegan con el ancla #notify) */
+  if (!live) {
+    $('buy-live').hidden = true;
+    if ($('size-set')) $('size-set').remove();
+    $('one-size').hidden = false;
+    $('one-size-t').textContent = hasSizes ? 'Sizes ' + p.sizes[0] + ' to ' + p.sizes[p.sizes.length - 1] + '.' : 'One size.';
+    $('soldout-btn').hidden = status !== 'soldout';
+    $('notify').hidden = false;
+    $('notify-t').textContent = status === 'soon' ? 'Coming soon' : 'Notify me if it comes back';
+    $('notify-p').textContent = status === 'soon' ? 'This one is not out yet. Get one email the moment it drops.' : 'This one sold out. Get one email if it comes back.';
+  }
+  function toNotify(focus) {
+    var box = $('notify');
+    box.scrollIntoView({ behavior: smooth, block: 'start' });
+    if (focus && $('notify-email')) $('notify-email').focus({ preventScroll: true });
+  }
+  $('notify-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var em = $('notify-email'), ok = em.value.trim() !== '' && em.checkValidity(), m = $('notify-msg');
+    em.setAttribute('aria-invalid', ok ? 'false' : 'true');
+    if (!ok) { m.className = 'nbox__msg small is-err'; m.textContent = 'Enter a valid email so we can let you know.'; em.focus(); return; }
+    $('notify-form').hidden = true;
+    m.className = 'nbox__msg small';
+    m.textContent = status === 'soon' ? "You're on the list. We'll email you once, when it drops." : "You're on the list. We'll email you once, if it comes back.";
+  });
+
+  /* acordeones */
+  var isKids = p.cat === 'kids', isWear = /tees|sweats|kids|bundles/.test(p.cat);
+  $('acc-details').innerHTML = '<ul>' + [
+    p.sub,
+    hasColors ? 'Colors: ' + p.colors.join(', ') : '',
+    isWear ? 'Fabric: XX% cotton, XX oz' : 'Material: XX (from the supplier)',
+    isWear ? 'Regular fit. Between sizes? Size up.' : (hasSizes ? '' : 'One size'),
+    isWear ? 'Wash cold inside out, hang dry' : '',
+    isKids ? 'Youth sizes YS to YXL' : ''
+  ].filter(Boolean).map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>';
+  $('acc-story').innerHTML = (STORY[p.id] || []).map(function (t) { return '<p>' + t + '</p>'; }).join('') + '<p>' + STORY_BASE + '</p><p><a href="story.html">Read our story</a></p>';
+
+  /* guía de tallas: tabla según el tipo de talla */
+  var rows = isKids ? ['YS', 'YM', 'YL', 'YXL'] : ['S', 'M', 'L', 'XL', '2XL', '3XL'];
+  $('sg-t').textContent = 'Size guide · ' + (hasSizes ? p.name : 'Tees and sweatshirts');
+  $('sg-body').innerHTML = (hasSizes ? '' : '<p>' + p.name + ' is one size. Here is the guide for tees and sweatshirts.</p>') +
+    '<p>Measured flat, in inches. Regular fit. Printed-to-order items can\'t be returned for size, so compare with a shirt you own.</p>' +
+    '<div class="tbl-wrap"><table class="tbl"><caption class="vh">Measurements in inches</caption><thead><tr><th scope="col">Size</th><th scope="col">Chest width</th><th scope="col">Body length</th><th scope="col">Sleeve</th></tr></thead><tbody>' +
+    rows.map(function (r) { return '<tr><th scope="row">' + r + '</th><td>XX</td><td>XX</td><td>XX</td></tr>'; }).join('') +
+    '</tbody></table></div><p>Chest: armpit to armpit. Length: top of shoulder to hem.</p>' +
+    '<p><a class="link" href="sizes.html">See full size guide</a></p>';
+  var sg = $('size-guide');
+  function openSG() { if (!sg.open) sg.showModal(); }
+  function closeSG() { if (sg.open) sg.close(); }
+  if ($('sg-open')) $('sg-open').addEventListener('click', openSG);
+  $('sg-open-2').addEventListener('click', openSG);
+  $('sg-close').addEventListener('click', closeSG);
+  sg.addEventListener('click', function (e) { if (e.target === sg) closeSG(); });
+
+  /* galería: flechas, contador, miniaturas, puntos (móvil), swipe nativo (scroll-snap) y teclado */
+  var track = $('pg-track'), thumbs = $('pg-thumbs'), dots = $('pg-dots'), cur = 0, many = IMGS.length > 1;
+  var smooth = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+  track.innerHTML = IMGS.map(function (m, i) {
+    return '<div class="pg__slide" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + ' of ' + IMGS.length + ': ' + imgAlt(m) + '" data-i="' + i + '">' + imgHTML(m, i) + '</div>';
+  }).join('');
+  thumbs.innerHTML = IMGS.map(function (m, i) {
+    return '<li><button type="button" class="pg__thumb' + (m.mock ? '' : ' pg__thumb--ph') + '" data-i="' + i + '" aria-label="Show image ' + (i + 1) + ' of ' + IMGS.length + ': ' + imgAlt(m) + '">' + (m.mock ? window.hmMock(p, '', m.view, m.color || undefined) : '<span aria-hidden="true">' + (i + 1) + '</span>') + '</button></li>';
+  }).join('');
+  dots.innerHTML = IMGS.map(function (m, i) { return '<button type="button" data-i="' + i + '" aria-label="Image ' + (i + 1) + ' of ' + IMGS.length + '"></button>'; }).join('');
+  ['pg-prev', 'pg-next', 'pg-count', 'pg-thumbs', 'pg-dots'].forEach(function (id) { $(id).hidden = !many; });
+  function mark(i) {
+    cur = i;
+    $('pg-count').textContent = (i + 1) + ' / ' + IMGS.length;
+    $('pg-live').textContent = 'Image ' + (i + 1) + ' of ' + IMGS.length;
+    [].forEach.call(thumbs.querySelectorAll('button'), function (b, j) { b.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+    [].forEach.call(dots.children, function (b, j) { b.setAttribute('aria-current', j === i ? 'true' : 'false'); });
+    var t = thumbs.children[i];
+    if (t && !thumbs.hidden && thumbs.offsetParent) {
+      var l = t.offsetLeft - thumbs.offsetLeft, w = t.offsetWidth;
+      if (l < thumbs.scrollLeft || l + w > thumbs.scrollLeft + thumbs.clientWidth) thumbs.scrollTo({ left: l - (thumbs.clientWidth - w) / 2, behavior: smooth });
+    }
+  }
+  function go(i, instant) {
+    i = (i + IMGS.length) % IMGS.length;
+    track.scrollTo({ left: i * track.clientWidth, behavior: instant ? 'auto' : smooth });
+    mark(i);
+  }
+  $('pg-prev').addEventListener('click', function () { go(cur - 1); });
+  $('pg-next').addEventListener('click', function () { go(cur + 1); });
+  thumbs.addEventListener('click', function (e) { var b = e.target.closest('[data-i]'); if (b) go(+b.getAttribute('data-i')); });
+  dots.addEventListener('click', function (e) { var b = e.target.closest('[data-i]'); if (b) go(+b.getAttribute('data-i')); });
+  var st;
+  track.addEventListener('scroll', function () {
+    clearTimeout(st);
+    st = setTimeout(function () { var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth)); if (i !== cur) mark(Math.max(0, Math.min(IMGS.length - 1, i))); }, 60);
+  }, { passive: true });
+  window.addEventListener('resize', function () { track.scrollTo({ left: cur * track.clientWidth }); });
+  $('pg').addEventListener('keydown', function (e) {
+    if (lb.open || !many && e.key !== 'Enter') return;
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      if (e.target.closest('input')) return;
+      e.preventDefault(); go(cur + (e.key === 'ArrowRight' ? 1 : -1));
+      if (e.target.closest('.pg__thumb')) thumbs.querySelectorAll('button')[cur].focus({ preventScroll: true });
+    } else if (e.key === 'Home' && e.target === track) { e.preventDefault(); go(0); }
+    else if (e.key === 'End' && e.target === track) { e.preventDefault(); go(IMGS.length - 1); }
+    else if (e.key === 'Enter' && e.target === track) { e.preventDefault(); openLB(); }
+  });
+  mark(0);
+
+  /* lightbox: clic en la foto abre; clic dentro hace zoom 2.2x donde apuntas (mover el mouse recorre la foto) */
+  var lb = $('lb'), lbImg = $('lb-img'), lastFocus = null;
+  function lbRender() {
+    lbImg.classList.remove('is-zoom');
+    lbImg.innerHTML = imgHTML(IMGS[cur], cur);
+    lbImg.setAttribute('role', 'img'); lbImg.setAttribute('aria-label', imgAlt(IMGS[cur]));
+    $('lb-count').textContent = (cur + 1) + ' / ' + IMGS.length;
+  }
+  function openLB() { lastFocus = document.activeElement; lbRender(); $('lb-prev').hidden = $('lb-next').hidden = !many; if (!lb.open) lb.showModal(); $('lb-close').focus(); document.body.style.overflow = 'hidden'; }
+  function lbGo(d) { go(cur + d, true); lbRender(); }
+  lb.addEventListener('close', function () { document.body.style.overflow = ''; if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true }); });
+  $('lb-close').addEventListener('click', function () { lb.close(); });
+  $('lb-prev').addEventListener('click', function () { lbGo(-1); });
+  $('lb-next').addEventListener('click', function () { lbGo(1); });
+  lb.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft' && many) { e.preventDefault(); lbGo(-1); }
+    else if (e.key === 'ArrowRight' && many) { e.preventDefault(); lbGo(1); }
+  });
+  function origin(e) { var r = lbImg.getBoundingClientRect(); lbImg.style.setProperty('--ox', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%'); lbImg.style.setProperty('--oy', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%'); }
+  var sx = null, swiped = false;
+  lbImg.addEventListener('pointerdown', function (e) { sx = e.clientX; swiped = false; });
+  lbImg.addEventListener('pointerup', function (e) {
+    if (sx != null && !lbImg.classList.contains('is-zoom') && many && Math.abs(e.clientX - sx) > 40) { swiped = true; lbGo(e.clientX < sx ? 1 : -1); }
+    sx = null;
+  });
+  lbImg.addEventListener('click', function (e) { if (swiped) return; origin(e); lbImg.classList.toggle('is-zoom'); });
+  lbImg.addEventListener('pointermove', function (e) { if (lbImg.classList.contains('is-zoom') && e.pointerType === 'mouse') origin(e); else if (lbImg.classList.contains('is-zoom') && sx != null) origin(e); });
+  lb.addEventListener('click', function (e) { if (e.target === lb || e.target.classList.contains('lb__fig')) lb.close(); });
+  track.addEventListener('click', function (e) { if (e.target.closest('.pg__slide')) openLB(); });
+  $('pg-zoom').addEventListener('click', openLB);
+
+  /* también te puede gustar: misma categoría primero, con la tarjeta compartida */
+  var pool = CAT.filter(function (x) { return x.id !== p.id && x.id !== 'crew-pack'; });
+  pool.sort(function (a, b) { return (b.cat === p.cat) - (a.cat === p.cat); });
+  $('like').innerHTML = pool.slice(0, 4).map(window.hmCard).join('');
+
+  /* barra sticky móvil: aparece cuando el botón principal sale por arriba */
+  var satc = $('satc'), atc = $('atc');
+  function setBar(on) {
+    if (satc.classList.contains('is-on') === on) return;
+    satc.classList.toggle('is-on', on); satc.setAttribute('aria-hidden', String(!on)); $('satc-btn').tabIndex = on ? 0 : -1;
+  }
+  var tick = false;
+  function check() { setBar((live ? atc : $('notify')).getBoundingClientRect().bottom < 0); }
+  window.addEventListener('scroll', function () { if (tick) return; tick = true; requestAnimationFrame(function () { tick = false; check(); }); }, { passive: true });
+
+  /* ---------- reseñas ----------
+     En Shopify: app Judge.me (bloque "Reviews" en Personalizar > Producto). Boceto: reseñas DE EJEMPLO que salen de
+     p.rating y p.reviews (hm.js), armadas con los textos de abajo; cada una lleva la marca "Ejemplo" (se oculta con "Ocultar notas"). */
+  var RV_TXT = [
+    [5, 'Wore it to the pull', 'Wore it to my first pull of the season and got asked where I got it three times. Shipped when they said it would.', 'True to size'],
+    [5, 'Looks better in person', 'The “The Evil One” print is sharp and the colors match the photos. Already ordered a second one for my brother.', 'True to size'],
+    [5, 'Backing the crew', 'Bought it to support the team. Held up great after a bunch of washes.', 'True to size'],
+    [5, 'My new favorite', 'Comfortable, fits like I expected, and the print didn\'t crack in the wash. Wearing it to every pull.', 'True to size'],
+    [5, 'Gift for my dad', 'My dad has been going to pulls for 30 years and loved it. Arrived in about a week.', 'True to size'],
+    [5, 'Exactly as pictured', 'What you see is what you get. Clean, centered print.', 'True to size'],
+    [5, 'Pit crew approved', 'Wore it all weekend in the pits and it still looks new.', 'Runs large'],
+    [5, 'Fast shipping', 'Ordered on a Monday and had it the next week. Great design.', 'True to size'],
+    [4, 'Great, runs a little big', 'Love the design. I usually wear a large and it\'s a bit roomy, so I\'d size down next time.', 'Runs large'],
+    [4, 'Worth the wait', 'Took a few extra days since it\'s printed to order, but it was worth it.', 'True to size'],
+    [4, 'Solid', 'Good fit and a cool design. Wish there were more color options.', 'True to size'],
+    [3, 'Runs small for me', 'The design is great but it\'s snug in the chest. Size up if you\'re between sizes.', 'Runs small'],
+    [3, 'Good, slow shipping', 'Print looks good. Shipping took longer than I hoped.', 'True to size']
+  ];
+  var RV_NAMES = ['Jake M.', 'Brittany S.', 'Cody R.', 'Tom H.', 'Kayla W.', 'Dustin P.', 'Megan L.', 'Travis K.', 'Amber J.', 'Wyatt B.', 'Lisa G.', 'Hunter D.', 'Kyle N.', 'Sarah T.', 'Brandon F.', 'Emily C.', 'Josh V.', 'Ashley R.', 'Nate O.', 'Rachel E.', 'Logan A.', 'Mandy Z.', 'Chad Y.'];
+  var RV_SIZES = ['L', 'M', 'XL', 'L', '2XL', 'M', 'S', 'XL', 'YM', 'YL', 'YS', 'YXL'];
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  var FITS = ['Runs small', 'True to size', 'Runs large'];
+  var wearRv = /tees|sweats|kids|bundles|limited/.test(p.cat) && hasSizes;
+  function buildReviews(n, rating) {
+    if (!n) return [];
+    /* estrellas por reseña: todas 5 y se bajan hasta que el promedio da el rating del producto */
+    var st = []; for (var i = 0; i < n; i++) st.push(5);
+    var deficit = Math.max(0, Math.round(5 * n - rating * n)), j = n - 1;
+    while (deficit > 0 && j >= 0) { var cut = deficit >= 2 && j === n - 1 ? 2 : 1; st[j] -= cut; deficit -= cut; j--; }
+    var by = { 5: [], 4: [], 3: [] }; RV_TXT.forEach(function (t) { by[t[0]].push(t); });
+    var sizes = RV_SIZES.filter(function (x) { return p.sizes.indexOf(x) > -1; });
+    var d = new Date(2026, 8, 28), used = { 5: 0, 4: 0, 3: 0 };
+    /* las reseñas se reparten en el tiempo para que "Most recent" ordene distinto que "Most helpful" */
+    var order = st.map(function (s, k) { return [s, k]; }).sort(function (a, b) { return ((a[1] * 7) % n) - ((b[1] * 7) % n); });
+    return order.map(function (o, k) {
+      var s = Math.max(3, o[0]), pool = by[s], t = pool[used[s]++ % pool.length];
+      var dt = new Date(d.getTime() - k * (3 + (k * 5) % 6) * 864e5);
+      var iso = dt.getFullYear() + '-' + ('0' + (dt.getMonth() + 1)).slice(-2) + '-' + ('0' + dt.getDate()).slice(-2);
+      return {
+        id: 'r' + k, stars: o[0], title: t[1], text: t[2], name: RV_NAMES[(k * 5 + p.id.length) % RV_NAMES.length], date: iso,
+        when: MONTHS[dt.getMonth()] + ' ' + dt.getDate() + ', ' + dt.getFullYear(),
+        size: wearRv ? (sizes[k % sizes.length] || p.sizes[0]) : '', fit: wearRv ? t[3] : '',
+        photos: k % 3 === 1 ? (k % 2 ? 2 : 1) : 0, helpful: (k * 7 + 3) % 13, voted: false
+      };
+    });
+  }
+  var RV = buildReviews(p.reviews || 0, p.rating || 0);
+  var avg = RV.length ? RV.reduce(function (a, r) { return a + r.stars; }, 0) / RV.length : 0;
+  function starsHTML(r, label) {
+    return '<span class="stars" role="img" aria-label="' + (label || 'Rated ' + r + ' out of 5') + '"><span class="stars__bg" aria-hidden="true">★★★★★</span><span class="stars__fg" aria-hidden="true" style="width:' + Math.round(r / 5 * 100) + '%">★★★★★</span></span>';
+  }
+  function byRecent(a, b) { return a.date < b.date ? 1 : a.date > b.date ? -1 : 0; }
+  var rvSmooth = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+
+  /* estrellas junto al título: "4.8 (23 reviews)" que baja a la sección */
+  if (RV.length) {
+    var rvLink = $('p-rv');
+    rvLink.hidden = false;
+    rvLink.innerHTML = '<span aria-hidden="true">' + starsHTML(avg) + '</span><b>' + avg.toFixed(1) + '</b><u>(' + RV.length + (RV.length === 1 ? ' review' : ' reviews') + ')</u>';
+    rvLink.setAttribute('aria-label', 'Rated ' + avg.toFixed(1) + ' out of 5. Read ' + RV.length + ' reviews');
+    rvLink.addEventListener('click', function (e) { e.preventDefault(); $('reviews').scrollIntoView({ behavior: rvSmooth, block: 'start' }); $('rv-t').focus({ preventScroll: true }); });
+  }
+
+  var rvState = { photos: false, star: 0, sort: 'recent', shown: 5 }, PAGE = 5;
+  if (!RV.length) { $('rv-has').hidden = true; $('rv-empty').hidden = false; $('rv-write').hidden = true; }
+  else {
+    $('rv-big').textContent = avg.toFixed(1);
+    $('rv-big-stars').innerHTML = starsHTML(avg, 'Average rating ' + avg.toFixed(1) + ' out of 5');
+    $('rv-based').textContent = 'Based on ' + RV.length + (RV.length === 1 ? ' review' : ' reviews');
+    var fits = RV.filter(function (r) { return r.fit; });
+    if (fits.length) {
+      var fc = FITS.map(function (f) { return fits.filter(function (r) { return r.fit === f; }).length; });
+      var top = fc.indexOf(Math.max.apply(null, fc)), pos = (fc[1] * 50 + fc[2] * 100) / fits.length;
+      $('rv-fit').innerHTML = '<p><b style="color:var(--ink)">Fit: ' + FITS[top] + '</b> · ' + fc[top] + ' of ' + fits.length + ' buyers</p>' +
+        '<div class="rv__scale" aria-hidden="true"><i style="left:' + pos.toFixed(0) + '%"></i></div><div class="rv__scale-l" aria-hidden="true"><span>Runs small</span><span>True to size</span><span>Runs large</span></div>';
+    } else $('rv-fit').hidden = true;
+  }
+  function count(fn) { return RV.filter(fn).length; }
+  function rvFiltered() {
+    var l = RV.filter(function (r) { return (!rvState.photos || r.photos) && (!rvState.star || r.stars === rvState.star); });
+    return l.sort(rvState.sort === 'helpful' ? function (a, b) { return b.helpful - a.helpful || byRecent(a, b); } : byRecent);
+  }
+  function rvPhotos(r) {
+    if (!r.photos) return '';
+    var out = '';
+    for (var i = 0; i < r.photos; i++) out += '<button type="button" class="rvi__pic" data-pic="' + r.id + '-' + i + '" aria-label="View photo ' + (i + 1) + ' from ' + r.name + '">' + window.hmMock(p, '', i ? 'back' : '', p.colors[i % Math.max(1, p.colors.length)] || undefined) + '</button>';
+    return '<div class="rvi__pics">' + out + '</div>';
+  }
+  var CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>';
+  var THUMB = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11v9H4v-9h3Zm0 0 4-7c1.5 0 2.5 1 2.2 2.6L12.6 10H19a2 2 0 0 1 2 2.3l-1.2 6A2 2 0 0 1 17.8 20H7"/></svg>';
+  function rvItem(r) {
+    return '<li class="rvi" id="rvi-' + r.id + '" tabindex="-1"><div class="rvi__top">' + starsHTML(r.stars) + '<span class="rvi__date">' + r.when + '</span></div>' +
+      '<p class="rvi__who"><b>' + r.name + '</b><span class="rvi__ver">' + CHECK + 'Verified buyer</span><span class="rv__ex" title="Reseña de ejemplo del boceto">Ejemplo</span></p>' +
+      '<h3 class="rvi__t">' + r.title + '</h3><p class="rvi__txt">' + r.text + '</p>' +
+      (r.size || r.fit ? '<dl class="rvi__meta">' + (r.size ? '<div><dt>Size bought:</dt><dd>' + r.size + '</dd></div>' : '') + (r.fit ? '<div><dt>Fit:</dt><dd>' + r.fit + '</dd></div>' : '') + '</dl>' : '') +
+      rvPhotos(r) +
+      '<button type="button" class="rvi__help" data-help="' + r.id + '" aria-pressed="' + r.voted + '">' + THUMB + 'Helpful (' + r.helpful + ')</button></li>';
+  }
+  function rvRender(focusFrom) {
+    if (!RV.length) return;
+    $('rv-dist').innerHTML = [5, 4, 3, 2, 1].map(function (s) {
+      var n = count(function (r) { return r.stars === s; }), pct = Math.round(n / RV.length * 100);
+      return '<li><button type="button" class="rv__bar" data-star="' + s + '" aria-pressed="' + (rvState.star === s) + '"' + (n ? '' : ' disabled') + ' aria-label="' + s + ' stars: ' + n + (n === 1 ? ' review' : ' reviews') + (n ? (rvState.star === s ? '. Showing only these' : '. Show only these') : '') + '"><span aria-hidden="true">' + s + ' ★</span><span class="rv__track" aria-hidden="true"><i style="width:' + pct + '%"></i></span><span class="num" aria-hidden="true">' + n + '</span></button></li>';
+    }).join('');
+    var np = count(function (r) { return r.photos; });
+    $('rv-chips').innerHTML = '<button type="button" class="rv__chip" data-chip="all" aria-pressed="' + (!rvState.photos && !rvState.star) + '">All (' + RV.length + ')</button>' +
+      '<button type="button" class="rv__chip" data-chip="photos" aria-pressed="' + rvState.photos + '"' + (np ? '' : ' disabled') + '>With photos (' + np + ')</button>' +
+      [5, 4, 3, 2, 1].map(function (s) { var n = count(function (r) { return r.stars === s; }); return n ? '<button type="button" class="rv__chip" data-chip="' + s + '" aria-pressed="' + (rvState.star === s) + '" aria-label="' + s + ' stars, ' + n + (n === 1 ? ' review' : ' reviews') + '">' + s + ' ★ (' + n + ')</button>' : ''; }).join('');
+    var list = rvFiltered(), shown = Math.min(rvState.shown, list.length);
+    $('rv-list').innerHTML = list.slice(0, shown).map(rvItem).join('');
+    $('rv-none').hidden = !!list.length;
+    $('rv-more-wrap').hidden = shown >= list.length;
+    $('rv-more').textContent = 'Load more reviews (' + (list.length - shown) + ' more)';
+    $('rv-count').textContent = list.length ? 'Showing ' + shown + ' of ' + list.length + (list.length === 1 ? ' review' : ' reviews') + (rvState.photos || rvState.star ? ' (filtered)' : '') : '';
+    if (focusFrom != null) { var it = $('rv-list').children[focusFrom]; if (it) it.focus(); }
+  }
+  rvRender();
+  function rvSet() {
+    rvState.shown = PAGE; rvRender();
+  }
+  $('rv-chips').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-chip]'); if (!b) return;
+    var c = b.getAttribute('data-chip');
+    if (c === 'all') { rvState.photos = false; rvState.star = 0; }
+    else if (c === 'photos') rvState.photos = !rvState.photos;
+    else rvState.star = rvState.star === +c ? 0 : +c;
+    rvSet(); var nb = $('rv-chips').querySelector('[data-chip="' + c + '"]'); if (nb) nb.focus();
+  });
+  $('rv-dist').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-star]'); if (!b) return;
+    var s = +b.getAttribute('data-star'); rvState.star = rvState.star === s ? 0 : s;
+    rvSet(); var nb = $('rv-dist').querySelector('[data-star="' + s + '"]'); if (nb) nb.focus();
+  });
+  $('rv-sort').addEventListener('change', function () { rvState.sort = this.value; rvSet(); });
+  $('rv-clear').addEventListener('click', function () { rvState.photos = false; rvState.star = 0; rvSet(); $('rv-chips').querySelector('button').focus(); });
+  $('rv-more').addEventListener('click', function () { var from = rvState.shown; rvState.shown += PAGE; rvRender(from); });
+  $('rv-list').addEventListener('click', function (e) {
+    var h = e.target.closest('[data-help]');
+    if (h) {
+      var r = RV.filter(function (x) { return x.id === h.getAttribute('data-help'); })[0];
+      r.voted = !r.voted; r.helpful += r.voted ? 1 : -1;
+      h.setAttribute('aria-pressed', String(r.voted)); h.innerHTML = THUMB + 'Helpful (' + r.helpful + ')';
+      return;
+    }
+    var pic = e.target.closest('[data-pic]');
+    if (pic) { $('rvlb-img').innerHTML = '<span class="ph ph--mock">' + pic.innerHTML + '</span>'; $('rvlb-t').textContent = pic.getAttribute('aria-label').replace(/^View p/, 'P'); rvLast = pic; $('rvlb').showModal(); $('rvlb-close').focus(); }
+  });
+  var rvLast = null;
+  $('rvlb-close').addEventListener('click', function () { $('rvlb').close(); });
+  $('rvlb').addEventListener('click', function (e) { if (e.target === $('rvlb')) $('rvlb').close(); });
+  $('rvlb').addEventListener('close', function () { if (rvLast && document.contains(rvLast)) rvLast.focus(); });
+
+  /* formulario "Write a review": estrellas con teclado (radios nativos: flechas cambian), validación en línea, moderación */
+  var RLABEL = ['', 'Poor', 'Fair', 'Good', 'Very good', 'Excellent'];
+  $('rstars').innerHTML = [1, 2, 3, 4, 5].map(function (v) {
+    return '<input type="radio" name="rf-rating" id="rf-r' + v + '" value="' + v + '"><label for="rf-r' + v + '" data-v="' + v + '"><span aria-hidden="true">★</span><span class="vh">' + v + (v === 1 ? ' star, ' : ' stars, ') + RLABEL[v] + '</span></label>';
+  }).join('') + '<span class="rstars__txt" id="rf-rating-txt" aria-hidden="true">Select a rating</span>';
+  function rating() { var c = document.querySelector('input[name="rf-rating"]:checked'); return c ? +c.value : 0; }
+  function paintStars(v) { [].forEach.call($('rstars').querySelectorAll('label'), function (l) { l.classList.toggle('on', +l.getAttribute('data-v') <= v); }); $('rf-rating-txt').textContent = v ? v + ' of 5 · ' + RLABEL[v] : 'Select a rating'; }
+  $('rstars').addEventListener('change', function () { paintStars(rating()); setErr('rf-rating', ''); });
+  $('rstars').addEventListener('mouseover', function (e) { var l = e.target.closest('label'); if (l) paintStars(+l.getAttribute('data-v')); });
+  $('rstars').addEventListener('mouseleave', function () { paintStars(rating()); });
+
+  if (wearRv) {
+    $('rf-size').innerHTML = '<option value="">Choose a size</option>' + p.sizes.map(function (x) { return '<option>' + x + '</option>'; }).join('');
+    $('rf-fits').innerHTML = FITS.map(function (f, i) { return '<label for="rf-fit-' + i + '"><input type="radio" name="rf-fit" id="rf-fit-' + i + '" value="' + f + '">' + f + '</label>'; }).join('');
+  } else $('rf-wear').remove();
+
+  function setErr(id, msg) {
+    var el = $(id), er = $(id + '-err');
+    if (er) er.textContent = msg;
+    if (id === 'rf-rating') $('rstars').classList.toggle('is-err', !!msg);
+    else if (el) el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    return !msg;
+  }
+  var formOpen = false, opener = null;
+  function openForm(btn) {
+    opener = btn; formOpen = true; $('rf').hidden = false; $('rf-ok').hidden = true;
+    $('rv-write').setAttribute('aria-expanded', 'true'); $('rv-write').textContent = 'Close form';
+    $('rf').scrollIntoView({ behavior: rvSmooth, block: 'start' });
+    $('rf-r5').focus({ preventScroll: true });
+  }
+  function closeForm(focusBack) {
+    formOpen = false; $('rf').hidden = true;
+    $('rv-write').setAttribute('aria-expanded', 'false'); $('rv-write').textContent = 'Write a review';
+    if (focusBack && opener && !opener.closest('[hidden]')) opener.focus();
+  }
+  $('rv-write').addEventListener('click', function () { if (formOpen) closeForm(true); else openForm(this); });
+  $('rv-first').addEventListener('click', function () { openForm(this); });
+  $('rf-cancel').addEventListener('click', function () { closeForm(true); });
+  $('rf-photo').addEventListener('change', function () {
+    var fs = [].slice.call(this.files || []);
+    $('rf-files').textContent = fs.length ? fs.map(function (f) { return f.name; }).join(', ') : 'No photos added';
+    checkPhotos();
+  });
+  function checkPhotos() {
+    var fs = [].slice.call($('rf-photo').files || []);
+    if (fs.length > 3) return setErr('rf-photo', 'Add up to 3 photos.');
+    if (fs.some(function (f) { return !/^image\//.test(f.type); })) return setErr('rf-photo', 'Photos must be images (JPG, PNG or HEIC).');
+    if (fs.some(function (f) { return f.size > 10 * 1024 * 1024; })) return setErr('rf-photo', 'Each photo must be 10 MB or less.');
+    return setErr('rf-photo', '');
+  }
+  ['rf-title', 'rf-body', 'rf-name', 'rf-email'].forEach(function (id) { $(id).addEventListener('input', function () { if (this.getAttribute('aria-invalid') === 'true') validate(id); }); });
+  function validate(only) {
+    var em = $('rf-email'), checks = {
+      'rf-rating': function () { return setErr('rf-rating', rating() ? '' : 'Choose a star rating.'); },
+      'rf-title': function () { return setErr('rf-title', $('rf-title').value.trim() ? '' : 'Add a title.'); },
+      'rf-body': function () { var n = $('rf-body').value.trim().length; return setErr('rf-body', n >= 20 ? '' : n ? 'Write at least 20 characters (' + n + ' so far).' : 'Write your review.'); },
+      'rf-photo': checkPhotos,
+      'rf-name': function () { return setErr('rf-name', $('rf-name').value.trim() ? '' : 'Add your name.'); },
+      'rf-email': function () { var v = em.value.trim(); return setErr('rf-email', !v ? 'Add your email.' : !em.checkValidity() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v) ? 'Enter a valid email, like name@example.com.' : ''); }
+    };
+    if (only) return checks[only]();
+    var bad = null;
+    Object.keys(checks).forEach(function (k) { if (!checks[k]() && !bad) bad = k; });
+    return bad;
+  }
+  $('rf').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var bad = validate();
+    if (bad) { (bad === 'rf-rating' ? $('rf-r5') : $(bad)).focus(); return; }
+    /* moderación: no se publica al momento; Judge.me la manda a revisión */
+    $('rf').reset(); paintStars(0); $('rf-files').textContent = 'No photos added';
+    closeForm(false);
+    $('rf-ok').hidden = false;
+    $('rf-ok').innerHTML = '<p class="rv__msg">Thanks! Your review will appear after we check it.</p><p class="small muted">We will email you when it goes live.</p>';
+    $('rf-ok').focus();
+  });
+
+  /* datos estructurados: Product (+ AggregateRating y Review solo si hay reseñas) + BreadcrumbList */
+  var base = location.href.split('#')[0].split('?')[0];
+  var url = base + '?p=' + p.id;
+  var ld = [{
+    '@context': 'https://schema.org', '@type': 'Product', name: p.name, description: p.sub + '. Designed by the Heavy Metal Pro Stock crew in Waterloo, WI, printed to order.',
+    sku: p.id, brand: { '@type': 'Brand', name: 'Heavy Metal Pro Stock: “The Evil One”' }, category: cname, url: url,
+    offers: { '@type': 'Offer', url: url, priceCurrency: 'USD', price: 'XX.XX', availability: live ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock', itemCondition: 'https://schema.org/NewCondition' }
+  }, {
+    '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: base.replace(/product\.html$/, 'index.html') },
+      { '@type': 'ListItem', position: 2, name: 'Shop', item: base.replace(/product\.html$/, 'shop.html?cat=all') },
+      { '@type': 'ListItem', position: 3, name: cname, item: base.replace(/product\.html$/, 'shop.html?cat=' + p.cat) },
+      { '@type': 'ListItem', position: 4, name: p.name, item: url }
+    ]
+  }];
+  if (RV.length) {
+    ld[0].aggregateRating = { '@type': 'AggregateRating', ratingValue: avg.toFixed(1), reviewCount: RV.length, bestRating: 5, worstRating: 1 };
+    ld[0].review = RV.slice().sort(byRecent).slice(0, 5).map(function (r) {
+      return { '@type': 'Review', author: { '@type': 'Person', name: r.name }, datePublished: r.date, name: r.title, reviewBody: r.text, reviewRating: { '@type': 'Rating', ratingValue: r.stars, bestRating: 5, worstRating: 1 } };
+    });
+  }
+  var s = document.createElement('script'); s.type = 'application/ld+json'; s.id = 'ld-product'; s.textContent = JSON.stringify(ld); document.head.appendChild(s);
+
+  sync();
+
+  /* llegó desde "Notify me" de una tarjeta (product.html?p=...#notify) */
+  if (location.hash === '#notify') {
+    var jump = function () {
+      if (!live) { $('notify').scrollIntoView({ block: 'start' }); $('notify-email').focus({ preventScroll: true }); }
+      else if (sold.length && nb) { if (nf.hidden) nb.click(); $('sold-wrap').scrollIntoView({ block: 'center' }); }
+    };
+    var later = function () { whenReady(function () { setTimeout(jump, 60); }); };
+    if (document.readyState === 'complete') later(); else window.addEventListener('load', later);
+  }
+  /* llegó a las reseñas (product.html?p=...#reviews) */
+  if (location.hash === '#reviews') {
+    var toRv = function () { whenReady(function () { setTimeout(function () { $('reviews').scrollIntoView({ block: 'start' }); }, 60); }); };
+    if (document.readyState === 'complete') toRv(); else window.addEventListener('load', toRv);
+  }
+})();
+</script>
+</body>
+</html>

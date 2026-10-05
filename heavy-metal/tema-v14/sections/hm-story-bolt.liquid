@@ -1,0 +1,122 @@
+{%- comment -%}
+  Our Story · 4 · The lightning band (the only dark band): the night the engine fired + video facade.
+  The video (uploaded file or YouTube/Vimeo link) only loads when someone presses play.
+{%- endcomment -%}
+{%- liquid
+  assign vid = section.settings.video_url
+  assign file = section.settings.video
+  assign has_url = false
+  if vid != blank and vid.id != blank
+    assign has_url = true
+  endif
+-%}
+<section class="sect sect--night st-bolt" id="{{ section.settings.anchor | default: 'bolt' | handleize }}" aria-labelledby="bolt-h-{{ section.id }}" data-st-bolt>
+  <div class="wrap">
+    <div class="st-bolt__txt">
+      <p class="st-eyebrow"><b>{{ section.settings.number | escape }}</b>{{ section.settings.eyebrow | escape }}</p>
+      {%- if section.settings.pre != blank -%}<p class="st-bolt__pre">{{ section.settings.pre | escape }}</p>{%- endif -%}
+      <div class="st-bolt__head">
+        <svg viewBox="0 0 140 280" aria-hidden="true"><polygon class="st-bolt-fill" points="88,0 20,150 58,150 30,280 122,105 78,105"/></svg>
+        <h2 id="bolt-h-{{ section.id }}">{{ section.settings.heading_1 | escape }}{% if section.settings.heading_mark != blank %} <em>{{ section.settings.heading_mark | escape }}</em>{% endif %}{{ section.settings.heading_2 | escape }}</h2>
+      </div>
+      {%- if section.settings.post != blank -%}<div class="st-bolt__post">{{ section.settings.post }}</div>{%- endif -%}
+    </div>
+
+    <figure class="st-vid">
+      <div class="st-vid__box" data-video-box>
+        {%- if section.settings.poster != blank -%}
+          {{ section.settings.poster | image_url: width: 1400 | image_tag: widths: '480, 720, 960, 1400', sizes: '(max-width: 1000px) 100vw, 55vw', loading: 'lazy', alt: '' }}
+        {%- endif -%}
+        <button class="st-vid__play" type="button" aria-describedby="vid-cap-{{ section.id }}"
+          {%- if file != blank %} data-video-play data-video-type="file"
+          {%- elsif has_url %} data-video-play data-video-type="{{ vid.type }}" data-video-id="{{ vid.id | escape }}"
+          {%- else %} data-video-soon="{{ section.settings.soon_text | escape }}"{% endif %} data-video-title="{{ section.settings.video_title | escape }}">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5v17l14-8.5z"/></svg>
+          <span class="vh">Play video: {{ section.settings.video_title | escape }}{% if section.settings.duration != blank %}, {{ section.settings.duration | escape }}{% endif %}</span>
+        </button>
+        <div class="st-vid__bar" aria-hidden="true">
+          <div class="st-vid__row">
+            <b>{{ section.settings.video_title | escape }}</b>
+            {%- if section.settings.duration != blank -%}
+              <span class="st-vid__sound"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg><span class="num">{{ section.settings.duration | escape }}</span></span>
+            {%- endif -%}
+          </div>
+          <div class="st-vid__track"><span></span></div>
+        </div>
+        {%- if file != blank -%}
+          <template data-video-tpl>{{ file | video_tag: autoplay: true, controls: true, playsinline: true, image_size: '1400x' }}</template>
+        {%- endif -%}
+      </div>
+      <figcaption id="vid-cap-{{ section.id }}">{{ section.settings.caption | escape }} <span class="st-vid__msg" role="status" data-video-msg></span></figcaption>
+    </figure>
+  </div>
+</section>
+<script src="{{ 'hm-story.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+.st-bolt{position:relative;overflow:hidden;scroll-margin-top:var(--header)}
+.st-bolt::before{content:"";position:absolute;inset:0;background:radial-gradient(60% 80% at 18% 30%,rgba(245,196,0,.10),transparent 70%);pointer-events:none}
+.st-bolt .wrap{position:relative;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(24px,4vw,64px);align-items:center}
+.st-bolt__txt{display:grid;gap:16px}
+.st-bolt__txt p{margin:0}
+.st-bolt .st-eyebrow{color:#A8A59A}
+.st-bolt .st-eyebrow b{background:var(--accent);color:var(--ink)}
+.st-bolt__pre{color:#CFCCC3;font-size:var(--t-md);max-width:46ch}
+.st-bolt__head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start}
+.st-bolt__head svg{width:clamp(36px,3.4vw,52px);height:auto;filter:drop-shadow(0 0 14px rgba(245,196,0,.55))}
+.st-bolt__head h2{font-family:var(--f-head);font-stretch:72%;font-weight:800;text-transform:uppercase;font-size:var(--t-hero);line-height:1.04;letter-spacing:.005em;color:var(--night-ink);margin:0;text-wrap:balance}
+.st-bolt__head h2 em{font-style:normal;color:var(--accent)}
+.st-bolt__post{color:#CFCCC3;max-width:46ch;border-top:1px solid #2E2E2B;padding-top:14px}
+.st-bolt__post p{margin:0}
+.st-bolt__post strong,.st-bolt__post b{color:var(--night-ink)}
+.st-bolt.is-on .st-bolt__head svg{animation:st-flick 1.1s steps(1) 1}
+@keyframes st-flick{0%,100%{opacity:1}12%{opacity:.15}20%{opacity:1}32%{opacity:.3}40%{opacity:1}}
+.st-vid{margin:0;display:grid;gap:8px}
+.st-vid__box{position:relative;aspect-ratio:16/9;background:#1E1E1C;overflow:hidden;border:1px solid #2E2E2B}
+.st-vid__box img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 38%;filter:saturate(.85) brightness(.72)}
+.st-vid__box::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,18,17,.1) 40%,rgba(18,18,17,.85));pointer-events:none}
+.st-vid__box.is-playing::after,.st-vid__box.is-playing .st-vid__bar{display:none}
+.st-vid__box iframe,.st-vid__box video{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:3;background:#000}
+.st-vid__play{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;border:0;background:var(--accent);color:var(--ink);display:grid;place-items:center;cursor:pointer;box-shadow:0 0 0 8px rgba(245,196,0,.22);transition:transform .15s,box-shadow .15s}
+.st-vid__play:hover{transform:translate(-50%,-50%) scale(1.06);box-shadow:0 0 0 12px rgba(245,196,0,.28)}
+.st-vid__play:focus-visible{outline:2px solid var(--night-ink);outline-offset:4px}
+.st-vid__play svg{width:26px;height:26px;margin-left:4px;fill:currentColor}
+.st-vid__bar{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:10px 14px 12px;display:grid;gap:8px;color:var(--night-ink);font-size:var(--t-xs)}
+.st-vid__row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.st-vid__row b{font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.st-vid__track{height:3px;background:rgba(242,240,233,.28)}
+.st-vid__sound{display:inline-flex;align-items:center;gap:6px;opacity:.85}
+.st-vid__sound svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2}
+.st-vid figcaption{font-size:var(--t-xs);color:#A8A59A}
+.st-vid__msg{color:var(--accent);font-weight:700}
+@media (prefers-reduced-motion:reduce){.st-bolt.is-on .st-bolt__head svg{animation:none}}
+@media (max-width:1000px){.st-bolt .wrap{grid-template-columns:1fr}.st-bolt__txt{max-width:640px}}
+@media (max-width:560px){.st-vid__play{width:60px;height:60px}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Story: lightning band",
+  "tag": "div",
+  "class": "hm-story-bolt",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Anchor", "default": "bolt" },
+    { "type": "text", "id": "number", "label": "Chapter number", "default": "04" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "2026 · The night it fired" },
+    { "type": "textarea", "id": "pre", "label": "Lead-in", "default": "Then, in 2026, the moment came. Chris stood in the shop and turned the engine over for the first time." },
+    { "type": "text", "id": "heading_1", "label": "Heading, start", "default": "At that exact moment," },
+    { "type": "text", "id": "heading_mark", "label": "Heading, yellow part", "default": "lightning struck" },
+    { "type": "text", "id": "heading_2", "label": "Heading, end", "default": ", and the power went out." },
+    { "type": "richtext", "id": "post", "label": "Closing text", "default": "<p>Some would call it a coincidence. <strong>We call it a sign.</strong> From that night on, there was no doubt about what we had built.</p>" },
+    { "type": "header", "content": "Video" },
+    { "type": "video", "id": "video", "label": "Video file", "info": "Upload in Content > Files. Wins over the link below." },
+    { "type": "video_url", "id": "video_url", "label": "Or a YouTube / Vimeo link", "accept": ["youtube", "vimeo"] },
+    { "type": "image_picker", "id": "poster", "label": "Poster image" },
+    { "type": "text", "id": "video_title", "label": "Video title", "default": "The night it fired" },
+    { "type": "text", "id": "duration", "label": "Duration", "info": "Like 0:42. Empty = hidden." },
+    { "type": "text", "id": "caption", "label": "Caption", "default": "Sound on. Sorry, neighbors. This is the shop the moment the engine fired and the lightning hit." },
+    { "type": "text", "id": "soon_text", "label": "Message when there is no video yet", "default": "Video coming soon." }
+  ],
+  "presets": [{ "name": "Story: lightning band" }]
+}
+{% endschema %}

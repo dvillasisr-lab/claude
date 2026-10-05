@@ -1,0 +1,137 @@
+{%- liquid
+  assign look = product.metafields.custom.complete_the_look.value
+  if look == blank and section.settings.use_crew_pack
+    assign look = settings.hm_crew_pack_product
+  endif
+  if look == blank and section.settings.product != blank
+    assign look = section.settings.product
+  endif
+  assign cap = settings.hm_crew_cap_product
+  assign show = true
+  if look == blank or look.id == product.id or look.available == false
+    assign show = false
+  endif
+  if product.tags contains 'special-edition' or product.tags contains 'bundle'
+    assign show = false
+  endif
+  assign look_images = look.media | where: 'media_type', 'image'
+-%}
+{%- if show -%}
+  <section class="sect sect--white hm-look" aria-labelledby="hm-look-t-{{ section.id }}">
+    <div class="wrap look">
+      <div class="look__pics">
+        {%- if look_images.size >= 2 -%}
+          {%- for m in look_images limit: 2 -%}
+            <span class="ph ph--mock">
+              {{- m | image_url: width: 800 | image_tag: widths: '300, 400, 600, 800', sizes: '(min-width: 760px) 25vw, 50vw', loading: 'lazy', class: 'photo', alt: m.alt | default: look.title -}}
+            </span>
+          {%- endfor -%}
+        {%- else -%}
+          <span class="ph ph--mock">
+            {%- if product.featured_media -%}
+              {{- product.featured_media | image_url: width: 800 | image_tag: widths: '300, 400, 600, 800', sizes: '(min-width: 760px) 25vw, 50vw', loading: 'lazy', class: 'photo', alt: product.title -}}
+            {%- endif -%}
+          </span>
+          <span class="ph ph--mock">
+            {%- if cap and cap.featured_media -%}
+              {{- cap.featured_media | image_url: width: 800 | image_tag: widths: '300, 400, 600, 800', sizes: '(min-width: 760px) 25vw, 50vw', loading: 'lazy', class: 'photo', alt: cap.title -}}
+            {%- elsif look.featured_media -%}
+              {{- look.featured_media | image_url: width: 800 | image_tag: widths: '300, 400, 600, 800', sizes: '(min-width: 760px) 25vw, 50vw', loading: 'lazy', class: 'photo', alt: look.title -}}
+            {%- endif -%}
+          </span>
+        {%- endif -%}
+      </div>
+      <div class="look__info">
+        <p class="label muted">{{ section.settings.label | escape }}</p>
+        <h2 class="h2" id="hm-look-t-{{ section.id }}">{{ look.title | escape }}</h2>
+        {%- if section.settings.text != blank -%}
+          <p class="small muted" style="margin:0">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+        <ul class="look__list">
+          {%- unless cap and cap.id == product.id -%}
+            <li><span>{{ product.title | escape }}</span><span class="num">{{ product.price | money_without_trailing_zeros }}</span></li>
+          {%- endunless -%}
+          {%- if cap and look == settings.hm_crew_pack_product -%}
+            <li><span>{{ cap.title | escape }}</span><span class="num">{{ cap.price | money_without_trailing_zeros }}</span></li>
+          {%- endif -%}
+          <li>
+            <span>{{ section.settings.bundle_row | escape }}</span>
+            <span class="num">
+              <b>{{ look.price | money_without_trailing_zeros }}</b>
+              {%- if look.metafields.custom.bundle_savings.value != blank %} · save ${{ look.metafields.custom.bundle_savings.value }}{% endif -%}
+            </span>
+          </li>
+        </ul>
+        <a class="link" href="{{ look.url }}" style="text-decoration:underline">{{ section.settings.link_text | escape }}</a>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% stylesheet %}
+  .hm-look .look { display: grid; gap: 20px; align-items: center; grid-template-columns: minmax(0, 1fr); }
+  @media (min-width: 760px) { .hm-look .look { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 4vw, 64px); } }
+  .hm-look .look__pics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+  .hm-look .look__pics .ph { --ar: 1/1; }
+  .hm-look .look__pics .photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hm-look .look__info { display: grid; gap: 10px; justify-items: start; max-width: 520px; }
+  .hm-look .look__info .h2 { margin: 0; font-size: min(var(--t-h2), 24px); }
+  .hm-look .look__list { list-style: none; margin: 0; padding: 0; width: 100%; border-top: 1px solid var(--line); }
+  .hm-look .look__list li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: var(--t-xs); }
+  .hm-look .look__list li span:first-child { font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HM Complete the look",
+  "tag": "div",
+  "class": "hm-section hm-complete-look",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Shows the product in the complete_the_look metafield. If empty, the Crew Pack from Theme settings."
+    },
+    {
+      "type": "checkbox",
+      "id": "use_crew_pack",
+      "label": "Use the Crew Pack when the metafield is empty",
+      "default": true
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Fallback product"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "Complete the look"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "The tee and the cap, one price. You pick the tee size."
+    },
+    {
+      "type": "text",
+      "id": "bundle_row",
+      "label": "Bundle row",
+      "default": "Bundle"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text",
+      "default": "Shop the Crew Pack"
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Complete the look"
+    }
+  ]
+}
+{% endschema %}

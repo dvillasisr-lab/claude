@@ -1,0 +1,220 @@
+{%- comment -%}
+  HM Home Next Pull: franja amarilla con el proximo pull y los contadores de la temporada.
+  - Proximo pull: Liquid imprime los Pull event "upcoming" con fecha en data-*; el navegador elige el mas cercano con
+    fecha >= hoy (la pagina se guarda en cache, "hoy" no se decide en Liquid). Sin ninguno: "dates coming soon".
+  - Contadores: Season stats de la temporada del ajuste del tema (hm_season). 0 = "Coming soon".
+{%- endcomment -%}
+{%- liquid
+  assign season = settings.hm_season | default: 2026
+  assign season_num = season | plus: 0
+  assign fb = section.settings.facebook_url | default: settings.hm_facebook_url
+  assign st = blank
+  for entry in shop.metaobjects.season_stats.values
+    assign entry_season = entry.season.value | plus: 0
+    if entry_season == season_num
+      assign st = entry
+      break
+    endif
+  endfor
+-%}
+
+<section class="nx" aria-labelledby="nx-title-{{ section.id }}" data-hm-nx data-kick="{{ section.settings.kicker | escape }}">
+  {%- comment -%} Datos de Pull event para el JS (no se ven) {%- endcomment -%}
+  <ul hidden data-nx-events>
+    {%- paginate shop.metaobjects.pull_event.values by 250 -%}
+      {%- for ev in shop.metaobjects.pull_event.values -%}
+        {%- liquid
+          assign ev_status = ev.status.value | downcase
+          if ev_status != '' and ev_status != 'upcoming'
+            continue
+          endif
+          if ev.date.value == blank
+            continue
+          endif
+          assign lg = ev.league.value | downcase
+          case lg
+            when 'ntpa'
+              assign lg_label = 'NTPA'
+            when 'badger_state', 'badger state tractor pullers'
+              assign lg_label = 'Badger State Tractor Pullers'
+            when 'ihra_ppl', 'ihra pro pulling (ppl)'
+              assign lg_label = 'IHRA Pro Pulling (PPL)'
+            when 'other', ''
+              assign lg_label = ''
+            else
+              assign lg_label = ev.league.value
+          endcase
+        -%}
+        <li
+          data-date="{{ ev.date.value | date: '%Y-%m-%d' }}"
+          data-name="{{ ev.event_name.value | escape }}"
+          data-city="{{ ev.city.value | escape }}"
+          data-league="{{ lg_label | escape }}"
+        ></li>
+      {%- endfor -%}
+    {%- endpaginate -%}
+  </ul>
+
+  <div class="wrap nx__in">
+    <div class="nx__date" data-nx-date aria-hidden="true"><span>{{ section.settings.date_label | escape }}</span><b>{{ section.settings.date_tba | escape }}</b></div>
+    <div class="nx__ev">
+      <p class="nx__kick" data-nx-kick hidden>{{ section.settings.kicker | escape }}</p>
+      <h2 class="h1" id="nx-title-{{ section.id }}" data-nx-title>{{ section.settings.empty_title | escape }}</h2>
+      <p class="nx__meta" data-nx-meta>
+        {{- section.settings.empty_text | replace: '[season]', season | escape -}}
+        {%- if fb != blank -%}
+          {{ ' ' }}<a href="{{ fb }}" target="_blank" rel="noopener">{{ section.settings.facebook_label | escape }}<span aria-hidden="true"> ↗</span><span class="vh"> (opens in a new tab)</span></a>
+        {%- endif -%}
+      </p>
+    </div>
+    <div class="nx__season">
+      <p class="nx__kick"><span class="num">{{ season }}</span> {{ section.settings.season_label | escape }}</p>
+      {%- liquid
+        assign soon = section.settings.soon_text
+        if st != blank
+          assign c_val = st.competitions.value | plus: 0
+          assign e_val = st.exhibitions.value | plus: 0
+          assign w_val = st.wins.value | plus: 0
+          assign c_note = st.competitions_note.value
+        else
+          assign c_val = 0
+          assign e_val = 0
+          assign w_val = 0
+          assign c_note = blank
+        endif
+      -%}
+      <dl class="nx__stats">
+        <div>
+          <dt>{{ section.settings.competitions_label | escape }}{% if c_note != blank %}<small>{{ c_note | escape }}</small>{% endif %}</dt>
+          {%- if c_val > 0 -%}<dd class="num">{{ c_val }}</dd>{%- else -%}<dd class="is-soon">{{ soon | escape }}</dd>{%- endif -%}
+        </div>
+        <div>
+          <dt>{{ section.settings.exhibitions_label | escape }}</dt>
+          {%- if e_val > 0 -%}<dd class="num">{{ e_val }}</dd>{%- else -%}<dd class="is-soon">{{ soon | escape }}</dd>{%- endif -%}
+        </div>
+        <div>
+          <dt>{{ section.settings.wins_label | escape }}</dt>
+          {%- if w_val > 0 -%}<dd class="num">{{ w_val }}</dd>{%- else -%}<dd class="is-soon">{{ soon | escape }}</dd>{%- endif -%}
+        </div>
+      </dl>
+      {%- if st != blank and st.updated.value != blank -%}
+        <p class="nx__upd">{{ section.settings.updated_label | escape }} {{ st.updated.value | date: '%B %-d, %Y' }}</p>
+      {%- endif -%}
+    </div>
+    <div class="nx__go">
+      {%- if section.settings.link1_label != blank -%}
+        <a class="link" href="{{ section.settings.link1_url | default: routes.root_url }}">{{ section.settings.link1_label | escape }}</a>
+      {%- endif -%}
+      {%- if section.settings.link2_label != blank -%}
+        <a class="link" href="{{ section.settings.link2_url | default: routes.root_url }}">{{ section.settings.link2_label | escape }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .nx { background: var(--accent); color: var(--ink); border-block: 1px solid var(--ink); }
+  .nx__in { display: grid; grid-template-columns: auto minmax(0, 1.3fr) minmax(0, 1.2fr) auto; gap: 16px clamp(20px, 3vw, 48px); align-items: center; padding-block: clamp(18px, 2.4vw, 28px); }
+  .nx__date { display: grid; place-items: center; align-content: center; width: 84px; height: 84px; background: var(--ink); color: var(--accent); text-align: center; line-height: 1; }
+  .nx__date span { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--night-ink); }
+  .nx__date b { font-family: var(--f-head); font-stretch: 78%; font-size: 32px; font-weight: 800; }
+  .nx__ev { display: grid; gap: 4px; min-width: 0; }
+  .nx__ev .h1 { margin: 0; }
+  .nx__kick { margin: 0; font-size: var(--t-xs); font-weight: 800; letter-spacing: .1em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
+  .nx__kick[hidden] { display: none; }
+  .nx__ev .nx__kick::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ink); }
+  .nx__meta { margin: 0; font-size: var(--t-sm); color: var(--ink); }
+  .nx__meta a { color: var(--ink); font-weight: 700; text-underline-offset: 3px; }
+  .nx__season { display: grid; gap: 6px; padding-left: clamp(16px, 2vw, 32px); border-left: 1px solid rgba(28, 27, 25, .35); }
+  .nx__stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0; }
+  .nx__stats div { display: grid; gap: 0; }
+  .nx__stats dd { order: -1; margin: 0; font-family: var(--f-head); font-stretch: 78%; font-weight: 800; font-size: clamp(30px, 3vw, 40px); line-height: 1; }
+  .nx__stats dd.is-soon { font-size: clamp(17px, 1.6vw, 20px); line-height: 1.15; padding-bottom: 4px; text-transform: uppercase; }
+  .nx__stats dt { font-size: var(--t-xs); font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+  .nx__stats dt small { display: block; font-size: 11px; font-weight: 500; letter-spacing: 0; text-transform: none; }
+  .nx__upd { margin: 0; font-size: 11px; color: var(--ink); opacity: .8; }
+  .nx__go { display: grid; gap: 12px; justify-items: start; }
+  .nx__go .link { color: var(--ink); }
+  @media (max-width: 1024px) {
+    .nx__in { grid-template-columns: auto minmax(0, 1fr); }
+    .nx__season { grid-column: 1/-1; padding-left: 0; border-left: 0; border-top: 1px solid rgba(28, 27, 25, .35); padding-top: 12px; }
+    .nx__go { grid-column: 1/-1; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+  }
+  @media (max-width: 480px) { .nx__date { width: 68px; height: 68px; } .nx__date b { font-size: 26px; } }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    if (window.HMNextPull) return;
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function init(root) {
+      if (root.__hmNx) return;
+      root.__hmNx = true;
+      var now = new Date(), today = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+      var evs = [].slice.call(root.querySelectorAll('[data-nx-events] li')).map(function (li) {
+        return { date: li.getAttribute('data-date') || '', name: li.getAttribute('data-name') || '', city: li.getAttribute('data-city') || '', league: li.getAttribute('data-league') || '' };
+      });
+      var next = evs.filter(function (e) { return /^\d{4}-\d{2}-\d{2}$/.test(e.date) && e.date >= today; })
+        .sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; })[0];
+      if (!next) return;
+      var d = new Date(next.date + 'T12:00:00');
+      var box = root.querySelector('[data-nx-date]'), kick = root.querySelector('[data-nx-kick]'), title = root.querySelector('[data-nx-title]'), meta = root.querySelector('[data-nx-meta]');
+      var label = root.getAttribute('data-kick') || 'Next pull';
+      box.innerHTML = '';
+      var m = document.createElement('span'); m.textContent = d.toLocaleString('en-US', { month: 'short' });
+      var b = document.createElement('b'); b.className = 'num'; b.textContent = d.getDate();
+      box.appendChild(m); box.appendChild(b);
+      kick.textContent = label + ' · ' + d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+      kick.hidden = false;
+      title.textContent = next.name;
+      meta.textContent = [next.city, next.league].filter(Boolean).join(' · ');
+    }
+    function initAll(scope) { [].slice.call((scope || document).querySelectorAll('[data-hm-nx]')).forEach(init); }
+    window.HMNextPull = { init: init };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { initAll(); });
+    else initAll();
+    document.addEventListener('shopify:section:load', function (e) { initAll(e.target); });
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "HM Home Next Pull",
+  "tag": "div",
+  "class": "hm-home-next-pull-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "El próximo pull sale solo de Contenido > Metaobjetos > Pull event (el primero con fecha de hoy en adelante y estado Upcoming). Los contadores salen de Season stats de la temporada en Ajustes del tema."
+    },
+    { "type": "text", "id": "kicker", "label": "Etiqueta con fecha", "default": "Next pull" },
+    { "type": "text", "id": "date_label", "label": "Cuadro de fecha sin fecha: arriba", "default": "Date" },
+    { "type": "text", "id": "date_tba", "label": "Cuadro de fecha sin fecha: abajo", "default": "TBA" },
+    { "type": "text", "id": "empty_title", "label": "Título sin fechas", "default": "Next pull: dates coming soon" },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Texto sin fechas",
+      "info": "[season] se cambia por la temporada.",
+      "default": "New [season] dates go on the schedule and on"
+    },
+    { "type": "text", "id": "facebook_label", "label": "Texto del link a Facebook", "default": "Facebook first" },
+    { "type": "url", "id": "facebook_url", "label": "Link a Facebook (opcional)", "info": "Vacío = el de Ajustes del tema." },
+    { "type": "header", "content": "Temporada" },
+    { "type": "text", "id": "season_label", "label": "Etiqueta de temporada", "default": "season so far" },
+    { "type": "text", "id": "competitions_label", "label": "Competencias", "default": "Competitions" },
+    { "type": "text", "id": "exhibitions_label", "label": "Exhibiciones", "default": "Exhibitions" },
+    { "type": "text", "id": "wins_label", "label": "Victorias", "default": "Wins" },
+    { "type": "text", "id": "soon_text", "label": "Texto cuando un contador está en 0", "default": "Coming soon" },
+    { "type": "text", "id": "updated_label", "label": "Texto de actualización", "default": "Last updated:" },
+    { "type": "header", "content": "Links" },
+    { "type": "text", "id": "link1_label", "label": "Link 1: texto", "default": "See the schedule" },
+    { "type": "url", "id": "link1_url", "label": "Link 1: destino" },
+    { "type": "text", "id": "link2_label", "label": "Link 2: texto", "default": "Read the Pit Log" },
+    { "type": "url", "id": "link2_url", "label": "Link 2: destino" }
+  ],
+  "presets": [
+    { "name": "HM Home Next Pull" }
+  ]
+}
+{% endschema %}

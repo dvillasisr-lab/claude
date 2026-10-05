@@ -1,0 +1,89 @@
+<section class="hm hm-video" id="watch" data-hm-video aria-labelledby="hm-video-title">
+  <div class="hm-head">
+    <div class="hm-head__text"><p class="hm-eyebrow">{{ section.settings.eyebrow }}</p><h2 class="hm-h2" id="hm-video-title" style="font-size:clamp(44px,5vw,72px)">{{ section.settings.title_1 }} <span class="hm-chrome">{{ section.settings.title_2 }}</span> {{ section.settings.title_3 }}</h2></div>
+  </div>
+  <div class="hm-video__frame">
+    {%- if section.settings.video != blank or section.settings.video_url != blank -%}
+      <button type="button" class="hm-video__poster" aria-label="Play the Heavy Metal pull video">
+        {% render 'hm-img', image: section.settings.poster, fallback: 'hm-rear.jpg', alt: '', class: 'hm-cover', sizes: '100vw' %}
+        <span class="hm-shade" style="opacity:.45"></span>
+        <span class="hm-video__play"><svg width="46" height="46" viewBox="0 0 46 46" aria-hidden="true"><polygon points="15,9 38,23 15,37" fill="#0B0B0A"/></svg></span>
+        <span class="hm-video__caption">{{ section.settings.caption }}</span>
+      </button>
+      <template>
+        {%- if section.settings.video != blank -%}
+          {{ section.settings.video | video_tag: autoplay: true, controls: true, playsinline: true }}
+        {%- else -%}
+          {%- if section.settings.video_url.type == 'youtube' -%}<iframe src="https://www.youtube.com/embed/{{ section.settings.video_url.id }}?autoplay=1&rel=0" title="Heavy Metal pull video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>{%- else -%}<iframe src="https://player.vimeo.com/video/{{ section.settings.video_url.id }}?autoplay=1" title="Heavy Metal pull video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>{%- endif -%}
+        {%- endif -%}
+      </template>
+    {%- else -%}
+      {% render 'hm-img', image: section.settings.poster, fallback: 'hm-rear.jpg', alt: '', class: 'hm-cover', sizes: '100vw' %}
+      <span class="hm-shade" style="opacity:.45"></span>
+      <span class="hm-video__play" aria-hidden="true"><svg width="46" height="46" viewBox="0 0 46 46"><polygon points="15,9 38,23 15,37" fill="#0B0B0A"/></svg></span>
+      <span class="hm-video__caption">Upload the pull video in the theme editor</span>
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "HM Video",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "03 / WATCH IT PULL"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Title start",
+      "default": "SEE THE"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Title (chrome)",
+      "default": "EVIL ONE"
+    },
+    {
+      "type": "text",
+      "id": "title_3",
+      "label": "Title end",
+      "default": "RUN"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video file (uploaded to Shopify)"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "Or YouTube / Vimeo link",
+      "accept": [
+        "youtube",
+        "vimeo"
+      ]
+    },
+    {
+      "type": "image_picker",
+      "id": "poster",
+      "label": "Cover photo"
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Caption",
+      "default": "HEAVY METAL · FULL PULL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Video"
+    }
+  ]
+}
+{% endschema %}
+

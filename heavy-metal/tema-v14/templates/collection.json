@@ -1,0 +1,30 @@
+{
+  "sections": {
+    "main": {
+      "type": "hm-main-collection",
+      "settings": {
+        "all_title": "Shop all",
+        "all_text": "Tees, hoodies, hats and stickers from the crew behind “The Evil One”. Printed when you order it, not before.",
+        "show_description": true,
+        "category_menu": "shop-categories-v14",
+        "per_page": 24,
+        "enable_filtering": true,
+        "enable_sorting": true,
+        "show_edition_link": false,
+        "edition_url": "",
+        "edition_title": "Limited run · one moment of the season",
+        "edition_text": "Short window. Set quantity. When it closes or sells out, it’s gone. No encores.",
+        "promo_url": "/pages/evil-list",
+        "promo_label": "The Evil List",
+        "promo_title": "Get the next drop first",
+        "promo_text": "Drops before the internet finds out and a heads-up before every pull. No spam. We’re too busy wrenching.",
+        "promo_link": "Join The Evil List",
+        "soon_heading": "Coming soon",
+        "soon_text": "The first drop from the crew behind “The Evil One” is on its way. Leave your email. We’ll yell when it lands."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

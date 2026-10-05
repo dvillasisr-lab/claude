@@ -1,0 +1,175 @@
+{%- comment -%}
+  The Machine · 3 · Spec sheet (the one dark band) + "Hear it" video facade.
+  Blocks: "Big number" (top grid) and "Row" (fine print). A row with an empty value is not shown.
+{%- endcomment -%}
+{%- liquid
+  assign vid = section.settings.video_url
+  assign has_video = false
+  if vid != blank and vid.id != blank
+    assign has_video = true
+  endif
+-%}
+<section class="sect sect--night mx-specs" aria-labelledby="sheet-h-{{ section.id }}" data-hm-video>
+  <div class="wrap mx-race">
+    <div>
+      <div class="sect-head">
+        <h2 class="h1" id="sheet-h-{{ section.id }}">{{ section.settings.title | escape }}</h2>
+        {%- if section.settings.subtitle != blank -%}<p class="small" style="margin:0">{{ section.settings.subtitle | escape }}</p>{%- endif -%}
+      </div>
+      <dl class="mx-big">
+        {%- assign n = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'big' and block.settings.value != blank -%}
+            {%- assign n = n | plus: 1 -%}
+            <div class="{% if block.settings.unknown %}mx-unk{% endif %}" {{ block.shopify_attributes }}>
+              <dt><i>{% if n < 10 %}0{% endif %}{{ n }}</i>{{ block.settings.label | escape }}</dt>
+              <dd><span class="mx-v">{{ block.settings.value | escape }}{% if block.settings.unit != blank %}<small>{{ block.settings.unit | escape }}</small>{% endif %}</span>{% if block.settings.sub != blank %}<span class="mx-s">{{ block.settings.sub | escape }}</span>{% endif %}</dd>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </dl>
+      <dl class="mx-fine">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'row' and block.settings.value != blank -%}
+            <div {{ block.shopify_attributes }}><dt>{{ block.settings.label | escape }}</dt><dd>{{ block.settings.value | escape }}</dd></div>
+          {%- endif -%}
+        {%- endfor -%}
+      </dl>
+      {%- if section.settings.updated != blank -%}
+        <p class="mx-upd"><span>Last updated: <b><time datetime="{{ section.settings.updated | date: '%Y-%m-%d' }}">{{ section.settings.updated | date: '%B %-d, %Y' }}</time></b></span></p>
+      {%- endif -%}
+    </div>
+
+    {%- if has_video or section.settings.poster != blank -%}
+    <div class="mx-hear">
+      <h2 class="h2" id="hear-h-{{ section.id }}">{{ section.settings.hear_title | escape }}</h2>
+      <div class="mx-hear__poster" data-video-box>
+        {%- if section.settings.poster != blank -%}
+          {{ section.settings.poster | image_url: width: 900 | image_tag: widths: '400, 600, 900', sizes: '(max-width: 960px) 100vw, 320px', loading: 'lazy', alt: '' }}
+        {%- endif -%}
+        {%- if has_video -%}
+          <button type="button" class="mx-hear__btn" data-video-play data-video-type="{{ vid.type }}" data-video-id="{{ vid.id | escape }}" data-video-title="{{ section.settings.cap_title | escape }}" aria-describedby="hear-h-{{ section.id }}">
+            <span class="mx-play" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z"/></svg></span>
+            <span class="mx-hear__cap"><b>{{ section.settings.cap_title | escape }}</b><span>{{ section.settings.cap_sub | escape }}</span></span>
+          </button>
+        {%- else -%}
+          <span class="mx-hear__cap"><b>{{ section.settings.cap_title | escape }}</b><span>{{ section.settings.soon_text | escape }}</span></span>
+        {%- endif -%}
+      </div>
+      {%- if has_video -%}
+        <p class="mx-hear__alt small"><a href="{{ vid }}" target="_blank" rel="noopener">{{ section.settings.open_text | escape }}<span class="vh"> (opens in a new tab)</span></a></p>
+      {%- endif -%}
+    </div>
+    {%- endif -%}
+  </div>
+</section>
+<script src="{{ 'hm-machine.js' | asset_url }}" defer></script>
+
+{% stylesheet %}
+.mx-specs{--line-night:rgba(242,240,233,.16);--mute-night:#A9A69E}
+.mx-race{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,320px);gap:clamp(24px,4vw,56px);align-items:stretch}
+.mx-race .sect-head .small{color:var(--mute-night)}
+.mx-big{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0;border-top:2px solid var(--night-ink)}
+.mx-big>div{padding:12px 16px 14px 0;border-bottom:1px solid var(--line-night);display:grid;gap:2px;align-content:start}
+.mx-big>div:not(:nth-child(3n+1)){padding-left:16px;border-left:1px solid var(--line-night)}
+.mx-big dt{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mute-night);display:flex;gap:8px}
+.mx-big dt i{font-style:normal;color:var(--accent)}
+.mx-big dd{margin:0}
+.mx-v{font-family:var(--f-head);font-stretch:62%;font-weight:800;font-size:clamp(34px,3.6vw,52px);line-height:1;letter-spacing:-.01em;color:var(--night-ink);font-variant-numeric:tabular-nums;text-transform:uppercase;white-space:nowrap}
+.mx-v small{font-size:.32em;font-stretch:100%;font-weight:700;letter-spacing:.1em;margin-left:.3em;color:var(--mute-night);vertical-align:.2em}
+.mx-s{display:block;font-size:var(--t-xs);color:var(--mute-night);margin-top:4px}
+.mx-unk .mx-v{color:var(--accent);position:relative}
+.mx-unk .mx-v::after{content:"";display:inline-block;width:.08em;height:.78em;margin-left:.06em;background:var(--accent);vertical-align:-.02em;animation:mx-blink 1.1s steps(2,start) 4}
+@keyframes mx-blink{to{visibility:hidden}}
+.mx-unk .mx-s{color:var(--night-ink)}
+.mx-fine{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:32px;margin:14px 0 0}
+.mx-fine div{display:flex;justify-content:space-between;gap:12px;padding-block:7px;border-bottom:1px solid var(--line-night);font-size:var(--t-xs)}
+.mx-fine dt{letter-spacing:.1em;text-transform:uppercase;color:var(--mute-night);font-weight:600}
+.mx-fine dd{margin:0;font-weight:700;color:var(--night-ink);text-align:right}
+.mx-upd{display:flex;flex-wrap:wrap;gap:4px 16px;margin:12px 0 0;font-size:var(--t-xs);color:var(--mute-night)}
+.mx-upd b{color:var(--night-ink);font-weight:700}
+.mx-hear{display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:10px}
+.mx-hear__poster{position:relative;display:block;overflow:hidden;background:#1E1E1C;color:var(--night-ink);min-height:300px;max-height:460px}
+.mx-hear__poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;transition:transform .4s}
+.mx-hear__poster::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,18,17,0) 45%,rgba(18,18,17,.85));pointer-events:none}
+.mx-hear__poster.is-playing::after{display:none}
+.mx-hear__poster iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:3}
+.mx-hear__btn{position:absolute;inset:0;z-index:2;width:100%;height:100%;border:0;padding:0;background:none;color:inherit;cursor:pointer;text-align:left}
+.mx-hear__btn:hover~img,.mx-hear__poster:hover img{transform:scale(1.03)}
+.mx-hear__btn:focus-visible{outline:2px solid var(--accent);outline-offset:-3px;box-shadow:none}
+.mx-play{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);z-index:2;width:68px;height:68px;border-radius:50%;background:var(--accent);display:grid;place-items:center;box-shadow:0 0 0 8px rgba(245,196,0,.25)}
+.mx-play svg{width:22px;height:22px;fill:var(--ink);margin-left:4px}
+.mx-hear__cap{position:absolute;left:14px;right:14px;bottom:12px;z-index:2;display:grid;gap:2px;font-size:var(--t-xs)}
+.mx-hear__cap b{font-family:var(--f-head);font-stretch:78%;font-size:var(--t-md);text-transform:uppercase;letter-spacing:.02em}
+.mx-hear__alt{margin:0}
+.mx-hear__alt a{color:var(--night-ink);text-underline-offset:3px}
+@media (prefers-reduced-motion:reduce){.mx-unk .mx-v::after{animation:none}.mx-hear__poster img{transition:none}}
+@media (max-width:1100px){.mx-fine{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:960px){.mx-race{grid-template-columns:1fr}.mx-hear__poster{aspect-ratio:16/10;min-height:0}}
+@media (max-width:760px){
+  .mx-big{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .mx-big>div{padding:10px 0 12px!important;border-left:0!important}
+  .mx-big>div:nth-child(2n){padding-left:14px!important;border-left:1px solid var(--line-night)!important}
+  .mx-v{font-size:30px}
+  .mx-fine{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:14px}
+  .mx-fine div{display:grid;gap:0;justify-content:start}
+  .mx-fine dd{text-align:left}
+  .mx-hear__poster{aspect-ratio:16/9}
+}
+@media (max-width:380px){.mx-v{font-size:26px}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Machine: spec sheet",
+  "tag": "div",
+  "class": "hm-machine-specs",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Title", "default": "Spec sheet" },
+    { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "Everything on it is custom-built." },
+    { "type": "text", "id": "updated", "label": "Last updated (YYYY-MM-DD)", "default": "2026-10-01", "info": "Change it whenever you edit a number." },
+    { "type": "header", "content": "Hear it" },
+    { "type": "text", "id": "hear_title", "label": "Title", "default": "Hear it" },
+    { "type": "video_url", "id": "video_url", "label": "Video (YouTube or Vimeo)", "accept": ["youtube", "vimeo"], "info": "The video only loads when someone presses play." },
+    { "type": "image_picker", "id": "poster", "label": "Poster image" },
+    { "type": "text", "id": "cap_title", "label": "Caption title", "default": "Play: Monroe, WI" },
+    { "type": "text", "id": "cap_sub", "label": "Caption text", "default": "Green County Fall Nationals, 2026" },
+    { "type": "text", "id": "open_text", "label": "Open on YouTube link", "default": "Watch on YouTube" },
+    { "type": "text", "id": "soon_text", "label": "Text when there is no video", "default": "Video coming soon" }
+  ],
+  "blocks": [
+    {
+      "type": "big",
+      "name": "Big number",
+      "limit": 9,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Engine" },
+        { "type": "text", "id": "value", "label": "Value", "default": "V8", "info": "Empty value = hidden." },
+        { "type": "text", "id": "unit", "label": "Unit", "info": "Small text after the value, like CU IN or LB." },
+        { "type": "text", "id": "sub", "label": "Line below", "default": "Cat 3208, reverse flow" },
+        { "type": "checkbox", "id": "unknown", "label": "Highlight as unknown (yellow)", "default": false }
+      ]
+    },
+    {
+      "type": "row",
+      "name": "Row",
+      "limit": 30,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Chassis" },
+        { "type": "text", "id": "value", "label": "Value", "default": "Custom-built", "info": "Empty value = the row is hidden." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Machine: spec sheet",
+      "blocks": [
+        { "type": "big", "settings": { "label": "Engine", "value": "V8", "sub": "Cat 3208, reverse flow" } },
+        { "type": "big", "settings": { "label": "Displacement", "value": "680", "unit": "CU IN", "sub": "636 stock, +44 built" } },
+        { "type": "big", "settings": { "label": "Horsepower", "value": "Unknown", "sub": "We’ll let the track answer.", "unknown": true } },
+        { "type": "row", "settings": { "label": "Chassis", "value": "Custom-built" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,248 @@
+[
+  {
+    "handle": "engine",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Engine"
+      },
+      {
+        "key": "value",
+        "value": "Cat 3208 V8"
+      },
+      {
+        "key": "text",
+        "value": "A Caterpillar 3208 V8 in reverse flow configuration: a setup you won’t find on any other tractor on the track."
+      },
+      {
+        "key": "image_position",
+        "value": "50% 55%"
+      },
+      {
+        "key": "pos_x",
+        "value": "650"
+      },
+      {
+        "key": "pos_y",
+        "value": "215"
+      },
+      {
+        "key": "label_x",
+        "value": "650"
+      },
+      {
+        "key": "row",
+        "value": "top"
+      },
+      {
+        "key": "order",
+        "value": "1"
+      }
+    ]
+  },
+  {
+    "handle": "displacement",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Displacement"
+      },
+      {
+        "key": "value",
+        "value": "680 CU IN"
+      },
+      {
+        "key": "text",
+        "value": "Factory: 636 cu in. Ours: 680 cu in. Built up from the factory 636 to 680."
+      },
+      {
+        "key": "image_position",
+        "value": "50% 78%"
+      },
+      {
+        "key": "pos_x",
+        "value": "480"
+      },
+      {
+        "key": "pos_y",
+        "value": "300"
+      },
+      {
+        "key": "label_x",
+        "value": "480"
+      },
+      {
+        "key": "row",
+        "value": "bottom"
+      },
+      {
+        "key": "order",
+        "value": "2"
+      }
+    ]
+  },
+  {
+    "handle": "turbo",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Turbo"
+      },
+      {
+        "key": "value",
+        "value": "Single, large"
+      },
+      {
+        "key": "text",
+        "value": "One turbo, and a big one. You see the stack up top; the rest lives under the hood."
+      },
+      {
+        "key": "image_position",
+        "value": "60% 12%"
+      },
+      {
+        "key": "pos_x",
+        "value": "535"
+      },
+      {
+        "key": "pos_y",
+        "value": "62"
+      },
+      {
+        "key": "label_x",
+        "value": "400"
+      },
+      {
+        "key": "row",
+        "value": "top"
+      },
+      {
+        "key": "order",
+        "value": "3"
+      }
+    ]
+  },
+  {
+    "handle": "body",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Body"
+      },
+      {
+        "key": "value",
+        "value": "Challenger 1015"
+      },
+      {
+        "key": "text",
+        "value": "A Challenger 1015 body in matte black, over a custom-built chassis."
+      },
+      {
+        "key": "image_position",
+        "value": "50% 60%"
+      },
+      {
+        "key": "pos_x",
+        "value": "870"
+      },
+      {
+        "key": "pos_y",
+        "value": "190"
+      },
+      {
+        "key": "label_x",
+        "value": "900"
+      },
+      {
+        "key": "row",
+        "value": "top"
+      },
+      {
+        "key": "order",
+        "value": "4"
+      }
+    ]
+  },
+  {
+    "handle": "weight",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Weight"
+      },
+      {
+        "key": "value",
+        "value": "10,000 LB"
+      },
+      {
+        "key": "text",
+        "value": "10,000 pounds of matte black, front weight box included."
+      },
+      {
+        "key": "image_position",
+        "value": "90% 72%"
+      },
+      {
+        "key": "pos_x",
+        "value": "1040"
+      },
+      {
+        "key": "pos_y",
+        "value": "420"
+      },
+      {
+        "key": "label_x",
+        "value": "980"
+      },
+      {
+        "key": "row",
+        "value": "bottom"
+      },
+      {
+        "key": "order",
+        "value": "5"
+      }
+    ]
+  },
+  {
+    "handle": "tires",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Tires"
+      },
+      {
+        "key": "value",
+        "value": "24.5-32"
+      },
+      {
+        "key": "text",
+        "value": "Rear tires sized 24.5-32. This is where 680 cubic inches meets the dirt."
+      },
+      {
+        "key": "image_position",
+        "value": "50% 62%"
+      },
+      {
+        "key": "pos_x",
+        "value": "200"
+      },
+      {
+        "key": "pos_y",
+        "value": "340"
+      },
+      {
+        "key": "label_x",
+        "value": "170"
+      },
+      {
+        "key": "row",
+        "value": "bottom"
+      },
+      {
+        "key": "order",
+        "value": "6"
+      }
+    ]
+  }
+]

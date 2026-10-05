@@ -1,0 +1,125 @@
+[
+  {
+    "handle": "title-partner",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Title Partner"
+      },
+      {
+        "key": "key",
+        "value": "title"
+      },
+      {
+        "key": "price",
+        "value": "25000"
+      },
+      {
+        "key": "tagline",
+        "value": "All season"
+      },
+      {
+        "key": "benefits",
+        "value": "[\"Your name in the team name all season\", \"Biggest logo on the tractor itself\", \"Top logo on all team gear and the trailer\", \"Top billing on the website and every social post\", \"Announcer shout-out at every pull\", \"VIP pit passes at every pull\"]"
+      },
+      {
+        "key": "featured",
+        "value": "false"
+      },
+      {
+        "key": "status",
+        "value": "available"
+      },
+      {
+        "key": "order",
+        "value": "1"
+      },
+      {
+        "key": "updated",
+        "value": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "handle": "pit-partner",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Pit Partner"
+      },
+      {
+        "key": "key",
+        "value": "pit"
+      },
+      {
+        "key": "price",
+        "value": "10000"
+      },
+      {
+        "key": "tagline",
+        "value": "Season package"
+      },
+      {
+        "key": "benefits",
+        "value": "[\"Logo on the team shirt sleeve\", \"Logo on the trailer\", \"Logo and link on this website\", \"Monthly social shout-outs\", \"Announcer mention at select pulls\", \"Pit passes at select pulls\"]"
+      },
+      {
+        "key": "featured",
+        "value": "true"
+      },
+      {
+        "key": "status",
+        "value": "available"
+      },
+      {
+        "key": "order",
+        "value": "2"
+      },
+      {
+        "key": "updated",
+        "value": "2026-10-01"
+      }
+    ]
+  },
+  {
+    "handle": "crew-supporter",
+    "fields": [
+      {
+        "key": "name",
+        "value": "Crew Supporter"
+      },
+      {
+        "key": "key",
+        "value": "crew"
+      },
+      {
+        "key": "price",
+        "value": "5000"
+      },
+      {
+        "key": "tagline",
+        "value": "Built for local shops and fans"
+      },
+      {
+        "key": "benefits",
+        "value": "[\"Name on the trailer supporters board\", \"Listed on this website\", \"Thank-you post on our socials\", \"“The Evil One” sponsor decal for your shop\"]"
+      },
+      {
+        "key": "featured",
+        "value": "false"
+      },
+      {
+        "key": "status",
+        "value": "available"
+      },
+      {
+        "key": "order",
+        "value": "3"
+      },
+      {
+        "key": "updated",
+        "value": "2026-09-12"
+      }
+    ]
+  }
+]

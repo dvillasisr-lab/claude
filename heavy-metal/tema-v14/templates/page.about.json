@@ -1,0 +1,286 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hm-story-hero",
+      "blocks": {
+        "f1": {
+          "type": "fact",
+          "settings": {
+            "value": "20+ years",
+            "text": "Chris F. in tractor pulling",
+            "highlight": true
+          }
+        },
+        "f2": {
+          "type": "fact",
+          "settings": {
+            "value": "12 years",
+            "text": "idea to engine fire",
+            "highlight": false
+          }
+        },
+        "f3": {
+          "type": "fact",
+          "settings": {
+            "value": "11 + 2",
+            "text": "crew and mascots",
+            "highlight": false
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "settings": {
+        "label": "Our Story · Tomah to Waterloo, WI",
+        "title": "Built in Wisconsin. Built to pull.",
+        "lede": "It started in 2014 with one idea. The idea became a Pro Stock tractor, built by one family in its own shop. Then it got a nickname: “The Evil One”. It earned it.",
+        "more_text": "Read the full story",
+        "position_1": "50% 40%",
+        "caption_1": "Chris in the seat",
+        "position_2": "50% 30%"
+      }
+    },
+    "chapters": {
+      "type": "hm-story-chapters",
+      "blocks": {
+        "m1": {
+          "type": "milestone",
+          "settings": {
+            "year": "2014",
+            "event": "Idea is born",
+            "place": "Tomah, WI",
+            "target": "#ch-2014",
+            "kind": "dot"
+          }
+        },
+        "m2": {
+          "type": "milestone",
+          "settings": {
+            "year": "Feb 2020",
+            "event": "First bolt",
+            "place": "Family shop, Waterloo",
+            "target": "#ch-2020",
+            "kind": "dot"
+          }
+        },
+        "m3": {
+          "type": "milestone",
+          "settings": {
+            "year": "2026",
+            "event": "Engine fires, lightning strikes",
+            "place": "Watch the video",
+            "target": "#bolt",
+            "kind": "bolt"
+          }
+        },
+        "m4": {
+          "type": "milestone",
+          "settings": {
+            "year": "2026",
+            "event": "First pull attempt",
+            "place": "A real track, a short run",
+            "target": "#first-pull",
+            "kind": "dot"
+          }
+        },
+        "m5": {
+          "type": "milestone",
+          "settings": {
+            "year": "Today",
+            "event": "[season] season",
+            "place": "",
+            "target": "#season",
+            "kind": "now"
+          }
+        },
+        "c1": {
+          "type": "chapter",
+          "settings": {
+            "position": "50% 58%",
+            "tag": "Tomah, WI",
+            "eyebrow": "2014 · Tomah, WI",
+            "title": "The name was never up for debate",
+            "text": "<p>Chris, a lifelong heavy metal fan, decided to build a Pro Stock pulling tractor. The name picked itself, and so did the nickname: “The Evil One”.</p>",
+            "anchor": "ch-2014"
+          }
+        },
+        "c2": {
+          "type": "chapter",
+          "settings": {
+            "position": "50% 52%",
+            "tag": "Never a solo job",
+            "eyebrow": "Feb 2020 · First bolt",
+            "title": "Built nights and weekends",
+            "text": "<p>The first bolt went in at the family shop in Waterloo. Then came nights and weekends stolen from work and family, sketches redrawn a thousand times, and a shop the whole family turned into a second home.</p>",
+            "anchor": "ch-2020"
+          }
+        },
+        "c3": {
+          "type": "chapter",
+          "settings": {
+            "position": "50% 45%",
+            "tag": "Cat 3208 · 680 ci",
+            "eyebrow": "The shop · Waterloo, WI",
+            "title": "Nothing off the shelf",
+            "text": "<p>A Cat 3208 V8 in reverse flow, a setup you won’t find on any other tractor on the track. 636 cubic inches stock, built out to 680. Nothing about it was quick. <a href=\"/pages/spec-sheet\" title=\"The Machine\">Full spec sheet</a></p>",
+            "anchor": "ch-shop"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "m5",
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "settings": {
+        "nav_label": "Story milestones",
+        "now_default": "Chasing our first win",
+        "title": "How it got built",
+        "subtitle": "Twelve years, one family shop, zero shortcuts.",
+        "carousel_label": "Chapters 01 to 03, scroll sideways for more"
+      }
+    },
+    "read": {
+      "type": "hm-story-read",
+      "settings": {
+        "position": "50% 30%",
+        "badge": "Long read",
+        "kicker": "In our own words",
+        "heading": "Twelve years",
+        "heading_mark": "in the making",
+        "text": "The sketches, the nights and weekends, the family shop, and the night the engine fired and lightning struck. The whole story. Long, loud, ours.",
+        "go": "Read the full story"
+      }
+    },
+    "bolt": {
+      "type": "hm-story-bolt",
+      "settings": {
+        "anchor": "bolt",
+        "number": "04",
+        "eyebrow": "2026 · The night it fired",
+        "pre": "Then, in 2026, the moment came. Chris stood in the shop and turned the engine over for the first time.",
+        "heading_1": "At that exact moment,",
+        "heading_mark": "lightning struck",
+        "heading_2": ", and the power went out.",
+        "post": "<p>Some would call it a coincidence. <strong>We call it a sign.</strong> From that night on, there was no doubt about what we had built.</p>",
+        "video_title": "The night it fired",
+        "duration": "",
+        "caption": "Sound on. Sorry, neighbors. This is the shop the moment the engine fired and the lightning hit.",
+        "soon_text": "Video coming soon."
+      }
+    },
+    "pull": {
+      "type": "hm-story-pull",
+      "settings": {
+        "anchor": "first-pull",
+        "tag": "First pull attempt",
+        "number": "05",
+        "eyebrow": "2026 · First pull",
+        "title": "The pull didn’t finish that day",
+        "text_1": "<p>The first pull didn’t go the way anyone hoped. A small, unexpected issue came up and the run ended before it should have. It was a disappointing day.</p>",
+        "quote": "We won’t sugarcoat it.",
+        "text_2": "<p>But getting the tractor onto a real track at all, twelve years after the idea and six years of building it with our own hands, was already something to be proud of. <strong>The story was just getting started.</strong></p>",
+        "today_label": "Today ·",
+        "no_win_line": "Chasing our first win",
+        "foot_text": "On the NTPA & PPL Badger State circuits. Every run goes in the Pit Log.",
+        "link_text": "See the Pit Log",
+        "link_url": "/blogs/pit-log"
+      }
+    },
+    "pair": {
+      "type": "hm-story-pair",
+      "blocks": {
+        "r1": {
+          "type": "fact",
+          "settings": {
+            "label": "Owner",
+            "value": "Gert Stessens"
+          }
+        },
+        "r2": {
+          "type": "fact",
+          "settings": {
+            "label": "Home",
+            "value": "Belgium"
+          }
+        },
+        "r3": {
+          "type": "fact",
+          "settings": {
+            "label": "Met",
+            "value": "at a pull in the Netherlands"
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3"
+      ],
+      "settings": {
+        "aria_label": "Friends and the song",
+        "bro_number": "06",
+        "bro_eyebrow": "Friends on the circuit",
+        "bro_tag_1": "“The Evil One”",
+        "bro_tag_2": "Diesel Ross",
+        "bro_title": "Tractor brothers",
+        "bro_lede": "<p>“The Evil One” has a brother across the ocean: <strong>Diesel Ross</strong>, a Pro Stock tractor in Europe owned by Gert Stessens from Belgium.</p>",
+        "bro_text": "<p>We met Gert at a pull in the Netherlands. Between the look of the two tractors and the friendship between Gert and Chris, “The Evil One” and Diesel Ross are considered tractor brothers.</p>",
+        "song_number": "07",
+        "song_eyebrow": "Walk-up song",
+        "song_title": "Fear of the Dark",
+        "song_artist": "Iron Maiden · 2015 Remaster",
+        "song_url": "https://open.spotify.com/track/6p8eFfPw3nQkf37aT3AkmK",
+        "song_link_text": "Listen on Spotify",
+        "song_caption": "The song “The Evil One” rolls up to the line with. Turn it up. Louder. No, louder.",
+        "tagline": "#HEAVYMETALPULLING",
+        "pl_title": "Full Volume or Nothing",
+        "pl_sub": "The official pit playlist. Loud is the only setting.",
+        "pl_updated": "2026-10-03",
+        "pl_button": "Play the playlist",
+        "pl_fine": "Loads the Spotify player.",
+        "playlist_url": "https://open.spotify.com/playlist/5eIKNHuPUpXlMNRFoNx0rr"
+      }
+    },
+    "crew": {
+      "type": "hm-story-crew",
+      "settings": {
+        "title": "The people behind the pull",
+        "subtitle": "Family, friends and two mascots. Guess who’s in charge.",
+        "chief_years": "20+",
+        "chief_years_text": "years in tractor pulling",
+        "team_label": "Team",
+        "pit_label": "Pit crew",
+        "mascot_label": "Mascots",
+        "list_label": "Crew members"
+      }
+    },
+    "cta": {
+      "type": "hm-story-cta",
+      "settings": {
+        "title": "Born in a lightning storm. Built to pull.",
+        "text": "Merch designed by the crew. Every order keeps the diesel flowing.",
+        "button": "Shop the drop",
+        "url": "/collections/all"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "chapters",
+    "read",
+    "bolt",
+    "pull",
+    "pair",
+    "crew",
+    "cta"
+  ]
+}

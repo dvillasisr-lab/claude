@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "hm-article",
+      "settings": {
+        "back_text": "",
+        "album_label": "From the gallery"
+      }
+    }
+  },
+  "order": ["main"]
+}

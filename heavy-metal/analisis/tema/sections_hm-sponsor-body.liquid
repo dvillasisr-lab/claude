@@ -1,0 +1,163 @@
+<section class="hm hm-spon" aria-label="Sponsorship details">
+  <div class="hm-stats">{%- for block in section.blocks -%}{%- if block.type == 'stat' -%}<div class="hm-stat" {{ block.shopify_attributes }}><strong>{{ block.settings.number }}</strong><span>{{ block.settings.label }}</span></div>{%- endif -%}{%- endfor -%}</div>
+  <div style="display:flex;flex-direction:column;gap:22px">
+    <p class="hm-eyebrow" style="color:#A8A59A;font-weight:700">WHERE YOUR BRAND SHOWS UP</p>
+    <p style="margin:0;font-size:15px;color:#8C8A82">Catch us live at PPL Badger State and NTPA events.</p>
+    <div class="hm-places">{%- assign n = 0 -%}{%- for block in section.blocks -%}{%- if block.type == 'placement' -%}{%- assign n = n | plus: 1 -%}<div class="hm-place" {{ block.shopify_attributes }}><span class="hm-place__n">0{{ n }}</span><span class="hm-place__t">{{ block.settings.title }}</span><p class="hm-place__d">{{ block.settings.text }}</p></div>{%- endif -%}{%- endfor -%}</div>
+  </div>
+  {%- assign partner_count = 0 -%}
+  {%- for block in section.blocks -%}{%- if block.type == 'partner' -%}{%- assign partner_count = partner_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+  <div id="partners" style="display:flex;flex-direction:column;gap:28px;border-top:1px solid #2A2A26;padding-top:56px">
+    <div style="display:flex;flex-direction:column;gap:10px"><p class="hm-eyebrow" style="color:#F5C400">OUR PARTNERS</p><h2 class="hm-h2" style="font-size:clamp(36px,3.4vw,48px)">RIDING WITH US</h2></div>
+    {%- if partner_count > 0 -%}
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px">
+      {%- for block in section.blocks -%}{%- if block.type == 'partner' -%}
+      <div style="border:1px solid #2A2A26;background:#121210;padding:24px;display:flex;align-items:center;justify-content:center;min-height:100px" {{ block.shopify_attributes }}>
+        {%- if block.settings.logo -%}{{ block.settings.logo | image_url: width: 300 | image_tag: alt: block.settings.name, loading: 'lazy', style: 'max-width:100%;max-height:60px;width:auto;filter:grayscale(1) brightness(1.4)' }}{%- else -%}<span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:2px;color:#D8D5CB">{{ block.settings.name }}</span>{%- endif -%}
+      </div>
+      {%- endif -%}{%- endfor -%}
+    </div>
+    {%- else -%}
+    <div style="border:1px dashed #45443F;background:#121210;padding:56px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;letter-spacing:2px;color:#F2F0E9;text-transform:uppercase">NO SPONSORS ON BOARD YET</div>
+      <p style="margin:0;max-width:520px;font-size:17px;line-height:1.6;color:#A8A59A">Every logo on this wall starts with one conversation. Be the first name behind Heavy Metal this season.</p>
+      <a class="hm-btn hm-btn--solid" href="#kit"><span>BECOME OUR FIRST PARTNER</span></a>
+    </div>
+    {%- endif -%}
+  </div>
+  <div class="hm-tiers" id="tiers">
+    {%- for block in section.blocks -%}{%- if block.type == 'tier' -%}
+    <div class="hm-tier{% if block.settings.featured %} is-featured{% endif %}" {{ block.shopify_attributes }}>
+      {%- if block.settings.featured -%}<span class="hm-tier__flag">MOST POPULAR</span>{%- endif -%}
+      <div class="hm-tier__top"><span class="hm-tier__name">{{ block.settings.name }}</span></div>
+      <div class="hm-tier__price"><strong>{{ block.settings.price }}</strong><span>/ SEASON</span></div>
+      <ul>{%- assign items = block.settings.benefits | newline_to_br | split: '<br />' -%}{%- for it in items -%}{%- assign itx = it | strip -%}{%- if itx != '' -%}<li>{{ itx }}</li>{%- endif -%}{%- endfor -%}</ul>
+      <a class="hm-btn {% if block.settings.featured %}hm-btn--solid{% else %}hm-btn--ghost{% endif %} hm-btn--full" href="#kit"><span>CLAIM THIS SPOT</span></a>
+    </div>
+    {%- endif -%}{%- endfor -%}
+  </div>
+  <div class="hm-kit" id="kit">
+    <div style="display:flex;flex-direction:column;gap:18px"><h2>{{ section.settings.kit_title }}</h2><p style="margin:0;font-size:17px;line-height:1.6;color:#D8D5CB">{{ section.settings.kit_text }}</p></div>
+    {%- form 'contact', id: 'hm-sponsor-form', class: 'hm-kit__form' -%}
+      {%- if form.posted_successfully? -%}<p class="hm-form-msg is-wide" style="grid-column:1/-1">THANKS. WE'LL BE IN TOUCH SOON TO TALK NUMBERS.</p>
+      {%- else -%}
+      <input type="hidden" name="contact[subject]" value="Sponsorship inquiry">
+      <div class="hm-kit__field"><label for="sp-name">Your name</label><input id="sp-name" type="text" name="contact[name]" required autocomplete="name" placeholder="Jane Smith"></div>
+      <div class="hm-kit__field"><label for="sp-co">Company</label><input id="sp-co" type="text" name="contact[company]" autocomplete="organization" placeholder="Smith Diesel &amp; Repair"></div>
+      <div class="hm-kit__field"><label for="sp-email">Email</label><input id="sp-email" type="email" name="contact[email]" required autocomplete="email" placeholder="jane@company.com"></div>
+      <div class="hm-kit__field"><label for="sp-phone">Phone</label><input id="sp-phone" type="tel" name="contact[phone]" autocomplete="tel" placeholder="(555) 123 4567"></div>
+      <div class="hm-kit__field is-wide"><label for="sp-tier">Interested in</label><select id="sp-tier" name="contact[tier]">{%- for block in section.blocks -%}{%- if block.type == 'tier' -%}<option{% if block.settings.featured %} selected{% endif %}>{{ block.settings.name }}</option>{%- endif -%}{%- endfor -%}<option>Not sure yet</option></select></div>
+      <div class="hm-kit__field is-wide"><button type="submit" class="hm-btn hm-btn--solid hm-btn--full"><span>TALK TO US ABOUT SPONSORING</span></button>{%- if form.errors -%}<p class="hm-form-msg">{{ form.errors | default_errors }}</p>{%- endif -%}</div>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "HM Sponsors details",
+  "settings": [
+    {
+      "type": "text",
+      "id": "kit_title",
+      "label": "Form title",
+      "default": "BECOME A SPONSOR"
+    },
+    {
+      "type": "textarea",
+      "id": "kit_text",
+      "label": "Form text",
+      "default": "Tell us a bit about your business and we'll reply within 24 hours to talk numbers and placement."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "[#]"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "PULLS PER SEASON"
+        }
+      ]
+    },
+    {
+      "type": "placement",
+      "name": "Placement",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "TEAM GEAR"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "On the crew shirts and on the merch fans buy and wear."
+        }
+      ]
+    },
+    {
+      "type": "partner",
+      "name": "Partner logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo (leave blank to show the name as text)"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Partner name",
+          "default": "Partner name"
+        }
+      ]
+    },
+    {
+      "type": "tier",
+      "name": "Tier",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "PIT PARTNER"
+        },
+        {
+          "type": "text",
+          "id": "price",
+          "label": "Price",
+          "default": "$10,000"
+        },
+        {
+          "type": "textarea",
+          "id": "benefits",
+          "label": "Benefits (one per line)"
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Most popular",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "HM Sponsors details"
+    }
+  ]
+}
+{% endschema %}
+

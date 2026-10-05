@@ -1,0 +1,165 @@
+{%- comment -%}
+  The Machine · 1 · Top: label, title, lede, key specs (with the hidden easter egg link) and the real photo strip.
+{%- endcomment -%}
+{%- liquid
+  assign egg_word = section.settings.egg_word | strip
+  assign egg_page = pages['3208']
+  if egg_page != blank
+    assign egg_url = egg_page.url
+  else
+    assign egg_url = '/pages/3208'
+  endif
+  assign key_count = 0
+  assign photo_count = 0
+  for block in section.blocks
+    if block.type == 'key'
+      assign key_count = key_count | plus: 1
+    elsif block.type == 'photo'
+      assign photo_count = photo_count | plus: 1
+    endif
+  endfor
+-%}
+<section class="sect mx-hero" aria-labelledby="mx-h1-{{ section.id }}">
+  <div class="wrap">
+    <div class="mx-top">
+      <div class="mx-top__txt">
+        {%- if section.settings.label != blank -%}<p class="label muted">{{ section.settings.label | escape }}</p>{%- endif -%}
+        <h1 class="h-hero" id="mx-h1-{{ section.id }}">{{ section.settings.title | escape }}</h1>
+        {%- if section.settings.lede != blank -%}<p class="lede">{{ section.settings.lede | escape }}</p>{%- endif -%}
+      </div>
+      {%- if key_count > 0 -%}
+        <dl class="mx-keys" aria-label="{{ section.settings.keys_label | escape }}">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'key' and block.settings.value != blank -%}
+              {%- liquid
+                assign val = block.settings.value | escape
+                if egg_word != blank and val contains egg_word
+                  assign egg_link = '<a class="mx-egg" href="' | append: egg_url | append: '" title="Psst">' | append: egg_word | append: '</a>'
+                  assign val = val | replace_first: egg_word, egg_link
+                endif
+              -%}
+              <div {{ block.shopify_attributes }}><dt>{{ block.settings.label | escape }}</dt><dd class="num">{{ val }}</dd></div>
+            {%- endif -%}
+          {%- endfor -%}
+        </dl>
+      {%- endif -%}
+    </div>
+    {%- if photo_count > 0 -%}
+      <ul class="mx-gal" tabindex="0" role="region" aria-label="{{ section.settings.photos_label | escape }}">
+        {%- assign n = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'photo' -%}
+            {%- assign n = n | plus: 1 -%}
+            <li {{ block.shopify_attributes }}>
+              <figure>
+                <div class="mx-photo">
+                  {%- if block.settings.image != blank -%}
+                    {%- liquid
+                      assign pos = block.settings.position | default: '50% 50%'
+                      assign style = 'object-position:' | append: pos
+                      if n == 1 and section.index == 1
+                        echo block.settings.image | image_url: width: 1200 | image_tag: widths: '360, 540, 720, 960, 1200', sizes: '(max-width: 760px) 74vw, 25vw', class: 'photo', style: style, fetchpriority: 'high'
+                      elsif n <= 2 and section.index == 1
+                        echo block.settings.image | image_url: width: 1200 | image_tag: widths: '360, 540, 720, 960, 1200', sizes: '(max-width: 760px) 74vw, 25vw', class: 'photo', style: style
+                      else
+                        echo block.settings.image | image_url: width: 1200 | image_tag: widths: '360, 540, 720, 960, 1200', sizes: '(max-width: 760px) 74vw, 25vw', class: 'photo', style: style, loading: 'lazy'
+                      endif
+                    -%}
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'mx-ph' }}
+                  {%- endif -%}
+                </div>
+                {%- if block.settings.caption != blank -%}
+                  <figcaption><b class="mx-n">{% if n < 10 %}0{% endif %}{{ n }}</b>{{ block.settings.caption | escape }}</figcaption>
+                {%- endif -%}
+              </figure>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+.mx-hero.mx-hero{padding-block:clamp(20px,2.4vw,32px) clamp(32px,3.6vw,48px)}
+.mx-top{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:20px clamp(32px,5vw,80px);align-items:end;margin-bottom:20px}
+.mx-top__txt{display:grid;gap:8px}
+.mx-top__txt .lede{max-width:66ch;margin:0}
+.mx-keys{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:0 0 4px;border-top:1px solid var(--ink);align-self:end}
+.mx-keys div{padding:7px 12px 7px 0;border-bottom:1px solid var(--line);display:grid;gap:1px;align-content:start}
+.mx-keys div:nth-child(2n){padding-left:14px;border-left:1px solid var(--line)}
+.mx-keys dt{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.mx-keys dd{margin:0;font-family:var(--f-head);font-stretch:75%;font-weight:700;font-size:clamp(18px,1.6vw,22px);text-transform:uppercase;color:var(--ink);line-height:1.15;white-space:nowrap}
+.mx-egg{color:inherit;text-decoration:none}
+.mx-egg:hover{color:var(--accent)}
+.mx-photo{position:relative;overflow:hidden;background:var(--tile);margin:0}
+.mx-photo img,.mx-photo .mx-ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mx-n{font-variant-numeric:tabular-nums;font-weight:800;letter-spacing:.04em}
+.mx-gal{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;list-style:none;margin:0;padding:0}
+.mx-gal:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.mx-gal figure{margin:0;display:grid;gap:8px}
+.mx-gal .mx-photo{aspect-ratio:4/5;max-height:calc(100svh - var(--header) - var(--announce) - 260px);min-height:260px;width:100%}
+.mx-gal figcaption{font-size:var(--t-xs);color:var(--mute);display:flex;gap:8px;padding-inline:8px}
+.mx-gal figcaption b{color:var(--ink)}
+@media (max-width:760px){
+  .mx-top{grid-template-columns:1fr}
+  .mx-keys dd{font-size:17px}
+  .mx-gal{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:2px;margin-inline:calc(-1 * var(--gutter));padding-inline:var(--gutter);scroll-padding-inline:var(--gutter);scrollbar-width:none}
+  .mx-gal::-webkit-scrollbar{display:none}
+  .mx-gal li{flex:0 0 74%;scroll-snap-align:start}
+  .mx-gal .mx-photo{max-height:none;min-height:0}
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Machine: top",
+  "tag": "div",
+  "class": "hm-machine-top",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Label", "default": "Pro Stock · Waterloo, WI" },
+    { "type": "text", "id": "title", "label": "Title", "default": "The Machine" },
+    { "type": "textarea", "id": "lede", "label": "Intro", "default": "A Caterpillar 3208 V8, reverse flow: a setup you won’t find on any other tractor on the track. Nothing about it is off the shelf, and nothing about it was quick." },
+    { "type": "text", "id": "keys_label", "label": "Key specs label (screen readers)", "default": "Key specs" },
+    { "type": "text", "id": "egg_word", "label": "Hidden link word", "default": "3208", "info": "When a key spec value contains this word, the word quietly links to the 3208 page. Leave empty to turn it off." },
+    { "type": "text", "id": "photos_label", "label": "Photo strip label (screen readers)", "default": "Photos of “The Evil One”" }
+  ],
+  "blocks": [
+    {
+      "type": "key",
+      "name": "Key spec",
+      "limit": 8,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Engine" },
+        { "type": "text", "id": "value", "label": "Value", "default": "Cat 3208 V8", "info": "Empty value = the row is hidden." }
+      ]
+    },
+    {
+      "type": "photo",
+      "name": "Photo",
+      "limit": 8,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Alt text comes from the image (Content > Files)." },
+        { "type": "text", "id": "caption", "label": "Caption", "default": "The Cat 3208, in the shop" },
+        { "type": "text", "id": "position", "label": "Focus point (x% y%)", "default": "50% 55%" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Machine: top",
+      "blocks": [
+        { "type": "key", "settings": { "label": "Engine", "value": "Cat 3208 V8" } },
+        { "type": "key", "settings": { "label": "Built to", "value": "680 CU IN" } },
+        { "type": "key", "settings": { "label": "Weight", "value": "10,000 LB" } },
+        { "type": "key", "settings": { "label": "Horsepower", "value": "Unknown" } },
+        { "type": "photo", "settings": { "caption": "The Cat 3208, in the shop", "position": "50% 55%" } },
+        { "type": "photo", "settings": { "caption": "Profile, matte black", "position": "50% 78%" } },
+        { "type": "photo", "settings": { "caption": "From the rear, on the track", "position": "50% 70%" } },
+        { "type": "photo", "settings": { "caption": "Head on, white smoke", "position": "50% 65%" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,58 @@
+{%- comment -%}
+  Open Graph and Twitter tags. hm_title / hm_desc / hm_brand come from layout/theme.liquid (already cleaned).
+  The title comes from page_title, which Shopify already HTML escapes, so it is printed without escape.
+  Image: the page image (product, article, collection image, or the social sharing image from
+  Online Store > Preferences), else the theme's "Logo for search engines and sharing" setting.
+{%- endcomment -%}
+{%- liquid
+  assign og_brand = hm_brand | default: settings.hm_brand_name | default: shop.name
+  assign og_title = hm_title | default: page_title | default: og_brand
+  assign og_url = canonical_url | default: request.origin
+  assign og_type = 'website'
+  assign og_description = hm_desc | default: page_description | default: shop.description | default: og_brand
+
+  if request.page_type == 'product'
+    assign og_type = 'product'
+  elsif request.page_type == 'article'
+    assign og_type = 'article'
+  elsif request.page_type == 'password'
+    assign og_url = request.origin
+  endif
+
+  assign og_image = page_image
+  if og_image == blank and settings.hm_logo != blank
+    assign og_image = settings.hm_logo
+  endif
+-%}
+
+<meta property="og:site_name" content="{{ og_brand | escape }}">
+<meta property="og:url" content="{{ og_url }}">
+<meta property="og:title" content="{{ og_title }}">
+<meta property="og:type" content="{{ og_type }}">
+<meta property="og:description" content="{{ og_description | escape }}">
+<meta property="og:locale" content="en_US">
+
+{%- if og_image != blank -%}
+  <meta property="og:image" content="https:{{ og_image | image_url: width: 1200 }}">
+  <meta property="og:image:secure_url" content="https:{{ og_image | image_url: width: 1200 }}">
+  {%- liquid
+    assign og_w = og_image.width | at_most: 1200
+    assign og_h = og_image.height | times: og_w | divided_by: og_image.width
+  -%}
+  <meta property="og:image:width" content="{{ og_w }}">
+  <meta property="og:image:height" content="{{ og_h }}">
+  <meta property="og:image:alt" content="{%- if og_image.alt != blank -%}{{ og_image.alt | escape }}{%- else -%}{{ og_title }}{%- endif -%}">
+  <meta name="twitter:image" content="https:{{ og_image | image_url: width: 1200 }}">
+{%- endif -%}
+
+{%- if request.page_type == 'product' -%}
+  <meta property="og:price:amount" content="{{ product.price | money_without_currency | strip_html }}">
+  <meta property="og:price:currency" content="{{ cart.currency.iso_code }}">
+{%- endif -%}
+
+{%- if settings.social_twitter_link != blank -%}
+  <meta name="twitter:site" content="{{ settings.social_twitter_link | split: 'twitter.com/' | last | prepend: '@' }}">
+{%- endif -%}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ og_title }}">
+<meta name="twitter:description" content="{{ og_description | escape }}">

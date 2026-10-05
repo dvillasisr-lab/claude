@@ -1,0 +1,267 @@
+{%- comment -%}
+  HM Home Shop: fotitos de categoria (menu) + una sola fila de productos de una coleccion.
+  La tarjeta es snippets/hm-card.liquid (la hace el agente COMMERCE).
+  Sin productos activos: sale "Coming soon" con el formulario de The Evil List.
+{%- endcomment -%}
+{%- liquid
+  assign coll = section.settings.collection
+  if coll == blank
+    assign coll = collections.all
+  endif
+  assign limit = section.settings.products_count
+  assign extra = section.settings.extra_product
+  if extra != blank
+    assign limit = limit | minus: 1
+  endif
+  assign has_products = false
+  if coll != blank and coll.products_count > 0
+    assign has_products = true
+  endif
+  if extra != blank
+    assign has_products = true
+  endif
+  assign menu = section.settings.cats_menu
+  assign badge_new = section.settings.badge_new_collection
+  assign badge_ltd = section.settings.badge_ltd_collection
+-%}
+
+<section class="shop-home" aria-labelledby="drop-title-{{ section.id }}" data-hm-home-shop>
+  <div class="wrap">
+    <div class="home-head">
+      <h2 class="h1" id="drop-title-{{ section.id }}">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.link_label != blank and has_products -%}
+        <a class="link" href="{{ section.settings.link_url | default: routes.all_products_collection_url }}">{{ section.settings.link_label | escape }}</a>
+      {%- endif -%}
+    </div>
+
+    {%- if has_products and menu != blank and menu.links.size > 0 -%}
+      <nav aria-label="{{ section.settings.cats_label | default: 'Shop by category' | escape }}">
+        <ul class="cats">
+          {%- for link in menu.links -%}
+            {%- liquid
+              assign thumb = blank
+              assign obj_handle = ''
+              if link.type == 'collection_link'
+                assign thumb = link.object.image
+                assign obj_handle = link.object.handle
+              endif
+            -%}
+            <li>
+              <a class="cat" href="{{ link.url }}">
+                <span class="thumb{% if thumb == blank %} thumb--mock{% endif %}">
+                  {%- if thumb != blank -%}
+                    {{
+                      thumb
+                      | image_url: width: 200
+                      | image_tag:
+                        class: 'photo',
+                        alt: '',
+                        widths: '100, 200',
+                        sizes: '100px',
+                        loading: 'lazy'
+                    }}
+                  {%- else -%}
+                    {% render 'hm-mock', handle: obj_handle %}
+                  {%- endif -%}
+                  {%- if badge_new != blank and obj_handle == badge_new.handle -%}
+                    <span class="thumb__new">New</span>
+                  {%- elsif badge_ltd != blank and obj_handle == badge_ltd.handle -%}
+                    <span class="thumb__new thumb__new--ink">Ltd</span>
+                  {%- endif -%}
+                </span>
+                <span>{{ link.title | escape }}</span>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    {%- endif -%}
+
+    {%- if has_products -%}
+      <div class="pgrid" data-hm-row aria-label="{{ section.settings.heading | escape }}">
+        {%- if coll != blank and limit > 0 -%}
+          {%- for product in coll.products limit: limit -%}
+            {%- if extra != blank and product.id == extra.id -%}{%- continue -%}{%- endif -%}
+            {% render 'hm-card', product: product, sizes: '(min-width: 1200px) 300px, (min-width: 761px) 25vw, 68vw' %}
+          {%- endfor -%}
+        {%- endif -%}
+        {%- if extra != blank -%}
+          {% render 'hm-card', product: extra, sizes: '(min-width: 1200px) 300px, (min-width: 761px) 25vw, 68vw' %}
+        {%- endif -%}
+      </div>
+      <div class="swipe" data-hm-swipe aria-hidden="true">
+        <span class="swipe__bar"><i data-hm-swipe-fill></i></span>
+        <span class="swipe__txt">{{ section.settings.swipe_label | escape }} <span>→</span></span>
+      </div>
+    {%- elsif coll == blank and request.design_mode -%}
+      <div class="pgrid">
+        {%- for i in (1..4) -%}
+          <div class="card">
+            <div class="ph">{{ 'product-' | append: i | placeholder_svg_tag: 'photo' }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="soon">
+        <span class="soon__bolt" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
+        <p class="label">{{ section.settings.soon_label | escape }}</p>
+        <p class="h2">{{ section.settings.soon_heading | escape }}</p>
+        <p class="muted">{{ section.settings.soon_text | escape }}</p>
+        {%- assign soon_form_id = 'hm-soon-' | append: section.id -%}
+        {%- form 'customer', id: soon_form_id, class: 'soon__form' -%}
+          <input type="hidden" name="contact[tags]" value="evil-list">
+          {%- if form.posted_successfully? -%}
+            <p role="status" style="margin:0"><b>You’re on the list.</b> One email when the drop goes live. That’s it.</p>
+          {%- else -%}
+            <label class="vh" for="{{ soon_form_id }}-email">Email</label>
+            <input
+              class="input"
+              id="{{ soon_form_id }}-email"
+              type="email"
+              name="contact[email]"
+              required
+              placeholder="Email address"
+              autocomplete="email"
+              {% if form.errors %}aria-invalid="true" aria-describedby="{{ soon_form_id }}-err"{% endif %}
+            >
+            <button class="btn" type="submit">{{ section.settings.soon_button | escape }}</button>
+            {%- if form.errors -%}
+              <p class="soon__err" id="{{ soon_form_id }}-err" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% stylesheet %}
+  .shop-home { background: var(--bg); padding-block: clamp(32px, 4vw, 48px); }
+  .home-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px; margin-bottom: 16px; }
+  .home-head .h1 { margin: 0; }
+  .home-head .link { white-space: nowrap; }
+  .shop-home .cats { margin-bottom: 20px; }
+  .shop-home .cat .thumb { position: relative; display: block; }
+  .shop-home .cat .thumb .photo,
+  .shop-home .cat .thumb svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .shop-home .pgrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .shop-home .ph svg { width: 100%; height: 100%; }
+  .shop-home .soon__form { flex-wrap: wrap; }
+  .shop-home .soon__err { flex-basis: 100%; margin: 0; color: var(--alert); font-size: var(--t-xs); }
+  @media (min-width: 761px) { .shop-home .card__media .ph { --ar: 5/6; } }
+  @media (max-height: 940px) and (min-width: 761px) { .shop-home .card__media .ph { --ar: 1/1; } }
+  @media (max-width: 760px) {
+    .shop-home .pgrid {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--gutter);
+      margin-inline: calc(var(--gutter) * -1);
+      padding-inline: var(--gutter);
+      padding-bottom: 6px;
+      scrollbar-width: none;
+      overscroll-behavior-x: contain;
+    }
+    .shop-home .pgrid::-webkit-scrollbar { display: none; }
+    .shop-home .pgrid > * { flex: 0 0 68%; scroll-snap-align: start; }
+    .shop-home .cats {
+      padding-right: 48px;
+      margin-right: calc(var(--gutter) * -1);
+      -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 56px), transparent);
+      mask-image: linear-gradient(90deg, #000 calc(100% - 56px), transparent);
+    }
+  }
+  .swipe { display: none; }
+  @media (max-width: 760px) {
+    .swipe { display: flex; align-items: center; gap: 12px; margin-top: 12px; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); }
+    .swipe[hidden] { display: none; }
+    .swipe__bar { position: relative; flex: 1; height: 3px; background: var(--line); overflow: hidden; }
+    .swipe__bar i { position: absolute; left: 0; top: 0; bottom: 0; width: var(--sw-w, 40%); transform: translateX(var(--sw-x, 0%)); background: var(--ink); }
+    .swipe__txt span { display: inline-block; margin-left: 2px; }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    if (window.HMHomeShop) return;
+    var mq = window.matchMedia('(max-width:760px)');
+    function init(root) {
+      if (root.__hmShop) return;
+      var row = root.querySelector('[data-hm-row]'), sw = root.querySelector('[data-hm-swipe]'), swf = root.querySelector('[data-hm-swipe-fill]');
+      if (!row || !sw || !swf) return;
+      var up = function () {
+        var max = row.scrollWidth - row.clientWidth, vis = row.scrollWidth ? row.clientWidth / row.scrollWidth : 1;
+        sw.hidden = max < 4 && mq.matches;
+        swf.style.setProperty('--sw-w', (vis * 100).toFixed(1) + '%');
+        swf.style.setProperty('--sw-x', (max > 0 ? row.scrollLeft / max * (1 / vis - 1) * 100 : 0).toFixed(1) + '%');
+      };
+      row.addEventListener('scroll', up, { passive: true });
+      window.addEventListener('resize', up);
+      root.__hmShop = { destroy: function () { row.removeEventListener('scroll', up); window.removeEventListener('resize', up); root.__hmShop = null; } };
+      up();
+    }
+    function initAll(scope) { [].slice.call((scope || document).querySelectorAll('[data-hm-home-shop]')).forEach(init); }
+    window.HMHomeShop = { init: init };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { initAll(); });
+    else initAll();
+    document.addEventListener('shopify:section:load', function (e) { initAll(e.target); });
+    document.addEventListener('shopify:section:unload', function (e) {
+      [].slice.call(e.target.querySelectorAll('[data-hm-home-shop]')).forEach(function (r) { if (r.__hmShop) r.__hmShop.destroy(); });
+    });
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "HM Home Shop",
+  "tag": "div",
+  "class": "hm-home-shop-section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Título", "default": "“The Evil One” Drop" },
+    { "type": "text", "id": "link_label", "label": "Link: texto", "default": "Shop all" },
+    { "type": "url", "id": "link_url", "label": "Link: destino" },
+    { "type": "header", "content": "Categorías" },
+    {
+      "type": "link_list",
+      "id": "cats_menu",
+      "label": "Menú de categorías",
+      "info": "Cada link a una colección muestra la foto destacada de esa colección."
+    },
+    { "type": "text", "id": "cats_label", "label": "Nombre accesible del menú", "default": "Shop by category" },
+    { "type": "collection", "id": "badge_new_collection", "label": "Colección con etiqueta “New”" },
+    { "type": "collection", "id": "badge_ltd_collection", "label": "Colección con etiqueta “Ltd”" },
+    { "type": "header", "content": "Productos" },
+    { "type": "collection", "id": "collection", "label": "Colección (New drop)" },
+    {
+      "type": "range",
+      "id": "products_count",
+      "label": "Productos en la fila",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "product",
+      "id": "extra_product",
+      "label": "Producto al final de la fila (opcional)",
+      "info": "Por ejemplo la edición especial. Cuenta dentro de los productos de la fila."
+    },
+    { "type": "text", "id": "swipe_label", "label": "Texto en celular", "default": "Swipe for more" },
+    { "type": "header", "content": "Tienda vacía" },
+    { "type": "text", "id": "soon_label", "label": "Etiqueta", "default": "Merch" },
+    { "type": "text", "id": "soon_heading", "label": "Título", "default": "Coming soon" },
+    {
+      "type": "textarea",
+      "id": "soon_text",
+      "label": "Texto",
+      "default": "The first drop from the crew behind “The Evil One” is on its way. Leave your email. We’ll yell when it lands."
+    },
+    { "type": "text", "id": "soon_button", "label": "Botón", "default": "Notify me" }
+  ],
+  "presets": [
+    { "name": "HM Home Shop" }
+  ]
+}
+{% endschema %}

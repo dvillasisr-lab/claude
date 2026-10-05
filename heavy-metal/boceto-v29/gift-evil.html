@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gift Evil Gift Card · Heavy Metal Pro Stock: “The Evil One”</title>
+<meta name="description" content="Gift Evil: the gift card from Heavy Metal Pro Stock: “The Evil One”. $25, $50 or $100, sent by email today or on the day you pick. Never expires.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V4
+   Orden: 1 tarjeta grande + caja de compra (misma rejilla que producto, la tarjeta llena la izquierda)
+   2 cómo funciona en tres pasos a todo el ancho · 3 preguntas en dos columnas. Un solo botón lleno en la página. */
+html,body{overflow-x:clip}
+
+/* 1 · tarjeta + compra */
+.ge{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;padding-block:20px var(--sect)}
+@media (min-width:900px){.ge{grid-template-columns:minmax(0,1fr) minmax(0,480px);gap:clamp(28px,3.4vw,56px);align-items:start}}
+.ge-stage{background:var(--tile);display:grid;place-items:center;padding:clamp(28px,6vw,96px) clamp(20px,5vw,72px);min-height:clamp(300px,52vw,620px);position:relative;overflow:hidden}
+@media (min-width:900px){.ge-stage{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--header) + 16px);height:clamp(440px,calc(100svh - 180px),680px)}}
+.ge-stage::after{content:"";position:absolute;left:12%;right:12%;bottom:clamp(20px,5vw,60px);height:24px;background:radial-gradient(50% 50% at 50% 50%,rgba(28,27,25,.28),transparent 70%);filter:blur(6px)}
+
+/* la tarjeta: negro mate con tormenta, logo, monto y rayo. Proporción de tarjeta real (85.6 × 54) */
+.gcard{position:relative;z-index:1;width:min(100%,560px);aspect-ratio:85.6/54;border-radius:clamp(10px,1.4vw,18px);overflow:hidden;isolation:isolate;color:var(--night-ink);
+  background:
+    radial-gradient(60% 80% at 82% 30%,rgba(170,178,190,.30),transparent 70%),
+    radial-gradient(70% 60% at 10% 0%,rgba(100,110,126,.35),transparent 70%),
+    linear-gradient(160deg,#16191E 0%,#23282F 55%,#3A414B 100%);
+  box-shadow:0 1px 0 rgba(255,255,255,.08) inset,0 18px 40px -18px rgba(18,18,17,.55);
+  transform:rotate(-3deg);transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.ge-stage:hover .gcard{transform:rotate(-1deg) translateY(-4px)}
+@media (prefers-reduced-motion:reduce){.gcard,.ge-stage:hover .gcard{transition:none;transform:rotate(-3deg)}}
+.gcard__in{position:absolute;inset:0;padding:7% 7.5%;display:grid;grid-template-rows:auto 1fr auto}
+.gcard__logo{width:58%;height:auto}
+.gcard__sub{margin:6px 0 0;font-family:var(--f-head);font-size:clamp(9px,1.1vw,13px);font-weight:700;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+.gcard__bolt{position:absolute;right:7%;top:9%;width:16%;height:auto;opacity:.95}
+.gcard__foot{display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.gcard__name{margin:0;font-family:var(--f-head);font-stretch:70%;font-weight:800;font-size:clamp(18px,2.4vw,30px);text-transform:uppercase;letter-spacing:.02em;line-height:1}
+.gcard__amt{margin:0;font-family:var(--f-head);font-stretch:62%;font-weight:800;font-size:clamp(44px,7vw,92px);line-height:.85;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.gcard__amt sup{font-size:.42em;vertical-align:.95em;margin-right:2px;font-weight:700}
+.gcard__stripe{position:absolute;left:0;right:0;bottom:0;height:5px;background:var(--accent)}
+
+.ge-cap{margin:0;font-size:var(--t-xs);color:var(--mute);text-align:center;position:absolute;left:0;right:0;bottom:12px;z-index:1}
+
+/* caja de compra */
+.gb{display:grid;gap:18px;align-content:start}
+.gb .label{color:var(--mute)}
+.gb h1{margin:4px 0 0;font-family:var(--f-head);font-stretch:75%;font-weight:800;text-transform:uppercase;font-size:var(--t-hero);line-height:1;color:var(--ink)}
+.gb__lead{margin:0;max-width:44ch;color:var(--soft)}
+.gb fieldset{border:0;margin:0;padding:0;min-width:0}
+.gb legend{padding:0;margin-bottom:8px;font-size:var(--t-xs);font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.amts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.amts input,.who input{position:absolute;opacity:0;width:1px;height:1px}
+.amt{display:grid;place-items:center;min-height:52px;border:1px solid var(--line);background:var(--surface);font-family:var(--f-head);font-stretch:80%;font-weight:800;font-size:20px;color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums;transition:border-color .15s}
+.amt:hover{border-color:var(--ink)}
+.amts input:checked+.amt{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.amts input:focus-visible+.amt,.who input:focus-visible+.whob{outline:2px solid var(--ink);outline-offset:2px}
+
+.who{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.whob{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border:1px solid var(--line);background:var(--surface);font-size:var(--t-sm);font-weight:600;color:var(--ink);cursor:pointer;text-align:center;padding:0 10px}
+.whob:hover{border-color:var(--ink)}
+.who input:checked+.whob{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+
+.rcp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px;margin-top:12px}
+.rcp .fld{display:grid;gap:4px;min-width:0}
+.rcp .fld--wide{grid-column:1/-1}
+.rcp label{font-size:var(--t-xs);font-weight:600;color:var(--ink)}
+.rcp .opt{font-weight:400;color:var(--mute)}
+.rcp textarea.input{min-height:88px;padding:10px 12px;resize:vertical;line-height:1.45}
+.rcp .hint{margin:0;font-size:var(--t-xs);color:var(--mute)}
+.rcp .err{margin:0;font-size:var(--t-xs);color:var(--alert);font-weight:600}
+.rcp .input[aria-invalid="true"]{border-color:var(--alert)}
+.cnt{font-size:var(--t-xs);color:var(--mute);justify-self:end;font-variant-numeric:tabular-nums}
+@media (max-width:480px){.rcp{grid-template-columns:minmax(0,1fr)}}
+
+.gb .btn{width:100%;min-height:52px}
+.gb__facts{list-style:none;margin:0;padding:14px 0 0;border-top:1px solid var(--line);display:grid;gap:8px;font-size:var(--t-sm);color:var(--soft)}
+.gb__facts li{display:flex;gap:10px;align-items:baseline}
+.gb__facts li::before{content:"";flex:none;width:7px;height:7px;background:var(--ink);transform:translateY(-1px) rotate(45deg)}
+.gb__msg{margin:0;font-size:var(--t-sm)}
+
+/* 2 · tres pasos a todo el ancho */
+.steps{border-top:1px solid var(--line);padding-block:var(--sect)}
+.steps__list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,3vw,48px);counter-reset:s}
+.steps__list li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;align-items:baseline}
+.steps__n{grid-row:span 2;font-family:var(--f-head);font-stretch:62%;font-weight:800;font-size:clamp(48px,5vw,72px);line-height:.8;color:var(--ink)}
+.steps__list h3{margin:0;font-family:var(--f-head);font-stretch:80%;font-weight:800;text-transform:uppercase;font-size:var(--t-h2);line-height:1.1;color:var(--ink)}
+.steps__list p{margin:0;color:var(--soft);max-width:36ch}
+@media (max-width:760px){.steps__list{grid-template-columns:minmax(0,1fr);gap:24px}}
+
+/* 3 · preguntas: título a la izquierda, respuestas a la derecha */
+.gq{border-top:1px solid var(--line);padding-block:var(--sect);display:grid;grid-template-columns:minmax(0,1fr);gap:16px 48px}
+@media (min-width:900px){.gq{grid-template-columns:minmax(0,1fr) minmax(0,2fr)}}
+.gq h2{margin:0;font-family:var(--f-head);font-stretch:80%;font-weight:800;text-transform:uppercase;font-size:var(--t-h1);line-height:1.05;color:var(--ink)}
+.gq__side p{margin:8px 0 0;color:var(--soft)}
+.gq__list{border-top:1px solid var(--ink)}
+.gq details{border-bottom:1px solid var(--line)}
+.gq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;align-items:center;min-height:52px;padding:10px 0;font-weight:700;color:var(--ink)}
+.gq summary::-webkit-details-marker{display:none}
+.gq summary::after{content:"+";flex:none;font-size:22px;font-weight:400;line-height:1}
+.gq details[open] summary::after{content:"−"}
+.gq details p{margin:0 0 16px;max-width:64ch;color:var(--soft)}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="shop"></div>
+
+<main id="main">
+
+<nav class="wrap crumbs" aria-label="Breadcrumb" style="padding-top:14px;font-size:var(--t-xs);color:var(--mute)"><a href="shop.html" style="text-decoration:none">Shop</a> <span aria-hidden="true">/</span> <span aria-current="page" style="color:var(--ink)">Gift Evil</span></nav>
+
+<!-- 1 · tarjeta + compra -->
+<div class="wrap ge">
+  <div class="ge-stage" aria-hidden="true">
+    <div class="gcard" id="gcard">
+      <svg class="gcard__bolt" viewBox="0 0 40 64"><path d="M24 0 6 36h12L12 64l22-38H21L30 0z" fill="#F5C400"/></svg>
+      <div class="gcard__in">
+        <div><img class="gcard__logo" src="img/logo-bone.svg" alt="" width="560" height="81"><p class="gcard__sub">Pro Stock · “The Evil One”</p></div>
+        <span></span>
+        <div class="gcard__foot"><p class="gcard__name">Gift Evil</p><p class="gcard__amt"><sup>$</sup><span id="gcard-amt">50</span></p></div>
+      </div>
+      <span class="gcard__stripe"></span>
+    </div>
+    <p class="ge-cap">Sent by email. Print it or keep it on your phone.</p>
+  </div>
+
+  <form class="gb" id="gb" novalidate>
+    <div>
+      <p class="label">Gift card</p>
+      <h1>Gift Evil</h1>
+    </div>
+    <p class="gb__lead">Not sure of their size? Give them the whole shop and let them pick their own evil.</p>
+
+    <fieldset>
+      <legend>Amount</legend>
+      <div class="amts">
+        <input type="radio" name="amt" id="a25" value="25"><label class="amt" for="a25">$25</label>
+        <input type="radio" name="amt" id="a50" value="50" checked><label class="amt" for="a50">$50</label>
+        <input type="radio" name="amt" id="a100" value="100"><label class="amt" for="a100">$100</label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Who gets it?</legend>
+      <div class="who">
+        <input type="radio" name="who" id="w-me" value="me" checked><label class="whob" for="w-me">Send it to me</label>
+        <input type="radio" name="who" id="w-them" value="them" aria-controls="rcp"><label class="whob" for="w-them">Email it to them</label>
+      </div>
+      <div class="rcp" id="rcp" hidden>
+        <div class="fld fld--wide"><label for="r-email">Their email</label><input class="input" id="r-email" type="email" autocomplete="off" required aria-describedby="r-email-err"><p class="err" id="r-email-err" aria-live="polite"></p></div>
+        <div class="fld"><label for="r-name">Their name <span class="opt">(optional)</span></label><input class="input" id="r-name" type="text" autocomplete="off" maxlength="60"></div>
+        <div class="fld"><label for="r-date">Send on <span class="opt">(optional)</span></label><input class="input" id="r-date" type="date" aria-describedby="r-date-hint"></div>
+        <p class="hint fld--wide" id="r-date-hint">Leave the date empty to send it right after checkout. You can pick a day up to 90 days out.</p>
+        <div class="fld fld--wide"><label for="r-msg">Your message <span class="opt">(optional)</span></label><textarea class="input" id="r-msg" maxlength="200" rows="3" aria-describedby="r-msg-cnt" placeholder="Happy birthday. Full pull or nothing."></textarea><span class="cnt" id="r-msg-cnt">0 / 200</span></div>
+      </div>
+    </fieldset>
+
+    <button class="btn" type="submit" id="gb-add">Add to cart · $50</button>
+    <p class="gb__msg" id="gb-msg" role="status" aria-live="polite"></p>
+
+    <ul class="gb__facts">
+      <li>Never expires.</li>
+      <li>Good for anything in the shop, special edition included.</li>
+      <li>Delivered by email, so it never gets lost in the mail.</li>
+    </ul>
+    <p class="note">En Shopify esto es un producto "Gift card" nativo (sin apps) con 3 variantes: $25, $50 y $100. Usa la plantilla <b>product.gift-card</b>. El formulario "Email it to them" es el de destinatario que ya trae Shopify: correo, nombre, mensaje de 200 caracteres y fecha de envío de hasta 90 días. Los montos se cambian en el producto, no en el tema. El link en el menú, en el footer y en el carrito vacío sale de Navegación.</p>
+  </form>
+</div>
+
+<!-- 2 · cómo funciona -->
+<section class="wrap steps" aria-labelledby="steps-h">
+  <h2 class="vh" id="steps-h">How it works</h2>
+  <ol class="steps__list">
+    <li><span class="steps__n" aria-hidden="true">1</span><h3>Pick an amount</h3><p>$25, $50 or $100. Add it to the cart with anything else or check out on its own.</p></li>
+    <li><span class="steps__n" aria-hidden="true">2</span><h3>We email it</h3><p>To you, so you can print it, or straight to them on the day you choose, with your note.</p></li>
+    <li><span class="steps__n" aria-hidden="true">3</span><h3>They gear up</h3><p>They enter the code at checkout. Whatever they don't spend stays on the card.</p></li>
+  </ol>
+</section>
+
+<!-- 3 · preguntas -->
+<section class="wrap gq" aria-labelledby="gq-h">
+  <div class="gq__side">
+    <h2 id="gq-h">Gift card questions</h2>
+    <p>Anything else? <a href="faq.html">See the FAQ</a> or <a href="contact.html?topic=order">send us a note</a>.</p>
+  </div>
+  <div class="gq__list">
+    <details><summary>Does it expire?</summary><p>No. The balance stays on the card until it's used up.</p></details>
+    <details><summary>What can they buy with it?</summary><p>Anything in the shop, special edition included. It can't be used to buy another gift card.</p></details>
+    <details><summary>Can I schedule it for a birthday?</summary><p>Yes. Pick “Email it to them”, choose the date and we send it that day. You get a copy of the receipt right away.</p></details>
+    <details><summary>How do they check the balance?</summary><p>The link in the gift card email always shows what's left. Their balance also shows at checkout when they enter the code.</p></details>
+    <details><summary>They lost the email. Now what?</summary><p><a href="contact.html?topic=order">Send us a note</a> with your order number and we'll send it again.</p></details>
+  </div>
+  <p class="note" style="grid-column:1/-1">Estas preguntas salen de metaobjetos FAQ item con la página "gift" (se agrega esa opción al campo pages). También aparecen en el FAQ general, en la categoría Orders. Que no venza es un ajuste de Shopify: Configuración &gt; Tarjetas de regalo &gt; Vencimiento: "Las tarjetas de regalo nunca vencen".</p>
+</section>
+
+</main>
+
+<div data-hm-footer></div>
+<script src="hm.js"></script>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  function amt() { var r = document.querySelector('input[name="amt"]:checked'); return r ? r.value : '50'; }
+  function them() { return $('w-them').checked; }
+
+  function sync() {
+    var a = amt();
+    $('gcard-amt').textContent = a;
+    $('gb-add').textContent = 'Add to cart · $' + a;
+  }
+  document.querySelectorAll('input[name="amt"]').forEach(function (r) { r.addEventListener('change', sync); });
+
+  /* destinatario: abre los campos y lleva el foco al correo */
+  document.querySelectorAll('input[name="who"]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      $('rcp').hidden = !them();
+      $('w-them').setAttribute('aria-expanded', String(them()));
+      if (them()) $('r-email').focus();
+    });
+  });
+  $('w-them').setAttribute('aria-expanded', 'false');
+
+  /* fecha: de hoy a 90 días */
+  var d0 = new Date(), d1 = new Date(); d1.setDate(d1.getDate() + 90);
+  function iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  $('r-date').min = iso(d0); $('r-date').max = iso(d1);
+
+  $('r-msg').addEventListener('input', function () { $('r-msg-cnt').textContent = this.value.length + ' / 200'; });
+  $('r-email').addEventListener('input', function () { if (this.getAttribute('aria-invalid')) { this.removeAttribute('aria-invalid'); $('r-email-err').textContent = ''; } });
+
+  $('gb').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var a = amt(), v = '$' + a;
+    if (them()) {
+      var em = $('r-email');
+      if (!em.value.trim() || !em.checkValidity()) {
+        em.setAttribute('aria-invalid', 'true');
+        $('r-email-err').textContent = em.value.trim() ? 'Check the email address.' : 'Enter their email so we know where to send it.';
+        em.focus(); return;
+      }
+      var dt = $('r-date').value;
+      v += ' · to ' + ($('r-name').value.trim() || em.value.trim()) + (dt ? ' on ' + new Date(dt + 'T12:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '');
+    }
+    $('gb-msg').textContent = '';
+    window.hmAdd('Gift Evil gift card', v, '$' + a + '.00', 1, { id: 'gift-evil', cat: 'gift', thumb: '<span class="gthumb" aria-hidden="true"><b>$' + a + '</b></span>' });
+  });
+  sync();
+})();
+</script>
+</body>
+</html>

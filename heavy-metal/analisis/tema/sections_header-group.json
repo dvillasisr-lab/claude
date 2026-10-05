@@ -1,0 +1,33 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "hm-header": {
+      "type": "hm-header",
+      "settings": {
+        "link_1_label": "THE MACHINE",
+        "link_1_url": "/pages/spec-sheet",
+        "link_2_label": "THE TEAM",
+        "link_2_url": "/pages/about",
+        "link_3_label": "SCHEDULE",
+        "link_3_url": "/pages/schedule",
+        "link_4_label": "SPONSORS",
+        "link_4_url": "/pages/sponsors",
+        "shop_label": "SHOP MERCH",
+        "shop_url": "/collections/all"
+      }
+    }
+  },
+  "order": [
+    "hm-header"
+  ]
+}

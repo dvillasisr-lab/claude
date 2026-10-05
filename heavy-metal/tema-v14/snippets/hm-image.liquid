@@ -1,0 +1,53 @@
+{% doc %}
+  Responsive image helper. Outputs an <img> with srcset (image_url + image_tag), sizes, width and height,
+  lazy loading by default. When the image is blank it outputs a neutral placeholder (never a broken image).
+
+  @param {image} image - Image, product image, collection image or file (MediaImage) reference
+  @param {string} [sizes] - The sizes attribute (default "100vw")
+  @param {string} [widths] - Comma separated widths for srcset (default "180, 360, 540, 720, 900, 1080, 1440, 1800")
+  @param {number} [max_width] - Width of the src fallback (default 1080)
+  @param {string} [loading] - "lazy" (default) or "eager" (above the fold)
+  @param {boolean} [priority] - true only on the LCP image: fetchpriority high and eager loading
+  @param {string} [alt] - Alt text; defaults to the image alt. Pass "" for decorative images
+  @param {string} [class] - Class for the img (and the placeholder)
+  @param {string} [placeholder] - placeholder_svg_tag name (default "image"); "none" renders nothing
+  @param {number} [crop_ratio] - Optional width/height ratio to crop server side (e.g. 1 for square)
+
+  @example
+  {% render 'hm-image', image: section.settings.image, sizes: '(min-width: 990px) 50vw, 100vw', class: 'photo' %}
+{% enddoc %}
+{%- liquid
+  assign img_sizes = sizes | default: '100vw'
+  assign img_widths = widths | default: '180, 360, 540, 720, 900, 1080, 1440, 1800'
+  assign img_max = max_width | default: 1080
+  assign img_class = class | default: ''
+  assign img_loading = loading | default: 'lazy'
+  if priority
+    assign img_loading = 'eager'
+  endif
+  assign img_alt = image.alt | default: ''
+  if alt != nil
+    assign img_alt = alt
+  endif
+-%}
+{%- if image != blank -%}
+  {%- liquid
+    if crop_ratio
+      assign img_h = img_max | divided_by: crop_ratio | round
+      assign img_src = image | image_url: width: img_max, height: img_h, crop: 'center'
+    else
+      assign img_src = image | image_url: width: img_max
+    endif
+  -%}
+  {%- if priority -%}
+    {{- img_src | image_tag: widths: img_widths, sizes: img_sizes, loading: img_loading, fetchpriority: 'high', alt: img_alt, class: img_class -}}
+  {%- else -%}
+    {{- img_src | image_tag: widths: img_widths, sizes: img_sizes, loading: img_loading, decoding: 'async', alt: img_alt, class: img_class -}}
+  {%- endif -%}
+{%- elsif placeholder != 'none' -%}
+  {%- liquid
+    assign ph_name = placeholder | default: 'image'
+    assign ph_class = img_class | append: ' placeholder-svg' | strip
+  -%}
+  {{- ph_name | placeholder_svg_tag: ph_class -}}
+{%- endif -%}

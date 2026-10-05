@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "album": {
+      "type": "hm-album",
+      "settings": {
+        "gallery_url": "/pages/gallery",
+        "schedule_url": "/pages/schedule"
+      }
+    }
+  },
+  "order": ["album"]
+}

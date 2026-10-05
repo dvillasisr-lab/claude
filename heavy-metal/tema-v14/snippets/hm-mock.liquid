@@ -1,0 +1,58 @@
+{% doc %}
+  Drawn product mock (the icons from the design): a black silhouette with the Heavy Metal Pro Stock: “The Evil One” mark.
+  Used for category tiles and for products that have no photo yet.
+  Pass `handle` (a collection handle) or `product`. Falls back to the tee.
+
+  @param {string} [handle] - collection handle
+  @param {object} [product] - product
+  @param {string} [kind] - tees, sweats, hats, kids, gear or bundles
+
+  @example
+  {% render 'hm-mock', handle: link.object.handle %}
+{% enddoc %}
+{%- liquid
+  assign kind = kind | default: ''
+  if kind == blank and product
+    assign t = product.type | append: ' ' | append: product.title | downcase
+    if t contains 'bundle' or t contains 'pack'
+      assign kind = 'bundles'
+    elsif t contains 'kid' or t contains 'youth' or t contains 'toddler'
+      assign kind = 'kids'
+    elsif t contains 'hoodie' or t contains 'sweat' or t contains 'crewneck'
+      assign kind = 'sweats'
+    elsif t contains 'cap' or t contains 'hat' or t contains 'beanie'
+      assign kind = 'hats'
+    elsif t contains 'sticker' or t contains 'koozie' or t contains 'decal'
+      assign kind = 'gear'
+    endif
+  elsif kind == blank and handle != blank
+    case handle
+      when 'sweatshirts', 'hoodies', 'sweats'
+        assign kind = 'sweats'
+      when 'hats', 'caps'
+        assign kind = 'hats'
+      when 'kids'
+        assign kind = 'kids'
+      when 'stickers-gear', 'gear', 'stickers'
+        assign kind = 'gear'
+      when 'bundles'
+        assign kind = 'bundles'
+    endcase
+  endif
+  if kind == blank
+    assign kind = 'tees'
+  endif
+-%}
+{%- if kind == 'tees' -%}
+  <svg class="mock" viewBox="0 0 100 100" aria-hidden="true"><g><path d="M34 18 18 26l-10 18 14 6 6-10v52h44V40l6 10 14-6-10-18-16-8c-2 6-8 10-16 10s-14-4-16-10Z" fill="var(--ink)"/><image href="{{ 'logo-bone.svg' | asset_url }}" x="36" y="38" width="28" height="4.1"/><g fill="#ECEAE5" font-family="Archivo,Arial,sans-serif" font-weight="800" text-anchor="middle"><text x="50" y="45.2" font-size="2.4" letter-spacing=".3">PRO STOCK</text><text x="50" y="48.4" font-size="2.3">“THE EVIL ONE”</text></g></g></svg>
+{%- elsif kind == 'sweats' -%}
+  <svg class="mock" viewBox="0 0 100 100" aria-hidden="true"><g><path d="M40 22c0-6 4-10 10-10s10 4 10 10l18 6 12 40-12 4-8-22v46H30V50l-8 22-12-4 12-40Z" fill="var(--ink)"/><path d="M43 22c2 4 4 6 7 6s5-2 7-6" fill="none" stroke="#ECEAE5" stroke-width=".9" opacity=".5"/><path d="M38 76h24l-3 10H41Z" fill="none" stroke="#ECEAE5" stroke-width=".9" opacity=".45"/><image href="{{ 'logo-bone.svg' | asset_url }}" x="36" y="40" width="28" height="4.1"/><g fill="#ECEAE5" font-family="Archivo,Arial,sans-serif" font-weight="800" text-anchor="middle"><text x="50" y="47.2" font-size="2.4" letter-spacing=".3">PRO STOCK</text><text x="50" y="50.4" font-size="2.3">“THE EVIL ONE”</text></g></g></svg>
+{%- elsif kind == 'hats' -%}
+  <svg class="mock" viewBox="0 0 100 100" aria-hidden="true"><g><path d="M20 62c0-20 13-34 30-34s30 14 30 34Zm-4 2h70c4 0 6 6 2 8-10 4-30 4-44 2H16c-4 0-4-10 0-10Z" fill="var(--ink)"/><text x="50" y="52" font-size="9" font-family="Archivo,Arial,sans-serif" font-weight="900" text-anchor="middle" fill="#ECEAE5" letter-spacing="-.3">HM</text></g></svg>
+{%- elsif kind == 'kids' -%}
+  <svg class="mock" viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(50 54) scale(.82) translate(-50 -54)"><path d="M34 18 18 26l-10 18 14 6 6-10v52h44V40l6 10 14-6-10-18-16-8c-2 6-8 10-16 10s-14-4-16-10Z" fill="var(--ink)"/><image href="{{ 'logo-bone.svg' | asset_url }}" x="36" y="38" width="28" height="4.1"/><g fill="#ECEAE5" font-family="Archivo,Arial,sans-serif" font-weight="800" text-anchor="middle"><text x="50" y="45.2" font-size="2.4" letter-spacing=".3">PRO STOCK</text><text x="50" y="48.4" font-size="2.3">“THE EVIL ONE”</text></g></g></svg>
+{%- elsif kind == 'gear' -%}
+  <svg class="mock" viewBox="0 0 100 100" aria-hidden="true"><g><path d="M50 12 61 36l26 3-19 18 5 26-23-13-23 13 5-26-19-18 26-3Z" fill="var(--ink)"/><text x="50" y="56" font-size="13" font-family="Archivo,Arial,sans-serif" font-weight="900" text-anchor="middle" fill="var(--accent)" letter-spacing="-.3">HM</text></g></svg>
+{%- elsif kind == 'bundles' -%}
+  <svg class="mock" viewBox="0 0 100 100" aria-hidden="true"><g><path d="M34 18 18 26l-10 18 14 6 6-10v52h44V40l6 10 14-6-10-18-16-8c-2 6-8 10-16 10s-14-4-16-10Z" fill="var(--ink)"/><image href="{{ 'logo-bone.svg' | asset_url }}" x="36" y="38" width="28" height="4.1"/><g fill="#ECEAE5" font-family="Archivo,Arial,sans-serif" font-weight="800" text-anchor="middle"><text x="50" y="45.2" font-size="2.4" letter-spacing=".3">PRO STOCK</text><text x="50" y="48.4" font-size="2.3">“THE EVIL ONE”</text></g></g><path d="M20 62c0-20 13-34 30-34s30 14 30 34Zm-4 2h70c4 0 6 6 2 8-10 4-30 4-44 2H16c-4 0-4-10 0-10Z" transform="translate(52 52) scale(.42)" fill="var(--ink)" stroke="var(--tile)" stroke-width="3"/></svg>
+{%- endif -%}

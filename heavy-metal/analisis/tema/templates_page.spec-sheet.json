@@ -1,0 +1,37 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "hm-spec-sheet",
+      "blocks": {
+        "s0": { "type": "spec", "settings": { "label": "ENGINE", "value": "CAT 3208 V8 (REVERSE-FLOW)" } },
+        "s1": { "type": "spec", "settings": { "label": "DISPLACEMENT", "value": "680 CU IN (636 STOCK)" } },
+        "s2": { "type": "spec", "settings": { "label": "TURBO", "value": "SINGLE, LARGE" } },
+        "s3": { "type": "spec", "settings": { "label": "HORSEPOWER", "value": "UNKNOWN" } },
+        "s4": { "type": "spec", "settings": { "label": "WEIGHT", "value": "10,000 LB" } },
+        "s5": { "type": "spec", "settings": { "label": "TIRES", "value": "24.5-32" } },
+        "s6": { "type": "spec", "settings": { "label": "TRANSMISSION", "value": "UNKNOWN" } },
+        "s7": { "type": "spec", "settings": { "label": "CHASSIS", "value": "CUSTOM-BUILT" } }
+      },
+      "block_order": ["s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7"],
+      "settings": {
+        "model": "Challenger 1015",
+        "class": "PRO STOCK",
+        "home_base": "WATERLOO, WI",
+        "circuits": "NTPA & PPL Badger State",
+        "quote": "This thing is f#cking evil.",
+        "quote_sub": "Everything on it is custom-built."
+      }
+    }
+  },
+  "order": ["main"]
+}
+

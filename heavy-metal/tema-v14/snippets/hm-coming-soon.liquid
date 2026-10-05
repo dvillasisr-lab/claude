@@ -1,0 +1,60 @@
+{% doc %}
+  Empty store "Coming soon" block with The Evil List signup (form 'customer', tag evil-list).
+  Shows on Shop and Search when there is no merch. Goes away by itself when the first product is published.
+
+  @param {string} [id] - Unique form id (default HmComingSoon)
+  @param {string} [heading] - Heading text (default "Coming soon")
+  @param {string} [text] - Text under the heading
+  @param {string} [label] - Small label above the heading (default "Merch")
+  @param {string} [tags] - Customer tags for the signup (default "evil-list,notify")
+
+  @example
+  {% render 'hm-coming-soon', id: 'HmSoonShop' %}
+{% enddoc %}
+{%- liquid
+  assign form_id = id | default: 'HmComingSoon'
+  assign title = heading | default: 'Coming soon'
+  assign eyebrow = label | default: 'Merch'
+  assign form_tags = tags | default: 'evil-list,notify'
+  assign body = text | default: 'The first drop from the crew behind “The Evil One” is on its way. Get a heads up when it lands.'
+-%}
+<div class="soon">
+  <span class="soon__bolt" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>
+  <p class="label">{{ eyebrow | escape }}</p>
+  <h2 class="h2">{{ title | escape }}</h2>
+  <p class="muted">{{ body | escape }}</p>
+  {%- form 'customer', id: form_id, class: 'soon__form-wrap', novalidate: 'novalidate', data-hm-notify-form: '' -%}
+    <input type="hidden" name="contact[tags]" value="{{ form_tags | escape }}">
+    <div class="soon__form" data-hm-form-fields>
+      <label class="vh" for="{{ form_id }}-email">Email</label>
+      <input
+        class="input"
+        id="{{ form_id }}-email"
+        type="email"
+        name="contact[email]"
+        required
+        placeholder="Email address"
+        autocomplete="email"
+        spellcheck="false"
+        aria-describedby="{{ form_id }}-err"
+      >
+      <button class="btn" type="submit">Notify me</button>
+    </div>
+    <p class="small hm-form-err" id="{{ form_id }}-err" role="alert" data-hm-form-errors>
+      {%- if form.errors -%}{{ form.errors | default_errors }}{%- endif -%}
+    </p>
+    <p role="status" data-hm-form-ok{% unless form.posted_successfully? %} hidden{% endunless %} style="margin:0">
+      <b>You’re on The Evil List.</b> One email when the drop goes live. That’s it.
+    </p>
+    <p class="consent" style="margin-top:8px">Email only. Unsubscribe anytime.</p>
+  {%- endform -%}
+</div>
+
+{% stylesheet %}
+  .soon__form-wrap { width: min(420px, 100%); display: grid; gap: 6px; justify-items: center; margin-top: 6px; }
+  .soon__form-wrap .soon__form { width: 100%; margin-top: 0; }
+  .soon__form .btn { flex: none; white-space: nowrap; }
+  .soon__form .input { min-width: 0; }
+  .soon .hm-form-err { margin: 0; color: var(--alert); font-weight: 600; }
+  .soon .hm-form-err:empty { display: none; }
+{% endstylesheet %}

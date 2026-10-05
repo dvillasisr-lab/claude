@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sponsor Heavy Metal</title>
+<meta name="description" content="Put your brand on Heavy Metal The Evil One, the only Cat V8 in a Pro Stock field of John Deere sixes. About 20 NTPA and PPL Badger State events planned. Request the sponsor media kit.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="hm.css">
+<style>
+/* SPONSORS v2 · claro y profesional (lo lee un gerente de marketing). Solo variables de hm.css.
+   Prefijo sp- = futura sección Liquid hm-sponsors-*. */
+html,body{overflow-x:clip}
+.sp-stack{display:grid;gap:18px;align-content:start}
+.sp-head{display:grid;gap:12px;margin-bottom:clamp(28px,4vw,56px);max-width:60rem}
+.sp-list{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.sp-list li{position:relative;padding-left:20px;color:var(--text);font-size:var(--t-sm)}
+.sp-list li::before{content:"";position:absolute;left:0;top:.7em;width:8px;height:1px;background:var(--ink)}
+
+/* 1 · hero */
+.sp-hero{padding-block:clamp(40px,6vw,88px) var(--sect)}
+.sp-hero__grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(28px,5vw,80px);align-items:center}
+.sp-hero__copy{display:grid;gap:24px}
+.sp-hero__copy h1{overflow-wrap:anywhere;min-width:0}
+.sp-facts{display:flex;flex-wrap:wrap;gap:8px 28px;margin:0;padding:18px 0 0;list-style:none;border-top:1px solid var(--line);font-size:var(--t-sm);color:var(--mute)}
+.sp-facts b{color:var(--ink);font-weight:700}
+@media (max-width:900px){.sp-hero__grid{grid-template-columns:1fr}}
+
+/* 2 · why pulling */
+.sp-reasons{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(28px,4vw,56px) var(--gap)}
+.sp-reasons li{display:grid;gap:10px;border-top:1px solid var(--line);padding-top:18px;align-content:start}
+.sp-reasons .n{font-size:var(--t-xs);font-weight:700;letter-spacing:.12em;color:var(--mute)}
+.sp-reasons p{margin:0;color:var(--text);max-width:52ch}
+.sp-src{font-size:var(--t-xs);color:var(--mute)}
+@media (max-width:700px){.sp-reasons{grid-template-columns:1fr}}
+
+/* 3 · numbers strip */
+.sp-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap)}
+.sp-stat{display:grid;gap:4px;border-top:1px solid var(--ink);padding-top:16px}
+.sp-stat__n{font-size:var(--t-3xl);font-weight:700;font-stretch:112%;line-height:1;color:var(--ink)}
+.sp-stat__n--ph{color:var(--mute)}
+.sp-stat__l{font-size:var(--t-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin-top:8px}
+.sp-stat__s{font-size:var(--t-sm);color:var(--mute)}
+@media (max-width:760px){.sp-stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:28px}}
+
+/* 4 · decal map */
+.sp-map{display:grid;grid-template-columns:minmax(0,8fr) minmax(0,4fr);gap:var(--gap);align-items:start}
+.sp-map__fig{margin:0;display:grid;gap:14px}
+.sp-map__stage{background:var(--surface)}
+.sp-map__stage::before{display:none}
+.sp-map__stage svg{position:absolute;inset:0;width:100%;height:100%}
+.sp-sil .b{fill:var(--bg);stroke:var(--soft);stroke-width:2.5}
+.sp-sil .w{fill:var(--tile);stroke:var(--soft);stroke-width:2.5}
+.sp-sil .t{fill:none;stroke:var(--line);stroke-width:12;stroke-dasharray:5 11}
+.sp-sil .h{fill:var(--surface);stroke:var(--soft);stroke-width:2.5}
+.sp-sil .g{stroke:var(--line);stroke-width:4}
+.sp-sil .s{fill:var(--tile)}
+.sp-sil .r{fill:none;stroke:var(--mute);stroke-width:7;stroke-linejoin:round}
+.sp-hot{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;border:2px solid var(--ink);background:var(--ink);color:var(--surface);font-weight:700;font-size:var(--t-sm);cursor:pointer;display:grid;place-items:center;padding:0;z-index:2;transition:transform .15s}
+.sp-hot[data-status="reserved"]{background:var(--surface);color:var(--mute);border-style:dashed;border-color:var(--mute)}
+.sp-hot[aria-pressed="true"]{background:var(--accent);border-color:var(--ink);color:var(--ink);border-style:solid;transform:translate(-50%,-50%) scale(1.15)}
+.sp-hot:hover{transform:translate(-50%,-50%) scale(1.1)}
+@media (max-width:520px){.sp-hot{width:28px;height:28px;font-size:var(--t-xs)}}
+.sp-legend{display:flex;flex-wrap:wrap;gap:8px 20px;margin:0;padding:0;list-style:none;font-size:var(--t-sm);color:var(--mute)}
+.sp-legend li{display:flex;align-items:center;gap:8px}
+.sp-dot{width:12px;height:12px;border-radius:50%;background:var(--ink)}
+.sp-dot--res{background:var(--surface);border:1.5px dashed var(--mute)}
+.sp-dot--sel{background:var(--accent);box-shadow:inset 0 0 0 1.5px var(--ink)}
+.sp-zones{display:grid;gap:0;margin:0;padding:0;list-style:none;border-top:1px solid var(--line)}
+.sp-zone{width:100%;display:grid;grid-template-columns:2rem minmax(0,1fr) auto;gap:10px;align-items:center;min-height:52px;padding:8px 12px;background:none;border:0;border-bottom:1px solid var(--line);color:var(--ink);font:inherit;text-align:left;cursor:pointer}
+.sp-zone__n{font-size:var(--t-xs);font-weight:700;color:var(--mute)}
+.sp-zone__name{font-weight:600;font-size:var(--t-sm);letter-spacing:.06em;text-transform:uppercase}
+.sp-zone__st{font-size:var(--t-xs);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.sp-zone:hover{background:var(--surface)}
+.sp-zone[aria-pressed="true"]{background:var(--surface);box-shadow:inset 3px 0 0 var(--ink)}
+.sp-zone[aria-pressed="true"] .sp-zone__n{color:var(--ink)}
+.sp-panel{background:var(--surface);padding:clamp(20px,2.4vw,28px);display:grid;gap:14px}
+.sp-panel dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px;margin:0;font-size:var(--t-sm)}
+.sp-panel dt{color:var(--mute);font-size:var(--t-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase;align-self:center}
+.sp-panel dd{margin:0;color:var(--ink)}
+.sp-panel p{margin:0;color:var(--text);font-size:var(--t-sm)}
+@media (max-width:960px){.sp-map{grid-template-columns:1fr}}
+
+/* 5 · tiers */
+.sp-tiers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--gap);align-items:stretch}
+.sp-tier{background:var(--surface);min-width:0;padding:clamp(20px,2.2vw,28px);display:grid;grid-template-rows:auto auto auto 1fr auto;gap:18px}
+.sp-tier--main{background:var(--ink);color:var(--night-ink)}
+.sp-tier--main .sp-list li{color:var(--line)}
+.sp-tier--main .sp-list li::before{background:var(--accent)}
+.sp-tier--main .sp-tier__for{color:var(--line)}
+.sp-tier--main .sp-tier__price small{color:var(--line)}
+.sp-tier__top{display:flex;justify-content:space-between;align-items:start;gap:12px}
+.sp-tier__name{font-size:var(--t-xl);font-weight:700;font-stretch:112%;text-transform:uppercase;line-height:1.05;margin:0;overflow-wrap:anywhere;min-width:0}
+.sp-tier__top .badge{white-space:nowrap;flex:none}
+.sp-tier .sp-list{align-content:start}
+.sp-tier__for{margin:0;font-size:var(--t-sm);color:var(--soft)}
+.sp-tier__for b{display:block;font-size:var(--t-xs);letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.sp-tier__price{margin:0;display:grid;gap:2px;padding-block:14px;border-block:1px solid var(--line)}
+.sp-tier--main .sp-tier__price{border-color:var(--soft)}
+.sp-tier__price span{font-size:var(--t-xl);font-weight:700;font-stretch:112%;text-transform:uppercase}
+.sp-tier__price small{font-size:var(--t-xs);color:var(--mute)}
+@media (max-width:1100px){.sp-tiers{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.sp-tiers{grid-template-columns:1fr}}
+.sp-extras{margin-top:clamp(32px,4vw,56px);display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:var(--gap);border-top:1px solid var(--line);padding-top:20px}
+.sp-extras .sp-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px var(--gap)}
+@media (max-width:760px){.sp-extras,.sp-extras .sp-list{grid-template-columns:1fr}}
+
+/* 6 · sample report */
+.sp-report{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,5vw,80px);align-items:start}
+.sp-sheet{background:var(--surface);padding:clamp(20px,3vw,40px);display:grid;gap:20px;position:relative;border:1px solid var(--line)}
+.sp-sheet__hd{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;border-bottom:1px solid var(--line);padding-bottom:16px}
+.sp-sheet__hd p{margin:0}
+.sp-sheet__meta{font-size:var(--t-xs);letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.sp-sheet__photos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.sp-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px var(--gap);margin:0}
+.sp-kpis dd{font-size:var(--t-xl)}
+.sp-kpis .spec{align-content:start}
+.sp-sheet > p{margin:0;font-size:var(--t-sm)}
+@media (max-width:900px){.sp-report{grid-template-columns:1fr}}
+@media (max-width:480px){.sp-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.sp-sheet__photos{grid-template-columns:1fr}}
+
+/* 7 · fan bridge */
+.sp-bridge{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:0;background:var(--tile)}
+.sp-bridge__copy{padding:clamp(24px,4vw,56px);display:grid;gap:16px;align-content:center}
+.sp-bridge__copy p{margin:0}
+@media (max-width:760px){.sp-bridge{grid-template-columns:1fr}}
+
+/* 8 · FAQ */
+.sp-faq{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(24px,4vw,64px)}
+.faq details{border-top:1px solid var(--line)}
+.faq details:last-child{border-bottom:1px solid var(--line)}
+.faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;align-items:center;min-height:60px;padding-block:14px;font-weight:600;font-size:var(--t-lg);color:var(--ink)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-size:var(--t-xl);font-weight:400;line-height:1;flex:none}
+.faq details[open] summary::after{content:"\2212"}
+.faq details p{margin:0 0 20px;max-width:62ch;color:var(--text)}
+@media (max-width:860px){.sp-faq{grid-template-columns:1fr}}
+
+/* 9 · media kit form */
+.sp-kit{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(28px,5vw,80px);align-items:start}
+.sp-steps{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:12px}
+.sp-steps li{counter-increment:s;display:grid;grid-template-columns:2rem minmax(0,1fr);gap:8px;font-size:var(--t-sm);color:var(--text)}
+.sp-steps li::before{content:"0" counter(s);font-weight:700;color:var(--mute)}
+.sp-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px var(--gap)}
+.sp-form .full{grid-column:1/-1}
+.sp-form textarea.input{min-height:120px;padding-block:12px;resize:vertical}
+.sp-form select.input{appearance:auto}
+.sp-form fieldset{border:0;margin:0;padding:0;display:grid;gap:10px}
+.sp-form legend{font-size:var(--t-xs);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);padding:0;margin-bottom:8px}
+.sp-checks{display:flex;flex-wrap:wrap;gap:10px}
+.sp-check{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1px solid var(--line);background:var(--surface);cursor:pointer;font-size:var(--t-sm)}
+.sp-check input{width:18px;height:18px;accent-color:var(--ink);margin:0}
+.sp-check:has(input:checked){border-color:var(--ink)}
+.sp-fine{margin:0;font-size:var(--t-xs);color:var(--mute)}
+.sp-status{margin:0;font-size:var(--t-sm)}
+.sp-status:empty{display:none}
+.sp-status.is-ok{background:var(--bg);border-left:3px solid var(--ink);padding:12px 14px;color:var(--ink)}
+.sp-status.is-err{color:var(--sale);font-weight:600}
+.input[aria-invalid="true"]{border-color:var(--sale)}
+@media (max-width:900px){.sp-kit{grid-template-columns:1fr}}
+@media (max-width:520px){.sp-form{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div data-hm-header data-current="sponsors"></div>
+
+<main>
+
+<!-- 1 · hm-sponsors-hero -->
+<section class="sp-hero" aria-labelledby="sp-title">
+  <div class="wrap sp-hero__grid">
+    <div class="sp-hero__copy">
+      <p class="label muted">Sponsorship · Partner with the team</p>
+      <h1 class="h-hero" id="sp-title">Put your brand on The Evil One</h1>
+      <p class="lede">The only Cat V8 in a Pro Stock field of John Deere sixes, in front of the farmers, truckers and diesel crowd of Wisconsin and the Midwest.</p>
+      <div class="btn-row">
+        <a class="btn" href="#kit">Get the media kit</a>
+        <a class="btn btn--ghost" href="#map">See open zones</a>
+      </div>
+      <ul class="sp-facts">
+        <li><b>Cat 3208</b> V8 · 680 CI</li>
+        <li><b>~20</b> events planned</li>
+        <li><b>NTPA</b> · PPL Badger State</li>
+      </ul>
+    </div>
+    <div class="ph ph--dark" style="--ar:4/5"><div class="ph__tag"><b>Foto · 4:5</b>Tractor en la pista, 3/4 frontal, con calcomanías de ejemplo en el cofre y el costado, humo negro al fondo</div></div>
+  </div>
+</section>
+
+<!-- 2 · hm-sponsors-why -->
+<section class="sect sect--white" id="why" aria-labelledby="why-t">
+  <div class="wrap">
+    <div class="sp-head">
+      <p class="label muted">Why pulling · why this tractor</p>
+      <h2 class="h2" id="why-t">A story your customers already talk about</h2>
+    </div>
+    <ol class="sp-reasons">
+      <li>
+        <span class="n">01</span>
+        <h3 class="h3">The only Cat V8 in the field</h3>
+        <p>Heavy Metal runs a Caterpillar 3208 V8 built to 680 cubic inches in a Pro Stock class of John Deere inline sixes. For a Cat dealer, that is not a logo placement. That is the headline.</p>
+      </li>
+      <li>
+        <span class="n">02</span>
+        <h3 class="h3">Seen on the stream, not only the grandstand</h3>
+        <p>Every hook is a chance for your logo to be on camera.</p>
+        <span class="sp-src">Per the leagues and broadcasters: NTPA events stream live on Full Pull Live. PPL events air on Pro Pulling TV and MAVTV.</span>
+      </li>
+      <li>
+        <span class="n">03</span>
+        <h3 class="h3">Matte black makes logos read</h3>
+        <p>The matte black Challenger body gives your colors a clean, dark canvas. No clutter, no fighting for attention.</p>
+      </li>
+      <li>
+        <span class="n">04</span>
+        <h3 class="h3">A full season on the circuit</h3>
+        <p>About 20 events planned across NTPA and PPL Badger State in Wisconsin and the Midwest. We are in testing season now, so partners who sign early help shape the schedule.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- 3 · hm-sponsors-numbers -->
+<section class="sect" aria-labelledby="num-t">
+  <div class="wrap sp-stack" style="gap:clamp(24px,3vw,40px)">
+    <h2 class="label muted" id="num-t">The season in numbers</h2>
+    <div class="sp-stats">
+      <div class="sp-stat"><span class="sp-stat__n num">~20</span><span class="sp-stat__l">Events planned</span><span class="sp-stat__s">NTPA and PPL Badger State</span></div>
+      <div class="sp-stat"><span class="sp-stat__n sp-stat__n--ph num">XX,XXX</span><span class="sp-stat__l">Social followers</span><span class="sp-stat__s">All team channels</span></div>
+      <div class="sp-stat"><span class="sp-stat__n sp-stat__n--ph num">XXX,XXX</span><span class="sp-stat__l">Video views</span><span class="sp-stat__s">Per season</span></div>
+      <div class="sp-stat"><span class="sp-stat__n sp-stat__n--ph num">XX</span><span class="sp-stat__l">Pulls on stream or TV</span><span class="sp-stat__s">Per season</span></div>
+    </div>
+    <p class="note" style="margin:0">Las cifras XX se llenan con datos reales (Meta Business Suite, TikTok, YouTube, calendario confirmado). En el sitio en vivo, una cifra sin dato se oculta; nunca publicar un placeholder.</p>
+  </div>
+</section>
+
+<!-- 4 · hm-sponsors-decal-map (metaobjeto decal_zone) -->
+<section class="sect sect--white" id="map" aria-labelledby="map-t">
+  <div class="wrap">
+    <div class="sp-head">
+      <p class="label muted">Decal map</p>
+      <h2 class="h2" id="map-t">Where your logo goes</h2>
+      <p class="lede">Pick a zone to see its size, status and the tier it belongs to.</p>
+    </div>
+    <div class="sp-map">
+      <figure class="sp-map__fig">
+        <div class="ph sp-map__stage" style="--ar:2/1">
+          <svg class="sp-sil" viewBox="0 0 1000 500" aria-hidden="true" focusable="false">
+            <path class="s" d="M560 150c-30-40 10-80-20-120 40 10 70 50 50 90 30-20 50-10 60 20z"/>
+            <line class="g" x1="0" y1="482" x2="1000" y2="482"/>
+            <rect class="h" x="30" y="370" width="70" height="22"/>
+            <path class="r" d="M250 205V70h92v135"/>
+            <rect class="b" x="235" y="175" width="120" height="40"/>
+            <rect class="b" x="545" y="130" width="22" height="100"/>
+            <path class="b" d="M330 230h520v100H330z"/>
+            <path class="b" d="M330 230l25-10h470l25 10"/>
+            <rect class="b" x="850" y="250" width="110" height="110"/>
+            <path class="b" d="M80 255c20-70 90-100 150-100s120 30 145 100h-40c-20-45-60-65-105-65s-90 25-110 65z"/>
+            <circle class="w" cx="220" cy="350" r="130"/>
+            <circle class="t" cx="220" cy="350" r="122"/>
+            <circle class="h" cx="220" cy="350" r="44"/>
+            <circle class="w" cx="780" cy="412" r="70"/>
+            <circle class="h" cx="780" cy="412" r="24"/>
+          </svg>
+          <button class="sp-hot" type="button" data-zone="hood" data-status="available" style="--x:64%;--y:48%" aria-label="Zone 1: Hood, available" aria-pressed="false">1</button>
+          <button class="sp-hot" type="button" data-zone="side" data-status="available" style="--x:50%;--y:61%" aria-label="Zone 2: Side panel, available" aria-pressed="false">2</button>
+          <button class="sp-hot" type="button" data-zone="fender" data-status="available" style="--x:13%;--y:40%" aria-label="Zone 3: Rear fender, available" aria-pressed="false">3</button>
+          <button class="sp-hot" type="button" data-zone="weights" data-status="available" style="--x:90.5%;--y:61%" aria-label="Zone 4: Weight box, available" aria-pressed="false">4</button>
+          <button class="sp-hot" type="button" data-zone="rollbar" data-status="reserved" style="--x:29.6%;--y:20%" aria-label="Zone 5: Rollbar, league reserved" aria-pressed="false">5</button>
+          <button class="sp-hot" type="button" data-zone="wheel" data-status="available" style="--x:22%;--y:70%" aria-label="Zone 6: Wheel center, available" aria-pressed="false">6</button>
+        </div>
+        <figcaption class="sp-stack" style="gap:12px">
+          <ul class="sp-legend" aria-label="Legend">
+            <li><span class="sp-dot" aria-hidden="true"></span>Available</li>
+            <li><span class="sp-dot sp-dot--res" aria-hidden="true"></span>League reserved</li>
+            <li><span class="sp-dot sp-dot--sel" aria-hidden="true"></span>Selected</li>
+          </ul>
+          <p class="note" style="margin:0">La silueta es guía; en vivo va el recorte real del tractor de perfil. Confirmar con NTPA y PPL Badger State las zonas obligatorias (número, clase, patrocinadores de liga) y tamaños reales. El estado de cada zona sale del metaobjeto "decal_zone".</p>
+        </figcaption>
+      </figure>
+
+      <div class="sp-stack">
+        <ul class="sp-zones" aria-label="Decal zones">
+          <li><button class="sp-zone" type="button" data-zone="hood" aria-pressed="false"><span class="sp-zone__n">01</span><span class="sp-zone__name">Hood</span><span class="sp-zone__st">Available</span></button></li>
+          <li><button class="sp-zone" type="button" data-zone="side" aria-pressed="false"><span class="sp-zone__n">02</span><span class="sp-zone__name">Side panel</span><span class="sp-zone__st">Available</span></button></li>
+          <li><button class="sp-zone" type="button" data-zone="fender" aria-pressed="false"><span class="sp-zone__n">03</span><span class="sp-zone__name">Rear fender</span><span class="sp-zone__st">Available</span></button></li>
+          <li><button class="sp-zone" type="button" data-zone="weights" aria-pressed="false"><span class="sp-zone__n">04</span><span class="sp-zone__name">Weight box</span><span class="sp-zone__st">Available</span></button></li>
+          <li><button class="sp-zone" type="button" data-zone="rollbar" aria-pressed="false"><span class="sp-zone__n">05</span><span class="sp-zone__name">Rollbar</span><span class="sp-zone__st">League reserved</span></button></li>
+          <li><button class="sp-zone" type="button" data-zone="wheel" aria-pressed="false"><span class="sp-zone__n">06</span><span class="sp-zone__name">Wheel center</span><span class="sp-zone__st">Available</span></button></li>
+        </ul>
+        <div class="sp-panel" id="zone-panel" aria-live="polite">
+          <p class="label muted" style="font-size:var(--t-xs)">Selected zone</p>
+          <h3 class="h2" id="zp-name">Hood</h3>
+          <dl>
+            <dt>Status</dt><dd><span class="badge" id="zp-status">Available</span></dd>
+            <dt>Size</dt><dd class="num" id="zp-size">XX x XX in</dd>
+            <dt>Tier</dt><dd id="zp-tier">Full Pull</dd>
+          </dl>
+          <p id="zp-desc">The largest flat surface on the tractor, facing the grandstand and side cameras.</p>
+          <a class="btn btn--block" href="#kit" id="zp-cta">Ask about this zone</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · hm-sponsors-tiers -->
+<section class="sect" id="tiers" aria-labelledby="tiers-t">
+  <div class="wrap">
+    <div class="sp-head">
+      <p class="label muted">Partnership tiers</p>
+      <h2 class="h2" id="tiers-t">Four ways onto the tractor</h2>
+      <p class="lede">Every package is built with you. Pricing comes with the media kit, and parts, fuel or service can cover part of it.</p>
+    </div>
+    <div class="sp-tiers">
+      <article class="sp-tier sp-tier--main" aria-labelledby="t1">
+        <div class="sp-tier__top"><h3 class="sp-tier__name" id="t1">Full Pull</h3><span class="badge">1 spot</span></div>
+        <p class="sp-tier__for"><b>Primary partner</b>Cat dealers, large equipment dealers, diesel manufacturers.</p>
+        <p class="sp-tier__price"><span>Contact us</span><small>Season agreement</small></p>
+        <ul class="sp-list">
+          <li>Hood and both main side panels</li>
+          <li>Naming: "Heavy Metal presented by [your brand]"</li>
+          <li>Logo on the official team shirt</li>
+          <li>Category exclusivity</li>
+          <li>2 posts per week in season, with video</li>
+          <li>Hospitality day at 2 events for your customers</li>
+          <li>Tractor on display at your dealership, twice a year</li>
+          <li>Post-pull reports and a season recap</li>
+        </ul>
+        <a class="btn btn--light" href="#kit" data-tier="full-pull">Request Full Pull details</a>
+      </article>
+      <article class="sp-tier" aria-labelledby="t2">
+        <div class="sp-tier__top"><h3 class="sp-tier__name" id="t2">Hook</h3><span class="badge badge--line">2 to 3 spots</span></div>
+        <p class="sp-tier__for"><b>Associate partner</b>Regional dealers, seed companies, co-ops.</p>
+        <p class="sp-tier__price"><span>Contact us</span><small>Season agreement</small></p>
+        <ul class="sp-list">
+          <li>Mid-size logo on the fender or weight box</li>
+          <li>Logo on the sleeve or back of the team shirt</li>
+          <li>2 posts per month</li>
+          <li>1 hospitality event, 4 pit passes</li>
+          <li>Your own coupon code in the team store</li>
+          <li>Quarterly report</li>
+        </ul>
+        <a class="btn" href="#kit" data-tier="hook">Request Hook details</a>
+      </article>
+      <article class="sp-tier" aria-labelledby="t3">
+        <div class="sp-tier__top"><h3 class="sp-tier__name" id="t3">Pit Crew</h3><span class="badge badge--line">Open</span></div>
+        <p class="sp-tier__for"><b>Technical partner</b>Diesel parts, lubricants, fuel, machine shops.</p>
+        <p class="sp-tier__price"><span>Contact us</span><small>In-kind, cash or both</small></p>
+        <ul class="sp-list">
+          <li>Small logo near the part you supply</li>
+          <li>A hotspot on The Machine page naming your part</li>
+          <li>Tech content that tags you</li>
+          <li>Right to say "used by Heavy Metal"</li>
+          <li>Banner at the pit tent</li>
+        </ul>
+        <a class="btn" href="#kit" data-tier="pit-crew">Request Pit Crew details</a>
+      </article>
+      <article class="sp-tier" aria-labelledby="t4">
+        <div class="sp-tier__top"><h3 class="sp-tier__name" id="t4">Hometown</h3><span class="badge badge--line">Open</span></div>
+        <p class="sp-tier__for"><b>Community partner</b>Businesses in Waterloo and Jefferson County.</p>
+        <p class="sp-tier__price"><span>Contact us</span><small>Season agreement</small></p>
+        <ul class="sp-list">
+          <li>Logo on the team trailer or community panel</li>
+          <li>Logo with link on this page</li>
+          <li>1 thank-you post with photo</li>
+          <li>Newsletter mention, 2 pit passes</li>
+        </ul>
+        <a class="btn" href="#kit" data-tier="hometown">Request Hometown details</a>
+      </article>
+    </div>
+    <div class="sp-extras">
+      <p class="label">Single-event options</p>
+      <ul class="sp-list">
+        <li>One-event sponsor: temporary decal and that weekend's posts</li>
+        <li>Presenting sponsor of the clip of the week</li>
+        <li>Sponsor of an event merch drop</li>
+        <li>Results bonus: an extra if we finish top 3</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 6 · hm-sponsors-report -->
+<section class="sect sect--white" id="report" aria-labelledby="rep-t">
+  <div class="wrap sp-report">
+    <div class="sp-stack">
+      <p class="label muted">After every pull</p>
+      <h2 class="h2" id="rep-t">Proof on one page</h2>
+      <p class="body" style="margin:0">Within days of each event you get a one-page report: your logo on the track, a frame from the stream, what the posts reached and what came back through your coupon code and links.</p>
+      <ul class="sp-list">
+        <li>Photos of your logo in competition</li>
+        <li>Stream or TV frame with your logo in shot</li>
+        <li>Post reach, video views, link clicks, coupon uses</li>
+        <li>What is next on the schedule</li>
+      </ul>
+    </div>
+    <article class="sp-sheet" aria-label="Sample post-pull report">
+      <div class="sp-sheet__hd">
+        <div class="sp-stack" style="gap:6px">
+          <p class="sp-sheet__meta">Post-pull report · Partner: [Your brand]</p>
+          <h3 class="h3">[Event name] · [City], WI</h3>
+        </div>
+        <span class="badge badge--ink" style="align-self:start">Sample</span>
+      </div>
+      <div class="sp-sheet__photos">
+        <div class="ph" style="--ar:4/3"><div class="ph__tag"><b>Foto · 4:3</b>Logo del socio en el cofre durante el pull</div></div>
+        <div class="ph" style="--ar:4/3"><div class="ph__tag"><b>Captura · 4:3</b>Frame de la transmisión con el logo visible</div></div>
+      </div>
+      <dl class="sp-kpis">
+        <div class="spec"><dt>Distance</dt><dd class="num">XXX ft</dd></div>
+        <div class="spec"><dt>Post reach</dt><dd class="num">XX,XXX</dd></div>
+        <div class="spec"><dt>Video views</dt><dd class="num">XX,XXX</dd></div>
+        <div class="spec"><dt>Link clicks</dt><dd class="num">XXX</dd></div>
+        <div class="spec"><dt>Coupon uses</dt><dd class="num">XX</dd></div>
+        <div class="spec"><dt>Logo on stream</dt><dd class="num">XX min</dd></div>
+      </dl>
+      <p><b>Next:</b> [Event name], [City], [Date]. Hospitality spots available for your customers.</p>
+    </article>
+  </div>
+</section>
+
+<!-- 7 · hm-sponsors-fan-bridge -->
+<section class="sect" aria-labelledby="fan-t">
+  <div class="wrap">
+    <div class="sp-bridge">
+      <div class="sp-bridge__copy">
+        <p class="label muted">For fans</p>
+        <h2 class="h2" id="fan-t">Not a company? Put your name on the tractor</h2>
+        <p class="body">Ride With The Evil One puts fan names on the crew panel for the season. We check every name before it goes on.</p>
+        <div><a class="btn" href="index.html#ride">Ride With The Evil One</a></div>
+      </div>
+      <div class="ph ph--dark" style="--ar:16/10"><div class="ph__tag"><b>Foto · 16:10</b>Panel del tractor con nombres de fans, luz rasante sobre el negro mate</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 · hm-sponsors-faq (+ JSON-LD FAQPage) -->
+<section class="sect sect--white" id="faq" aria-labelledby="faq-t">
+  <div class="wrap sp-faq">
+    <div class="sp-stack">
+      <p class="label muted">Sponsor FAQ</p>
+      <h2 class="h2" id="faq-t">Straight answers</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Where can my decal go under league rules?</summary>
+        <p>NTPA and PPL Badger State reserve some areas for class, number and league sponsor decals. Every zone on the map is checked against those rules before we confirm it, and we produce and apply the decals ourselves.</p>
+      </details>
+      <details>
+        <summary>How long is a sponsorship agreement?</summary>
+        <p>Standard agreements run one season. Multi-season terms are available and lock in your zone and category. Everything is in writing before a decal goes on.</p>
+      </details>
+      <details>
+        <summary>Can we sponsor with parts, fuel or service instead of cash?</summary>
+        <p>Yes. Pit Crew partnerships are built for in-kind or mixed support, and in-kind value can count toward any tier. We state the value in the agreement.</p>
+      </details>
+      <details>
+        <summary>Which events will the tractor run?</summary>
+        <p>About 20 events are planned across NTPA and PPL Badger State in Wisconsin and the Midwest. We are in testing season, so the confirmed schedule goes to partners first and is posted on the Schedule page.</p>
+      </details>
+      <details>
+        <summary>What reporting do we get?</summary>
+        <p>A one-page report after every pull you are part of, plus a season recap for Full Pull and quarterly reports for Hook partners.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- 9 · hm-sponsors-kit (form contact nativo, etiqueta "sponsor") -->
+<section class="sect" id="kit" aria-labelledby="kit-t">
+  <div class="wrap sp-kit">
+    <div class="sp-stack">
+      <p class="label muted">Media kit</p>
+      <h2 class="h2" id="kit-t">Get the media kit</h2>
+      <p class="body" style="margin:0">Tell us a little about your company. Chris F, owner and driver, answers every request personally.</p>
+      <ol class="sp-steps">
+        <li>Send the form. It takes about a minute.</li>
+        <li>We reply with the media kit and open zones.</li>
+        <li>We build a package around your season and your customers.</li>
+      </ol>
+    </div>
+    <form class="sp-form" id="kit-form" novalidate>
+      <div class="field"><label for="f-company">Company *</label><input class="input" id="f-company" name="company" type="text" autocomplete="organization" required></div>
+      <div class="field"><label for="f-name">Your name *</label><input class="input" id="f-name" name="name" type="text" autocomplete="name" required></div>
+      <div class="field"><label for="f-email">Work email *</label><input class="input" id="f-email" name="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="f-phone">Phone</label><input class="input" id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
+      <div class="field full"><label for="f-budget">Budget range</label>
+        <select class="input" id="f-budget" name="budget">
+          <option value="">Select a range</option>
+          <option>Under $X,XXX</option>
+          <option>$X,XXX to $X,XXX</option>
+          <option>$X,XXX to $XX,XXX</option>
+          <option>$XX,XXX and up</option>
+          <option>In-kind (parts, fuel, service)</option>
+          <option>Not sure yet</option>
+        </select>
+      </div>
+      <fieldset class="full">
+        <legend>Interested in</legend>
+        <div class="sp-checks">
+          <label class="sp-check" for="i-full"><input type="checkbox" id="i-full" name="interest" value="full-pull">Full Pull</label>
+          <label class="sp-check" for="i-hook"><input type="checkbox" id="i-hook" name="interest" value="hook">Hook</label>
+          <label class="sp-check" for="i-pit"><input type="checkbox" id="i-pit" name="interest" value="pit-crew">Pit Crew</label>
+          <label class="sp-check" for="i-home"><input type="checkbox" id="i-home" name="interest" value="hometown">Hometown</label>
+        </div>
+      </fieldset>
+      <div class="field full"><label for="f-msg">Message</label><textarea class="input" id="f-msg" name="message" placeholder="Your territory, the events you care about, what a win looks like for you"></textarea></div>
+      <div class="full sp-stack" style="gap:12px">
+        <div><button class="btn" type="submit">Get the media kit</button></div>
+        <p class="sp-fine">* Required. We only use this to reply to your request.</p>
+      </div>
+      <p class="sp-status full" id="kit-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<div data-hm-footer></div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Where can my decal go under league rules?", "acceptedAnswer": {"@type": "Answer", "text": "NTPA and PPL Badger State reserve some areas for class, number and league sponsor decals. Every zone on the map is checked against those rules before we confirm it, and we produce and apply the decals ourselves."}},
+    {"@type": "Question", "name": "How long is a sponsorship agreement?", "acceptedAnswer": {"@type": "Answer", "text": "Standard agreements run one season. Multi-season terms are available and lock in your zone and category. Everything is in writing before a decal goes on."}},
+    {"@type": "Question", "name": "Can we sponsor with parts, fuel or service instead of cash?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Pit Crew partnerships are built for in-kind or mixed support, and in-kind value can count toward any tier. We state the value in the agreement."}},
+    {"@type": "Question", "name": "Which events will the tractor run?", "acceptedAnswer": {"@type": "Answer", "text": "About 20 events are planned across NTPA and PPL Badger State in Wisconsin and the Midwest. We are in testing season, so the confirmed schedule goes to partners first and is posted on the Schedule page."}},
+    {"@type": "Question", "name": "What reporting do we get?", "acceptedAnswer": {"@type": "Answer", "text": "A one-page report after every pull you are part of, plus a season recap for Full Pull and quarterly reports for Hook partners."}}
+  ]
+}
+</script>
+<script>
+(function(){
+  /* Mapa de calcomanías: en Shopify estos datos vienen del metaobjeto decal_zone */
+  var zones = {
+    hood:    {name:'Hood', status:'available', size:'XX x XX in', tier:'Full Pull', desc:'The largest flat surface on the tractor, facing the grandstand and side cameras.'},
+    side:    {name:'Side panel', status:'available', size:'XX x XX in', tier:'Full Pull', desc:'Both sides of the engine bay, next to the Cat V8. The main placement from the stands.'},
+    fender:  {name:'Rear fender', status:'available', size:'XX x XX in', tier:'Hook', desc:'Right above the rear tires, in frame at the hook and at the finish.'},
+    weights: {name:'Weight box', status:'available', size:'XX x XX in', tier:'Hook', desc:'The front of the tractor, first thing on screen as it comes down the track.'},
+    rollbar: {name:'Rollbar', status:'reserved', size:'XX x XX in', tier:'Not for sale: NTPA and PPL decals', desc:'Kept for league class, number and series sponsor decals.'},
+    wheel:   {name:'Wheel center', status:'available', size:'XX in diameter', tier:'Pit Crew', desc:'A technical placement close to the running gear, made for parts partners.'}
+  };
+  var btns = document.querySelectorAll('[data-zone]');
+  var el = function(id){return document.getElementById(id);};
+  function select(key){
+    var z = zones[key]; if(!z) return;
+    btns.forEach(function(b){b.setAttribute('aria-pressed', b.dataset.zone === key ? 'true' : 'false');});
+    el('zp-name').textContent = z.name;
+    var st = el('zp-status');
+    st.textContent = z.status === 'available' ? 'Available' : 'League reserved';
+    st.className = 'badge' + (z.status === 'available' ? '' : ' badge--line');
+    el('zp-size').textContent = z.size;
+    el('zp-tier').textContent = z.tier;
+    el('zp-desc').textContent = z.desc;
+    el('zp-cta').hidden = z.status !== 'available';
+  }
+  btns.forEach(function(b){b.addEventListener('click', function(){select(b.dataset.zone);});});
+  select('hood');
+
+  /* Botones de nivel: marcan la casilla correspondiente en el formulario */
+  var map = {'full-pull':'i-full','hook':'i-hook','pit-crew':'i-pit','hometown':'i-home'};
+  document.querySelectorAll('[data-tier]').forEach(function(a){
+    a.addEventListener('click', function(){var c = el(map[a.dataset.tier]); if(c) c.checked = true;});
+  });
+
+  /* Formulario: en el boceto solo muestra el mensaje de éxito */
+  var form = el('kit-form'), status = el('kit-status');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var bad = Array.prototype.filter.call(form.querySelectorAll('[required]'), function(i){
+      var ok = i.checkValidity(); i.setAttribute('aria-invalid', ok ? 'false' : 'true'); return !ok;
+    });
+    if(bad.length){
+      status.className = 'sp-status full is-err';
+      status.textContent = 'Please complete company, name and a valid work email.';
+      bad[0].focus();
+      return;
+    }
+    var name = el('f-name').value.trim().split(' ')[0];
+    status.className = 'sp-status full is-ok';
+    status.textContent = 'Thanks, ' + name + '. Your request is in. We will send the media kit to ' + el('f-email').value.trim() + '.';
+    form.querySelector('button[type="submit"]').disabled = true;
+  });
+})();
+</script>
+<script src="hm.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<footer class="hm hm-footer">
+  <div class="hm-footer__cols">
+    <div class="hm-footer__brand">{% render 'hm-logo', variant: 'solid', color: '#F2F0E9' %}<p>{{ section.settings.blurb }}</p></div>
+    {%- for block in section.blocks -%}
+    <div class="hm-footer__col" {{ block.shopify_attributes }}><h3>{{ block.settings.title }}</h3>
+    {%- if block.settings.menu != blank and block.settings.menu.links.size > 0 -%}
+      {%- for link in block.settings.menu.links -%}<a href="{{ link.url }}">{{ link.title }}</a>{%- endfor -%}
+    {%- else -%}
+      {%- case block.settings.title -%}
+        {%- when 'SHOP' -%}
+          <a href="{{ routes.all_products_collection_url }}">All gear</a><a href="{{ routes.root_url }}#shop">Crew Pack bundle</a>
+        {%- when 'SPONSOR' -%}
+          <a href="/pages/sponsors#tiers">Sponsorship tiers</a><a href="/pages/sponsors#kit">Become a sponsor</a><a href="/pages/sponsors#partners">Our partners</a>
+        {%- when 'TEAM' -%}
+          <a href="/pages/spec-sheet">The machine</a><a href="/pages/schedule">Schedule</a><a href="/pages/contact">Contact</a>
+        {%- when 'HELP' -%}
+          <a href="{{ shop.shipping_policy.url | default: '/policies/shipping-policy' }}">Shipping</a><a href="{{ shop.refund_policy.url | default: '/policies/refund-policy' }}">Returns</a><a href="{{ shop.privacy_policy.url | default: '/policies/privacy-policy' }}">Privacy</a>
+        {%- else -%}
+          <a href="{{ routes.root_url }}">Home</a>
+      {%- endcase -%}
+    {%- endif -%}
+    </div>
+    {%- endfor -%}
+  </div>
+  <div class="hm-footer__bottom"><span>© {{ 'now' | date: '%Y' }} Heavy Metal Pro Stock · {{ shop.domain }}</span><span>{%- if settings.social_instagram_link != blank -%}<a href="{{ settings.social_instagram_link }}">Instagram</a>{%- endif -%}{%- if settings.social_facebook_link != blank -%} · <a href="{{ settings.social_facebook_link }}">Facebook</a>{%- endif -%}{%- if settings.social_tiktok_link != blank -%} · <a href="{{ settings.social_tiktok_link }}">TikTok</a>{%- endif -%}</span></div>
+</footer>
+{% schema %}
+{
+  "name": "HM Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "blurb",
+      "label": "Short text",
+      "default": "Pro Stock tractor pulling out of Wisconsin. \"The Evil One.\""
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Link column",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "SHOP"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
