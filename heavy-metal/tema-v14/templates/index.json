@@ -14,7 +14,8 @@
         "sim_class": "Pro Stock · WI",
         "distance_label": "Distance",
         "logo_invert": true,
-        "tractor_clip": false
+        "tractor_clip": false,
+        "tractor": "shopify://shop_images/hm-tractor-limpio.webp"
       }
     },
     "marquee": {
