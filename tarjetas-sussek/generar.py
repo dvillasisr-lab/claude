@@ -260,7 +260,7 @@ BASE_CSS = """
   .lockup .wm{height:calc(var(--ih) * .987);width:auto;margin:calc(var(--ih) * .033) 0 0 calc(var(--ih) * .099);display:block;overflow:visible}
   .wm .ini{fill:var(--ini, currentColor)}
   .wm .rest{fill:var(--rest, currentColor)}
-  .c1.front .wm, .d2.back .wm, .d3.front .wm{--ini:#202054;--rest:#26262b}
+  .c1.front .wm, .d2.back .wm, .d3.front .wm{--ini:#202054;--rest:#202054}
   .word{font-family:"EB Garamond",Garamond,Georgia,serif;font-weight:500;font-size:4.6mm;line-height:1.02}
   .word span{display:block}
   .word span::first-letter{font-size:1.16em;font-weight:600}
