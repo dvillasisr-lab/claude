@@ -81,7 +81,8 @@ UNION ALL
 -- V7 prefijo de ticket por equipo: n1 piezas
 SELECT 'V7_ticket_vs_team', CONCAT(SUBSTR(ticket_number,1,1), ' / ', COALESCE(team,'NULL')), COUNT(*), NULL, NULL, NULL FROM (
   SELECT ticket_number, team FROM analytics_engineering_production.braze._dim_braze_campaign
-  UNION ALL SELECT ticket_number, team FROM analytics_engineering_production.braze._dim_braze_canvas) x GROUP BY 1,2
+  UNION ALL SELECT ticket_number, team FROM analytics_engineering_production.braze._dim_braze_canvas) x
+GROUP BY SUBSTR(ticket_number,1,1), team
 UNION ALL
 -- V8 gross_amount segun conversion: clave = is_converted / applied, n1 filas, n2 con monto, n3 monto promedio, n4 monto maximo
 SELECT 'V8_gross_amount', CONCAT('conv=', CAST(is_converted AS STRING), ' / applied=', CAST(applied_for_loan AS STRING)),
@@ -92,11 +93,11 @@ UNION ALL
 SELECT 'V9_cobertura_mes', CAST(DATE_TRUNC('month', event_date) AS STRING), COUNT(*), SUM(CASE WHEN was_send THEN 1 ELSE 0 END),
        COUNT(DISTINCT user_id), NULL
 FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
-WHERE event_date >= DATE '2026-01-01' GROUP BY 1
+WHERE event_date >= DATE '2026-01-01' GROUP BY DATE_TRUNC('month', event_date)
 UNION ALL
 -- V10b duplicados identicos o distintos: n1 grupos, n2 filas extra
 SELECT 'V10b_duplicados_tipo', CASE WHEN versiones = 1 THEN 'identicas' ELSE 'difieren' END, COUNT(*), SUM(n - 1), NULL, NULL
-FROM dup GROUP BY 1
+FROM dup GROUP BY CASE WHEN versiones = 1 THEN 'identicas' ELSE 'difieren' END
 UNION ALL
 -- V10c en que columna difieren los duplicados: n1 grupos donde esa columna tiene mas de un valor
 SELECT 'V10c_columna_que_varia', col, CAST(v AS DOUBLE), NULL, NULL, NULL FROM (
