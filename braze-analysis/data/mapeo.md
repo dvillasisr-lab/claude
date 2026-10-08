@@ -304,3 +304,67 @@ Qué puede significar y qué hacemos en cada caso:
 | Difieren en communication_name o ticket | Varios pasos de un Canvas el mismo día | **No** colapsar: son mensajes distintos. Contar envíos desde la tabla 7 de pasos de Canvas |
 
 Las queries V10b, V10c, V10d y V10e del notebook dicen cuál de los cuatro casos es. V13 dice el total de filas para dimensionar.
+
+---
+
+## 11. Resultados de la verificación con data real (8 de octubre de 2026)
+
+Periodo verificado: 1 de enero a 30 de septiembre de 2026, tabla `xplore._dim_braze_users_and_communications`.
+
+### Tamaño
+
+| Qué | Valor |
+|---|---|
+| Filas | 729.3 millones |
+| Usuarios distintos | 19.5 millones |
+| Comunicaciones distintas | 3,439 |
+| Filas con envío (`was_send`) | 670.4 millones (92 %) |
+| Filas sin envío | 58.9 millones (8 %) |
+
+### Decisión por duda
+
+| # | Duda | Qué dijo la data | Decisión |
+|---|---|---|---|
+| 1 | `user_id` = `customer_id` | Solo 6.6 % de los 19.5 M usuarios cruzan con el golden dataset (1.29 M) | La llave sí funciona pero el golden dataset solo cubre clientes. Suscripción para todos sale de `_dim_braze_users`. Filtros de riesgo y ARCO solo para los 1.29 M. Probar también cruce por `braze_id` |
+| 2 | Tabla oficial de Canvas | `xplore` y `semantic_layer` son idénticas: 1,508.9 M filas, mismos totales | Usar `braze_semantic_layer` |
+| 3 | `control_group` en tabla 6 | Vale "Lead" en 99.9998 % de filas. "Control" solo 1,635 filas | **No sirve** como grupo control. El control real está en `in_control_group` de la tabla de Canvas: 709 K filas en control, 95.2 M en test, 555.6 M sin experimento |
+| 3b | Conversión control vs test en Canvas | Control 6.66 %, test 2.09 %, sin experimento 0.70 % | El control convierte **más** que el test en el agregado. Eso no es "Braze destruye valor": es que los Canvas con experimento tienen audiencias distintas. El lift solo se mide **dentro de cada Canvas**, nunca en el total |
+| 4 | Conversiones en filas sin envío | 58.9 M filas sin envío tienen 1.03 M conversiones (1.75 %). Las filas con envío: 0.65 % | Una fila es "usuario entró a la audiencia ese día". `was_send` dice si salió mensaje. Los no enviados convierten más: sesgo de selección, no sirven de control |
+| 5 | Conversión repetida | Sí. 5.36 M filas convertidas son unos 3.5 M usuario-día. Hay usuarios con conversión en hasta 141 días distintos | **La conversión se repite en cada envío dentro de la ventana de atribución.** Sumar `is_converted` infla. Regla: conversión única = usuario × día. Pedir la tabla real de préstamos para atribución correcta |
+| 6 | Códigos de canal | En tabla 6, `channel` es solo Canvas / Email / In-App / Others. El canal real es `category`: email, push notification, whatsapp, in-app, banner | Usar `category`. Ignorar `channel` de la tabla 6 |
+| 6a | Convención de nombres | En los catálogos la columna `channel` trae cientos de valores basura (audiencias, números, tickets). Campañas: 615 con código válido, 237 "Not Tracked", unos 150 basura. Canvas: 4,470 válidos, 511 "Not Tracked", unos 200 basura | La convención se rompe en 15 a 20 % de las piezas. Es un hallazgo de gobernanza. Para el canal real usar `category` de la tabla 6, no el catálogo |
+| 7 | Prefijo de ticket | B y T aparecen en todos los equipos. 748 piezas "Not Tracked" sin ticket. Columna `team` contaminada con QA, Test, "Copy of Marketing", nombres de personas | Normalizar `team`: todo lo que contenga QA, Test, Prueba, Check, Copy se marca "QA/Test". Hallazgo: piezas de prueba viven en producción |
+| 8 | `gross_amount` | Solo existe cuando `is_converted`. Promedio 2,089 MXN, máximo 26,400. Conversión implica solicitud | Consistente. Es monto de préstamo otorgado |
+| 9 | Cobertura | Todos los meses tienen data. Junio es anómalo: 17.4 M usuarios tocados contra 6 M normales | Junio hubo un envío masivo a toda la base. Analizarlo aparte |
+| 10 | Duplicados | 1.97 M grupos, 3.56 M filas extra = **0.5 % de las filas**. Difieren solo en `is_converted` (680 K) y `gross_amount` (366 K). Ninguna otra columna cambia | Son el mismo envío con distinta conversión pegada. Deduplicar con MAX. Afecta conversiones, no envíos |
+
+### Volumen por canal (envíos, enero a septiembre)
+
+| Canal | Envíos | % | Costo variable estimado MXN |
+|---|---|---|---|
+| Email | 334.3 M | 49.9 % | 16.7 M (a 0.05) |
+| Push | 251.9 M | 37.6 % | 0 |
+| WhatsApp | 55.8 M | 8.3 % | 55.8 M (a 1.00) |
+| In-app | 28.2 M | 4.2 % | 0 |
+| Banner | 0.2 M | 0.03 % | 0 |
+| **Total** | **670.4 M** | | **72.5 M** |
+
+### Equipos reales (piezas en catálogo, limpiando pruebas)
+
+Marketing ~2,100, Lending ~1,160, Not Tracked 748, ProductGrowth ~650, Sales ~415, B2B ~230, NewProducts ~120, Compliance ~96, CX ~90, Research ~40, Collections ~36, Security ~23, Acquisition ~15. Más unas 250 piezas de QA o prueba.
+
+### Insights preliminares (antes de deduplicar, para orientar, no para presentar)
+
+1. **WhatsApp es 8 % de los envíos y 77 % del costo variable.** Unos 55.8 M MXN en 9 meses. Es la primera palanca de ahorro.
+2. **Presión alta:** unos 70 M envíos al mes sobre unos 6 M usuarios activos. Promedio 12 mensajes por usuario al mes, 3 por semana.
+3. **Junio tuvo un blast a 17.4 M usuarios,** tres veces la base habitual. Hay que ver qué fue y qué dejó.
+4. **La conversión reportada está inflada** por la repetición dentro de la ventana de atribución. Cualquier número de "conversiones de Braze" que circule hoy probablemente cuenta el mismo préstamo varias veces.
+5. **El grupo control solo existe en 15 % de las filas de Canvas.** La mayoría de las campañas no tiene forma de probar incrementalidad.
+6. **Gobernanza:** 748 piezas sin ticket, 15 a 20 % con nombre fuera de convención, y unas 250 piezas de prueba en producción.
+7. **Solo 6.6 % de los usuarios de Braze son clientes** en el golden dataset. Braze le habla sobre todo a prospectos.
+
+### Qué falta pedir
+
+- Tabla real de préstamos originados (usuario, fecha, monto) para atribuir bien y medir lift.
+- Costo fijo mensual de Braze.
+- Confirmar si `braze_id` cruza mejor con el golden dataset.
