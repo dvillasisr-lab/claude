@@ -368,3 +368,12 @@ Marketing ~2,100, Lending ~1,160, Not Tracked 748, ProductGrowth ~650, Sales ~41
 - Tabla real de préstamos originados (usuario, fecha, monto) para atribuir bien y medir lift.
 - Costo fijo mensual de Braze.
 - Confirmar si `braze_id` cruza mejor con el golden dataset.
+
+### Decisiones adicionales (8 de octubre de 2026, tarde)
+
+| Tema | Decisión |
+|---|---|
+| Tabla de préstamos | El usuario prefiere no compartirla. Conversión = "según Braze", deduplicada por usuario y día, con atribución fraccional entre las comunicaciones de ese día. Se declara así en el entregable y en el deck |
+| Costo fijo de Braze | No disponible. El análisis de costo usa solo variable: email 0.05 MXN, WhatsApp 1.00 MXN, resto 0 |
+| Privacidad | Ninguna extracción (E1, E2, E3) contiene identificadores de usuario. Solo agregados por campaña, catálogo y conteos por rango |
+| Canal | `category` es el medio real. `channel` es el tipo de pieza (Canvas, Email, In-App, Others) y solo se usa como etiqueta secundaria |
