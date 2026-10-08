@@ -1,19 +1,28 @@
--- Vistas base para la auditoría de Braze.
--- Fuente de verdad de definiciones: braze-analysis/METRICAS.md y data/mapeo.md.
--- Dialecto ANSI. En Databricks: `date`, `group` con acentos graves y DATEDIFF(day, a, b) -> DATEDIFF(b, a).
+-- Databricks notebook source
+-- MAGIC %md
+-- MAGIC # Vistas base de la auditoría de Braze
+-- MAGIC Dialecto: Databricks SQL con Unity Catalog.
+-- MAGIC Son vistas TEMPORALES: viven solo en la sesión del notebook. Así no choca Unity Catalog con Hive Metastore.
+-- MAGIC Si quieres vistas permanentes, pide un esquema propio en Unity Catalog (ej. `analytics_engineering_production.sandbox_braze`) y cambia `TEMPORARY VIEW v_x` por `VIEW catalogo.esquema.v_x`.
+-- MAGIC Definiciones: braze-analysis/METRICAS.md y data/mapeo.md.
+-- MAGIC
+-- MAGIC Nota sobre duplicados: la verificación V10 encontró 1.97 millones de grupos repetidos en el grano usuario x comunicación x día x canal.
+-- MAGIC v_envios los colapsa con MAX por bandera. Eso es correcto si son copias o eventos de la misma pieza; se revisa con V10b y V10c.
+
+-- COMMAND ----------
 
 -- ---------------------------------------------------------------
 -- 1. Dimensión de piezas: campañas y Canvas en una sola tabla
 -- ---------------------------------------------------------------
-CREATE OR REPLACE VIEW v_piezas AS
+CREATE OR REPLACE TEMPORARY VIEW v_piezas AS
 WITH base AS (
   SELECT
     'campaign'            AS tipo_pieza,
     campaign_id           AS communication_id,
     campaign_name         AS nombre,
-    team, product, "date" AS fecha_codigo, ticket_number,
+    team, product, `date` AS fecha_codigo, ticket_number,
     channel               AS canal_codigo,
-    audience, offer, "group" AS grupo,
+    audience, offer, `group` AS grupo,
     archived, first_sent, last_sent,
     campaign_created_at   AS created_at,
     channel_email, channel_in_app_message, channel_webhook,
@@ -22,8 +31,8 @@ WITH base AS (
   UNION ALL
   SELECT
     'canvas', canvas_id, canvas_name,
-    team, product, "date", ticket_number,
-    channel, audience, offer, "group",
+    team, product, `date`, ticket_number,
+    channel, audience, offer, `group`,
     archived, first_sent, last_sent, canvas_created_at,
     channel_email, channel_in_app_message, channel_webhook,
     channel_push_notification, channel_whatsapp, FALSE
@@ -46,25 +55,27 @@ SELECT
   -- Estado operativo
   CASE
     WHEN archived THEN 'archivada'
-    WHEN last_sent >= DATE '2026-09-30' - INTERVAL '90' DAY THEN 'activa'
+    WHEN last_sent >= DATE_SUB(DATE '2026-09-30', 90) THEN 'activa'
     ELSE 'zombi'
   END AS estado,
-  DATEDIFF(day, first_sent, last_sent) AS dias_vida,
+  DATEDIFF(last_sent, first_sent) AS dias_vida,
   CAST(channel_email AS INT) + CAST(channel_in_app_message AS INT) + CAST(channel_webhook AS INT)
     + CAST(channel_push_notification AS INT) + CAST(channel_whatsapp AS INT) + CAST(channel_banner AS INT)
     AS n_canales,
   SUBSTR(ticket_number, 1, 1) AS ticket_prefijo
 FROM base b;
 
+-- COMMAND ----------
+
 -- ---------------------------------------------------------------
 -- 2. Hecho de envíos: una fila por usuario x comunicación x día x canal
 --    Deduplicado. Con costo variable por fila.
 -- ---------------------------------------------------------------
-CREATE OR REPLACE VIEW v_envios AS
+CREATE OR REPLACE TEMPORARY VIEW v_envios AS
 WITH dedup AS (
   SELECT
     user_id, communication_id, communication_name, channel, category,
-    product_service, ticket_number, "group" AS grupo, team, segment, subsegment,
+    product_service, ticket_number, `group` AS grupo, team, segment, subsegment,
     event_date,
     MAX(CAST(email_sent AS INT))          AS email_sent,
     MAX(CAST(email_delivery AS INT))      AS email_delivery,
@@ -89,7 +100,7 @@ WITH dedup AS (
   FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
   WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-10-07'
   GROUP BY user_id, communication_id, communication_name, channel, category,
-           product_service, ticket_number, "group", team, segment, subsegment, event_date
+           product_service, ticket_number, `group`, team, segment, subsegment, event_date
 )
 SELECT
   d.*,
@@ -102,10 +113,12 @@ SELECT
 FROM dedup d
 LEFT JOIN v_piezas p ON p.communication_id = d.communication_id;
 
+-- COMMAND ----------
+
 -- ---------------------------------------------------------------
 -- 3. Dimensión de usuarios: Braze + filtros de contactabilidad
 -- ---------------------------------------------------------------
-CREATE OR REPLACE VIEW v_usuarios AS
+CREATE OR REPLACE TEMPORARY VIEW v_usuarios AS
 SELECT
   u.user_id, u.braze_id, u.days_on_book, u.timezone,
   u.attributed_campaign, u.attributed_source,
@@ -122,10 +135,12 @@ SELECT
 FROM analytics_engineering_production.braze._dim_braze_users u
 LEFT JOIN product.customer_golden_dataset.dim_braze_filters f ON f.customer_id = u.user_id;
 
+-- COMMAND ----------
+
 -- ---------------------------------------------------------------
 -- 4. Hecho de pasos de Canvas con experimentos y grupo control
 -- ---------------------------------------------------------------
-CREATE OR REPLACE VIEW v_canvas_pasos AS
+CREATE OR REPLACE TEMPORARY VIEW v_canvas_pasos AS
 SELECT
   e.user_id, e.canvas_id, e.canvas_step_id, e.category AS canal,
   e.event_date, DATE_TRUNC('month', e.event_date) AS mes,
@@ -139,10 +154,12 @@ FROM analytics_engineering_production.braze_semantic_layer._fct_braze_canvas_use
 LEFT JOIN analytics_engineering_production.braze._dim_braze_canvas_step s ON s.canvas_step_id = e.canvas_step_id
 WHERE e.event_date BETWEEN DATE '2026-01-01' AND DATE '2026-10-07';
 
+-- COMMAND ----------
+
 -- ---------------------------------------------------------------
 -- 5. Resumen por usuario (lente H). Una fila por usuario.
 -- ---------------------------------------------------------------
-CREATE OR REPLACE VIEW v_usuarios_resumen AS
+CREATE OR REPLACE TEMPORARY VIEW v_usuarios_resumen AS
 WITH env AS (
   SELECT
     user_id,
@@ -207,6 +224,8 @@ FROM v_usuarios u
 LEFT JOIN env e  ON e.user_id = u.user_id
 LEFT JOIN conv c ON c.user_id = u.user_id
 LEFT JOIN post_baja pb ON pb.user_id = u.user_id;
+
+-- COMMAND ----------
 
 -- ---------------------------------------------------------------
 -- 6. Conteos de control. Correr después de crear las vistas.

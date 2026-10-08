@@ -276,3 +276,31 @@ Con estas decisiones el gasto variable se calcula así:
 `costo_fila = email_sent × 0.05 + whatsapp_send × 1.00`
 
 Push, in-app y banner cuestan cero variable. Si hay costo fijo de Braze, se prorratea por envío del mes.
+
+---
+
+## 10. Lo que aprendimos al correr las primeras queries (8 de octubre de 2026)
+
+**El warehouse es Databricks con Unity Catalog.** Eso cambia dos cosas:
+
+- Las vistas se crean como temporales dentro del notebook. Un `CREATE VIEW` sin catálogo intenta ir a Hive Metastore y Unity Catalog lo rechaza.
+- Los archivos `sql/verificaciones.sql` y `sql/vistas_base.sql` ahora son notebooks de Databricks. Se importan con File > Import y cada query corre en su propia celda. Si se pegan como un solo archivo en el editor SQL, solo se ve el resultado de la última query.
+
+**Hay muchas filas repetidas en la tabla principal.** La verificación V10 dio:
+
+| Grupos repetidos | Filas de más |
+|---|---|
+| 1,972,276 | 3,557,092 |
+
+Grano revisado: usuario × comunicación × día × canal. Un grupo repetido es una combinación que aparece más de una vez.
+
+Qué puede significar y qué hacemos en cada caso:
+
+| Si los duplicados... | Significa | Qué hacemos |
+|---|---|---|
+| Son copias exactas | Problema de carga de la tabla | Deduplicar con MAX. Lo que ya hace `v_envios`. Avisar al equipo de datos |
+| Difieren solo en segment, subsegment o group | Atributos del usuario tomados en momentos distintos | Deduplicar con MAX. Es el mismo mensaje |
+| Difieren en banderas (una fila con sent, otra con open) | Cada fila es un evento, no un envío | Deduplicar con MAX. Une los eventos del mismo envío |
+| Difieren en communication_name o ticket | Varios pasos de un Canvas el mismo día | **No** colapsar: son mensajes distintos. Contar envíos desde la tabla 7 de pasos de Canvas |
+
+Las queries V10b, V10c, V10d y V10e del notebook dicen cuál de los cuatro casos es. V13 dice el total de filas para dimensionar.
