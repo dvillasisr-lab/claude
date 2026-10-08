@@ -377,3 +377,5 @@ Marketing ~2,100, Lending ~1,160, Not Tracked 748, ProductGrowth ~650, Sales ~41
 | Costo fijo de Braze | No disponible. El análisis de costo usa solo variable: email 0.05 MXN, WhatsApp 1.00 MXN, resto 0 |
 | Privacidad | Ninguna extracción (E1, E2, E3) contiene identificadores de usuario. Solo agregados por campaña, catálogo y conteos por rango |
 | Canal | `category` es el medio real. `channel` es el tipo de pieza (Canvas, Email, In-App, Others) y solo se usa como etiqueta secundaria |
+| Conversión por producto | `applied_for_loan` e `is_converted` solo tienen sentido para Cash (préstamos). Para Pay, referidos y otros productos la eficiencia se mide con entrega, apertura y clic. Cada lente separa por `product_service` antes de comparar |
+| Qué son E1, E2, E3 | Nombres cortos de las tres queries de extracción en `sql/extraccion.sql`. E1 = resumen por campaña × mes × canal. E2 = catálogo limpio. E3 = distribución de mensajes por usuario y suscripción. Resultados en CSV, sin datos personales |
