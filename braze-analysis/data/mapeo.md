@@ -251,3 +251,28 @@ Con esto: gasto por canal, por equipo, por campaña, costo por solicitud, costo 
 - La tabla 4 de dispositivos queda fuera salvo que aparezca una llave.
 
 Siguiente paso: respondes las 10 preguntas (o dices "asume todo") y escribo las vistas base en SQL y arrancan los analistas.
+
+---
+
+## 9. Decisiones tomadas (8 de octubre de 2026)
+
+Con tus respuestas. Donde dijiste "no sé", aplico el default y agrego una query en `sql/verificaciones.sql` para que la data lo confirme antes de analizar.
+
+| # | Decisión | Cómo se verifica con data |
+|---|---|---|
+| 1 | `user_id` = `customer_id` | % de usuarios de la tabla 6 que cruzan con la 9. Si es menor a 90 %, se revisa |
+| 2 | Uso `braze_semantic_layer._fct_braze_canvas_user_engagement` | Comparo conteos y sumas de las dos tablas. Si son iguales, da igual. Si no, te aviso cuál difiere |
+| 3 | `control_group`: la data dice qué valores hay | `SELECT DISTINCT control_group` con conteo y tasa de conversión por valor. El valor con conversión más baja y sin envíos es el control |
+| 4 | Atribución: la que ya trae la tabla, sin recalcular. Se reporta como "según Braze" | Reviso si hay conversiones en filas sin envío (`was_send = false AND is_converted = true`) |
+| 5 | La conversión puede repetirse en varias filas. Deduplico por usuario y día al sumar montos | Cuento usuarios con `is_converted` en más de una fila el mismo día |
+| 6 | Códigos de canal: la data los lista | `SELECT DISTINCT channel, category` |
+| 7 | `ticket_number` es solo identificador | Cruce prefijo (B, T) contra `team` para ver si hay patrón |
+| 8 | `gross_amount` = monto otorgado. Sin tasa ni margen, no se convierte en ingreso. Se reporta como "monto colocado" | Reviso que `gross_amount` sea nulo cuando `is_converted = false` |
+| 9 | Periodo: **2026-01-01 a 2026-09-30** (meses cerrados de este año). Octubre se muestra aparte como parcial | Filas por mes para ver cobertura |
+| 10 | Tarifas en MXN: **email 0.05, WhatsApp 1.00, in-app 0, push 0, banner 0**. Costo fijo de Braze: pendiente | Nada que verificar. Si consigues el costo mensual de Braze, se prorratea |
+
+Con estas decisiones el gasto variable se calcula así:
+
+`costo_fila = email_sent × 0.05 + whatsapp_send × 1.00`
+
+Push, in-app y banner cuestan cero variable. Si hay costo fijo de Braze, se prorratea por envío del mes.
