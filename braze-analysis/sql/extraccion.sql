@@ -256,3 +256,131 @@ FROM primera_baja b
 LEFT JOIN despues d ON d.user_id = b.user_id
 GROUP BY b.mes_baja
 ORDER BY b.mes_baja;
+
+
+-- ===================== E6. Solapamiento: a qué usuarios les llegan varias cosas parecidas =====================
+-- Sin identificadores de usuario en el resultado. Todo sale agregado.
+-- Familia = communication_name sin la fecha, para que las versiones mensuales de una Canvas cuenten como la misma idea.
+-- Audiencia = quinto bloque del nombre (Leads, Recurrentes_Dormants, Nuevos_NeverActive...). Si el nombre no sigue la convención, queda 'sin_audiencia'.
+
+-- E6a. Cuántas comunicaciones distintas recibe un usuario en un día, por mes.
+-- Resultado esperado: unas 45 filas (9 meses × 5 bandas). Descargar como e6a_solape_dia_mes.csv
+WITH envios AS (
+  SELECT DISTINCT c.user_id, c.event_date, c.category AS canal,
+    regexp_replace(c.communication_name, '-\d{8}-', '-') AS familia
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications c
+  WHERE c.event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30' AND c.was_send
+),
+usuario_dia AS (
+  SELECT user_id, event_date, DATE_TRUNC('month', event_date) AS mes,
+    COUNT(DISTINCT familia) AS familias_dia, COUNT(DISTINCT canal) AS canales_dia, COUNT(*) AS msgs_dia
+  FROM envios GROUP BY user_id, event_date
+),
+resultado_dia AS (
+  SELECT user_id, event_date,
+    MAX(CASE WHEN email_unsubscribe THEN 1 ELSE 0 END) AS baja_email,
+    MAX(CASE WHEN is_converted THEN 1 ELSE 0 END) AS conv,
+    MAX(CASE WHEN email_click OR pn_open OR whatsapp_read OR in_app_click THEN 1 ELSE 0 END) AS respondio
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
+  GROUP BY user_id, event_date
+)
+SELECT u.mes,
+  CASE WHEN u.familias_dia = 1 THEN '1' WHEN u.familias_dia = 2 THEN '2' WHEN u.familias_dia <= 4 THEN '3 a 4' WHEN u.familias_dia <= 7 THEN '5 a 7' ELSE '8+' END AS banda_familias_dia,
+  COUNT(*)                                   AS usuario_dias,
+  APPROX_COUNT_DISTINCT(u.user_id)           AS usuarios_aprox,
+  SUM(u.msgs_dia)                            AS msgs,
+  AVG(u.canales_dia)                         AS canales_prom,
+  SUM(r.respondio)                           AS usuario_dias_con_respuesta,
+  SUM(r.conv)                                AS usuario_dias_con_conversion,
+  SUM(r.baja_email)                          AS usuario_dias_con_baja
+FROM usuario_dia u LEFT JOIN resultado_dia r ON r.user_id = u.user_id AND r.event_date = u.event_date
+GROUP BY 1, 2 ORDER BY 1, 2;
+
+-- E6b. Qué pares de familias le llegan al mismo usuario el mismo día, y si son parecidas (mismo producto o misma audiencia).
+-- Resultado esperado: hasta 1,000 filas. Descargar como e6b_pares_familias.csv
+WITH envios AS (
+  SELECT DISTINCT c.user_id, c.event_date,
+    regexp_replace(c.communication_name, '-\d{8}-', '-') AS familia,
+    c.category AS canal
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications c
+  WHERE c.event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30' AND c.was_send
+),
+pares AS (
+  SELECT a.user_id, a.event_date, a.familia AS familia_a, b.familia AS familia_b, a.canal AS canal_a, b.canal AS canal_b
+  FROM envios a JOIN envios b ON a.user_id = b.user_id AND a.event_date = b.event_date AND a.familia < b.familia
+)
+SELECT familia_a, familia_b, canal_a, canal_b,
+  split_part(familia_a, '-', 1) AS equipo_a, split_part(familia_b, '-', 1) AS equipo_b,
+  CASE WHEN split_part(familia_a, '-', 2) = split_part(familia_b, '-', 2) THEN 1 ELSE 0 END AS mismo_producto,
+  CASE WHEN split_part(familia_a, '-', 5) = split_part(familia_b, '-', 5) THEN 1 ELSE 0 END AS misma_audiencia,
+  COUNT(*)                          AS usuario_dias_juntas,
+  APPROX_COUNT_DISTINCT(user_id)    AS usuarios_aprox,
+  COUNT(DISTINCT DATE_TRUNC('month', event_date)) AS meses
+FROM pares
+GROUP BY 1, 2, 3, 4, 5, 6, 7, 8
+HAVING COUNT(*) >= 10000
+ORDER BY usuario_dias_juntas DESC
+LIMIT 1000;
+
+
+-- ===================== E7. Segmentación: a quién le funciona qué =====================
+-- Sin identificadores. Dos cortes: por etapa del golden record y por audiencia del nombre (E7a), y por patrón de respuesta del usuario (E7b).
+
+-- E7a. Familia × canal × etapa del usuario: envíos, respuesta, conversión y bajas.
+-- La etapa viene de product.customer_golden_dataset.dim_braze_filters (cubre ~7 % de usuarios; el resto queda en 'sin_golden').
+-- Resultado esperado: 10 a 20 mil filas. Descargar como e7a_familia_canal_etapa.csv
+WITH base AS (
+  SELECT c.user_id, c.event_date, c.category AS canal,
+    regexp_replace(c.communication_name, '-\d{8}-', '-') AS familia,
+    MAX(CAST(c.was_send AS INT)) AS envio,
+    MAX(CASE WHEN c.email_click OR c.pn_open OR c.whatsapp_read OR c.in_app_click THEN 1 ELSE 0 END) AS respondio,
+    MAX(CAST(c.email_unsubscribe AS INT)) AS baja_email,
+    MAX(CAST(c.is_converted AS INT)) AS conv,
+    MAX(COALESCE(c.gross_amount, 0)) AS monto
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications c
+  WHERE c.event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
+  GROUP BY c.user_id, c.event_date, c.category, 4
+)
+SELECT b.familia, split_part(b.familia, '-', 1) AS equipo, split_part(b.familia, '-', 2) AS producto, split_part(b.familia, '-', 5) AS audiencia, b.canal,
+  CASE WHEN f.customer_id IS NULL THEN 'sin_golden' ELSE COALESCE(f.step, 'sin_etapa') END AS etapa,
+  SUM(b.envio)                       AS envios,
+  APPROX_COUNT_DISTINCT(b.user_id)   AS usuarios_aprox,
+  SUM(b.respondio)                   AS respuestas,
+  SUM(b.conv)                        AS conversiones_filas,
+  SUM(b.monto)                       AS monto_filas,
+  SUM(b.baja_email)                  AS bajas_email_eventos
+FROM base b
+LEFT JOIN product.customer_golden_dataset.dim_braze_filters f ON f.customer_id = b.user_id
+GROUP BY 1, 2, 3, 4, 5, 6
+HAVING SUM(b.envio) >= 1000
+ORDER BY envios DESC;
+
+-- E7b. Patrón de respuesta por usuario: a qué canal responde cada quien, y cuánto le mandamos por cada canal.
+-- Responder = clic en email, apertura de push, lectura de WhatsApp o clic en in-app, al menos una vez en el periodo.
+-- Resultado esperado: 16 filas (una por combinación de canales a los que responde). Descargar como e7b_patron_respuesta.csv
+WITH por_usuario AS (
+  SELECT user_id,
+    SUM(CASE WHEN email_sent THEN 1 ELSE 0 END)    AS msgs_email,
+    SUM(CASE WHEN pn_send THEN 1 ELSE 0 END)       AS msgs_push,
+    SUM(CASE WHEN whatsapp_send THEN 1 ELSE 0 END) AS msgs_wa,
+    SUM(CASE WHEN in_app_impression THEN 1 ELSE 0 END) AS msgs_inapp,
+    MAX(CASE WHEN email_click THEN 1 ELSE 0 END)   AS resp_email,
+    MAX(CASE WHEN pn_open THEN 1 ELSE 0 END)       AS resp_push,
+    MAX(CASE WHEN whatsapp_read THEN 1 ELSE 0 END) AS resp_wa,
+    MAX(CASE WHEN in_app_click THEN 1 ELSE 0 END)  AS resp_inapp,
+    MAX(CASE WHEN is_converted THEN 1 ELSE 0 END)  AS convirtio,
+    MAX(CASE WHEN email_unsubscribe THEN 1 ELSE 0 END) AS baja_email
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
+  GROUP BY user_id
+)
+SELECT resp_email, resp_push, resp_wa, resp_inapp,
+  COUNT(*)            AS usuarios,
+  SUM(msgs_email)     AS msgs_email, SUM(msgs_push) AS msgs_push, SUM(msgs_wa) AS msgs_wa, SUM(msgs_inapp) AS msgs_inapp,
+  SUM(convirtio)      AS usuarios_con_conversion,
+  SUM(baja_email)     AS usuarios_con_baja_email,
+  ROUND(SUM(msgs_email) * 0.05 + SUM(msgs_wa) * 1.00, 2) AS costo_mxn
+FROM por_usuario
+GROUP BY 1, 2, 3, 4
+ORDER BY usuarios DESC;

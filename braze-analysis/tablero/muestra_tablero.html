@@ -41,6 +41,7 @@ section>.hd{display:grid;gap:4px}
 section>.hd p{color:var(--ink-2);max-width:72ch}
 .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px}
 .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px 10px;display:grid;gap:8px;min-width:0}
 .card h3{font-size:14px;font-weight:600}
 .card .sub{font-size:12px;color:var(--ink-2)}
@@ -106,10 +107,11 @@ footer code{font-family:var(--mono);font-size:12px}
 </section>
 
 <section>
-  <div class="hd"><h2>Bajas de email</h2><p>457 mil usuarios únicos se dieron de baja en 9 meses. Enero y junio concentran más bajas que el resto. El acumulado llega a 2.3 % de los 19.5 M usuarios contactados en el periodo. Push y WhatsApp no tienen campo de baja.</p></div>
-  <div class="grid2">
+  <div class="hd"><h2>Bajas de email</h2><p>457 mil usuarios únicos se dieron de baja en 9 meses. Tres lecturas: en qué meses se concentran las bajas, qué parte de la base ya se perdió, y la tasa de cada mes (de cada 100 usuarios que recibieron email ese mes, cuántos se dieron de baja). La tasa fue de 1.5 % en enero y bajó a 0.4 % en junio, con un repunte a 1.2 % en julio. Push y WhatsApp no tienen campo de baja.</p></div>
+  <div class="grid3">
     <div class="card"><h3>Qué parte de las bajas cae en cada mes</h3><div class="sub">% de las 457 mil bajas del periodo. Si fueran parejas, cada mes tendría 11.1 %.</div><div class="chart" id="c_bajas_mes"></div></div>
     <div class="card"><h3>Bajas acumuladas sobre la base contactada</h3><div class="sub">% de los 19.5 M usuarios con alguna comunicación en el periodo. Denominador provisional: la base exacta de email sale de E5.</div><div class="chart" id="c_bajas_acum"></div></div>
+    <div class="card"><h3>Tasa mensual de baja</h3><div class="sub">Usuarios únicos con baja en el mes entre usuarios únicos con email entregado ese mes. Es la tasa que se compara con otros meses.</div><div class="chart" id="c_bajas_tasa"></div></div>
   </div>
 </section>
 
@@ -124,7 +126,7 @@ footer code{font-family:var(--mono);font-size:12px}
 </section>
 
 <footer>
-  <p><b>Definiciones.</b> Entrega = entregados entre enviados. Apertura de email y clic = sobre entregados. Apertura de push = sobre enviados (Braze solo registra apertura directa). Lectura de WhatsApp = sobre entregados. Bajas de email = usuarios únicos con evento de baja en el mes; se muestran como parte del total del periodo y como acumulado sobre la base contactada. Push y WhatsApp no tienen campo de baja.</p>
+  <p><b>Definiciones.</b> Entrega = entregados entre enviados. Apertura de email y clic = sobre entregados. Apertura de push = sobre enviados (Braze solo registra apertura directa). Lectura de WhatsApp = sobre entregados. Bajas de email = usuarios únicos con evento de baja en el mes; se muestran como parte del total del periodo y como acumulado sobre la base contactada. Push y WhatsApp no tienen campo de baja. Tasa mensual de baja = usuarios únicos con baja en el mes entre usuarios únicos con email entregado en el mes.</p>
   <p><b>Fuentes.</b> <code>data/e1_comunicacion_mes_canal.csv</code> y <code>data/e4a_serie_semana_mes_canal.csv</code>, <code>data/e4b_concentracion_mes.csv</code>, tabla <code>_dim_braze_users_and_communications</code>, deduplicada por usuario × comunicación × día × canal. Queries en <code>sql/muestra_b_canales.sql</code>.</p>
   <p><b>Benchmarks</b> de METRICAS.md: email promocional apertura 15 a 25 %, clic 1.5 a 3 %; push apertura 3 a 10 %; WhatsApp lectura 70 a 90 %. Entrega de WhatsApp se compara contra 90 %.</p>
 </footer>
@@ -197,6 +199,7 @@ bars('c_conc', DATA.monthly, 'conc_msgs', 'var(--accent)', {valFmt:v=>fmtP(v,0),
 const BT = DATA.monthly.reduce((a,r)=>a+r.bajas_usuarios,0); let acc=0;
 const BAJAS = DATA.monthly.map(r=>{ acc+=r.bajas_usuarios; return {mes:r.mes, pct:Math.round(1000*r.bajas_usuarios/BT)/10, n:r.bajas_usuarios, acum:acc, pacum:Math.round(10000*acc/19538153)/100}; });
 bars('c_bajas_mes', BAJAS, 'pct', 'var(--accent)', {valFmt:v=>fmtP(v,1), ymaxFixed:20, unitTip:' de las bajas del periodo', bench:11.1, benchLabel:'reparto parejo 11.1 %'});
+lines('c_bajas_tasa', DATA.monthly, [{key:'baja_email',name:'Tasa',color:'var(--accent)'}], {xlabel:r=>mlabel(r.mes), xlabelTip:r=>mlabel(r.mes)+' 2026', fmt:v=>fmtP(v,2), ymax:2, H:200});
 lines('c_bajas_acum', BAJAS, [{key:'pacum',name:'Acumulado',color:'var(--accent)'}], {xlabel:r=>mlabel(r.mes), xlabelTip:r=>mlabel(r.mes)+' 2026', fmt:v=>fmtP(v,2), ymax:3, H:200});
 
 // Lines (small multiples and weekly)
@@ -229,7 +232,7 @@ const wk=DATA.weekly; const wl=r=>{const [y,m,d]=r.sem.split('-'); return `${+d}
 lines('c_week', wk, [{key:'email',name:'Email',color:S.email},{key:'push',name:'Push',color:S.push},{key:'whatsapp',name:'WhatsApp',color:S.wa},{key:'inapp',name:'In-app',color:S.inapp}], {xlabel:wl, xlabelTip:r=>'Semana del '+wl(r), fmt:v=>v.toLocaleString('es-MX',{maximumFractionDigits:1})+' M', scale:1e6, H:260});
 
 // Table
-const cols=[['mes','Mes',r=>mlabel(r.mes)],['env','Envíos',r=>fmtM(r.email+r.push+r.whatsapp+r.inapp+r.banner)],['email','Email',r=>fmtM(r.email)],['push','Push',r=>fmtM(r.push)],['whatsapp','WhatsApp',r=>fmtM(r.whatsapp)],['inapp','In-app',r=>fmtM(r.inapp)],['costo','Costo MXN',r=>fmtM(r.costo_email+r.costo_wa)],['ee','Entrega email',r=>fmtP(r.entrega_email)],['ae','Apertura email',r=>fmtP(r.apertura_email)],['ce','Clic email',r=>fmtP(r.clic_email,2)],['bu','Bajas, usuarios',r=>r.bajas_usuarios.toLocaleString('es-MX')],['bp','% de las bajas',r=>{const b=BAJAS.find(x=>x.mes===r.mes);return fmtP(b.pct,1);}],['ba','Bajas acumuladas',r=>{const b=BAJAS.find(x=>x.mes===r.mes);return b.acum.toLocaleString('es-MX');}],['ap','Apertura push',r=>fmtP(r.apertura_push,2)],['ew','Entrega WA',r=>fmtP(r.entrega_wa)],['lw','Lectura WA',r=>fmtP(r.lectura_wa)],['wp','WA sin entregar, MXN',r=>fmtM(r.wa_perdido)],['ci','Clic in-app',r=>fmtP(r.clic_inapp)],['cc','Msgs en usuarios 41+',r=>fmtP(r.conc_msgs)]];
+const cols=[['mes','Mes',r=>mlabel(r.mes)],['env','Envíos',r=>fmtM(r.email+r.push+r.whatsapp+r.inapp+r.banner)],['email','Email',r=>fmtM(r.email)],['push','Push',r=>fmtM(r.push)],['whatsapp','WhatsApp',r=>fmtM(r.whatsapp)],['inapp','In-app',r=>fmtM(r.inapp)],['costo','Costo MXN',r=>fmtM(r.costo_email+r.costo_wa)],['ee','Entrega email',r=>fmtP(r.entrega_email)],['ae','Apertura email',r=>fmtP(r.apertura_email)],['ce','Clic email',r=>fmtP(r.clic_email,2)],['bu','Bajas, usuarios',r=>r.bajas_usuarios.toLocaleString('es-MX')],['bp','% de las bajas',r=>{const b=BAJAS.find(x=>x.mes===r.mes);return fmtP(b.pct,1);}],['ba','Bajas acumuladas',r=>{const b=BAJAS.find(x=>x.mes===r.mes);return b.acum.toLocaleString('es-MX');}],['bt','Tasa de baja',r=>fmtP(r.baja_email,2)],['ap','Apertura push',r=>fmtP(r.apertura_push,2)],['ew','Entrega WA',r=>fmtP(r.entrega_wa)],['lw','Lectura WA',r=>fmtP(r.lectura_wa)],['wp','WA sin entregar, MXN',r=>fmtM(r.wa_perdido)],['ci','Clic in-app',r=>fmtP(r.clic_inapp)],['cc','Msgs en usuarios 41+',r=>fmtP(r.conc_msgs)]];
 document.getElementById('tbl').innerHTML=`<table><thead><tr>${cols.map(c=>`<th>${c[1]}</th>`).join('')}</tr></thead><tbody>${DATA.monthly.map(r=>`<tr>${cols.map(c=>`<td>${c[2](r)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
 const btn=document.getElementById('btn_tbl'), tbl=document.getElementById('tbl');
 btn.addEventListener('click',()=>{ tbl.hidden=!tbl.hidden; btn.textContent=tbl.hidden?'Mostrar tabla':'Ocultar tabla'; btn.setAttribute('aria-expanded',String(!tbl.hidden)); });
