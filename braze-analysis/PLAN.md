@@ -220,3 +220,23 @@ Objetivo: que el usuario pueda rehacer a mano cualquier número. Todo resultado 
 ### Cómo se construye y verifica
 
 El archivo se arma en local con fórmulas, se sube a Drive del usuario como Google Sheets y se lee de vuelta para confirmar que las fórmulas evalúan y que Verificación cuadra. Orden: Léeme, Parámetros, crudos y Verificación primero; luego Catálogo y lentes; al final Estándares, Insights y Plan de acción. Cuando esté al 100 % se pide a design un tablero y una presentación a partir del Sheets.
+
+### Riesgos encontrados en la verificación y su mitigación
+
+| Riesgo | Mitigación | Comprobación |
+|---|---|---|
+| Fórmulas de arreglo (medianas, listas de ids) pueden romperse al convertir a Sheets | Prueba chica antes de construir con una fórmula de cada tipo. Si falla: medianas con columnas auxiliares ordenadas y lista de ids precalculada desde E2, marcada como derivada | Descargar la prueba ya calculada por Google y leer los valores |
+| Bajas: 457,376 usuario-mes contra 439,269 usuarios únicos | Las dos cifras con nombre propio en Parámetros y en cada pestaña que las use | E5 menos E7b debe dar cero |
+| E1 deduplicado contra E3 y E7b por filas | E1 manda en volumen por campaña; E3 y E7b en distribución por usuario. Supuesto escrito | Verificación muestra la diferencia (0.2 % y 1 %) como esperada |
+| Fechas en cuatro formatos | Columna `mes_clave` ("2026-06") en toda pestaña con fecha; todos los cruces la usan | COUNTIFS por mes en E1 debe sumar 14,031 |
+| E4a mezcla semana y mes | Toda fórmula sobre E4a filtra `grano` | Total mensual de E4a igual al de E1 por canal |
+| Filas de E1 con envíos cero | Campañas activas con envíos > 0; bajas y aperturas sin filtro | Familias activas en septiembre contra el conteo actual |
+| Comunicación sin nombre | Etiqueta "(sin nombre)" más su id en Catálogo | Ninguna familia vacía en Campañas |
+| Ticket "Other" en 1,275 filas | ticket_number primero, regex sobre el nombre como respaldo, vacío si ninguno | Conteo y lista de familias sin ticket |
+| E2 con ids sin envíos y E1 con un id fuera de E2 | Lista de ids desde E2 completada con E1; columna `envio_en_periodo` | Ids de E1 sin familia en Catálogo = 0 |
+| Costo precalculado sobre WhatsApp enviado en E1 y E4a | Columnas marcadas "no usar"; costo solo desde Parámetros con base de cobro seleccionable | Cambiar la base de cobro mueve WhatsApp de 55.2 a 41.0 M |
+| Conversión por fila contra por usuario | Nunca en la misma tabla; siempre "de referencia" | Revisión de encabezados |
+| Divisiones entre cero y vacíos en medianas | IFERROR a vacío; mediana solo sobre familias con volumen ≥ mediana del canal, regla en Parámetros | Medianas por canal contra las actuales |
+| Lentitud por SUMIFS masivos | Rangos acotados, sin funciones volátiles ni columnas completas | Tiempo de recálculo al cambiar un parámetro |
+| Equipo mal clasificado por nombre | Catálogo con `equipo` editable y `equipo_original`; todo lee la editable | Tabla de equipos con conteo de familias |
+| Números actuales contra los del Sheets | Verificación: cifra actual, cifra del Sheets, diferencia, explicación. Las diferencias esperadas (base de cobro, bajas únicas, E9b con clic) explicadas de antemano | Todo en cero o explicado |
