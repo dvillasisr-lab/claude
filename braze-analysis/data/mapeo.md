@@ -387,6 +387,8 @@ Marketing ~2,100, Lending ~1,160, Not Tracked 748, ProductGrowth ~650, Sales ~41
 | E1 (campaña × mes × canal) | **Recibida** | `data/e1_comunicacion_mes_canal.csv` | 14,031 filas, 32 columnas, 3,439 comunicaciones, enero a septiembre 2026. Sin filas rotas, sin claves duplicadas (comunicación × canal × mes). `envios` cuadra fila por fila con la suma de envíos por canal |
 | E2 (catálogo limpio) | **Recibida** | `data/e2_catalogo.csv` | 6,144 piezas (5,173 Canvas, 971 campañas), 28 columnas, sin filas rotas, sin ids duplicados. Llegó pegada en el chat y se recuperó de la transcripción |
 | E3 (mensajes por usuario y suscripción) | **Recibida** | `data/e3_usuarios_distribucion.csv` | 747 filas, 23 columnas, 19.5 M usuarios. Sin filas rotas, sin claves duplicadas |
+| E4a (semana y mes × canal) | **Recibida** | `data/e4a_serie_semana_mes_canal.csv` | 245 filas (45 de mes, 200 de semana), 24 columnas. Llegó pegada y se recuperó de la transcripción. Suma exacto contra E1 en envíos, bajas y costo |
+| E4b (mes × banda de mensajes) | **Recibida** | `data/e4b_concentracion_mes.csv` | 72 filas, 13 columnas. Suma 670.4 M mensajes, igual que E3 |
 
 Cuadre entre E1 y E3 (mismo periodo, misma tabla fuente):
 
@@ -435,3 +437,21 @@ Las tres extracciones ya están. Con esto arranca la Ola 2 (analistas por lente)
 - La baja solo existe para email (`email_unsubscribe`). Push y WhatsApp no tienen campo de baja ni de opt-out en la tabla. Definición y proxies en `METRICAS.md`, sección Bajas.
 - La cifra de bajas que se presenta es usuarios únicos por mes (count distinct `user_id` con `email_unsubscribe = true`), no eventos. E1 y E3 traen eventos; los únicos salen de E4a.
 - Lista de outcomes del entregable final en `PENDIENTES.md`. Pide vista por mes y por semana. E1 es mensual; la semanal sale de E4a y la concentración por mes de E4b.
+
+### Decisión sobre suscripción (14 de octubre de 2026)
+
+Respuesta del usuario: en `_dim_braze_users_and_communications` no existe `email_subscribe` ni `push_subscribe`. Solo hay `email_unsubscribe` (true cuando el usuario se dio de baja ese día por esa comunicación; false solo significa que no hubo baja en esa fila). Para push solo hay `pn_send` y `pn_open`.
+
+Las columnas `email_subscribe` y `push_subscribe` que usa E3 vienen de `_dim_braze_users`, no de la tabla de comunicaciones. Existen (la query corrió), pero su significado no está confirmado y los datos no son creíbles (89 % de los emails a `false`, push `false` para todos). Decisión:
+
+- **Baja de email** = usuarios únicos con `email_unsubscribe = true` en el periodo (E4a). No se usa `email_subscribe` para medir bajas ni para el cruce "dado de baja que sigue recibiendo".
+- **Push y WhatsApp**: sin estado de suscripción. Se reportan solo proxies marcados como tal (METRICAS.md, sección Bajas).
+- El outcome 1.10 de PENDIENTES.md (usuarios con baja que siguen recibiendo) se replantea como: usuarios con baja de email en el mes M que reciben email en meses posteriores. Requiere una extracción E5 ligera por cohorte de baja. Pendiente de decidir si vale la pena.
+
+### Primera lectura de E4a y E4b, solo para orientar
+
+- Bajas de email: 457 mil usuarios únicos en 9 meses contra 1.09 M eventos. Cada usuario que se da de baja genera 2.4 eventos en promedio (varias comunicaciones el mismo día o filas por canal). La cifra que se presenta es la de usuarios.
+- Tasa mensual de baja: entre 0.75 % y 1.5 % de los usuarios únicos con email entregado cada mes. Enero es el peor (1.5 %) y baja hasta mayo (0.8 %), repunta en julio (1.2 %) y vuelve a bajar en septiembre (0.75 %).
+- Junio: 15.5 M usuarios únicos con email entregado contra 4.3 a 5.1 M en los demás meses. Es el envío de BillPay a 16 M. Generó 63 mil bajas, la cifra más alta después de enero.
+- Concentración por mes: los usuarios con 41 o más mensajes al mes son entre 3.6 % y 7.9 % de los que reciben algo, pero concentran entre 20 % y 37 % de los mensajes. La concentración sube de enero (20 %) a mayo (37 %) y se queda arriba de 30 % desde entonces.
+- Usuarios alcanzados al mes: entre 5.5 M y 6.3 M, salvo junio con 17.4 M.

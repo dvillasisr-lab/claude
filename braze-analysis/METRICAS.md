@@ -78,7 +78,7 @@ Solo email tiene campo de baja en la tabla (`email_unsubscribe`). Push y WhatsAp
 |---|---|---|
 | Eventos de baja de email | filas con `email_unsubscribe = true` en el periodo | Un usuario puede generar varios eventos (se da de baja, vuelve a entrar, se vuelve a dar de baja, o la fila se repite por canal o comunicación) |
 | Usuarios únicos con baja de email | count distinct `user_id` con `email_unsubscribe = true` en el periodo | Es la cifra que se presenta. Query de referencia: `SELECT DATE_TRUNC('month', event_date), COUNT(DISTINCT user_id), COUNT(user_id) FROM ..._dim_braze_users_and_communications WHERE email_unsubscribe = true GROUP BY 1` |
-| Tasa de baja de email | usuarios únicos con baja / usuarios únicos con email entregado en el periodo | Si no hay únicos, eventos de baja / emails entregados y marcar como proxy |
+| Tasa de baja de email | usuarios únicos con baja / usuarios únicos con email entregado en el periodo | Sale de E4a. Si no hay únicos, eventos de baja / emails entregados y marcar como proxy. Referencia real: 0.75 % a 1.5 % mensual en 2026 |
 | Proxy de baja push | caída en usuarios con `pn_send` mes a mes, o `push_subscribe` si se confirma que la columna sirve | Marcar como proxy |
 | Proxy de baja WhatsApp | caída en tasa de entrega de WhatsApp (bloqueos y números inválidos no se distinguen) | Marcar como proxy |
 
