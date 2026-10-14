@@ -42,7 +42,7 @@ def fmt_p(v, d=2):
 def main(path, out_json=None):
     d = pd.read_csv(path)
     d['familia'] = d.familia.fillna('(sin nombre)')
-    d = d.drop(columns=[c for c in ['toques_usuario_mes','usuarios_por_envio','otros_canales','accion_tipo','accion','por_que'] if c in d.columns])
+    d = d.drop(columns=[c for c in ['toques_usuario_mes','usuarios_por_envio','otros_canales','accion_tipo','accion','por_que','emails_a_dados_de_baja','envios_etapa_bloqueada'] if c in d.columns])
     e1 = pd.read_csv('data/e1_comunicacion_mes_canal.csv')
     e1['familia'] = e1.communication_name.str.replace(r'-\d{8}-', '-', regex=True)
     act = e1[e1.envios > 0].groupby(['familia', 'canal']).agg(env=('envios', 'sum'), usr=('usuarios_aprox', 'sum'),
@@ -63,6 +63,21 @@ def main(path, out_json=None):
                 outs.append(f'{CANAL[c]} ({LABEL[c]} {fmt_p(resp, 1 if c=="in-app" else 2)})')
         return ', '.join(outs)
     d['otros_canales'] = [alternativa(f, c) for f, c in zip(d.familia, d.canal)]
+
+    # E5b: emails que llegaron a usuarios ya dados de baja (solo email). E7a: envíos a etapas que no deberían recibir promoción.
+    import os
+    d['emails_a_dados_de_baja'] = 0.0; d['envios_etapa_bloqueada'] = 0.0
+    if os.path.exists('data/e5b_comms_despues_baja.csv'):
+        b = pd.read_csv('data/e5b_comms_despues_baja.csv')
+        b['familia'] = b.familia.str.replace(r'-\d{8}-', '-', regex=True)
+        b = b.groupby('familia').emails_despues_de_baja.sum()
+        m = d.canal.eq('email')
+        d.loc[m, 'emails_a_dados_de_baja'] = d.loc[m, 'familia'].map(b).fillna(0).values
+    if os.path.exists('data/e7a_familia_canal_etapa.csv'):
+        e7 = pd.read_csv('data/e7a_familia_canal_etapa.csv')
+        e7['familia'] = e7.familia.str.replace(r'-\d{8}-', '-', regex=True)
+        e7 = e7[e7.etapa.isin(['3.Blacklist', '4.Kpay CC Freeze', '6.Reus or Arco'])].groupby(['familia', 'canal']).envios.sum()
+        d['envios_etapa_bloqueada'] = [e7.get((f, c), 0) for f, c in zip(d.familia, d.canal)]
 
     tipos, acciones, porques = [], [], []
     for r in d.itertuples():
@@ -177,6 +192,11 @@ def main(path, out_json=None):
                 t = 'Seguir igual'
                 a = 'Sin cambio; seguir midiendo.'
                 p = f'Respuesta en rango o volumen bajo ({resp_txt}).' if resp is not None and not (isinstance(resp, float) and math.isnan(resp)) else 'Sin respuesta medible en el periodo.'
+        if r.tipo == 'promocional o lifecycle':
+            if r.emails_a_dados_de_baja >= 500:
+                p += f' Además llegaron {fmt_m(r.emails_a_dados_de_baja)} emails a usuarios que ya se habían dado de baja: revisar el filtro de suscripción del Canvas.'
+            if r.envios_etapa_bloqueada >= 10000:
+                p += f' {fmt_m(r.envios_etapa_bloqueada)} envíos fueron a usuarios en REUS o ARCO, lista negra o con tarjeta congelada: excluirlos del segmento.'
         tipos.append(t); acciones.append(a); porques.append(p)
 
     d['accion_tipo'], d['accion'], d['por_que'] = tipos, acciones, porques

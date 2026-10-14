@@ -464,3 +464,11 @@ Las columnas `email_subscribe` y `push_subscribe` que usa E3 vienen de `_dim_bra
 
 Por decisión del usuario la señal de eficiencia se basa en métricas de comunicación (respuesta y bajas), no en conversión. `is_converted` se considera poco confiable y solo aplica a Cash; se deja como columna de referencia. Regla completa en `sql/muestra_c_campanas.sql`.
 
+
+## E5b, E6a, E6b y E7a recibidas (14 oct 2026)
+
+- `e5b_comms_despues_baja.csv`: 97 familias (HAVING 500). Familia conserva la fecha en el nombre: en Spark el `\d` del regexp_replace necesita doble barra. Se colapsa en el análisis.
+- `e6a_solape_dia_mes.csv`: 45 filas, 9 meses × 5 bandas.
+- `e6b_pares_familias.csv`: 1,000 pares. Misma nota del regexp.
+- `e7a_familia_canal_etapa.csv`: 5,679 filas. Etapas presentes: 3.Blacklist, 4.Kpay CC Freeze, 6.Reus or Arco, 7.Prospects y sin_golden (las etapas 1, 2 y 5 no aparecen en la tabla de filtros). Cobertura 37 % de los envíos.
+- Faltan: E7b (16 filas), E7c (abren vs no abren) y la línea del denominador de E5 (usuarios únicos con email entregado).

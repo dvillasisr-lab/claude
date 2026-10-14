@@ -258,6 +258,7 @@ GROUP BY b.mes_baja
 ORDER BY b.mes_baja;
 
 
+-- Nota (14 oct): en Databricks el regexp_replace con '\d' no quitó la fecha del nombre. Usar '-\\d{8}-' (doble barra) en Spark SQL.
 -- ===================== E6. Solapamiento: a qué usuarios les llegan varias cosas parecidas =====================
 -- Sin identificadores de usuario en el resultado. Todo sale agregado.
 -- Familia = communication_name sin la fecha, para que las versiones mensuales de una Canvas cuenten como la misma idea.
