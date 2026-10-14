@@ -449,3 +449,58 @@ FROM envio_conv
 GROUP BY familia, canal
 HAVING COUNT(*) >= 10000
 ORDER BY envios_usuario_dia DESC;
+
+
+-- ===================== E8. Cuántos días pasan entre el primer email y la baja, y cuántos emails recibió antes =====================
+-- Responde "¿en cuántos días se desuscriben?": promedio, mediana y p90 de días entre el primer email entregado y la primera baja,
+-- emails y familias distintas que recibió antes de darse de baja, y qué familia le llegó el día de la baja.
+-- Todo agregado, sin identificadores. Ojo: la historia empieza el 1 de enero, así que quien ya recibía email antes aparece con menos
+-- días de los reales (censura por la izquierda). cohorte_limpia = 1 marca a quien recibió su primer email de febrero en adelante;
+-- esa es la cifra buena para "días hasta la baja". En Spark el \d del regexp va con doble barra (\\d).
+-- Resultado esperado: 4 bloques, menos de 150 filas. Descargar como e8_dias_hasta_baja.csv
+WITH emails AS (
+  SELECT user_id, event_date, regexp_replace(communication_name, '-\\d{8}-', '-') AS familia, email_unsubscribe
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30' AND category = 'email' AND email_delivery
+),
+usuario AS (
+  SELECT user_id, MIN(event_date) AS primer_email, MIN(CASE WHEN email_unsubscribe THEN event_date END) AS fecha_baja
+  FROM emails GROUP BY user_id
+),
+antes AS (
+  SELECT e.user_id, COUNT(*) AS emails_antes, COUNT(DISTINCT e.familia) AS familias_antes
+  FROM emails e JOIN usuario u ON u.user_id = e.user_id AND e.event_date <= u.fecha_baja
+  GROUP BY e.user_id
+),
+base AS (
+  SELECT u.user_id, datediff(u.fecha_baja, u.primer_email) AS dias, a.emails_antes, a.familias_antes,
+         CASE WHEN u.primer_email >= DATE '2026-02-01' THEN 1 ELSE 0 END AS cohorte_limpia
+  FROM usuario u JOIN antes a ON a.user_id = u.user_id
+  WHERE u.fecha_baja IS NOT NULL
+),
+dia_baja AS (
+  SELECT b.*, e.familia FROM base b JOIN emails e ON e.user_id = b.user_id JOIN usuario u ON u.user_id = b.user_id AND e.event_date = u.fecha_baja
+)
+SELECT 'resumen' AS bloque, 'todos' AS clave, cohorte_limpia, COUNT(*) AS usuarios,
+  AVG(dias) AS dias_prom, percentile_approx(dias, 0.5) AS dias_mediana, percentile_approx(dias, 0.9) AS dias_p90,
+  AVG(emails_antes) AS emails_prom, percentile_approx(emails_antes, 0.5) AS emails_mediana, AVG(familias_antes) AS familias_prom
+FROM base GROUP BY cohorte_limpia
+UNION ALL
+SELECT 'banda_dias',
+  CASE WHEN dias = 0 THEN '0 mismo día' WHEN dias <= 7 THEN '1 a 7' WHEN dias <= 30 THEN '08 a 30' WHEN dias <= 90 THEN '31 a 90'
+       WHEN dias <= 180 THEN '91 a 180' ELSE '181+' END,
+  cohorte_limpia, COUNT(*), AVG(dias), percentile_approx(dias, 0.5), percentile_approx(dias, 0.9),
+  AVG(emails_antes), percentile_approx(emails_antes, 0.5), AVG(familias_antes)
+FROM base GROUP BY 2, 3
+UNION ALL
+SELECT 'banda_emails',
+  CASE WHEN emails_antes = 1 THEN '01' WHEN emails_antes <= 3 THEN '02 a 3' WHEN emails_antes <= 10 THEN '04 a 10'
+       WHEN emails_antes <= 30 THEN '11 a 30' ELSE '31+' END,
+  cohorte_limpia, COUNT(*), AVG(dias), percentile_approx(dias, 0.5), percentile_approx(dias, 0.9),
+  AVG(emails_antes), percentile_approx(emails_antes, 0.5), AVG(familias_antes)
+FROM base GROUP BY 2, 3
+UNION ALL
+SELECT 'familia_dia_baja', familia, cohorte_limpia, COUNT(*), AVG(dias), percentile_approx(dias, 0.5), percentile_approx(dias, 0.9),
+  AVG(emails_antes), percentile_approx(emails_antes, 0.5), AVG(familias_antes)
+FROM dia_baja GROUP BY 2, 3 HAVING COUNT(*) >= 500
+ORDER BY bloque, usuarios DESC;

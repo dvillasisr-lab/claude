@@ -471,4 +471,7 @@ Por decisión del usuario la señal de eficiencia se basa en métricas de comuni
 - `e6a_solape_dia_mes.csv`: 45 filas, 9 meses × 5 bandas.
 - `e6b_pares_familias.csv`: 1,000 pares. Misma nota del regexp.
 - `e7a_familia_canal_etapa.csv`: 5,679 filas. Etapas presentes: 3.Blacklist, 4.Kpay CC Freeze, 6.Reus or Arco, 7.Prospects y sin_golden (las etapas 1, 2 y 5 no aparecen en la tabla de filtros). Cobertura 37 % de los envíos.
-- Faltan: E7b (16 filas), E7c (abren vs no abren) y la línea del denominador de E5 (usuarios únicos con email entregado).
+- `e7b_patron_respuesta.csv`: 16 filas, una por combinación de canales respondidos. Resultado en `hallazgos/muestra_j_patron_respuesta.csv`.
+- `e7c_abren_vs_no_abren.csv`: 2,062 filas (familia con fecha; se colapsa a 1,194). Se subió dos veces el mismo archivo (mismo checksum). Resultado en `hallazgos/muestra_k_abren_vs_no_abren.csv`.
+- Los archivos subidos se identifican por sus columnas y checksum, no por el nombre de descarga (todos se llaman New_Query_...). Ninguno viene topado por el límite de Databricks: el único con 1,000 filas es E6b porque la query trae `LIMIT 1000`.
+- Faltan: E8 (días hasta la baja, escrita) y la línea del denominador de E5 (usuarios únicos con email entregado).

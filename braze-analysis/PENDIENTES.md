@@ -25,11 +25,11 @@ Todo lo de esta sección se muestra por mes y por semana, por canal y total, par
 |---|---|---|---|
 | 2.1 | Inventario: qué existe, qué está activo, qué no se envía hace 90 días, tipo de comunicación | E2 + E1 | Pendiente, datos listos |
 | 2.2 | Ranking de comunicaciones por eficiencia y cuadrantes (volumen vs resultado) | E1 | Muestra lista: `hallazgos/MUESTRA_C_campanas.md` y `muestra_c_familias.csv` |
-| 2.2b | Plan de acción por campaña y equipo: familias con señal apagar o rehacer, revisar, proteger, escalar, basada en respuesta y bajas (conversión solo de referencia), con filtros por equipo, canal y tipo | E1 | Muestra lista: página `tablero/muestra_campanas.html` (publicada). 340 familias promocionales a apagar o rehacer, 89 activas en septiembre con 28 M msgs y 3.2 M MXN al mes . Cada familia tiene acción concreta (qué hacer) y justificación (por qué) con `scripts/acciones_campanas.py`: 42 Apagar, 44 Limpiar base WA, 190 Rehacer, 41 Bajar frecuencia |
+| 2.2b | Plan de acción por campaña y equipo: familias con señal apagar o rehacer, revisar, proteger, escalar, basada en respuesta y bajas (conversión solo de referencia), con filtros por equipo, canal y tipo | E1 | Muestra lista: página `tablero/muestra_campanas.html` (publicada). 340 familias promocionales a apagar o rehacer, 89 activas en septiembre con 28 M msgs y 3.2 M MXN al mes . Cada familia tiene acción concreta (qué hacer) y justificación (por qué) con `scripts/acciones_campanas.py`, decidida solo con datos (señal, canal, E7c abren vs no abren, E7a), no con el nombre: 50 Apagar, 45 Limpiar base WA, 181 Rehacer, 41 Bajar frecuencia. Ahorro 3.2 M MXN al mes |
 | 2.2c | Solapamiento: a qué usuarios les llegan varias comunicaciones parecidas el mismo día, y qué pares de familias coinciden más | E6 | E6 recibida. Muestra en `hallazgos/MUESTRA_F_solapamiento.md`: 9 % de usuario-días con 3+ campañas concentra 24 % de mensajes; 62 % del solape es entre equipos; Canvas QA con 1.87 M envíos |
-| 2.2d | Segmentación: a quién le funciona qué (familia × canal × etapa, y patrón de respuesta por usuario) | E7 | E7a recibida: 44 M envíos promocionales a usuarios con tarjeta congelada, REUS/ARCO o lista negra. Ver `hallazgos/MUESTRA_H_etapas_bloqueadas.md`. Falta E7b |
+| 2.2d | Segmentación: a quién le funciona qué (familia × canal × etapa, y patrón de respuesta por usuario) | E7 | E7a recibida: 44 M envíos promocionales a usuarios con tarjeta congelada, REUS/ARCO o lista negra. Ver `hallazgos/MUESTRA_H_etapas_bloqueadas.md`. E7b recibida: 73 % de los usuarios no responde a nada; 59 % de los mensajes van a un canal al que el usuario nunca respondió (25.8 M MXN). Ver `hallazgos/MUESTRA_J_canal_preferido.md` |
 | 2.2e | Buenas prácticas con datos propios: qué audiencia, gancho, tamaño e intensidad ayudan o empeoran, y checklist antes de lanzar | E1 + E3 | Muestra lista: `hallazgos/MUESTRA_G_buenas_practicas.md` |
-| 2.2f | Abren y convierten vs no abren (método del equipo para decidir si un email aporta) | E7c | Query escrita, pendiente de correr |
+| 2.2f | Abren y convierten vs no abren (método del equipo para decidir si un email aporta) | E7c | E7c recibida: 856 familias × canal con muestra; quienes abren convierten 2 a 3 veces más (mediana); 64 con menos de 1.5 veces. Entra en la regla de acciones. Ver `hallazgos/MUESTRA_K_abren_vs_no_abren.md` |
 | 2.3 | Gobernanza: envíos, costo y resultado por equipo y producto, concentración, naming | E1 + E2 | Pendiente, datos listos |
 | 2.4 | Presión por usuario: distribución, banda 321+, costo de la presión | E3 | Pendiente, datos listos |
 | 2.5 | Costo por conversión y gasto en comunicaciones que no convierten (solo Cash) | E1 | Pendiente, datos listos |
@@ -54,8 +54,10 @@ Todo lo de esta sección se muestra por mes y por semana, por canal y total, par
 | E6a (solapamiento por usuario-día, por mes y banda de familias) | Recibida 14 oct, `data/e6a_solape_dia_mes.csv` | 45 filas |
 | E6b (pares de familias que coinciden en el mismo usuario el mismo día) | Recibida 14 oct, `data/e6b_pares_familias.csv` | hasta 1,000 filas |
 | E7a (familia × canal × etapa del golden record) | Recibida 14 oct, `data/e7a_familia_canal_etapa.csv` | 10 a 20 mil filas |
-| E7b (patrón de respuesta por usuario: a qué canal responde y cuánto se le manda) | Escrita, pendiente de correr | 16 filas |
-| E7c (convierten los que abren vs los que no, por familia y canal) | Escrita, pendiente de correr | 1 a 3 mil filas |
+| E7b (patrón de respuesta por usuario: a qué canal responde y cuánto se le manda) | Recibida 14 oct, `data/e7b_patron_respuesta.csv` | 16 filas |
+| E7c (convierten los que abren vs los que no, por familia y canal) | Recibida 14 oct, `data/e7c_abren_vs_no_abren.csv` | 2,062 filas |
+| E8 (días entre el primer email y la baja, emails antes de la baja, familia del día de la baja) | Escrita en `sql/extraccion.sql`, pendiente de correr | menos de 150 filas |
+| Línea del denominador de E5 (usuarios únicos con email entregado en el periodo) | Pendiente | 1 fila |
 
 Con E1 a E4 están todos los datos para arrancar la Ola 2 (analistas por lente). Muestras del formato en `hallazgos/MUESTRA_B_canales.md` (canales) y `hallazgos/MUESTRA_C_campanas.md` (campañas y equipos), y del tablero en `tablero/muestra_tablero.html` (publicado en https://claude.ai/code/artifact/81c8ba2e-4305-498c-8c18-6148df86320a).
 
