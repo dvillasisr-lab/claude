@@ -220,6 +220,8 @@ ORDER BY mes, banda_msgs_mes;
 
 -- ===================== E5. Cohorte de baja: usuarios que se dan de baja de email y siguen recibiendo email después =====================
 -- Resultado esperado: 9 filas (una por mes de baja). Descargar como e5_cohorte_baja.csv
+-- Correr también esta línea aparte y anotar el número: es el denominador del acumulado de bajas.
+--   SELECT APPROX_COUNT_DISTINCT(user_id) AS usuarios_con_email FROM analytics_engineering_production.xplore._dim_braze_users_and_communications WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30' AND email_sent;
 -- Nota: un usuario dado de baja puede recibir email transaccional de forma legítima. El resultado se cruza con el tipo de comunicación en el análisis.
 WITH primera_baja AS (
   SELECT user_id, MIN(DATE_TRUNC('month', event_date)) AS mes_baja

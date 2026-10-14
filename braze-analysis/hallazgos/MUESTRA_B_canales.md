@@ -7,7 +7,7 @@ Fuentes: `data/e1_comunicacion_mes_canal.csv`, `data/e4a_serie_semana_mes_canal.
 
 ## Respuesta en una página
 
-WhatsApp se lleva el 77 % del costo variable con el 8 % de los envíos, y uno de cada cuatro mensajes no se entrega: 14.2 M MXN pagados por mensajes que nunca llegaron. Push es el 38 % del volumen y el 58 % de ese volumen va en comunicaciones que abre menos del 1 % de la gente. Email cumple en apertura pero no en clic ni en bajas. In-app es el canal más eficiente por envío y el menos usado.
+WhatsApp se lleva el 77 % del costo variable con el 8 % de los envíos, y uno de cada cuatro mensajes no se entrega: 14.2 M MXN pagados por mensajes que nunca llegaron. Push es el 38 % del volumen y el 58 % de ese volumen va en comunicaciones que abre menos del 1 % de la gente. Email cumple en apertura pero no en clic, y ya perdió 457 mil usuarios por baja en el año. In-app es el canal más eficiente por envío y el menos usado.
 
 Tres movimientos salen de aquí: limpiar la base de WhatsApp antes de enviar, poner tope de frecuencia a push y mover a in-app lo que hoy va por push a usuarios que abren la app.
 
@@ -39,12 +39,24 @@ Query: Q8 y Q9.
 Confianza: alta en la cifra. Media en la lectura: Braze registra apertura directa; la influida no está en la tabla, así que la apertura real es algo mayor pero no 3 veces mayor.
 Implicación: las Canvas "Rescate" de Marketing (Anonimos-RescateTasa0 con 8.3 M envíos y 0.55 % de apertura, RescateFinesDeSemana con 10.5 M en cuatro versiones y menos de 1 %) son las primeras a revisar. Y hay una campaña con prefijo QA (ReminderRegistroTelefono) que mandó 1.9 M push a producción con 0.01 % de apertura: apagar hoy.
 
-### H-B3. Email abre bien, pero no genera clic y pierde entre 0.75 % y 1.5 % de su base cada mes
-Cifra: apertura 23.7 % sobre entregados, clic 0.93 %, bajas 457 mil usuarios únicos en 9 meses. Periodo: enero a septiembre 2026. Denominador: emails entregados y usuarios únicos con email entregado.
-Comparación: benchmark de email promocional: apertura 15 a 25 % (cumple), clic 1.5 a 3 % (no cumple), baja menor a 0.3 % por envío. La tasa mensual por usuario de 0.75 a 1.5 % es alta: a ese ritmo se pierde cerca del 10 % de la base contactable al año.
-Query: Q2.
-Confianza: alta. Las bajas son usuarios únicos con `email_unsubscribe = true`, según lo que confirmaste.
-Implicación: el problema de email no es que no lo abran, es que no hay qué hacer dentro. Revisar llamadas a la acción y relevancia antes que asunto. El envío de BillPay de junio es el ejemplo: 16.1 M emails, apertura 7.7 % contra 22.6 % del resto del mes, clic 0.10 %, 37 mil eventos de baja, 806 mil MXN.
+### H-B3. Email abre bien pero no genera clic, y 457 mil usuarios se dieron de baja en 9 meses, con enero y junio como los peores meses
+Cifra: apertura 23.7 % sobre entregados, clic 0.93 %. Bajas: 457 mil usuarios únicos, 2.3 % de los 19.5 M usuarios contactados en el periodo. Enero concentra 15.1 % de las bajas y junio 13.9 %; un reparto parejo sería 11.1 % por mes. Periodo: enero a septiembre 2026.
+Comparación: benchmark de email promocional: apertura 15 a 25 % (cumple), clic 1.5 a 3 % (no cumple).
+Query: Q2 y la tabla de bajas de abajo.
+Confianza: alta en bajas y clic. El denominador del acumulado (19.5 M) es provisional: incluye usuarios que nunca recibieron email. La base exacta de email sale de E5.
+Implicación: el problema de email no es que no lo abran, es que no hay qué hacer dentro. Revisar llamadas a la acción y relevancia antes que asunto. Junio muestra el costo de un envío masivo mal dirigido: el email de BillPay fue a 16.1 M de usuarios, abrió 7.7 % contra 22.6 % del resto del mes, clic 0.10 %, y ese mes trae 63 mil bajas, el segundo peor.
+
+| Mes | Bajas (usuarios) | % de las bajas del periodo | Acumulado | Acumulado sobre 19.5 M |
+|---|---|---|---|---|
+| Ene | 69,226 | 15.1 % | 69,226 | 0.35 % |
+| Feb | 57,965 | 12.7 % | 127,191 | 0.65 % |
+| Mar | 50,413 | 11.0 % | 177,604 | 0.91 % |
+| Abr | 38,422 | 8.4 % | 216,026 | 1.11 % |
+| May | 38,034 | 8.3 % | 254,060 | 1.30 % |
+| Jun | 63,425 | 13.9 % | 317,485 | 1.62 % |
+| Jul | 52,912 | 11.6 % | 370,397 | 1.90 % |
+| Ago | 50,340 | 11.0 % | 420,737 | 2.15 % |
+| Sep | 36,639 | 8.0 % | 457,376 | 2.34 % |
 
 ### H-B4. In-app convierte 12 veces más que email por envío y cuesta cero, pero es solo el 4 % del volumen
 Cifra: en Cash, 31.3 conversiones por cada 1,000 impresiones in-app contra 2.6 por 1,000 emails, 3.1 por 1,000 push y 4.9 por 1,000 WhatsApp. Clic sobre impresión 38 %. Periodo: enero a septiembre 2026. Denominador: envíos del canal en Cash, conversión fraccional.
@@ -69,21 +81,21 @@ Implicación: tope de frecuencia por usuario (el lente E lo cuantifica por seman
 
 ## Serie mensual (la vista de tablero)
 
-| Mes | Envíos | Email % | Push % | WA % | In-app % | Costo MXN | Entrega email | Apertura email | Clic email | Baja email (usuarios) | Apertura push | Entrega WA | Lectura WA | Clic in-app | Msgs en usuarios 41+ |
+| Mes | Envíos | Email % | Push % | WA % | In-app % | Costo MXN | Entrega email | Apertura email | Clic email | Bajas (% del periodo) | Apertura push | Entrega WA | Lectura WA | Clic in-app | Msgs en usuarios 41+ |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Ene | 58.7 M | 60 | 27 | 10 | 3 | 7.37 M | 91.5 % | 28.1 % | 1.20 % | 1.51 % | 1.83 % | 80.0 % | 74.6 % | 47.5 % | 19.6 % |
-| Feb | 67.5 M | 52 | 32 | 11 | 4 | 9.52 M | 96.2 % | 28.0 % | 0.88 % | 1.25 % | 1.43 % | 77.1 % | 73.3 % | 19.1 % | 29.3 % |
-| Mar | 67.7 M | 53 | 27 | 15 | 4 | 12.24 M | 96.4 % | 29.7 % | 1.03 % | 0.99 % | 1.81 % | 73.9 % | 72.5 % | 24.0 % | 21.5 % |
-| Abr | 64.3 M | 53 | 35 | 9 | 4 | 7.55 M | 95.8 % | 26.9 % | 0.98 % | 0.85 % | 1.53 % | 69.3 % | 65.6 % | 36.0 % | 28.5 % |
-| May | 85.0 M | 47 | 41 | 7 | 4 | 8.09 M | 95.8 % | 22.7 % | 0.86 % | 0.77 % | 1.28 % | 67.3 % | 67.1 % | 47.4 % | 37.0 % |
-| Jun | 109.0 M | 46 | 43 | 7 | 4 | 9.65 M | 93.5 % | 18.1 % | 0.67 % | 0.41 % | 1.05 % | 74.3 % | 67.4 % | 45.4 % | 35.7 % |
-| Jul | 71.7 M | 45 | 43 | 7 | 5 | 6.36 M | 95.9 % | 20.9 % | 1.00 % | 1.23 % | 1.77 % | 72.9 % | 62.5 % | 37.0 % | 32.6 % |
-| Ago | 77.9 M | 45 | 46 | 6 | 4 | 6.13 M | 95.7 % | 20.7 % | 0.95 % | 1.13 % | 1.57 % | 78.0 % | 63.6 % | 41.5 % | 35.3 % |
-| Sep | 65.6 M | 54 | 37 | 5 | 4 | 4.96 M | 95.6 % | 20.4 % | 0.92 % | 0.75 % | 2.12 % | 77.3 % | 64.1 % | 41.5 % | 30.1 % |
+| Ene | 58.7 M | 60 | 27 | 10 | 3 | 7.37 M | 91.5 % | 28.1 % | 1.20 % | 15.1 % | 1.83 % | 80.0 % | 74.6 % | 47.5 % | 19.6 % |
+| Feb | 67.5 M | 52 | 32 | 11 | 4 | 9.52 M | 96.2 % | 28.0 % | 0.88 % | 12.7 % | 1.43 % | 77.1 % | 73.3 % | 19.1 % | 29.3 % |
+| Mar | 67.7 M | 53 | 27 | 15 | 4 | 12.24 M | 96.4 % | 29.7 % | 1.03 % | 11.0 % | 1.81 % | 73.9 % | 72.5 % | 24.0 % | 21.5 % |
+| Abr | 64.3 M | 53 | 35 | 9 | 4 | 7.55 M | 95.8 % | 26.9 % | 0.98 % | 8.4 % | 1.53 % | 69.3 % | 65.6 % | 36.0 % | 28.5 % |
+| May | 85.0 M | 47 | 41 | 7 | 4 | 8.09 M | 95.8 % | 22.7 % | 0.86 % | 8.3 % | 1.28 % | 67.3 % | 67.1 % | 47.4 % | 37.0 % |
+| Jun | 109.0 M | 46 | 43 | 7 | 4 | 9.65 M | 93.5 % | 18.1 % | 0.67 % | 13.9 % | 1.05 % | 74.3 % | 67.4 % | 45.4 % | 35.7 % |
+| Jul | 71.7 M | 45 | 43 | 7 | 5 | 6.36 M | 95.9 % | 20.9 % | 1.00 % | 11.6 % | 1.77 % | 72.9 % | 62.5 % | 37.0 % | 32.6 % |
+| Ago | 77.9 M | 45 | 46 | 6 | 4 | 6.13 M | 95.7 % | 20.7 % | 0.95 % | 11.0 % | 1.57 % | 78.0 % | 63.6 % | 41.5 % | 35.3 % |
+| Sep | 65.6 M | 54 | 37 | 5 | 4 | 4.96 M | 95.6 % | 20.4 % | 0.92 % | 8.0 % | 2.12 % | 77.3 % | 64.1 % | 41.5 % | 30.1 % |
 
 Lectura rápida: el costo bajó de 12.2 M en marzo a 5.0 M en septiembre porque WhatsApp bajó de 10.4 M a 3.2 M envíos. La apertura de email cae de 28 % a 20 % entre el primer y el tercer trimestre. La lectura de WhatsApp cae de 75 % a 64 %. Push sube de volumen y no mejora.
 
-Nota sobre la baja de junio (0.41 %): el denominador ese mes son 15.5 M usuarios únicos por el envío de BillPay, contra 4.3 a 5.1 M los demás meses. En usuarios absolutos junio tuvo 63 mil bajas, el segundo peor mes.
+Las bajas se muestran como parte del total del periodo, no como tasa, porque el denominador cambia mucho entre meses (junio alcanzó 15.5 M usuarios por BillPay contra 4 a 5 M los demás meses).
 
 ## Serie semanal
 
