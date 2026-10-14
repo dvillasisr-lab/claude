@@ -14,6 +14,7 @@ Todo lo de esta sección se muestra por mes y por semana, por canal y total, par
 | 1.4 | Apertura: email (abiertos / entregados) y push (abiertos / enviados) | E1, E4 | Datos listos (E1 y E4a) | |
 | 1.5 | Lectura WhatsApp (leídos / entregados) | E1, E4 | Datos listos (E1 y E4a) | |
 | 1.6 | Clic: email (clics / entregados), in-app y banner (clics / impresiones) | E1, E4 | Datos listos (E1 y E4a) | Push y WhatsApp no tienen clic en la tabla |
+| 1.7b | Días hasta la baja y emails antes de la baja | E8 | Datos listos (parciales): mediana 4 días y 6 emails para usuarios nuevos; 48 % se da de baja el día de un email del retargeting de registro. Ver `hallazgos/MUESTRA_L_dias_hasta_baja.md` |
 | 1.7 | Bajas de email en tres vistas: parte del mes (% de las bajas del periodo), acumulado sobre la base, y tasa mensual (usuarios con baja / usuarios con email entregado en el mes) | E4a | Listo en el tablero | 457 mil usuarios únicos en 9 meses, 1.09 M eventos. Definición en METRICAS.md sección Bajas |
 | 1.8 | Bajas por canal | No existe para push ni WhatsApp | Bloqueado por dato | Solo email tiene campo de baja. Ver METRICAS.md sección Bajas |
 | 1.9 | Concentración de mensajes: usuarios y mensajes por banda de mensajes, por mes | E4b | Datos listos | |
@@ -56,7 +57,9 @@ Todo lo de esta sección se muestra por mes y por semana, por canal y total, par
 | E7a (familia × canal × etapa del golden record) | Recibida 14 oct, `data/e7a_familia_canal_etapa.csv` | 10 a 20 mil filas |
 | E7b (patrón de respuesta por usuario: a qué canal responde y cuánto se le manda) | Recibida 14 oct, `data/e7b_patron_respuesta.csv` | 16 filas |
 | E7c (convierten los que abren vs los que no, por familia y canal) | Recibida 14 oct, `data/e7c_abren_vs_no_abren.csv` | 2,062 filas |
-| E8 (días entre el primer email y la baja, emails antes de la baja, familia del día de la baja) | Escrita en `sql/extraccion.sql`, pendiente de correr | menos de 150 filas |
+| E8 (días entre el primer email y la baja, emails antes de la baja, familia del día de la baja) | Recibida 15 oct, `data/e8_dias_hasta_baja.csv`. Solo cubre 115 mil de las 457 mil bajas (filtro de entrega en la fila de la baja); query corregida (versión 2), vale la pena volver a correr. Ver `hallazgos/MUESTRA_L_dias_hasta_baja.md` | 79 filas |
+| E9a (abren vs no abren con ventanas de 7, 30, 90 días y fin de periodo) | Escrita, pendiente de correr | 1 a 3 mil filas |
+| E9b (patrón de respuesta por usuario en los últimos 90 días, julio a septiembre) | Escrita, pendiente de correr | 16 filas |
 | Línea del denominador de E5 (usuarios únicos con email entregado en el periodo) | Pendiente | 1 fila |
 
 Con E1 a E4 están todos los datos para arrancar la Ola 2 (analistas por lente). Muestras del formato en `hallazgos/MUESTRA_B_canales.md` (canales) y `hallazgos/MUESTRA_C_campanas.md` (campañas y equipos), y del tablero en `tablero/muestra_tablero.html` (publicado en https://claude.ai/code/artifact/81c8ba2e-4305-498c-8c18-6148df86320a).

@@ -458,14 +458,23 @@ ORDER BY envios_usuario_dia DESC;
 -- días de los reales (censura por la izquierda). cohorte_limpia = 1 marca a quien recibió su primer email de febrero en adelante;
 -- esa es la cifra buena para "días hasta la baja". En Spark el \d del regexp va con doble barra (\\d).
 -- Resultado esperado: 4 bloques, menos de 150 filas. Descargar como e8_dias_hasta_baja.csv
+-- Versión 2 (15 oct): la primera versión pedía email_delivery en la misma fila de la baja y solo encontró 115 mil de las 457 mil bajas.
+-- Ahora la fecha de baja se toma de cualquier fila con email_unsubscribe, y los emails entregados se cuentan aparte.
 WITH emails AS (
-  SELECT user_id, event_date, regexp_replace(communication_name, '-\\d{8}-', '-') AS familia, email_unsubscribe
+  SELECT user_id, event_date, regexp_replace(communication_name, '-\\d{8}-', '-') AS familia
   FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
   WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30' AND category = 'email' AND email_delivery
 ),
+bajas AS (
+  SELECT user_id, MIN(event_date) AS fecha_baja
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30' AND email_unsubscribe
+  GROUP BY user_id
+),
 usuario AS (
-  SELECT user_id, MIN(event_date) AS primer_email, MIN(CASE WHEN email_unsubscribe THEN event_date END) AS fecha_baja
-  FROM emails GROUP BY user_id
+  SELECT e.user_id, MIN(e.event_date) AS primer_email, MAX(b.fecha_baja) AS fecha_baja
+  FROM emails e JOIN bajas b ON b.user_id = e.user_id
+  GROUP BY e.user_id
 ),
 antes AS (
   SELECT e.user_id, COUNT(*) AS emails_antes, COUNT(DISTINCT e.familia) AS familias_antes
@@ -479,7 +488,10 @@ base AS (
   WHERE u.fecha_baja IS NOT NULL
 ),
 dia_baja AS (
-  SELECT b.*, e.familia FROM base b JOIN emails e ON e.user_id = b.user_id JOIN usuario u ON u.user_id = b.user_id AND e.event_date = u.fecha_baja
+  -- familia que le llegó el día de la baja o, si ese día no hubo entrega, la última que recibió antes
+  SELECT b.*, e.familia
+  FROM base b JOIN usuario u ON u.user_id = b.user_id
+  JOIN emails e ON e.user_id = b.user_id AND e.event_date = (SELECT MAX(e2.event_date) FROM emails e2 WHERE e2.user_id = b.user_id AND e2.event_date <= u.fecha_baja)
 )
 SELECT 'resumen' AS bloque, 'todos' AS clave, cohorte_limpia, COUNT(*) AS usuarios,
   AVG(dias) AS dias_prom, percentile_approx(dias, 0.5) AS dias_mediana, percentile_approx(dias, 0.9) AS dias_p90,
@@ -504,3 +516,68 @@ SELECT 'familia_dia_baja', familia, cohorte_limpia, COUNT(*), AVG(dias), percent
   AVG(emails_antes), percentile_approx(emails_antes, 0.5), AVG(familias_antes)
 FROM dia_baja GROUP BY 2, 3 HAVING COUNT(*) >= 500
 ORDER BY bloque, usuarios DESC;
+
+
+
+-- ===================== E9a. Lo mismo que E7c pero con varias ventanas: convierte en 7, 30, 90 días y hasta fin de periodo =====================
+-- Para ver si la diferencia entre quienes abren y quienes no se sostiene o se desvanece al abrir la ventana. Si a 90 días convierten
+-- casi igual, el mensaje adelantó una conversión que iba a pasar; si la diferencia se mantiene, sí movió algo.
+-- Resultado esperado: 1 a 3 mil filas. Descargar como e9a_abren_vs_no_abren_ventanas.csv
+WITH envio AS (
+  SELECT user_id, event_date, category AS canal, regexp_replace(communication_name, '-\\d{8}-', '-') AS familia,
+    MAX(CASE WHEN email_open OR pn_open OR whatsapp_read OR in_app_impression THEN 1 ELSE 0 END) AS abrio
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30' AND was_send
+  GROUP BY user_id, event_date, category, 4
+),
+conv AS (
+  SELECT DISTINCT user_id, event_date AS fecha_conv
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-12-29' AND is_converted
+),
+envio_conv AS (
+  SELECT e.user_id, e.event_date, e.canal, e.familia, e.abrio,
+    MAX(CASE WHEN datediff(c.fecha_conv, e.event_date) BETWEEN 0 AND 7 THEN 1 ELSE 0 END)  AS conv_7,
+    MAX(CASE WHEN datediff(c.fecha_conv, e.event_date) BETWEEN 0 AND 30 THEN 1 ELSE 0 END) AS conv_30,
+    MAX(CASE WHEN datediff(c.fecha_conv, e.event_date) BETWEEN 0 AND 90 THEN 1 ELSE 0 END) AS conv_90,
+    MAX(CASE WHEN c.fecha_conv >= e.event_date AND c.fecha_conv <= DATE '2026-09-30' THEN 1 ELSE 0 END) AS conv_fin
+  FROM envio e
+  LEFT JOIN conv c ON c.user_id = e.user_id AND c.fecha_conv BETWEEN e.event_date AND e.event_date + INTERVAL 90 DAYS
+  GROUP BY e.user_id, e.event_date, e.canal, e.familia, e.abrio
+)
+SELECT familia, canal, COUNT(*) AS envios_usuario_dia, SUM(abrio) AS abrieron,
+  SUM(CASE WHEN abrio = 1 THEN conv_7 END)   AS ab_conv_7,   SUM(CASE WHEN abrio = 0 THEN conv_7 END)   AS no_conv_7,
+  SUM(CASE WHEN abrio = 1 THEN conv_30 END)  AS ab_conv_30,  SUM(CASE WHEN abrio = 0 THEN conv_30 END)  AS no_conv_30,
+  SUM(CASE WHEN abrio = 1 THEN conv_90 END)  AS ab_conv_90,  SUM(CASE WHEN abrio = 0 THEN conv_90 END)  AS no_conv_90,
+  SUM(CASE WHEN abrio = 1 THEN conv_fin END) AS ab_conv_fin, SUM(CASE WHEN abrio = 0 THEN conv_fin END) AS no_conv_fin
+FROM envio_conv
+GROUP BY familia, canal
+HAVING COUNT(*) >= 10000
+ORDER BY envios_usuario_dia DESC;
+
+
+-- ===================== E9b. Lo mismo que E7b pero con ventana: a qué canal respondió en los últimos 90 días (julio a septiembre) =====================
+-- En E7b "respondió" era alguna vez en 9 meses. Aquí se mide sobre julio a septiembre: quién respondió a qué canal en esos 90 días,
+-- y cuánto se le mandó por cada canal en esos mismos 90 días. Da la versión fina de "canal mudo".
+-- Resultado esperado: 16 filas. Descargar como e9b_patron_respuesta_90d.csv
+WITH u AS (
+  SELECT user_id,
+    MAX(CASE WHEN category = 'email' AND email_open THEN 1 ELSE 0 END)                AS resp_email,
+    MAX(CASE WHEN category = 'push notification' AND pn_open THEN 1 ELSE 0 END)       AS resp_push,
+    MAX(CASE WHEN category = 'whatsapp' AND whatsapp_read THEN 1 ELSE 0 END)          AS resp_wa,
+    MAX(CASE WHEN category = 'in-app' AND in_app_click THEN 1 ELSE 0 END)             AS resp_inapp,
+    SUM(CASE WHEN category = 'email' AND was_send THEN 1 ELSE 0 END)                  AS msgs_email,
+    SUM(CASE WHEN category = 'push notification' AND was_send THEN 1 ELSE 0 END)      AS msgs_push,
+    SUM(CASE WHEN category = 'whatsapp' AND was_send THEN 1 ELSE 0 END)               AS msgs_wa,
+    SUM(CASE WHEN category = 'in-app' AND was_send THEN 1 ELSE 0 END)                 AS msgs_inapp,
+    MAX(CASE WHEN is_converted THEN 1 ELSE 0 END)                                     AS convirtio,
+    MAX(CASE WHEN email_unsubscribe THEN 1 ELSE 0 END)                                AS baja_email
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-07-01' AND DATE '2026-09-30'
+  GROUP BY user_id
+)
+SELECT resp_email, resp_push, resp_wa, resp_inapp, COUNT(*) AS usuarios,
+  SUM(msgs_email) AS msgs_email, SUM(msgs_push) AS msgs_push, SUM(msgs_wa) AS msgs_wa, SUM(msgs_inapp) AS msgs_inapp,
+  SUM(convirtio) AS usuarios_con_conversion, SUM(baja_email) AS usuarios_con_baja_email,
+  SUM(msgs_email) * 0.05 + SUM(msgs_wa) * 1.00 AS costo_mxn
+FROM u GROUP BY 1, 2, 3, 4 ORDER BY usuarios DESC;

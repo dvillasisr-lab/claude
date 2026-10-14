@@ -475,3 +475,8 @@ Por decisión del usuario la señal de eficiencia se basa en métricas de comuni
 - `e7c_abren_vs_no_abren.csv`: 2,062 filas (familia con fecha; se colapsa a 1,194). Se subió dos veces el mismo archivo (mismo checksum). Resultado en `hallazgos/muestra_k_abren_vs_no_abren.csv`.
 - Los archivos subidos se identifican por sus columnas y checksum, no por el nombre de descarga (todos se llaman New_Query_...). Ninguno viene topado por el límite de Databricks: el único con 1,000 filas es E6b porque la query trae `LIMIT 1000`.
 - Faltan: E8 (días hasta la baja, escrita) y la línea del denominador de E5 (usuarios únicos con email entregado).
+
+## E8 recibida (15 oct 2026)
+
+- `e8_dias_hasta_baja.csv`: 79 filas en 4 bloques (resumen, banda_dias, banda_emails, familia_dia_baja) × cohorte_limpia. Identificado por columnas. Cubre 115 mil bajas de 457 mil: la versión 1 de la query pedía entrega en la misma fila de la baja. Versión 2 escrita en `sql/extraccion.sql`.
+- Pendientes de correr: E9a (abren vs no abren con ventanas 7, 30, 90 días y fin de periodo), E9b (patrón de respuesta de julio a septiembre), E8 versión 2 y la línea del denominador de E5.
