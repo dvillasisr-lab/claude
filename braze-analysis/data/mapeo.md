@@ -379,3 +379,17 @@ Marketing ~2,100, Lending ~1,160, Not Tracked 748, ProductGrowth ~650, Sales ~41
 | Canal | `category` es el medio real. `channel` es el tipo de pieza (Canvas, Email, In-App, Others) y solo se usa como etiqueta secundaria |
 | Conversión por producto | `applied_for_loan` e `is_converted` solo tienen sentido para Cash (préstamos). Para Pay, referidos y otros productos la eficiencia se mide con entrega, apertura y clic. Cada lente separa por `product_service` antes de comparar |
 | Qué son E1, E2, E3 | Nombres cortos de las tres queries de extracción en `sql/extraccion.sql`. E1 = resumen por campaña × mes × canal. E2 = catálogo limpio. E3 = distribución de mensajes por usuario y suscripción. Resultados en CSV, sin datos personales |
+
+## 12. Estado de las extracciones (14 de octubre de 2026)
+
+| Extracción | Estado | Dónde está | Notas |
+|---|---|---|---|
+| E1 (campaña × mes × canal) | **Pendiente** | | Subir como archivo CSV adjunto, no pegado como texto. Son 30 a 50 mil filas y el chat no aguanta el pegado |
+| E2 (catálogo limpio) | **Recibida** | `data/e2_catalogo.csv` | 6,144 piezas (5,173 Canvas, 971 campañas), 28 columnas, sin filas rotas, sin ids duplicados. Llegó pegada en el chat y se recuperó de la transcripción |
+| E3 (mensajes por usuario y suscripción) | **Pendiente** | | Subir como archivo CSV adjunto |
+
+Primera lectura de E2, solo para orientar:
+
+- 5,958 piezas archivadas y 186 activas. El catálogo es casi todo histórico.
+- 2,576 piezas (42 %) quedan `sin_clasificar` por tipo de comunicación. La regla de clasificación por nombre necesita afinarse con E1 antes de presentar.
+- 1,053 piezas (17 %) no siguen la convención de nombre. 749 sin ticket. 321 son QA o prueba. Coincide con lo visto en la verificación.
