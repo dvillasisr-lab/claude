@@ -455,3 +455,12 @@ Las columnas `email_subscribe` y `push_subscribe` que usa E3 vienen de `_dim_bra
 - Junio: 15.5 M usuarios únicos con email entregado contra 4.3 a 5.1 M en los demás meses. Es el envío de BillPay a 16 M. Generó 63 mil bajas, la cifra más alta después de enero.
 - Concentración por mes: los usuarios con 41 o más mensajes al mes son entre 3.6 % y 7.9 % de los que reciben algo, pero concentran entre 20 % y 37 % de los mensajes. La concentración sube de enero (20 %) a mayo (37 %) y se queda arriba de 30 % desde entonces.
 - Usuarios alcanzados al mes: entre 5.5 M y 6.3 M, salvo junio con 17.4 M.
+
+### E5 recibida (14 oct 2026)
+
+`data/e5_cohorte_baja.csv`, 9 filas. Usuarios con baja por mes cuadran con E4a (diferencias de decenas por APPROX_COUNT_DISTINCT). Lectura: de enero a agosto 404 mil usuarios se dieron de baja; 70 mil (17 %) recibieron email después, 1.27 M emails en total (unos 20 por usuario), 40 % abiertos, 11 mil (2.8 %) se dieron de baja otra vez. Apertura de 40 % en gente dada de baja apunta a transaccionales o cobranza, que Braze manda aunque el usuario esté dado de baja. E5b (escrita) dice cuáles son. La línea del denominador (usuarios con email en el periodo) no llegó; el acumulado sigue sobre 19.5 M.
+
+### Señal de campañas (14 oct 2026)
+
+Por decisión del usuario la señal de eficiencia se basa en métricas de comunicación (respuesta y bajas), no en conversión. `is_converted` se considera poco confiable y solo aplica a Cash; se deja como columna de referencia. Regla completa en `sql/muestra_c_campanas.sql`.
+

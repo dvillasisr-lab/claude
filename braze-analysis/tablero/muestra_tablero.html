@@ -27,6 +27,7 @@ p{margin:0}
 .wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
 header{display:grid;gap:8px}
 header p.lead{max-width:68ch;color:var(--ink-2)}
+header a{color:var(--accent)}
 .muestra{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--warn);font-weight:500;border:1px solid currentColor;border-radius:999px;padding:2px 10px;width:max-content}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
 .tile{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px;display:grid;gap:4px;align-content:start}
@@ -82,6 +83,7 @@ footer code{font-family:var(--mono);font-size:12px}
   <p class="eyebrow">Auditoría de uso de Braze · Kueski · enero a septiembre 2026</p>
   <h1>Tablero Braze 2026</h1>
   <p class="lead">Qué enviamos, por qué canal, cuánto cuesta y cómo responde la gente, mes a mes y semana a semana. Las cifras salen de las extracciones E1 y E4 y son las mismas del documento de hallazgos del lente de canales.</p>
+  <p class="lead">La priorización por campaña y equipo está en otra página: <a href="https://claude.ai/code/artifact/1ad2c43e-0072-4e46-a27a-6e58fa8d0043">Campañas Braze por prioridad</a>.</p>
 </header>
 
 <div class="tiles" id="tiles"></div>
@@ -113,6 +115,9 @@ footer code{font-family:var(--mono);font-size:12px}
     <div class="card"><h3>Bajas acumuladas sobre la base contactada</h3><div class="sub">% de los 19.5 M usuarios con alguna comunicación en el periodo. Denominador provisional: la base exacta de email sale de E5.</div><div class="chart" id="c_bajas_acum"></div></div>
     <div class="card"><h3>Tasa mensual de baja</h3><div class="sub">Usuarios únicos con baja en el mes entre usuarios únicos con email entregado ese mes. Es la tasa que se compara con otros meses.</div><div class="chart" id="c_bajas_tasa"></div></div>
   </div>
+  <div class="card"><h3>Qué pasa después de la baja</h3><div class="sub">Cohorte E5: usuarios con baja en el mes, y de esos cuántos vuelven a recibir email en los meses siguientes del periodo. Septiembre no tiene meses después.</div>
+  <div class="tbl-wrap"><table><thead><tr><th>Mes de baja</th><th>Usuarios con baja</th><th>Reciben email al mes siguiente</th><th>Reciben email después (total)</th><th>Emails recibidos después</th><th>Apertura de esos emails</th><th>Se dan de baja otra vez</th></tr></thead><tbody id="e5_body"></tbody></table></div>
+  <p class="sub">De enero a agosto, 404 mil usuarios se dieron de baja y 70 mil (17 %) recibieron email después: 1.27 M emails, 40 % abiertos, 64 mil MXN. La apertura tan alta sugiere que son transaccionales o de cobranza, que Braze manda aunque el usuario esté dado de baja. Qué comunicaciones son sale de E5b.</p></div>
 </section>
 
 <section>
@@ -236,4 +241,6 @@ const cols=[['mes','Mes',r=>mlabel(r.mes)],['env','Envíos',r=>fmtM(r.email+r.pu
 document.getElementById('tbl').innerHTML=`<table><thead><tr>${cols.map(c=>`<th>${c[1]}</th>`).join('')}</tr></thead><tbody>${DATA.monthly.map(r=>`<tr>${cols.map(c=>`<td>${c[2](r)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
 const btn=document.getElementById('btn_tbl'), tbl=document.getElementById('tbl');
 btn.addEventListener('click',()=>{ tbl.hidden=!tbl.hidden; btn.textContent=tbl.hidden?'Mostrar tabla':'Ocultar tabla'; btn.setAttribute('aria-expanded',String(!tbl.hidden)); });
+const E5=[["Ene",69270,8506,14111,296684,123417,2521],["Feb",52274,6908,10905,221013,91600,1828],["Mar",51056,5565,9649,187051,80700,1461],["Abr",38687,5405,8132,154596,61674,1176],["May",36210,5600,7692,150704,56738,1127],["Jun",58469,5444,7032,119515,42514,1366],["Jul",50631,5936,6944,94264,32880,972],["Ago",47499,5775,5775,48939,18634,814],["Sep",35173,null,null,null,null,null]];
+document.getElementById('e5_body').innerHTML=E5.map(r=>`<tr><td>${r[0]}</td><td>${r[1].toLocaleString('es-MX')}</td><td>${r[2]==null?'':r[2].toLocaleString('es-MX')+' <span class="sub">('+fmtP(100*r[2]/r[1],1)+')</span>'}</td><td>${r[3]==null?'':r[3].toLocaleString('es-MX')+' <span class="sub">('+fmtP(100*r[3]/r[1],1)+')</span>'}</td><td>${r[4]==null?'':r[4].toLocaleString('es-MX')}</td><td>${r[5]==null?'':fmtP(100*r[5]/r[4],1)}</td><td>${r[6]==null?'':r[6].toLocaleString('es-MX')+' <span class="sub">('+fmtP(100*r[6]/r[1],1)+')</span>'}</td></tr>`).join('');
 </script>

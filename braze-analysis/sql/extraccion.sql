@@ -384,3 +384,67 @@ SELECT resp_email, resp_push, resp_wa, resp_inapp,
 FROM por_usuario
 GROUP BY 1, 2, 3, 4
 ORDER BY usuarios DESC;
+
+
+-- ===================== E5b. Qué comunicaciones le llegan a un usuario después de darse de baja de email =====================
+-- Complementa E5: 17 % de los que se dan de baja vuelven a recibir email. Esto dice cuáles son (familia, equipo, tipo) para ver si son transaccionales o promocionales.
+-- Sin identificadores. Resultado esperado: 200 a 500 filas. Descargar como e5b_comms_despues_baja.csv
+WITH primera_baja AS (
+  SELECT user_id, MIN(event_date) AS fecha_baja
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30' AND email_unsubscribe
+  GROUP BY user_id
+),
+despues AS (
+  SELECT DISTINCT c.user_id, c.event_date, c.communication_id, c.communication_name, c.team,
+    CAST(c.email_open AS INT) AS abierto, CAST(c.email_click AS INT) AS clic
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications c
+  JOIN primera_baja b ON b.user_id = c.user_id
+  WHERE c.event_date > b.fecha_baja AND c.event_date <= DATE '2026-09-30' AND c.email_sent
+)
+SELECT regexp_replace(communication_name, '-\d{8}-', '-') AS familia, MAX(team) AS equipo,
+  COUNT(*)                          AS emails_despues_de_baja,
+  APPROX_COUNT_DISTINCT(user_id)    AS usuarios_aprox,
+  SUM(abierto)                      AS abiertos,
+  SUM(clic)                         AS clics,
+  COUNT(DISTINCT DATE_TRUNC('month', event_date)) AS meses
+FROM despues
+GROUP BY 1
+HAVING COUNT(*) >= 500
+ORDER BY emails_despues_de_baja DESC;
+
+
+-- ===================== E7c. Convierten los que abren vs los que no abren, por familia y canal =====================
+-- Es el método que ya usa el equipo para decidir si un email aporta: si los que abren convierten igual que los que no, el email no está moviendo nada.
+-- Conversión = is_converted en los 7 días siguientes al envío, por usuario. Sin identificadores en el resultado.
+-- Resultado esperado: 1 a 3 mil filas. Descargar como e7c_abren_vs_no_abren.csv
+WITH envio AS (
+  SELECT user_id, event_date, category AS canal, regexp_replace(communication_name, '-\d{8}-', '-') AS familia,
+    MAX(CASE WHEN email_open OR pn_open OR whatsapp_read OR in_app_impression THEN 1 ELSE 0 END) AS abrio,
+    MAX(CASE WHEN email_click OR in_app_click THEN 1 ELSE 0 END) AS clic
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30' AND was_send
+  GROUP BY user_id, event_date, category, 4
+),
+conv AS (
+  SELECT DISTINCT user_id, event_date AS fecha_conv
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-10-07' AND is_converted
+),
+envio_conv AS (
+  SELECT e.*, MAX(CASE WHEN c.user_id IS NOT NULL THEN 1 ELSE 0 END) AS convirtio_7d
+  FROM envio e
+  LEFT JOIN conv c ON c.user_id = e.user_id AND c.fecha_conv BETWEEN e.event_date AND e.event_date + INTERVAL 7 DAYS
+  GROUP BY ALL
+)
+SELECT familia, canal,
+  COUNT(*)                                          AS envios_usuario_dia,
+  SUM(abrio)                                        AS abrieron,
+  SUM(CASE WHEN abrio = 1 THEN convirtio_7d END)    AS abrieron_y_convirtieron,
+  SUM(CASE WHEN abrio = 0 THEN convirtio_7d END)    AS no_abrieron_y_convirtieron,
+  SUM(clic)                                         AS hicieron_clic,
+  SUM(CASE WHEN clic = 1 THEN convirtio_7d END)     AS clic_y_convirtieron
+FROM envio_conv
+GROUP BY familia, canal
+HAVING COUNT(*) >= 10000
+ORDER BY envios_usuario_dia DESC;
