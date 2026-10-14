@@ -46,6 +46,6 @@ Todo lo de esta sección se muestra por mes y por semana, por canal y total, par
 | E4b (mes × banda de mensajes) | Recibida, `data/e4b_concentracion_mes.csv` | 72 filas |
 | E5 (cohorte de baja: usuarios con baja en el mes M que reciben email en M+1, M+2, M+3) | Escrita en `sql/extraccion.sql`, pendiente de correr | 9 filas |
 
-Con E1 a E4 están todos los datos para arrancar la Ola 2 (analistas por lente). Muestra del formato en `hallazgos/MUESTRA_B_canales.md`.
+Con E1 a E4 están todos los datos para arrancar la Ola 2 (analistas por lente). Muestra del formato en `hallazgos/MUESTRA_B_canales.md` y del tablero en `tablero/muestra_tablero.html` (publicado en https://claude.ai/code/artifact/81c8ba2e-4305-498c-8c18-6148df86320a).
 
 Periodo decidido: meses enero a septiembre 2026 (los 9 son completos). Semanas: 38 completas del 5 de enero al 27 de septiembre; se excluyen las dos semanas parciales de las orillas.

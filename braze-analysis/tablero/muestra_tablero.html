@@ -1,0 +1,225 @@
+<title>Tablero Braze 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: un tablero de lectura vertical. Resumen arriba (tiles), luego volumen y costo, tasas en multiples pequenos, presion, semana a semana, y la tabla al final. */
+:root{
+  --bg:#f5f6f4; --surface:#ffffff; --ink:#15201b; --ink-2:#5b6661; --ink-3:#8a948f; --line:#dfe4e0; --line-soft:#eef1ee;
+  --accent:#1c5cab; --crit:#c9302f; --good:#1f7a1f; --warn:#b36b00;
+  --s-email:#2a78d6; --s-push:#eb6834; --s-wa:#1baf7a; --s-inapp:#eda100;
+  --font:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ color-scheme:dark;
+  --bg:#131615; --surface:#1b1f1d; --ink:#edf0ec; --ink-2:#b5bdb7; --ink-3:#7f8883; --line:#2d3331; --line-soft:#232826;
+  --accent:#5598e7; --crit:#e66767; --good:#4caf50; --warn:#e0a030;
+  --s-email:#3987e5; --s-push:#d95926; --s-wa:#199e70; --s-inapp:#c98500; } }
+:root[data-theme="dark"]{ color-scheme:dark;
+  --bg:#131615; --surface:#1b1f1d; --ink:#edf0ec; --ink-2:#b5bdb7; --ink-3:#7f8883; --line:#2d3331; --line-soft:#232826;
+  --accent:#5598e7; --crit:#e66767; --good:#4caf50; --warn:#e0a030;
+  --s-email:#3987e5; --s-push:#d95926; --s-wa:#199e70; --s-inapp:#c98500; }
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.45;padding-inline:clamp(16px,3vw,40px);padding-block:24px 48px}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:600}
+h1{font-size:clamp(24px,3vw,32px);letter-spacing:-.01em}
+h2{font-size:17px}
+p{margin:0}
+.eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-2);font-weight:500}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+header{display:grid;gap:8px}
+header p.lead{max-width:68ch;color:var(--ink-2)}
+.muestra{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--warn);font-weight:500;border:1px solid currentColor;border-radius:999px;padding:2px 10px;width:max-content}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px;display:grid;gap:4px;align-content:start}
+.tile .k{font-size:12px;color:var(--ink-2);font-weight:500}
+.tile .v{font-family:var(--mono);font-size:26px;font-weight:500;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.tile .v small{font-size:13px;color:var(--ink-2);font-family:var(--font);font-weight:400;margin-left:4px}
+.tile .d{font-size:12px;color:var(--ink-2)}
+.tile .d b{font-weight:500}
+.tile .d.crit b{color:var(--crit)} .tile .d.good b{color:var(--good)}
+section{display:grid;gap:14px}
+section>.hd{display:grid;gap:4px}
+section>.hd p{color:var(--ink-2);max-width:72ch}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px 16px 10px;display:grid;gap:8px;min-width:0}
+.card h3{font-size:14px;font-weight:600}
+.card .sub{font-size:12px;color:var(--ink-2)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.chart{position:relative;width:100%}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.chart text{font-family:var(--font);font-size:11px;fill:var(--ink-2)}
+.chart .grid line{stroke:var(--line-soft)}
+.chart .axis line{stroke:var(--line)}
+.chart .bench{stroke:var(--ink-3);stroke-dasharray:4 3}
+.chart .bench-lbl{fill:var(--ink-3);font-size:10px}
+.chart .lbl{fill:var(--ink);font-family:var(--mono);font-size:11px}
+.chart .hit{fill:transparent}
+.chart .cross{stroke:var(--ink-3);stroke-width:1;display:none}
+.tip{position:absolute;pointer-events:none;background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:6px 8px;font-size:12px;color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.08);display:none;white-space:nowrap;z-index:2;font-variant-numeric:tabular-nums;font-family:var(--mono)}
+.tip .t{color:var(--ink-2);font-family:var(--font);margin-bottom:2px}
+.tip div span{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line-soft);white-space:nowrap}
+th{font-weight:500;color:var(--ink-2);font-size:12px;position:sticky;top:0;background:var(--surface)}
+td:first-child,th:first-child{text-align:left;font-weight:500}
+td{font-family:var(--mono);font-size:12.5px}
+td:first-child{font-family:var(--font)}
+.btn{font:inherit;font-size:13px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:6px 12px;cursor:pointer}
+.btn:hover{border-color:var(--ink-3)} .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+footer{font-size:12.5px;color:var(--ink-2);display:grid;gap:6px;max-width:80ch;border-top:1px solid var(--line);padding-top:16px}
+footer code{font-family:var(--mono);font-size:12px}
+@media (prefers-reduced-motion:no-preference){ .chart path.line{transition:opacity .15s} }
+</style>
+
+<div class="wrap">
+<header>
+  <span class="muestra">Muestra de formato</span>
+  <p class="eyebrow">Auditoría de uso de Braze · Kueski · enero a septiembre 2026</p>
+  <h1>Tablero Braze 2026</h1>
+  <p class="lead">Qué enviamos, por qué canal, cuánto cuesta y cómo responde la gente, mes a mes y semana a semana. Las cifras salen de las extracciones E1 y E4 y son las mismas del documento de hallazgos del lente de canales.</p>
+</header>
+
+<div class="tiles" id="tiles"></div>
+
+<section>
+  <div class="hd"><h2>Volumen y costo variable</h2><p>Email y push son el 88 % de los envíos. WhatsApp es el 8 % del volumen y el 77 % del costo. El costo cae de marzo a septiembre porque WhatsApp baja de 10.4 M a 3.2 M envíos.</p></div>
+  <div class="grid2">
+    <div class="card"><h3>Envíos por mes y canal</h3><div class="sub">Millones de mensajes enviados. Banner se omite por tamaño (menos de 0.1 %).</div><div class="legend" id="lg1"></div><div class="chart" id="c_vol"></div></div>
+    <div class="card"><h3>Costo variable por mes</h3><div class="sub">Millones de MXN. Email 0.05 y WhatsApp 1.00 por mensaje. Push e in-app no tienen costo variable.</div><div class="legend" id="lg2"></div><div class="chart" id="c_cost"></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="hd"><h2>Tasas por canal, mes a mes</h2><p>La línea punteada es el piso del benchmark por canal. Email abre dentro del rango pero no genera clic. Push no se acerca al rango en ningún mes. WhatsApp pierde entrega y lectura a lo largo del año.</p></div>
+  <div class="grid3" id="rates"></div>
+</section>
+
+<section>
+  <div class="hd"><h2>Presión sobre el usuario</h2><p>Parte de los mensajes del mes que reciben los usuarios con 41 o más mensajes ese mes (10 o más por semana, el doble del umbral de 5). Son entre 4 % y 8 % de los usuarios alcanzados.</p></div>
+  <div class="grid2">
+    <div class="card"><h3>Mensajes concentrados en usuarios con 41+ al mes</h3><div class="sub">% de los mensajes del mes</div><div class="chart" id="c_conc"></div></div>
+    <div class="card"><h3>Usuarios que se dieron de baja de email</h3><div class="sub">Miles de usuarios únicos con baja en el mes. En junio el denominador de la tasa se triplica por el envío de BillPay, por eso aquí se muestran usuarios y no tasa.</div><div class="chart" id="c_bajas"></div></div>
+  </div>
+</section>
+
+<section>
+  <div class="hd"><h2>Semana a semana</h2><p>38 semanas completas, del 5 de enero al 27 de septiembre. Las dos semanas de las orillas se excluyen porque solo tienen 3 días dentro del periodo. El pico del 1 de junio es el envío de BillPay a 16 M de usuarios.</p></div>
+  <div class="card"><h3>Envíos por semana y canal</h3><div class="sub">Millones de mensajes. Semana que empieza en lunes.</div><div class="legend" id="lg3"></div><div class="chart" id="c_week"></div></div>
+</section>
+
+<section>
+  <div class="bar"><div class="hd"><h2>Serie mensual en tabla</h2><p>Las mismas cifras de las gráficas, para copiar o revisar.</p></div><button class="btn" id="btn_tbl" aria-expanded="false">Mostrar tabla</button></div>
+  <div class="tbl-wrap" id="tbl" hidden></div>
+</section>
+
+<footer>
+  <p><b>Definiciones.</b> Entrega = entregados entre enviados. Apertura de email y clic = sobre entregados. Apertura de push = sobre enviados (Braze solo registra apertura directa). Lectura de WhatsApp = sobre entregados. Baja de email = usuarios únicos con evento de baja en el mes entre usuarios únicos con email entregado ese mes. Push y WhatsApp no tienen campo de baja.</p>
+  <p><b>Fuentes.</b> <code>data/e1_comunicacion_mes_canal.csv</code> y <code>data/e4a_serie_semana_mes_canal.csv</code>, <code>data/e4b_concentracion_mes.csv</code>, tabla <code>_dim_braze_users_and_communications</code>, deduplicada por usuario × comunicación × día × canal. Queries en <code>sql/muestra_b_canales.sql</code>.</p>
+  <p><b>Benchmarks</b> de METRICAS.md: email promocional apertura 15 a 25 %, clic 1.5 a 3 %; push apertura 3 a 10 %; WhatsApp lectura 70 a 90 %. Entrega de WhatsApp se compara contra 90 %.</p>
+</footer>
+</div>
+
+<script>
+const DATA = {"monthly": [{"mes": "2026-01", "email": 35158735, "push": 15949146, "whatsapp": 5615464, "inapp": 1917443, "banner": 34421, "costo_email": 1757936.75, "costo_wa": 5615464.0, "entrega_email": 91.5, "apertura_email": 28.1, "clic_email": 1.2, "baja_email": 1.51, "bajas_usuarios": 69226, "apertura_push": 1.83, "entrega_wa": 80.0, "lectura_wa": 74.6, "clic_inapp": 47.5, "conc_msgs": 19.6, "conc_usuarios": 3.6, "wa_perdido": 1124517}, {"mes": "2026-02", "email": 35242825, "push": 21516451, "whatsapp": 7760317, "inapp": 2971043, "banner": 19304, "costo_email": 1762141.25, "costo_wa": 7760317.0, "entrega_email": 96.2, "apertura_email": 28.0, "clic_email": 0.88, "baja_email": 1.25, "bajas_usuarios": 57965, "apertura_push": 1.43, "entrega_wa": 77.1, "lectura_wa": 73.3, "clic_inapp": 19.1, "conc_msgs": 29.3, "conc_usuarios": 5.9, "wa_perdido": 1777312}, {"mes": "2026-03", "email": 36212646, "push": 18471313, "whatsapp": 10425526, "inapp": 2615201, "banner": 20513, "costo_email": 1810632.3, "costo_wa": 10425526.0, "entrega_email": 96.4, "apertura_email": 29.7, "clic_email": 1.03, "baja_email": 0.99, "bajas_usuarios": 50413, "apertura_push": 1.81, "entrega_wa": 73.9, "lectura_wa": 72.5, "clic_inapp": 24.0, "conc_msgs": 21.5, "conc_usuarios": 4.5, "wa_perdido": 2721119}, {"mes": "2026-04", "email": 33829564, "push": 22337312, "whatsapp": 5862900, "inapp": 2277358, "banner": 21512, "costo_email": 1691478.2, "costo_wa": 5862900.0, "entrega_email": 95.8, "apertura_email": 26.9, "clic_email": 0.98, "baja_email": 0.85, "bajas_usuarios": 38422, "apertura_push": 1.53, "entrega_wa": 69.3, "lectura_wa": 65.6, "clic_inapp": 36.0, "conc_msgs": 28.5, "conc_usuarios": 5.2, "wa_perdido": 1802839}, {"mes": "2026-05", "email": 40123306, "push": 35112316, "whatsapp": 6088107, "inapp": 3646721, "banner": 21487, "costo_email": 2006165.3, "costo_wa": 6088107.0, "entrega_email": 95.8, "apertura_email": 22.7, "clic_email": 0.86, "baja_email": 0.77, "bajas_usuarios": 38034, "apertura_push": 1.28, "entrega_wa": 67.3, "lectura_wa": 67.1, "clic_inapp": 47.4, "conc_msgs": 37.0, "conc_usuarios": 6.6, "wa_perdido": 1990044}, {"mes": "2026-06", "email": 50632165, "push": 46793838, "whatsapp": 7116053, "inapp": 4405164, "banner": 22670, "costo_email": 2531608.25, "costo_wa": 7116053.0, "entrega_email": 93.5, "apertura_email": 18.1, "clic_email": 0.67, "baja_email": 0.41, "bajas_usuarios": 63425, "apertura_push": 1.05, "entrega_wa": 74.3, "lectura_wa": 67.4, "clic_inapp": 45.4, "conc_msgs": 35.7, "conc_usuarios": 3.6, "wa_perdido": 1826395}, {"mes": "2026-07", "email": 32187574, "push": 31053603, "whatsapp": 4752869, "inapp": 3665811, "banner": 25874, "costo_email": 1609378.7, "costo_wa": 4752869.0, "entrega_email": 95.9, "apertura_email": 20.9, "clic_email": 1.0, "baja_email": 1.23, "bajas_usuarios": 52912, "apertura_push": 1.77, "entrega_wa": 72.9, "lectura_wa": 62.5, "clic_inapp": 37.0, "conc_msgs": 32.6, "conc_usuarios": 7.9, "wa_perdido": 1285689}, {"mes": "2026-08", "email": 34850209, "push": 35455023, "whatsapp": 4391874, "inapp": 3230674, "banner": 22151, "costo_email": 1742510.45, "costo_wa": 4391874.0, "entrega_email": 95.7, "apertura_email": 20.7, "clic_email": 0.95, "baja_email": 1.13, "bajas_usuarios": 50340, "apertura_push": 1.57, "entrega_wa": 78.0, "lectura_wa": 63.6, "clic_inapp": 41.5, "conc_msgs": 35.3, "conc_usuarios": 7.9, "wa_perdido": 967490}, {"mes": "2026-09", "email": 35252732, "push": 24395024, "whatsapp": 3198105, "inapp": 2708621, "banner": 29010, "costo_email": 1762636.6, "costo_wa": 3198105.0, "entrega_email": 95.6, "apertura_email": 20.4, "clic_email": 0.92, "baja_email": 0.75, "bajas_usuarios": 36639, "apertura_push": 2.12, "entrega_wa": 77.3, "lectura_wa": 64.1, "clic_inapp": 41.5, "conc_msgs": 30.1, "conc_usuarios": 6.2, "wa_perdido": 727540}], "weekly": [{"sem": "2026-01-05", "total": 12306232, "costo": 1456879.35, "email": 7435767, "push": 3460246, "whatsapp": 1085091, "inapp": 324613, "bajas": 14378}, {"sem": "2026-01-12", "total": 12280038, "costo": 1612398.85, "email": 6738377, "push": 3706790, "whatsapp": 1275480, "inapp": 555368, "bajas": 15519}, {"sem": "2026-01-19", "total": 16471120, "costo": 1488409.6, "email": 10590472, "push": 4503517, "whatsapp": 958886, "inapp": 415118, "bajas": 19781}, {"sem": "2026-01-26", "total": 13653832, "costo": 2621356.9, "email": 7429478, "push": 3533201, "whatsapp": 2249883, "inapp": 434803, "bajas": 16128}, {"sem": "2026-02-02", "total": 9962138, "costo": 1551386.45, "email": 5157889, "push": 3173674, "whatsapp": 1293492, "inapp": 333136, "bajas": 14140}, {"sem": "2026-02-09", "total": 17996481, "costo": 1633309.85, "email": 9367557, "push": 6569529, "whatsapp": 1164932, "inapp": 888907, "bajas": 15324}, {"sem": "2026-02-16", "total": 20725755, "costo": 3364118.4, "email": 8825348, "push": 8017003, "whatsapp": 2922851, "inapp": 956502, "bajas": 12312}, {"sem": "2026-02-23", "total": 18870015, "costo": 2964717.85, "email": 11921037, "push": 3743378, "whatsapp": 2368666, "inapp": 831188, "bajas": 13613}, {"sem": "2026-03-02", "total": 14115134, "costo": 1207519.95, "email": 7545119, "push": 5197064, "whatsapp": 830264, "inapp": 538139, "bajas": 12815}, {"sem": "2026-03-09", "total": 14887056, "costo": 2974660.75, "email": 8313515, "push": 3161325, "whatsapp": 2558985, "inapp": 847611, "bajas": 13223}, {"sem": "2026-03-16", "total": 17319312, "costo": 4134159.25, "email": 7392465, "push": 5556355, "whatsapp": 3764536, "inapp": 602071, "bajas": 11113}, {"sem": "2026-03-23", "total": 14725073, "costo": 2786676.3, "email": 7772426, "push": 4159875, "whatsapp": 2398055, "inapp": 390904, "bajas": 10822}, {"sem": "2026-03-30", "total": 11738221, "costo": 2744132.3, "email": 6579186, "push": 2420922, "whatsapp": 2415173, "inapp": 317605, "bajas": 9123}, {"sem": "2026-04-06", "total": 14213404, "costo": 1689259.8, "email": 7121896, "push": 5293227, "whatsapp": 1333165, "inapp": 461450, "bajas": 10574}, {"sem": "2026-04-13", "total": 18344964, "costo": 1575631.05, "email": 10760621, "push": 5800310, "whatsapp": 1037600, "inapp": 740727, "bajas": 10936}, {"sem": "2026-04-20", "total": 14050150, "costo": 936960.85, "email": 6445517, "push": 6453019, "whatsapp": 614685, "inapp": 533474, "bajas": 7616}, {"sem": "2026-04-27", "total": 16651251, "costo": 1830773.75, "email": 8576715, "push": 5890116, "whatsapp": 1401938, "inapp": 776296, "bajas": 8607}, {"sem": "2026-05-04", "total": 18474273, "costo": 1100635.85, "email": 10006057, "push": 7105083, "whatsapp": 600333, "inapp": 758191, "bajas": 9462}, {"sem": "2026-05-11", "total": 17066097, "costo": 1991124.2, "email": 9119084, "push": 5509162, "whatsapp": 1535170, "inapp": 895515, "bajas": 8812}, {"sem": "2026-05-18", "total": 18934260, "costo": 1470629.45, "email": 8649109, "push": 8624131, "whatsapp": 1038174, "inapp": 619102, "bajas": 8340}, {"sem": "2026-05-25", "total": 26181152, "costo": 3415886.6, "email": 11658072, "push": 10708453, "whatsapp": 2832983, "inapp": 975898, "bajas": 9187}, {"sem": "2026-06-01", "total": 39639936, "costo": 2709529.05, "email": 25179961, "push": 12084227, "whatsapp": 1450531, "inapp": 920675, "bajas": 22166}, {"sem": "2026-06-08", "total": 20043986, "costo": 1919617.65, "email": 6523493, "push": 11163278, "whatsapp": 1593443, "inapp": 759294, "bajas": 11918}, {"sem": "2026-06-15", "total": 22594634, "costo": 1899547.85, "email": 6679017, "push": 13013361, "whatsapp": 1565597, "inapp": 1330325, "bajas": 11589}, {"sem": "2026-06-22", "total": 19102933, "costo": 2278343.25, "email": 8684285, "push": 7630658, "whatsapp": 1844129, "inapp": 940127, "bajas": 10759}, {"sem": "2026-06-29", "total": 15636568, "costo": 1176340.45, "email": 7730149, "push": 6129888, "whatsapp": 789833, "inapp": 979026, "bajas": 13625}, {"sem": "2026-07-06", "total": 14252748, "costo": 1515289.45, "email": 6845869, "push": 5572663, "whatsapp": 1172996, "inapp": 657249, "bajas": 12807}, {"sem": "2026-07-13", "total": 17395657, "costo": 1752242.8, "email": 7331876, "push": 7532735, "whatsapp": 1385649, "inapp": 1137754, "bajas": 11709}, {"sem": "2026-07-20", "total": 20421013, "costo": 1549405.3, "email": 7506166, "push": 10878407, "whatsapp": 1174097, "inapp": 858793, "bajas": 10583}, {"sem": "2026-07-27", "total": 12764212, "costo": 1320406.05, "email": 7089061, "push": 4106859, "whatsapp": 965953, "inapp": 595530, "bajas": 10901}, {"sem": "2026-08-03", "total": 14549482, "costo": 1441257.0, "email": 6936140, "push": 5592237, "whatsapp": 1094450, "inapp": 922259, "bajas": 10196}, {"sem": "2026-08-10", "total": 21611131, "costo": 1627477.2, "email": 8119844, "push": 11625711, "whatsapp": 1221485, "inapp": 637829, "bajas": 10210}, {"sem": "2026-08-17", "total": 17150797, "costo": 1314941.25, "email": 7772625, "push": 7684710, "whatsapp": 926310, "inapp": 762665, "bajas": 10795}, {"sem": "2026-08-24", "total": 18774538, "costo": 1294569.85, "email": 8552617, "push": 8681649, "whatsapp": 866939, "inapp": 669102, "bajas": 14463}, {"sem": "2026-08-31", "total": 16515620, "costo": 1422406.6, "email": 9791712, "push": 5124570, "whatsapp": 932821, "inapp": 659724, "bajas": 8429}, {"sem": "2026-09-07", "total": 14689164, "costo": 1229373.45, "email": 8443349, "push": 4810680, "whatsapp": 807206, "inapp": 622853, "bajas": 8514}, {"sem": "2026-09-14", "total": 14348991, "costo": 1206661.65, "email": 6905733, "push": 5998983, "whatsapp": 861375, "inapp": 573631, "bajas": 8270}, {"sem": "2026-09-21", "total": 16916335, "costo": 1048612.25, "email": 8011445, "push": 7594626, "whatsapp": 648040, "inapp": 657302, "bajas": 11072}], "kpi": {"envios": 667434260, "costo": 71885702.79999998, "wa_perdido": 14222945, "apertura_push": 1.53, "clic_email": 0.93, "bajas_usuarios": 457376}};
+const S = {email:'var(--s-email)', push:'var(--s-push)', whatsapp:'var(--s-wa)', inapp:'var(--s-inapp)'};
+const NAMES = {email:'Email', push:'Push', whatsapp:'WhatsApp', inapp:'In-app'};
+const MES = {'01':'Ene','02':'Feb','03':'Mar','04':'Abr','05':'May','06':'Jun','07':'Jul','08':'Ago','09':'Sep'};
+const fmtM = v => (v/1e6).toLocaleString('es-MX',{maximumFractionDigits:1})+' M';
+const fmtK = v => (v/1e3).toLocaleString('es-MX',{maximumFractionDigits:0})+' mil';
+const fmtP = (v,d=1) => v.toLocaleString('es-MX',{minimumFractionDigits:d,maximumFractionDigits:d})+' %';
+const mlabel = m => MES[m.slice(5)];
+const K = DATA.kpi;
+
+// KPI tiles
+const tiles = [
+  {k:'Envíos', v:fmtM(K.envios), d:'9 meses, 5 canales'},
+  {k:'Costo variable', v:(K.costo/1e6).toLocaleString('es-MX',{maximumFractionDigits:1}), u:'M MXN', d:'<b>77 %</b> es WhatsApp', cls:'crit'},
+  {k:'WhatsApp sin entregar', v:(K.wa_perdido/1e6).toLocaleString('es-MX',{maximumFractionDigits:1}), u:'M MXN', d:'<b>25.8 %</b> de los envíos de WhatsApp', cls:'crit'},
+  {k:'Apertura de push', v:fmtP(K.apertura_push,2), d:'benchmark <b>3 a 10 %</b>', cls:'crit'},
+  {k:'Clic de email', v:fmtP(K.clic_email,2), d:'benchmark <b>1.5 a 3 %</b>', cls:'crit'},
+  {k:'Bajas de email', v:fmtK(K.bajas_usuarios), d:'usuarios únicos, <b>0.75 a 1.5 %</b> al mes'},
+];
+document.getElementById('tiles').innerHTML = tiles.map(t=>`<div class="tile"><div class="k">${t.k}</div><div class="v">${t.v}${t.u?`<small>${t.u}</small>`:''}</div><div class="d ${t.cls||''}">${t.d}</div></div>`).join('');
+
+function legend(id, keys){ document.getElementById(id).innerHTML = keys.map(k=>`<span><i style="background:${S[k]}"></i>${NAMES[k]}</span>`).join(''); }
+legend('lg1',['email','push','whatsapp','inapp']); legend('lg2',['whatsapp','email']); legend('lg3',['email','push','whatsapp','inapp']);
+
+function tipEl(host){ const t=document.createElement('div'); t.className='tip'; host.appendChild(t); return t; }
+function showTip(t, host, x, y, html){ t.innerHTML=html; t.style.display='block'; const r=host.getBoundingClientRect(); const tw=t.offsetWidth; let lx=x+12; if(lx+tw>r.width) lx=x-tw-12; t.style.left=lx+'px'; t.style.top=Math.max(0,y-10)+'px'; }
+function niceMax(v){ const p=Math.pow(10,Math.floor(Math.log10(v))); const n=v/p; const m = n<=1?1:n<=2?2:n<=2.5?2.5:n<=5?5:10; return m*p; }
+
+// Stacked bars
+function stackedBars(id, rows, keys, {labelX, valFmt, scale=1, unit=''}){
+  const host=document.getElementById(id); const W=520,H=240,ml=40,mr=8,mt=10,mb=26; const iw=W-ml-mr, ih=H-mt-mb;
+  const totals=rows.map(r=>keys.reduce((a,k)=>a+(r[k]||0),0)); const ymax=niceMax(Math.max(...totals)/scale);
+  const n=rows.length, bw=iw/n, gap=Math.max(4,bw*0.25), w=bw-gap;
+  const y=v=>mt+ih-(v/scale)/ymax*ih;
+  let g=''; const ticks=5;
+  for(let i=0;i<=ticks;i++){ const v=ymax*i/ticks; g+=`<g class="grid"><line x1="${ml}" x2="${W-mr}" y1="${y(v*scale)}" y2="${y(v*scale)}"/></g><text x="${ml-6}" y="${y(v*scale)+4}" text-anchor="end">${v.toLocaleString('es-MX')}</text>`; }
+  let bars='', hits='';
+  rows.forEach((r,i)=>{ let acc=0; const x=ml+i*bw+gap/2;
+    keys.forEach(k=>{ const v=r[k]||0; if(!v) return; const y1=y(acc+v), y0=y(acc); const h=Math.max(0,y0-y1-2); bars+=`<rect x="${x}" y="${y1}" width="${w}" height="${h}" fill="${S[k]}" rx="1"/>`; acc+=v; });
+    bars+=`<text class="lbl" x="${x+w/2}" y="${y(acc)-5}" text-anchor="middle">${valFmt(acc)}</text>`;
+    hits+=`<rect class="hit" data-i="${i}" x="${ml+i*bw}" y="${mt}" width="${bw}" height="${ih}"/>`;
+    g+=`<text x="${x+w/2}" y="${H-8}" text-anchor="middle">${labelX(r)}</text>`;
+  });
+  host.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Barras apiladas">${g}<g class="axis"><line x1="${ml}" x2="${W-mr}" y1="${mt+ih}" y2="${mt+ih}"/></g>${bars}${hits}</svg>`;
+  const t=tipEl(host);
+  host.querySelectorAll('.hit').forEach(h=>{ h.addEventListener('mousemove',e=>{ const r=rows[+h.dataset.i]; const tot=keys.reduce((a,k)=>a+(r[k]||0),0);
+    showTip(t,host,e.clientX-host.getBoundingClientRect().left,e.clientY-host.getBoundingClientRect().top,`<div class="t">${labelX(r,true)}</div>`+keys.slice().reverse().map(k=>`<div><span style="background:${S[k]}"></span>${NAMES[k]} ${valFmt(r[k]||0)}${unit}</div>`).join('')+`<div>Total ${valFmt(tot)}${unit}</div>`); });
+    h.addEventListener('mouseleave',()=>t.style.display='none'); });
+}
+stackedBars('c_vol', DATA.monthly, ['email','push','whatsapp','inapp'], {labelX:(r,l)=>l?mlabel(r.mes)+' 2026':mlabel(r.mes), valFmt:fmtM, scale:1e6});
+stackedBars('c_cost', DATA.monthly.map(r=>({mes:r.mes, whatsapp:r.costo_wa, email:r.costo_email})), ['whatsapp','email'], {labelX:(r,l)=>l?mlabel(r.mes)+' 2026':mlabel(r.mes), valFmt:v=>(v/1e6).toLocaleString('es-MX',{maximumFractionDigits:1})+' M', scale:1e6, unit:' MXN'});
+
+// Simple bars (one series)
+function bars(id, rows, key, color, {valFmt, ymaxFixed, unitTip=''}){
+  const host=document.getElementById(id); const W=520,H=220,ml=40,mr=8,mt=10,mb=26; const iw=W-ml-mr, ih=H-mt-mb;
+  const ymax=ymaxFixed||niceMax(Math.max(...rows.map(r=>r[key]))); const n=rows.length,bw=iw/n,gap=Math.max(4,bw*0.3),w=bw-gap; const y=v=>mt+ih-v/ymax*ih;
+  let g='',b='',hits=''; for(let i=0;i<=4;i++){const v=ymax*i/4; g+=`<g class="grid"><line x1="${ml}" x2="${W-mr}" y1="${y(v)}" y2="${y(v)}"/></g><text x="${ml-6}" y="${y(v)+4}" text-anchor="end">${v.toLocaleString('es-MX')}</text>`;}
+  rows.forEach((r,i)=>{const x=ml+i*bw+gap/2; const v=r[key]; b+=`<rect x="${x}" y="${y(v)}" width="${w}" height="${Math.max(0,mt+ih-y(v))}" fill="${color}" rx="1"/><text class="lbl" x="${x+w/2}" y="${y(v)-5}" text-anchor="middle">${valFmt(v)}</text>`; g+=`<text x="${x+w/2}" y="${H-8}" text-anchor="middle">${mlabel(r.mes)}</text>`; hits+=`<rect class="hit" data-i="${i}" x="${ml+i*bw}" y="${mt}" width="${bw}" height="${ih}"/>`;});
+  host.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img">${g}<g class="axis"><line x1="${ml}" x2="${W-mr}" y1="${mt+ih}" y2="${mt+ih}"/></g>${b}${hits}</svg>`;
+  const t=tipEl(host); host.querySelectorAll('.hit').forEach(h=>{h.addEventListener('mousemove',e=>{const r=rows[+h.dataset.i]; const rc=host.getBoundingClientRect(); showTip(t,host,e.clientX-rc.left,e.clientY-rc.top,`<div class="t">${mlabel(r.mes)} 2026</div><div>${valFmt(r[key])}${unitTip}</div>`);}); h.addEventListener('mouseleave',()=>t.style.display='none');});
+}
+bars('c_conc', DATA.monthly, 'conc_msgs', 'var(--accent)', {valFmt:v=>fmtP(v,0), ymaxFixed:50, unitTip:' de los mensajes'});
+bars('c_bajas', DATA.monthly.map(r=>({mes:r.mes, v:r.bajas_usuarios/1e3})), 'v', 'var(--accent)', {valFmt:v=>v.toLocaleString('es-MX',{maximumFractionDigits:0}), unitTip:' mil usuarios'});
+
+// Lines (small multiples and weekly)
+function lines(id, rows, series, {xlabel, xlabelTip, fmt, ymin=0, ymax, bench, benchLabel, H=200, endLabels=true, scale=1}){
+  const host=document.getElementById(id); const W=520,ml=36,mr=endLabels?44:8,mt=12,mb=24; const iw=W-ml-mr, ih=H-mt-mb;
+  const vals=series.flatMap(s=>rows.map(r=>r[s.key]/scale)); const yM=ymax||niceMax(Math.max(...vals)*1.05); const y0=ymin;
+  const x=i=>ml+(rows.length===1?0:i*iw/(rows.length-1)); const y=v=>mt+ih-(v-y0)/(yM-y0)*ih;
+  let g=''; for(let i=0;i<=4;i++){const v=y0+(yM-y0)*i/4; g+=`<g class="grid"><line x1="${ml}" x2="${W-mr}" y1="${y(v)}" y2="${y(v)}"/></g><text x="${ml-6}" y="${y(v)+4}" text-anchor="end">${v.toLocaleString('es-MX',{maximumFractionDigits:1})}</text>`;}
+  const step=Math.ceil(rows.length/9); rows.forEach((r,i)=>{ if(i%step===0||i===rows.length-1) g+=`<text x="${x(i)}" y="${H-6}" text-anchor="middle">${xlabel(r)}</text>`; });
+  if(bench!=null && bench<=yM){ g+=`<line class="bench" x1="${ml}" x2="${W-mr}" y1="${y(bench)}" y2="${y(bench)}"/><text class="bench-lbl" x="${ml+4}" y="${y(bench)-4}">${benchLabel}</text>`; }
+  let p=''; series.forEach(s=>{ const d=rows.map((r,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(r[s.key]/scale).toFixed(1)}`).join(''); p+=`<path class="line" d="${d}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linejoin="round"/>`; const last=rows[rows.length-1]; p+=`<circle cx="${x(rows.length-1)}" cy="${y(last[s.key]/scale)}" r="3.5" fill="${s.color}" stroke="var(--surface)" stroke-width="2"/>`; if(endLabels) p+=`<text class="lbl" x="${x(rows.length-1)+8}" y="${y(last[s.key]/scale)+4}">${fmt(last[s.key]/scale)}</text>`; });
+  host.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img">${g}<g class="axis"><line x1="${ml}" x2="${W-mr}" y1="${mt+ih}" y2="${mt+ih}"/></g>${p}<line class="cross" id="${id}_x" y1="${mt}" y2="${mt+ih}"/><rect class="hit" x="${ml}" y="${mt}" width="${iw}" height="${ih}"/></svg>`;
+  const t=tipEl(host); const svg=host.querySelector('svg'); const cross=host.querySelector('.cross');
+  svg.querySelector('.hit').addEventListener('mousemove',e=>{ const rc=svg.getBoundingClientRect(); const px=(e.clientX-rc.left)/rc.width*W; const i=Math.max(0,Math.min(rows.length-1,Math.round((px-ml)/iw*(rows.length-1)))); cross.style.display='block'; cross.setAttribute('x1',x(i)); cross.setAttribute('x2',x(i)); const r=rows[i];
+    showTip(t,host,x(i)/W*rc.width,e.clientY-host.getBoundingClientRect().top,`<div class="t">${xlabelTip(r)}</div>`+series.map(s=>`<div><span style="background:${s.color}"></span>${s.name} ${fmt(r[s.key]/scale)}</div>`).join('')); });
+  svg.querySelector('.hit').addEventListener('mouseleave',()=>{t.style.display='none';cross.style.display='none';});
+}
+const rateCards=[
+  {id:'r1',title:'Entrega de email',key:'entrega_email',color:S.email,bench:null,ymin:80,ymax:100,fmt:v=>fmtP(v,1)},
+  {id:'r2',title:'Apertura de email',key:'apertura_email',color:S.email,bench:15,benchLabel:'benchmark 15 %',ymax:35,fmt:v=>fmtP(v,1)},
+  {id:'r3',title:'Clic de email',key:'clic_email',color:S.email,bench:1.5,benchLabel:'benchmark 1.5 %',ymax:2,fmt:v=>fmtP(v,2)},
+  {id:'r4',title:'Apertura de push',key:'apertura_push',color:S.push,bench:3,benchLabel:'benchmark 3 %',ymax:4,fmt:v=>fmtP(v,2)},
+  {id:'r5',title:'Entrega de WhatsApp',key:'entrega_wa',color:S.wa,bench:90,benchLabel:'benchmark 90 %',ymin:50,ymax:100,fmt:v=>fmtP(v,1)},
+  {id:'r6',title:'Lectura de WhatsApp',key:'lectura_wa',color:S.wa,bench:70,benchLabel:'benchmark 70 %',ymin:50,ymax:100,fmt:v=>fmtP(v,1)},
+];
+document.getElementById('rates').innerHTML=rateCards.map(c=>`<div class="card"><h3>${c.title}</h3><div class="chart" id="${c.id}"></div></div>`).join('');
+rateCards.forEach(c=>lines(c.id, DATA.monthly, [{key:c.key,name:c.title,color:c.color}], {xlabel:r=>mlabel(r.mes), xlabelTip:r=>mlabel(r.mes)+' 2026', fmt:c.fmt, ymin:c.ymin||0, ymax:c.ymax, bench:c.bench, benchLabel:c.benchLabel, H:170}));
+
+const wk=DATA.weekly; const wl=r=>{const [y,m,d]=r.sem.split('-'); return `${+d} ${MES[m].toLowerCase()}`;};
+lines('c_week', wk, [{key:'email',name:'Email',color:S.email},{key:'push',name:'Push',color:S.push},{key:'whatsapp',name:'WhatsApp',color:S.wa},{key:'inapp',name:'In-app',color:S.inapp}], {xlabel:wl, xlabelTip:r=>'Semana del '+wl(r), fmt:v=>v.toLocaleString('es-MX',{maximumFractionDigits:1})+' M', scale:1e6, H:260});
+
+// Table
+const cols=[['mes','Mes',r=>mlabel(r.mes)],['env','Envíos',r=>fmtM(r.email+r.push+r.whatsapp+r.inapp+r.banner)],['email','Email',r=>fmtM(r.email)],['push','Push',r=>fmtM(r.push)],['whatsapp','WhatsApp',r=>fmtM(r.whatsapp)],['inapp','In-app',r=>fmtM(r.inapp)],['costo','Costo MXN',r=>fmtM(r.costo_email+r.costo_wa)],['ee','Entrega email',r=>fmtP(r.entrega_email)],['ae','Apertura email',r=>fmtP(r.apertura_email)],['ce','Clic email',r=>fmtP(r.clic_email,2)],['be','Baja email (usuarios)',r=>fmtP(r.baja_email,2)],['bu','Bajas, usuarios',r=>r.bajas_usuarios.toLocaleString('es-MX')],['ap','Apertura push',r=>fmtP(r.apertura_push,2)],['ew','Entrega WA',r=>fmtP(r.entrega_wa)],['lw','Lectura WA',r=>fmtP(r.lectura_wa)],['wp','WA sin entregar, MXN',r=>fmtM(r.wa_perdido)],['ci','Clic in-app',r=>fmtP(r.clic_inapp)],['cc','Msgs en usuarios 41+',r=>fmtP(r.conc_msgs)]];
+document.getElementById('tbl').innerHTML=`<table><thead><tr>${cols.map(c=>`<th>${c[1]}</th>`).join('')}</tr></thead><tbody>${DATA.monthly.map(r=>`<tr>${cols.map(c=>`<td>${c[2](r)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+const btn=document.getElementById('btn_tbl'), tbl=document.getElementById('tbl');
+btn.addEventListener('click',()=>{ tbl.hidden=!tbl.hidden; btn.textContent=tbl.hidden?'Mostrar tabla':'Ocultar tabla'; btn.setAttribute('aria-expanded',String(!tbl.hidden)); });
+</script>
