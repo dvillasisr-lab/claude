@@ -505,3 +505,14 @@ Revisión de los 15 CSV de `data/` por columnas, nulos, duplicados y cruces entr
 - **Familias**: todas las familias de E5b, E6b, E7a, E7c, E8 y E9a existen en E1 (0 sin match). E8 cubre 400,821 de 439,269 usuarios únicos con baja (91 %).
 - **E6b** tiene exactamente 1,000 filas por el LIMIT de la query; es la muestra de los pares más frecuentes, no el universo.
 - **Usuarios**: E3 19,538,153 y E7b 19,538,178 (conteos aproximados, diferencia 25). E9b 7,071,406 por su ventana de julio a septiembre.
+
+## Versión 2 de E3, E4b, E7b y E9b recibidas (15 oct 2026)
+
+Identificadas por columnas (todas traen la columna nueva de WhatsApp entregado y ya no traen `costo_mxn`). E7b y E9b tienen las mismas columnas; se distinguen por el total de usuarios (19.5 M contra 7.07 M).
+
+- `e3_usuarios_distribucion.csv`: md5 d0b3c7dac0fe5c40cbbf038b38c0a9b9, 744 filas (antes 747; conteos aproximados). Nueva `msgs_whatsapp_entregados` = 41,541,446.
+- `e4b_concentracion_mes.csv`: md5 749c6f65d08730b080c1ec14a5e3eded, 72 filas. Nueva `msgs_whatsapp_entregados` = 41,541,446. Lo demás idéntico a la versión 1.
+- `e7b_patron_respuesta.csv`: md5 22c1a30d95371bfcacd6010fa70663a8, 16 filas. Nueva `msgs_wa_entregados` = 41,541,446. Lo demás idéntico.
+- `e9b_patron_respuesta_90d.csv`: md5 826741149feea5466b593c68d32ee10e, 16 filas. Cambia la definición de respuesta en email (clic, igual que E7b; la versión 1 usaba apertura): sin respuesta pasa de 44 % a 58 %. Nueva `msgs_wa_entregados` = 9,518,484.
+- WhatsApp entregado en E3, E4b y E7b (41.54 M) contra E1 (40.99 M): 1.3 % de diferencia por la deduplicación de E1.
+- Con esto la data está completa. Pendiente solo el costo fijo de Braze.

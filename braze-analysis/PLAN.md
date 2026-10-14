@@ -240,3 +240,14 @@ El archivo se arma en local con fórmulas, se sube a Drive del usuario como Goog
 | Lentitud por SUMIFS masivos | Rangos acotados, sin funciones volátiles ni columnas completas | Tiempo de recálculo al cambiar un parámetro |
 | Equipo mal clasificado por nombre | Catálogo con `equipo` editable y `equipo_original`; todo lee la editable | Tabla de equipos con conteo de familias |
 | Números actuales contra los del Sheets | Verificación: cifra actual, cifra del Sheets, diferencia, explicación. Las diferencias esperadas (base de cobro, bajas únicas, E9b con clic) explicadas de antemano | Todo en cero o explicado |
+
+### Prueba de conversión de fórmulas (15 oct, hecha)
+
+Archivo chico armado en local con una fórmula de cada tipo, subido a Drive, convertido a Google Sheets y leído de vuelta ya calculado por Google. Resultado:
+
+- Funcionan tal cual: SUMIFS, COUNTIFS, IFERROR, INDEX y MATCH, SUMPRODUCT, LEFT, TEXTJOIN con IF en arreglo, REGEXREPLACE (familia), REGEXEXTRACT (ticket), el costo con base de cobro seleccionable desde Parámetros, el formato de porcentaje, el encabezado congelado y los filtros.
+- MEDIAN con IF en arreglo sí se evalúa como arreglo, pero dio error de división entre cero porque una fila sin entregados entra en la división. Regla: toda mediana filtra entregados (o envíos) mayores a cero además del canal, que es lo mismo que la regla de volumen mínimo. Alternativa sin arreglo: columna auxiliar con la tasa y MEDIAN sobre un rango filtrado por SUMPRODUCT.
+- Las fórmulas se escriben con sintaxis de Sheets (ARRAYFORMULA, REGEX) sin problema: Google las evalúa aunque Excel no las conozca.
+- Limitación de la herramienta: el conector de Drive crea archivos pero no edita celdas de un Sheets existente. Cada versión del Sheets se sube como archivo nuevo con número de versión en el nombre (braze_auditoria_v1, v2...), y las anteriores se mandan a la papelera cuando el usuario lo indique.
+- Verificación automática: el archivo convertido se descarga de vuelta y se comparan los valores calculados por Google con los esperados, sin mirarlo a ojo.
+- Archivo de prueba en el Drive del usuario: prueba_conversion_braze (se puede borrar).
