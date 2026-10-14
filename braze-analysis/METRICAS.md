@@ -70,6 +70,20 @@ Eje X: envíos (mediana como corte). Eje Y: conversión o ingreso por 1,000 env�
 - Solapamiento: días en que un usuario recibe 3 o más campañas distintas.
 - Fatiga: tasa de baja por decil de frecuencia. Si el decil 10 tiene baja 2 veces o más que el decil 5, hay fatiga.
 
+## Bajas (unsubscribe)
+
+Solo email tiene campo de baja en la tabla (`email_unsubscribe`). Push y WhatsApp no tienen un campo equivalente: la baja de push ocurre a nivel de permiso del sistema operativo y la de WhatsApp en el mecanismo de opt-out de WhatsApp, y ninguna se registra por comunicación en Braze. Por eso la tasa de baja se reporta solo para email, y para push y WhatsApp se usan proxies.
+
+| Métrica | Fórmula | Nota |
+|---|---|---|
+| Eventos de baja de email | filas con `email_unsubscribe = true` en el periodo | Un usuario puede generar varios eventos (se da de baja, vuelve a entrar, se vuelve a dar de baja, o la fila se repite por canal o comunicación) |
+| Usuarios únicos con baja de email | count distinct `user_id` con `email_unsubscribe = true` en el periodo | Es la cifra que se presenta. Query de referencia: `SELECT DATE_TRUNC('month', event_date), COUNT(DISTINCT user_id), COUNT(user_id) FROM ..._dim_braze_users_and_communications WHERE email_unsubscribe = true GROUP BY 1` |
+| Tasa de baja de email | usuarios únicos con baja / usuarios únicos con email entregado en el periodo | Si no hay únicos, eventos de baja / emails entregados y marcar como proxy |
+| Proxy de baja push | caída en usuarios con `pn_send` mes a mes, o `push_subscribe` si se confirma que la columna sirve | Marcar como proxy |
+| Proxy de baja WhatsApp | caída en tasa de entrega de WhatsApp (bloqueos y números inválidos no se distinguen) | Marcar como proxy |
+
+Cifras de referencia del usuario (sin filtro de fecha ni deduplicación, solo para dimensionar): 7.3 M usuarios únicos con WhatsApp enviado (84.4 M envíos), 5.7 M con entrega, 4.4 M con lectura. 5.5 M usuarios únicos con push enviado (456.6 M envíos), 2.3 M con apertura. No coinciden con E1 (55 M WhatsApp y 251 M push) porque E1 cubre solo enero a septiembre 2026 y colapsa duplicados usuario × comunicación × día × canal.
+
 ## Vista por usuario (lente H)
 
 Una fila por `external_user_id` (o `user_id` si no hay externo) con:

@@ -429,3 +429,9 @@ Las tres extracciones ya están. Con esto arranca la Ola 2 (analistas por lente)
 | Qué significa `email_subscribe = false` | 11.1 M usuarios con `false` reciben 298 M emails (89 % del total) y concentran las 1.1 M bajas. Los 8.4 M con `true` reciben 36 M y cero bajas. Si `false` fuera "dado de baja", estaríamos enviando el 89 % del email a gente que no quiere recibirlo. Lo más probable es que `false` sea "no opt-in explícito" (Braze distingue `opted_in`, `subscribed`, `unsubscribed`) | Confirmar en `_dim_braze_users` cómo se construye la columna y si existe el valor original de tres estados |
 | `push_subscribe` es `false` para el 100 % | 19.5 M usuarios, todos `false`, y aun así 252 M push enviados | La columna está vacía o mal mapeada. Buscar el estado real de push (token, permiso, `push_subscribe` original) |
 | Cobertura del golden record | 93 % `sin_golden` | Saber si `dim_braze_filters` solo cubre clientes con préstamo o cuenta y si se puede ampliar |
+
+### Confirmado por el usuario (14 de octubre de 2026)
+
+- La baja solo existe para email (`email_unsubscribe`). Push y WhatsApp no tienen campo de baja ni de opt-out en la tabla. Definición y proxies en `METRICAS.md`, sección Bajas.
+- La cifra de bajas que se presenta es usuarios únicos por mes (count distinct `user_id` con `email_unsubscribe = true`), no eventos. E1 y E3 traen eventos; los únicos salen de E4a.
+- Lista de outcomes del entregable final en `PENDIENTES.md`. Pide vista por mes y por semana. E1 es mensual; la semanal sale de E4a y la concentración por mes de E4b.

@@ -145,3 +145,74 @@ SELECT banda_msgs, email_subscribe, push_subscribe, etapa, canal_contactable, ba
 FROM con_estado
 GROUP BY banda_msgs, email_subscribe, push_subscribe, etapa, canal_contactable, baja_algun_canal, no_contactable_riesgo
 ORDER BY banda_msgs, usuarios DESC;
+
+
+-- ===================== E4a. Serie por semana y por mes × canal (vista de tablero) =====================
+-- Misma base deduplicada que E1. Trae mix, costo, entrega, apertura, lectura, clic y bajas (eventos y usuarios únicos).
+-- Resultado esperado: unas 250 filas (39 semanas + 9 meses, por 5 canales). Descargar como e4a_serie_semana_mes_canal.csv
+WITH base AS (
+  SELECT user_id, communication_id, event_date, category,
+    MAX(CAST(was_send AS INT)) AS was_send,
+    MAX(CAST(email_sent AS INT)) AS email_sent, MAX(CAST(email_delivery AS INT)) AS email_delivery,
+    MAX(CAST(email_open AS INT)) AS email_open, MAX(CAST(email_click AS INT)) AS email_click,
+    MAX(CAST(email_unsubscribe AS INT)) AS email_unsubscribe,
+    MAX(CAST(pn_send AS INT)) AS pn_send, MAX(CAST(pn_open AS INT)) AS pn_open,
+    MAX(CAST(whatsapp_send AS INT)) AS whatsapp_send, MAX(CAST(whatsapp_delivery AS INT)) AS whatsapp_delivery,
+    MAX(CAST(whatsapp_read AS INT)) AS whatsapp_read,
+    MAX(CAST(in_app_impression AS INT)) AS in_app_impression, MAX(CAST(in_app_click AS INT)) AS in_app_click,
+    MAX(CAST(banner_impression AS INT)) AS banner_impression, MAX(CAST(banner_click AS INT)) AS banner_click,
+    MAX(CAST(is_converted AS INT)) AS conv
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
+  GROUP BY user_id, communication_id, event_date, category
+),
+periodos AS (
+  SELECT 'semana' AS grano, DATE_TRUNC('week', event_date) AS periodo, * FROM base
+  UNION ALL
+  SELECT 'mes' AS grano, DATE_TRUNC('month', event_date) AS periodo, * FROM base
+)
+SELECT grano, periodo, category AS canal,
+  SUM(was_send)                                                        AS envios,
+  APPROX_COUNT_DISTINCT(CASE WHEN was_send = 1 THEN user_id END)       AS usuarios_aprox,
+  APPROX_COUNT_DISTINCT(CASE WHEN was_send = 1 THEN communication_id END) AS comunicaciones,
+  SUM(email_sent) AS email_sent, SUM(email_delivery) AS email_delivery, SUM(email_open) AS email_open, SUM(email_click) AS email_click,
+  SUM(email_unsubscribe)                                               AS bajas_email_eventos,
+  APPROX_COUNT_DISTINCT(CASE WHEN email_unsubscribe = 1 THEN user_id END) AS bajas_email_usuarios,
+  APPROX_COUNT_DISTINCT(CASE WHEN email_delivery = 1 THEN user_id END) AS usuarios_email_entregado,
+  SUM(pn_send) AS pn_send, SUM(pn_open) AS pn_open,
+  SUM(whatsapp_send) AS whatsapp_send, SUM(whatsapp_delivery) AS whatsapp_delivery, SUM(whatsapp_read) AS whatsapp_read,
+  SUM(in_app_impression) AS in_app_impression, SUM(in_app_click) AS in_app_click,
+  SUM(banner_impression) AS banner_impression, SUM(banner_click) AS banner_click,
+  SUM(conv)                                                            AS conversiones_filas,
+  ROUND(SUM(email_sent) * 0.05 + SUM(whatsapp_send) * 1.00, 2)         AS costo_mxn
+FROM periodos
+GROUP BY grano, periodo, category
+ORDER BY grano, periodo, canal;
+
+
+-- ===================== E4b. Concentración de mensajes por mes: usuarios por banda de mensajes =====================
+-- Resultado esperado: unas 80 filas (9 meses × 9 bandas). Descargar como e4b_concentracion_mes.csv
+WITH por_usuario_mes AS (
+  SELECT user_id, DATE_TRUNC('month', event_date) AS mes,
+    SUM(CASE WHEN was_send THEN 1 ELSE 0 END) AS msgs,
+    SUM(CASE WHEN email_sent THEN 1 ELSE 0 END) AS msgs_email,
+    SUM(CASE WHEN pn_send THEN 1 ELSE 0 END) AS msgs_push,
+    SUM(CASE WHEN whatsapp_send THEN 1 ELSE 0 END) AS msgs_whatsapp,
+    SUM(CASE WHEN in_app_impression THEN 1 ELSE 0 END) AS msgs_inapp,
+    SUM(CASE WHEN email_unsubscribe THEN 1 ELSE 0 END) AS bajas_email,
+    SUM(CASE WHEN whatsapp_send THEN 1.00 ELSE 0 END) + SUM(CASE WHEN email_sent THEN 0.05 ELSE 0 END) AS costo_mxn
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
+  GROUP BY user_id, DATE_TRUNC('month', event_date)
+)
+SELECT mes,
+  CASE WHEN msgs = 0 THEN '00' WHEN msgs <= 5 THEN '01-05' WHEN msgs <= 10 THEN '06-10' WHEN msgs <= 20 THEN '11-20'
+       WHEN msgs <= 40 THEN '21-40' WHEN msgs <= 80 THEN '41-80' WHEN msgs <= 160 THEN '081-160' ELSE '161+' END AS banda_msgs_mes,
+  COUNT(*) AS usuarios,
+  SUM(msgs) AS msgs, SUM(msgs_email) AS msgs_email, SUM(msgs_push) AS msgs_push, SUM(msgs_whatsapp) AS msgs_whatsapp, SUM(msgs_inapp) AS msgs_inapp,
+  SUM(CASE WHEN bajas_email > 0 THEN 1 ELSE 0 END) AS usuarios_con_baja_email,
+  ROUND(SUM(costo_mxn), 0) AS costo_mxn,
+  PERCENTILE_APPROX(msgs, 0.5) AS msgs_p50, PERCENTILE_APPROX(msgs, 0.9) AS msgs_p90, MAX(msgs) AS msgs_max
+FROM por_usuario_mes
+GROUP BY mes, 2
+ORDER BY mes, banda_msgs_mes;
