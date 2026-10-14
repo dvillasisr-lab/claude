@@ -1,0 +1,748 @@
+banda_msgs,email_subscribe,push_subscribe,etapa,canal_contactable,baja_algun_canal,no_contactable_riesgo,usuarios,msgs,msgs_email,msgs_push,msgs_whatsapp,msgs_inapp,bajas_email,comms_distintas_prom,dias_con_envio_prom,usuarios_con_conversion,dias_con_conversion,costo_mxn,msgs_p50,msgs_p90,msgs_p99,msgs_max
+00,false,false,sin_golden,n/a,0,0,37362,0,0,0,0,0,36779,0,0,0,0,0,0,0,0,0
+00,true,false,sin_golden,n/a,0,0,9510,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,4.Kpay CC Freeze,Only WA,1,0,506,0,0,0,0,0,620,0,0,0,0,0,0,0,0,0
+00,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,268,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,4.Kpay CC Freeze,Email-WA,0,0,252,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,4.Kpay CC Freeze,InApp-Push-WA,1,0,211,0,0,0,0,0,289,0,0,0,0,0,0,0,0,0
+00,false,false,7.Prospects,Only WA,1,0,145,0,0,0,0,0,198,0,0,0,0,0,0,0,0,0
+00,false,false,4.Kpay CC Freeze,InApp-WA,1,0,75,0,0,0,0,0,82,0,0,0,0,0,0,0,0,0
+00,true,false,4.Kpay CC Freeze,Email-WA,0,0,71,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,59,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,7.Prospects,InApp-Push-WA,1,0,55,0,0,0,0,0,70,0,0,0,0,0,0,0,0,0
+00,false,false,7.Prospects,Email-WA,0,0,52,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,7.Prospects,InApp-Push-Email-WA,0,0,33,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,7.Prospects,InApp-WA,1,0,18,0,0,0,0,0,26,0,0,0,0,0,0,0,0,0
+00,true,false,7.Prospects,Email-WA,0,0,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,7.Prospects,InApp-Email-WA,0,0,12,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,3.Blacklist,Email-WA,0,1,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,true,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,3.Blacklist,Only WA,1,1,10,0,0,0,0,0,8,0,0,0,0,0,0,0,0,0
+00,false,false,4.Kpay CC Freeze,Email-WA,1,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,4.Kpay CC Freeze,InApp-Push,1,0,9,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0
+00,false,false,4.Kpay CC Freeze,Only Email,1,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,4.Kpay CC Freeze,No MKT Channel,1,0,6,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0
+00,true,false,3.Blacklist,Email-WA,0,1,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,true,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,6.Reus or Arco,Email-WA,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,7.Prospects,InApp-Email,1,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,7.Prospects,Only Email,1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,4.Kpay CC Freeze,Only InApp,1,0,2,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0
+00,false,false,6.Reus or Arco,Only WA,1,0,2,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+00,false,false,6.Reus or Arco,InApp-Push-WA,1,0,2,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0
+00,false,false,3.Blacklist,Only Email,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,3.Blacklist,InApp-Push-WA,1,1,2,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0
+00,false,false,4.Kpay CC Freeze,Only WA,1,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+00,false,false,7.Prospects,InApp-Push-Email,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,6.Reus or Arco,InApp-Push,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,4.Kpay CC Freeze,InApp-Email,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,true,false,7.Prospects,InApp-Email-WA,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,7.Prospects,InApp-Push,1,0,1,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0
+00,false,false,3.Blacklist,InApp-Push-Email-WA,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,7.Prospects,No MKT Channel,1,0,1,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0
+00,false,false,6.Reus or Arco,No MKT Channel,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,false,false,6.Reus or Arco,Only InApp,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+00,true,false,3.Blacklist,InApp-Email-WA,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+01-05,true,false,sin_golden,n/a,0,0,6789943,8190760,7969502,28655,6,192566,0,1.2,1.2,921,923,398481,1,2,5,5
+01-05,false,false,sin_golden,n/a,0,0,4265598,6192461,4816470,133959,900463,341524,137134,1.4,1.4,1044,1047,1141287,1,2,5,5
+01-05,false,false,4.Kpay CC Freeze,Email-WA,0,0,4864,11890,6184,186,5418,101,0,1.8,2.4,2,2,5727,2,5,5,5
+01-05,false,false,7.Prospects,Email-WA,0,0,4290,7485,5863,93,1156,372,0,1.6,1.5,54,54,1449,1,4,5,5
+01-05,false,false,3.Blacklist,Email-WA,0,1,4016,9230,7261,1038,880,49,0,1.4,2.2,0,0,1243,2,4,5,5
+01-05,false,false,3.Blacklist,InApp-Push-Email-WA,0,1,3311,6147,2404,3695,16,31,0,1.7,1.8,0,0,136,1,3,5,5
+01-05,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,2627,3095,2402,515,71,107,0,1.1,1.2,0,0,191,1,1,5,5
+01-05,false,false,4.Kpay CC Freeze,Only WA,1,0,2500,7720,3223,82,4285,129,1607,2.6,3,0,0,4446,3,5,5,5
+01-05,true,false,3.Blacklist,Email-WA,0,1,2403,5211,5116,76,0,19,0,1.2,2.1,0,0,256,2,4,5,5
+01-05,false,false,7.Prospects,InApp-Push-Email-WA,0,0,1994,2704,2233,75,44,351,0,1.3,1.1,25,26,156,1,3,5,5
+01-05,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,948,2095,1475,89,479,52,0,1.6,2.2,0,0,553,1,5,5,5
+01-05,false,false,7.Prospects,Only WA,1,0,787,2001,792,23,1145,41,307,2.3,2.5,2,2,1185,2,5,5,5
+01-05,false,false,7.Prospects,InApp-Email-WA,0,0,750,1252,958,35,80,179,0,1.6,1.4,11,11,128,1,4,5,5
+01-05,false,false,3.Blacklist,InApp-Email-WA,0,1,545,1281,840,364,67,10,0,1.8,2.2,0,0,109,2,5,5,5
+01-05,true,false,7.Prospects,Email-WA,0,0,412,512,502,3,0,7,0,1.2,1.2,0,0,25,1,2,5,5
+01-05,true,false,4.Kpay CC Freeze,Email-WA,0,0,352,707,684,2,0,21,0,1.3,2,0,0,34,1,5,5,5
+01-05,desconocido,false,sin_golden,n/a,0,0,329,440,0,32,0,408,0,1.3,1.1,0,0,0,1,2,4,4
+01-05,false,false,3.Blacklist,Only WA,1,1,305,683,559,48,71,5,105,1.4,2.1,0,0,99,2,4,5,5
+01-05,false,false,4.Kpay CC Freeze,InApp-WA,1,0,278,896,274,43,515,64,155,2.9,3.1,0,0,529,3,5,5,5
+01-05,false,false,6.Reus or Arco,Email-WA,0,0,255,875,178,13,676,8,0,3.3,3.3,0,0,685,4,5,5,5
+01-05,true,false,3.Blacklist,InApp-Email-WA,0,1,190,409,348,56,0,5,0,1.5,2,0,0,17,2,4,5,5
+01-05,false,false,4.Kpay CC Freeze,No MKT Channel,1,0,144,508,77,13,404,14,31,3.4,3.3,0,0,408,4,5,5,5
+01-05,false,false,3.Blacklist,InApp-Push-WA,1,1,132,267,114,152,1,0,21,1.8,1.9,0,0,7,2,4,5,5
+01-05,false,false,4.Kpay CC Freeze,Only Email,1,0,105,315,125,2,187,1,0,2.4,2.8,0,0,193,3,5,5,5
+01-05,true,false,3.Blacklist,InApp-Push-Email-WA,0,1,102,165,52,113,0,0,0,1.5,1.6,0,0,3,1,3,4,4
+01-05,false,false,4.Kpay CC Freeze,Email-WA,1,0,102,170,88,22,59,1,0,1.5,1.6,0,0,63,1,4,5,5
+01-05,false,false,7.Prospects,InApp-Push-WA,1,0,100,122,105,4,7,6,10,1.1,1.2,0,0,12,1,1,5,5
+01-05,false,false,7.Prospects,InApp-WA,1,0,97,244,90,9,124,21,21,2.3,2.3,0,0,129,2,5,5,5
+01-05,false,false,6.Reus or Arco,Only WA,1,0,94,351,33,2,316,0,9,3.7,3.7,1,1,318,4,5,5,5
+01-05,false,false,7.Prospects,Only Email,1,0,93,185,103,0,82,0,0,1.8,1.9,0,0,87,1,5,5,5
+01-05,false,false,4.Kpay CC Freeze,InApp-Push-WA,1,0,88,158,78,48,21,11,18,1.6,1.7,0,0,25,1,4,5,5
+01-05,false,false,4.Kpay CC Freeze,InApp-Push,1,0,86,184,53,127,2,2,1,1.7,2.1,0,0,5,2,5,5,5
+01-05,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,0,69,160,65,78,1,16,0,2.1,2.1,0,0,4,2,5,5,5
+01-05,false,false,3.Blacklist,Only Email,1,1,56,165,121,17,24,2,0,1.8,2.7,0,0,30,3,5,5,5
+01-05,true,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,54,80,61,9,0,10,0,1.3,1.4,0,0,3,1,3,5,5
+01-05,false,false,4.Kpay CC Freeze,Only InApp,1,0,50,148,41,29,70,7,8,2.6,2.8,0,0,72,3,5,5,5
+01-05,false,false,3.Blacklist,InApp-WA,1,1,50,126,80,25,16,4,12,1.8,2.4,0,0,20,2,5,5,5
+01-05,false,false,6.Reus or Arco,InApp-Email-WA,0,0,50,160,52,12,84,12,0,3,2.9,0,0,87,3,5,5,5
+01-05,false,false,3.Blacklist,InApp-Push-Email,1,1,45,112,63,49,0,0,0,2.1,2.3,0,0,3,2,5,5,5
+01-05,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,0,44,61,43,12,5,1,0,1.3,1.4,0,0,7,1,3,5,5
+01-05,false,false,7.Prospects,No MKT Channel,1,0,43,157,28,0,126,3,5,3.2,3.5,0,0,127,4,5,5,5
+01-05,false,false,6.Reus or Arco,Email-WA,1,0,42,146,38,3,100,5,0,3.2,3.3,0,0,102,4,5,5,5
+01-05,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,1,40,97,54,40,3,0,0,2.2,2.4,0,0,6,2,4,5,5
+01-05,false,false,4.Kpay CC Freeze,Email-WA,0,1,32,71,56,10,5,0,0,1.5,2.2,0,0,8,1,5,5,5
+01-05,false,false,7.Prospects,InApp-Push-Email,1,0,31,40,30,4,6,0,0,1.1,1.3,0,0,8,1,1,5,5
+01-05,true,false,7.Prospects,InApp-Email-WA,0,0,25,42,34,3,0,5,0,1.6,1.4,0,0,2,1,4,5,5
+01-05,true,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,24,35,19,15,0,1,0,1.3,1.3,0,0,1,1,3,5,5
+01-05,false,false,6.Reus or Arco,InApp-Push,1,0,23,50,18,29,2,1,0,2,2.2,0,0,3,2,5,5,5
+01-05,false,false,4.Kpay CC Freeze,InApp-Email,1,0,22,68,39,4,24,1,0,2.1,3,0,0,26,3,5,5,5
+01-05,false,false,6.Reus or Arco,No MKT Channel,1,1,22,85,23,2,54,6,12,3.5,3.4,0,0,55,4,5,5,5
+01-05,false,false,6.Reus or Arco,Only InApp,1,0,19,50,21,9,19,1,0,2.3,2.4,0,0,20,3,5,5,5
+01-05,false,false,3.Blacklist,Email-WA,1,1,17,26,18,6,2,0,0,1.3,1.5,0,0,3,1,3,3,3
+01-05,false,false,6.Reus or Arco,Only InApp,1,1,17,52,25,2,13,12,10,2.5,2.6,0,0,14,3,5,5,5
+01-05,false,false,6.Reus or Arco,Only Email,1,0,16,61,8,0,53,0,0,3.6,3.4,0,0,53,4,5,5,5
+01-05,false,false,7.Prospects,InApp-Email,1,0,15,22,15,1,3,3,0,1.5,1.3,0,0,4,1,4,4,4
+01-05,false,false,4.Kpay CC Freeze,InApp-Push,1,1,14,38,15,17,5,1,0,2.3,2.5,0,0,6,2,5,5,5
+01-05,false,false,4.Kpay CC Freeze,No MKT Channel,1,1,13,38,6,0,32,0,0,2.8,2.4,0,0,32,3,5,5,5
+01-05,false,false,6.Reus or Arco,InApp-Push,1,1,12,35,13,2,17,3,0,2.8,2.5,0,0,18,3,5,5,5
+01-05,false,false,6.Reus or Arco,No MKT Channel,1,0,12,55,0,0,55,0,14,4.6,4.3,0,0,55,5,5,5,5
+01-05,false,false,3.Blacklist,InApp-Email,1,1,12,33,24,6,3,0,0,1.8,2.6,0,0,4,2,5,5,5
+01-05,false,false,3.Blacklist,InApp-Push,1,1,11,22,7,15,0,0,0,1.7,2,0,0,0,2,4,4,4
+01-05,false,false,3.Blacklist,No MKT Channel,1,1,10,27,15,3,8,1,2,2.2,2.5,0,0,9,2,4,5,5
+01-05,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,1,10,21,14,5,2,0,0,1.5,2.1,0,0,3,2,3,5,5
+01-05,false,false,6.Reus or Arco,Email-WA,0,1,10,13,10,2,1,0,0,1.1,1.3,0,0,2,1,2,3,3
+01-05,false,false,7.Prospects,Only InApp,1,0,9,25,2,2,20,1,0,2.8,2.6,0,0,20,2,5,5,5
+01-05,true,false,7.Prospects,InApp-Push-Email-WA,0,0,9,28,26,0,0,2,0,2.2,2,1,1,1,3,5,5,5
+01-05,false,false,4.Kpay CC Freeze,Only Email,1,1,8,18,17,0,1,0,0,1.5,2.3,0,0,2,2,3,3,3
+01-05,false,false,6.Reus or Arco,InApp-WA,1,0,8,27,12,2,13,0,10,3,3.3,0,0,14,3,5,5,5
+01-05,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,1,8,12,5,7,0,0,0,1.5,1.5,0,0,0,1,3,3,3
+01-05,false,false,4.Kpay CC Freeze,Only InApp,1,1,6,11,7,1,0,3,0,1.5,1.8,0,0,0,1,4,4,4
+01-05,false,false,7.Prospects,InApp-Push,1,0,6,11,6,3,0,2,2,1.8,1.2,0,0,0,1,5,5,5
+01-05,false,false,6.Reus or Arco,InApp-Email-WA,0,1,6,20,13,3,3,1,0,2.3,3.2,0,0,4,4,5,5,5
+01-05,false,false,6.Reus or Arco,Only Email,1,1,6,21,9,0,10,2,0,2.8,2.8,0,0,10,4,5,5,5
+01-05,false,false,3.Blacklist,Only InApp,1,1,5,16,13,1,2,0,0,1.8,3,0,0,3,3,5,5,5
+01-05,false,false,4.Kpay CC Freeze,Only WA,1,1,5,19,8,4,7,0,0,2.8,3,0,0,7,4,5,5,5
+01-05,false,false,7.Prospects,Email-WA,1,0,5,16,12,4,0,0,0,2.4,2.6,0,0,1,4,5,5,5
+01-05,false,false,4.Kpay CC Freeze,InApp-Push-WA,1,1,5,11,5,6,0,0,2,1.8,2.2,0,0,0,2,4,4,4
+01-05,false,false,6.Reus or Arco,InApp-Push-WA,1,0,5,12,5,3,4,0,2,2.2,2.2,0,0,4,1,5,5,5
+01-05,false,false,6.Reus or Arco,Only WA,1,1,4,11,2,0,9,0,1,2.5,2.8,0,0,9,3,4,4,4
+01-05,true,false,4.Kpay CC Freeze,InApp-Email-WA,0,1,3,7,6,1,0,0,0,1.3,2.3,0,0,0,2,4,4,4
+01-05,true,false,4.Kpay CC Freeze,Email-WA,0,1,3,8,8,0,0,0,0,1.3,2.7,0,0,0,3,4,4,4
+01-05,false,false,6.Reus or Arco,InApp-Email,1,0,2,10,0,0,9,1,0,4.5,3.5,0,0,9,5,5,5,5
+01-05,false,false,4.Kpay CC Freeze,InApp-WA,1,1,2,4,1,0,3,0,0,2,2,0,0,3,1,3,3,3
+01-05,desconocido,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,2,2,0,2,0,0,0,1,1,0,0,0,1,1,1,1
+01-05,false,false,6.Reus or Arco,InApp-Push-Email,1,0,2,3,0,3,0,0,0,1.5,1.5,0,0,0,1,2,2,2
+01-05,false,false,6.Reus or Arco,InApp-Push-WA,1,1,1,4,3,1,0,0,0,3,4,0,0,0,4,4,4,4
+01-05,desconocido,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,1,1,0,0,0,1,0,1,1,0,0,0,1,1,1,1
+01-05,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,1,1,3,1,2,0,0,0,3,3,0,0,0,3,3,3,3
+01-05,false,false,4.Kpay CC Freeze,Email-WA,1,1,1,2,1,1,0,0,0,2,2,0,0,0,2,2,2,2
+01-05,true,false,6.Reus or Arco,Email-WA,0,0,1,5,5,0,0,0,0,5,2,0,0,0,5,5,5,5
+01-05,true,false,6.Reus or Arco,InApp-Email-WA,0,0,1,3,3,0,0,0,0,3,3,0,0,0,3,3,3,3
+01-05,true,false,6.Reus or Arco,Email-WA,0,1,1,2,2,0,0,0,0,1,2,0,0,0,2,2,2,2
+06-10,true,false,sin_golden,n/a,0,0,446485,3601091,3466783,63743,1,70546,0,4.4,7.4,1478,1659,173340,8,10,10,10
+06-10,false,false,sin_golden,n/a,0,0,386088,3089356,1962042,342294,522105,262831,80593,5.2,6.8,6230,6462,620207,8,10,10,10
+06-10,false,false,4.Kpay CC Freeze,Email-WA,0,0,15698,137987,102331,1982,32649,1018,0,4.2,8.6,5,5,37766,9,10,10,10
+06-10,true,false,4.Kpay CC Freeze,Email-WA,0,0,10189,83925,83563,76,0,286,0,4,8.2,0,0,4178,8,10,10,10
+06-10,false,false,7.Prospects,Email-WA,0,0,3851,33458,20832,518,10975,1132,0,5.5,7.5,205,213,12017,9,10,10,10
+06-10,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,2623,22351,15174,959,5560,658,0,4.6,8.3,2,2,6319,9,10,10,10
+06-10,false,false,4.Kpay CC Freeze,Only WA,1,0,2570,21012,13703,550,6503,252,2913,4.6,7.9,3,3,7188,8,10,10,10
+06-10,true,false,7.Prospects,Email-WA,0,0,1365,11875,11801,35,0,39,0,4.5,8.6,2,2,590,9,10,10,10
+06-10,false,false,3.Blacklist,InApp-Push-Email-WA,0,1,868,6890,3174,3338,306,69,0,3,5.7,0,0,465,8,10,10,10
+06-10,false,false,7.Prospects,InApp-Push-Email-WA,0,0,755,6294,3175,1144,490,1484,0,6.3,3.8,134,137,649,8,10,10,10
+06-10,false,false,7.Prospects,Only WA,1,0,750,6230,2653,75,3385,117,684,5.8,7.8,23,23,3518,8,10,10,10
+06-10,false,false,7.Prospects,InApp-Email-WA,0,0,744,6323,3964,166,1196,995,0,6.1,6,67,67,1394,9,10,10,10
+06-10,false,false,4.Kpay CC Freeze,Only Email,1,0,728,6360,3865,91,2317,87,0,5,8.4,0,0,2510,9,10,10,10
+06-10,false,false,6.Reus or Arco,Email-WA,0,0,599,4397,476,75,3805,41,0,6.9,7,4,4,3829,7,9,10,10
+06-10,true,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,543,4611,4365,110,0,136,0,4.3,8.5,0,0,218,8,10,10,10
+06-10,false,false,3.Blacklist,Email-WA,0,1,483,3595,2688,420,397,83,0,3.3,6.1,0,0,531,7,9,10,10
+06-10,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,393,3320,1382,1480,292,164,0,4.9,7.7,1,1,361,9,10,10,10
+06-10,false,false,4.Kpay CC Freeze,InApp-WA,1,0,324,2615,1419,139,902,154,362,5.3,7.7,0,0,973,8,10,10,10
+06-10,false,false,6.Reus or Arco,Only WA,1,0,255,1874,104,13,1750,7,59,7.1,7.1,0,0,1755,7,9,10,10
+06-10,false,false,4.Kpay CC Freeze,No MKT Channel,1,0,222,1803,535,35,1190,43,170,6.5,7.7,0,0,1217,8,10,10,10
+06-10,false,false,4.Kpay CC Freeze,InApp-Email,1,0,209,1837,1085,75,625,51,0,5.3,8.4,0,0,679,9,10,10,10
+06-10,false,false,7.Prospects,Only Email,1,0,183,1603,629,17,939,18,0,6.1,8.1,1,1,970,9,10,10,10
+06-10,false,false,3.Blacklist,InApp-Email-WA,0,1,131,1025,669,256,74,23,0,3.6,6.2,0,0,107,8,10,10,10
+06-10,true,false,3.Blacklist,Email-WA,0,1,120,888,858,18,0,12,0,2.3,6,0,0,43,7,10,10,10
+06-10,false,false,6.Reus or Arco,InApp-Email-WA,0,0,104,848,202,46,540,60,0,7.2,7.2,4,4,550,8,10,10,10
+06-10,false,false,7.Prospects,InApp-WA,1,0,94,778,298,36,374,69,90,6.4,7.2,2,2,389,8,10,10,10
+06-10,false,false,7.Prospects,No MKT Channel,1,0,92,771,110,15,631,15,44,6.9,7.9,0,0,637,8,10,10,10
+06-10,false,false,6.Reus or Arco,Email-WA,1,0,85,628,57,5,559,7,0,7.1,6.9,1,1,562,7,9,10,10
+06-10,false,false,6.Reus or Arco,Only Email,1,0,82,616,42,4,565,5,0,7.1,7,0,0,567,7,9,10,10
+06-10,true,false,7.Prospects,InApp-Email-WA,0,0,81,706,661,17,0,28,0,4.7,8.3,0,0,33,9,10,10,10
+06-10,false,false,3.Blacklist,Only WA,1,1,60,459,383,37,34,5,39,2.9,6.6,0,0,53,8,9,10,10
+06-10,false,false,6.Reus or Arco,No MKT Channel,1,1,57,458,33,9,412,4,5,7.7,6.9,1,1,414,8,10,10,10
+06-10,false,false,4.Kpay CC Freeze,Only InApp,1,0,55,448,159,36,220,33,38,6.2,7.4,0,0,228,9,10,10,10
+06-10,false,false,4.Kpay CC Freeze,InApp-Push-WA,1,0,49,418,139,214,44,21,21,4.8,7.7,0,0,51,9,10,10,10
+06-10,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,0,46,358,122,175,54,7,0,4.9,6,0,0,60,8,10,10,10
+06-10,false,false,6.Reus or Arco,Only InApp,1,0,43,332,49,16,256,11,0,7.1,7,0,0,258,8,9,10,10
+06-10,false,false,3.Blacklist,InApp-Push-WA,1,1,40,306,166,125,11,4,13,3.1,5.8,0,0,19,7,10,10,10
+06-10,false,false,6.Reus or Arco,No MKT Channel,1,0,38,297,22,2,272,1,20,7.4,7.3,0,0,273,8,10,10,10
+06-10,false,false,7.Prospects,InApp-Email,1,0,37,312,154,12,139,7,0,5.4,7.9,0,0,147,8,10,10,10
+06-10,false,false,7.Prospects,InApp-Push-WA,1,0,30,255,93,67,63,32,23,6.8,6.1,0,0,68,9,10,10,10
+06-10,false,false,6.Reus or Arco,InApp-WA,1,0,29,219,19,5,193,2,25,7.1,7.2,0,0,194,8,9,10,10
+06-10,false,false,4.Kpay CC Freeze,InApp-Push,1,0,28,212,75,111,22,4,1,4.3,6.4,1,1,26,7,10,10,10
+06-10,true,false,3.Blacklist,InApp-Push-Email-WA,0,1,26,200,84,113,0,3,0,2.6,5.2,0,0,4,8,9,10,10
+06-10,false,false,3.Blacklist,Only Email,1,1,24,188,145,12,28,2,0,3.8,6.5,0,0,35,7,10,10,10
+06-10,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,1,22,168,82,77,8,1,0,3.5,5.6,0,0,12,8,9,10,10
+06-10,false,false,4.Kpay CC Freeze,Email-WA,1,0,20,150,73,16,57,4,0,5,7,0,0,61,7,10,10,10
+06-10,false,false,3.Blacklist,InApp-Push-Email,1,1,20,168,75,74,15,4,0,2.8,6.1,0,0,19,8,10,10,10
+06-10,false,false,6.Reus or Arco,InApp-Push,1,1,18,145,29,7,106,3,1,7,7.1,0,0,107,8,10,10,10
+06-10,false,false,7.Prospects,Only InApp,1,0,16,134,27,2,96,9,8,6.9,7.5,0,0,97,8,10,10,10
+06-10,false,false,6.Reus or Arco,Email-WA,0,1,16,130,50,5,72,3,0,6.8,7.4,1,1,75,8,10,10,10
+06-10,false,false,4.Kpay CC Freeze,Email-WA,0,1,15,107,81,6,17,0,0,3.9,6.6,0,0,21,7,9,10,10
+06-10,false,false,6.Reus or Arco,Only InApp,1,1,15,111,21,3,85,2,1,6.7,6.8,0,0,86,7,9,10,10
+06-10,false,false,3.Blacklist,InApp-WA,1,1,15,116,72,14,23,7,4,4.3,6.6,0,0,27,7,10,10,10
+06-10,false,false,6.Reus or Arco,Only Email,1,1,14,113,8,0,104,1,0,7.2,7.1,1,1,104,8,10,10,10
+06-10,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,0,12,97,30,24,36,6,0,4.7,6.8,0,0,38,9,10,10,10
+06-10,true,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,12,108,72,31,0,5,0,4.8,8.6,0,0,4,9,10,10,10
+06-10,false,false,6.Reus or Arco,Only WA,1,1,10,73,8,0,62,3,1,7,7,0,0,62,7,8,9,9
+06-10,false,false,7.Prospects,InApp-Push-Email,1,0,10,86,6,16,64,0,0,6.9,7.4,0,0,64,8,10,10,10
+06-10,true,false,3.Blacklist,InApp-Email-WA,0,1,9,62,50,12,0,0,0,3,5.3,0,0,3,6,9,9,9
+06-10,false,false,6.Reus or Arco,InApp-Push,1,0,8,63,13,38,12,0,0,4.1,6.1,0,0,13,7,10,10,10
+06-10,false,false,6.Reus or Arco,InApp-Email,1,0,8,63,12,1,44,6,0,7.1,6.6,0,0,45,8,10,10,10
+06-10,true,false,7.Prospects,InApp-Push-Email-WA,0,0,8,62,48,12,0,2,0,3.5,5.8,0,0,2,8,9,9,9
+06-10,false,false,3.Blacklist,InApp-Email,1,1,8,63,38,7,15,3,0,4.1,7,0,0,17,8,10,10,10
+06-10,desconocido,false,sin_golden,n/a,0,0,7,52,0,36,0,16,0,6.1,5.7,0,0,0,7,10,10,10
+06-10,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,1,6,43,33,6,4,0,0,3.7,6.3,0,0,6,6,10,10,10
+06-10,false,false,4.Kpay CC Freeze,InApp-Push,1,1,6,48,25,17,6,0,0,3.8,6.7,0,0,7,8,9,9,9
+06-10,false,false,4.Kpay CC Freeze,No MKT Channel,1,1,6,52,14,0,38,0,0,7.7,7.8,0,0,39,9,10,10,10
+06-10,false,false,7.Prospects,InApp-Push,1,0,5,41,7,8,26,0,0,6.4,7.2,0,0,26,8,10,10,10
+06-10,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,1,4,29,10,10,9,0,0,5,5.8,0,0,10,6,9,9,9
+06-10,false,false,3.Blacklist,No MKT Channel,1,1,4,27,18,1,7,1,0,2.8,5.3,0,0,8,6,8,8,8
+06-10,false,false,6.Reus or Arco,InApp-Push-WA,1,0,4,32,4,24,4,0,0,4.5,7,0,0,4,7,10,10,10
+06-10,false,false,6.Reus or Arco,InApp-WA,1,1,4,32,8,3,18,3,0,6.8,7.3,0,0,18,7,10,10,10
+06-10,false,false,3.Blacklist,InApp-Push,1,1,4,30,16,12,2,0,1,2.5,6.3,0,0,3,6,10,10,10
+06-10,true,false,6.Reus or Arco,Email-WA,0,0,3,25,24,0,0,1,0,7.3,5,0,0,1,8,10,10,10
+06-10,false,false,4.Kpay CC Freeze,Only WA,1,1,3,22,12,3,7,0,1,6,6,0,0,8,6,10,10,10
+06-10,false,false,4.Kpay CC Freeze,Only Email,1,1,2,12,9,3,0,0,0,3,4.5,0,0,0,6,6,6,6
+06-10,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,1,2,13,8,5,0,0,0,2.5,5.5,0,0,0,6,7,7,7
+06-10,false,false,3.Blacklist,Only InApp,1,1,2,14,5,7,2,0,2,5,6,0,0,2,6,8,8,8
+06-10,false,false,4.Kpay CC Freeze,InApp-WA,1,1,2,16,11,0,4,1,0,5.5,6.5,0,0,5,8,8,8,8
+06-10,false,false,7.Prospects,Email-WA,1,0,2,16,0,0,16,0,0,7,8,0,0,16,7,9,9,9
+06-10,false,false,4.Kpay CC Freeze,InApp-Push-WA,1,1,2,19,5,11,2,1,0,3.5,7.5,0,0,2,9,10,10,10
+06-10,false,false,6.Reus or Arco,InApp-Push-Email,1,1,2,14,0,5,9,0,0,5,5.5,0,0,9,7,7,7,7
+06-10,false,false,6.Reus or Arco,InApp-Email-WA,0,1,1,6,5,1,0,0,0,5,6,0,0,0,6,6,6,6
+06-10,false,false,6.Reus or Arco,InApp-Push-Email,1,0,1,7,0,6,1,0,0,5,7,0,0,1,7,7,7,7
+06-10,false,false,4.Kpay CC Freeze,InApp-Email,1,1,1,9,6,0,3,0,0,6,9,0,0,3,9,9,9,9
+06-10,true,false,4.Kpay CC Freeze,Email-WA,0,1,1,10,9,0,0,1,0,4,8,0,0,0,10,10,10,10
+06-10,false,false,4.Kpay CC Freeze,Only InApp,1,1,1,9,2,0,7,0,0,8,7,0,0,7,9,9,9,9
+081-160,false,false,sin_golden,n/a,0,0,1123462,124433712,60772366,49815907,9740741,4086850,82491,49.3,80.8,309805,661275,12779359,107,146,159,160
+081-160,false,false,7.Prospects,Email-WA,0,0,49688,6190358,4911560,278592,937748,61979,0,65.5,91.2,4260,7822,1183326,127,155,160,160
+081-160,true,false,sin_golden,n/a,0,0,46084,5318503,973689,4253044,0,91644,0,50.2,91.7,4695,7944,48684,118,145,159,160
+081-160,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,23032,2749739,847762,1644298,120766,134942,0,57,74.6,7621,12385,163154,119,152,160,160
+081-160,false,false,4.Kpay CC Freeze,Email-WA,0,0,17761,2057206,1392589,364573,240131,58956,0,58.5,81.2,4079,6953,309760,114,149,159,160
+081-160,false,false,7.Prospects,InApp-Push-Email-WA,0,0,17631,2127766,701354,1177519,102467,145223,0,53.4,67.1,8422,15663,137535,121,153,160,160
+081-160,false,false,7.Prospects,Only Email,1,0,15030,1908747,1475488,75519,316030,41402,0,69.1,91.7,2503,5233,389804,131,155,160,160
+081-160,false,false,7.Prospects,InApp-Email-WA,0,0,14966,1797694,1313182,101080,244384,138152,0,66.9,82.9,5476,13191,310043,120,153,160,160
+081-160,false,false,7.Prospects,Only WA,1,0,9466,1154652,878510,63434,202680,9947,18678,67.3,88.3,580,1182,246606,123,153,160,160
+081-160,false,false,7.Prospects,InApp-Email,1,0,8328,1043053,736668,49599,153218,102823,0,70.5,84.5,3728,9066,190051,128,155,160,160
+081-160,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,0,7788,957445,280920,568471,57322,49834,0,61.7,78.9,2300,3746,71368,124,154,160,160
+081-160,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,7410,853472,580497,115302,80781,75806,0,58.4,77.7,3603,7640,109806,113,149,159,160
+081-160,false,false,4.Kpay CC Freeze,Only Email,1,0,6981,826568,541885,143559,106057,34425,0,61.8,81.3,2017,3575,133151,118,150,159,160
+081-160,false,false,7.Prospects,InApp-Push-Email,1,0,5036,625314,215162,318448,44728,46496,0,54.8,69.3,2417,4721,55486,126,155,160,160
+081-160,false,false,4.Kpay CC Freeze,InApp-Email,1,0,4401,530556,359756,54485,59949,55593,0,64.2,80.2,2298,4999,77937,121,152,160,160
+081-160,false,false,7.Prospects,No MKT Channel,1,0,3328,404147,283907,26618,81540,11965,7191,68.5,85.6,572,1358,95735,122,154,160,160
+081-160,false,false,7.Prospects,InApp-WA,1,0,2181,259896,165484,25406,46375,22446,5126,69.3,80.5,703,1684,54649,119,151,160,160
+081-160,false,false,4.Kpay CC Freeze,Only WA,1,0,2075,238317,166117,33672,32620,5822,3707,61.2,81.6,370,654,40926,112,149,159,160
+081-160,false,false,7.Prospects,Only InApp,1,0,1952,235748,130543,18200,49160,37603,4455,70.5,77.9,1032,2820,55687,121,152,160,160
+081-160,false,false,4.Kpay CC Freeze,InApp-Push-WA,1,0,1187,143822,35448,94476,7459,6356,2353,59.3,79.9,319,546,9231,122,152,160,160
+081-160,false,false,7.Prospects,InApp-Push-WA,1,0,973,119028,29653,74757,8258,6294,2174,57.8,76,330,588,9741,123,154,160,160
+081-160,false,false,4.Kpay CC Freeze,No MKT Channel,1,0,855,99662,61759,18202,15086,4531,1591,61.4,79.7,262,486,18174,114,150,159,160
+081-160,false,false,4.Kpay CC Freeze,InApp-WA,1,0,670,77161,48635,12706,8391,7304,1693,58.7,77.7,325,704,10823,113,150,160,160
+081-160,true,false,7.Prospects,InApp-Email-WA,0,0,643,70040,53713,2804,0,13437,0,58.1,66,441,1171,2686,103,144,157,160
+081-160,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,0,533,58421,32736,21609,1807,2065,0,27.8,62.3,248,622,3444,106,143,160,160
+081-160,false,false,4.Kpay CC Freeze,Only InApp,1,0,493,57772,35825,7379,7490,6962,1168,59.5,78.2,247,627,9281,116,150,160,160
+081-160,false,false,4.Kpay CC Freeze,InApp-Push,1,0,492,60528,16615,36608,3990,3257,772,59.8,79.5,151,270,4821,126,154,160,160
+081-160,true,false,7.Prospects,InApp-Push-Email-WA,0,0,448,54648,16319,34689,0,3624,0,57.8,68.2,205,355,816,123,154,160,160
+081-160,false,false,7.Prospects,InApp-Push,1,0,433,54432,14866,30464,5466,3600,781,59.6,77,182,325,6209,128,153,160,160
+081-160,true,false,4.Kpay CC Freeze,Email-WA,0,0,373,40101,28253,8784,0,3034,0,44.4,70.2,202,338,1413,103,140,157,159
+081-160,true,false,7.Prospects,Email-WA,0,0,373,39998,28780,8419,0,2778,0,57.9,69.3,190,409,1439,100,142,157,160
+081-160,true,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,364,39809,32378,1726,0,5626,0,49.2,72,243,570,1619,106,143,158,159
+081-160,true,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,358,43631,15101,25795,0,2708,0,52.8,67.7,187,307,755,121,152,160,160
+081-160,false,false,3.Blacklist,InApp-Push-Email-WA,0,1,225,26393,9887,13594,1151,1731,0,50.3,66.1,100,215,1645,116,151,160,160
+081-160,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,1,204,22661,14751,6405,572,831,0,23.2,65.9,87,184,1310,107,143,155,158
+081-160,false,false,6.Reus or Arco,InApp-Push,1,0,190,20450,12169,6823,630,757,28,22.7,62.1,85,241,1238,103,142,159,160
+081-160,false,false,6.Reus or Arco,Email-WA,0,0,169,19328,14832,1704,2529,249,0,54.4,81.3,28,91,3271,112,149,159,160
+081-160,false,false,6.Reus or Arco,InApp-Email-WA,0,0,129,14094,10988,1562,820,670,0,34.3,72.5,72,246,1369,105,145,158,159
+081-160,false,false,6.Reus or Arco,InApp-Push-Email,1,0,125,13744,6548,5540,790,844,0,32.8,61.3,53,128,1117,105,143,159,159
+081-160,false,false,3.Blacklist,InApp-Push-Email,1,1,124,15161,5853,7272,817,1188,0,51.6,65.3,65,147,1110,123,152,160,160
+081-160,false,false,3.Blacklist,Email-WA,0,1,112,12572,7348,3470,746,984,0,45.2,65.7,58,128,1113,105,150,157,159
+081-160,false,false,3.Blacklist,Only Email,1,1,81,9306,5245,2513,827,700,0,50.6,67.7,48,104,1089,114,143,160,160
+081-160,false,false,6.Reus or Arco,Only Email,1,0,69,7847,5818,679,1075,262,0,56.1,78,18,32,1366,114,150,160,160
+081-160,false,false,3.Blacklist,InApp-Email-WA,0,1,63,7091,4784,1082,572,633,0,51.3,72.1,37,77,811,107,146,157,157
+081-160,false,false,6.Reus or Arco,InApp-Push-Email,1,1,59,6887,4092,1976,364,428,0,30.7,68,21,58,569,115,151,158,158
+081-160,false,false,6.Reus or Arco,Only WA,1,0,58,6487,4684,657,1042,102,71,59.4,77.4,8,23,1276,107,146,158,158
+081-160,false,false,6.Reus or Arco,Only InApp,1,0,57,6019,4624,658,295,426,3,28.1,69.5,33,102,526,99,143,160,160
+081-160,false,false,6.Reus or Arco,InApp-Push-WA,1,0,57,6004,3284,2284,228,194,49,27.1,61.1,27,66,392,98,139,147,147
+081-160,false,false,3.Blacklist,InApp-Email,1,1,47,5573,3508,761,572,723,0,58.3,71.3,25,67,747,119,147,156,156
+081-160,false,false,6.Reus or Arco,InApp-Email,1,0,46,5332,3924,471,530,397,0,44.4,75.3,23,72,726,115,154,156,156
+081-160,false,false,6.Reus or Arco,InApp-Email-WA,0,1,42,4640,3641,536,170,288,0,23.1,74,25,89,352,105,145,160,160
+081-160,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,1,41,4659,2872,1482,141,131,0,25.7,65.4,11,17,285,107,150,160,160
+081-160,false,false,6.Reus or Arco,InApp-Push,1,1,37,3922,2044,1507,123,233,4,31.8,57.3,13,25,225,103,133,157,157
+081-160,false,false,6.Reus or Arco,Email-WA,0,1,26,2859,2097,501,176,82,0,30.9,72.4,10,29,281,108,153,160,160
+081-160,false,false,6.Reus or Arco,No MKT Channel,1,0,26,2971,2051,346,468,104,47,60.9,77.5,7,10,571,111,144,154,154
+081-160,false,false,6.Reus or Arco,InApp-WA,1,0,25,2865,2053,286,335,190,64,51,74.7,9,31,438,103,146,155,155
+081-160,false,false,6.Reus or Arco,InApp-Email,1,1,24,2721,2004,314,154,233,0,33.2,75,16,34,254,106,148,160,160
+081-160,false,false,6.Reus or Arco,Only Email,1,1,20,2256,1434,426,232,162,0,44.5,72,7,14,304,113,137,148,148
+081-160,false,false,6.Reus or Arco,InApp-Push-WA,1,1,19,2149,1472,574,37,63,3,21.7,69,8,20,111,114,145,157,157
+081-160,false,false,3.Blacklist,InApp-Push,1,1,18,2145,878,942,134,187,56,48.3,62.6,9,20,178,111,157,157,157
+081-160,false,false,7.Prospects,Email-WA,1,0,16,1824,1391,218,178,34,0,59.3,82.3,5,10,248,100,150,154,154
+081-160,false,false,4.Kpay CC Freeze,Only Email,1,1,12,1330,942,263,57,68,0,32.8,79,5,10,104,99,153,153,153
+081-160,false,false,3.Blacklist,Only WA,1,1,12,1351,759,395,110,83,37,50.8,70.4,3,5,148,108,141,149,149
+081-160,false,false,3.Blacklist,InApp-Push-WA,1,1,11,1212,379,690,48,93,21,47.5,67,3,8,67,108,155,160,160
+081-160,false,false,4.Kpay CC Freeze,Email-WA,0,1,11,1207,989,71,109,34,0,39.4,77.1,3,3,158,102,148,155,155
+081-160,false,false,3.Blacklist,InApp-WA,1,1,11,1229,699,270,103,154,30,48.9,68.4,9,17,138,104,147,159,159
+081-160,false,false,4.Kpay CC Freeze,InApp-Push,1,1,10,1205,659,463,20,61,7,31.2,66.4,6,7,53,120,143,149,149
+081-160,false,false,6.Reus or Arco,Only InApp,1,1,10,1100,761,124,68,142,5,34.1,65.5,7,24,106,110,130,131,131
+081-160,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,1,9,1164,600,448,48,61,0,32.6,71.6,2,4,78,135,153,153,153
+081-160,false,false,6.Reus or Arco,Email-WA,1,0,9,807,651,117,27,12,0,18.1,65.4,3,4,60,88,102,102,102
+081-160,false,false,4.Kpay CC Freeze,Email-WA,1,0,9,959,786,131,29,12,0,25.3,75.6,3,4,68,101,134,134,134
+081-160,false,false,3.Blacklist,No MKT Channel,1,1,8,891,461,290,73,64,30,47.5,67.8,6,14,96,107,141,141,141
+081-160,false,false,6.Reus or Arco,No MKT Channel,1,1,6,673,299,258,54,62,2,39,73.5,2,4,69,104,132,132,132
+081-160,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,1,6,566,415,57,45,33,0,26,64.5,2,2,66,89,114,114,114
+081-160,false,false,3.Blacklist,Only InApp,1,1,4,392,244,13,64,65,0,39.3,59.5,3,8,76,95,107,107,107
+081-160,false,false,4.Kpay CC Freeze,No MKT Channel,1,1,4,450,231,85,7,122,2,23.3,49,3,10,19,104,139,139,139
+081-160,false,false,6.Reus or Arco,InApp-WA,1,1,4,409,308,63,11,26,2,17.5,70,3,8,26,99,120,120,120
+081-160,true,false,3.Blacklist,InApp-Push-Email-WA,0,1,3,325,162,93,0,70,0,24,39.3,3,4,8,111,126,126,126
+081-160,false,false,4.Kpay CC Freeze,InApp-Push-WA,1,1,3,351,221,114,10,6,1,28.7,69,0,0,21,129,139,139,139
+081-160,false,false,4.Kpay CC Freeze,InApp-Email,1,1,3,349,275,36,22,16,0,34.3,76.3,2,2,36,117,143,143,143
+081-160,true,false,3.Blacklist,Email-WA,0,1,3,322,236,46,0,40,0,40,73.7,2,2,12,110,128,128,128
+081-160,desconocido,false,sin_golden,n/a,0,0,3,329,0,328,0,1,0,57,87.7,0,0,0,108,131,131,131
+081-160,false,false,6.Reus or Arco,Only WA,1,1,2,254,230,4,3,11,0,20,97.5,1,1,15,119,135,135,135
+081-160,false,false,4.Kpay CC Freeze,Only InApp,1,1,2,235,139,42,25,29,4,41,76,1,2,32,92,143,143,143
+081-160,false,false,4.Kpay CC Freeze,InApp-WA,1,1,2,181,146,21,3,11,1,24.5,60,1,1,10,89,92,92,92
+081-160,true,false,6.Reus or Arco,InApp-Email-WA,0,0,1,90,85,0,0,5,0,25,60,1,1,4,90,90,90,90
+081-160,true,false,6.Reus or Arco,InApp-Push-Email-WA,0,1,1,83,57,25,0,1,0,13,50,1,1,3,83,83,83,83
+081-160,true,false,3.Blacklist,InApp-Email-WA,0,1,1,107,102,0,0,5,0,34,66,1,3,5,107,107,107,107
+081-160,true,false,6.Reus or Arco,InApp-Push-Email-WA,0,0,1,87,38,41,0,8,0,26,43,1,2,2,87,87,87,87
+11-20,false,false,sin_golden,n/a,0,0,652263,9899943,5998504,1140393,2168921,591771,146149,7.7,12.4,22792,26928,2468846,15,19,20,20
+11-20,true,false,sin_golden,n/a,0,0,573533,8325744,8055840,175787,0,94032,0,6.4,13,3854,5235,402792,14,19,20,20
+11-20,false,false,4.Kpay CC Freeze,Email-WA,0,0,31825,462728,315737,39844,102061,5044,0,6.9,13.7,102,112,117848,14,18,20,20
+11-20,false,false,7.Prospects,Email-WA,0,0,9793,143774,87186,5757,47517,3302,0,8.1,13.1,495,547,51876,14,19,20,20
+11-20,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,5429,80195,52526,6709,16935,4008,0,8.1,13.6,39,50,19561,14,19,20,20
+11-20,true,false,3.Blacklist,Email-WA,0,1,5256,95537,95517,7,0,13,0,1.2,17.7,1,1,4776,18,19,20,20
+11-20,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,4372,72724,17994,46999,5880,1846,0,9,14.9,23,27,6780,17,20,20,20
+11-20,false,false,7.Prospects,Only WA,1,0,4143,67305,9561,650,56615,479,2548,13.2,15.1,67,72,57093,17,20,20,20
+11-20,false,false,4.Kpay CC Freeze,Only WA,1,0,3715,56564,36831,2833,16359,535,4536,7.6,14.3,19,21,18201,15,19,20,20
+11-20,true,false,4.Kpay CC Freeze,Email-WA,0,0,3522,45471,44186,858,0,424,0,6,12.1,34,34,2209,12,17,20,20
+11-20,false,false,4.Kpay CC Freeze,Only Email,1,0,2793,42329,26239,2803,12641,646,0,8.2,14,2,2,13953,15,19,20,20
+11-20,false,false,7.Prospects,InApp-Push-Email-WA,0,0,2752,42846,19128,13358,2981,7376,0,9.9,8,701,766,3937,16,20,20,20
+11-20,false,false,7.Prospects,InApp-Email-WA,0,0,2096,31725,20042,1259,5493,4927,0,9.6,10.5,432,488,6495,15,19,20,20
+11-20,true,false,7.Prospects,Email-WA,0,0,945,12421,12161,81,0,179,0,6.4,12.2,17,17,608,12,17,20,20
+11-20,false,false,7.Prospects,No MKT Channel,1,0,876,14806,925,138,13609,133,368,14.5,15.6,8,8,13655,17,20,20,20
+11-20,false,false,3.Blacklist,Email-WA,0,1,824,14173,13052,629,387,100,0,2.7,16.2,4,4,1040,18,19,20,20
+11-20,false,false,7.Prospects,Only Email,1,0,815,12329,5887,472,5816,152,0,9.2,13.9,7,8,6110,15,19,20,20
+11-20,false,false,4.Kpay CC Freeze,InApp-Email,1,0,743,11316,6804,799,3080,629,0,9.1,13.9,1,1,3420,15,19,20,20
+11-20,false,false,3.Blacklist,InApp-Push-Email-WA,0,1,544,8518,5831,2233,260,184,0,4.5,12.7,2,2,552,16,20,20,20
+11-20,false,false,7.Prospects,InApp-WA,1,0,479,7693,1764,276,5198,455,442,12.7,14.2,30,30,5286,16,20,20,20
+11-20,false,false,4.Kpay CC Freeze,InApp-WA,1,0,475,7207,4026,612,2126,440,533,9.3,13.7,8,9,2327,15,19,20,20
+11-20,false,false,4.Kpay CC Freeze,No MKT Channel,1,0,403,6312,2323,364,3500,123,353,10.9,14.1,3,4,3616,16,20,20,20
+11-20,true,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,357,4973,4272,235,0,463,0,7.6,12.7,6,7,214,13,19,20,20
+11-20,false,false,4.Kpay CC Freeze,InApp-Push-WA,1,0,246,4115,909,2685,415,104,183,9.6,15,0,0,460,17,20,20,20
+11-20,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,0,225,3833,935,2268,504,125,0,9.6,14.9,1,1,551,18,20,20,20
+11-20,false,false,6.Reus or Arco,Email-WA,0,0,219,3309,1880,365,954,107,0,9.1,12.2,24,28,1048,15,19,20,20
+11-20,false,false,7.Prospects,InApp-Email,1,0,208,3259,1845,137,1013,264,0,9.8,13.2,10,13,1105,16,20,20,20
+11-20,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,0,162,2609,715,1418,382,93,0,7.8,11.5,9,9,418,17,20,20,20
+11-20,false,false,3.Blacklist,Only WA,1,1,129,2253,2215,27,11,0,36,1.5,16.9,0,0,122,18,20,20,20
+11-20,false,false,7.Prospects,Only InApp,1,0,112,1873,290,61,1422,98,56,13.6,14.8,3,3,1437,17,20,20,20
+11-20,false,false,3.Blacklist,InApp-Email-WA,0,1,106,1619,1312,168,110,28,0,5.2,13.3,0,0,176,15,19,20,20
+11-20,false,false,7.Prospects,InApp-Push-WA,1,0,102,1672,550,669,253,200,102,10.6,11.7,13,13,281,17,20,20,20
+11-20,true,false,7.Prospects,InApp-Email-WA,0,0,101,1518,1273,48,0,195,0,8.8,11.3,12,17,64,15,20,20,20
+11-20,false,false,4.Kpay CC Freeze,Only InApp,1,0,101,1531,784,115,516,116,87,10.1,13.4,0,0,555,15,19,20,20
+11-20,false,false,6.Reus or Arco,InApp-Email-WA,0,0,99,1496,858,121,347,168,0,9.2,11.2,18,20,390,15,20,20,20
+11-20,false,false,6.Reus or Arco,Only WA,1,0,95,1453,678,75,666,33,87,10.4,13.2,6,6,700,15,20,20,20
+11-20,true,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,85,1391,420,934,0,37,0,7.9,15.2,1,1,21,16,20,20,20
+11-20,false,false,7.Prospects,InApp-Push-Email,1,0,79,1269,358,458,369,84,0,10.2,13,4,5,387,17,19,20,20
+11-20,false,false,4.Kpay CC Freeze,InApp-Push,1,0,65,1028,307,591,95,32,17,8.7,12.9,0,0,110,16,20,20,20
+11-20,true,false,3.Blacklist,InApp-Email-WA,0,1,51,925,910,12,0,3,0,1.7,17.6,0,0,46,18,20,20,20
+11-20,false,false,6.Reus or Arco,InApp-Push,1,0,47,744,158,443,125,18,0,6.9,12.7,0,0,133,16,19,20,20
+11-20,true,false,7.Prospects,InApp-Push-Email-WA,0,0,41,642,397,155,0,90,0,8,9.3,11,15,20,16,20,20,20
+11-20,false,false,6.Reus or Arco,Email-WA,1,0,35,543,285,94,159,4,0,7.9,13.4,0,0,173,15,19,20,20
+11-20,false,false,4.Kpay CC Freeze,Email-WA,1,0,30,497,480,0,14,2,0,3.8,15.5,2,2,38,18,19,20,20
+11-20,false,false,6.Reus or Arco,Only Email,1,0,30,453,181,45,209,18,0,10.7,12.6,2,2,218,14,20,20,20
+11-20,false,false,6.Reus or Arco,InApp-Push-WA,1,0,29,462,109,256,86,11,9,8.3,11.9,2,2,91,16,20,20,20
+11-20,false,false,3.Blacklist,Only Email,1,1,28,420,278,45,79,18,0,7.3,13.1,1,1,93,14,20,20,20
+11-20,false,false,6.Reus or Arco,No MKT Channel,1,0,27,412,187,4,215,6,22,11,13.2,0,0,224,16,20,20,20
+11-20,false,false,3.Blacklist,InApp-Push-WA,1,1,25,385,202,148,20,15,8,6,12.1,0,0,30,15,20,20,20
+11-20,false,false,6.Reus or Arco,Only InApp,1,0,23,336,164,38,109,25,6,8.7,12.4,1,1,117,14,19,20,20
+11-20,false,false,4.Kpay CC Freeze,Email-WA,0,1,23,357,240,32,82,3,0,7.2,13.5,0,0,94,16,18,20,20
+11-20,false,false,3.Blacklist,InApp-Push-Email,1,1,23,351,193,128,21,8,0,6.6,12.1,0,0,31,15,18,19,19
+11-20,false,false,6.Reus or Arco,InApp-WA,1,0,22,318,150,38,89,41,17,8.8,11.2,6,6,97,14,18,19,19
+11-20,true,false,3.Blacklist,InApp-Push-Email-WA,0,1,19,341,324,17,0,0,0,2.3,16.8,0,0,16,19,20,20,20
+11-20,desconocido,false,sin_golden,n/a,0,0,17,263,0,232,0,31,0,6.8,13.9,0,0,0,15,19,20,20
+11-20,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,1,16,225,128,83,10,3,0,5.5,10.7,0,0,16,13,17,20,20
+11-20,false,false,6.Reus or Arco,InApp-Email,1,0,15,234,128,12,67,27,0,10.6,13.1,0,0,73,17,20,20,20
+11-20,false,false,6.Reus or Arco,Only Email,1,1,14,222,162,12,36,12,0,9.1,12.7,1,1,44,17,19,19,19
+11-20,false,false,7.Prospects,InApp-Push,1,0,13,214,68,95,42,9,2,9.4,14.2,0,0,45,17,20,20,20
+11-20,false,false,3.Blacklist,InApp-Email,1,1,13,196,144,12,32,8,0,7.5,13.1,0,0,39,14,19,20,20
+11-20,false,false,6.Reus or Arco,Email-WA,0,1,11,188,119,6,62,0,0,8.5,13.9,0,0,68,17,19,19,19
+11-20,false,false,6.Reus or Arco,Only InApp,1,1,11,181,106,32,32,10,0,8.5,13,2,2,37,16,18,19,19
+11-20,false,false,6.Reus or Arco,InApp-Push,1,1,11,148,77,35,26,10,0,6.5,10.8,1,1,30,13,16,20,20
+11-20,false,false,6.Reus or Arco,InApp-Push-Email,1,0,11,173,32,88,39,14,0,7.5,12.1,0,0,41,16,19,20,20
+11-20,false,false,6.Reus or Arco,No MKT Channel,1,1,10,144,82,15,40,6,1,8,12,0,0,44,13,18,18,18
+11-20,false,false,6.Reus or Arco,InApp-Email-WA,0,1,9,136,95,1,38,2,0,6.9,13.8,0,0,43,14,20,20,20
+11-20,false,false,3.Blacklist,InApp-WA,1,1,9,142,114,16,9,3,6,3.8,13.6,0,0,15,17,18,18,18
+11-20,true,false,4.Kpay CC Freeze,Email-WA,0,1,8,145,145,0,0,0,0,1.1,18,0,0,7,18,19,19,19
+11-20,true,false,6.Reus or Arco,Email-WA,0,0,7,108,101,1,0,6,0,8.3,12.9,0,0,5,17,20,20,20
+11-20,false,false,6.Reus or Arco,Only WA,1,1,7,101,55,0,44,2,4,9,13.3,0,0,47,14,19,19,19
+11-20,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,1,7,110,68,6,25,11,0,7.7,13.1,1,1,28,16,20,20,20
+11-20,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,1,7,114,57,45,4,5,0,7.6,11.3,0,0,7,17,20,20,20
+11-20,true,false,6.Reus or Arco,InApp-Email-WA,0,0,6,107,97,1,0,9,0,10.5,14.7,1,1,5,17,20,20,20
+11-20,false,false,4.Kpay CC Freeze,InApp-Push,1,1,4,62,43,16,0,3,0,4.8,11.5,0,0,2,15,20,20,20
+11-20,false,false,6.Reus or Arco,InApp-Email,1,1,4,66,34,6,17,9,0,9.3,13.3,0,0,19,15,19,19,19
+11-20,false,false,4.Kpay CC Freeze,No MKT Channel,1,1,3,44,36,0,4,4,1,6.7,13,0,0,6,15,18,18,18
+11-20,false,false,6.Reus or Arco,InApp-WA,1,1,3,47,23,10,12,2,1,7,12.7,1,1,13,16,17,17,17
+11-20,false,false,6.Reus or Arco,InApp-Push-WA,1,1,3,49,12,26,11,0,3,7,12.3,0,0,12,17,19,19,19
+11-20,false,false,3.Blacklist,No MKT Channel,1,1,3,53,24,11,15,3,12,13.3,14.3,0,0,16,18,20,20,20
+11-20,false,false,3.Blacklist,InApp-Push,1,1,2,25,21,4,0,0,0,6,10.5,0,0,1,11,14,14,14
+11-20,false,false,4.Kpay CC Freeze,Only Email,1,1,2,34,20,0,14,0,0,10,13.5,0,0,15,15,19,19,19
+11-20,false,false,4.Kpay CC Freeze,InApp-Push-WA,1,1,2,34,23,9,1,1,0,8,13.5,0,0,2,15,19,19,19
+11-20,false,false,7.Prospects,Email-WA,1,0,2,31,20,0,11,0,0,10,14,0,0,12,12,19,19,19
+11-20,true,false,4.Kpay CC Freeze,InApp-Email-WA,0,1,2,36,36,0,0,0,0,1,17.5,0,0,2,18,18,18,18
+11-20,false,false,3.Blacklist,Only InApp,1,1,1,11,5,1,4,1,0,7,11,0,0,4,11,11,11,11
+11-20,false,false,4.Kpay CC Freeze,InApp-WA,1,1,1,11,10,0,1,0,0,7,10,0,0,2,11,11,11,11
+11-20,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,1,1,20,12,2,5,1,0,13,16,0,0,6,20,20,20,20
+11-20,false,false,4.Kpay CC Freeze,Only InApp,1,1,1,12,12,0,0,0,0,5,10,0,0,1,12,12,12,12
+11-20,false,false,6.Reus or Arco,InApp-Push-Email,1,1,1,13,0,9,4,0,0,4,11,0,0,4,13,13,13,13
+11-20,false,false,4.Kpay CC Freeze,InApp-Email,1,1,1,11,8,0,3,0,0,5,11,0,0,3,11,11,11,11
+11-20,true,false,6.Reus or Arco,InApp-Push-Email-WA,0,0,1,14,7,5,0,2,0,6,9,0,0,0,14,14,14,14
+11-20,false,false,3.Blacklist,Email-WA,1,1,1,19,18,0,0,0,0,4,17,0,0,1,19,19,19,19
+161-320,false,false,sin_golden,n/a,0,0,376479,77501794,24276670,46123311,3419720,3672346,30465,84.3,124.3,178076,549887,4633554,196,264,312,320
+161-320,false,false,7.Prospects,Email-WA,0,0,55146,10944088,8357433,1003593,1443769,138150,0,102.7,131.1,6659,22393,1861641,191,240,308,320
+161-320,false,false,7.Prospects,InApp-Push-Email-WA,0,0,38591,9116494,2579057,5629977,442504,461326,0,112,124.6,17566,44920,571457,233,302,318,320
+161-320,false,false,7.Prospects,Only Email,1,0,27699,5829974,4279616,529256,808446,210752,0,110,132.1,9110,36359,1022427,201,270,314,320
+161-320,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,26241,6000821,1914041,3483436,256844,341644,0,105.8,122.3,14135,31689,352546,223,296,318,320
+161-320,false,false,7.Prospects,InApp-Email,1,0,25218,5849274,3868576,432192,800361,740708,0,124.5,132.2,18016,90325,993790,228,294,318,320
+161-320,false,false,7.Prospects,InApp-Push-Email,1,0,20378,5050676,1542615,2876755,317070,311332,0,115.9,129.9,10955,29286,394201,250,307,319,320
+161-320,false,false,7.Prospects,InApp-Email-WA,0,0,18599,4048411,2728915,418355,500204,396890,0,115.8,128.3,10361,48961,636650,210,281,315,320
+161-320,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,0,16898,4055881,1286134,2288852,216677,260190,0,113.3,128,9460,21572,280984,240,304,319,320
+161-320,true,false,sin_golden,n/a,0,0,11158,2123770,343712,1749004,1,31031,0,92.8,127.1,1315,2198,17187,174,242,305,320
+161-320,false,false,7.Prospects,Only WA,1,0,8427,1668886,1244653,192462,216894,14755,7054,104.3,131.6,658,2149,279127,191,237,307,320
+161-320,false,false,4.Kpay CC Freeze,Email-WA,0,0,8056,1668620,935991,523709,136252,71451,0,99.4,122.7,3216,7665,183052,195,272,314,320
+161-320,false,false,4.Kpay CC Freeze,Only Email,1,0,5859,1279630,689439,397991,113630,77045,0,105.1,125.2,3194,8935,148102,208,287,317,320
+161-320,false,false,4.Kpay CC Freeze,InApp-Email,1,0,4934,1101055,665073,201460,108388,123677,0,110.5,127.7,3680,13826,141642,216,289,317,320
+161-320,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,4263,923910,523404,236285,72668,89912,0,105.2,124.1,2963,10161,98838,208,282,316,320
+161-320,false,false,7.Prospects,No MKT Channel,1,0,3831,796698,545717,120164,107689,22944,4399,109.5,130.9,903,3643,134975,199,267,314,320
+161-320,false,false,7.Prospects,InApp-Push-WA,1,0,3155,772100,128842,566966,50166,25907,7606,123.5,137.9,916,2281,56608,246,308,319,320
+161-320,false,false,7.Prospects,Only InApp,1,0,2782,630748,359889,95375,90188,84559,5227,119.5,127.4,1986,11049,108182,221,290,317,320
+161-320,false,false,7.Prospects,InApp-Push,1,0,1992,498542,97609,334516,37648,28544,4372,123.5,137.8,917,2445,42528,254,309,319,320
+161-320,false,false,7.Prospects,InApp-WA,1,0,1984,423583,258703,75222,53050,36311,3035,113.3,127,926,4289,65985,205,276,317,320
+161-320,false,false,4.Kpay CC Freeze,InApp-Push-WA,1,0,1593,366451,92585,236847,18563,18183,3944,109.8,128.6,722,1647,23192,225,296,318,320
+161-320,false,false,4.Kpay CC Freeze,InApp-Push,1,0,1130,269309,70286,165586,15955,17243,2863,112.1,130.7,608,1522,19469,237,306,319,320
+161-320,false,false,4.Kpay CC Freeze,Only WA,1,0,874,176871,107430,46212,16844,6286,1389,99.4,125,276,732,22216,192,260,315,320
+161-320,true,false,7.Prospects,InApp-Push-Email-WA,0,0,830,189223,45934,131155,0,12083,0,111.4,113.2,431,955,2297,221,298,318,320
+161-320,false,false,4.Kpay CC Freeze,No MKT Channel,1,0,576,125336,66371,39016,12074,7719,1206,104.8,126.2,293,940,15393,207,284,314,318
+161-320,false,false,4.Kpay CC Freeze,Only InApp,1,0,438,98077,50195,26675,9758,11258,968,108.8,127.4,315,1256,12268,217,294,315,320
+161-320,true,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,430,93553,31664,55051,14,6758,0,89.8,105.7,312,667,1597,208,287,317,320
+161-320,false,false,4.Kpay CC Freeze,InApp-WA,1,0,335,72482,36043,24083,5758,6484,699,105.6,124.8,194,613,7560,206,284,316,317
+161-320,false,false,3.Blacklist,InApp-Push-Email-WA,0,1,177,41117,15527,20453,1837,3256,0,94.3,111.1,127,391,2613,225,300,317,319
+161-320,true,false,7.Prospects,InApp-Email-WA,0,0,166,32322,22821,3276,0,6124,0,92.8,103.9,153,814,1141,187,233,281,316
+161-320,false,false,3.Blacklist,InApp-Push-Email,1,1,159,36827,14488,17206,2015,3091,0,95.6,112,124,375,2739,230,293,318,318
+161-320,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,0,147,32946,12887,16978,1606,1412,0,89,115,79,303,2250,213,291,316,317
+161-320,true,false,7.Prospects,Email-WA,0,0,103,21351,9177,10688,0,1473,0,105.5,109.3,59,177,459,199,271,313,313
+161-320,false,false,6.Reus or Arco,InApp-Push-Email,1,0,97,22765,8592,11362,1348,1423,0,92.7,116.9,63,239,1778,236,303,319,319
+161-320,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,1,87,18150,9461,6872,636,1114,0,55,109.1,64,205,1109,196,273,320,320
+161-320,true,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,74,14337,10551,1516,0,2200,0,90.7,110.7,68,242,528,188,244,290,290
+161-320,true,false,4.Kpay CC Freeze,Email-WA,0,0,74,15688,8011,6132,0,1530,0,85.5,107.7,52,155,401,201,286,315,315
+161-320,false,false,6.Reus or Arco,InApp-Push-Email,1,1,64,14088,5735,6396,820,1106,0,78.5,110.4,47,133,1107,211,295,319,319
+161-320,false,false,3.Blacklist,Email-WA,0,1,63,13370,6823,4539,769,1227,0,81.4,101.9,47,137,1110,202,291,318,318
+161-320,false,false,3.Blacklist,Only Email,1,1,63,14631,7355,4723,1176,1362,0,98.6,116.6,48,180,1544,232,291,313,313
+161-320,false,false,6.Reus or Arco,Email-WA,0,0,47,9297,6528,1512,1023,225,0,95.6,121.2,14,85,1349,184,238,316,316
+161-320,false,false,3.Blacklist,InApp-Email,1,1,46,10310,5968,2111,879,1307,0,101,116.6,38,205,1177,211,286,317,317
+161-320,false,false,6.Reus or Arco,InApp-Push,1,0,45,10129,4012,5057,516,522,64,78.8,116,24,100,717,210,304,317,317
+161-320,false,false,6.Reus or Arco,InApp-Email,1,0,45,9938,6067,1695,1077,1086,0,106.3,119.4,34,226,1380,213,300,314,314
+161-320,false,false,3.Blacklist,InApp-Email-WA,0,1,36,8036,4578,1907,671,873,0,98.9,119.8,31,107,900,217,298,318,318
+161-320,false,false,6.Reus or Arco,InApp-Email-WA,0,0,31,6751,4262,1143,650,684,0,87.5,119.7,22,149,863,215,267,309,309
+161-320,false,false,6.Reus or Arco,InApp-Push-WA,1,0,28,6135,1659,3946,380,147,57,97.6,114.5,9,15,463,211,283,318,318
+161-320,false,false,6.Reus or Arco,Only Email,1,0,27,5984,3489,1575,627,290,0,107.6,121,14,60,801,213,292,318,318
+161-320,false,false,3.Blacklist,InApp-Push,1,1,24,5579,1814,2886,343,531,44,89,109.9,17,52,434,222,306,319,319
+161-320,false,false,6.Reus or Arco,InApp-Push,1,1,18,3921,1625,1720,199,374,5,80.3,109.4,10,19,280,218,275,283,283
+161-320,false,false,6.Reus or Arco,Only InApp,1,0,16,3458,2197,612,315,327,29,84.9,115.5,14,72,425,201,303,318,318
+161-320,false,false,6.Reus or Arco,InApp-Email,1,1,16,3623,1926,678,475,531,0,103.1,123.3,11,35,571,225,303,309,309
+161-320,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,1,13,2736,1251,1194,84,201,0,65.1,99.2,7,15,147,207,264,302,302
+161-320,false,false,6.Reus or Arco,Only Email,1,1,13,2774,1844,306,314,306,0,104,116.5,10,42,406,203,261,303,303
+161-320,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,1,12,2769,1269,1191,151,150,0,72.9,114.8,10,24,214,230,287,310,310
+161-320,false,false,6.Reus or Arco,Only InApp,1,1,12,2778,1659,530,270,302,21,98.9,120.6,9,47,353,231,275,290,290
+161-320,false,false,6.Reus or Arco,InApp-Email-WA,0,1,12,2416,1400,504,170,329,0,67.8,110.9,8,23,240,189,246,247,247
+161-320,false,false,3.Blacklist,No MKT Channel,1,1,11,2522,1136,907,269,210,25,108.5,117.5,8,26,326,223,311,313,313
+161-320,false,false,6.Reus or Arco,Only WA,1,0,10,1991,1185,541,227,38,17,105.8,125.4,1,4,286,173,279,288,288
+161-320,false,false,3.Blacklist,InApp-Push-WA,1,1,10,2403,995,1150,74,179,31,92.1,121.1,9,33,124,242,298,312,312
+161-320,false,false,4.Kpay CC Freeze,InApp-Push,1,1,9,2026,771,940,124,184,2,72.6,110.8,5,14,163,234,276,276,276
+161-320,false,false,3.Blacklist,InApp-WA,1,1,7,1515,920,312,109,172,36,89,131.1,6,11,155,188,289,289,289
+161-320,false,false,6.Reus or Arco,InApp-WA,1,0,7,1450,740,534,66,106,23,79.7,108.9,4,24,103,196,268,268,268
+161-320,false,false,3.Blacklist,Only InApp,1,1,6,1392,725,127,202,333,10,111.5,108,5,67,238,223,290,290,290
+161-320,false,false,6.Reus or Arco,InApp-Push-WA,1,1,6,1305,745,459,29,69,1,50.8,123.2,4,12,66,189,271,271,271
+161-320,false,false,6.Reus or Arco,No MKT Channel,1,1,4,767,287,336,92,51,2,105.3,107,3,12,106,179,216,216,216
+161-320,false,false,6.Reus or Arco,Email-WA,0,1,4,787,467,232,50,38,0,71.3,108.3,3,8,73,188,228,228,228
+161-320,true,false,3.Blacklist,InApp-Push-Email-WA,0,1,4,955,422,481,0,51,0,93,109.5,3,17,21,201,314,314,314
+161-320,false,false,3.Blacklist,Only WA,1,1,4,865,427,310,62,66,5,81,126.8,4,10,83,191,246,246,246
+161-320,false,false,4.Kpay CC Freeze,Email-WA,0,1,4,734,475,180,23,56,0,39,111.5,2,7,47,164,237,237,237
+161-320,false,false,6.Reus or Arco,No MKT Channel,1,0,4,932,611,111,140,70,1,110.5,138.8,1,6,171,205,298,298,298
+161-320,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,1,3,716,391,235,34,54,0,70,121.3,3,9,54,234,292,292,292
+161-320,false,false,7.Prospects,Email-WA,1,0,3,589,381,123,85,0,0,119.7,128.7,0,0,104,190,218,218,218
+161-320,false,false,4.Kpay CC Freeze,InApp-Email,1,1,3,772,530,64,92,85,0,97,118.3,2,16,119,292,295,295,295
+161-320,false,false,4.Kpay CC Freeze,Only Email,1,1,3,681,491,85,39,66,0,75.7,110.3,3,6,64,247,273,273,273
+161-320,false,false,4.Kpay CC Freeze,No MKT Channel,1,1,2,452,237,142,40,33,0,79.5,119.5,2,7,52,177,275,275,275
+161-320,false,false,4.Kpay CC Freeze,Only WA,1,1,2,480,309,137,8,23,1,58.5,137,2,6,23,221,259,259,259
+161-320,false,false,6.Reus or Arco,InApp-WA,1,1,1,180,100,68,2,10,0,42,83,1,1,7,180,180,180,180
+161-320,false,false,6.Reus or Arco,Only WA,1,1,1,213,91,75,19,28,3,71,115,0,0,24,213,213,213,213
+161-320,true,false,3.Blacklist,InApp-Email-WA,0,1,1,183,166,0,0,17,0,53,86,1,2,8,183,183,183,183
+161-320,true,false,3.Blacklist,Email-WA,0,1,1,163,93,57,0,13,0,59,68,1,2,5,163,163,163,163
+161-320,false,false,4.Kpay CC Freeze,Email-WA,1,0,1,171,149,19,1,1,0,27,109,0,0,8,171,171,171,171
+21-40,false,false,sin_golden,n/a,0,0,1220034,36774435,24684290,6006954,5007132,1074470,194966,15,25.7,59630,82443,6241347,29,38,40,40
+21-40,true,false,sin_golden,n/a,0,0,305016,8524097,7896438,524203,13,103177,0,13.3,26,7834,12575,394835,27,35,40,40
+21-40,true,false,4.Kpay CC Freeze,Email-WA,0,0,86171,2316783,2311904,1947,2,2926,0,5.5,26.8,255,284,115597,26,29,33,40
+21-40,false,false,4.Kpay CC Freeze,Email-WA,0,0,43858,1267379,1005224,112171,139160,10698,0,9.3,27.4,650,736,189421,28,34,40,40
+21-40,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,19218,596292,130612,411240,41121,13258,0,17.7,26.8,233,270,47652,31,38,40,40
+21-40,false,false,7.Prospects,Email-WA,0,0,9486,278213,186155,23522,60872,7637,0,14.3,25.2,1049,1272,70180,28,37,40,40
+21-40,false,false,7.Prospects,Only WA,1,0,8241,228160,42228,3592,179997,2336,9315,22.9,24.7,191,211,182108,26,36,40,40
+21-40,true,false,7.Prospects,Email-WA,0,0,6708,185422,183426,395,0,1598,0,7.8,26.6,202,224,9171,26,31,39,40
+21-40,false,false,7.Prospects,InApp-Push-Email-WA,0,0,6532,202595,65407,106455,12273,18436,0,16.9,20,1561,1947,15543,31,39,40,40
+21-40,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,5284,156964,102144,25589,20120,9026,0,15.5,25.5,338,429,25227,29,38,40,40
+21-40,false,false,4.Kpay CC Freeze,Only WA,1,0,4832,132673,100694,7974,22764,1227,4681,11,25.7,71,87,27799,26,34,40,40
+21-40,false,false,7.Prospects,InApp-Email-WA,0,0,3235,97437,63960,6421,13157,13875,0,16.6,20.5,1081,1451,16355,30,38,40,40
+21-40,false,false,4.Kpay CC Freeze,Only Email,1,0,3202,95480,58075,15034,20225,2118,0,15.7,26.1,59,73,23129,29,38,40,40
+21-40,false,false,7.Prospects,No MKT Channel,1,0,2955,83497,8672,746,72825,1250,2553,24.4,25.1,63,68,73259,27,37,40,40
+21-40,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,0,1840,58717,11525,39333,6135,1716,0,18.8,27.1,20,25,6711,32,39,40,40
+21-40,false,false,7.Prospects,Only Email,1,0,1370,40246,19586,1923,17605,1125,0,18.4,25.1,96,122,18584,29,38,40,40
+21-40,false,false,7.Prospects,InApp-WA,1,0,1221,36060,8991,1593,22675,2795,1647,23.4,24.7,107,133,23125,29,38,40,40
+21-40,true,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,1177,33896,31136,826,0,1930,0,10.1,26.1,100,108,1557,28,35,40,40
+21-40,false,false,4.Kpay CC Freeze,InApp-Email,1,0,1011,30836,18936,3744,5808,2315,0,18.3,25.8,48,64,6755,31,38,40,40
+21-40,true,false,3.Blacklist,Email-WA,0,1,997,21522,21488,1,0,33,0,2.4,20.6,3,4,1074,21,23,32,40
+21-40,false,false,4.Kpay CC Freeze,InApp-Push-WA,1,0,980,30161,5036,22300,2177,646,981,18.9,27.1,6,7,2429,31,38,40,40
+21-40,true,false,7.Prospects,InApp-Email-WA,0,0,585,18932,15971,373,0,2588,0,18.9,23.8,123,154,799,33,39,40,40
+21-40,false,false,7.Prospects,Only InApp,1,0,584,17766,3111,809,12471,1375,569,25.2,25.5,41,48,12627,31,38,40,40
+21-40,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,0,552,16395,4005,9277,2450,658,0,11.8,20.8,59,64,2650,29,37,40,40
+21-40,false,false,4.Kpay CC Freeze,No MKT Channel,1,0,536,15378,5863,1442,7576,490,898,19.9,24.4,18,19,7869,28,37,40,40
+21-40,false,false,4.Kpay CC Freeze,InApp-WA,1,0,492,14564,7846,2556,3002,1142,688,17.6,24.9,42,52,3394,29,38,40,40
+21-40,false,false,7.Prospects,InApp-Email,1,0,491,15406,8976,831,3731,1865,0,18.6,23.1,106,129,4180,32,39,40,40
+21-40,false,false,7.Prospects,InApp-Push-Email,1,0,471,14915,4147,8012,1811,941,0,17.5,23.4,71,88,2018,32,39,40,40
+21-40,true,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,341,10444,3668,6503,0,272,0,15.9,27.8,4,4,183,31,37,40,40
+21-40,false,false,3.Blacklist,Email-WA,0,1,320,8169,6483,1009,495,179,0,7.6,21.9,11,14,819,23,33,40,40
+21-40,false,false,7.Prospects,InApp-Push-WA,1,0,302,9311,2212,5428,1170,500,287,18.6,24.4,29,35,1281,31,38,40,40
+21-40,false,false,3.Blacklist,InApp-Push-Email-WA,0,1,298,8392,3836,3867,438,237,0,12.4,22.7,6,8,630,26,37,40,40
+21-40,false,false,6.Reus or Arco,Email-WA,0,0,250,7447,5237,561,1485,159,0,13.6,23.6,24,29,1747,29,38,40,40
+21-40,false,false,6.Reus or Arco,InApp-Push,1,0,183,5477,1232,3109,926,205,26,11.3,22,10,12,988,30,37,40,40
+21-40,false,false,6.Reus or Arco,InApp-Email-WA,0,0,152,4604,3111,523,572,394,0,12.8,22.8,27,39,728,30,38,40,40
+21-40,false,false,4.Kpay CC Freeze,InApp-Push,1,0,146,4576,991,2960,506,114,123,18.5,25.9,3,3,556,32,39,40,40
+21-40,false,false,6.Reus or Arco,Only WA,1,0,144,4275,2729,155,1345,46,158,15.1,25.5,3,3,1481,29,39,40,40
+21-40,false,false,4.Kpay CC Freeze,Only InApp,1,0,142,4246,2067,448,1337,391,227,19.4,24.4,16,18,1440,29,38,40,40
+21-40,true,false,7.Prospects,InApp-Push-Email-WA,0,0,102,3151,1401,1417,0,333,0,16.2,20.4,18,29,70,31,37,40,40
+21-40,false,false,6.Reus or Arco,InApp-Push-WA,1,0,85,2513,475,1491,468,79,49,12,22,6,6,492,29,37,40,40
+21-40,false,false,6.Reus or Arco,Only InApp,1,0,71,2152,1378,240,388,144,28,12.8,22.9,8,11,457,30,38,40,40
+21-40,false,false,6.Reus or Arco,InApp-Push-Email,1,0,68,2120,437,1171,381,130,0,12.5,22.5,4,4,403,31,38,40,40
+21-40,false,false,3.Blacklist,InApp-Email-WA,0,1,61,1726,1152,368,123,79,0,14.5,22.3,4,4,181,27,37,40,40
+21-40,false,false,6.Reus or Arco,Only Email,1,0,50,1431,921,107,373,30,0,14.7,22.9,4,5,419,27,36,39,39
+21-40,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,1,49,1570,724,663,142,41,0,10.5,21.3,1,1,178,33,38,40,40
+21-40,false,false,7.Prospects,InApp-Push,1,0,48,1568,311,905,239,112,40,18.3,25,5,5,255,33,40,40,40
+21-40,false,false,6.Reus or Arco,Email-WA,0,1,47,1375,982,43,328,21,0,12.3,24.6,1,1,377,29,37,39,39
+21-40,false,false,6.Reus or Arco,InApp-WA,1,0,45,1296,716,166,360,53,38,16.8,23.1,6,7,396,28,37,39,39
+21-40,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,1,43,1306,803,393,75,22,0,9.9,21.2,2,3,115,29,39,40,40
+21-40,false,false,6.Reus or Arco,Email-WA,1,0,39,1095,701,133,241,19,0,11.3,23.1,1,1,276,27,37,40,40
+21-40,false,false,6.Reus or Arco,No MKT Channel,1,0,36,1056,531,68,434,23,45,17.9,23.8,3,3,461,28,39,40,40
+21-40,false,false,3.Blacklist,Only Email,1,1,35,1019,594,184,189,49,0,15.7,23.9,1,2,219,29,37,40,40
+21-40,false,false,6.Reus or Arco,Only Email,1,1,34,1019,682,95,200,40,0,13.2,22.8,7,8,234,29,37,40,40
+21-40,false,false,3.Blacklist,InApp-Push-Email,1,1,31,1005,382,492,84,47,0,16.5,23.7,1,1,103,34,39,40,40
+21-40,false,false,3.Blacklist,Only WA,1,1,31,733,574,94,41,24,16,6.4,21,0,0,70,22,27,39,39
+21-40,desconocido,false,sin_golden,n/a,0,0,28,798,0,732,0,66,0,9.4,24.8,0,0,0,28,35,37,37
+21-40,false,false,6.Reus or Arco,InApp-Push,1,1,27,825,404,295,72,53,2,10.1,19.8,2,2,92,30,37,40,40
+21-40,false,false,6.Reus or Arco,InApp-Email,1,0,25,818,554,39,156,69,0,15.8,25.7,4,5,184,34,39,40,40
+21-40,false,false,6.Reus or Arco,Only InApp,1,1,18,512,321,48,86,57,6,14.4,20.1,2,2,102,27,40,40,40
+21-40,false,false,6.Reus or Arco,InApp-Email-WA,0,1,18,518,400,22,78,18,0,10.1,24.3,1,1,98,28,38,39,39
+21-40,false,false,6.Reus or Arco,No MKT Channel,1,1,17,507,352,19,90,44,9,14,22.8,3,6,108,32,37,40,40
+21-40,false,false,4.Kpay CC Freeze,Email-WA,1,0,16,408,370,14,22,2,0,7.7,22.6,0,0,41,24,33,37,37
+21-40,false,false,6.Reus or Arco,InApp-Push-WA,1,1,16,501,122,287,80,10,8,13,22.7,1,2,86,31,37,38,38
+21-40,true,false,3.Blacklist,InApp-Email-WA,0,1,14,345,330,6,0,9,0,5.6,22.1,1,2,17,21,36,40,40
+21-40,false,false,4.Kpay CC Freeze,Email-WA,0,1,14,419,306,29,80,4,0,11,26.5,0,0,95,29,38,38,38
+21-40,false,false,3.Blacklist,InApp-Email,1,1,12,368,202,97,45,20,0,16.8,23.4,1,1,55,30,36,40,40
+21-40,true,false,6.Reus or Arco,Email-WA,0,0,11,279,254,9,0,16,0,13.5,17.3,3,3,13,24,30,35,35
+21-40,false,false,3.Blacklist,InApp-Push-WA,1,1,10,301,159,115,19,8,14,12.4,24.7,0,0,27,27,40,40,40
+21-40,false,false,6.Reus or Arco,InApp-Push-Email,1,1,10,325,102,160,49,14,0,12.2,21.4,0,0,54,33,40,40,40
+21-40,false,false,7.Prospects,Email-WA,1,0,8,237,176,20,39,2,0,13.8,25.5,0,0,48,28,39,39,39
+21-40,true,false,3.Blacklist,InApp-Push-Email-WA,0,1,8,198,157,38,0,3,0,3.9,21.5,0,0,8,26,27,27,27
+21-40,false,false,4.Kpay CC Freeze,InApp-Push,1,1,7,203,94,89,7,13,1,10.7,18.6,0,0,12,29,34,34,34
+21-40,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,1,6,170,139,7,19,5,0,11.7,23.3,0,0,26,25,36,36,36
+21-40,false,false,6.Reus or Arco,Only WA,1,1,5,182,130,18,34,0,0,11,30.6,0,0,41,37,39,39,39
+21-40,false,false,6.Reus or Arco,InApp-Email,1,1,5,136,93,9,30,4,0,11.8,23.4,0,0,35,25,40,40,40
+21-40,false,false,4.Kpay CC Freeze,Only Email,1,1,5,140,113,1,21,5,0,9.8,25.2,0,0,27,28,32,32,32
+21-40,false,false,4.Kpay CC Freeze,No MKT Channel,1,1,5,133,113,12,2,5,6,11.2,21,1,1,8,23,34,34,34
+21-40,true,false,6.Reus or Arco,InApp-Email-WA,0,0,5,152,136,3,0,13,0,13.2,19.2,2,2,7,30,39,39,39
+21-40,false,false,3.Blacklist,No MKT Channel,1,1,4,119,40,27,39,13,0,21.8,23.3,0,0,41,25,37,37,37
+21-40,false,false,4.Kpay CC Freeze,Only InApp,1,1,4,120,80,23,8,9,0,13,23,0,0,12,28,37,37,37
+21-40,false,false,6.Reus or Arco,InApp-WA,1,1,4,133,79,30,20,4,8,12,26,0,0,24,31,39,39,39
+21-40,false,false,3.Blacklist,InApp-Push,1,1,3,106,13,80,9,4,1,23,28.7,0,0,10,38,40,40,40
+21-40,false,false,4.Kpay CC Freeze,InApp-Push-WA,1,1,3,97,56,37,3,1,1,7.7,22.7,0,0,6,31,38,38,38
+21-40,false,false,3.Blacklist,InApp-WA,1,1,3,65,61,2,1,1,1,7,19.3,0,0,4,21,23,23,23
+21-40,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,1,2,74,53,15,3,3,0,15.5,24.5,0,0,6,35,39,39,39
+21-40,false,false,3.Blacklist,Only InApp,1,1,2,58,45,3,4,6,0,13,24,0,0,6,22,36,36,36
+21-40,false,false,3.Blacklist,Email-WA,1,1,2,48,39,7,2,0,0,4.5,20.5,0,0,4,22,26,26,26
+21-40,false,false,4.Kpay CC Freeze,Only WA,1,1,1,25,18,0,3,4,1,14,16,1,1,4,25,25,25,25
+21-40,true,false,6.Reus or Arco,Email-WA,0,1,1,21,21,0,0,0,0,9,18,0,0,1,21,21,21,21
+21-40,true,false,6.Reus or Arco,InApp-Push-Email-WA,0,1,1,31,13,18,0,0,0,8,18,0,0,1,31,31,31,31
+21-40,false,false,4.Kpay CC Freeze,InApp-Email,1,1,1,21,4,1,14,2,0,17,17,0,0,14,21,21,21,21
+21-40,true,false,4.Kpay CC Freeze,Only WA,1,0,1,26,26,0,0,0,0,5,27,0,0,1,26,26,26,26
+21-40,true,false,4.Kpay CC Freeze,InApp-Email-WA,0,1,1,26,25,0,0,1,0,4,27,0,0,1,26,26,26,26
+21-40,true,false,4.Kpay CC Freeze,Email-WA,0,1,1,26,26,0,0,0,0,5,25,0,0,1,26,26,26,26
+321+,false,false,7.Prospects,InApp-Push-Email,1,0,126379,67761831,18704445,39872408,4219119,4909637,0,241.4,220.3,94840,635231,5154341,531,683,844,1631
+321+,false,false,7.Prospects,InApp-Push-Email-WA,0,0,79767,38711129,10391943,24098732,2106663,2092655,0,224.9,210.8,44630,239387,2626260,476,618,763,1447
+321+,false,false,sin_golden,n/a,0,0,38207,14244706,2687613,10605145,666733,284555,4649,173,201.4,5515,32639,801114,361,437,539,1356
+321+,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,0,19515,8927484,2750167,5019549,482879,662168,0,202.8,196.9,15469,73940,620387,440,600,740,1235
+321+,false,false,7.Prospects,InApp-Email,1,0,12980,6145950,2368067,2602893,527224,639133,0,212.7,200.1,11105,110106,645627,448,646,824,1584
+321+,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,12598,5326532,1628918,3096306,248664,346438,0,190.4,189.2,8964,36153,330110,403,542,669,1494
+321+,false,false,7.Prospects,InApp-Push,1,0,9593,4754216,1024883,3094116,311799,320628,21115,228.2,217.8,6380,38565,363043,483,640,792,1277
+321+,false,false,7.Prospects,Only Email,1,0,7799,3571269,1199830,1914276,256096,198893,0,215,202.4,4689,27792,316088,440,602,778,1309
+321+,false,false,7.Prospects,InApp-Push-WA,1,0,6974,3154477,652174,2185426,185567,130318,15751,216,210.4,2911,14079,218176,440,572,711,1051
+321+,false,false,7.Prospects,Email-WA,0,0,6608,2801428,901673,1631565,180573,86820,0,205.6,197,2247,10426,225657,410,531,664,882
+321+,false,false,7.Prospects,InApp-Email-WA,0,0,5958,2715266,961226,1327782,191093,232437,0,208.9,198.4,4307,36406,239154,434,605,757,1360
+321+,false,false,4.Kpay CC Freeze,Only Email,1,0,1916,814105,286225,415504,50070,61013,0,189.6,186.6,1491,7468,64381,403,548,696,1126
+321+,false,false,4.Kpay CC Freeze,InApp-Email,1,0,1645,723183,272026,333785,48342,67577,0,194.1,190.2,1428,9744,61943,413,581,753,1112
+321+,false,false,7.Prospects,Only InApp,1,0,1315,601774,189724,301105,51009,59275,2684,207.3,198.8,1067,10230,60495,435,613,806,983
+321+,false,false,4.Kpay CC Freeze,Email-WA,0,0,1235,491993,171428,263122,26058,30831,0,179.7,181.6,826,3480,34629,380,496,628,797
+321+,false,false,4.Kpay CC Freeze,InApp-Push,1,0,1192,533830,144094,319566,30416,39088,3176,197.1,198.4,927,4666,37621,429,577,714,944
+321+,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,882,370428,132008,187460,20331,30095,0,187.1,188,694,3769,26931,398,542,651,914
+321+,false,false,7.Prospects,No MKT Channel,1,0,859,369370,103458,218617,27651,19473,1907,205.6,196.5,467,2657,32824,408,559,734,855
+321+,false,false,7.Prospects,Only WA,1,0,768,316864,87674,199469,20958,8685,1575,202.1,195.2,227,955,25342,396,511,692,766
+321+,false,false,4.Kpay CC Freeze,InApp-Push-WA,1,0,729,305417,80530,191182,15864,17601,1821,190.3,193.6,453,1968,19891,402,537,683,760
+321+,false,false,7.Prospects,InApp-WA,1,0,693,299862,83055,174034,20781,21755,1256,203.1,197.5,430,3029,24934,405,560,690,869
+321+,false,false,3.Blacklist,InApp-Push-Email,1,1,216,109038,36676,54338,7125,10795,0,199.6,191.4,196,1551,8959,498,656,970,990
+321+,true,false,7.Prospects,InApp-Push-Email-WA,0,0,206,78969,22145,49612,0,7153,0,172.3,162.4,159,761,1107,362,466,549,843
+321+,false,false,4.Kpay CC Freeze,No MKT Channel,1,0,199,83264,27826,43380,5114,6815,604,182.1,186.6,164,808,6505,400,537,750,754
+321+,false,false,4.Kpay CC Freeze,Only InApp,1,0,169,72235,23853,36811,4955,6464,620,187.2,190,141,988,6148,396,562,720,890
+321+,false,false,6.Reus or Arco,InApp-Push-Email,1,0,132,60387,18225,34190,3715,4207,0,204.1,188.8,91,714,4626,424,611,797,821
+321+,true,false,sin_golden,n/a,0,0,122,42328,7621,33952,0,754,0,178.2,181.1,1,4,381,340,377,501,593
+321+,false,false,4.Kpay CC Freeze,Only WA,1,0,117,45798,14801,24942,2790,3217,305,172.3,177.5,79,380,3530,375,463,615,645
+321+,false,false,3.Blacklist,InApp-Push-Email-WA,0,1,102,47202,15875,25046,2363,3858,0,192.8,186.7,93,596,3157,431,618,723,768
+321+,false,false,4.Kpay CC Freeze,InApp-WA,1,0,84,34470,11479,18249,1792,2891,253,182.3,186.1,64,411,2366,400,519,601,601
+321+,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,0,64,27697,7964,17006,1450,1264,0,200.7,188.8,33,170,1848,424,543,644,644
+321+,false,false,6.Reus or Arco,InApp-Push-Email,1,1,57,27637,8426,14805,1745,2624,0,193.6,191.9,46,348,2166,452,702,910,910
+321+,true,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,44,16105,5457,9052,0,1573,0,146.9,151.9,40,187,273,347,434,551,551
+321+,false,false,3.Blacklist,Only Email,1,1,35,14848,6253,6270,965,1346,0,164.1,168.2,33,233,1278,414,538,626,626
+321+,false,false,3.Blacklist,InApp-Email,1,1,33,15165,6088,6176,1181,1677,0,183.7,181.7,32,365,1485,434,600,841,841
+321+,false,false,6.Reus or Arco,InApp-Push,1,0,28,11743,2959,7257,690,828,57,188.1,186.4,21,105,838,419,482,626,626
+321+,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,1,20,9914,3156,5243,590,917,0,204.4,200,16,126,748,414,680,752,752
+321+,false,false,6.Reus or Arco,InApp-Push-WA,1,0,19,7817,1855,5318,447,197,50,197.3,192.1,6,28,540,400,535,614,614
+321+,false,false,6.Reus or Arco,InApp-Push,1,1,17,8077,2489,4421,465,690,32,205.2,187.4,14,105,589,422,653,921,921
+321+,false,false,3.Blacklist,InApp-Email-WA,0,1,13,6126,2323,2660,444,686,0,194.5,185.6,11,125,560,493,541,633,633
+321+,false,false,3.Blacklist,InApp-Push,1,1,11,5703,1816,2932,350,599,21,211.5,193.6,11,64,441,430,754,780,780
+321+,false,false,3.Blacklist,InApp-Push-WA,1,1,10,4758,1552,2659,199,348,15,186.7,192.6,7,51,277,505,596,631,631
+321+,false,false,6.Reus or Arco,Only Email,1,0,9,4366,1363,2457,255,289,0,217.6,200.6,6,59,323,491,636,636,636
+321+,true,false,7.Prospects,Email-WA,0,0,7,2326,694,1466,0,165,0,156.6,145.1,6,14,35,324,360,360,360
+321+,false,false,6.Reus or Arco,Only Email,1,1,7,3208,1078,1730,204,193,0,207.1,193.7,4,15,258,458,550,550,550
+321+,false,false,6.Reus or Arco,InApp-Email,1,1,6,2710,1191,898,183,434,0,174.5,192.5,4,37,243,388,628,628,628
+321+,true,false,7.Prospects,InApp-Email-WA,0,0,6,2207,895,1024,0,280,0,147.2,157.7,5,40,45,346,431,431,431
+321+,false,false,3.Blacklist,Email-WA,0,1,6,2414,935,1000,136,336,0,143.5,143.7,5,66,183,368,481,481,481
+321+,false,false,4.Kpay CC Freeze,InApp-Push,1,1,6,2648,764,1474,157,249,1,152.3,177.3,5,20,195,389,570,570,570
+321+,false,false,6.Reus or Arco,InApp-Email,1,0,6,2918,1164,1261,176,310,0,192.5,182.5,6,83,234,386,722,722,722
+321+,true,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,5,1844,1035,390,0,418,0,111.8,131.2,5,51,52,370,423,423,423
+321+,false,false,6.Reus or Arco,InApp-Email-WA,0,0,4,1629,675,695,109,149,0,166.5,168.8,3,19,143,393,496,496,496
+321+,false,false,6.Reus or Arco,Email-WA,0,0,4,1742,650,925,99,66,0,197.3,190.3,2,9,132,380,523,523,523
+321+,false,false,6.Reus or Arco,No MKT Channel,1,0,4,1427,421,851,115,38,7,169.8,175.5,2,18,136,347,385,385,385
+321+,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,1,4,1401,530,672,82,113,0,135.8,154.3,4,12,109,356,360,360,360
+321+,false,false,3.Blacklist,Only InApp,1,1,4,1872,784,715,133,238,2,168,190.8,4,36,172,422,556,556,556
+321+,false,false,6.Reus or Arco,No MKT Channel,1,1,3,1416,461,738,99,117,2,219.7,183.7,3,27,122,465,556,556,556
+321+,true,false,4.Kpay CC Freeze,Email-WA,0,0,3,1190,557,517,0,112,0,159,169,3,11,28,358,476,476,476
+321+,false,false,3.Blacklist,No MKT Channel,1,1,2,904,432,311,76,84,0,189.5,180.5,2,13,98,352,552,552,552
+321+,false,false,6.Reus or Arco,Only InApp,1,0,2,895,385,401,59,50,1,178.5,193,2,31,78,379,516,516,516
+321+,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,1,2,763,317,380,5,60,0,130,170,2,13,21,352,411,411,411
+321+,false,false,6.Reus or Arco,Email-WA,0,1,2,714,296,356,26,36,0,129,166,2,8,41,353,361,361,361
+321+,false,false,6.Reus or Arco,InApp-WA,1,0,2,955,293,536,59,67,1,224,207,1,2,74,373,582,582,582
+321+,false,false,4.Kpay CC Freeze,Only InApp,1,1,2,1009,419,365,117,106,0,208,209.5,2,16,138,490,519,519,519
+321+,false,false,3.Blacklist,InApp-WA,1,1,1,356,244,0,38,74,9,130,185,1,11,50,356,356,356,356
+321+,false,false,4.Kpay CC Freeze,No MKT Channel,1,1,1,442,151,210,32,43,1,193,198,1,9,40,442,442,442,442
+321+,false,false,7.Prospects,Email-WA,1,0,1,420,131,209,37,43,0,233,185,1,1,44,420,420,420,420
+321+,false,false,3.Blacklist,Only WA,1,1,1,330,183,100,28,19,0,125,172,1,14,37,330,330,330,330
+321+,false,false,6.Reus or Arco,InApp-Email-WA,0,1,1,349,160,122,23,44,0,111,133,1,9,31,349,349,349,349
+321+,false,false,6.Reus or Arco,Only WA,1,0,1,366,109,241,16,0,0,172,168,0,0,21,366,366,366,366
+41-80,false,false,sin_golden,n/a,0,0,1866403,104821274,75936269,13392795,13455067,2029675,162442,24.9,47.3,159361,252859,17251880,53,73,80,80
+41-80,true,false,sin_golden,n/a,0,0,99570,5345687,4154057,1085995,5,105207,0,19.8,45.9,10631,17219,207708,52,69,79,80
+41-80,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,20649,1175409,312047,767192,57907,37856,0,33,45,1465,2010,73509,56,74,80,80
+41-80,false,false,4.Kpay CC Freeze,Email-WA,0,0,18814,1091725,722288,168803,176097,24193,0,32.2,45.4,2240,2970,212211,57,75,80,80
+41-80,false,false,7.Prospects,Email-WA,0,0,16454,1008530,781681,53692,153414,19623,0,31,50.2,1958,2869,192498,62,77,80,80
+41-80,false,false,7.Prospects,InApp-Push-Email-WA,0,0,10127,604763,208037,311337,32328,52865,0,28.3,34.8,3800,5610,42730,59,76,80,80
+41-80,false,false,7.Prospects,InApp-Email-WA,0,0,6369,391473,279326,20645,50517,40767,0,32.4,44.1,2326,4061,64483,62,77,80,80
+41-80,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,6119,363048,243641,49322,40062,29648,0,32.4,44.4,1694,2660,52244,59,76,80,80
+41-80,false,false,7.Prospects,Only WA,1,0,4989,296470,180650,15707,95161,4922,14862,37.7,47,351,507,104194,59,76,80,80
+41-80,false,false,4.Kpay CC Freeze,Only Email,1,0,4689,280556,181234,37663,53709,7802,0,35,46.3,544,744,62771,59,76,80,80
+41-80,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,0,3708,220268,50672,145230,16170,8115,0,36.4,46.7,190,263,18704,59,76,80,80
+41-80,false,false,7.Prospects,Only Email,1,0,3248,205134,148005,11936,38648,6482,0,34.4,50,525,796,46048,65,78,80,80
+41-80,false,false,4.Kpay CC Freeze,Only WA,1,0,2209,129168,86976,13136,26307,2711,4023,34.1,45.8,247,328,30656,57,75,80,80
+41-80,false,false,4.Kpay CC Freeze,InApp-Email,1,0,2025,123790,81716,12803,17427,11692,0,35.3,45.4,554,840,21513,61,77,80,80
+41-80,false,false,7.Prospects,InApp-Email,1,0,1850,117433,78680,5761,18969,13932,0,34.8,45,665,1138,22903,65,78,80,80
+41-80,true,false,7.Prospects,Email-WA,0,0,1803,101101,94832,1937,0,4319,0,33.9,43.3,540,669,4742,54,73,79,80
+41-80,false,false,7.Prospects,No MKT Channel,1,0,1797,107490,54658,6040,42270,4497,4819,39.8,45.9,239,340,45003,60,76,80,80
+41-80,true,false,7.Prospects,InApp-Email-WA,0,0,1540,89588,74560,2367,0,12656,0,35.6,40.8,564,834,3728,57,75,80,80
+41-80,true,false,4.Kpay CC Freeze,Email-WA,0,0,1443,79569,72360,3839,0,3351,0,22.9,42.9,432,546,3618,53,72,79,80
+41-80,false,false,7.Prospects,InApp-WA,1,0,1393,82985,43924,5462,24214,9339,3637,38.9,43.7,354,557,26410,60,75,80,80
+41-80,false,false,7.Prospects,InApp-Push-Email,1,0,1380,85474,27281,44871,7223,6057,0,31,39.4,399,571,8587,63,77,80,80
+41-80,false,false,4.Kpay CC Freeze,InApp-Push-WA,1,0,925,52171,11170,36356,2979,1642,1220,34.1,45.1,60,89,3538,54,74,80,80
+41-80,false,false,7.Prospects,Only InApp,1,0,851,50932,21013,3293,18825,7763,1858,40.6,43.1,251,389,19876,59,76,80,80
+41-80,false,false,4.Kpay CC Freeze,No MKT Channel,1,0,690,41075,24777,4941,9650,1676,1113,35.8,45.6,99,159,10889,58,76,80,80
+41-80,true,false,4.Kpay CC Freeze,InApp-Email-WA,0,0,644,36889,31123,1118,0,4619,0,27.4,41.8,252,374,1556,56,73,80,80
+41-80,false,false,4.Kpay CC Freeze,InApp-WA,1,0,642,38056,23342,5308,5706,3660,1295,32.8,45,165,255,6873,59,76,80,80
+41-80,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,0,579,34162,18010,12852,1846,1414,0,17.5,35.8,140,208,2747,58,75,80,80
+41-80,false,false,7.Prospects,InApp-Push-WA,1,0,475,28374,8184,15600,2652,1933,785,31.5,41.1,131,168,3061,59,77,80,80
+41-80,false,false,6.Reus or Arco,Email-WA,0,0,384,21916,17857,844,2993,216,0,19.1,46.8,31,67,3886,57,73,78,80
+41-80,true,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,0,360,20063,8403,10922,0,735,0,26.9,44.7,38,46,420,52,73,80,80
+41-80,false,false,4.Kpay CC Freeze,Only InApp,1,0,298,17747,10188,2002,3560,1968,565,34.6,44.3,68,98,4069,59,76,80,80
+41-80,false,false,4.Kpay CC Freeze,InApp-Push,1,0,294,17363,4325,10940,1351,721,318,33.4,44.9,28,41,1567,58,77,80,80
+41-80,false,false,3.Blacklist,InApp-Push-Email-WA,0,1,214,12544,4671,6749,503,609,0,28.6,40.4,39,59,737,57,76,80,80
+41-80,false,false,6.Reus or Arco,InApp-Push,1,0,195,11977,6396,4353,726,483,22,16,38,45,71,1046,62,76,80,80
+41-80,false,false,6.Reus or Arco,Only WA,1,0,182,10159,7969,297,1844,42,129,20.7,46.8,11,17,2242,54,67,80,80
+41-80,false,false,6.Reus or Arco,InApp-Email-WA,0,0,180,10781,8789,679,735,562,0,18.8,44.7,47,77,1174,61,75,80,80
+41-80,false,false,6.Reus or Arco,InApp-Push-Email-WA,0,1,154,9741,6144,2776,585,226,0,14.3,41.5,15,22,892,65,76,79,80
+41-80,true,false,7.Prospects,InApp-Push-Email-WA,0,0,151,9133,3760,4276,0,1094,0,25.3,32.4,65,102,188,59,77,80,80
+41-80,false,false,3.Blacklist,Email-WA,0,1,144,8324,5109,2154,591,459,0,27.3,38.9,41,53,846,56,78,80,80
+41-80,false,false,7.Prospects,InApp-Push,1,0,142,8916,2617,4423,1336,535,228,32.6,43.3,37,49,1467,63,78,80,80
+41-80,false,false,6.Reus or Arco,InApp-Push-Email,1,0,101,6058,2842,2369,473,363,0,18.6,37.1,25,37,615,58,77,80,80
+41-80,false,false,6.Reus or Arco,Email-WA,0,1,96,5360,4426,221,656,49,0,13.5,46.5,6,9,877,55,69,80,80
+41-80,false,false,6.Reus or Arco,Only InApp,1,0,85,4901,4028,212,418,238,45,16.7,44.6,15,32,619,56,74,80,80
+41-80,false,false,6.Reus or Arco,Only Email,1,0,83,4856,3682,276,793,102,0,22.5,45.8,16,19,977,58,77,80,80
+41-80,false,false,6.Reus or Arco,Email-WA,1,0,76,4232,3625,75,511,18,0,14.3,47.2,5,8,692,55,69,79,79
+41-80,false,false,6.Reus or Arco,InApp-Email-WA,0,1,68,4150,3581,187,215,158,0,14.4,48,26,39,394,60,77,80,80
+41-80,false,false,6.Reus or Arco,InApp-Push-WA,1,0,60,3512,1814,1344,231,114,42,16.1,37.2,14,22,322,57,73,80,80
+41-80,false,false,6.Reus or Arco,InApp-WA,1,0,50,2884,2323,114,327,117,38,20,44.4,13,35,443,56,72,79,79
+41-80,false,false,6.Reus or Arco,No MKT Channel,1,0,49,2865,2136,63,617,48,52,26.9,46.2,4,10,724,60,72,77,77
+41-80,false,false,3.Blacklist,Only Email,1,1,46,2716,1835,433,272,172,0,31.1,41.7,12,21,364,56,77,79,79
+41-80,false,false,3.Blacklist,InApp-Push-Email,1,1,45,2931,1059,1489,203,176,0,31,42.2,8,11,256,69,77,79,79
+41-80,false,false,6.Reus or Arco,InApp-Email,1,0,45,2540,1782,211,298,241,0,18.8,40.5,9,15,387,56,74,79,79
+41-80,false,false,6.Reus or Arco,InApp-Push,1,1,43,2502,1412,767,124,189,8,17.9,33.3,13,20,195,58,75,80,80
+41-80,false,false,3.Blacklist,InApp-Email-WA,0,1,40,2301,1544,356,205,193,0,28.4,40.3,9,15,282,53,74,80,80
+41-80,false,false,6.Reus or Arco,InApp-Push-Email,1,1,34,2158,1326,573,163,95,0,15.3,41.7,5,6,229,65,77,80,80
+41-80,false,false,6.Reus or Arco,Only Email,1,1,30,1705,1225,165,237,76,0,21.6,41.6,5,6,298,54,73,79,79
+41-80,false,false,4.Kpay CC Freeze,InApp-Push-Email-WA,0,1,29,1627,892,625,70,32,0,17.8,34.9,2,3,115,59,68,80,80
+41-80,false,false,6.Reus or Arco,Only InApp,1,1,25,1436,1189,62,65,119,2,16.5,41.2,12,24,124,58,70,73,73
+41-80,false,false,6.Reus or Arco,InApp-Push-WA,1,1,24,1443,932,385,100,25,5,13.6,41,3,6,147,59,77,80,80
+41-80,false,false,6.Reus or Arco,Only WA,1,1,20,1043,884,9,145,5,0,13.1,46.2,1,1,189,50,61,68,68
+41-80,false,false,3.Blacklist,InApp-Email,1,1,20,1185,841,124,99,117,0,27.2,39.5,9,11,141,56,70,76,76
+41-80,false,false,4.Kpay CC Freeze,Email-WA,0,1,17,898,763,61,67,6,0,12.4,43.9,0,0,105,51,65,73,73
+41-80,false,false,7.Prospects,Email-WA,1,0,16,896,738,0,144,13,0,27.4,45.9,2,2,181,56,69,72,72
+41-80,false,false,6.Reus or Arco,No MKT Channel,1,1,16,958,727,45,128,58,5,22.1,45.5,6,15,164,56,80,80,80
+41-80,true,false,3.Blacklist,Email-WA,0,1,16,745,727,0,0,18,0,13.7,35.5,3,5,36,46,53,55,55
+41-80,false,false,3.Blacklist,InApp-Push-WA,1,1,15,799,279,449,42,28,39,27.8,37,4,6,56,50,70,76,76
+41-80,false,false,6.Reus or Arco,InApp-Email,1,1,13,885,702,56,60,66,0,17.8,50.8,3,4,95,68,78,80,80
+41-80,false,false,6.Reus or Arco,InApp-WA,1,1,12,712,578,68,52,13,1,15.3,45.8,3,8,81,62,75,77,77
+41-80,false,false,4.Kpay CC Freeze,Email-WA,1,0,12,644,542,61,25,16,0,16.8,41.3,2,2,52,52,69,72,72
+41-80,false,false,4.Kpay CC Freeze,Only Email,1,1,11,593,449,73,40,29,0,15.5,37.9,0,0,62,50,61,80,80
+41-80,false,false,3.Blacklist,InApp-Push,1,1,9,542,318,187,17,18,0,23.1,41.1,1,1,33,57,75,75,75
+41-80,false,false,3.Blacklist,Only WA,1,1,9,560,390,60,55,55,27,33.2,37.1,5,7,75,67,74,74,74
+41-80,false,false,4.Kpay CC Freeze,InApp-Email-WA,0,1,9,534,425,72,10,25,0,15.3,44,1,1,31,60,73,73,73
+41-80,desconocido,false,sin_golden,n/a,0,0,8,567,0,553,0,14,0,37.9,57,0,0,0,78,79,79,79
+41-80,false,false,4.Kpay CC Freeze,InApp-Push-Email,1,1,7,441,179,203,37,21,0,28.6,42.7,1,1,46,69,77,77,77
+41-80,false,false,3.Blacklist,InApp-WA,1,1,6,379,249,64,35,31,18,30.3,45.5,1,2,47,63,75,75,75
+41-80,false,false,3.Blacklist,No MKT Channel,1,1,6,360,189,80,72,18,23,34.7,44.2,4,5,81,55,78,78,78
+41-80,false,false,4.Kpay CC Freeze,InApp-Push,1,1,6,342,263,57,14,8,6,12.8,38.3,0,0,27,52,78,78,78
+41-80,false,false,4.Kpay CC Freeze,No MKT Channel,1,1,6,354,328,19,3,4,1,12.7,48.7,1,4,19,53,74,74,74
+41-80,true,false,3.Blacklist,InApp-Push-Email-WA,0,1,5,268,116,119,0,31,0,23.2,25.8,3,3,6,47,73,73,73
+41-80,false,false,3.Blacklist,Only InApp,1,1,5,349,158,51,55,85,3,40,42,4,6,63,72,80,80,80
+41-80,true,false,6.Reus or Arco,InApp-Email-WA,0,0,5,268,222,3,0,43,0,23,37.6,2,2,11,57,68,68,68
+41-80,true,false,6.Reus or Arco,InApp-Push-Email-WA,0,0,4,217,96,101,0,20,0,20.3,29,3,3,5,48,64,64,64
+41-80,false,false,4.Kpay CC Freeze,InApp-Push-WA,1,1,4,214,121,74,17,2,5,14.3,31.8,1,3,23,48,70,70,70
+41-80,false,false,4.Kpay CC Freeze,InApp-Email,1,1,4,227,158,22,20,27,0,18.5,39.3,0,0,28,51,74,74,74
+41-80,false,false,4.Kpay CC Freeze,Only WA,1,1,4,202,145,46,9,0,3,15.5,37,1,1,16,47,62,62,62
+41-80,false,false,4.Kpay CC Freeze,Only InApp,1,1,3,163,77,44,20,22,1,30,34.7,0,0,24,56,66,66,66
+41-80,true,false,3.Blacklist,InApp-Email-WA,0,1,3,146,122,2,0,22,0,17.7,32.7,1,3,6,49,50,50,50
+41-80,false,false,4.Kpay CC Freeze,InApp-WA,1,1,2,120,102,17,1,0,1,14.5,37.5,1,1,6,48,72,72,72
+41-80,true,false,6.Reus or Arco,Email-WA,0,1,2,105,102,1,0,2,0,17,42,0,0,5,48,57,57,57
+41-80,false,false,4.Kpay CC Freeze,Email-WA,1,1,1,42,37,1,0,0,0,12,34,0,0,2,42,42,42,42
+41-80,true,false,6.Reus or Arco,InApp-Push-Email-WA,0,1,1,65,39,22,0,2,0,20,39,1,1,2,65,65,65,65
+41-80,true,false,4.Kpay CC Freeze,InApp-WA,1,0,1,80,73,3,0,4,0,33,65,0,0,4,80,80,80,80
+41-80,true,false,6.Reus or Arco,InApp-Email-WA,0,1,1,73,63,0,0,10,0,19,53,1,2,3,73,73,73,73

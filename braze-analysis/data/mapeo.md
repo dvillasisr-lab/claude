@@ -384,12 +384,48 @@ Marketing ~2,100, Lending ~1,160, Not Tracked 748, ProductGrowth ~650, Sales ~41
 
 | Extracción | Estado | Dónde está | Notas |
 |---|---|---|---|
-| E1 (campaña × mes × canal) | **Pendiente** | | Subir como archivo CSV adjunto, no pegado como texto. Son 30 a 50 mil filas y el chat no aguanta el pegado |
+| E1 (campaña × mes × canal) | **Recibida** | `data/e1_comunicacion_mes_canal.csv` | 14,031 filas, 32 columnas, 3,439 comunicaciones, enero a septiembre 2026. Sin filas rotas, sin claves duplicadas (comunicación × canal × mes). `envios` cuadra fila por fila con la suma de envíos por canal |
 | E2 (catálogo limpio) | **Recibida** | `data/e2_catalogo.csv` | 6,144 piezas (5,173 Canvas, 971 campañas), 28 columnas, sin filas rotas, sin ids duplicados. Llegó pegada en el chat y se recuperó de la transcripción |
-| E3 (mensajes por usuario y suscripción) | **Pendiente** | | Subir como archivo CSV adjunto |
+| E3 (mensajes por usuario y suscripción) | **Recibida** | `data/e3_usuarios_distribucion.csv` | 747 filas, 23 columnas, 19.5 M usuarios. Sin filas rotas, sin claves duplicadas |
 
-Primera lectura de E2, solo para orientar:
+Cuadre entre E1 y E3 (mismo periodo, misma tabla fuente):
 
-- 5,958 piezas archivadas y 186 activas. El catálogo es casi todo histórico.
-- 2,576 piezas (42 %) quedan `sin_clasificar` por tipo de comunicación. La regla de clasificación por nombre necesita afinarse con E1 antes de presentar.
-- 1,053 piezas (17 %) no siguen la convención de nombre. 749 sin ticket. 321 son QA o prueba. Coincide con lo visto en la verificación.
+| Métrica | E1 | E3 | Diferencia |
+|---|---|---|---|
+| Envíos totales | 667.4 M | 670.4 M | 0.4 % (E1 colapsa duplicados usuario × comunicación × día × canal, E3 no) |
+| Emails enviados | 333.5 M | 334.3 M | 0.2 % |
+| Push enviados | 251.1 M | 251.9 M | 0.3 % |
+| WhatsApp enviados | 55.2 M | 55.8 M | 1.0 % |
+| Bajas de email | 1.09 M | 1.10 M | 0.2 % |
+| Costo variable MXN | 71.9 M | 72.5 M | 0.8 % |
+
+Las tres extracciones ya están. Con esto arranca la Ola 2 (analistas por lente).
+
+### Primera lectura de E1, solo para orientar
+
+- 667 M envíos en 9 meses, entre 59 M y 109 M al mes. Junio es el pico (109 M) por un email de BillPay a 16 M de usuarios y por push.
+- Mix por canal: email 50 %, push 38 %, WhatsApp 8 %, in-app 4 %, banner casi cero.
+- Costo variable: 71.9 M MXN. WhatsApp es el 77 % del costo (55.2 M) con el 8 % del volumen. Email es el 23 % (16.7 M).
+- Por equipo: Marketing 262 M envíos y 35 M MXN; Product Growth 177 M y 22 M MXN; Others 92 M; Sales 85 M; Collections 45 M. Compliance, Acquisition, CX, NPS, B2B y Security son marginales.
+- Por producto: Cash 319 M envíos y 44 M MXN; Pay 233 M y 23 M MXN; Others 88 M; Ecosystem 26 M.
+- Tasas globales: email entrega 95 %, apertura 24 % sobre entregados, clic 0.9 %, baja 0.34 % (por arriba del benchmark de 0.3 %). Push apertura 1.5 % (debajo del benchmark de 3 a 10 %). WhatsApp entrega 74 %, lectura 69 % sobre entregados (debajo del benchmark de 70 a 90 %). In-app clic 38 %.
+- Conversiones: 4.72 M filas con conversión, 3.38 M con atribución fraccional. La relación 1.4 confirma que un usuario-día suele recibir más de una comunicación.
+- 8,993 de 14,031 filas (64 %) tienen `envios = 0`: son filas de audiencia sin envío (control, no elegibles, suprimidos). Se conservan para medir audiencia, pero no cuentan como mensajes.
+- `monto_filas` viene `null` en 8,738 filas: todo lo que no es Cash. Coherente con la regla de conversión por producto.
+- `grupo` tiene 150 valores distintos, muchos con horas (`5PM`, `10:00am`) o nombres de prueba. Es un campo libre, no una dimensión. Se usa solo como etiqueta.
+
+### Primera lectura de E3, solo para orientar
+
+- 19.5 M usuarios con al menos una fila en el periodo. 48,754 (0.2 %) no recibieron nada.
+- Distribución: 57 % recibió 1 a 5 mensajes en 9 meses. El 12 % de los usuarios (bandas 81 a 160, 161 a 320 y 321+) concentra el 69 % de los mensajes (461 M de 670 M). Máximo por usuario: 1,631 mensajes.
+- Costo por presión: la banda 321+ son 339 mil usuarios con 164 M mensajes (482 por usuario en 9 meses, 12 por semana).
+- 93 % de los usuarios no tienen golden record (`sin_golden`): la tabla de filtros solo cubre 1.3 M. Los cruces por etapa, canal contactable y riesgo solo valen para ese 7 %.
+- 487 mil usuarios con baja en algún canal recibieron 140 M mensajes (51 M email, 68 M push, 11 M WhatsApp). Es el cruce de riesgo legal del lente H, pendiente de confirmar qué canal dieron de baja contra qué canal recibieron.
+
+### Dudas abiertas que salen de E3 (resolver antes del lente H)
+
+| Duda | Evidencia | Qué se necesita |
+|---|---|---|
+| Qué significa `email_subscribe = false` | 11.1 M usuarios con `false` reciben 298 M emails (89 % del total) y concentran las 1.1 M bajas. Los 8.4 M con `true` reciben 36 M y cero bajas. Si `false` fuera "dado de baja", estaríamos enviando el 89 % del email a gente que no quiere recibirlo. Lo más probable es que `false` sea "no opt-in explícito" (Braze distingue `opted_in`, `subscribed`, `unsubscribed`) | Confirmar en `_dim_braze_users` cómo se construye la columna y si existe el valor original de tres estados |
+| `push_subscribe` es `false` para el 100 % | 19.5 M usuarios, todos `false`, y aun así 252 M push enviados | La columna está vacía o mal mapeada. Buscar el estado real de push (token, permiso, `push_subscribe` original) |
+| Cobertura del golden record | 93 % `sin_golden` | Saber si `dim_braze_filters` solo cubre clientes con préstamo o cuenta y si se puede ampliar |
