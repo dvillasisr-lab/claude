@@ -4,7 +4,7 @@ Fuente: `data/e8_dias_hasta_baja.csv` (163 filas, 4 bloques: resumen, banda_dias
 
 Dos cohortes. **Cohorte limpia (nuevos)** = su primer email fue de febrero en adelante, así que el conteo de días y emails es real. **Cohorte 0 (ya recibían en enero)** = la historia empieza el 1 de enero, así que sus días y emails son un piso, no la cifra real.
 
-**Cobertura.** La versión 3 encontró 400,821 bajas (158,520 nuevos y 242,301 de la cohorte 0), 88 % de las 457,376 del periodo. El 12 % restante son usuarios cuya baja no tiene un email entregado antes dentro del periodo (por ejemplo solo envíos rebotados). La versión 1 solo encontraba 115 mil porque pedía entrega en la misma fila de la baja; los porcentajes de esa versión quedaron sustituidos por estos.
+**Cobertura.** La versión 3 encontró 400,821 bajas (158,520 nuevos y 242,301 de la cohorte 0), 91 % de los 439,269 usuarios únicos que se dieron de baja en el periodo (E5 y E7b coinciden en esa cifra; los 457,376 de la vista de canales cuentan usuario por mes, y 18 mil usuarios se dieron de baja en más de un mes). El 9 % restante son usuarios cuya baja no tiene un email entregado antes dentro del periodo (por ejemplo solo envíos rebotados). La versión 1 solo encontraba 115 mil porque pedía entrega en la misma fila de la baja; los porcentajes de esa versión quedaron sustituidos por estos.
 
 **Cómo leer "familia del día de la baja".** Es la familia que le llegó el último día con email entregado antes de la baja o el mismo día. Si ese día recibió dos familias, cuenta en las dos; por eso la suma por familia da 104 % en nuevos y 99 % en la cohorte 0 (el 1 % faltante son familias con menos de 500 bajas, que la query no lista).
 

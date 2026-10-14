@@ -488,3 +488,20 @@ Por decisión del usuario la señal de eficiencia se basa en métricas de comuni
 - `e9b_patron_respuesta_90d.csv`: 16 filas, julio a septiembre.
 - E8 versión 2 falló en Spark (subquery correlacionada en el JOIN); la versión 3 corrió bien y es la que está en `data/`.
 - Costo de WhatsApp: todas las queries lo calculan sobre `whatsapp_send`. Meta cobra por mensaje entregado; queda como parámetro en el Sheets (ver PENDIENTES).
+
+## Verificación de integridad antes del Sheets (15 oct 2026)
+
+Revisión de los 15 CSV de `data/` por columnas, nulos, duplicados y cruces entre extracciones. Lo que hay que tener en cuenta al construir el Sheets:
+
+- **Bajas**: E4a suma 457,376 bajas usuario-mes (un usuario cuenta en cada mes con baja); E5 y E7b dan 439,269 usuarios únicos. Las dos cifras son correctas con su definición; 18 mil usuarios se dieron de baja en más de un mes (E5 trae `se_dan_de_baja_otra_vez`).
+- **E1 está deduplicado** por usuario × comunicación × día (MAX por fila); E3 y E7b cuentan filas. Por eso E3 y E7b suman 334.27 M emails y E1 333.49 M (0.2 %), y 55.76 M contra 55.21 M en WhatsApp (1 %). E1 es la fuente para volumen por campaña; E3 y E7b para distribución por usuario.
+- **E4a trae dos granos** (semana y mes). Cualquier total debe filtrar `grano`; sumar todo duplica.
+- **E1 tiene 8,993 filas de 14,031 con envíos 0** (meses con aperturas, clics o bajas de envíos anteriores). Para contar campañas activas filtrar envíos > 0.
+- **Una comunicación sin nombre** (un id, 325 mil emails) aparece como familia nula en E1, E7a, E7c y E8. En el Sheets se etiqueta "(sin nombre)" con su communication_id.
+- **Ticket**: E1 trae `ticket_number` en todas las filas menos 3, pero 1,275 filas dicen "Other". El ticket por regex sobre el nombre (`-[A-Z]\d{3,4}-`) cubre 13,222 filas. En el Sheets: ticket_number primero, regex como respaldo.
+- **E2 contra E1**: E2 tiene 2,706 ids que no enviaron nada en el periodo (catálogo completo) y E1 tiene 1 id que no está en E2. Las listas de ids por familia se arman desde E2 y se completan con E1.
+- **Conversión**: E1 trae conversiones fraccionales por fila (3.38 M); E3 y E7b traen usuarios con conversión (1.19 M). No son comparables entre sí.
+- **Banner**: 217 mil impresiones en 9 filas de E1 y 1 en E7c. Se reporta aparte, no entra en las señales.
+- **Familias**: todas las familias de E5b, E6b, E7a, E7c, E8 y E9a existen en E1 (0 sin match). E8 cubre 400,821 de 439,269 usuarios únicos con baja (91 %).
+- **E6b** tiene exactamente 1,000 filas por el LIMIT de la query; es la muestra de los pares más frecuentes, no el universo.
+- **Usuarios**: E3 19,538,153 y E7b 19,538,178 (conteos aproximados, diferencia 25). E9b 7,071,406 por su ventana de julio a septiembre.

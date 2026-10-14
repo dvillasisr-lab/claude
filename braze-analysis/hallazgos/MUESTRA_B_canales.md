@@ -7,7 +7,7 @@ Fuentes: `data/e1_comunicacion_mes_canal.csv`, `data/e4a_serie_semana_mes_canal.
 
 ## Respuesta en una página
 
-WhatsApp se lleva el 77 % del costo variable con el 8 % de los envíos, y uno de cada cuatro mensajes no se entrega: 14.2 M MXN pagados por mensajes que nunca llegaron. Push es el 38 % del volumen y el 58 % de ese volumen va en comunicaciones que abre menos del 1 % de la gente. Email cumple en apertura pero no en clic, y ya perdió 457 mil usuarios por baja en el año. In-app es el canal más eficiente por envío y el menos usado.
+WhatsApp se lleva el 77 % del costo variable con el 8 % de los envíos, y uno de cada cuatro mensajes no se entrega: 14.2 M MXN pagados por mensajes que nunca llegaron. Push es el 38 % del volumen y el 58 % de ese volumen va en comunicaciones que abre menos del 1 % de la gente. Email cumple en apertura pero no en clic, y ya perdió 439 mil usuarios únicos por baja en el año (457 mil bajas contando usuario por mes). In-app es el canal más eficiente por envío y el menos usado.
 
 Tres movimientos salen de aquí: limpiar la base de WhatsApp antes de enviar, poner tope de frecuencia a push y mover a in-app lo que hoy va por push a usuarios que abren la app.
 
@@ -39,8 +39,8 @@ Query: Q8 y Q9.
 Confianza: alta en la cifra. Media en la lectura: Braze registra apertura directa; la influida no está en la tabla, así que la apertura real es algo mayor pero no 3 veces mayor.
 Implicación: las Canvas "Rescate" de Marketing (Anonimos-RescateTasa0 con 8.3 M envíos y 0.55 % de apertura, RescateFinesDeSemana con 10.5 M en cuatro versiones y menos de 1 %) son las primeras a revisar. Y hay una campaña con prefijo QA (ReminderRegistroTelefono) que mandó 1.9 M push a producción con 0.01 % de apertura: apagar hoy.
 
-### H-B3. Email abre bien pero no genera clic, y 457 mil usuarios se dieron de baja en 9 meses, con enero y junio como los peores meses
-Cifra: apertura 23.7 % sobre entregados, clic 0.93 %. Bajas: 457 mil usuarios únicos, 2.3 % de los 20.1 M usuarios únicos con email en el periodo (E5: 20,137,560). Enero concentra 15.1 % de las bajas y junio 13.9 %; un reparto parejo sería 11.1 % por mes. Periodo: enero a septiembre 2026.
+### H-B3. Email abre bien pero no genera clic, y 439 mil usuarios se dieron de baja en 9 meses, con enero y junio como los peores meses
+Cifra: apertura 23.7 % sobre entregados, clic 0.93 %. Bajas: 457,376 usuario-mes (E4a, un usuario cuenta en cada mes en que se dio de baja) y 439,269 usuarios únicos (E5 y E7b), 2.2 % de los 20.1 M usuarios únicos con email en el periodo (E5: 20,137,560). Enero concentra 15.1 % de las bajas y junio 13.9 %; un reparto parejo sería 11.1 % por mes. Periodo: enero a septiembre 2026.
 Comparación: benchmark de email promocional: apertura 15 a 25 % (cumple), clic 1.5 a 3 % (no cumple).
 Query: Q2 y la tabla de bajas de abajo.
 Confianza: alta en bajas y clic. El denominador del acumulado es la base de email del periodo (20,137,560 usuarios únicos con email enviado, E5).
