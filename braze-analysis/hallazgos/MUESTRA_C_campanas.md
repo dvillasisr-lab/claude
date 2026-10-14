@@ -37,6 +37,76 @@ Solo promocionales o lifecycle (quitando cobranza y transaccionales): 340 famili
 
 Casi todo el ahorro en dinero está en WhatsApp: las 5 familias con más ahorro mensual son WhatsApp a bases frías (B0171 rezagados 868 mil MXN al mes, B0333 churn 12 meses 331 mil, B0209 inactivos 258 mil, B0223 never active 206 mil) y el email B0211 RegistradosPay-Tasa0 (194 mil MXN y 3.9 M emails al mes). Push no ahorra dinero pero sí mensajes: 31 M push al mes a gente que no los abre. Falta sumar el costo fijo de Braze por mensaje cuando se tenga el contrato; con eso el ahorro de push y de email sube.
 
+## Qué hacer en cada una y por qué
+
+Cada familia × canal tiene ahora tres columnas más: `accion_tipo` (una de nueve acciones), `accion` (la instrucción concreta) y `por_que` (los números de esa familia que la justifican). Las asigna `scripts/acciones_campanas.py` a partir de la señal, el canal y la audiencia leída del nombre. También se agregan `toques_usuario_mes` (envíos entre usuarios alcanzados, por mes activo, de E1), `usuarios_por_envio` y `otros_canales` (canales de la misma familia que sí responden, para no perder el contacto al apagar uno). En la página de campañas están como columnas "Qué hacer" y "Por qué", con filtro.
+
+**Qué significa "abrió" o "leyó" en las acciones.** Es el canal en general: cualquier email, push o WhatsApp de Kueski en los últimos 90 días (60 en push), no solo de esta campaña. Es un filtro de receptividad al canal; en Braze es la fecha del último open o read por canal. Lo único que sí es de la campaña es "excluir a quien no abrió ninguno de sus últimos 3 envíos".
+
+### Reglas
+
+| Situación | Qué hacer | Por qué |
+|---|---|---|
+| Apagar o rehacer, canal a base fría (dormants, inactivos, churn, rezagados, never active) o a leads sin crédito | **Apagar** ese canal; si otro canal de la misma familia responde, dejarlo como contacto | Las bases frías responden peor en todos los canales (email clic 0.35 % vs 0.72 %, push 0.77 % vs 1.75 %, WhatsApp entrega 68 % vs 82 %). Insistir cuesta y quema el permiso |
+| Apagar o rehacer, canal a clientes activos | **Rehacer o re-segmentar**: solo quien abrió algo del canal en 90 días (60 en push), tope de 2 al mes | Los activos sí responden cuando la base se acota; el problema es a quién y cuántas veces |
+| Apagar o rehacer en WhatsApp a activos, o revisar en WhatsApp | **Limpiar base de WhatsApp**: quitar números sin entrega, enviar a quien leyó algún WhatsApp en 90 días | Cada envío cuesta 1 MXN se entregue o no; 14.3 M MXN del periodo fueron mensajes no entregados |
+| Revisar por bajas altas | **Bajar frecuencia**: 2 emails al mes y excluir a quien no abrió ninguno de los últimos 3 envíos de la campaña | El clic es bueno, así que el contenido sirve; lo que molesta es la presión |
+| Revisar por respuesta baja | **Rehacer o re-segmentar**: probar gancho, asunto u horario y acotar a quien abre el canal | Está debajo de la mediana del canal; si el gancho es "tasa 0" se avisa que es el más flojo en email |
+| Apagar o rehacer pero sin envíos en septiembre | **Confirmar apagado** | Ya no envía; solo verificar que esté archivada para que no vuelva |
+| Proteger | **Proteger**: no tocar y evitar que otras campañas le lleguen el mismo día | Respuesta 1.5 veces la mediana con volumen alto |
+| Escalar | **Escalar**: ampliar audiencia por pasos, duplicar y medir cada mes | Respuesta al doble de la mediana con poco volumen |
+| Sin señal, pero 4.5 o más mensajes por usuario al mes | **Bajar frecuencia** a 2 | Con 3 o más toques el clic de email cae a 0.48 % (2 toques: 1.76 %) |
+| Sin señal, email a más de 1 M de usuarios por envío | **Rehacer**: dividir en segmentos | Arriba de 1 M de audiencia el clic cae 5 veces |
+| Cobranza o transaccional | **No tocar** | Su resultado es el pago o la operación, no la respuesta; solo vigilar que no incluya dados de baja (E5b) |
+| Resto | **Seguir igual** | Respuesta en rango o volumen bajo |
+
+### Resumen por acción
+
+| Qué hacer | Familias | Activas en sep. | Envíos al mes (activas) | Ahorro MXN al mes | WA no entregado MXN |
+|---|---|---|---|---|---|
+| Apagar | 42 | 42 | 20.5 M | 2.6 M | 4.6 M |
+| Limpiar base de WhatsApp | 44 | 18 | 1.6 M | 357 mil | 3.7 M |
+| Rehacer o re-segmentar | 190 | 73 | 14.9 M | 192 mil |  |
+| Bajar frecuencia | 41 | 14 | 2.8 M |  |  |
+| Confirmar apagado | 251 | 0 |  |  | 2.0 M |
+| Proteger | 152 | 54 | 5.5 M |  |  |
+| Escalar | 150 | 46 | 415 mil |  |  |
+| No tocar | 289 | 118 | 12.1 M |  | 524 |
+| Seguir igual | 758 | 116 | 6.9 M |  | 4.0 M |
+
+Lectura: el ahorro en dinero está casi todo en **Apagar** (42 familias activas, 2.6 M MXN al mes, la mayoría WhatsApp a bases frías) y en **Limpiar base de WhatsApp** (357 mil MXN al mes más lo que se recupera de los no entregados). **Rehacer** y **Bajar frecuencia** casi no ahorran dinero (push no cuesta) pero quitan 17.7 M mensajes al mes de encima de los usuarios, que es donde están la fatiga y las bajas.
+
+### Las 22 activas donde primero hay que actuar
+
+Las 12 con más ahorro al mes y las 10 de mayor volumen entre las que no ahorran dinero pero sí mensajes.
+
+| Familia | Canal | Envíos al mes | Qué hacer | Por qué |
+|---|---|---|---|---|
+| Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0-N/A | whatsapp | 868 mil | **Apagar.** Apagar el WhatsApp a esta base; mantener el contacto por email (clic 0.52 %), in-app (clic 29.3 %). | Lectura 57.7 % con mínimo 60 %, entrega 62.8 %. Cuesta 868 mil MXN al mes. Es base dormants, inactivos, rezagados o never active: a bases frías WhatsApp entrega 68 % contra 82 % en activos. Se pagaron 1.9 M MXN de mensajes que no se entregaron. Ahorro: 868 mil MXN al mes. |
+| Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta-N/A | whatsapp | 331 mil | **Apagar.** Apagar el WhatsApp a esta base; si hace falta tocarla, usar push o in-app, que no cuestan. | Lectura 48.9 % con mínimo 60 %, entrega 73.8 %. Cuesta 331 mil MXN al mes. Es base dormants, inactivos, rezagados o never active: a bases frías WhatsApp entrega 68 % contra 82 % en activos. Se pagaron 608 mil MXN de mensajes que no se entregaron. Ahorro: 331 mil MXN al mes. |
+| Lending-KCash-B0209-CANVAS-Recurrentes_Inactivos-DescuentoDirecto-N/A | whatsapp | 258 mil | **Apagar.** Apagar el WhatsApp a esta base; mantener el contacto por email (clic 0.54 %), push (apertura 1.19 %), in-app (clic 19.8 %). | Lectura 59.8 % con mínimo 60 %, entrega 63.5 %. Cuesta 258 mil MXN al mes. Es base dormants, inactivos, rezagados o never active: a bases frías WhatsApp entrega 68 % contra 82 % en activos. Se pagaron 847 mil MXN de mensajes que no se entregaron. Ahorro: 258 mil MXN al mes. |
+| Lending-KCash-B0223-CANVAS-Nuevos_NeverActive-InstallmentsNoCash-N/A | whatsapp | 206 mil | **Apagar.** Apagar el WhatsApp a esta base; mantener el contacto por in-app (clic 18.1 %). | Lectura 50.8 % con mínimo 60 %, entrega 52.1 %. Cuesta 206 mil MXN al mes. Es base dormants, inactivos, rezagados o never active: a bases frías WhatsApp entrega 68 % contra 82 % en activos. Se pagaron 886 mil MXN de mensajes que no se entregaron. Ahorro: 206 mil MXN al mes. |
+| Lending-KCash-B0211-CANVAS-Nuevos_RegistradosPay-Tasa0-N/A | email | 3.9 M | **Apagar.** Apagar el email a esta base; dejar solo in-app (clic 32.5 %). | Clic 0.25 % con mínimo 0.3 %, 3.9 M envíos al mes, 4.8 mensajes por usuario al mes. Es base leads y registrados sin crédito: el email a bases frías hace 0.35 % de clic contra 0.72 % en activos. El gancho "tasa 0" es el más flojo del portafolio en email (0.53 % clic promedio). Ahorro: 194 mil MXN al mes. |
+| Lending-KPay-202600903-B0332-CANVAS-HardInactive_6MesesInactividad-ConSinOferta-N/A | whatsapp | 192 mil | **Apagar.** Apagar el WhatsApp a esta base; mantener el contacto por push (apertura 0.99 %). | Lectura 51.8 % con mínimo 60 %, entrega 84.3 %. Cuesta 192 mil MXN al mes. Es base dormants, inactivos, rezagados o never active: a bases frías WhatsApp entrega 68 % contra 82 % en activos. Se pagaron 30 mil MXN de mensajes que no se entregaron. Ahorro: 192 mil MXN al mes. |
+| Lending-KPay-B0331-CANVAS-Medium_active-ConSinOferta-N/A | whatsapp | 151 mil | **Limpiar base de WhatsApp.** Limpiar la base (quitar números sin entrega) y enviar solo a quien leyó cualquier WhatsApp de Kueski en los últimos 90 días, no solo de esta campaña. | Lectura 57.4 % con mínimo 60 %, entrega 86.7 %. Cuesta 151 mil MXN al mes. Se pagaron 20 mil MXN de mensajes que no se entregaron. |
+| Lending-KCash-B0619-CANVAS-XSell_KPayToKCash-FiestasPatrias-N/A | whatsapp | 107 mil | **Limpiar base de WhatsApp.** Limpiar la base (quitar números sin entrega) y enviar solo a quien leyó cualquier WhatsApp de Kueski en los últimos 90 días, no solo de esta campaña. | Lectura 48.9 % con mínimo 60 %, entrega 74.5 %. Cuesta 107 mil MXN al mes. Se pagaron 27 mil MXN de mensajes que no se entregaron. |
+| Marketing-KCash-B0171-CANVAS-Leads-BBDDHotLeadsW2RescateTasa0-N/A | whatsapp | 106 mil | **Apagar.** Apagar el WhatsApp a esta base; mantener el contacto por email (clic 1.04 %), push (apertura 2.01 %), in-app (clic 33.0 %). | Lectura 58.9 % con mínimo 60 %, entrega 69.0 %. Cuesta 106 mil MXN al mes. Es base leads y registrados sin crédito: a bases frías WhatsApp entrega 68 % contra 82 % en activos. Se pagaron 197 mil MXN de mensajes que no se entregaron. Ahorro: 106 mil MXN al mes. |
+| Lending-KPay-B0620-CANVAS-Leads-XSellCashaPay-N/A | whatsapp | 93 mil | **Apagar.** Apagar el WhatsApp a esta base; mantener el contacto por push (apertura 0.78 %). | Lectura 56.1 % con mínimo 60 %, entrega 70.7 %. Cuesta 93 mil MXN al mes. Es base leads y registrados sin crédito: a bases frías WhatsApp entrega 68 % contra 82 % en activos. Se pagaron 27 mil MXN de mensajes que no se entregaron. Ahorro: 93 mil MXN al mes. |
+| Lending-KCash-B0223-CANVAS-Nuevos_NeverActive-InstallmentsNoCash-N/A | email | 1.7 M | **Apagar.** Apagar el email a esta base; dejar solo in-app (clic 18.1 %). | Clic 0.09 % con mínimo 0.3 %, 1.7 M envíos al mes, 3.4 mensajes por usuario al mes. Es base dormants, inactivos, rezagados o never active: el email a bases frías hace 0.35 % de clic contra 0.72 % en activos. Ahorro: 84 mil MXN al mes. |
+| Lending-KCash-B0210-CANVAS-Nuevos_MPNeverCash-Tasa0-N/A | whatsapp | 57 mil | **Apagar.** Apagar el WhatsApp a esta base; si hace falta tocarla, usar push o in-app, que no cuestan. | Lectura 52.4 % con mínimo 60 %, entrega 83.4 %. Cuesta 57 mil MXN al mes. Es base dormants, inactivos, rezagados o never active: a bases frías WhatsApp entrega 68 % contra 82 % en activos. Se pagaron 85 mil MXN de mensajes que no se entregaron. Ahorro: 57 mil MXN al mes. |
+| Sales-KPay-B0615-CANVAS-Recurrentes-ComerciodeldiaSeptiembre-N/A | push notification | 1.9 M | **Rehacer o re-segmentar.** Probar copy y horario; acotar a quienes abrieron algún push de Kueski en 60 días. | Apertura 0.93 % debajo de la mediana 1.07 %, 1.9 M envíos al mes, 7.0 mensajes por usuario al mes. |
+| Marketing-KCash-B0391-CANVAS-Leads_BDDMarketing-RescateFinesDeSemana-N/A | push notification | 1.9 M | **Rehacer o re-segmentar.** Probar copy y horario; acotar a quienes abrieron algún push de Kueski en 60 días. | Apertura 0.76 % debajo de la mediana 1.07 %, 1.9 M envíos al mes, 5.0 mensajes por usuario al mes. |
+| Marketing-KCash-B0171-CANVAS-Anonimos-RescateTasa0-N/A | push notification | 1.5 M | **Apagar.** Apagar el push a esta base; dejar in-app (clic 13.2 %). | Apertura 0.55 % con mínimo 0.75 %, 1.5 M envíos al mes, 4.8 mensajes por usuario al mes. No cuesta, pero gasta el permiso de push y suma fatiga: los usuarios más contactados generan 16 bajas por cada 100. |
+| Marketing-KPay-B0615-CANVAS-Leads-ComerciodeldiaSeptiembre-N/A | push notification | 1.3 M | **Apagar.** Apagar el push a esta base; dejar email (clic 0.50 %). | Apertura 0.66 % con mínimo 0.75 %, 1.3 M envíos al mes, 6.5 mensajes por usuario al mes. No cuesta, pero gasta el permiso de push y suma fatiga: los usuarios más contactados generan 16 bajas por cada 100. |
+| Marketing-KCash-B0000-CANVAS-Leads_LeftFunnel-Retargeting_Veriff | email | 1.1 M | **Bajar frecuencia.** Mantener el contenido, bajar a 2 emails al mes y excluir a quien no abrió ninguno de los últimos 3 envíos de esta campaña. | Clic 3.04 % está bien (mediana 0.5 %) pero genera 3.9 bajas por mil (umbral 2.5), 5.2 mensajes por usuario al mes. El mensaje funciona, la presión molesta. |
+| Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0-N/A | push notification | 969 mil | **Apagar.** Apagar el push a esta base; dejar email (clic 0.52 %), in-app (clic 29.3 %). | Apertura 0.55 % con mínimo 0.75 %, 969 mil envíos al mes, 2.5 mensajes por usuario al mes. No cuesta, pero gasta el permiso de push y suma fatiga: los usuarios más contactados generan 16 bajas por cada 100. |
+| Marketing-KPay-B00527-CANVAS-Leads-BillpaymentsOnboarding-N/A | push notification | 876 mil | **Apagar.** Apagar el push a esta base; dejar in-app si existe. | Apertura 0.73 % con mínimo 0.75 %, 876 mil envíos al mes. No cuesta, pero gasta el permiso de push y suma fatiga: los usuarios más contactados generan 16 bajas por cada 100. |
+| Sales-KPay-B0622-CANVAS-Recurrentes-KUESKIPROMOTORInstore-N/A | push notification | 617 mil | **Rehacer o re-segmentar.** Re-segmentar: solo usuarios que abrieron cualquier push de Kueski en los últimos 60 días (no solo de esta campaña), máximo 2 al mes. | Apertura 0.65 % con mínimo 0.75 %, 617 mil envíos al mes, 4.1 mensajes por usuario al mes. Son clientes activos (1.75 % de apertura promedio en push); el problema es a quién y cuántas veces se manda. |
+| Lending-KCash-B0211-CANVAS-Nuevos_RegistradosPay-Tasa0-N/A | push notification | 566 mil | **Apagar.** Apagar el push a esta base; dejar in-app (clic 32.5 %). | Apertura 0.48 % con mínimo 0.75 %, 566 mil envíos al mes, 4.1 mensajes por usuario al mes. No cuesta, pero gasta el permiso de push y suma fatiga: los usuarios más contactados generan 16 bajas por cada 100. |
+| Sales-KPay-B0599-CANVAS-Recurrentes-VentaAzulAeromexico-N/A | push notification | 560 mil | **Rehacer o re-segmentar.** Re-segmentar: solo usuarios que abrieron cualquier push de Kueski en los últimos 60 días (no solo de esta campaña), máximo 2 al mes. | Apertura 0.73 % con mínimo 0.75 %, 560 mil envíos al mes, 2.1 mensajes por usuario al mes. Son clientes activos (1.75 % de apertura promedio en push); el problema es a quién y cuántas veces se manda. |
+
+Cruce con las decisiones ya tomadas: Retargeting_Veriff sale como **Bajar frecuencia** (clic 3.04 %, 3.9 bajas por mil, 5.2 emails por usuario al mes); apagar el email y dejar push e in-app es una versión más dura de lo mismo. Rescate Tasa 0 rezagados en email no sale marcada; la que sale es su versión WhatsApp, **Apagar**, con 868 mil MXN al mes. Referral Dormants sale **Confirmar apagado**: último envío en junio.
+
 ## Por equipo (solo promocionales o lifecycle, señal apagar o rehacer)
 
 | Equipo | Familias | Envíos | Costo MXN | Activas en sep | Msgs al mes de las activas | MXN al mes de las activas | Dónde está el problema |
