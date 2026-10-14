@@ -101,18 +101,19 @@ FROM piezas;
 
 -- ===================== E3. Distribución por usuario: cuántos mensajes recibe cada quién y si está suscrito =====================
 -- Resultado esperado: menos de 2 mil filas. Descargar como e3_usuarios_distribucion.csv
+-- Versión 2 (15 oct): agrega msgs_whatsapp_entregados y quita costo_mxn. El costo se calcula solo en el Sheets a partir de los parámetros.
 WITH por_usuario AS (
   SELECT user_id,
     SUM(CASE WHEN was_send THEN 1 ELSE 0 END)                                 AS msgs,
     SUM(CASE WHEN email_sent THEN 1 ELSE 0 END)                               AS msgs_email,
     SUM(CASE WHEN pn_send THEN 1 ELSE 0 END)                                  AS msgs_push,
     SUM(CASE WHEN whatsapp_send THEN 1 ELSE 0 END)                            AS msgs_whatsapp,
+    SUM(CASE WHEN whatsapp_delivery THEN 1 ELSE 0 END)                        AS msgs_whatsapp_entregados,
     SUM(CASE WHEN in_app_impression THEN 1 ELSE 0 END)                        AS msgs_inapp,
     SUM(CASE WHEN email_unsubscribe THEN 1 ELSE 0 END)                        AS bajas_email,
     APPROX_COUNT_DISTINCT(CASE WHEN was_send THEN communication_id END)       AS comms_distintas,
     APPROX_COUNT_DISTINCT(CASE WHEN was_send THEN event_date END)             AS dias_con_envio,
-    APPROX_COUNT_DISTINCT(CASE WHEN is_converted THEN event_date END)         AS dias_con_conversion,
-    SUM(CASE WHEN whatsapp_send THEN 1.00 ELSE 0 END) + SUM(CASE WHEN email_sent THEN 0.05 ELSE 0 END) AS costo_mxn
+    APPROX_COUNT_DISTINCT(CASE WHEN is_converted THEN event_date END)         AS dias_con_conversion
   FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
   WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
   GROUP BY user_id
@@ -135,12 +136,11 @@ con_estado AS (
 )
 SELECT banda_msgs, email_subscribe, push_subscribe, etapa, canal_contactable, baja_algun_canal, no_contactable_riesgo,
   COUNT(*) AS usuarios,
-  SUM(msgs) AS msgs, SUM(msgs_email) AS msgs_email, SUM(msgs_push) AS msgs_push, SUM(msgs_whatsapp) AS msgs_whatsapp, SUM(msgs_inapp) AS msgs_inapp,
+  SUM(msgs) AS msgs, SUM(msgs_email) AS msgs_email, SUM(msgs_push) AS msgs_push, SUM(msgs_whatsapp) AS msgs_whatsapp, SUM(msgs_whatsapp_entregados) AS msgs_whatsapp_entregados, SUM(msgs_inapp) AS msgs_inapp,
   SUM(bajas_email) AS bajas_email,
   ROUND(AVG(comms_distintas), 1) AS comms_distintas_prom, ROUND(AVG(dias_con_envio), 1) AS dias_con_envio_prom,
   SUM(CASE WHEN dias_con_conversion > 0 THEN 1 ELSE 0 END) AS usuarios_con_conversion,
   SUM(dias_con_conversion) AS dias_con_conversion,
-  ROUND(SUM(costo_mxn), 0) AS costo_mxn,
   PERCENTILE_APPROX(msgs, 0.5) AS msgs_p50, PERCENTILE_APPROX(msgs, 0.9) AS msgs_p90, PERCENTILE_APPROX(msgs, 0.99) AS msgs_p99, MAX(msgs) AS msgs_max
 FROM con_estado
 GROUP BY banda_msgs, email_subscribe, push_subscribe, etapa, canal_contactable, baja_algun_canal, no_contactable_riesgo
@@ -192,15 +192,16 @@ ORDER BY grano, periodo, canal;
 
 -- ===================== E4b. Concentración de mensajes por mes: usuarios por banda de mensajes =====================
 -- Resultado esperado: unas 80 filas (9 meses × 9 bandas). Descargar como e4b_concentracion_mes.csv
+-- Versión 2 (15 oct): agrega msgs_whatsapp_entregados y quita costo_mxn.
 WITH por_usuario_mes AS (
   SELECT user_id, DATE_TRUNC('month', event_date) AS mes,
     SUM(CASE WHEN was_send THEN 1 ELSE 0 END) AS msgs,
     SUM(CASE WHEN email_sent THEN 1 ELSE 0 END) AS msgs_email,
     SUM(CASE WHEN pn_send THEN 1 ELSE 0 END) AS msgs_push,
     SUM(CASE WHEN whatsapp_send THEN 1 ELSE 0 END) AS msgs_whatsapp,
+    SUM(CASE WHEN whatsapp_delivery THEN 1 ELSE 0 END) AS msgs_whatsapp_entregados,
     SUM(CASE WHEN in_app_impression THEN 1 ELSE 0 END) AS msgs_inapp,
-    SUM(CASE WHEN email_unsubscribe THEN 1 ELSE 0 END) AS bajas_email,
-    SUM(CASE WHEN whatsapp_send THEN 1.00 ELSE 0 END) + SUM(CASE WHEN email_sent THEN 0.05 ELSE 0 END) AS costo_mxn
+    SUM(CASE WHEN email_unsubscribe THEN 1 ELSE 0 END) AS bajas_email
   FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
   WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
   GROUP BY user_id, DATE_TRUNC('month', event_date)
@@ -209,9 +210,8 @@ SELECT mes,
   CASE WHEN msgs = 0 THEN '00' WHEN msgs <= 5 THEN '01-05' WHEN msgs <= 10 THEN '06-10' WHEN msgs <= 20 THEN '11-20'
        WHEN msgs <= 40 THEN '21-40' WHEN msgs <= 80 THEN '41-80' WHEN msgs <= 160 THEN '081-160' ELSE '161+' END AS banda_msgs_mes,
   COUNT(*) AS usuarios,
-  SUM(msgs) AS msgs, SUM(msgs_email) AS msgs_email, SUM(msgs_push) AS msgs_push, SUM(msgs_whatsapp) AS msgs_whatsapp, SUM(msgs_inapp) AS msgs_inapp,
+  SUM(msgs) AS msgs, SUM(msgs_email) AS msgs_email, SUM(msgs_push) AS msgs_push, SUM(msgs_whatsapp) AS msgs_whatsapp, SUM(msgs_whatsapp_entregados) AS msgs_whatsapp_entregados, SUM(msgs_inapp) AS msgs_inapp,
   SUM(CASE WHEN bajas_email > 0 THEN 1 ELSE 0 END) AS usuarios_con_baja_email,
-  ROUND(SUM(costo_mxn), 0) AS costo_mxn,
   PERCENTILE_APPROX(msgs, 0.5) AS msgs_p50, PERCENTILE_APPROX(msgs, 0.9) AS msgs_p90, MAX(msgs) AS msgs_max
 FROM por_usuario_mes
 GROUP BY mes, 2
@@ -360,11 +360,13 @@ ORDER BY envios DESC;
 -- E7b. Patrón de respuesta por usuario: a qué canal responde cada quien, y cuánto le mandamos por cada canal.
 -- Responder = clic en email, apertura de push, lectura de WhatsApp o clic en in-app, al menos una vez en el periodo.
 -- Resultado esperado: 16 filas (una por combinación de canales a los que responde). Descargar como e7b_patron_respuesta.csv
+-- Versión 2 (15 oct): agrega msgs_wa_entregados y quita costo_mxn.
 WITH por_usuario AS (
   SELECT user_id,
     SUM(CASE WHEN email_sent THEN 1 ELSE 0 END)    AS msgs_email,
     SUM(CASE WHEN pn_send THEN 1 ELSE 0 END)       AS msgs_push,
     SUM(CASE WHEN whatsapp_send THEN 1 ELSE 0 END) AS msgs_wa,
+    SUM(CASE WHEN whatsapp_delivery THEN 1 ELSE 0 END) AS msgs_wa_entregados,
     SUM(CASE WHEN in_app_impression THEN 1 ELSE 0 END) AS msgs_inapp,
     MAX(CASE WHEN email_click THEN 1 ELSE 0 END)   AS resp_email,
     MAX(CASE WHEN pn_open THEN 1 ELSE 0 END)       AS resp_push,
@@ -378,10 +380,9 @@ WITH por_usuario AS (
 )
 SELECT resp_email, resp_push, resp_wa, resp_inapp,
   COUNT(*)            AS usuarios,
-  SUM(msgs_email)     AS msgs_email, SUM(msgs_push) AS msgs_push, SUM(msgs_wa) AS msgs_wa, SUM(msgs_inapp) AS msgs_inapp,
+  SUM(msgs_email)     AS msgs_email, SUM(msgs_push) AS msgs_push, SUM(msgs_wa) AS msgs_wa, SUM(msgs_wa_entregados) AS msgs_wa_entregados, SUM(msgs_inapp) AS msgs_inapp,
   SUM(convirtio)      AS usuarios_con_conversion,
-  SUM(baja_email)     AS usuarios_con_baja_email,
-  ROUND(SUM(msgs_email) * 0.05 + SUM(msgs_wa) * 1.00, 2) AS costo_mxn
+  SUM(baja_email)     AS usuarios_con_baja_email
 FROM por_usuario
 GROUP BY 1, 2, 3, 4
 ORDER BY usuarios DESC;
@@ -566,24 +567,29 @@ ORDER BY envios_usuario_dia DESC;
 -- En E7b "respondió" era alguna vez en 9 meses. Aquí se mide sobre julio a septiembre: quién respondió a qué canal en esos 90 días,
 -- y cuánto se le mandó por cada canal en esos mismos 90 días. Da la versión fina de "canal mudo".
 -- Resultado esperado: 16 filas. Descargar como e9b_patron_respuesta_90d.csv
-WITH u AS (
+-- Versión 2 (15 oct): misma definición que E7b (email responde = clic; la versión 1 usaba apertura por error), agrega msgs_wa_entregados y quita costo_mxn. Solo cambia la ventana de fechas.
+WITH por_usuario AS (
   SELECT user_id,
-    MAX(CASE WHEN category = 'email' AND email_open THEN 1 ELSE 0 END)                AS resp_email,
-    MAX(CASE WHEN category = 'push notification' AND pn_open THEN 1 ELSE 0 END)       AS resp_push,
-    MAX(CASE WHEN category = 'whatsapp' AND whatsapp_read THEN 1 ELSE 0 END)          AS resp_wa,
-    MAX(CASE WHEN category = 'in-app' AND in_app_click THEN 1 ELSE 0 END)             AS resp_inapp,
-    SUM(CASE WHEN category = 'email' AND was_send THEN 1 ELSE 0 END)                  AS msgs_email,
-    SUM(CASE WHEN category = 'push notification' AND was_send THEN 1 ELSE 0 END)      AS msgs_push,
-    SUM(CASE WHEN category = 'whatsapp' AND was_send THEN 1 ELSE 0 END)               AS msgs_wa,
-    SUM(CASE WHEN category = 'in-app' AND was_send THEN 1 ELSE 0 END)                 AS msgs_inapp,
-    MAX(CASE WHEN is_converted THEN 1 ELSE 0 END)                                     AS convirtio,
-    MAX(CASE WHEN email_unsubscribe THEN 1 ELSE 0 END)                                AS baja_email
+    SUM(CASE WHEN email_sent THEN 1 ELSE 0 END)    AS msgs_email,
+    SUM(CASE WHEN pn_send THEN 1 ELSE 0 END)       AS msgs_push,
+    SUM(CASE WHEN whatsapp_send THEN 1 ELSE 0 END) AS msgs_wa,
+    SUM(CASE WHEN whatsapp_delivery THEN 1 ELSE 0 END) AS msgs_wa_entregados,
+    SUM(CASE WHEN in_app_impression THEN 1 ELSE 0 END) AS msgs_inapp,
+    MAX(CASE WHEN email_click THEN 1 ELSE 0 END)   AS resp_email,
+    MAX(CASE WHEN pn_open THEN 1 ELSE 0 END)       AS resp_push,
+    MAX(CASE WHEN whatsapp_read THEN 1 ELSE 0 END) AS resp_wa,
+    MAX(CASE WHEN in_app_click THEN 1 ELSE 0 END)  AS resp_inapp,
+    MAX(CASE WHEN is_converted THEN 1 ELSE 0 END)  AS convirtio,
+    MAX(CASE WHEN email_unsubscribe THEN 1 ELSE 0 END) AS baja_email
   FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
   WHERE event_date BETWEEN DATE '2026-07-01' AND DATE '2026-09-30'
   GROUP BY user_id
 )
-SELECT resp_email, resp_push, resp_wa, resp_inapp, COUNT(*) AS usuarios,
-  SUM(msgs_email) AS msgs_email, SUM(msgs_push) AS msgs_push, SUM(msgs_wa) AS msgs_wa, SUM(msgs_inapp) AS msgs_inapp,
-  SUM(convirtio) AS usuarios_con_conversion, SUM(baja_email) AS usuarios_con_baja_email,
-  SUM(msgs_email) * 0.05 + SUM(msgs_wa) * 1.00 AS costo_mxn
-FROM u GROUP BY 1, 2, 3, 4 ORDER BY usuarios DESC;
+SELECT resp_email, resp_push, resp_wa, resp_inapp,
+  COUNT(*)            AS usuarios,
+  SUM(msgs_email)     AS msgs_email, SUM(msgs_push) AS msgs_push, SUM(msgs_wa) AS msgs_wa, SUM(msgs_wa_entregados) AS msgs_wa_entregados, SUM(msgs_inapp) AS msgs_inapp,
+  SUM(convirtio)      AS usuarios_con_conversion,
+  SUM(baja_email)     AS usuarios_con_baja_email
+FROM por_usuario
+GROUP BY 1, 2, 3, 4
+ORDER BY usuarios DESC;

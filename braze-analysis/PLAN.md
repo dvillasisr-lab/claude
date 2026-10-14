@@ -192,3 +192,30 @@ Entregable con pirámide: 1 página de respuesta, 8 a 12 hallazgos clave con cif
 6. Ingreso por conversión o ticket promedio si quieres resultados en dinero.
 7. Tarifas: costo por SMS y WhatsApp por país, costo del contrato Braze y de proveedores de email, para la lente de gasto.
 8. Export de usuarios con estado de suscripción (o la tabla de cambios de suscripción) para la vista por usuario.
+
+## 9. Entregable final: un Google Sheets con todo (acordado el 15 de octubre)
+
+Objetivo: que el usuario pueda rehacer a mano cualquier número. Todo resultado de query va crudo, todo cálculo es fórmula, todo insight apunta a la celda que lo sostiene. Formato plano: sin colores, sin celdas combinadas, encabezado en la fila 1 y congelado, una tabla por pestaña desde A1, filtros activados en las tablas largas. No se construye nada hasta que toda la data esté recibida (faltan E3, E4b, E7b y E9b en versión 2).
+
+### Reglas que aplican a todas las pestañas
+
+- **Identificador siempre que se pueda.** Toda fila que hable de una comunicación lleva `communication_id`, `ticket` (B0211, T2728, S0004) y `communication_name`. Toda fila que hable de una familia lleva `familia`, `ticket` (tomado de la primera comunicación de la familia en E1) e `ids` (lista de los communication_id de la familia según E2, separados por coma) para buscarla en Braze.
+- **Disclaimer en cada cálculo.** Cada pestaña de cálculo tiene una columna `supuestos` por fila o un bloque "Supuestos de esta pestaña" al inicio que dice qué asume el número: base de cobro, conversión de referencia, conteos aproximados (APPROX_COUNT_DISTINCT y PERCENTILE_APPROX en Databricks), familias colapsadas por fecha, doble conteo, censura de la cohorte 0, etc. Léeme junta todos los supuestos en una lista.
+- **Costos solo en el Sheets.** Las columnas `costo_mxn` que vienen en E1 y E4a (calculadas sobre WhatsApp enviado) se dejan en crudo pero no se usan; el costo se calcula siempre con fórmula desde Parámetros.
+- **Funciones compatibles** con Excel y Sheets (SUMIFS, COUNTIFS, AVERAGEIFS, MEDIAN con IF, INDEX y MATCH, IFERROR, TEXTJOIN), para que la conversión del archivo no rompa fórmulas.
+
+### Pestañas
+
+1. **Léeme.** Qué es cada pestaña, fuente, periodo (1 ene a 30 sep 2026), fecha de corrida y md5 de cada CSV, columnas derivadas, lista de supuestos, cómo actualizar si se vuelve a correr una query.
+2. **Parámetros.** Costo por email (0.05), por WhatsApp (1.00), por push (0), por in-app (0); base de cobro de WhatsApp (entregado por default, enviado como opción); costo fijo de Braze por mes (vacío hasta tenerlo); denominador de usuarios con email (20,137,560, E5); mínimos de respuesta por canal (email clic 0.3 %, push apertura 0.75 %, WhatsApp lectura 60 %, in-app clic 10 %); umbrales de acción (mitad del mínimo, lift 1.5, muestra 1000 abrieron / 1000 no abrieron / 100 conversiones, in-app clic 5 % para quitar la pieza); estándares externos de referencia editables (ver pestaña Estándares). Las medianas por canal no son parámetro: se calculan.
+3. **Datos crudos: una pestaña por extracción** (E1, E2, E3, E4a, E4b, E5, E5b, E6a, E6b, E7a, E7b, E7c, E8, E9a, E9b), pegadas completas y sin tocar. Única columna agregada: `familia` en E1 y E2 (nombre sin la fecha `-AAAAMMDD-`), marcada como derivada.
+4. **Catálogo de familias.** Fórmulas sobre E1 y E2: familia, ticket, ids, equipo, producto, canales, tipo (cobranza = equipo Collections; transaccional = sin ticket en el nombre; lo demás promocional o lifecycle), primer y último mes, activa en septiembre.
+5. **Una pestaña de cálculo por lente**, cada una con sus supuestos: B canales (mes × canal: envíos, entregados, respuesta, bajas, costo), C campañas (familia × canal: envíos, costo, respuesta, bajas por mil, mediana del canal, señal, mueve, acción, por qué, ahorro), E después de la baja, F solapamiento, G buenas prácticas con datos propios (audiencia, gancho, tamaño, intensidad), H etapas bloqueadas, J canal preferido (E7b y E9b), K abren vs no abren (E7c), L días hasta la baja (E8), M ventanas (E9a).
+6. **Estándares y buenas prácticas.** Una fila por métrica u operación: qué es, cómo se calcula (fórmula viva sobre los crudos), valor actual, estándar propuesto, de dónde sale el estándar (referencia externa editable en Parámetros, o nuestro propio percentil), brecha, qué hacer y qué significa quedarse debajo. Cubre: entrega por canal, apertura y clic de email, apertura de push, lectura y entrega de WhatsApp, clic de in-app, bajas por mil entregados, mensajes por usuario al mes (tope diario, semanal y mensual), familias simultáneas por usuario, días hasta la baja, mensajes a canal mudo, envíos a etapas bloqueadas, envíos después de la baja, tamaño máximo de un envío masivo y prueba previa, grupos de control, limpieza de WhatsApp no entregado, nomenclatura con ticket. Es la pestaña que evita volver a lo mismo: deja el estándar escrito y la fórmula que lo mide.
+7. **Insights.** Una sola pestaña con filtros. Columnas: lente, equipo, producto, canal, tipo de hallazgo (gasto, fatiga, segmentación, calidad de dato, oportunidad), hallazgo, cifra (referencia viva a la celda del cálculo), fuente (E número), confianza, qué significa, qué hacer, estándar relacionado.
+8. **Plan de acción.** Resumen por acción (campañas, mensajes al mes, costo y ahorro) y la lista por campaña con ticket e ids, ambos con fórmula sobre la pestaña C.
+9. **Verificación.** Totales de los hallazgos actuales (archivos de `hallazgos/`) contra los totales del Sheets, con columna de diferencia. La revisión de "lo que ya tengo" se hace aquí hasta que todo dé cero o la diferencia esté explicada.
+
+### Cómo se construye y verifica
+
+El archivo se arma en local con fórmulas, se sube a Drive del usuario como Google Sheets y se lee de vuelta para confirmar que las fórmulas evalúan y que Verificación cuadra. Orden: Léeme, Parámetros, crudos y Verificación primero; luego Catálogo y lentes; al final Estándares, Insights y Plan de acción. Cuando esté al 100 % se pide a design un tablero y una presentación a partir del Sheets.
