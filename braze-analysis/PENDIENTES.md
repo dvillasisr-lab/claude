@@ -17,7 +17,7 @@ Todo lo de esta sección se muestra por mes y por semana, por canal y total, par
 | 1.7 | Bajas de email: eventos y usuarios únicos por periodo, tasa sobre entregados | E4a | Datos listos | 457 mil usuarios únicos en 9 meses, 1.09 M eventos. Definición en METRICAS.md sección Bajas |
 | 1.8 | Bajas por canal | No existe para push ni WhatsApp | Bloqueado por dato | Solo email tiene campo de baja. Ver METRICAS.md sección Bajas |
 | 1.9 | Concentración de mensajes: usuarios y mensajes por banda de mensajes, por mes | E4b | Datos listos | |
-| 1.10 | Usuarios con baja que siguen recibiendo mensajes | E5 (por definir) | Replanteado | `email_subscribe` no sirve para esto. Se mediría como usuarios con baja en el mes M que reciben email después. Necesita extracción E5 por cohorte de baja. Decidir si vale la pena |
+| 1.10 | Usuarios con baja que siguen recibiendo mensajes | E5 | Pendiente de correr E5 | `email_subscribe` no sirve para esto. Se mediría como usuarios con baja en el mes M que reciben email después. Necesita extracción E5 por cohorte de baja. Decidir si vale la pena |
 
 ## 2. Lo demás del plan (lentes A a I)
 
@@ -44,6 +44,8 @@ Todo lo de esta sección se muestra por mes y por semana, por canal y total, par
 |---|---|---|
 | E4a (semana y mes × canal) | Recibida, `data/e4a_serie_semana_mes_canal.csv` | 245 filas |
 | E4b (mes × banda de mensajes) | Recibida, `data/e4b_concentracion_mes.csv` | 72 filas |
-| E5 (cohorte de baja: usuarios con baja en el mes M que reciben email en M+1, M+2, M+3) | Por definir, solo si se quiere el outcome 1.10 | Unas 30 filas |
+| E5 (cohorte de baja: usuarios con baja en el mes M que reciben email en M+1, M+2, M+3) | Escrita en `sql/extraccion.sql`, pendiente de correr | 9 filas |
 
-Con E1 a E4 están todos los datos para arrancar la Ola 2 (analistas por lente).
+Con E1 a E4 están todos los datos para arrancar la Ola 2 (analistas por lente). Muestra del formato en `hallazgos/MUESTRA_B_canales.md`.
+
+Periodo decidido: meses enero a septiembre 2026 (los 9 son completos). Semanas: 38 completas del 5 de enero al 27 de septiembre; se excluyen las dos semanas parciales de las orillas.

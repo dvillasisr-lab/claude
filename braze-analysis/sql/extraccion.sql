@@ -216,3 +216,41 @@ SELECT mes,
 FROM por_usuario_mes
 GROUP BY mes, 2
 ORDER BY mes, banda_msgs_mes;
+
+
+-- ===================== E5. Cohorte de baja: usuarios que se dan de baja de email y siguen recibiendo email después =====================
+-- Resultado esperado: 9 filas (una por mes de baja). Descargar como e5_cohorte_baja.csv
+-- Nota: un usuario dado de baja puede recibir email transaccional de forma legítima. El resultado se cruza con el tipo de comunicación en el análisis.
+WITH primera_baja AS (
+  SELECT user_id, MIN(DATE_TRUNC('month', event_date)) AS mes_baja
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30' AND email_unsubscribe
+  GROUP BY user_id
+),
+despues AS (
+  SELECT b.user_id, b.mes_baja, DATE_TRUNC('month', t.event_date) AS mes_envio,
+    SUM(CASE WHEN t.email_sent THEN 1 ELSE 0 END) AS emails,
+    SUM(CASE WHEN t.email_open THEN 1 ELSE 0 END) AS abiertos,
+    SUM(CASE WHEN t.email_unsubscribe THEN 1 ELSE 0 END) AS bajas_otra_vez
+  FROM primera_baja b
+  JOIN analytics_engineering_production.xplore._dim_braze_users_and_communications t ON t.user_id = b.user_id
+  WHERE t.event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
+    AND DATE_TRUNC('month', t.event_date) > b.mes_baja
+  GROUP BY b.user_id, b.mes_baja, DATE_TRUNC('month', t.event_date)
+)
+SELECT b.mes_baja,
+  COUNT(DISTINCT b.user_id)                                                                        AS usuarios_baja,
+  COUNT(DISTINCT CASE WHEN d.mes_envio = ADD_MONTHS(b.mes_baja, 1) AND d.emails > 0 THEN d.user_id END) AS reciben_email_m1,
+  SUM(CASE WHEN d.mes_envio = ADD_MONTHS(b.mes_baja, 1) THEN d.emails ELSE 0 END)                 AS emails_m1,
+  COUNT(DISTINCT CASE WHEN d.mes_envio = ADD_MONTHS(b.mes_baja, 2) AND d.emails > 0 THEN d.user_id END) AS reciben_email_m2,
+  SUM(CASE WHEN d.mes_envio = ADD_MONTHS(b.mes_baja, 2) THEN d.emails ELSE 0 END)                 AS emails_m2,
+  COUNT(DISTINCT CASE WHEN d.mes_envio = ADD_MONTHS(b.mes_baja, 3) AND d.emails > 0 THEN d.user_id END) AS reciben_email_m3,
+  SUM(CASE WHEN d.mes_envio = ADD_MONTHS(b.mes_baja, 3) THEN d.emails ELSE 0 END)                 AS emails_m3,
+  COUNT(DISTINCT CASE WHEN d.emails > 0 THEN d.user_id END)                                       AS reciben_email_despues_total,
+  SUM(COALESCE(d.emails, 0))                                                                      AS emails_despues_total,
+  SUM(COALESCE(d.abiertos, 0))                                                                    AS abiertos_despues_total,
+  COUNT(DISTINCT CASE WHEN d.bajas_otra_vez > 0 THEN d.user_id END)                               AS se_dan_de_baja_otra_vez
+FROM primera_baja b
+LEFT JOIN despues d ON d.user_id = b.user_id
+GROUP BY b.mes_baja
+ORDER BY b.mes_baja;
