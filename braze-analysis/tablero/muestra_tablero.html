@@ -112,7 +112,7 @@ footer code{font-family:var(--mono);font-size:12px}
   <div class="hd"><h2>Bajas de email</h2><p>457 mil usuarios únicos se dieron de baja en 9 meses. Tres lecturas: en qué meses se concentran las bajas, qué parte de la base ya se perdió, y la tasa de cada mes (de cada 100 usuarios que recibieron email ese mes, cuántos se dieron de baja). La tasa fue de 1.5 % en enero y bajó a 0.4 % en junio, con un repunte a 1.2 % en julio. Push y WhatsApp no tienen campo de baja.</p></div>
   <div class="grid3">
     <div class="card"><h3>Qué parte de las bajas cae en cada mes</h3><div class="sub">% de las 457 mil bajas del periodo. Si fueran parejas, cada mes tendría 11.1 %.</div><div class="chart" id="c_bajas_mes"></div></div>
-    <div class="card"><h3>Bajas acumuladas sobre la base contactada</h3><div class="sub">% de los 19.5 M usuarios con alguna comunicación en el periodo. Denominador provisional: la base exacta de email sale de E5.</div><div class="chart" id="c_bajas_acum"></div></div>
+    <div class="card"><h3>Bajas acumuladas sobre la base contactada</h3><div class="sub">% de los 20.1 M usuarios únicos que recibieron al menos un email en el periodo (E5).</div><div class="chart" id="c_bajas_acum"></div></div>
     <div class="card"><h3>Tasa mensual de baja</h3><div class="sub">Usuarios únicos con baja en el mes entre usuarios únicos con email entregado ese mes. Es la tasa que se compara con otros meses.</div><div class="chart" id="c_bajas_tasa"></div></div>
   </div>
   <div class="card"><h3>Qué pasa después de la baja</h3><div class="sub">Cohorte E5: usuarios con baja en el mes, y de esos cuántos vuelven a recibir email en los meses siguientes del periodo. Septiembre no tiene meses después.</div>
@@ -155,7 +155,7 @@ const tiles = [
   {k:'WhatsApp sin entregar', v:(K.wa_perdido/1e6).toLocaleString('es-MX',{maximumFractionDigits:1}), u:'M MXN', d:'<b>25.8 %</b> de los envíos de WhatsApp', cls:'crit'},
   {k:'Apertura de push', v:fmtP(K.apertura_push,2), d:'benchmark <b>3 a 10 %</b>', cls:'crit'},
   {k:'Clic de email', v:fmtP(K.clic_email,2), d:'benchmark <b>1.5 a 3 %</b>', cls:'crit'},
-  {k:'Bajas de email', v:fmtK(K.bajas_usuarios), d:'usuarios únicos en 9 meses, <b>2.3 %</b> de los 19.5 M contactados'},
+  {k:'Bajas de email', v:fmtK(K.bajas_usuarios), d:'usuarios únicos en 9 meses, <b>2.3 %</b> de los 20.1 M con email en el periodo'},
 ];
 document.getElementById('tiles').innerHTML = tiles.map(t=>`<div class="tile"><div class="k">${t.k}</div><div class="v">${t.v}${t.u?`<small>${t.u}</small>`:''}</div><div class="d ${t.cls||''}">${t.d}</div></div>`).join('');
 
@@ -202,7 +202,7 @@ function bars(id, rows, key, color, {valFmt, ymaxFixed, unitTip='', bench, bench
 }
 bars('c_conc', DATA.monthly, 'conc_msgs', 'var(--accent)', {valFmt:v=>fmtP(v,0), ymaxFixed:50, unitTip:' de los mensajes'});
 const BT = DATA.monthly.reduce((a,r)=>a+r.bajas_usuarios,0); let acc=0;
-const BAJAS = DATA.monthly.map(r=>{ acc+=r.bajas_usuarios; return {mes:r.mes, pct:Math.round(1000*r.bajas_usuarios/BT)/10, n:r.bajas_usuarios, acum:acc, pacum:Math.round(10000*acc/19538153)/100}; });
+const BAJAS = DATA.monthly.map(r=>{ acc+=r.bajas_usuarios; return {mes:r.mes, pct:Math.round(1000*r.bajas_usuarios/BT)/10, n:r.bajas_usuarios, acum:acc, pacum:Math.round(10000*acc/20137560)/100}; });
 bars('c_bajas_mes', BAJAS, 'pct', 'var(--accent)', {valFmt:v=>fmtP(v,1), ymaxFixed:20, unitTip:' de las bajas del periodo', bench:11.1, benchLabel:'reparto parejo 11.1 %'});
 lines('c_bajas_tasa', DATA.monthly, [{key:'baja_email',name:'Tasa',color:'var(--accent)'}], {xlabel:r=>mlabel(r.mes), xlabelTip:r=>mlabel(r.mes)+' 2026', fmt:v=>fmtP(v,2), ymax:2, H:200});
 lines('c_bajas_acum', BAJAS, [{key:'pacum',name:'Acumulado',color:'var(--accent)'}], {xlabel:r=>mlabel(r.mes), xlabelTip:r=>mlabel(r.mes)+' 2026', fmt:v=>fmtP(v,2), ymax:3, H:200});

@@ -43,6 +43,7 @@ Todo lo de esta sección se muestra por mes y por semana, por canal y total, par
 |---|---|---|
 | `email_subscribe` y `push_subscribe` de `_dim_braze_users` | Resuelto: no se usan | La baja se mide con `email_unsubscribe` (usuarios únicos). Push y WhatsApp no tienen estado de suscripción |
 | Cobertura del golden record (93 % sin golden) | Cruces por etapa y riesgo | Saber a quién cubre `dim_braze_filters` |
+| Costo fijo de Braze ("$7,020/mes, 32,474 créditos") | Costo total por mensaje y por conversión | Pendiente del usuario. En el Sheets final los costos serán celdas de parámetro (email 0.05, WhatsApp 1.00, fijo Braze vacío) para editarlos sin tocar fórmulas |
 
 ## 4. Extracciones pendientes
 
@@ -50,17 +51,16 @@ Todo lo de esta sección se muestra por mes y por semana, por canal y total, par
 |---|---|---|
 | E4a (semana y mes × canal) | Recibida, `data/e4a_serie_semana_mes_canal.csv` | 245 filas |
 | E4b (mes × banda de mensajes) | Recibida, `data/e4b_concentracion_mes.csv` | 72 filas |
-| E5 (cohorte de baja) | Recibida, `data/e5_cohorte_baja.csv`. Falta la línea del denominador (usuarios con email en el periodo) | 9 filas |
+| E5 (cohorte de baja) | Recibida, `data/e5_cohorte_baja.csv`. Denominador recibido 15 oct: 20,137,560 usuarios únicos con email en el periodo (bajas = 2.27 % de la base) | 9 filas |
 | E5b (qué comunicaciones llegan después de la baja) | Recibida 14 oct, `data/e5b_comms_despues_baja.csv` | 200 a 500 filas |
 | E6a (solapamiento por usuario-día, por mes y banda de familias) | Recibida 14 oct, `data/e6a_solape_dia_mes.csv` | 45 filas |
 | E6b (pares de familias que coinciden en el mismo usuario el mismo día) | Recibida 14 oct, `data/e6b_pares_familias.csv` | hasta 1,000 filas |
 | E7a (familia × canal × etapa del golden record) | Recibida 14 oct, `data/e7a_familia_canal_etapa.csv` | 10 a 20 mil filas |
 | E7b (patrón de respuesta por usuario: a qué canal responde y cuánto se le manda) | Recibida 14 oct, `data/e7b_patron_respuesta.csv` | 16 filas |
 | E7c (convierten los que abren vs los que no, por familia y canal) | Recibida 14 oct, `data/e7c_abren_vs_no_abren.csv` | 2,062 filas |
-| E8 (días entre el primer email y la baja, emails antes de la baja, familia del día de la baja) | Recibida 15 oct, `data/e8_dias_hasta_baja.csv`. Solo cubre 115 mil de las 457 mil bajas (filtro de entrega en la fila de la baja); query corregida (versión 2), vale la pena volver a correr. Ver `hallazgos/MUESTRA_L_dias_hasta_baja.md` | 79 filas |
-| E9a (abren vs no abren con ventanas de 7, 30, 90 días y fin de periodo) | Escrita, pendiente de correr | 1 a 3 mil filas |
-| E9b (patrón de respuesta por usuario en los últimos 90 días, julio a septiembre) | Escrita, pendiente de correr | 16 filas |
-| Línea del denominador de E5 (usuarios únicos con email entregado en el periodo) | Pendiente | 1 fila |
+| E8 (días entre el primer email y la baja, emails antes de la baja, familia del día de la baja) | Recibida 15 oct, `data/e8_dias_hasta_baja.csv`. Solo cubre 115 mil de las 457 mil bajas (filtro de entrega en la fila de la baja); query corregida (versión 3, sin subquery correlacionada; la v2 falló en Spark). Opcional volver a correr. Ver `hallazgos/MUESTRA_L_dias_hasta_baja.md` | 79 filas |
+| E9a (abren vs no abren con ventanas de 7, 30, 90 días y fin de periodo) | Recibida 15 oct, `data/e9a_abren_vs_no_abren_ventanas.csv`. Ver sección de ventanas en `hallazgos/MUESTRA_K_abren_vs_no_abren.md` | 1,225 filas |
+| E9b (patrón de respuesta por usuario en los últimos 90 días, julio a septiembre) | Recibida 15 oct, `data/e9b_patron_respuesta_90d.csv`. Ver `hallazgos/MUESTRA_J_canal_preferido.md` | 16 filas |
 
 Con E1 a E4 están todos los datos para arrancar la Ola 2 (analistas por lente). Muestras del formato en `hallazgos/MUESTRA_B_canales.md` (canales) y `hallazgos/MUESTRA_C_campanas.md` (campañas y equipos), y del tablero en `tablero/muestra_tablero.html` (publicado en https://claude.ai/code/artifact/81c8ba2e-4305-498c-8c18-6148df86320a).
 

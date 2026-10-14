@@ -32,6 +32,26 @@ Dos cohortes. **Cohorte limpia** = su primer email fue de febrero en adelante, a
 | Collections-KCash-T000-CANVAS-Precobranza-ecosystem | 1,518 | 3 % | 29 | 15.8 |
 | Lending-KCash-B0301-CANVAS-Active-Retargeting_Installments_SP | 1,360 | 3 % | 1 | 9.0 |
 
+## Por equipo, tipo y cohorte
+
+Las familias con 500 o más bajas cubren todas las bajas de la cohorte limpia y 84 % de la cohorte 0. Para cada baja se toma la familia que le llegó el día de la baja y su equipo y tipo (del catálogo). Días y emails son medianas y promedios ponderados por usuarios.
+
+| Cohorte | Equipo | Bajas | % de la cohorte | Días hasta la baja (mediana) | Emails antes |
+|---|---|---|---|---|---|
+| Nuevos (feb a sep) | Marketing | 27.0 mil | 57 % | 5 | 7 |
+| Nuevos | Others (transaccional, BillPay) | 12.2 mil | 26 % | 7 | 9 |
+| Nuevos | Product Growth | 3.7 mil | 8 % | 56 | 14 |
+| Nuevos | Acquisition (KPay) | 3.3 mil | 7 % | 1 | 4 |
+| Nuevos | Collections | 2.2 mil | 5 % | 34 | 19 |
+| Ya recibían en enero | Marketing | 27.0 mil | 40 % | 51 | 16 |
+| Ya recibían | Product Growth | 18.8 mil | 28 % | 111 | 32 |
+| Ya recibían | Others | 7.7 mil | 12 % | 80 | 31 |
+| Ya recibían | Collections, Sales, Compliance | 3.1 mil | 5 % | 88 a 118 | 32 a 61 |
+
+- **Por tipo**: 79 % de las bajas de nuevos y 74 % de las de la base vieja caen el día de un email promocional; 19 % y 8 % el día de un transaccional (FraudRisk, Payment Confirmation, BillPay); 5 % y 2 % en cobranza.
+- **Por producto**: Cash concentra 69 % y 65 %. KPay es 7 % en nuevos pero con la baja más rápida de todas (mediana 1 día, 4 emails: los retargetings de Veriff y NIP con cupón).
+- **Lectura**: Marketing pierde al usuario nuevo en la primera semana con el onboarding; Product Growth lo pierde a los tres meses con la insistencia de Tasa 0 (B0211) e Installments (B0223). Son dos problemas distintos con dos arreglos distintos: tope diario en el primero, tope mensual y salida por no apertura en el segundo.
+
 ## Cohorte 0 (ya recibía email en enero, 67.2 mil usuarios)
 
 Mediana 62 días y 15 emails (piso, por la censura). Aquí mandan las campañas de insistencia a bases viejas: B0171 Rezagados NarrativaTasa0 (13 %, a los 29 días), B0211 Nuevos Registrados Tasa 0 (12 %, a los 108 días y 29 emails), B0326 Leads Referral (9 %, 85 días, 20 emails), B0223 NeverActive (5 %, 182 días, 44 emails). Es el cansancio lento: muchos emails durante meses hasta que el usuario se harta.

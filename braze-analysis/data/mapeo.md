@@ -480,3 +480,10 @@ Por decisión del usuario la señal de eficiencia se basa en métricas de comuni
 
 - `e8_dias_hasta_baja.csv`: 79 filas en 4 bloques (resumen, banda_dias, banda_emails, familia_dia_baja) × cohorte_limpia. Identificado por columnas. Cubre 115 mil bajas de 457 mil: la versión 1 de la query pedía entrega en la misma fila de la baja. Versión 2 escrita en `sql/extraccion.sql`.
 - Pendientes de correr: E9a (abren vs no abren con ventanas 7, 30, 90 días y fin de periodo), E9b (patrón de respuesta de julio a septiembre), E8 versión 2 y la línea del denominador de E5.
+
+## E9a, E9b y denominador de E5 recibidos (15 oct 2026)
+
+- Denominador de E5: 20,137,560 usuarios únicos con email enviado en el periodo. Las 457 mil bajas son 2.27 % de esa base. Reemplaza el provisional de 19.5 M en el tablero y en MUESTRA_B.
+- `e9a_abren_vs_no_abren_ventanas.csv`: 1,225 filas (familia con fecha; 1,224 al colapsar), conversión a 7, 30, 90 días y fin de periodo. Resultado en `hallazgos/muestra_m_ventanas.csv`.
+- `e9b_patron_respuesta_90d.csv`: 16 filas, julio a septiembre.
+- E8 versión 2 falló en Spark (subquery correlacionada en el JOIN); versión 3 escrita. Opcional.

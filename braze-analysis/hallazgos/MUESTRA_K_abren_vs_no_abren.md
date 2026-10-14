@@ -87,3 +87,23 @@ El equipo tenía 22 % contra 17 %. Aquí sale 4.5 % contra 2.6 % en Marketing-KC
 1. Usar las dos columnas como filtro de salida de cualquier campaña nueva: a las 4 semanas, si quienes abren no convierten al menos la mitad de lo normal del canal, se apaga sin discutir.
 2. Para probar causalidad de verdad hace falta un grupo de control (holdout) en Braze: 5 a 10 % de la audiencia que no recibe el mensaje. Es la única forma de separar "el mensaje mueve" de "quien abre ya iba a convertir".
 3. En in-app medir con holdout también: no hay "no vieron" y el clic es la única señal.
+
+## Con ventanas de 7, 30 y 90 días y hasta fin de periodo (E9a)
+
+Fuente: `data/e9a_abren_vs_no_abren_ventanas.csv` (1,225 filas; 867 familias × canal con muestra). Resultado en `hallazgos/muestra_m_ventanas.csv`. Mismo cálculo que E7c pero la conversión se busca en 7, 30 y 90 días después del envío, y hasta el 30 de septiembre.
+
+| Canal | Convierten quienes abren / quienes no, a 7 días | A 30 días | A 90 días | Hasta fin de periodo | Veces a 7 días | Veces a 90 días |
+|---|---|---|---|---|---|---|
+| Email | 8.4 % / 3.6 % | 18.9 % / 9.8 % | 25.3 % / 13.6 % | 24.0 % / 12.4 % | 2.3 | 1.6 |
+| Push | 19.8 % / 6.6 % | 35.5 % / 18.3 % | 43.9 % / 25.2 % | 41.4 % / 22.6 % | 3.0 | 1.9 |
+| WhatsApp | 5.9 % / 3.3 % | 14.4 % / 9.7 % | 23.0 % / 15.4 % | 21.9 % / 14.6 % | 2.1 | 1.5 |
+
+(Medianas entre familias con muestra. "Hasta fin de periodo" sale un poco menor que 90 días porque los envíos de agosto y septiembre tienen menos días por delante.)
+
+- **La diferencia se achica al abrir la ventana, pero no desaparece.** Las veces pasan de 2.3 a 1.6 en email, de 3.0 a 1.9 en push y de 2.1 a 1.5 en WhatsApp: la mitad de la ventaja de quienes abren es de corto plazo (el mensaje adelanta la conversión) y la otra mitad se sostiene a 90 días (quien abre es alguien distinto, más activo).
+- **A 90 días, 285 de 867 familias × canal (33 %) ya tienen menos de 1.5 veces**, contra 65 a 7 días. Entre promocionales son 248 de 779. Eso quiere decir que para un tercio de las campañas, en tres meses quienes no abrieron alcanzan a quienes abrieron: el mensaje movió el calendario, no el resultado.
+- **Las que apagamos siguen mal con cualquier ventana.** B0211 Nuevos Registrados por email: quienes abren convierten 2.3 % a 90 días contra 1.0 % de quienes no; en email lo normal entre quienes abren a 90 días es 25 %. B0223 NeverActive: 0.8 % contra 0.3 %. B0171 Rezagados WhatsApp: 4.2 % contra 1.7 % (normal 23 %). La ventana no las rescata.
+- **Las de ventas a recurrentes (Sales KPay, Privalia, Comercio del día, Venta Azul) sí sostienen la diferencia** a 90 días (2 a 2.5 veces) y con conversión alta entre quienes abren (27 a 39 %). Son las que vale la pena re-segmentar en vez de apagar.
+- **Veriff (email) cae a 1.5 veces a 90 días** (12.1 % contra 8.1 %): dos tercios de su diferencia a 7 días era adelanto. Refuerza la lectura de bajar frecuencia en vez de insistir.
+
+Qué ventana usar: 7 días para medir si la pieza mueve a corto plazo (es la que entra en la regla de acciones); 90 días para saber si cambió el resultado. Cuando las dos coinciden, la decisión es segura; cuando a 7 días se ve bien y a 90 no, el mensaje adelanta pero no suma, y la discusión es de costo (vale si es push o in-app, no si es WhatsApp).

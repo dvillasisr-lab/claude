@@ -458,7 +458,7 @@ ORDER BY envios_usuario_dia DESC;
 -- días de los reales (censura por la izquierda). cohorte_limpia = 1 marca a quien recibió su primer email de febrero en adelante;
 -- esa es la cifra buena para "días hasta la baja". En Spark el \d del regexp va con doble barra (\\d).
 -- Resultado esperado: 4 bloques, menos de 150 filas. Descargar como e8_dias_hasta_baja.csv
--- Versión 2 (15 oct): la primera versión pedía email_delivery en la misma fila de la baja y solo encontró 115 mil de las 457 mil bajas.
+-- Versión 3 (15 oct): sin subquery correlacionada. Versión 2: la primera versión pedía email_delivery en la misma fila de la baja y solo encontró 115 mil de las 457 mil bajas.
 -- Ahora la fecha de baja se toma de cualquier fila con email_unsubscribe, y los emails entregados se cuentan aparte.
 WITH emails AS (
   SELECT user_id, event_date, regexp_replace(communication_name, '-\\d{8}-', '-') AS familia
@@ -487,11 +487,17 @@ base AS (
   FROM usuario u JOIN antes a ON a.user_id = u.user_id
   WHERE u.fecha_baja IS NOT NULL
 ),
+ultimo AS (
+  -- fecha del último email entregado el día de la baja o antes (Spark no acepta subquery correlacionada en el JOIN)
+  SELECT e.user_id, MAX(e.event_date) AS fecha_ultimo
+  FROM emails e JOIN usuario u ON u.user_id = e.user_id AND e.event_date <= u.fecha_baja
+  GROUP BY e.user_id
+),
 dia_baja AS (
   -- familia que le llegó el día de la baja o, si ese día no hubo entrega, la última que recibió antes
   SELECT b.*, e.familia
-  FROM base b JOIN usuario u ON u.user_id = b.user_id
-  JOIN emails e ON e.user_id = b.user_id AND e.event_date = (SELECT MAX(e2.event_date) FROM emails e2 WHERE e2.user_id = b.user_id AND e2.event_date <= u.fecha_baja)
+  FROM base b JOIN ultimo l ON l.user_id = b.user_id
+  JOIN emails e ON e.user_id = b.user_id AND e.event_date = l.fecha_ultimo
 )
 SELECT 'resumen' AS bloque, 'todos' AS clave, cohorte_limpia, COUNT(*) AS usuarios,
   AVG(dias) AS dias_prom, percentile_approx(dias, 0.5) AS dias_mediana, percentile_approx(dias, 0.9) AS dias_p90,

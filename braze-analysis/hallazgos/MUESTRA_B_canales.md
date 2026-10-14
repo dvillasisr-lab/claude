@@ -40,23 +40,23 @@ Confianza: alta en la cifra. Media en la lectura: Braze registra apertura direct
 Implicación: las Canvas "Rescate" de Marketing (Anonimos-RescateTasa0 con 8.3 M envíos y 0.55 % de apertura, RescateFinesDeSemana con 10.5 M en cuatro versiones y menos de 1 %) son las primeras a revisar. Y hay una campaña con prefijo QA (ReminderRegistroTelefono) que mandó 1.9 M push a producción con 0.01 % de apertura: apagar hoy.
 
 ### H-B3. Email abre bien pero no genera clic, y 457 mil usuarios se dieron de baja en 9 meses, con enero y junio como los peores meses
-Cifra: apertura 23.7 % sobre entregados, clic 0.93 %. Bajas: 457 mil usuarios únicos, 2.3 % de los 19.5 M usuarios contactados en el periodo. Enero concentra 15.1 % de las bajas y junio 13.9 %; un reparto parejo sería 11.1 % por mes. Periodo: enero a septiembre 2026.
+Cifra: apertura 23.7 % sobre entregados, clic 0.93 %. Bajas: 457 mil usuarios únicos, 2.3 % de los 20.1 M usuarios únicos con email en el periodo (E5: 20,137,560). Enero concentra 15.1 % de las bajas y junio 13.9 %; un reparto parejo sería 11.1 % por mes. Periodo: enero a septiembre 2026.
 Comparación: benchmark de email promocional: apertura 15 a 25 % (cumple), clic 1.5 a 3 % (no cumple).
 Query: Q2 y la tabla de bajas de abajo.
-Confianza: alta en bajas y clic. El denominador del acumulado (19.5 M) es provisional: incluye usuarios que nunca recibieron email. La base exacta de email sale de E5.
+Confianza: alta en bajas y clic. El denominador del acumulado es la base de email del periodo (20,137,560 usuarios únicos con email enviado, E5).
 Implicación: el problema de email no es que no lo abran, es que no hay qué hacer dentro. Revisar llamadas a la acción y relevancia antes que asunto. Junio muestra el costo de un envío masivo mal dirigido: el email de BillPay fue a 16.1 M de usuarios, abrió 7.7 % contra 22.6 % del resto del mes, clic 0.10 %, y ese mes trae 63 mil bajas, el segundo peor.
 
-| Mes | Bajas (usuarios) | % de las bajas del periodo | Acumulado | Acumulado sobre 19.5 M |
+| Mes | Bajas (usuarios) | % de las bajas del periodo | Acumulado | Acumulado sobre 20.1 M |
 |---|---|---|---|---|
-| Ene | 69,226 | 15.1 % | 69,226 | 0.35 % |
-| Feb | 57,965 | 12.7 % | 127,191 | 0.65 % |
-| Mar | 50,413 | 11.0 % | 177,604 | 0.91 % |
-| Abr | 38,422 | 8.4 % | 216,026 | 1.11 % |
-| May | 38,034 | 8.3 % | 254,060 | 1.30 % |
-| Jun | 63,425 | 13.9 % | 317,485 | 1.62 % |
-| Jul | 52,912 | 11.6 % | 370,397 | 1.90 % |
-| Ago | 50,340 | 11.0 % | 420,737 | 2.15 % |
-| Sep | 36,639 | 8.0 % | 457,376 | 2.34 % |
+| Ene | 69,226 | 15.1 % | 69,226 | 0.34 % |
+| Feb | 57,965 | 12.7 % | 127,191 | 0.63 % |
+| Mar | 50,413 | 11.0 % | 177,604 | 0.88 % |
+| Abr | 38,422 | 8.4 % | 216,026 | 1.07 % |
+| May | 38,034 | 8.3 % | 254,060 | 1.26 % |
+| Jun | 63,425 | 13.9 % | 317,485 | 1.58 % |
+| Jul | 52,912 | 11.6 % | 370,397 | 1.84 % |
+| Ago | 50,340 | 11.0 % | 420,737 | 2.09 % |
+| Sep | 36,639 | 8.0 % | 457,376 | 2.27 % |
 
 ### H-B4. In-app convierte 12 veces más que email por envío y cuesta cero, pero es solo el 4 % del volumen
 Cifra: en Cash, 31.3 conversiones por cada 1,000 impresiones in-app contra 2.6 por 1,000 emails, 3.1 por 1,000 push y 4.9 por 1,000 WhatsApp. Clic sobre impresión 38 %. Periodo: enero a septiembre 2026. Denominador: envíos del canal en Cash, conversión fraccional.
