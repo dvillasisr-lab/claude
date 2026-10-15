@@ -1,19 +1,28 @@
 # Playbook de Braze para Kueski
 
+## Cómo usar este documento
+
+- **Vas a mandar algo:** sección 0.
+- **Vas a crear algo nuevo:** sección 6.
+- **Vas a activar algo:** checklist de la sección 7.
+- **Quieres mejorar algo que ya existe:** sección 8.
+- **Vas a poner orden en Braze:** secciones 1, 2 y 3.
+- **Vas a configurar la cuenta de Braze:** sección 11.
+
 ## Las 12 reglas en una página
 
-1. **Una pieza se llama** `Ticket-Producto-Audiencia-Gancho`. Sin ticket no se activa.
-2. **No se le escribe** a lista negra, REUS o ARCO, tarjeta KPay congelada, dados de baja, números de WhatsApp que fallaron 3 veces ni a quien no respondió nada en 90 días.
-3. **Máximo 2 toques** de la misma pieza al mes. El segundo solo a quien no abrió el primero.
-4. **Máximo 5 mensajes promocionales por semana** por usuario, 2 piezas al día y 1 push al día.
-5. **Se manda por el canal al que el usuario responde.** Hoy 59 % de los mensajes van a un canal que el usuario nunca abrió.
-6. **WhatsApp solo a quien ya dio señal** (abrió un push, un email o la app) o a clientes activos. Nunca a bases frías.
-7. **Nada a toda la base.** Más de 1 millón de usuarios obliga a prueba al 10 % y a un segmento.
-8. **Un recordatorio de algo que el usuario empezó** responde 5 a 10 veces más que una oferta nueva. Ese es el gancho principal.
-9. **Referidos, lanzamientos y novedades van en in-app**, no por email. En in-app responden 43 a 55 %; por email 0.2 %.
-10. **A las 4 semanas se revisa.** Si no llega al mínimo del canal, se apaga o se rehace. Sin discusión.
-11. **Toda pieza lleva grupo de control de verdad:** 10 % que no recibe nada, con la opción nativa de Braze. Hoy ninguna lo tiene, así que nadie puede decir cuánto vende Braze.
-12. **Un Canvas tiene máximo 8 pasos y el usuario entra una sola vez.** Hoy hay Canvas de inactividad con 120 pasos y 477 pasos que abren menos de 1 %.
+1. Una pieza se llama `Ticket-Producto-Audiencia-Gancho`. Sin ticket no se activa.
+2. No se le escribe a lista negra, REUS o ARCO, tarjeta KPay congelada, dados de baja, WhatsApp fallido 3 veces ni a quien no respondió en 90 días.
+3. Máximo 2 toques de la misma pieza al mes. El segundo solo a quien no abrió el primero.
+4. Máximo 5 promocionales por semana, 2 piezas al día y 1 push al día.
+5. Se manda por el canal al que el usuario responde.
+6. WhatsApp solo a quien ya dio señal o a clientes activos. Nunca a bases frías.
+7. Nada a toda la base. Más de 1 millón: prueba al 10 % y un segmento.
+8. El gancho principal es recordar algo que el usuario empezó.
+9. Referidos, lanzamientos y novedades van en in-app, no por email.
+10. A las 4 semanas se revisa. Debajo del mínimo del canal se apaga o se rehace.
+11. Toda pieza lleva grupo de control del 10 % con la opción nativa de Braze.
+12. Un Canvas tiene máximo 8 pasos y el usuario entra una sola vez.
 
 ---
 
