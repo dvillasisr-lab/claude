@@ -51,7 +51,7 @@ GAN = [('tasa 0', r'(Tasa0|Tasa 0)'), ('descuento, cupón u oferta', r'(Descuent
        ('retargeting o recordatorio', r'(Retargeting|Rescate|Recordatorio|Reminder)'), ('lanzamiento, novedades, newsletter', r'(Lanzamiento|Intro|Newsletter|Recommendations)'),
        ('cross sell', r'(XSell|Cross)')]
 AUDS = [a for a, _ in AUD] + ['otros']; GANS = [g for g, _ in GAN] + ['otros']
-TAM = ['<10 mil', '10 a 100 mil', '100 mil a 1 M', '1 M+']; TOQ = ['1', '2', '3 a 4', '5+']
+TAM = ['menos de 10 mil', '10 a 100 mil', '100 mil a 1 M', '1 M+']; TOQ = ['1', '2', '3 a 4', '5+']
 TICKET_RE = r'-[A-Z]?[BTS]0?\d{3,5}-'
 
 def md5(p): return hashlib.md5(open(p, 'rb').read()).hexdigest()
@@ -126,8 +126,23 @@ ver = wb.create_sheet('Verificación')
 # ---------- pandas base
 e1 = E['E1']
 e1name = e1.communication_name.replace('null', '')
-e1f = fam_pd(e1name.where(e1name != '', None)).fillna('(sin nombre)-' + e1.communication_id)
+e1f_raw = fam_pd(e1name.where(e1name != '', None)).fillna('(sin nombre)-' + e1.communication_id)
 e1mes = e1.mes.str[:7]; e1env = num('E1', 'envios'); e1usr = num('E1', 'usuarios_aprox')
+# Familias que solo cambian en mayúsculas/minúsculas (p. ej. "...-in-App" y "...-in-app") son la misma familia:
+# SUMIFS, COUNTIF y VLOOKUP de Sheets no distinguen mayúsculas, así que la réplica pandas tampoco debe hacerlo.
+# CANON: minúsculas -> nombre representativo (la variante con más envíos en E1; si no está en E1, la primera vista).
+def _build_canon():
+    m = {}
+    g_ = pd.DataFrame(dict(f=e1f_raw, e=e1env)).groupby('f').e.sum().sort_values(ascending=False)
+    for f in g_.index: m.setdefault(f.lower(), f)
+    for s_ in [fam_pd(E['E2'].nombre), fam_pd(E['E5b'].familia), fam_pd(E['E6b'].familia_a), fam_pd(E['E6b'].familia_b),
+               fam_pd(E['E7a'].familia), fam_pd(E['E7c'].familia), E['E9a'].familia, E['E8'].clave]:
+        for f in s_.unique(): m.setdefault(f.lower(), f)
+    return m
+CANON = _build_canon()
+def canon(s_): return s_.str.lower().map(CANON).fillna(s_)
+e1f = canon(e1f_raw)
+CASE_PAIRS = int(e1f_raw.nunique() - e1f.nunique())  # familias de E1 que se juntan por mayúsculas/minúsculas (8)
 e1aud = e1name.map(lambda s: clasif(s, AUD)); e1gan = e1name.map(lambda s: clasif(s, GAN))
 e1tam = pd.cut(e1usr, [-1, 9999.999, 99999.999, 999999.999, 1e18], labels=TAM).astype(str)
 ratio = e1env / e1usr.where(e1usr > 0)
@@ -203,7 +218,7 @@ def fam_formula(l, namecol, idcol=None):
         return lambda r, l=l: f'=IF({l[namecol]}{r}="","(sin nombre)-"&{l[idcol]}{r},REGEXREPLACE({l[namecol]}{r},"-\\d{{8}}-","-"))'
     return lambda r, l=l: f'=REGEXREPLACE({l[namecol]}{r},"-\\d{{8}}-","-")'
 
-add_derived('E1', 'familia (derivada)', fam_formula(None, 'communication_name', 'communication_id'), e1f.tolist())
+add_derived('E1', 'familia (derivada)', fam_formula(None, 'communication_name', 'communication_id'), e1f_raw.tolist())
 add_derived('E1', 'mes_clave (derivada)', lambda r, l: f'=LEFT({l["mes"]}{r},7)')
 add_derived('E1', 'mes_num (derivada)', lambda r, l: f'=VALUE(RIGHT({l["mes_clave (derivada)"]}{r},2))')
 add_derived('E1', 'equipo (derivada)', lambda r, l: f'=IFERROR(VLOOKUP({l["team"]}{r},{MAP_RNG},2,FALSE),"Others")')
@@ -222,7 +237,7 @@ add_derived('E6b', 'familia_b (derivada)', fam_formula(None, 'familia_b'), fam_p
 add_derived('E7a', 'familia (derivada)', fam_formula(None, 'familia'), fam_pd(E['E7a'].familia).tolist())
 add_derived('E7c', 'familia (derivada)', fam_formula(None, 'familia'), fam_pd(E['E7c'].familia).tolist())
 add_derived('E9a', 'familia (derivada)', fam_formula(None, 'familia'), fam_pd(E['E9a'].familia).tolist())
-add_derived('E8', 'familia (derivada)', lambda r, l: f'=IF({l["bloque"]}{r}="familia_dia_baja",{l["clave"]}{r},"")')
+add_derived('E8', 'familia (derivada)', lambda r, l: f'=IF({l["bloque"]}{r}="familia_dia_baja",IF({l["clave"]}{r}="","(sin familia)",{l["clave"]}{r}),"")')
 
 # ---------- Catálogo (una fila por familia de E1)
 FAMS = sorted(e1f.unique())
@@ -261,7 +276,7 @@ act = g1[g1.env > 0]
 catp['meses'] = act.groupby('fam').mes.nunique().reindex(FAMS).fillna(0)
 catp['ultimo'] = act.groupby('fam').mes.max().reindex(FAMS); catp['activa'] = (catp.ultimo == '2026-09').astype(int)
 catp['env'] = g1.groupby('fam').env.sum().reindex(FAMS)
-catp['en_e2'] = pd.Series(FAMS).isin(set(fam_pd(E['E2'].nombre))).values
+catp['en_e2'] = pd.Series(FAMS).isin(set(canon(fam_pd(E['E2'].nombre)))).values
 TIPO_F = lambda eq, fam: f'IF({eq}="Collections","cobranza",IF(OR(LEFT({fam},13)="Transaccional",NOT(REGEXMATCH({fam},"{TICKET_RE}"))),"transaccional u operativa","promocional o lifecycle"))'
 for i, f in enumerate(FAMS):
     r = i + 2; A = f'$A{r}'
@@ -347,7 +362,7 @@ def motivo(r):
     return {'proteger': 'respuesta alta con volumen', 'escalar': 'respuesta alta sin volumen'}.get(r.senal, '')
 camp['motivo'] = camp.apply(motivo, axis=1)
 # E7c
-e7c = E['E7c']; k7 = pd.DataFrame(dict(fam=fam_pd(e7c.familia), canal=e7c.canal, eud=num('E7c', 'envios_usuario_dia'), ab=num('E7c', 'abrieron'), abc=num('E7c', 'abrieron_y_convirtieron'), nabc=num('E7c', 'no_abrieron_y_convirtieron'))).groupby(['fam', 'canal']).sum()
+e7c = E['E7c']; k7 = pd.DataFrame(dict(fam=canon(fam_pd(e7c.familia)), canal=e7c.canal, eud=num('E7c', 'envios_usuario_dia'), ab=num('E7c', 'abrieron'), abc=num('E7c', 'abrieron_y_convirtieron'), nabc=num('E7c', 'no_abrieron_y_convirtieron'))).groupby(['fam', 'canal']).sum()
 camp = camp.merge(k7, left_on=['fam', 'canal'], right_index=True, how='left').fillna({'eud': 0, 'ab': 0, 'abc': 0, 'nabc': 0})
 camp['noab'] = camp.eud - camp.ab
 camp['conv_ab'] = div(camp.abc, camp.ab); camp['conv_noab'] = div(camp.nabc, camp.noab); camp['lift'] = div(camp.conv_ab, camp.conv_noab)
@@ -359,9 +374,9 @@ def mueve(r):
     return int((not pd.isna(r.resp)) and (not pd.isna(r.minimo)) and r.resp >= r.minimo * 0.5)
 camp['mueve'] = camp.apply(mueve, axis=1)
 # E5b, E7a
-e5b = E['E5b']; b5 = pd.DataFrame(dict(fam=fam_pd(e5b.familia), em=num('E5b', 'emails_despues_de_baja'))).groupby('fam').em.sum()
+e5b = E['E5b']; b5 = pd.DataFrame(dict(fam=canon(fam_pd(e5b.familia)), em=num('E5b', 'emails_despues_de_baja'))).groupby('fam').em.sum()
 camp['e5b'] = np.where(c == 'email', camp.fam.map(b5).fillna(0), 0.0)
-e7a = E['E7a']; a7 = pd.DataFrame(dict(fam=fam_pd(e7a.familia), canal=e7a.canal, etapa=e7a.etapa, env=num('E7a', 'envios')))
+e7a = E['E7a']; a7 = pd.DataFrame(dict(fam=canon(fam_pd(e7a.familia)), canal=e7a.canal, etapa=e7a.etapa, env=num('E7a', 'envios')))
 p7 = a7.pivot_table(index=['fam', 'canal'], columns='etapa', values='env', aggfunc='sum', fill_value=0)
 for et in ETAPAS:
     if et not in p7.columns: p7[et] = 0
@@ -469,7 +484,7 @@ for i, r0 in camp.iterrows():
      'lift': f'=IF(AND(ISNUMBER({x["conv_abren"]}),ISNUMBER({x["conv_no_abren"]})),IF({x["conv_no_abren"]}>0,{x["conv_abren"]}/{x["conv_no_abren"]},""),"")',
      'muestra_ok': f'=IF(AND({x["abrieron (E7c)"]}>={PB["m_ab"]},{x["no_abrieron (E7c)"]}>={PB["m_noab"]},{x["abrieron_y_convirtieron (E7c)"]}+{x["no_abrieron_y_convirtieron (E7c)"]}>={PB["m_conv"]}),1,0)',
      'mediana conv_abren del canal': '=' + med_lookup(B, 'mediana conv_abren (con muestra)'),
-     'mueve': f'=IF(AND({x["muestra_ok"]}=1,ISNUMBER({x["conv_abren"]}),ISNUMBER({x["lift"]}),ISNUMBER({x["mediana conv_abren del canal"]})),IF(AND({x["conv_abren"]}>={x["mediana conv_abren del canal"]}/2,{x["lift"]}>={PB["lift"]}),1,0),IF(AND(ISNUMBER({resp}),ISNUMBER({mn}),{resp}>={mn}*{PB["frac"]}),1,0))',
+     'mueve': f'=IF(AND({x["muestra_ok"]}=1,ISNUMBER({x["conv_abren"]}),ISNUMBER({x["lift"]}),ISNUMBER({x["mediana conv_abren del canal"]})),IF(AND({x["conv_abren"]}>={x["mediana conv_abren del canal"]}/2,{x["lift"]}>={PB["lift"]}),1,0),IF(AND(ISNUMBER({resp}),ISNUMBER({mn})),IF({resp}>={mn}*{PB["frac"]},1,0),0))',
      'emails_a_dados_de_baja (E5b)': f'=IF({B}="email",SUMIFS({rng("E5b","emails_despues_de_baja")},{rng("E5b","familia (derivada)")},{A}),0)',
      'envios_con_etapa (E7a)': f'=SUMIFS({rng("E7a","envios")},{rng("E7a","familia (derivada)")},{A},{rng("E7a","canal")},{B})',
      'envios_etapa_bloqueada (E7a)': '=' + '+'.join(f'SUMIFS({rng("E7a","envios")},{rng("E7a","familia (derivada)")},{A},{rng("E7a","canal")},{B},{rng("E7a","etapa")},"{et}")' for et in BLOQUEADAS),
@@ -710,7 +725,7 @@ LF2, f2a, f2b = table(ws, r0, 'F2. Por mes', H2, rows, pct_cols=('% con 3 o más
 r0 = f2b + 3
 def e6b(col): return rng('E6b', col)
 e6bdf = E['E6b']
-eqa = fam_pd(e6bdf.familia_a).map(catp.equipo).fillna('no está en E1'); eqb = fam_pd(e6bdf.familia_b).map(catp.equipo).fillna('no está en E1')
+eqa = canon(fam_pd(e6bdf.familia_a)).map(catp.equipo).fillna('no está en E1'); eqb = canon(fam_pd(e6bdf.familia_b)).map(catp.equipo).fillna('no está en E1')
 pares = pd.Series([f'{a} + {b}' if a <= b else f'{b} + {a}' for a, b in zip(eqa, eqb)])
 ud = num('E6b', 'usuario_dias_juntas'); par_sum = ud.groupby(pares).sum().sort_values(ascending=False)
 H3 = ['par de equipos', 'pares de familias (filas de E6b)', 'usuario_dias_juntas', '% de los usuario-días de E6b', 'pares donde ambas son promocionales', 'usuario_dias_juntas de esos pares']
@@ -885,6 +900,8 @@ header(ws, 'Lente L. En cuántos días se dan de baja y cuántos emails recibier
 def e8c(col): return rng('E8', col)
 BLQ = e8c('bloque'); CLV = e8c('clave'); COH = e8c('cohorte_limpia'); USR8 = e8c('usuarios')
 def s8(col, bloque, clave_ref, coh): return f'SUMIFS({e8c(col)},{BLQ},"{bloque}",{CLV},{clave_ref},{COH},{coh})'
+# Para familia_dia_baja la clave se cruza por la columna familia (derivada), que convierte la clave vacía (null) en "(sin familia)".
+def s8f(col, clave_ref, coh): return f'SUMIFS({e8c(col)},{BLQ},"familia_dia_baja",{e8c("familia (derivada)")},{clave_ref},{COH},{coh})'
 H = ['cohorte_limpia', 'qué es', 'usuarios', 'dias_prom', 'dias_mediana', 'dias_p90', 'emails_prom', 'emails_mediana', 'familias_prom', '% de los usuarios únicos con baja (E5)']
 rows = []
 for k, (coh, lab) in enumerate([(1, 'primer email dentro del periodo (nuevos)'), (0, 'ya recibía email antes de enero')]):
@@ -912,15 +929,15 @@ for coh in (1, 0):
         rows.append([b, coh, f'={s8("usuarios", "banda_emails", f"$A{rr}", f"$B{rr}")}', f'=IFERROR(C{rr}/$C${L_COH_ROW[coh]},"")', f'=SUM(D${first_r}:D{rr})', f'={s8("dias_prom", "banda_emails", f"$A{rr}", f"$B{rr}")}', f'={s8("dias_mediana", "banda_emails", f"$A{rr}", f"$B{rr}")}', f'={s8("familias_prom", "banda_emails", f"$A{rr}", f"$B{rr}")}'])
 LL3, l3a, l3b = table(ws, r0, 'L3. Emails recibidos antes de la baja por cohorte', H, rows, pct_cols=('% de la cohorte', '% acumulado'), int_cols=('usuarios',))
 r0 = l3b + 3
-e8 = E['E8']; fdb = e8[e8.bloque == 'familia_dia_baja'].copy(); fdb['u'] = pd.to_numeric(fdb.usuarios); fdb['c'] = fdb.cohorte_limpia.astype(int)
+e8 = E['E8']; fdb = e8[e8.bloque == 'familia_dia_baja'].copy(); fdb['clave'] = canon(fdb.clave.replace({'null': '(sin familia)', '': '(sin familia)'})); fdb['u'] = pd.to_numeric(fdb.usuarios); fdb['c'] = fdb.cohorte_limpia.astype(int)
 fdb = fdb.sort_values(['c', 'u'], ascending=[False, False])
 H = ['familia del día de la baja', 'cohorte_limpia', 'ticket', 'equipo', 'tipo', 'usuarios', '% de la cohorte', 'dias_mediana', 'dias_prom', 'emails_prom', 'familias_prom']
 rows = []
 for k, (_, fr) in enumerate(fdb.iterrows()):
     rr = r0 + 2 + k
-    rows.append([fr.clave, fr.c, '=' + cat_lookup(f'$A{rr}', 'ticket'), '=' + cat_lookup(f'$A{rr}', 'equipo'), '=' + cat_lookup(f'$A{rr}', 'tipo'), f'={s8("usuarios", "familia_dia_baja", f"$A{rr}", f"$B{rr}")}',
-                 f'=IFERROR(F{rr}/IF($B{rr}=1,$C${L_COH_ROW[1]},$C${L_COH_ROW[0]}),"")', f'={s8("dias_mediana", "familia_dia_baja", f"$A{rr}", f"$B{rr}")}', f'={s8("dias_prom", "familia_dia_baja", f"$A{rr}", f"$B{rr}")}', f'={s8("emails_prom", "familia_dia_baja", f"$A{rr}", f"$B{rr}")}', f'={s8("familias_prom", "familia_dia_baja", f"$A{rr}", f"$B{rr}")}'])
-LL4, l4a, l4b = table(ws, r0, 'L4. Familia que llegó el día de la baja (cohorte 1 primero, de mayor a menor). Las claves son estáticas: si se recarga E8, pegar aquí las claves nuevas.', H, rows, pct_cols=('% de la cohorte',), int_cols=('usuarios',))
+    rows.append([fr.clave, fr.c, '=' + cat_lookup(f'$A{rr}', 'ticket'), '=' + cat_lookup(f'$A{rr}', 'equipo'), '=' + cat_lookup(f'$A{rr}', 'tipo'), f'={s8f("usuarios", f"$A{rr}", f"$B{rr}")}',
+                 f'=IFERROR(F{rr}/IF($B{rr}=1,$C${L_COH_ROW[1]},$C${L_COH_ROW[0]}),"")', f'={s8f("dias_mediana", f"$A{rr}", f"$B{rr}")}', f'={s8f("dias_prom", f"$A{rr}", f"$B{rr}")}', f'={s8f("emails_prom", f"$A{rr}", f"$B{rr}")}', f'={s8f("familias_prom", f"$A{rr}", f"$B{rr}")}'])
+LL4, l4a, l4b = table(ws, r0, 'L4. Familia que llegó el día de la baja (cohorte 1 primero, de mayor a menor). Las claves son estáticas: si se recarga E8, pegar aquí las claves nuevas. "(sin familia)" = fila de E8 con clave vacía (null en la query): usuarios cuyo email del día de la baja no tiene nombre de familia.', H, rows, pct_cols=('% de la cohorte',), int_cols=('usuarios',))
 L4R = lambda col: trng(ws, LL4, col, l4a, l4b)
 r0 = l4b + 3
 H = ['equipo', 'cohorte_limpia', 'bajas (usuarios, con doble conteo)', '% de la cohorte', 'familias en la lista']
@@ -945,7 +962,7 @@ ws = WS['M_Ventanas']
 header(ws, 'Lente M. Abren contra no abren con ventanas de conversión a 7, 30, 90 días y fin de periodo',
        'E9a (familia × canal, ya sin fecha en el nombre), Catálogo, Parámetros (muestra mínima y lift mínimo).',
        'Misma lógica que K pero la conversión se cuenta dentro de 7, 30 o 90 días después del envío, o hasta el fin del periodo. Un lift que cae al alargar la ventana dice que la conversión iba a pasar de todos modos. Muestra suficiente = abrieron y no abrieron por arriba de Parámetros filas 17 y 18, y conversiones a 90 días por arriba de la fila 19. Conversión de referencia (is_converted), para comparar grupos, no para atribuir.')
-e9 = E['E9a']; e9k = pd.DataFrame(dict(fam=e9.familia, canal=e9.canal, env=num('E9a', 'envios_usuario_dia'))).sort_values(['env', 'fam'], ascending=[False, True])
+e9 = E['E9a']; e9k = pd.DataFrame(dict(fam=canon(e9.familia), canal=e9.canal, env=num('E9a', 'envios_usuario_dia'))).sort_values(['env', 'fam'], ascending=[False, True])
 def e9r(col): return rng('E9a', col)
 H = ['familia', 'canal', 'ticket', 'equipo', 'tipo', 'envios_usuario_dia', 'abrieron', 'no_abrieron', 'conv_abren_7', 'conv_no_abren_7', 'lift_7', 'conv_abren_30', 'conv_no_abren_30', 'lift_30', 'conv_abren_90', 'conv_no_abren_90', 'lift_90', 'conv_abren_fin', 'conv_no_abren_fin', 'lift_fin', 'muestra_ok']
 rows = []
@@ -984,6 +1001,7 @@ def xc(sheet, col, r): return f"'{sheet}'!${col}${r}" if '_' in sheet or ' ' in 
 def xr(sheet, col, a, b): return f"{sheet}!${col}${a}:${col}${b}"
 def base_if(ent, env): return f'=IF({PB["base_wa"]}="entregado",{ent},{env})'
 DEF = 'Válido con los parámetros default. Si cambias Parámetros (mínimos, factores, muestra), esta fila sale REVISAR a propósito: el valor esperado está fijo con los defaults.'
+UQ = ' UNIQUE de Google Sheets puede juntar o no las familias que solo cambian en mayúsculas/minúsculas; por eso la tolerancia es el número de esos pares. SUMIFS, COUNTIF y VLOOKUP siempre las juntan.'
 
 V = []  # (grupo, pestaña, comprobación, fórmula, esperado, explicación, tolerancia)
 def add(g, t, q, f, exp, ex='', tol=0.5): V.append((g, t, q, f, exp, ex, tol))
@@ -999,12 +1017,12 @@ add('E1 totales', 'E1', 'Filas con envíos = 0', f'=COUNTIF({rng("E1","envios")}
 add('E1 totales', 'E1', 'Filas con ticket_number = "Other"', f'=COUNTIF({rng("E1","ticket_number")},"Other")', int((e1.ticket_number == 'Other').sum()), 'Sin ticket en Braze. El Catálogo lo saca del nombre con regex cuando se puede.')
 add('E1 totales', 'E1', 'Filas sin communication_name (una comunicación sin nombre, 3 meses)', f'=COUNTBLANK({rng("E1","communication_name")})', int((e1.communication_name == 'null').sum()), 'Un solo communication_id. En familia (derivada) aparece como "(sin nombre)-id".')
 add('E1 derivadas', 'E1', 'communication_id distintos', f'=COUNTA(UNIQUE({rng("E1","communication_id")}))', int(e1.communication_id.nunique()), '')
-add('E1 derivadas', 'E1', 'familias distintas (incluye "(sin nombre)")', f'=COUNTA(UNIQUE({rng("E1","familia (derivada)")}))', int(e1f.nunique()), 'familia = nombre sin la fecha -AAAAMMDD-. Comprueba que REGEXREPLACE evaluó en todas las filas. Debe ser igual a las filas del Catálogo.')
+add('E1 derivadas', 'E1', 'familias distintas (incluye "(sin nombre)")', f'=COUNTA(UNIQUE({rng("E1","familia (derivada)")}))', int(e1f.nunique()), 'familia = nombre sin la fecha -AAAAMMDD-. Comprueba que REGEXREPLACE evaluó en todas las filas. Debe ser igual a las filas del Catálogo.' + UQ, CASE_PAIRS)
 add('E1 derivadas', 'E1', 'Filas con mes_clave con forma 2026-MM', f'=COUNTIF({rng("E1","mes_clave (derivada)")},"2026-*")', int(e1mes.str.startswith('2026').sum()), 'Debe ser igual a las filas.')
 for m in sorted(e1mes.unique()):
     add('E1 derivadas', 'E1', f'Filas del mes {m}', f'=COUNTIF({rng("E1","mes_clave (derivada)")},"{m}")', int((e1mes == m).sum()), '')
 add('E1 derivadas', 'E1', 'Filas de septiembre con envíos > 0', f'=COUNTIFS({rng("E1","mes_clave (derivada)")},"2026-09",{rng("E1","envios")},">0")', int(((e1mes == '2026-09') & (e1env > 0)).sum()), '')
-add('E1 derivadas', 'E1', 'Familias activas en septiembre (envíos > 0)', f'=COUNTA(UNIQUE(FILTER({rng("E1","familia (derivada)")},{rng("E1","mes_clave (derivada)")}="2026-09",{rng("E1","envios")}>0)))', int(e1f[(e1mes == '2026-09') & (e1env > 0)].nunique()), 'Debe ser igual a la suma de activa_sep en el Catálogo.')
+add('E1 derivadas', 'E1', 'Familias activas en septiembre (envíos > 0)', f'=COUNTA(UNIQUE(FILTER({rng("E1","familia (derivada)")},{rng("E1","mes_clave (derivada)")}="2026-09",{rng("E1","envios")}>0)))', int(e1f[(e1mes == '2026-09') & (e1env > 0)].nunique()), 'Debe ser igual a la suma de activa_sep en el Catálogo.' + UQ, CASE_PAIRS)
 add('E1 derivadas', 'E1', 'Suma de mes_num (derivada)', f'=SUM({rng("E1","mes_num (derivada)")})', int(e1mes.str[5:7].astype(int).sum()), 'Comprueba que mes_num quedó numérico en todas las filas (lo usan MINIFS y MAXIFS de primer y último mes).')
 for eq in EQUIPOS:
     add('E1 derivadas', 'E1', f'Filas con equipo (derivada) = {eq}', f'=COUNTIF({rng("E1","equipo (derivada)")},"{eq}")', int((e1equipo == eq).sum()), 'Sale del mapeo de equipos en Parámetros. Si cambias el mapeo, cambia a propósito.')
@@ -1068,13 +1086,13 @@ for tab, c_, ex in [('E7a','envios','E7a agrupa por familia × canal × etapa; 0
         add('Otros granos', tab, f'  {c_} menos envíos de E1', f'=SUM({rng(tab,c_)})-SUM({rng("E1","envios")})', S(tab, c_) - S('E1','envios'), 'Diferencia esperada por grano, ver fila anterior.')
 add('E2', 'E2', 'Piezas tipo canvas', f'=COUNTIF({rng("E2","tipo_pieza")},"canvas")', int((E['E2'].tipo_pieza == 'canvas').sum()), '')
 add('E2', 'E2', 'Piezas tipo campaign', f'=COUNTIF({rng("E2","tipo_pieza")},"campaign")', int((E['E2'].tipo_pieza == 'campaign').sum()), '')
-add('E2', 'E2', 'Familias distintas en el catálogo', f'=COUNTA(UNIQUE({rng("E2","familia (derivada)")}))', int(fam_pd(E['E2'].nombre).nunique()), 'Más que en E1 porque E2 trae piezas que no enviaron en el periodo.')
+add('E2', 'E2', 'Familias distintas en el catálogo', f'=COUNTA(UNIQUE({rng("E2","familia (derivada)")}))', int(canon(fam_pd(E['E2'].nombre)).nunique()), 'Más que en E1 porque E2 trae piezas que no enviaron en el periodo.' + UQ, int(fam_pd(E['E2'].nombre).nunique() - canon(fam_pd(E['E2'].nombre)).nunique()))
 add('E2', 'E2 vs E1', 'Ids de E2 que sí enviaron en el periodo (están en E1)', f'=SUMPRODUCT(--(COUNTIF({rng("E1","communication_id")},{rng("E2","communication_id")})>0))', int(E['E2'].communication_id.isin(e1.communication_id).sum()), '3,438 de 6,144. El id sin nombre de E1 no está en E2.')
 # familias con fecha en las pestañas crudas
 for tab, col in [('E5b', 'familia'), ('E7a', 'familia'), ('E7c', 'familia'), ('E9a', 'familia'), ('E6b', 'familia_a')]:
     d = E[tab][col]
     add('Familias con fecha', tab, f'Filas cuyo {col} trae fecha -AAAAMMDD- (la derivada la quita)', f'=SUMPRODUCT(--REGEXMATCH({rng(tab, col)},"-\\d{{8}}-"))', int(d.str.contains(r'-\d{8}-').sum()), 'E5b, E6b, E7a y E7c traen la familia con fecha; E9a y E8 ya vienen sin fecha (0). Por eso toda fórmula cruza por la columna familia (derivada), nunca por la original.')
-    add('Familias con fecha', tab, f'Valores distintos de {col} (derivada)', f'=COUNTA(UNIQUE({rng(tab, col + " (derivada)")}))', int(fam_pd(d).nunique()), f'Original: {d.nunique()} valores distintos.')
+    add('Familias con fecha', tab, f'Valores distintos de {col} (derivada)', f'=COUNTA(UNIQUE({rng(tab, col + " (derivada)")}))', int(canon(fam_pd(d)).nunique()), f'Original: {d.nunique()} valores distintos.' + UQ, int(fam_pd(d).nunique() - canon(fam_pd(d)).nunique()))
 
 # ----- bloque 2: Catálogo
 CATA = f'Catálogo!$A$2:$A${NC + 1}'
@@ -1154,20 +1172,20 @@ add('B_Canales', 'B_Canales', 'B1 respuesta email enero (clic / entregado)', f'=
 add('B_Canales', 'B_Canales', 'B3 usuarios con fila en enero (E4b)', f'=B_Canales!$B${b3a}', float(num('E4b','usuarios')[E['E4b'].mes.str[:7] == '2026-01'].sum()), '')
 add('B_Canales', 'B_Canales', 'B4 suma whatsapp_send de los 9 meses', f'=SUM(B_Canales!$B${b4a}:$B${b4b})', float(num('E4a','whatsapp_send')[mes4 & (e4a.canal == 'whatsapp')].sum()), '')
 # E
-e5bt = pd.DataFrame(dict(fam=fam_pd(E['E5b'].familia), em=num('E5b','emails_despues_de_baja'))); e5bt['tipo'] = e5bt.fam.map(catp.tipo).fillna('no está en E1'); e5bt['eq'] = e5bt.fam.map(catp.equipo).fillna('no está en E1')
+e5bt = pd.DataFrame(dict(fam=canon(fam_pd(E['E5b'].familia)), em=num('E5b','emails_despues_de_baja'))); e5bt['tipo'] = e5bt.fam.map(catp.tipo).fillna('no está en E1'); e5bt['equipo'] = e5bt.fam.map(catp.equipo).fillna('no está en E1')
 add('E_DespuesBaja', 'E_DespuesBaja', 'E1 total usuarios_baja (igual a E5)', f'=E_DespuesBaja!$B${E_TOTAL_ROW}', S('E5','usuarios_baja'), '')
 add('E_DespuesBaja', 'E_DespuesBaja', 'E1 total reciben_email_despues_total', f'=E_DespuesBaja!$L${E_TOTAL_ROW}', S('E5','reciben_email_despues_total'), '')
 add('E_DespuesBaja', 'E_DespuesBaja', 'E2 total emails a dados de baja (igual a E5b)', f'=E_DespuesBaja!$C${E_TIPO_ROW["no está en E1"] + 1}', S('E5b','emails_despues_de_baja'), '')
 for t in TIPOS + ['no está en E1']:
     add('E_DespuesBaja', 'E_DespuesBaja', f'E2 emails a dados de baja de familias {t}', f'=E_DespuesBaja!$C${E_TIPO_ROW[t]}', float(e5bt.em[e5bt.tipo == t].sum()), 'Tipo del Catálogo. "no está en E1" = la familia no envió en el periodo según E1 (nombre distinto o fuera de E1).')
-add('E_DespuesBaja', 'E_DespuesBaja', 'E3 emails a dados de baja del equipo Marketing', f'=E_DespuesBaja!$C${e3a}', float(e5bt.em[e5bt.eq == 'Marketing'].sum()), 'Con el mapeo de Parámetros.')
+add('E_DespuesBaja', 'E_DespuesBaja', 'E3 emails a dados de baja del equipo Marketing', f'=E_DespuesBaja!$C${e3a}', float(e5bt.em[e5bt.equipo == 'Marketing'].sum()), 'Con el mapeo de Parámetros.')
 # F
 add('F_Solape', 'F_Solape', 'F1 total usuario_dias (igual a E6a)', '=F_Solape!$B$11', S('E6a','usuario_dias'), '')
 add('F_Solape', 'F_Solape', 'F1 usuario-días con 3 o más familias (3 a 4 + 5 a 7 + 8+)', '=F_Solape!$B$8+F_Solape!$B$9+F_Solape!$B$10', float(num('E6a','usuario_dias')[E['E6a'].banda_familias_dia.isin(BANDAS6[2:])].sum()), '')
 add('F_Solape', 'F_Solape', 'F2 suma usuario_dias de los 9 meses', f'=SUM(F_Solape!$B${f2a}:$B${f2b})', S('E6a','usuario_dias'), '')
 add('F_Solape', 'F_Solape', 'F3 suma usuario_dias_juntas (igual a E6b)', f'=SUM(F_Solape!$C${f3a}:$C${f3b})', S('E6b','usuario_dias_juntas'), 'Si el mapeo de equipos cambia, un par puede quedar fuera de las etiquetas y esta fila sale REVISAR.')
 add('F_Solape', 'F_Solape', 'F3 primer par de equipos (el más grande)', f'=F_Solape!$C${f3a}', float(par_sum.iloc[0]), f'Etiqueta: {par_sum.index[0]}.')
-add('F_Solape', 'F_Solape', 'F3 pares donde ambas son promocionales (suma)', f'=SUM(F_Solape!$E${f3a}:$E${f3b})', int(((fam_pd(e6bdf.familia_a).map(catp.tipo) == 'promocional o lifecycle') & (fam_pd(e6bdf.familia_b).map(catp.tipo) == 'promocional o lifecycle')).sum()), '')
+add('F_Solape', 'F_Solape', 'F3 pares donde ambas son promocionales (suma)', f'=SUM(F_Solape!$E${f3a}:$E${f3b})', int(((canon(fam_pd(e6bdf.familia_a)).map(catp.tipo) == 'promocional o lifecycle') & (canon(fam_pd(e6bdf.familia_b)).map(catp.tipo) == 'promocional o lifecycle')).sum()), '')
 # G
 add('G_Practicas', 'G_Practicas', 'G1 suma de envíos (E1 en los 4 canales con respuesta)', f'=SUM(G_Practicas!$D${g1a}:$D${g1b})', float(g1.env[g1.canal.isin(C4)].sum()), 'Sin banner.')
 add('G_Practicas', 'G_Practicas', 'G1 suma de comunicación-meses', f'=SUM(G_Practicas!$C${g1a}:$C${g1b})', int(g1.canal.isin(C4).sum()), 'Filas de E1 sin banner.')
@@ -1215,7 +1233,7 @@ for k, cnl in enumerate(C4):
     if len(sub) and sub.lift.notna().any():
         add('K_Abren', 'K_Abren', f'K1 {cnl}: mediana lift (con muestra)', f'=K_Abren!$F${6 + k}', float(sub.lift.median()), DEF, 1e-6)
 # L
-fdb['eq'] = fdb.clave.map(catp.equipo).fillna('no está en E1'); fdb['tipo'] = fdb.clave.map(catp.tipo).fillna('no está en E1')
+fdb['equipo'] = fdb.clave.map(catp.equipo).fillna('no está en E1'); fdb['tipo'] = fdb.clave.map(catp.tipo).fillna('no está en E1')
 r8 = e8[(e8.bloque == 'resumen')]
 def r8v(col, coh): return float(pd.to_numeric(r8[r8.cohorte_limpia == str(coh)][col]).iloc[0])
 add('L_Baja', 'L_Baja', 'L1 cohorte 1: usuarios', '=L_Baja!$C$6', r8v('usuarios', 1), '158,520 nuevos.')
@@ -1228,10 +1246,10 @@ add('L_Baja', 'L_Baja', 'L4 suma usuarios familia_dia_baja (igual a E8)', f'=SUM
 add('L_Baja', 'L_Baja', 'L4 primera fila: usuarios (la familia con más bajas de la cohorte 1)', f'=L_Baja!$F${l4a}', float(fdb.u.iloc[0]), f'{fdb.clave.iloc[0]}.')
 add('L_Baja', 'L_Baja', 'L4 primera fila: % de la cohorte 1', f'=L_Baja!$G${l4a}', float(fdb.u.iloc[0] / r8v('usuarios', 1)), '31 %: un solo email explica casi un tercio de las bajas de usuarios nuevos.', 1e-6)
 for eq in EQUIPOS:
-    add('L_Baja', 'L_Baja', f'L5 cohorte 1, equipo {eq}: bajas', f'=L_Baja!$C${l5a + EQUIPOS.index(eq)}', float(fdb.u[(fdb.c == 1) & (fdb.eq == eq)].sum()), 'Con el mapeo de Parámetros y el tipo del Catálogo.')
+    add('L_Baja', 'L_Baja', f'L5 cohorte 1, equipo {eq}: bajas', f'=L_Baja!$C${l5a + EQUIPOS.index(eq)}', float(fdb.u[(fdb.c == 1) & (fdb.equipo == eq)].sum()), 'Con el mapeo de Parámetros y el tipo del Catálogo.')
 add('L_Baja', 'L_Baja', 'L6 cohorte 1, promocional o lifecycle: bajas', f'=L_Baja!$C${l6a}', float(fdb.u[(fdb.c == 1) & (fdb.tipo == 'promocional o lifecycle')].sum()), '')
 # M
-e9g = pd.DataFrame(dict(fam=e9.familia, canal=e9.canal, env=num('E9a','envios_usuario_dia'), ab=num('E9a','abrieron'), a90=num('E9a','ab_conv_90'), n90=num('E9a','no_conv_90'))).groupby(['fam', 'canal']).sum()
+e9g = pd.DataFrame(dict(fam=canon(e9.familia), canal=e9.canal, env=num('E9a','envios_usuario_dia'), ab=num('E9a','abrieron'), a90=num('E9a','ab_conv_90'), n90=num('E9a','no_conv_90'))).groupby(['fam', 'canal']).sum()
 e9g['noab'] = e9g.env - e9g.ab; e9m = ((e9g.ab >= 1000) & (e9g.noab >= 1000) & (e9g.a90 + e9g.n90 >= 100))
 mi = INFO['M_Ventanas']
 add('M_Ventanas', 'M_Ventanas', 'M1 filas (familia × canal de E9a)', f'=COUNTA(M_Ventanas!$A${mi["first"]}:$A${mi["last"]})', mi['filas'], '')
@@ -1272,7 +1290,7 @@ R.append(['Periodo', '1 de enero a 30 de septiembre de 2026 (event_date). E9b so
 R.append(['Fecha de corrida', f'Queries corridas por el usuario el {HOY}. E3, E4b, E7b y E9b en versión 2 (agregan WhatsApp entregado y quitan costo).'])
 R.append(['Formato', 'Plano, sin colores. Pestañas crudas: encabezado en la fila 1, filtros, columnas derivadas marcadas "(derivada)" al final. Pestañas de cálculo: fila 1 título, fila 2 fuente, fila 3 supuestos y disclaimer, tablas desde la fila 4 con su título. Catálogo, Campañas y Medianas son tablas planas con encabezado en la fila 1.'])
 R.append(['Cómo se verifica', f'Pestaña Verificación ({len(V)} filas): cada fila compara una cifra calculada aquí con fórmula contra la misma cifra calculada en pandas sobre el CSV original. Estado ok = la diferencia está dentro de la tolerancia (columna J; 0.5 para conteos y sumas, 0.000001 para proporciones). REVISAR = algo se pegó mal o una fórmula falló, SALVO en las filas marcadas "Válido con los parámetros default": esas comparan contra los defaults y salen REVISAR a propósito cuando cambias Parámetros (es la forma de ver que el cambio sí movió las cosas). Al volver los parámetros a su valor, deben regresar a ok.'])
-R.append(['Tiempo de cálculo', 'Campañas tiene 1,917 filas × 72 columnas con SUMIFS sobre E1 (14 mil filas) y el Catálogo 1,829 filas. La primera vez que se abre en Google Sheets tarda de 1 a 3 minutos en calcular todo (aparece "Calculando..." arriba). Esperar a que termine antes de leer Verificación; si una fila dice "error en fórmula" o "Loading", esperar y volver a mirar.'])
+R.append(['Tiempo de cálculo', f'Campañas tiene {len(camp):,} filas × {len(CAMP_COLS)} columnas con SUMIFS sobre E1 ({len(e1):,} filas) y el Catálogo {NC:,} filas. La primera vez que se abre en Google Sheets tarda de 1 a 3 minutos en calcular todo (aparece "Calculando..." arriba). Esperar a que termine antes de leer Verificación; si una fila dice "error en fórmula" o "Loading", esperar y volver a mirar.'])
 R.append([''])
 R.append(['Orden de las pestañas y qué hay en cada una', ''])
 for name, desc in [
@@ -1300,7 +1318,7 @@ for tab, fname, desc, grano, _ in TABS:
     R.append([tab, fname, i['md5'], i['filas'], grano, desc, ', '.join(i['derived']) or 'ninguna', nul])
 R.append([''])
 R.append(['Columnas derivadas', ''])
-R.append(['familia (derivada)', 'Nombre de la comunicación sin la fecha "-AAAAMMDD-" (REGEXREPLACE). Agrupa las copias que Braze crea con fecha distinta para la misma campaña. Si la comunicación no tiene nombre, queda "(sin nombre)-" seguido del communication_id. CORRECCIÓN respecto a v1: E5b, E6b, E7a y E7c traen la familia CON fecha (la query no la quitó), por eso tienen su propia columna familia (derivada) y todo cruce usa esa columna, nunca la original. E9a y E8 sí vienen sin fecha. La pestaña Verificación cuenta cuántas filas traen fecha en cada una.'])
+R.append(['familia (derivada)', 'Nombre de la comunicación sin la fecha "-AAAAMMDD-" (REGEXREPLACE). Agrupa las copias que Braze crea con fecha distinta para la misma campaña. Si la comunicación no tiene nombre, queda "(sin nombre)-" seguido del communication_id. CORRECCIÓN respecto a v1: E5b, E6b, E7a y E7c traen la familia CON fecha (la query no la quitó), por eso tienen su propia columna familia (derivada) y todo cruce usa esa columna, nunca la original. E9a y E8 sí vienen sin fecha. La pestaña Verificación cuenta cuántas filas traen fecha en cada una. MAYÚSCULAS: hay familias que solo cambian en mayúsculas/minúsculas (por ejemplo "...-CuestaEnero-in-App" y "...-CuestaEnero-in-app", o "AmazonPrimeDays" y "AmazonPrimedays"); SUMIFS, COUNTIF y VLOOKUP de Sheets no distinguen mayúsculas, así que se tratan como UNA sola familia: en E1 son ' + str(CASE_PAIRS) + ' pares y el Catálogo tiene ' + str(NC) + ' filas (una por familia). En E8 (familia_dia_baja) hay una fila con clave vacía (null en la query, 1,227 usuarios de la cohorte 1): la columna familia (derivada) la nombra "(sin familia)" para que no se pierda.'])
 R.append(['mes_clave y mes_num (derivadas)', 'mes_clave = primeros 7 caracteres de la fecha ("2026-06"). mes_num = el mes como número (6), para que MINIFS y MAXIFS calculen primer y último mes. En E4a las filas de grano semana llevan el mes de la fecha de inicio de la semana.'])
 R.append(['equipo (derivada)', 'E1 trae 11 equipos (team). La tabla de mapeo al final de Parámetros los lleva a 5 para la vista por equipo: Marketing, Product Growth, Sales, Collections y Others (Compliance, Acquisition, CX, B2B, NPS y Security caen en Others). Es editable: cambia la columna B del mapeo y todo se recalcula. El Catálogo guarda también el equipo original.'])
 R.append(['tipo (derivada)', 'cobranza si el equipo original es Collections; transaccional u operativa si el nombre empieza con "Transaccional" o no trae un ticket con forma -B0211- / -T2728- / -S0004-; promocional o lifecycle todo lo demás. Es una regla por nombre, no un dato de Braze: una familia promocional sin ticket queda como transaccional. Se puede corregir a mano en el Catálogo (la columna es fórmula; si la sobreescribes, anótalo aquí).'])
@@ -1355,6 +1373,13 @@ leeme.column_dimensions['A'].width = 34; leeme.column_dimensions['B'].width = 12
 for col in 'CDEFGH': leeme.column_dimensions[col].width = 30
 
 # ---------- orden final y guardar
+# MINIFS, MAXIFS y TEXTJOIN necesitan el prefijo _xlfn. en el xlsx (estándar OOXML). Google Sheets lo quita al importar; LibreOffice lo exige.
+_XLFN = re.compile(r'(?<![\w.])(MINIFS|MAXIFS|TEXTJOIN)\(')
+for ws_ in [WS[n_] for n_ in CALC] + [ver]:
+    for row_ in ws_.iter_rows():
+        for c_ in row_:
+            if isinstance(c_.value, str) and c_.value.startswith('=') and _XLFN.search(c_.value):
+                c_.value = _XLFN.sub(r'_xlfn.\1(', c_.value)
 wb._sheets = [leeme, par] + [WS[n_] for n_ in CALC] + [INFO[t]['ws'] for t, *_ in TABS] + [ver]
 wb.save(OUT)
 print('guardado', OUT, os.path.getsize(OUT) // 1024, 'KB; filas verificación', len(V), '; familias', NC, '; campañas', NCAMP)
