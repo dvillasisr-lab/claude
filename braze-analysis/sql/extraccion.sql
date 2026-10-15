@@ -654,7 +654,7 @@ ORDER BY envios DESC;
 
 
 -- ===================== E12. Antigüedad del usuario en Braze × canal: a quién le funciona cada canal según cuánto lleva en la base =====================
--- Antigüedad = meses entre la fecha de alta del usuario en Braze (_dim_braze_users) y el envío. Si la columna de alta se llama distinto de created_at, cambiarla aquí.
+-- Antigüedad al momento del envío = days_on_book (días en la base al día de hoy) menos los días que han pasado desde el envío. _dim_braze_users no trae fecha de alta, solo days_on_book.
 -- Resultado esperado: 7 bandas × 5 canales × 2 (suscrito o no) = unas 70 filas. Descargar como e12_antiguedad.csv
 WITH base AS (
   SELECT c.user_id, c.communication_id, c.event_date, c.category AS canal,
@@ -667,11 +667,12 @@ WITH base AS (
   GROUP BY c.user_id, c.communication_id, c.event_date, c.category
 ),
 con_alta AS (
-  SELECT b.*, months_between(b.event_date, CAST(u.created_at AS DATE)) AS meses_en_base, u.email_subscribe
+  SELECT b.*, (u.days_on_book - datediff(current_date(), b.event_date)) / 30.4 AS meses_en_base, u.email_subscribe
   FROM base b LEFT JOIN analytics_engineering_production.braze._dim_braze_users u ON u.user_id = b.user_id
 )
 SELECT
   CASE WHEN meses_en_base IS NULL THEN 'sin_alta'
+       WHEN meses_en_base < 0 THEN '0. alta después del envío (revisar)'
        WHEN meses_en_base < 1 THEN '0. menos de 1 mes'
        WHEN meses_en_base < 3 THEN '1. 1 a 3 meses'
        WHEN meses_en_base < 6 THEN '2. 3 a 6 meses'
@@ -687,3 +688,204 @@ SELECT
 FROM con_alta
 GROUP BY 1, 2, 3
 ORDER BY 1, 2, 3;
+
+
+-- ===================== E13. Lift contra grupo de control, por Canvas =====================
+-- La única medida de cuánto vende Braze de verdad. Usa in_control_group de la tabla de Canvas (la columna control_group de la tabla
+-- de hechos no sirve: vale "Lead" en el 99.99 % de las filas, ver data/mapeo.md sección 11).
+-- Grano: un usuario cuenta una vez por Canvas y grupo (test o control). Si solicitó o convirtió en cualquier fila, cuenta como que sí.
+-- Lift = tasa_test - tasa_control. Se calcula en el Sheets. Solo vale si control tiene 1,000 usuarios o más.
+-- Resultado esperado: una fila por Canvas y grupo, menos de 2,000 filas. Descargar como e13_lift_control.csv
+WITH por_usuario AS (
+  SELECT canvas_id, user_id,
+    CASE WHEN in_control_group = TRUE THEN 'control' ELSE 'test' END AS grupo,
+    MAX(canvas_name) AS canvas_name, MAX(team) AS team, MAX(product) AS product,
+    MAX(audience) AS audience, MAX(offer) AS offer, MAX(ticket_number) AS ticket_number,
+    MIN(event_date) AS primer_dia, MAX(event_date) AS ultimo_dia,
+    MAX(CAST(was_opened AS INT))      AS abrio,
+    MAX(CAST(applied_for_loan AS INT)) AS solicito,
+    MAX(CAST(is_converted AS INT))     AS convirtio,
+    MAX(gross_amount)                  AS monto
+  FROM analytics_engineering_production.braze_semantic_layer._fct_braze_canvas_user_engagement
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
+  GROUP BY canvas_id, user_id, CASE WHEN in_control_group = TRUE THEN 'control' ELSE 'test' END
+)
+SELECT canvas_id, canvas_name, team, product, audience, offer, ticket_number, grupo,
+  MIN(primer_dia)            AS primer_dia,
+  MAX(ultimo_dia)            AS ultimo_dia,
+  COUNT(*)                   AS usuarios,
+  SUM(abrio)                 AS usuarios_abrieron,
+  SUM(solicito)              AS usuarios_solicitaron,
+  SUM(convirtio)             AS usuarios_convirtieron,
+  ROUND(SUM(monto), 0)       AS monto,
+  ROUND(SUM(solicito) * 100.0 / COUNT(*), 3)  AS pct_solicitud,
+  ROUND(SUM(convirtio) * 100.0 / COUNT(*), 3) AS pct_conversion
+FROM por_usuario
+GROUP BY canvas_id, canvas_name, team, product, audience, offer, ticket_number, grupo
+ORDER BY canvas_name, grupo;
+
+
+-- ===================== E14. Experimentos A/B dentro de Canvas: qué variante gana =====================
+-- experiment_split_name y canvas_variation_name vienen de la tabla de Canvas. Un Canvas sin experimento trae una sola variante.
+-- Grano: un usuario cuenta una vez por Canvas, experimento y variante.
+-- Resultado esperado: menos de 3,000 filas. Descargar como e14_experimentos.csv
+WITH por_usuario AS (
+  SELECT canvas_id, user_id,
+    COALESCE(experiment_split_name, 'sin_experimento') AS experimento,
+    COALESCE(canvas_variation_name, 'sin_variante')   AS variante,
+    CASE WHEN in_control_group = TRUE THEN 'control' ELSE 'test' END AS grupo,
+    MAX(canvas_name) AS canvas_name, MAX(team) AS team, MAX(product) AS product,
+    MAX(CAST(was_opened AS INT))       AS abrio,
+    MAX(CAST(applied_for_loan AS INT)) AS solicito,
+    MAX(CAST(is_converted AS INT))     AS convirtio,
+    MAX(gross_amount)                  AS monto
+  FROM analytics_engineering_production.braze_semantic_layer._fct_braze_canvas_user_engagement
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
+  GROUP BY canvas_id, user_id, COALESCE(experiment_split_name, 'sin_experimento'), COALESCE(canvas_variation_name, 'sin_variante'),
+           CASE WHEN in_control_group = TRUE THEN 'control' ELSE 'test' END
+)
+SELECT canvas_id, canvas_name, team, product, experimento, variante, grupo,
+  COUNT(*)              AS usuarios,
+  SUM(abrio)            AS usuarios_abrieron,
+  SUM(solicito)         AS usuarios_solicitaron,
+  SUM(convirtio)        AS usuarios_convirtieron,
+  ROUND(SUM(monto), 0)  AS monto,
+  ROUND(SUM(abrio) * 100.0 / COUNT(*), 2)     AS pct_abrio,
+  ROUND(SUM(solicito) * 100.0 / COUNT(*), 3)  AS pct_solicitud,
+  ROUND(SUM(convirtio) * 100.0 / COUNT(*), 3) AS pct_conversion
+FROM por_usuario
+GROUP BY canvas_id, canvas_name, team, product, experimento, variante, grupo
+ORDER BY canvas_name, experimento, variante, grupo;
+
+
+-- ===================== E15. Embudo por paso de Canvas: en qué toque se cae la gente =====================
+-- Un usuario cuenta una vez por paso y canal. El orden del paso se aproxima por la fecha en que ese paso se creó.
+-- Sirve para confirmar la regla de 2 toques y para ver qué pasos nunca se abren.
+-- Resultado esperado: pasos × canal, 2,000 a 6,000 filas. Descargar como e15_embudo_pasos.csv
+WITH por_usuario AS (
+  SELECT e.canvas_id, e.canvas_step_id, e.category AS canal, e.user_id,
+    MAX(e.canvas_name) AS canvas_name, MAX(e.canvas_step_name) AS canvas_step_name,
+    MAX(e.team) AS team, MAX(e.product) AS product,
+    MAX(CAST(e.was_opened AS INT))       AS abrio,
+    MAX(CAST(e.applied_for_loan AS INT)) AS solicito,
+    MAX(CAST(e.is_converted AS INT))     AS convirtio
+  FROM analytics_engineering_production.braze_semantic_layer._fct_braze_canvas_user_engagement e
+  WHERE e.event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
+    AND (e.in_control_group IS NULL OR e.in_control_group = FALSE)
+  GROUP BY e.canvas_id, e.canvas_step_id, e.category, e.user_id
+),
+pasos AS (
+  SELECT canvas_step_id, canvas_step_created_at, first_sent AS paso_primer_envio, last_sent AS paso_ultimo_envio,
+    ROW_NUMBER() OVER (PARTITION BY canvas_id ORDER BY canvas_step_created_at, canvas_step_name) AS orden_aprox
+  FROM analytics_engineering_production.braze._dim_braze_canvas_step
+)
+SELECT u.canvas_id, u.canvas_name, u.team, u.product, u.canvas_step_id, u.canvas_step_name, p.orden_aprox, u.canal,
+  p.paso_primer_envio, p.paso_ultimo_envio,
+  COUNT(*)          AS usuarios,
+  SUM(u.abrio)      AS usuarios_abrieron,
+  SUM(u.solicito)   AS usuarios_solicitaron,
+  SUM(u.convirtio)  AS usuarios_convirtieron,
+  ROUND(SUM(u.abrio) * 100.0 / COUNT(*), 2)     AS pct_abrio,
+  ROUND(SUM(u.convirtio) * 100.0 / COUNT(*), 3) AS pct_conversion
+FROM por_usuario u
+LEFT JOIN pasos p ON p.canvas_step_id = u.canvas_step_id
+GROUP BY u.canvas_id, u.canvas_name, u.team, u.product, u.canvas_step_id, u.canvas_step_name, p.orden_aprox, u.canal,
+         p.paso_primer_envio, p.paso_ultimo_envio
+ORDER BY u.canvas_name, p.orden_aprox, u.canal;
+
+
+-- ===================== E16. Mensajes a usuarios que nunca respondieron en todo el periodo (lo que se paga en MAU sin retorno) =====================
+-- Primero se clasifica a cada usuario con todo el periodo: ¿respondió alguna vez en algún canal? ¿convirtió alguna vez?
+-- Después se cuenta, mes por mes, cuántos mensajes y cuánto costo variable fue a cada grupo.
+-- Braze cobra por usuario activo al mes; un usuario al que se le manda cuenta aunque nunca responda. Esto dimensiona ese costo.
+-- Resultado esperado: 9 meses × 2 × 2 × 5 canales = unas 180 filas. Descargar como e16_sin_respuesta.csv
+WITH base AS (
+  SELECT user_id, communication_id, event_date, category AS canal,
+    MAX(CAST(was_send AS INT)) AS envio,
+    MAX(CASE WHEN email_open OR email_click OR pn_open OR whatsapp_read OR in_app_click OR banner_click THEN 1 ELSE 0 END) AS respondio,
+    MAX(CAST(email_sent AS INT)) AS email_sent, MAX(CAST(whatsapp_send AS INT)) AS whatsapp_send,
+    MAX(CAST(email_unsubscribe AS INT)) AS baja_email,
+    MAX(CAST(is_converted AS INT)) AS conv
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
+  GROUP BY user_id, communication_id, event_date, category
+),
+perfil AS (
+  SELECT user_id,
+    MAX(respondio) AS respondio_alguna_vez,
+    MAX(conv)      AS convirtio_alguna_vez,
+    SUM(envio)     AS envios_periodo
+  FROM base GROUP BY user_id
+)
+SELECT DATE_TRUNC('month', b.event_date) AS mes, b.canal,
+  p.respondio_alguna_vez, p.convirtio_alguna_vez,
+  CASE WHEN p.envios_periodo <= 5 THEN '1. 1 a 5' WHEN p.envios_periodo <= 20 THEN '2. 6 a 20'
+       WHEN p.envios_periodo <= 80 THEN '3. 21 a 80' ELSE '4. más de 80' END AS banda_msgs_periodo,
+  APPROX_COUNT_DISTINCT(CASE WHEN b.envio = 1 THEN b.user_id END) AS usuarios_aprox,
+  SUM(b.envio)                                                   AS envios,
+  SUM(b.baja_email)                                              AS bajas_email_eventos,
+  ROUND(SUM(b.email_sent) * 0.05 + SUM(b.whatsapp_send) * 1.00, 2) AS costo_mxn
+FROM base b JOIN perfil p ON p.user_id = b.user_id
+GROUP BY 1, 2, 3, 4, 5
+ORDER BY 1, 2, 3, 4, 5;
+
+
+-- ===================== E17. Canal contactable (golden dataset) contra canal por el que de verdad se le escribió =====================
+-- Solo cubre el 6.6 % de usuarios que están en el golden dataset (clientes). Mide cuántos push van a gente marcada "Only Email",
+-- cuántos WhatsApp a wa_unsubscribed, cuántos push a quien desinstaló la app, etc.
+-- Resultado esperado: menos de 1,000 filas. Descargar como e17_contactable.csv
+WITH base AS (
+  SELECT user_id, communication_id, event_date, category AS canal, MAX(team) AS team,
+    MAX(CAST(was_send AS INT)) AS envio,
+    MAX(CASE WHEN email_click OR pn_open OR whatsapp_read OR in_app_click THEN 1 ELSE 0 END) AS respondio,
+    MAX(CAST(email_unsubscribe AS INT)) AS baja_email,
+    MAX(CAST(email_sent AS INT)) AS email_sent, MAX(CAST(whatsapp_send AS INT)) AS whatsapp_send,
+    MAX(CAST(is_converted AS INT)) AS conv
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
+  GROUP BY user_id, communication_id, event_date, category
+)
+SELECT b.canal, b.team,
+  COALESCE(f.mkt_contactable_channel, 'sin_golden') AS canal_contactable,
+  f.step AS etapa,
+  CAST(f.email_unsubscribed AS STRING) AS email_unsubscribed,
+  CAST(f.push_unsubscribed AS STRING)  AS push_unsubscribed,
+  CAST(f.wa_unsubscribed AS STRING)    AS wa_unsubscribed,
+  CAST(f.with_app AS STRING)           AS with_app,
+  CAST(f.app_uninstall AS STRING)      AS app_uninstall,
+  CAST(f.notifications_enabled AS STRING) AS notifications_enabled,
+  SUM(b.envio)                       AS envios,
+  APPROX_COUNT_DISTINCT(b.user_id)   AS usuarios_aprox,
+  SUM(b.respondio)                   AS respuestas,
+  SUM(b.baja_email)                  AS bajas_email_eventos,
+  SUM(b.conv)                        AS conversiones_filas,
+  ROUND(SUM(b.email_sent) * 0.05 + SUM(b.whatsapp_send) * 1.00, 2) AS costo_mxn
+FROM base b
+LEFT JOIN product.customer_golden_dataset.dim_braze_filters f ON f.customer_id = b.user_id
+WHERE f.customer_id IS NOT NULL
+GROUP BY 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+HAVING SUM(b.envio) >= 100
+ORDER BY envios DESC;
+
+
+-- ===================== E18. Dispositivos: iOS contra Android =====================
+-- _dim_braze_device trae platform, device_model y os_version pero no trae user_id. Sin llave no se puede cruzar con envíos.
+-- E18a da el mix de dispositivos por sí solo. E18b busca en el catálogo qué tabla tiene device_id junto con un user_id,
+-- para armar el cruce. Si E18b encuentra una, se escribe E18c (push por plataforma).
+
+-- E18a. Mix de plataforma y versión. Resultado esperado: menos de 500 filas. Descargar como e18a_dispositivos.csv
+SELECT lower(platform) AS plataforma,
+  split_part(os_version, '.', 1) AS os_version_mayor,
+  device_model,
+  COUNT(*) AS dispositivos
+FROM analytics_engineering_production.braze._dim_braze_device
+GROUP BY 1, 2, 3
+ORDER BY dispositivos DESC;
+
+-- E18b. ¿Dónde más existe device_id o platform? (Unity Catalog). Resultado esperado: decenas de filas. Descargar como e18b_llave_dispositivo.csv
+-- Si system.information_schema no está permitido, cambiar por analytics_engineering_production.information_schema.columns
+SELECT table_catalog, table_schema, table_name, column_name
+FROM system.information_schema.columns
+WHERE lower(column_name) IN ('device_id', 'platform', 'device_os', 'os', 'app_platform', 'push_platform')
+  AND table_catalog IN ('analytics_engineering_production', 'product', 'braze', 'braze_raw', 'raw')
+ORDER BY 1, 2, 3, 4;
