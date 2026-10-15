@@ -97,6 +97,15 @@ def convert(src, dst):
             add_table(doc, lines[i:j]); i = j; continue
         if ln.strip() == '---':
             break_next = True; i += 1; continue
+        if ln.startswith('```'):
+            j = i + 1
+            while j < len(lines) and not lines[j].startswith('```'):
+                p = doc.add_paragraph(); r = p.add_run(lines[j]); r.font.name = 'Consolas'
+                r._element.rPr.rFonts.set(qn('w:eastAsia'), 'Consolas'); r.font.size = Pt(9)
+                r.font.color.rgb = RGBColor(0x1F, 0x4E, 0x79); p.paragraph_format.space_after = Pt(0)
+                j += 1
+            doc.add_paragraph().paragraph_format.space_after = Pt(2)
+            i = j + 1; continue
         m = re.match(r'^(#{1,3})\s+(.*)', ln)
         if m:
             lvl = len(m.group(1))
@@ -118,7 +127,7 @@ def convert(src, dst):
             i += 1; continue
         # párrafo: juntar líneas consecutivas no vacías que no sean otra cosa
         buf = [ln]; j = i + 1
-        while j < len(lines) and lines[j].strip() and not lines[j].startswith(('|', '#', '- ', '* ')) and not re.match(r'^\s*\d+\.\s', lines[j]) and lines[j].strip() != '---':
+        while j < len(lines) and lines[j].strip() and not lines[j].startswith(('|', '#', '- ', '* ', '```')) and not re.match(r'^\s*\d+\.\s', lines[j]) and lines[j].strip() != '---':
             buf.append(lines[j]); j += 1
         p = doc.add_paragraph(); add_runs(p, ' '.join(s.strip() for s in buf))
         p.paragraph_format.space_after = Pt(6)

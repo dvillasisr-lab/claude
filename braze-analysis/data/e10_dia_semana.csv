@@ -1,0 +1,178 @@
+dia_semana_num,dia_semana,canal,team,envios,usuarios_aprox,comunicaciones,email_entregados,wa_entregados,respuestas,bajas_email_eventos,conversiones_filas
+1,Sunday,banner,Others,1254,1499,1,0,0,0,0,0
+1,Sunday,email,Marketing,5629553,4306782,593,5488408,0,90939,51125,54120
+1,Sunday,email,Others,3660098,1659821,151,3571750,0,105329,13325,1014
+1,Sunday,email,Product Growth,3234831,1902483,750,3197118,0,48952,35249,61765
+1,Sunday,email,Sales,1865279,1033381,102,1820599,0,4799,8733,31472
+1,Sunday,email,Acquisition,399620,287294,10,357878,0,10673,1293,734
+1,Sunday,email,Collections,296,314055,22,15828,0,14460,439,21034
+1,Sunday,email,Compliance,0,11872,36,10,0,1019,439,0
+1,Sunday,email,CX,0,787,6,0,0,60,30,0
+1,Sunday,in-app,Marketing,1654555,1063089,149,0,0,576240,0,45719
+1,Sunday,in-app,Product Growth,881751,558489,233,0,0,422728,0,87025
+1,Sunday,in-app,Sales,476033,241066,76,0,0,45426,0,9056
+1,Sunday,in-app,Others,217308,231801,16,0,0,183507,0,41
+1,Sunday,in-app,Collections,0,1,1,0,0,1,0,0
+1,Sunday,push notification,Marketing,20289799,2432843,308,0,0,219111,0,18458
+1,Sunday,push notification,Sales,7768492,743317,144,0,0,83452,0,11512
+1,Sunday,push notification,Others,2266593,1719834,45,0,0,44624,0,412
+1,Sunday,push notification,Product Growth,1293792,727225,144,0,0,50280,0,13519
+1,Sunday,push notification,Collections,0,1822,12,0,0,1889,0,221
+1,Sunday,whatsapp,Marketing,1064929,892554,250,0,929788,715189,0,57811
+1,Sunday,whatsapp,Product Growth,386770,413637,226,0,325701,296247,0,15133
+1,Sunday,whatsapp,Sales,124447,204054,88,0,116220,202875,0,15615
+1,Sunday,whatsapp,Others,10822,13001,18,0,10773,9672,0,13
+1,Sunday,whatsapp,Compliance,0,2632,8,0,431,2561,0,0
+2,Monday,banner,Others,34281,28054,1,0,0,0,0,0
+2,Monday,email,Product Growth,30009163,3891105,745,28291780,0,81301,52738,87602
+2,Monday,email,Others,22360335,16978605,151,20372798,0,171337,21949,1711
+2,Monday,email,Marketing,13279002,5576804,600,12660990,0,126574,74745,77423
+2,Monday,email,Collections,5448861,1462465,25,5217326,0,58738,1181,88669
+2,Monday,email,Sales,3094888,1092159,95,3006016,0,6657,12806,41925
+2,Monday,email,Compliance,1820172,110578,48,1762679,0,5184,888,0
+2,Monday,email,Acquisition,416645,287364,10,373152,0,11993,1617,778
+2,Monday,email,CX,36299,33814,4,35956,0,1374,65,0
+2,Monday,email,B2B,0,1,1,0,0,0,1,0
+2,Monday,email,NPS,0,1,1,0,0,0,1,0
+2,Monday,email,Security,0,1,1,0,0,0,1,0
+2,Monday,in-app,Marketing,2029496,1131724,219,0,0,689147,0,55606
+2,Monday,in-app,Product Growth,1315425,704036,265,0,0,595020,0,130262
+2,Monday,in-app,Sales,567931,272173,56,0,0,39396,0,7720
+2,Monday,in-app,Others,327815,319174,29,0,0,267740,0,108
+2,Monday,in-app,Collections,21539,21542,2,0,0,2861,0,1098
+2,Monday,push notification,Marketing,17153411,2472611,331,0,0,201945,0,23828
+2,Monday,push notification,Product Growth,6703759,1045561,167,0,0,106722,0,23277
+2,Monday,push notification,Sales,6255001,564710,154,0,0,71803,0,11015
+2,Monday,push notification,Collections,2113514,844956,14,0,0,89423,0,16069
+2,Monday,push notification,Others,1482269,728510,67,0,0,80195,0,108
+2,Monday,whatsapp,Marketing,5588906,2272805,261,0,4141466,2765363,0,81906
+2,Monday,whatsapp,Product Growth,2426460,1389570,225,0,1527032,894173,0,22191
+2,Monday,whatsapp,Sales,933177,541434,88,0,797506,601036,0,51613
+2,Monday,whatsapp,Compliance,496524,104894,8,0,287179,174693,0,0
+2,Monday,whatsapp,Others,127577,131678,23,0,111303,62566,0,370
+3,Tuesday,banner,Others,27003,23383,1,0,0,0,0,0
+3,Tuesday,email,Marketing,19203149,6407581,631,18304377,0,135447,83537,77123
+3,Tuesday,email,Product Growth,16777075,3939293,769,15993478,0,74253,57609,83075
+3,Tuesday,email,Others,14110529,2731439,164,13687303,0,187144,24784,1345
+3,Tuesday,email,Collections,5960509,1541015,24,5718775,0,62334,1387,99289
+3,Tuesday,email,Sales,4315101,1364563,101,4166261,0,6076,14977,41371
+3,Tuesday,email,Acquisition,442486,295038,10,397827,0,12298,1787,893
+3,Tuesday,email,Compliance,292726,86637,55,284254,0,3567,776,0
+3,Tuesday,email,CX,31,4694,4,62,0,447,50,0
+3,Tuesday,in-app,Marketing,1961085,1130779,209,0,0,680662,0,51616
+3,Tuesday,in-app,Product Growth,1212646,688901,260,0,0,540744,0,116944
+3,Tuesday,in-app,Sales,414290,219510,46,0,0,34474,0,6329
+3,Tuesday,in-app,Others,321897,326235,28,0,0,255185,0,69
+3,Tuesday,in-app,Collections,10576,9924,2,0,0,1438,0,839
+3,Tuesday,push notification,Marketing,15880649,2394102,324,0,0,181676,0,21507
+3,Tuesday,push notification,Others,7581323,2165858,71,0,0,126052,0,10
+3,Tuesday,push notification,Sales,6728321,620299,137,0,0,104172,0,16332
+3,Tuesday,push notification,Product Growth,5682385,1842483,167,0,0,101652,0,22414
+3,Tuesday,push notification,Collections,2245032,908864,14,0,0,81830,0,12879
+3,Tuesday,whatsapp,Marketing,6436181,2987247,264,0,4831863,3261155,0,101515
+3,Tuesday,whatsapp,Product Growth,2105776,1219676,227,0,1512088,926259,0,24111
+3,Tuesday,whatsapp,Sales,1687687,920727,88,0,1387200,1004483,0,84331
+3,Tuesday,whatsapp,Compliance,151564,88342,8,0,90921,69431,0,0
+3,Tuesday,whatsapp,Others,40444,44822,22,0,40425,34697,0,41
+4,Wednesday,banner,Others,28416,25025,1,0,0,0,0,0
+4,Wednesday,email,Marketing,19225017,6530270,647,18330489,0,125978,83388,75268
+4,Wednesday,email,Product Growth,8925030,3095980,794,8637848,0,66817,54305,82617
+4,Wednesday,email,Others,6052015,2335886,178,5906085,0,169225,22203,1443
+4,Wednesday,email,Collections,5557937,1484443,26,5326797,0,54582,1321,100544
+4,Wednesday,email,Sales,4960845,1397251,96,4805354,0,9257,14248,49832
+4,Wednesday,email,Acquisition,441896,291620,10,397727,0,11925,1697,854
+4,Wednesday,email,Compliance,192013,88370,40,187207,0,2909,743,0
+4,Wednesday,email,Security,0,1,1,0,0,0,1,0
+4,Wednesday,email,B2B,0,4,2,0,0,0,4,0
+4,Wednesday,email,CX,0,2184,4,12,0,177,35,0
+4,Wednesday,in-app,Marketing,1902586,1067390,197,0,0,642602,0,47532
+4,Wednesday,in-app,Product Growth,1188078,696139,248,0,0,538449,0,116215
+4,Wednesday,in-app,Sales,460843,250263,49,0,0,33170,0,6272
+4,Wednesday,in-app,Others,404215,365631,29,0,0,295083,0,59
+4,Wednesday,in-app,Collections,11603,11371,2,0,0,1551,0,886
+4,Wednesday,push notification,Marketing,17283582,2410083,322,0,0,197461,0,22581
+4,Wednesday,push notification,Sales,6452919,618066,122,0,0,82295,0,11573
+4,Wednesday,push notification,Product Growth,5712322,1887912,169,0,0,116153,0,22743
+4,Wednesday,push notification,Others,3390823,1848646,72,0,0,104009,0,316
+4,Wednesday,push notification,Collections,2093114,820917,14,0,0,69937,0,11049
+4,Wednesday,whatsapp,Marketing,4843066,2646320,264,0,3417530,2499701,0,73870
+4,Wednesday,whatsapp,Product Growth,2134569,1049386,220,0,1648295,972116,0,25934
+4,Wednesday,whatsapp,Sales,760491,609337,89,0,558234,453124,0,25410
+4,Wednesday,whatsapp,Others,155469,143706,21,0,132267,75808,0,563
+4,Wednesday,whatsapp,Compliance,2518,12012,8,0,3547,11745,0,0
+5,Thursday,banner,Others,45100,41862,1,0,0,0,0,0
+5,Thursday,email,Product Growth,25755854,4206551,774,22884266,0,77256,55384,91407
+5,Thursday,email,Marketing,9532505,5148302,636,9235034,0,112148,78635,65854
+5,Thursday,email,Others,8308771,4154688,155,8052875,0,199674,22468,1332
+5,Thursday,email,Collections,5424673,1493046,24,5194938,0,52005,1304,95076
+5,Thursday,email,Sales,2860005,1258001,96,2743574,0,6127,13795,31971
+5,Thursday,email,Acquisition,447047,315143,10,402288,0,11408,1725,763
+5,Thursday,email,Compliance,118056,103691,35,114695,0,2309,689,0
+5,Thursday,email,NPS,0,1,1,0,0,0,1,0
+5,Thursday,email,CX,0,2162,5,4,0,145,48,0
+5,Thursday,email,B2B,0,2,1,0,0,0,2,0
+5,Thursday,in-app,Marketing,1765022,1105253,209,0,0,636639,0,49166
+5,Thursday,in-app,Product Growth,1375932,693018,257,0,0,627427,0,125234
+5,Thursday,in-app,Sales,506049,269983,47,0,0,38093,0,5906
+5,Thursday,in-app,Others,290694,279924,24,0,0,236294,0,49
+5,Thursday,in-app,Collections,9845,9084,1,0,0,1317,0,733
+5,Thursday,push notification,Marketing,20358260,2399619,359,0,0,204653,0,22021
+5,Thursday,push notification,Product Growth,8010331,1912366,202,0,0,155156,0,25982
+5,Thursday,push notification,Sales,7274386,613269,105,0,0,90895,0,12456
+5,Thursday,push notification,Collections,1935217,785515,12,0,0,65320,0,11071
+5,Thursday,push notification,Others,1149576,713967,63,0,0,76252,0,16
+5,Thursday,whatsapp,Marketing,6988184,2925941,261,0,5244691,3768852,0,90161
+5,Thursday,whatsapp,Product Growth,6380979,2011938,220,0,4580221,2493760,0,56992
+5,Thursday,whatsapp,Sales,1413762,819274,89,0,1195473,967335,0,71962
+5,Thursday,whatsapp,Others,40410,45282,30,0,40420,37373,0,75
+5,Thursday,whatsapp,Compliance,1,6864,8,0,879,7039,0,0
+6,Friday,banner,Others,77331,59813,1,0,0,0,0,0
+6,Friday,email,Product Growth,27735657,4219919,741,26309802,0,87874,52002,105681
+6,Friday,email,Marketing,14534951,6103779,605,13981587,0,111709,72325,78390
+6,Friday,email,Others,7537371,2473682,166,7332785,0,193602,19166,1711
+6,Friday,email,Collections,5529996,1490089,23,5305577,0,60760,1288,101246
+6,Friday,email,Sales,4951251,1337499,91,4801690,0,8003,12705,37625
+6,Friday,email,Acquisition,451298,274392,10,406367,0,11267,1530,756
+6,Friday,email,Compliance,47,16327,66,232,0,1635,743,0
+6,Friday,email,CX,0,1330,6,0,0,117,32,0
+6,Friday,email,B2B,0,1,1,0,0,0,1,0
+6,Friday,in-app,Marketing,1805459,1042827,192,0,0,615446,0,49472
+6,Friday,in-app,Product Growth,1656172,753288,263,0,0,792152,0,177175
+6,Friday,in-app,Sales,564258,249999,53,0,0,47267,0,7334
+6,Friday,in-app,Others,286669,278962,37,0,0,236208,0,53
+6,Friday,in-app,Collections,27861,27687,1,0,0,3769,0,1888
+6,Friday,push notification,Marketing,17187597,2390226,362,0,0,180667,0,21999
+6,Friday,push notification,Sales,9380303,639209,123,0,0,120901,0,15476
+6,Friday,push notification,Product Growth,6797972,1838000,209,0,0,150853,0,34387
+6,Friday,push notification,Others,2945218,1780087,78,0,0,99321,0,2
+6,Friday,push notification,Collections,2172549,857811,12,0,0,77852,0,12992
+6,Friday,whatsapp,Marketing,5080621,2065883,260,0,3573252,2426563,0,77601
+6,Friday,whatsapp,Product Growth,1653841,1172487,226,0,1167530,859166,0,32050
+6,Friday,whatsapp,Sales,1314885,820293,89,0,958814,709151,0,33133
+6,Friday,whatsapp,Others,49559,52559,23,0,44429,31713,0,31
+6,Friday,whatsapp,Compliance,0,4891,8,0,711,4721,0,0
+7,Saturday,banner,Others,3566,4290,1,0,0,0,0,0
+7,Saturday,email,Marketing,6201118,4128657,559,6114755,0,94848,55165,66198
+7,Saturday,email,Others,5281912,2032529,142,5143575,0,142244,14305,1075
+7,Saturday,email,Collections,4498206,1460274,22,4306463,0,35320,947,51125
+7,Saturday,email,Product Growth,4468078,2774813,679,4371225,0,56449,38496,74901
+7,Saturday,email,Sales,1733258,809931,89,1725669,0,6603,9455,38059
+7,Saturday,email,Acquisition,408301,270998,10,366277,0,10413,1375,731
+7,Saturday,email,Compliance,0,11631,40,67,0,1249,516,0
+7,Saturday,email,CX,0,902,4,0,0,84,31,0
+7,Saturday,email,B2B,0,1,1,0,0,0,1,0
+7,Saturday,in-app,Marketing,1881010,1062889,173,0,0,611972,0,51095
+7,Saturday,in-app,Product Growth,1138937,637376,241,0,0,545324,0,121973
+7,Saturday,in-app,Sales,516477,245976,79,0,0,44863,0,8368
+7,Saturday,in-app,Others,231048,224591,17,0,0,191745,0,49
+7,Saturday,in-app,Collections,3995,3791,1,0,0,516,0,32
+7,Saturday,push notification,Marketing,22691193,2352568,330,0,0,242060,0,23039
+7,Saturday,push notification,Sales,6686405,782665,140,0,0,71028,0,9587
+7,Saturday,push notification,Others,3005495,1748962,48,0,0,73309,0,2
+7,Saturday,push notification,Collections,1682006,830524,12,0,0,55847,0,5450
+7,Saturday,push notification,Product Growth,1430418,693088,181,0,0,67697,0,19144
+7,Saturday,whatsapp,Sales,1187211,563683,89,0,914594,666732,0,28335
+7,Saturday,whatsapp,Marketing,812331,823932,255,0,721167,720714,0,46397
+7,Saturday,whatsapp,Product Growth,797665,703395,227,0,661388,482455,0,21298
+7,Saturday,whatsapp,Others,14389,16508,16,0,14384,12839,0,20
+7,Saturday,whatsapp,Compliance,0,3285,8,0,548,3221,0,0

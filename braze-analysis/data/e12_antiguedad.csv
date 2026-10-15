@@ -1,0 +1,82 @@
+banda_antiguedad,canal,email_subscribe,envios,usuarios_aprox,respuestas,bajas_email_eventos,conversiones_filas
+0. alta después del envío (revisar),banner,false,27,25,0,0,0
+0. alta después del envío (revisar),banner,true,19,19,0,0,0
+0. alta después del envío (revisar),email,false,3434522,1544275,110829,8316,51645
+0. alta después del envío (revisar),email,true,1325141,824485,51222,0,14297
+0. alta después del envío (revisar),in-app,false,1572230,837854,1365338,0,69612
+0. alta después del envío (revisar),in-app,null,452,359,417,0,0
+0. alta después del envío (revisar),in-app,true,262198,147900,232343,0,5957
+0. alta después del envío (revisar),push notification,false,757717,591171,118014,0,30056
+0. alta después del envío (revisar),push notification,null,8,8,0,0,0
+0. alta después del envío (revisar),push notification,true,30023,23523,4020,0,1535
+0. alta después del envío (revisar),whatsapp,false,135651,112307,79156,0,53416
+0. menos de 1 mes,banner,false,4561,4628,0,0,0
+0. menos de 1 mes,banner,true,546,547,0,0,0
+0. menos de 1 mes,email,false,17745674,1782356,490144,79566,140289
+0. menos de 1 mes,email,true,8979586,1251098,152781,0,19887
+0. menos de 1 mes,in-app,false,2167787,737801,870220,0,107114
+0. menos de 1 mes,in-app,null,55,37,24,0,0
+0. menos de 1 mes,in-app,true,188090,81031,87854,0,5849
+0. menos de 1 mes,push notification,false,12489176,969846,448405,0,47411
+0. menos de 1 mes,push notification,null,794,76,19,0,0
+0. menos de 1 mes,push notification,true,1228746,104202,23314,0,1532
+0. menos de 1 mes,whatsapp,false,4298405,1022149,2045955,0,61866
+1. 1 a 3 meses,banner,false,11728,10191,0,0,0
+1. 1 a 3 meses,banner,true,528,513,0,0,0
+1. 1 a 3 meses,email,false,19537817,1832950,277978,88398,164204
+1. 1 a 3 meses,email,true,5140712,986928,43742,0,13233
+1. 1 a 3 meses,in-app,false,2267589,579446,806674,0,118034
+1. 1 a 3 meses,in-app,null,20,13,3,0,0
+1. 1 a 3 meses,in-app,true,134660,48395,53661,0,3621
+1. 1 a 3 meses,push notification,false,21759620,849327,446355,0,51371
+1. 1 a 3 meses,push notification,null,857,50,16,0,0
+1. 1 a 3 meses,push notification,true,2242000,77404,18744,0,919
+1. 1 a 3 meses,whatsapp,false,5240816,1182090,2627670,0,64589
+1. 1 a 3 meses,whatsapp,true,1,1,0,0,0
+2. 3 a 6 meses,banner,false,18001,14347,0,0,0
+2. 3 a 6 meses,banner,true,330,262,0,0,0
+2. 3 a 6 meses,email,false,28368984,2010831,265502,106705,178753
+2. 3 a 6 meses,email,true,3538479,675190,16349,0,3969
+2. 3 a 6 meses,in-app,false,2534276,560957,908502,0,136233
+2. 3 a 6 meses,in-app,null,1,1,1,0,0
+2. 3 a 6 meses,in-app,true,69586,27761,26344,0,1234
+2. 3 a 6 meses,push notification,false,27068021,853599,421301,0,50319
+2. 3 a 6 meses,push notification,null,210,9,0,0,0
+2. 3 a 6 meses,push notification,true,1913650,57073,8344,0,317
+2. 3 a 6 meses,whatsapp,false,7295525,1314317,3776743,0,83766
+2. 3 a 6 meses,whatsapp,true,2,1,1,0,0
+3. 6 a 12 meses,banner,false,37630,24892,0,0,0
+3. 6 a 12 meses,banner,true,125,101,0,0,0
+3. 6 a 12 meses,email,false,46849194,3481158,371000,175021,262809
+3. 6 a 12 meses,email,true,3712374,1602674,13371,0,907
+3. 6 a 12 meses,in-app,false,4027824,619611,1441696,0,217631
+3. 6 a 12 meses,in-app,true,43010,19807,18063,0,538
+3. 6 a 12 meses,push notification,false,43122332,997325,570160,0,71692
+3. 6 a 12 meses,push notification,null,33,1,0,0,0
+3. 6 a 12 meses,push notification,true,1481007,35791,3727,0,94
+3. 6 a 12 meses,whatsapp,false,10329169,1731747,5434859,0,150015
+3. 6 a 12 meses,whatsapp,true,7,2,0,0,0
+4. 1 a 2 años,banner,false,71836,41701,0,0,0
+4. 1 a 2 años,banner,true,75,62,0,0,0
+4. 1 a 2 años,email,false,80567981,3944083,540717,295242,437030
+4. 1 a 2 años,email,true,5063107,2526110,13882,0,791
+4. 1 a 2 años,in-app,false,6791301,739052,2309570,0,327408
+4. 1 a 2 años,in-app,null,5,4,4,0,0
+4. 1 a 2 años,in-app,true,41684,20177,21151,0,494
+4. 1 a 2 años,push notification,false,66550090,1067227,874124,0,108857
+4. 1 a 2 años,push notification,null,3,3,0,0,0
+4. 1 a 2 años,push notification,true,963566,27323,2559,0,40
+4. 1 a 2 años,whatsapp,false,11882890,1718603,6370839,0,284625
+4. 1 a 2 años,whatsapp,true,13,8,8,0,0
+5. más de 2 años,banner,false,71432,40808,0,0,0
+5. más de 2 años,banner,true,113,95,0,0,0
+5. más de 2 años,email,false,100795884,3407049,575134,340363,637128
+5. más de 2 años,email,true,8430301,2978124,22423,0,860
+5. más de 2 años,in-app,false,7302741,666531,2313085,0,287694
+5. más de 2 años,in-app,null,3,2,3,0,0
+5. más de 2 años,in-app,true,35588,19792,19503,0,504
+5. más de 2 años,push notification,false,71072935,767807,905819,0,109248
+5. más de 2 años,push notification,null,9,9,0,0,0
+5. más de 2 años,push notification,true,403229,14850,1571,0,56
+5. más de 2 años,whatsapp,false,16028717,1790164,7889286,0,340205
+5. más de 2 años,whatsapp,true,19,2,11,0,0

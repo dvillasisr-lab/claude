@@ -1,14 +1,18 @@
 # Playbook de Braze para Kueski
 
-Versión 2. 15 de octubre de 2026. Reglas sacadas de nueve meses de envíos (enero a septiembre de 2026, 3,439 comunicaciones). Cada regla trae el dato que la sostiene. Los números completos están en el anexo y en el Sheets `braze_auditoria_v3`.
+Versión 4. 15 de octubre de 2026. Documento operativo: sugiere qué mandar, a quién, por qué canal, qué día y cuántas veces. Las sugerencias salen de nueve meses de envíos (enero a septiembre de 2026, 3,439 comunicaciones) y de 18 extracciones de Databricks. No son reglas fijas: cada equipo decide y las ajusta con sus propias pruebas. El análisis que las sostiene está aparte, en el Sheets `braze_auditoria_v4` y en `ANALISIS_BRAZE_KUESKI.md`.
 
 ## Cómo usar este documento
 
+- **Vas a mandar algo:** sección 0. Busca tu caso en la tabla y te sugiere canal, día, veces, segmento, exclusiones y control. En la versión web el resolvedor lo arma con cinco respuestas.
 - **Vas a crear algo nuevo:** ve a la sección 6 y sigue los 9 pasos. Antes de activar, pasa el checklist de la sección 7.
 - **Quieres mejorar algo que ya existe:** busca la pieza en la pestaña Campañas del Sheets, lee su acción y aplica la sección 8.
 - **Vas a poner orden en Braze:** secciones 1 (nombres), 2 (a quién no se le escribe) y 3 (cuántas veces). Se configuran una vez.
+- **Vas a configurar la cuenta de Braze:** sección 11. Dieciocho ajustes que se hacen una vez y protegen todo lo demás.
+- **Quieres ver el dato detrás de una sugerencia:** no está aquí. Está en el Sheets `braze_auditoria_v4` (pestaña Insights) y en el archivo de análisis.
+- **Solo tienes cinco minutos:** lee las 12 reglas de abajo y el checklist de la sección 7. Con eso ya no rompes nada.
 
-## Las 10 reglas en una página
+## Las 12 reglas en una página
 
 1. **Una pieza se llama** `Ticket-Producto-Audiencia-Gancho`. Sin ticket no se activa.
 2. **No se le escribe** a lista negra, REUS o ARCO, tarjeta KPay congelada, dados de baja, números de WhatsApp que fallaron 3 veces ni a quien no respondió nada en 90 días.
@@ -20,6 +24,133 @@ Versión 2. 15 de octubre de 2026. Reglas sacadas de nueve meses de envíos (ene
 8. **Un recordatorio de algo que el usuario empezó** responde 5 a 10 veces más que una oferta nueva. Ese es el gancho principal.
 9. **Referidos, lanzamientos y novedades van en in-app**, no por email. En in-app responden 43 a 55 %; por email 0.2 %.
 10. **A las 4 semanas se revisa.** Si no llega al mínimo del canal, se apaga o se rehace. Sin discusión.
+11. **Toda pieza lleva grupo de control de verdad:** 10 % que no recibe nada, con la opción nativa de Braze. Hoy ninguna lo tiene, así que nadie puede decir cuánto vende Braze.
+12. **Un Canvas tiene máximo 8 pasos y el usuario entra una sola vez.** Hoy hay Canvas de inactividad con 120 pasos y 477 pasos que abren menos de 1 %.
+
+---
+
+# 0. Resuélvelo: qué mandar, a quién, por dónde y cuándo
+
+Tablas de consulta. Buscas tu caso y la celda te dice lo que recomiendan los datos. Son sugerencias, no reglas: si tu prueba dice otra cosa, gana tu prueba.
+
+## 0.1 Qué mandar: canal, día y veces
+
+| Qué mandar | Canal | Mejor día | Mejor evitar | Veces | A quién | Control |
+|---|---|---|---|---|---|---|
+| Recordar algo que empezó (registro, Veriff, solicitud) | Email T1, push T2 | El mismo día o el siguiente. Cualquier día | | 2 en 7 días | Quien dejó el paso hace menos de 30 días | 10 % |
+| Bienvenida | Email día 1, luego push e in-app | Lunes a viernes | Sábado y domingo | 1 email al día, 3 la primera semana | Nuevos (menos de 30 días) | 10 % |
+| Oferta de crédito (Tasa 0, línea, monto) | Push. WhatsApp solo a quien abrió el push. Email no conviene | Martes a jueves | Lunes. Fin de semana | 2 al mes | Registrados y activos que abrieron un push en 60 días | 10 % |
+| Descuento, cupón, cashback, comercio del día (KPay) | Push y WhatsApp. Email no conviene | Push martes a jueves. WhatsApp sábado | Lunes. Dos canales el mismo día | 1 WhatsApp al mes, 1 push al día | Recurrentes de KPay | 10 % |
+| Referidos | In-app. Luego push | Cualquier día | Por email | 1 in-app por sesión, 1 push al mes | Activos | 10 % |
+| Lanzamiento, novedad, newsletter | In-app | Martes a jueves | Lunes. Mayo, junio, agosto, noviembre. A toda la base | 1 vez | Activos | 10 % |
+| Reactivar a un inactivo | Push. WhatsApp solo a quien abrió el push | Martes a jueves | Lunes. Fin de semana si pasa de 100 mil | 3 en 30 días y sale | Inactivos con señal en 90 días. Solo Lending | 10 % |
+| Encuesta o aviso legal | In-app. Email una vez | Martes a jueves | | 1 | Quien aplica | No |
+| Precobranza y cobranza | Email y push del proceso | Lunes a viernes. Precobranza 3 días antes del vencimiento | Domingo | Según el proceso | El bucket | No |
+| Transaccional | El del proceso | Al instante | | 1 por evento | Quien hizo la acción | No |
+
+Empate de canal: in-app, push, email, WhatsApp, en ese orden. Si el usuario respondió a un canal en 90 días, ese canal.
+
+## 0.2 Mejor día para mandar X
+
+Sí = recomendado. No = no recomendado, no prohibido.
+
+| Qué mandar | Lun | Mar | Mié | Jue | Vie | Sáb | Dom |
+|---|---|---|---|---|---|---|---|
+| Email masivo (más de 100 mil) | No | Sí | Sí | Sí | Sí | No | No |
+| Email acotado (menos de 100 mil, a quien respondió en 60 días) | No | Sí | Sí | Sí | Sí | Sí | Sí, el mejor |
+| Email a usuarios nuevos | Sí | Sí | Sí | Sí | Sí | No | No |
+| Push | Sí | Sí | Sí | Sí | Sí | Sí | Sí |
+| WhatsApp a recurrentes | No | No | No | No | No | Sí, el mejor | Solo acotado |
+| In-app | Sí | Sí | Sí | Sí | Sí | Sí | Sí |
+| Oferta de crédito | No | Sí | Sí | Sí | Sí | No | No |
+| Descuento o evento KPay | No | Push | Push | Push | Push | WhatsApp | No |
+| Reactivación | No | Sí | Sí | Sí | Sí | Solo chica | Solo chica |
+| Lanzamiento in-app | No | Sí | Sí | Sí | Sí | No | No |
+| Cobranza | Sí | Sí | Sí | Sí | Sí | Rinde menos | No |
+
+El mejor día de email de cada equipo:
+
+| Equipo | Mejor día | Peor día |
+|---|---|---|
+| Marketing | Jueves. Sábado y domingo solo acotado | Miércoles |
+| Product Growth (Lending) | Miércoles. Sábado y domingo solo acotado | Lunes |
+| Sales | No manda email. Push martes a jueves, WhatsApp sábado | Todos |
+| Collections | Lunes a viernes | Sábado y domingo |
+
+Hora: no hay dato. Horas de silencio de 21:00 a 9:00 (sección 11). La hora se prueba con A/B.
+
+## 0.3 Qué conviene mandar cada mes
+
+Sí = recomendado. No = mejor esperar a otro mes.
+
+| Mes | Evento | Oferta de crédito | Descuento y evento KPay | Lanzamiento o newsletter | Reactivación | Email masivo | WhatsApp | Pruebas A/B y relanzar |
+|---|---|---|---|---|---|---|---|---|
+| Enero | Cuesta de enero | Sí, con control | Sí, una por equipo | No | No | Sí, una pieza nueva por audiencia | Sí | No |
+| Febrero | | Sí | Sí | Sí | Sí | Sí | Sí, 1 al mes | Sí |
+| Marzo | | Sí | Sí | Sí | Sí | Sí | Solo acotado, es el mes más caro | Sí |
+| Abril | | Sí | Sí | Sí | No | Sí | No, hasta limpiar la base | Sí |
+| Mayo | Hot Sale | Solo acotada | Sí, una por equipo y canal | No | No | No | Solo recurrentes, sábado | No |
+| Junio | | No | No | No | No | No | Solo acotado | No |
+| Julio | | Sí | Sí | Sí | Sí | Sí | Sí | Sí, es el mes para probar |
+| Agosto | Regreso a clases | Solo acotada | Sí, una por equipo y canal | No | No | No | Solo recurrentes, sábado | No |
+| Septiembre | | Sí | Sí | Sí | Sí | Sí, sin subir el push | Sí | Sí, preparar Buen Fin |
+| Octubre | | Sí | Sí | Sí | Sí | Sí | Sí | Sí |
+| Noviembre | Buen Fin | Solo acotada | Sí, una por equipo y canal. Preventa por WhatsApp en sábado | No | No | No | Solo recurrentes, sábado | No |
+| Diciembre | | Sí | Sí | No | No | No a bases que no reciben | Sí | No |
+
+Octubre a diciembre no tienen dato de este año; la fila sale del calendario comercial y de las reglas de los otros meses.
+
+Sugerencias según el tipo de mes:
+
+- Mes con evento (enero, mayo, agosto, noviembre): una pieza por equipo y canal, nada a toda la base, ningún lanzamiento.
+- Mes después de un evento (junio): se baja el volumen. Solo retargeting, cobranza y transaccional masivo.
+- Mes sin evento (febrero, julio, octubre): pruebas A/B y relanzamientos con control.
+- Si la entrega de WhatsApp del mes anterior bajó de 75 %: este mes no sube el WhatsApp.
+- El push de un mes no sube más de 1.3 veces el promedio de los tres anteriores.
+
+## 0.4 A quién: segmento y antigüedad
+
+| Si quieres llegar a | Segmento | Canal | Veces | Dueño |
+|---|---|---|---|---|
+| Quien no se registra | `SEG-KCash-Anonimos`, `SEG-KCash-Leads_SinRegistro` | Push e in-app | 2 en 7 días | Marketing |
+| Registrado sin crédito o sin Veriff | `SEG-KCash-Registrados_SinSolicitud`, `SEG-KCash-Registrados_FaltaVeriff`, `SEG-KPay-Registrados_FaltaVeriff` | Email y push de retargeting | 2 | Marketing (KCash), Acquisition (KPay) |
+| Nuevo (menos de 30 días) | `SEG-KCash-Nuevos_30d`, `SEG-KPay-Nuevos_30d` | Email día 1, luego push e in-app | 1 email al día, 3 la primera semana | Lending, Sales |
+| Activo o recurrente | `SEG-KCash-Activos`, `SEG-KCash-Recurrentes`, `SEG-KPay-Recurrentes_90d` | Cualquiera | 5 promocionales a la semana, 1 WhatsApp al mes | Lending, Sales |
+| Inactivo, dormant, churn | `SEG-KCash-Inactivos_90a180d`, `SEG-KCash-Dormants_180a360d`, `SEG-KPay-Churn_12m`, `SEG-KCash-NeverActive` | Push con señal. WhatsApp solo detrás del push | 3 en 30 días y sale | Solo Lending |
+| En mora | `SEG-KCash-BKT1`, `SEG-KCash-BKT2`, `SEG-KCash-BKT3`, `SEG-KCash-Precobranza` | El del proceso | Según el proceso | Collections |
+| Comercio | `SEG-KPayB2B-Comercios_Activos`, `SEG-KPayB2B-Comercios_Inactivos` | Email y WhatsApp | 2 al mes | Sales |
+| Toda la base | No existe. Va por in-app | In-app | 1 | CRM aprueba |
+
+Siempre con las 7 exclusiones de la sección 2 (cobranza y transaccional: solo lista negra).
+
+| Lleva en la base | Qué le conviene | Mejor evitar |
+|---|---|---|
+| Menos de 1 mes | Solo su bienvenida: hasta 3 emails la primera semana y 1 push al día | Masivos. Fin de semana |
+| 1 a 6 meses | Retargeting y ofertas con señal. 2 al mes | Más de 1 push al día |
+| 6 meses a 1 año | Solo con señal en 90 días. 2 al mes | Reactivaciones de más de 3 toques |
+| 1 a 2 años | Solo si respondió en 90 días | Push sin señal |
+| Más de 2 años | Push solo a quien abrió un push en 90 días. Email solo transaccional y cobranza | Masivos |
+
+## 0.5 Qué manda cada equipo
+
+| Equipo | Canal | Día | Le funciona | Le conviene evitar |
+|---|---|---|---|---|
+| Marketing | Email y push de retargeting. In-app para referidos y lanzamientos | Jueves | Retargeting de registro y Veriff. Referidos por in-app | Push a anónimos y leads sin señal. Referidos y lanzamientos por email. 2 emails al día en onboarding. Nada a bases frías |
+| Product Growth (Lending) | Push con señal e in-app. Email solo retargeting a activos | Miércoles | Retargeting de Installments. Descuento a inactivos con señal | Tasa 0 por email a registrados. NeverActive por email. Canvas de más de 8 pasos |
+| Sales | Push y WhatsApp a recurrentes de KPay | Push martes a jueves. WhatsApp sábado | Quincenas sin intereses, evento del comercio | Email. El mismo evento por dos canales el mismo día. Promoción a tarjetas congeladas |
+| Collections | Email y push del proceso | Lunes a viernes | Precobranza 3 días antes del vencimiento, cobranza por bucket | Pruebas a usuarios reales. Piezas sin ticket |
+| Others (transaccional, BillPay, Shopping, Compliance) | Transaccional por el del proceso. BillPay y Shopping con las reglas promocionales | Martes a jueves | Confirmaciones y estados de cuenta | BillPay y Shopping a toda la base |
+
+## 0.6 Qué se manda por producto
+
+| Producto | Canal | Audiencia | Sugerencia |
+|---|---|---|---|
+| KCash | Push con señal, email de retargeting, in-app | Un dueño por audiencia | Una pieza de Tasa 0 por audiencia |
+| KPay | Push y WhatsApp | `SEG-KPay-Recurrentes_90d` | Comercio del día y Cuponera: una pieza con catálogo, no una por mes. Nunca a tarjetas congeladas |
+| Installments | Email y push de retargeting | Activos | Se escala por segmento |
+| BillPay | In-app y push | Activos | Nada a toda la base |
+| Ecosistema | In-app | | Nada a Todos sin in-app primero |
+| Dos productos | | | Se parte en dos piezas |
 
 ---
 
@@ -42,8 +173,8 @@ M0610-KCash-Leads_LeftFunnel-Retargeting_Veriff
 |---|---|---|
 | Ticket | Letra del equipo y número del ticket | M Marketing, L Lending (Product Growth), S Sales, C Collections, A Acquisition, P Producto y transaccional, K Compliance y legal |
 | Producto | El producto del que habla la pieza | KCash, KPay, KPayB2B, BillPay, Installments, Ecosistema, Kueski (solo corporativo) |
-| Audiencia | El segmento maestro (sección 1.3) | Anonimos, Leads, Registrados, Nuevos, Activos, Recurrentes, Inactivos, Dormants, Churn, Comercios, Todos. Cobranza: BKT1, BKT2, BKT3, Precobranza |
-| Gancho | Qué le ofreces o le recuerdas | Tasa0, Descuento, Cupon, Cashback, Referidos, Retargeting, Recordatorio, Lanzamiento, Newsletter, CrossSell, Encuesta, Informativo, Cobranza, Transaccional, o el nombre del evento: HotSale, BuenFin, CuestaEnero, BackToSchool, DiaMadres |
+| Audiencia | El segmento maestro (tabla 0.4) | Anonimos, Leads, Registrados, Nuevos, Activos, Recurrentes, Inactivos, Dormants, Churn, Comercios, Todos. Cobranza: BKT1, BKT2, BKT3, Precobranza |
+| Gancho | Qué le ofreces o le recuerdas | Tasa0, Descuento, Cupon, Cashback, Referidos, Retargeting, Recordatorio, Bienvenida, Lanzamiento, Newsletter, CrossSell, Encuesta, Informativo, Cobranza, Transaccional, o el nombre del evento: HotSale, BuenFin, CuestaEnero, BackToSchool, DiaMadres |
 
 Reglas:
 
@@ -82,34 +213,14 @@ Nota para datos: el parser de Databricks que llena `team`, `product`, `audience`
 - `NN` es el orden. Canal: Email, Push, WA, InApp, Espera, Decision, Salida.
 - `T1`, `T2` es el toque. Máximo T2 en promocional.
 - Antes de un paso de WhatsApp siempre hay un paso de Decision: solo pasa quien abrió algo antes.
-- Cada paso de email lleva el filtro de suscripción (1.5). Hoy 80 mil emails llegaron a gente dada de baja porque el filtro estaba solo a la entrada.
+- Cada paso de email lleva el filtro de suscripción (1.4). Hoy 80 mil emails llegaron a gente dada de baja porque el filtro estaba solo a la entrada.
 - Todo Canvas termina en un paso de Salida con el motivo. Si no, el usuario sigue recibiendo pasos aunque ya haya convertido.
-- El grupo de control (10 %) se configura dentro del Canvas o la campaña, no en el nombre.
+- El grupo de control (10 %) se configura con la opción nativa de Braze, no como un camino llamado "Control".
+- **Máximo 8 pasos.** Hoy 45 Canvas pasan de 20 pasos y 19 pasan de 50: los de inactividad `ConSinOferta` tienen entre 96 y 120 pasos para 734 mil usuarios. Un Canvas así no se puede leer ni medir. Se parte por audiencia.
+- **Re-elegibilidad apagada.** El usuario entra una vez al Canvas. Si tiene que volver a entrar es otra pieza (sección 11).
+- **Un paso que abre menos de 1 % con mil o más usuarios se apaga ese mes.** Hoy hay 477 pasos así.
 
-## 1.3 Segmentos: pocos, con dueño
-
-Hoy la audiencia se escribe de 731 formas distintas y dos equipos trabajan la misma base con ofertas distintas (Lending y Marketing sobre inactivos; Lending y Marketing con Tasa 0 al mismo usuario el mismo día).
-
-Nombre: `SEG-Producto-Audiencia_Detalle`. Máximo 30 segmentos maestros en total.
-
-| Familia | Segmentos | Dueño |
-|---|---|---|
-| Embudo de registro | `SEG-KCash-Anonimos`, `SEG-KCash-Leads_SinRegistro`, `SEG-KCash-Registrados_SinSolicitud`, `SEG-KCash-Registrados_FaltaVeriff`, `SEG-KPay-Registrados_FaltaVeriff` | Marketing (KCash), Acquisition (KPay) |
-| Nuevos | `SEG-KCash-Nuevos_30d`, `SEG-KPay-Nuevos_30d` | Lending, Sales |
-| Activos | `SEG-KCash-Activos`, `SEG-KCash-Recurrentes`, `SEG-KPay-Recurrentes_90d` | Lending, Sales |
-| Fríos | `SEG-KCash-Inactivos_90a180d`, `SEG-KCash-Dormants_180a360d`, `SEG-KPay-Churn_12m`, `SEG-KCash-NeverActive` | Solo Lending. Marketing no crea segmentos fríos. |
-| Cobranza | `SEG-KCash-BKT1`, `SEG-KCash-BKT2`, `SEG-KCash-BKT3`, `SEG-KCash-Precobranza` | Collections |
-| Comercios | `SEG-KPayB2B-Comercios_Activos`, `SEG-KPayB2B-Comercios_Inactivos` | Sales |
-| Exclusión | `EXC-Blacklist`, `EXC-REUS_ARCO`, `EXC-KPay_CCFreeze`, `EXC-BajaEmail`, `EXC-WA_SinEntrega3`, `EXC-SinRespuesta90d`, `EXC-Empleados` | MarTech (con Legal y Riesgo) |
-| Interno | `SEG-Interno-QA` | MarTech |
-
-Reglas:
-
-- Las piezas usan el segmento maestro y afinan con un filtro adentro del Canvas ("y abrió un push en 60 días"). No se crea un segmento por campaña.
-- Un segmento nuevo se pide en el ticket y lo aprueba el dueño de la familia.
-- Cada trimestre se archivan los segmentos sin uso en 90 días.
-
-## 1.4 Tags
+## 1.3 Tags
 
 Los tags no están en Databricks, así que no sabemos cómo se usan hoy. Regla para adelante: cuatro tags obligatorios por pieza, de lista cerrada, en minúsculas.
 
@@ -122,7 +233,7 @@ Los tags no están en Databricks, así que no sabemos cómo se usan hoy. Regla p
 
 Opcional: `gancho:` con el mismo valor que el nombre, y `estado:revision` para lo que está en el Plan_accion. Nadie crea tags fuera de la lista.
 
-## 1.5 Grupos de suscripción
+## 1.4 Grupos de suscripción
 
 | Grupo | Se puede dar de baja | Quién lo usa |
 |---|---|---|
@@ -135,26 +246,6 @@ Opcional: `gancho:` con el mismo valor que el nombre, y `estado:revision` para l
 | Cobranza | No | Collections |
 
 Cada paso de email promocional filtra por su grupo. El pie del email ofrece la baja del grupo y la baja total.
-
-## 1.6 Lo demás
-
-- **Plantillas:** `TPL-Canal-Uso-vN` (`TPL-Email-Promo-v3`). Bloques compartidos para encabezado y pie legal. Nadie edita el pie dentro de una campaña.
-- **Atributos de usuario que hacen falta:** `canal_preferido_90d` (último canal al que respondió), `ultima_respuesta`, `wa_fallos_seguidos`, `etapa_golden`, `producto_activo`, `fecha_alta`. En minúsculas con guion bajo.
-- **Evento de conversión:** uno por pieza, ventana de 7 días. Lending: `solicitud_enviada`. KPay: `compra_kpay`. Embudo: el siguiente paso. Cobranza: `pago_recibido`.
-- **UTMs:** `utm_source=braze`, `utm_medium=email|push|whatsapp|inapp`, `utm_campaign=<ticket>`, `utm_content=<paso>`.
-- **Archivo:** sin envíos en 90 días se archiva. Una sola versión activa por pieza.
-- **Permisos:** activar a un segmento real lo hace el dueño del segmento más MarTech. Más de 1 M de usuarios o "Todos": también CRM. Exclusiones: MarTech con Legal o Riesgo.
-
-## 1.7 Limpieza que hay que hacer hoy
-
-| Qué | Cuánto |
-|---|---|
-| Piezas activas duplicadas (mismo equipo, producto, audiencia y gancho) | 109 piezas en 13 combinaciones. Se queda una por combinación. |
-| Piezas con 10 o más versiones | 15 familias. Se consolidan en una. |
-| Pruebas y copias que mandan a usuarios reales | 171 comunicaciones, 7.26 M envíos. Se pausan hoy. La más grande: `QA-KPay-B001 ReminderRegistroTelefono`, 1.87 M push con 0.01 % de apertura. |
-| Dos versiones del email de desembolso activas | 20240821 y 20251110 llegan juntas a 600 mil usuarios. Se apaga la de 2024. |
-| Piezas sin ticket | 749. Others solo tiene ticket en 49 % de sus envíos. |
-| Collections con ticket T000 en todo | Un ticket C por bucket. |
 
 ---
 
@@ -174,6 +265,9 @@ Siete exclusiones. Se ponen una vez como filtro negativo en todo lo promocional 
 
 Cobranza y transaccional solo excluyen lista negra. Legal decide si cobranza también excluye REUS y ARCO (hoy 61 mil envíos).
 
+Mientras Datos no defina las banderas de contactabilidad del golden dataset, las exclusiones se arman con los eventos de Braze (baja, desinstalación, fallo de WhatsApp) y con `is_blacklist`, `is_reus`, `is_arco` y `cc_freeze`.
+
+
 ---
 
 # 3. Cuántas veces
@@ -189,6 +283,7 @@ Cobranza y transaccional solo excluyen lista negra. Legal decide si cobranza tam
 | Onboarding (retargeting de registro) | 1 email al día, máximo 3 la primera semana. El resto por push o in-app | Hoy manda 2 al día y causa 22 % de las bajas de usuarios nuevos |
 | Usuario nuevo | Una sola secuencia de bienvenida. Nada más hasta que termine | 33 % se da de baja con el primer email. Antes de irse recibe 4 piezas distintas |
 | Reactivación de quien no responde | 3 toques en 30 días, un canal, un gancho. Si no responde, fuera | 73 % de los usuarios no respondió nada en 9 meses |
+| Push a usuarios con más de 2 años en la base | Solo a quien abrió un push en 90 días | Reciben 91 push en 9 meses (10 al mes) y abren 1.3 %. Un usuario nuevo recibe 13 y abre 3.4 % |
 
 Se configura con el frequency capping de Braze (global por tipo y canal) y con el tope del Canvas.
 
@@ -223,41 +318,27 @@ Si el usuario ya tiene `canal_preferido_90d`, ese canal manda. Empate: in-app, p
 
 ---
 
-# 5. Qué funciona y qué no
+# 5. Qué funciona y qué no, en una tabla
 
-Cada punto: dato, y la regla que sale de ahí. Los números completos están en el anexo.
+Resumen operativo: solo lo que conviene hacer.
 
-## 5.1 En general
+| Dimensión | Funciona | No funciona | Sugerencia |
+|---|---|---|---|
+| En general | In-app, WhatsApp a quien ya respondió, recordar algo empezado, 2 toques, audiencias de 10 a 100 mil con un criterio | Email masivo a prospectos, push y WhatsApp a bases frías, enviar a toda la base, 3 o más toques, dos equipos sobre la misma gente el mismo día, email masivo en lunes, Canvas de 100 pasos | Antes de agregar un mensaje, quita uno |
+| Canal | In-app para lo informativo. Push como canal de señal. WhatsApp a recurrentes. Email para retargeting y transaccional | Email para Tasa 0, referidos y novedades. WhatsApp como primer toque | Tabla 0.1 y mínimos de 5.1 |
+| Día | Martes a jueves para email masivo. Sábado para WhatsApp a recurrentes | Lunes masivo. Fin de semana a nuevos o a bases grandes | Tabla 0.2 |
+| Mes | Los meses sin evento, para probar y relanzar | Masivos en mayo, junio y agosto. Lanzamientos en el mes de un evento | Tabla 0.3 |
+| Tamaño | 10 a 100 mil usuarios (clic 1.2 %) | Más de 1 M (0.16 %) | Más de 1 M obliga a prueba al 10 % |
+| Toques | 2 (clic 1.8 %) | 3 o más (0.5 %) | 2 y se acabó |
+| Antigüedad | El primer mes, que es cuando responde | Más de 1 año sin señal | Tabla 0.4 |
+| Equipo y producto | Cada equipo en su canal: Marketing retargeting, Lending push con señal, Sales push y WhatsApp a recurrentes | Sales por email. Marketing en bases frías. Dos equipos con Tasa 0 al mismo usuario | Tablas 0.5 y 0.6 |
+| Pasos del Canvas | 8 o menos, con Decision entre envíos. Push detrás de una señal (abre 6 % contra 2 %) | 100 pasos. Pasos con menos de 1 % | Pasos con 1.2 |
+| Control | 10 % nativo de Braze y lectura del lift a 4 semanas | Caminos llamados "Control" y push silencioso | Sin lift nadie defiende una pieza |
+| Pruebas | A/B de una variable, misma base, mismo día, 50/50 | Caminos de audiencia presentados como experimento | Una prueba por equipo al mes |
 
-- **Funciona:** in-app (38 % de clic), WhatsApp cuando llega (69 % de lectura), recordar algo empezado, 2 toques, audiencias de 10 a 100 mil con un criterio.
-- **No funciona:** email masivo a prospectos, push a bases frías (0.8 %), WhatsApp a bases frías, enviar a toda la base, 3 o más toques, dos equipos sobre la misma gente el mismo día.
-- **Regla:** antes de agregar un mensaje, quita uno. El problema no es mandar mejor, es mandar menos y a quien sí.
+## 5.1 Mínimo por canal
 
-## 5.2 Por equipo
-
-**Marketing.** El que más manda (39 %), más gasta (47 %) y más bajas genera (4.95 por mil, el doble del estándar).
-
-- Funciona: retargeting de Veriff (email 3.0 %, push 5.8 %), referidos a clientes KCash por push (2.4 %), in-app de registro de línea (87 %).
-- No funciona: rescates por push a anónimos y leads (0.6 a 0.8 % en 22 M envíos), referidos por email a leads y dormants (0.1 a 0.2 % en 15 M emails), onboarding con 2 emails al día.
-- Regla: referidos y lanzamientos salen del email y van a in-app. Rescates por push solo a quien abrió un push en 60 días. Onboarding a 1 email al día.
-
-**Product Growth (Lending).** Donde está el ahorro más grande: 1.3 M MXN al mes.
-
-- Funciona: retargeting de Installments a activos (email 2.8 %, push 11 %), descuento directo a inactivos (0.55 %), in-app (46 %).
-- No funciona: Tasa 0 por email a registrados (B0211: 35 M emails, 0.28 % de clic, y ni quien abre convierte), NeverActive por email (13 M, 0.10 %), insistir 3 meses (pierde al usuario a los 92 a 128 días y 17 a 31 emails).
-- Regla: Tasa 0 solo con señal y 2 toques al mes. B0211 y B0223 se apagan por email y se dejan en push acotado. Lending es el único dueño de las bases frías.
-
-**Sales.** Peor email de todos (0.21 %) y mejor WhatsApp (80 % de entrega, 78 % de lectura).
-
-- Funciona: push y WhatsApp a recurrentes de KPay (Quincenas sin intereses 4.2 %, Primavera 2.2 %, Comercio del día 1.1 a 1.8 %). Sus ventas a recurrentes sí sostienen la conversión a 90 días.
-- No funciona: promociones de comercios por email a todo el portafolio (6.4 M, 0.22 %), el mismo evento por dos canales el mismo día, promoción a tarjetas congeladas (13 M envíos).
-- Regla: Sales manda por push y WhatsApp a recurrentes, no por email. Un evento = una pieza por canal y calendario con Marketing.
-
-**Collections.** No entra a las reglas promocionales. Precobranza es la pieza que mejor responde de toda la empresa (email 4.3 %, push 5.3 %): protegerla. Pendientes: un ticket por bucket, pausar los Canvas `PRUEBA_` que llegaron a 5 mil usuarios reales, y Legal decide sobre REUS y ARCO.
-
-**Others (transaccional, BillPay, Shopping, Compliance).** Lo transaccional funciona (Payment Confirmation 3.8 %). Lo que no: BillPay Intro (16 M emails, 0.11 %, causó 31 % de las bajas de usuarios nuevos del año) y Shopping WeeklyRecommendations (7 M, 0.12 %, 57 mil a REUS). Regla: BillPay y Shopping entran a las reglas de todos. Lo transaccional se nombra con ticket.
-
-## 5.3 Por canal
+Si a las 4 semanas la pieza está debajo del mínimo, se apaga o se rehace.
 
 | Canal | Hoy | Mínimo para seguir | Funciona | No funciona |
 |---|---|---|---|---|
@@ -266,67 +347,36 @@ Cada punto: dato, y la regla que sale de ahí. Los números completos están en 
 | WhatsApp | 74 % de entrega, 69 % de lectura | 80 % de entrega, 60 % de lectura | Activos, recurrentes de KPay | Bases frías, repetir el mismo WhatsApp a los 2 a 6 días |
 | In-app | 38 % de clic | 10 % | Casi todo: referidos, lanzamientos, retargeting, onboarding | Ofertas genéricas (14 %) |
 
-- Email: no es el asunto (abren 24 %), es que no hay qué hacer adentro. Un solo llamado a la acción.
-- Push: es el canal de señal. Primero push, y el resto solo a quien lo abrió. Septiembre tuvo el mejor push del año (2.1 %) con el menor volumen desde marzo: menos push, más apertura.
-- WhatsApp: 8 % de los envíos y 77 % del costo. Nunca como primer toque.
-- In-app: gratis y es el que más responde. Lo que sea informativo va ahí primero.
+- Email: un solo llamado a la acción. El problema no es el asunto (abren 24 %), es que no hay qué hacer adentro.
+- Push: primero push, y el resto solo a quien lo abrió. Menos push, más apertura.
+- WhatsApp: nunca como primer toque. Es 8 % de los envíos y 77 % del costo.
+- In-app: todo lo informativo va ahí primero. Es gratis y es el que más responde.
 
-## 5.4 Por mes
+## 5.2 Cómo saber si una pieza sirve
 
-- **Junio fue el peor mes:** 109 M envíos (el doble de enero), clic 0.67 %, push 1.05 %, 63 mil bajas. Fue el mes del email de BillPay a 16 M usuarios encima de Hot Sale. Más volumen no trajo más respuesta.
-- **Enero:** el mejor clic (1.2 %) y las bajas más altas (69 mil). Muchas piezas nuevas sobre bases que no recibían en diciembre.
-- **Marzo:** el más caro (12.2 M MXN) por 10 M de WhatsApp.
-- **Abril y mayo:** la entrega de WhatsApp tocó piso (69 % y 67 %). Se siguió mandando. Se recuperó a 78 % cuando bajó el volumen.
-- **Mayo, junio y agosto:** los meses donde más gente recibe 3 o más piezas el mismo día (Hot Sale, BillPay, regreso a clases).
+Por cada pieza se compara cuánto convierten los que abrieron contra los que no, a 7 días. Lo normal es que quien abre convierta 2 a 3 veces más (email 8 % contra 4 %, push 20 % contra 7 %, WhatsApp 6 % contra 3 %).
 
-Reglas de calendario:
+| Lo que ves | Qué significa | Qué haces |
+|---|---|---|
+| Quienes abren convierten menos de la mitad de lo normal del canal | No hay a quién acotar | Se apaga |
+| Quienes abren convierten igual que quienes no (menos de 1.5 veces) | El mensaje no cambia nada | Se rehace o se apaga |
+| Quienes abren convierten mucho más, pero abren pocos | La pieza está bien, la base no | Se acota a quien abrió algo en 60 días |
+| El lift contra el grupo de control es cero | La gente iba a comprar igual | Se apaga aunque "convierta" |
 
-- Un calendario único para los meses con evento (Hot Sale, regreso a clases, Buen Fin, Cuesta de enero): una pieza por equipo y canal.
-- Ningún lanzamiento a toda la base en el mismo mes que un evento comercial.
-- Si la entrega de WhatsApp baja de 75 % un mes, el siguiente no sube el volumen.
-- El push de un mes no supera 1.3 veces el promedio de los tres anteriores sin aprobación de CRM.
-- Día de la semana y hora: pendientes (ver anexo C).
-
-## 5.5 Por producto
-
-- **KCash:** 48 % de los envíos, 58 % del costo. Responde el doble que KPay. Su problema es la insistencia (Tasa 0 a registrados) y dos equipos sobre la misma base. Regla: un dueño por audiencia, una pieza de Tasa 0 por audiencia.
-- **KPay:** casi el doble de piezas que KCash (985) para menos volumen: muchas piezas chicas y repetidas (Comercio del día por mes). Menor respuesta en email (0.44 %) y push (1.1 %). Regla: Comercio del día es una sola pieza con versiones, no una por mes. Canal: push y WhatsApp a recurrentes.
-- **Ecosistema:** piezas a "Todos", bajas más altas (3.9 por mil), clic más bajo (0.37 %). Regla: nada a Todos sin pasar por in-app primero.
-- **Installments:** responde bien (1.4 % de clic, 0.5 bajas por mil) con poco volumen. Regla: escalar con segmento.
-- Una pieza no cubre dos productos. Se parte en dos.
-
-## 5.6 Por tamaño y por toques
-
-- 10 a 100 mil usuarios: clic 1.2 %. 100 mil a 1 M: 0.6 %. Más de 1 M: 0.16 %. Regla: el tamaño ideal es 10 a 100 mil con un criterio. Más de 1 M obliga a prueba al 10 %.
-- 1 toque: 0.8 % de clic. 2 toques: 1.8 %. 3 a 4: 0.5 %. Regla: 2 toques y se acabó.
-
-## 5.7 Usuarios nuevos
-
-- 33 % se da de baja con el primer email. La mitad se va en el primer mes. Antes de irse recibieron 5 emails de 4 piezas distintas.
-- Las causas: el email masivo de BillPay (31 % de las bajas de nuevos), el retargeting de registro de Marketing con 2 emails al día (22 %), los rescates de Tasa 0 (8.5 %).
-- Regla: un nuevo entra a una sola secuencia de bienvenida. 1 email al día, 3 la primera semana. Si no abrió ninguno de sus primeros 5 emails, se pausa lo promocional por email. Ningún envío masivo incluye a usuarios con menos de 30 días.
-
-## 5.8 Cómo saber si una pieza sirve: abren contra no abren
-
-Por cada pieza se compara cuánto convierten los que abrieron contra los que no, a 7 días. Lo normal: quien abre convierte 2 a 3 veces más (email 8 % contra 4 %; push 20 % contra 7 %; WhatsApp 6 % contra 3 %).
-
-- Si quienes abren convierten menos de la mitad de lo normal del canal: no hay a quién acotar. Se apaga.
-- Si quienes abren convierten igual que quienes no (menos de 1.5 veces): el mensaje no cambia nada. Se rehace o se apaga.
-- Si quienes abren convierten mucho más pero abren pocos: la pieza está bien, la base no. Se acota a quien abrió algo en 60 días.
-- Para saber de verdad si el mensaje causa la conversión hace falta grupo de control (sección 6, paso 7).
+Esto se lee en la pestaña Campañas del Sheets (columna señal y acción) y en la sección 8.
 
 ---
 
 # 6. Crear algo nuevo en 9 pasos
 
-1. **Qué quieres que pase.** Un evento de conversión (sección 1.6) y el tipo: promocional, lifecycle, transaccional o cobranza. El tipo decide qué reglas aplican.
-2. **A quién.** Un segmento maestro (1.3) más un filtro si hace falta. Nunca "Todos" sin filtro de respuesta en 90 días. Revisa en Catálogo que no exista ya una pieza viva con la misma audiencia y gancho: si existe, se mejora esa.
-3. **Por qué canal.** Tablas 4.1 y 4.2. Si el usuario tiene canal preferido, ese.
+1. **Qué quieres que pase.** Un evento de conversión (ventana de 7 días) y el tipo: promocional, lifecycle, transaccional o cobranza. El tipo decide qué reglas aplican.
+2. **A quién.** Un segmento maestro (tabla 0.4) más un filtro si hace falta. Nunca "Todos" sin filtro de respuesta en 90 días. Revisa en Catálogo que no exista ya una pieza viva con la misma audiencia y gancho: si existe, se mejora esa.
+3. **Por qué canal.** Tabla 0.1 (y 4.1, 4.2 si tu caso no está). Si el usuario tiene canal preferido, ese.
 4. **Cuántas veces.** Máximo 2 toques al mes, el segundo solo a quien no abrió. Revisa que la audiencia no esté ya en el tope semanal (sección 3).
-5. **Cuándo.** Revisa el calendario único. No en la misma semana que un evento de otro equipo a la misma gente. No a toda la base en mayo, junio ni agosto.
-6. **Cómo se llama.** Sección 1.1. Pasos con 1.2. Tags con 1.4. Grupo de suscripción en cada paso de email. UTMs con ticket.
-7. **Cómo se prueba.** Grupo de control del 10 % (5 % si pasa de 1 M). Más de 1 M: primero al 10 % durante 48 horas y lees bajas por mil y respuesta contra el mínimo del canal. 100 mil a 1 M: al 5 %.
-8. **Cómo se mide.** A las 4 semanas: respuesta contra el mínimo del canal (5.3), bajas por mil (menos de 2.5), abren contra no abren (5.8), lift contra el control. Aparece sola en el Sheets el mes siguiente.
+5. **Cuándo.** Día según la tabla 0.2 y mes según la 0.3. Revisa el calendario único. No en la misma semana que un evento de otro equipo a la misma gente.
+6. **Cómo se llama.** Sección 1.1. Pasos con 1.2. Tags con 1.3. Grupo de suscripción en cada paso de email. UTMs con ticket.
+7. **Cómo se prueba.** Grupo de control del 10 % (5 % si pasa de 1 M) con la opción nativa de Braze, no con un camino que se llame Control ni con push silencioso. Más de 1 M: primero al 10 % durante 48 horas y lees bajas por mil y respuesta contra el mínimo del canal. 100 mil a 1 M: al 5 %. Si la pieza tiene dos versiones, A/B 50/50 de una sola variable.
+8. **Cómo se mide.** A las 4 semanas: respuesta contra el mínimo del canal (5.1), bajas por mil (menos de 2.5), abren contra no abren (5.2), lift contra el control. Aparece sola en el Sheets el mes siguiente.
 9. **Cómo termina.** Fecha de revisión en el ticket. Si a las 4 semanas no cumple, se apaga o se rehace. Si cumple, revisión mensual. Sin envíos en 90 días, se archiva.
 
 ---
@@ -340,13 +390,14 @@ Lo firma el dueño del segmento y MarTech. Si falta una, no se activa.
 3. Audiencia = segmento maestro. Si es "Todos" o más de 1 M: aprobación de CRM y prueba al 10 %.
 4. Las 7 exclusiones como filtro negativo.
 5. Filtro de suscripción en cada paso de email.
-6. Canal según la sección 4. WhatsApp solo detrás de una señal y con `EXC-WA_SinEntrega3`.
+6. Canal y día según la sección 0. WhatsApp solo detrás de una señal y con `EXC-WA_SinEntrega3`.
 7. Máximo 2 toques, el segundo con Decision "no abrió". Paso de Salida con motivo.
 8. Dentro del tope semanal, diario y de push.
 9. Grupo de control del 10 % y evento de conversión a 7 días.
 10. Plantilla vigente, UTMs con ticket, un solo llamado a la acción.
 11. Calendario revisado: nadie más le manda lo mismo a esa audiencia esa semana.
 12. Fecha de revisión a 4 semanas en el ticket y versión anterior archivada.
+13. Máximo 8 pasos, re-elegibilidad apagada, salida al convertir, horas de silencio y caducidad del push (sección 11).
 
 ---
 
@@ -376,19 +427,13 @@ Hoy hay 85 piezas activas debajo del mínimo. El ahorro por acción está en Pla
 |---|---|---|
 | 1 | Actualizar las extracciones y generar el Sheets del mes como archivo nuevo | Datos |
 | 1 | Leer Estándares: qué indicador se movió y qué equipo lo mueve | CRM |
+| 1 | Leer el lift de las piezas que cumplieron 4 semanas con control. Lift cero: se apaga | CRM con cada equipo |
+| 1 | Revisar MAU y puntos de datos consumidos contra el contrato de Braze | MarTech |
 | 2 | Ejecutar Plan_accion: Apagar, Confirmar apagado y Limpiar WhatsApp se hacen; Rehacer y Bajar frecuencia se asignan con ticket | Cada equipo con MarTech |
 | 2 | Limpieza: piezas sin envío en 90 días, versiones duplicadas, pruebas activas, nombres fuera de regla | MarTech |
 | 3 | Calendario del mes siguiente: una pieza por equipo, canal y audiencia | Marketing, Lending, Sales con CRM |
 | 4 | Piezas nuevas pasan el checklist y se activan con control | Dueños y MarTech |
 | Cada trimestre | Revisar segmentos, tags, grupos de suscripción, plantillas. Archivar lo sin uso. Actualizar este playbook | MarTech y CRM |
-
-Gobierno:
-
-- **Dueños.** Un dueño por familia de segmentos. Un dueño por pieza (el ticket). MarTech es dueño de nombres, tags, suscripciones, plantillas, exclusiones y frequency cap. CRM es dueño del calendario y de los estándares.
-- **Calendario único.** Una vista compartida con fecha, equipo, pieza, audiencia, canal, gancho y tamaño. Nada promocional se activa sin estar ahí.
-- **Comité quincenal de 30 minutos.** Conflictos de calendario, piezas a Todos, cambios a exclusiones, y piezas en Apagar que un equipo quiera defender (con grupo de control, no con opinión).
-- **Excepciones** se piden en el ticket, se aprueban en el comité y tienen fecha de fin.
-- Un indicador en rojo dos meses seguidos abre un ticket al equipo que lo mueve.
 
 ---
 
@@ -405,145 +450,37 @@ Gobierno:
 - **Etapa bloqueada:** lista negra, REUS o ARCO, tarjeta KPay congelada.
 - **Grupo de control:** el 10 % de la audiencia que no recibe el mensaje, para medir si el mensaje mueve algo.
 - **Segmento maestro:** segmento `SEG-` con dueño, que usan todas las piezas de esa audiencia.
+- **Lift:** conversión de quien recibió el mensaje menos conversión del grupo de control. Es lo único que dice si el mensaje vende.
+- **Camino (Path):** rama de un Canvas por audiencia o por condición. No es una prueba A/B.
+- **Re-elegibilidad:** opción de Braze que deja que un usuario vuelva a entrar al mismo Canvas o campaña. Apagada en promocional.
+- **Horas de silencio (Quiet Hours):** ventana en la que Braze no manda nada y espera al día siguiente.
+- **MAU:** usuarios activos al mes que Braze cobra. Todo usuario que recibe un mensaje cuenta.
+- **Puntos de datos:** cada atributo o evento que se escribe en Braze. También se cobran.
 
 ---
 
-# Anexo A. Cifras de apoyo
+# 11. Configuración de Braze: lo que se pone una vez
 
-## A1. Estándares de hoy (Estándares del Sheets)
+Ajustes de la cuenta y de cada pieza que no dependen del mensaje. Los hace MarTech. Cada uno con el dato de Kueski que lo justifica cuando lo hay.
 
-| Indicador | Hoy | Estándar | Estado |
-|---|---|---|---|
-| Entrega de email | 95.1 % | 95 % | Cumple |
-| Apertura de email | 23.6 % | 15 a 25 % | Cumple (no decidir con ella) |
-| Clic de email | 0.92 % | 1.5 % | Debajo en los 4 equipos |
-| Bajas de email por mil | 3.13 | 2.5 | Debajo |
-| Apertura de push | 1.53 % | 3 % | Debajo |
-| Entrega de WhatsApp | 74.2 % | 90 % | Debajo |
-| Lectura de WhatsApp | 68.8 % | 70 % | Debajo por poco |
-| Clic de in-app | 38.2 % | 5 a 20 % | Cumple |
-| Toques por pieza y usuario al mes | 1.71 | 2 | Cumple (Collections 3.86) |
-| Usuarios con 41 o más mensajes en el periodo | 5.3 % | | Debajo |
-| Usuario-días con 3 o más piezas | 9.0 % | 10 % | Cumple, pero es 24 % de los mensajes |
-| Mensajes a canal mudo | 58.9 % | | Debajo |
-| Usuarios que nunca respondieron | 72.9 % | | Debajo |
-| Promocional a etapas bloqueadas | 43.78 M | 0 | Debajo |
-| Promocional a dados de baja | 79,994 | 0 | Debajo |
-| Piezas activas debajo del mínimo | 85 | 0 | Debajo |
-| Envíos con ticket | 87.4 % | 100 % | Debajo (Others 48.7 %) |
-
-## A2. Por equipo
-
-| Equipo | Familias | Envíos | % envíos | Costo MXN | % costo | Email clic | Bajas por mil | Push | WA entrega | WA lectura | In-app | Ahorro al mes |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Marketing | 368 | 262.3 M | 39 % | 27.2 M | 47 % | 0.93 % | 4.95 | 1.09 % | 74 % | 71 % | 34 % | 160,647 |
-| Product Growth | 184 | 177.2 M | 27 % | 17.3 M | 30 % | 0.45 % | 3.02 | 2.10 % | 72 % | 61 % | 46 % | 1,296,806 |
-| Sales | 205 | 85.3 M | 13 % | 7.1 M | 12 % | 0.21 % | 3.71 | 1.23 % | 80 % | 78 % | 8 % | 102,271 |
-| Collections | 23 | 44.7 M | 7 % | 1.6 M | 3 % | 1.09 % | 0.25 | 3.61 % | | | 13 % | 0 |
-| Others | 283 | 98.0 M | 15 % | 4.4 M | 8 % | 1.83 % | 2.20 | 2.76 % | 71 % | 69 % | 80 % | 38,639 |
-
-## A3. Por mes
-
-| Mes | Envíos | Email clic | Bajas (usuarios) | Push apertura | WhatsApp enviados | WA entrega | WA lectura | In-app clic | Costo MXN |
-|---|---|---|---|---|---|---|---|---|---|
-| Ene | 58.7 M | 1.20 % | 69,226 | 1.83 % | 5.6 M | 80 % | 75 % | 48 % | 7.4 M |
-| Feb | 67.5 M | 0.88 % | 57,965 | 1.43 % | 7.8 M | 77 % | 73 % | 19 % | 9.5 M |
-| Mar | 67.8 M | 1.03 % | 50,413 | 1.81 % | 10.4 M | 74 % | 72 % | 24 % | 12.2 M |
-| Abr | 64.3 M | 0.98 % | 38,422 | 1.53 % | 5.9 M | 69 % | 66 % | 36 % | 7.6 M |
-| May | 85.0 M | 0.86 % | 38,034 | 1.28 % | 6.1 M | 67 % | 67 % | 47 % | 8.1 M |
-| Jun | 109.0 M | 0.67 % | 63,425 | 1.05 % | 7.1 M | 74 % | 67 % | 45 % | 9.7 M |
-| Jul | 71.7 M | 1.00 % | 52,912 | 1.77 % | 4.8 M | 73 % | 62 % | 37 % | 6.4 M |
-| Ago | 78.0 M | 0.95 % | 50,340 | 1.57 % | 4.4 M | 78 % | 64 % | 42 % | 6.1 M |
-| Sep | 65.6 M | 0.92 % | 36,639 | 2.12 % | 3.2 M | 77 % | 64 % | 42 % | 5.0 M |
-
-## A4. Por audiencia y por gancho (según el nombre de la pieza)
-
-| Audiencia | Email clic | Bajas por mil | Push | WA lectura | WA entrega | WA costo MXN |
-|---|---|---|---|---|---|---|
-| Nuevos y onboarding | 1.25 % | 6.9 | 3.18 % | 68 % | 77 % | 0.8 M |
-| Activos y recurrentes | 0.72 % | 3.1 | 1.75 % | 70 % | 82 % | 14.9 M |
-| Leads y registrados sin crédito | 0.75 % | 4.6 | 0.94 % | 73 % | 75 % | 15.1 M |
-| Fríos | 0.35 % | 4.3 | 0.77 % | 65 % | 68 % | 23.0 M |
-
-| Gancho | Email envíos | Email clic | Bajas por mil | Push | WA lectura | In-app clic |
-|---|---|---|---|---|---|---|
-| Retargeting o recordatorio | 23.6 M | 3.09 % | 3.8 | 2.16 % | 70 % | 58 % |
-| Tasa 0 | 54.3 M | 0.53 % | 4.6 | 0.68 % | 69 % | 22 % |
-| Descuento, cupón, oferta | 35.0 M | 0.41 % | 3.4 | 1.38 % | 58 % | 14 % |
-| Cross sell | 2.7 M | 0.34 % | 2.0 | 1.69 % | 54 % | 25 % |
-| Referidos | 40.8 M | 0.22 % | 4.3 | 1.15 % | 71 % | 43 % |
-| Lanzamiento, novedades, newsletter | 33.0 M | 0.22 % | 5.6 | 0.82 % | 73 % | 55 % |
-
-## A5. Por etapa del usuario (golden dataset, cubre 37 % de los envíos)
-
-| Etapa | Envíos | Promocional | Email clic (promo) | Push (promo) | In-app (promo) |
-|---|---|---|---|---|---|
-| Prospectos | 189.1 M | 167.2 M | 0.27 % | 1.33 % | 27 % |
-| Tarjeta KPay congelada | 56.6 M | 43.4 M | 0.38 % | 1.45 % | 33 % |
-| REUS o ARCO | 0.49 M | 0.25 M | | | |
-| Lista negra | 0.43 M | 0.15 M | | | |
-| Sin etapa | 416.2 M | 356.3 M | 0.67 % | 1.20 % | 51 % |
-
-## A6. A qué canal responde la gente (9 meses)
-
-| Responde a | Usuarios | % usuarios | % mensajes | % costo | Mensajes por usuario | Convierten | Baja de email |
-|---|---|---|---|---|---|---|---|
-| Ninguno | 14.2 M | 73 % | 24 % | 14 % | 11 | 0.08 % | 1.4 % |
-| Solo WhatsApp | 1.6 M | 8 % | 15 % | 34 % | 63 | 2.0 % | 3.4 % |
-| Solo in-app | 1.1 M | 6 % | 7 % | 4 % | 43 | 8.8 % | 1.7 % |
-| Solo email | 365 mil | 2 % | 2 % | 1 % | 33 | 5.0 % | 15.8 % |
-| Varios canales | 2.2 M | 11 % | 52 % | 47 % | 120 a 262 | 30 a 75 % | 2 a 8 % |
-
-Quien responde a varios canales convierte mucho más porque es cliente activo que usa la app. Sirve para segmentar, no para decir que el mensaje convirtió. Quien solo responde a WhatsApp es 8 % de los usuarios y 34 % del costo, y recibe 58 M emails y 21 M push que nunca abre.
-
-## A7. Las piezas que más pesan hoy
-
-| Pieza (nombre actual) | Canal | Envíos | Respuesta | Acción |
-|---|---|---|---|---|
-| Lending-KCash-B0211 Nuevos_RegistradosPay Tasa0 | email | 34.9 M | 0.28 % | Apagar |
-| NewProducts T0000 Portfolio_BillPay_Intro | email | 16.1 M | 0.11 % | Confirmar apagado |
-| Lending-KCash-B0223 Nuevos_NeverActive Installments | email | 13.5 M | 0.10 % | Apagar |
-| Marketing-KCash-B0391 Leads RescateFinesDeSemana | push | 13.4 M | 0.76 % | Rehacer o re-segmentar |
-| Marketing-KCash-B0000 Leads_LeftFunnel Retargeting_Veriff | email | 9.7 M | 3.04 % | Bajar frecuencia |
-| Marketing-KCash-B0171 Anonimos RescateTasa0 | push | 8.9 M | 0.56 % | Apagar |
-| Marketing-KCash-B0326 Leads ReferralProgram | email | 8.5 M | 0.23 % | Confirmar apagado |
-| Marketing-KCash-B0326 Recurrentes_Dormants ReferralProgram | email | 7.0 M | 0.07 % | Apagar |
-| Shopping-KPay-S0004 WeeklyRecommendations | email | 7.0 M | 0.12 % | Rehacer o re-segmentar |
-| Sales-KPay-B0335 Recurrentes PromocionesMerchants | email | 6.4 M | 0.22 % | Rehacer o re-segmentar |
-
-Las que hay que proteger: Precobranza (email 4.3 %, push 5.3 %), Retargeting Veriff (push 5.8 %), Retargeting Installments a activos (push 11 %), Payment Confirmation (3.8 %), registro de línea MX in-app (87 %), Quincenas sin intereses (push 4.2 %).
-
-# Anexo B. Dónde está cada cosa en el Sheets
-
-| Pestaña | Qué trae | Sirve para |
+| Ajuste | Cómo se deja | Por qué |
 |---|---|---|
-| Parámetros | Costos, mínimos y topes. Cambiarlos recalcula todo | Secciones 3 y 5 |
-| Canales | Volumen, respuesta, costo y bajas por canal y mes | 5.3, 5.4 |
-| Equipos | Lo mismo por equipo | 5.2 |
-| Campañas | Una fila por pieza y canal con señal y acción | Sección 8 |
-| Catálogo | Una fila por familia: ticket, audiencia, gancho, estado, versiones | 1.7, paso 2 de la sección 6 |
-| Vista_equipo | Todo lo anterior para un equipo (celda B2) | Sección 9 |
-| Insights | Hallazgos con cifra, filtrables | Sección 5 |
-| Plan_accion | Ahorro por acción, las diez que más pesan, por equipo | Secciones 8 y 9 |
-| Estándares | 24 indicadores con valor actual, estándar y estado por equipo | Anexo A1, sección 9 |
+| Horas de silencio | 21:00 a 9:00 hora del usuario en todo lo promocional y lifecycle. Cobranza según lo que marque Legal | No hay hora en Databricks, así que es la única protección contra push nocturnos. Se pide a Datos agregar la hora |
+| Frequency capping global | Los topes de la sección 3 cargados en la cuenta: 5 promocionales por semana, 2 piezas al día, 1 push al día, 1 WhatsApp al mes. Transaccional y cobranza fuera del tope | 9 % de los usuario-días reciben 3 o más piezas; son 24 % de los mensajes |
+| Grupo de control nativo | 10 % en toda pieza promocional y lifecycle, 5 % si pasa de 1 M. Siempre con el evento de conversión a 7 días | Hoy no hay ninguno |
+| Re-elegibilidad | Apagada en lifecycle y en oferta. Encendida solo en transaccional y recordatorios de pago | Es la causa probable de que un usuario reciba la misma pieza 17 a 31 veces |
+| Salida del Canvas | Toda pieza sale al ocurrir su evento de conversión, al darse de baja del grupo de suscripción o al cumplir 30 días dentro | Hoy el Canvas sigue mandando después de la conversión |
+| Intelligent Timing e Intelligent Channel | Se prueban en 2 piezas por equipo contra control durante un mes. Si ganan, se extienden. No se activan en todo sin prueba | Sin hora en los datos no sabemos la hora buena. La prueba lo dice |
+| Caducidad del push (TTL) | 24 horas en promocional, 72 en cobranza | Un push de oferta entregado dos días después se abre como spam y gasta envíos en celulares apagados |
+| Permiso de notificaciones | Se pide dentro de la app después de la primera acción de valor, con una pantalla previa in-app que explique para qué | 16.5 M push fueron a usuarios marcados "sin notificaciones" en el golden dataset. El dato hay que confirmarlo, pero el permiso define el canal |
+| Centro de preferencias de email | Una página con los 7 grupos de suscripción (1.4) y la baja total. Link en el pie de toda plantilla. Los grupos no promocionales no se pueden apagar | 3.1 bajas por mil. Hoy la única opción del usuario es irse del todo |
+| Dominio de email | SPF, DKIM y DMARC en el dominio de envío. Dominio distinto para promocional y transaccional, con lista de supresión compartida | Protege la entrega de lo transaccional (95 %) del volumen promocional |
+| Calidad del número de WhatsApp | Un número por tipo (promocional, cobranza). Plantillas con la categoría correcta (marketing o utility). Pausa automática si la calidad baja a "media". `EXC-WA_SinEntrega3` en toda pieza de WhatsApp | 1 de cada 4 WhatsApp no llega y se paga igual (14.2 M MXN). Un número castigado baja el tope diario de Meta |
+| Liquid con valor por defecto | Todo campo personalizado con `default`. Prueba con un usuario sin datos antes de activar | Evita "Hola null". Prevención: no tenemos la cifra |
+| Prioridad de in-app | Una sola in-app por sesión. Orden: transaccional, cobranza, onboarding, promocional | In-app es el canal que mejor responde (38 %). Varias a la vez se tapan |
+| Catálogos | Comercios, cupones y ofertas en Catálogos de Braze. Una pieza que lee del catálogo, no una pieza por comercio ni por mes | Comercio del día y Cuponera tienen 11 y 8 segmentos distintos solo por el mes |
+| MAU y puntos de datos | Revisar cada mes contra el contrato. Los atributos que cambian a cada rato (saldo, último login) se escriben una vez al día, no en cada evento | El costo fijo de Braze depende de ambos. Los 4.1 M usuarios sin respuesta en 90 días también cuentan como MAU si reciben algo |
+| Currents a Databricks | Agregar a la tabla de comunicaciones: hora del envío, `device_id` y `platform`, rebote y queja de spam de email, rebote de push, fallo de WhatsApp | Hoy no se puede medir hora, celular ni rebotes. La llave de dispositivo ya existe en `braze.int_communications_joined` |
+| Roles y permisos | Editor crea pero no activa. Aprobador (dueño del segmento y MarTech) activa. Admin solo MarTech. Nadie activa lo que creó | 171 pruebas y copias llegaron a usuarios reales (7.26 M envíos) |
+| Nombre y tags obligatorios | Las reglas de la sección 1. Pieza sin ticket o sin tag `tipo:` no se aprueba | 749 piezas sin ticket. Los tags no llegan a Databricks |
 
-# Anexo C. Lo que todavía no sabemos
-
-| Qué | Estado |
-|---|---|
-| Tags | No están en Databricks. Si alguien exporta la lista de campañas con tags desde Braze, se audita en una hora. |
-| Día de la semana | Pendiente: query E10 (`e10_dia_semana.csv`). |
-| Segmentos reales de Braze | Pendiente: query E11 (`e11_segmentacion.csv`). Hoy la audiencia se lee del nombre. |
-| Antigüedad del usuario | Pendiente: query E12 (`e12_antiguedad.csv`). |
-| Tipo de celular | No se puede: la tabla de dispositivos no cruza con la de envíos. |
-| Hora del día | No se puede: la tabla solo trae fecha. |
-| Región | No está en ninguna tabla. |
-
-# Anexo D. Supuestos
-
-- Periodo enero a septiembre de 2026. Respuesta = clic en email, apertura en push, lectura en WhatsApp, clic en in-app.
-- Conversión a 7 días como referencia, no como atribución (no hay grupo de control hoy).
-- Costos: email 0.05 MXN por enviado, WhatsApp 1.00 MXN por entregado, push e in-app 0. No incluye el costo fijo de Braze.
-- Audiencia, gancho y tipo se leen del nombre de la pieza; el 17 % que no sigue la convención cae en "otros".
-- Las etapas del golden dataset cubren 37 % de los envíos.
-- Las bajas solo existen para email. Lectura de WhatsApp subestimada si el usuario apagó las confirmaciones.
