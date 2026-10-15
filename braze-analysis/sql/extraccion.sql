@@ -593,3 +593,97 @@ SELECT resp_email, resp_push, resp_wa, resp_inapp,
 FROM por_usuario
 GROUP BY 1, 2, 3, 4
 ORDER BY usuarios DESC;
+
+
+-- ===================== E10. Día de la semana × canal × equipo (para la parte "cuándo" del playbook) =====================
+-- La tabla solo trae fecha, no hora: se puede día de la semana, no hora del día.
+-- Resultado esperado: 7 × 5 canales × ~11 equipos = unas 400 filas. Descargar como e10_dia_semana.csv
+WITH base AS (
+  SELECT user_id, communication_id, event_date, category AS canal, MAX(team) AS team,
+    MAX(CAST(was_send AS INT)) AS envio,
+    MAX(CASE WHEN email_click OR pn_open OR whatsapp_read OR in_app_click THEN 1 ELSE 0 END) AS respondio,
+    MAX(CAST(email_delivery AS INT)) AS email_entregado, MAX(CAST(whatsapp_delivery AS INT)) AS wa_entregado,
+    MAX(CAST(email_unsubscribe AS INT)) AS baja_email,
+    MAX(CAST(is_converted AS INT)) AS conv
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
+  GROUP BY user_id, communication_id, event_date, category
+)
+SELECT dayofweek(event_date) AS dia_semana_num, date_format(event_date, 'EEEE') AS dia_semana, canal, team,
+  SUM(envio)                        AS envios,
+  APPROX_COUNT_DISTINCT(user_id)    AS usuarios_aprox,
+  COUNT(DISTINCT communication_id)  AS comunicaciones,
+  SUM(email_entregado)              AS email_entregados,
+  SUM(wa_entregado)                 AS wa_entregados,
+  SUM(respondio)                    AS respuestas,
+  SUM(baja_email)                   AS bajas_email_eventos,
+  SUM(conv)                         AS conversiones_filas
+FROM base
+GROUP BY 1, 2, 3, 4
+ORDER BY 1, 3, envios DESC;
+
+
+-- ===================== E11. Inventario de segmentación: qué valores de segment, subsegment y group se usan y cuánto pesan =====================
+-- Para medir si la segmentación está repetida (muchos nombres para la misma audiencia) y cuánto volumen lleva cada una.
+-- Las columnas segment, subsegment y group son las de la tabla de hechos (ver data/mapeo.md sección 10). Si alguna no existe con ese nombre, quitarla del SELECT y del GROUP BY.
+-- Resultado esperado: 500 a 5,000 filas. Descargar como e11_segmentacion.csv
+WITH base AS (
+  SELECT user_id, communication_id, event_date, category AS canal,
+    MAX(segment) AS segment, MAX(subsegment) AS subsegment, MAX(`group`) AS grp, MAX(team) AS team,
+    MAX(regexp_replace(communication_name, '-\d{8}-', '-')) AS familia,
+    MAX(CAST(was_send AS INT)) AS envio,
+    MAX(CASE WHEN email_click OR pn_open OR whatsapp_read OR in_app_click THEN 1 ELSE 0 END) AS respondio,
+    MAX(CAST(email_unsubscribe AS INT)) AS baja_email,
+    MAX(CAST(is_converted AS INT)) AS conv
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications
+  WHERE event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
+  GROUP BY user_id, communication_id, event_date, category
+)
+SELECT COALESCE(segment, 'null') AS segment, COALESCE(subsegment, 'null') AS subsegment, COALESCE(grp, 'null') AS grupo, team, canal,
+  COUNT(DISTINCT communication_id) AS comunicaciones,
+  COUNT(DISTINCT familia)          AS familias,
+  SUM(envio)                       AS envios,
+  APPROX_COUNT_DISTINCT(user_id)   AS usuarios_aprox,
+  SUM(respondio)                   AS respuestas,
+  SUM(baja_email)                  AS bajas_email_eventos,
+  SUM(conv)                        AS conversiones_filas
+FROM base
+GROUP BY 1, 2, 3, 4, 5
+HAVING SUM(envio) >= 1000
+ORDER BY envios DESC;
+
+
+-- ===================== E12. Antigüedad del usuario en Braze × canal: a quién le funciona cada canal según cuánto lleva en la base =====================
+-- Antigüedad = meses entre la fecha de alta del usuario en Braze (_dim_braze_users) y el envío. Si la columna de alta se llama distinto de created_at, cambiarla aquí.
+-- Resultado esperado: 7 bandas × 5 canales × 2 (suscrito o no) = unas 70 filas. Descargar como e12_antiguedad.csv
+WITH base AS (
+  SELECT c.user_id, c.communication_id, c.event_date, c.category AS canal,
+    MAX(CAST(c.was_send AS INT)) AS envio,
+    MAX(CASE WHEN c.email_click OR c.pn_open OR c.whatsapp_read OR c.in_app_click THEN 1 ELSE 0 END) AS respondio,
+    MAX(CAST(c.email_unsubscribe AS INT)) AS baja_email,
+    MAX(CAST(c.is_converted AS INT)) AS conv
+  FROM analytics_engineering_production.xplore._dim_braze_users_and_communications c
+  WHERE c.event_date BETWEEN DATE '2026-01-01' AND DATE '2026-09-30'
+  GROUP BY c.user_id, c.communication_id, c.event_date, c.category
+),
+con_alta AS (
+  SELECT b.*, months_between(b.event_date, CAST(u.created_at AS DATE)) AS meses_en_base, u.email_subscribe
+  FROM base b LEFT JOIN analytics_engineering_production.braze._dim_braze_users u ON u.user_id = b.user_id
+)
+SELECT
+  CASE WHEN meses_en_base IS NULL THEN 'sin_alta'
+       WHEN meses_en_base < 1 THEN '0. menos de 1 mes'
+       WHEN meses_en_base < 3 THEN '1. 1 a 3 meses'
+       WHEN meses_en_base < 6 THEN '2. 3 a 6 meses'
+       WHEN meses_en_base < 12 THEN '3. 6 a 12 meses'
+       WHEN meses_en_base < 24 THEN '4. 1 a 2 años'
+       ELSE '5. más de 2 años' END AS banda_antiguedad,
+  canal, COALESCE(CAST(email_subscribe AS STRING), 'null') AS email_subscribe,
+  SUM(envio)                      AS envios,
+  APPROX_COUNT_DISTINCT(user_id)  AS usuarios_aprox,
+  SUM(respondio)                  AS respuestas,
+  SUM(baja_email)                 AS bajas_email_eventos,
+  SUM(conv)                       AS conversiones_filas
+FROM con_alta
+GROUP BY 1, 2, 3
+ORDER BY 1, 2, 3;
