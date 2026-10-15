@@ -282,3 +282,11 @@ Acordado con el usuario el 15 de octubre. No es solo "análisis en un deck"; son
 - Pendiente: E18c (push por plataforma vía `braze.int_communications_joined`), deck del consultor, y que el usuario confirme qué cubre el costo fijo de Braze.
 
 - Buenas prácticas de Braze propuestas para una sección 11 del playbook (pendiente de aprobación): horas de silencio, Intelligent Timing y Channel, re-elegibilidad, salida del Canvas al convertir, TTL del push, valores por defecto en Liquid, centro de preferencias, calidad del número de WhatsApp, prioridad de in-app, usuarios facturables (MAU), puntos de datos, catálogos para promos de comercios, eventos de rebote y spam en Currents, autenticación de dominio.
+
+### Deck estilo consultoría (15 oct)
+
+- `hallazgos/storyline.md`: ghost deck (pregunta, governing thought, SCQA, títulos de acción).
+- `scripts/deck_content.py`: modelo de contenido (47 láminas: portada, resumen ejecutivo, 5 secciones A a E, anexos) con un `SOWHAT` por lámina.
+- `scripts/build_deck.py`: genera `deck/BRAZE_KUESKI_DECK.html` (artefacto web, 16:9, SVG, navegación con teclado) y `deck/BRAZE_KUESKI_DECK.pptx` (python-pptx, gráficas nativas) desde el mismo modelo.
+- Verificado: sin desbordes en HTML (Playwright), PPTX abre y convierte a PDF (LibreOffice).
+- Pendiente: costo fijo de Braze y E18c; al cambiar cifras en Sheets, actualizar `deck_content.py` y correr `python3 scripts/build_deck.py`.
