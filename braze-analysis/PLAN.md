@@ -252,3 +252,16 @@ Archivo chico armado en local con una fórmula de cada tipo, subido a Drive, con
 - Verificación previa con LibreOffice en local: 123 de 127 filas de Verificación dan cero antes de subir; las 4 restantes usan UNIQUE y REGEXREPLACE, que LibreOffice no tiene y Google Sheets sí.
 - Verificación automática: el archivo convertido se descarga de vuelta y se comparan los valores calculados por Google con los esperados, sin mirarlo a ojo.
 - Archivo de prueba en el Drive del usuario: prueba_conversion_braze (se puede borrar).
+
+### Estado de las etapas del Sheets (15 oct)
+
+- v1 (crudos, Parámetros, Verificación): entregado, "v1 ok".
+- v2 y v2b (Catálogo, Campañas, Medianas, lentes B a M): entregado, "v2 ok". v2b corrigió la comunicación sin nombre ("(sin nombre)").
+- v3 (Vista_equipo con selector, Insights con filtros, Plan_accion, Estándares): generado como `sheets/braze_auditoria_v3.xlsx`, 419 filas de Verificación (404 ok en LibreOffice; las 15 restantes usan UNIQUE y REGEX y salen ok en Google). Pendiente la confirmación del usuario.
+
+## 10. Después del Sheets: playbook y deck
+
+Acordado con el usuario el 15 de octubre. No es solo "análisis en un deck"; son dos entregables:
+
+1. **Playbook de Braze** (para que no vuelva el desorden): nomenclatura `Equipo-Producto-Ticket-Fecha-Nombre-Canal` con ticket obligatorio; reglas de frecuencia (2 toques de la misma comunicación por usuario al mes, tope global semanal) y de solapamiento (máximo 2 familias por usuario por día, exclusión entre Canvas promocionales); canal por usuario (no mandar por un canal al que nunca respondió); exclusiones obligatorias (etapas bloqueadas, dados de baja, prospectos sin consentimiento); grupo de control del 10 % y prueba del 10 % antes de envíos masivos; checklist antes de lanzar; y una guía para crear algo nuevo: a quién (etapa, respuesta previa por canal, audiencia que funciona en G), por qué canal (respuesta y costo por canal del equipo y del producto), cuántas veces, con qué gancho, cómo medir. Cada fila de la pestaña Estándares se vuelve una regla. Límite: "cuándo" (hora y día de la semana) necesita una extracción nueva (E10: envíos y respuesta por día de la semana y hora); con las actuales solo se ve por mes y semana.
+2. **Deck estilo consultor (business case)** con la skill `consulting-deck`: gráficas, qué funciona y qué no, insights, findings, costo de no hacer nada, plan con ahorro estimado y orden de ejecución. Las cifras salen de las celdas ya verificadas del Sheets.

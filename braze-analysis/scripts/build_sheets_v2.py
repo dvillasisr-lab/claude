@@ -12,7 +12,7 @@ from openpyxl.styles import Font, Alignment
 
 LO_TEST = '--lo-test' in sys.argv
 D = 'data/'
-VERSION = 'v2b'
+VERSION = 'v3'
 OUT = f'sheets/braze_auditoria_{VERSION}_lo_test.xlsx' if LO_TEST else f'sheets/braze_auditoria_{VERSION}.xlsx'
 HOY = '14 de octubre de 2026'
 
@@ -121,7 +121,8 @@ def S(tab, col): return float(num(tab, col).sum())
 leeme = wb.create_sheet('Léeme'); par = wb.create_sheet('Parámetros')
 for tab, fname, *_ in TABS: write_raw(tab, fname)
 CALC = ['Catálogo', 'Campañas', 'Medianas', 'B_Canales', 'E_DespuesBaja', 'F_Solape', 'G_Practicas', 'H_Etapas', 'J_Canal', 'K_Abren', 'L_Baja', 'M_Ventanas']
-WS = {n: wb.create_sheet(n) for n in CALC}
+NEW = ['Vista_equipo', 'Insights', 'Plan_accion', 'Estándares']
+WS = {n: wb.create_sheet(n) for n in CALC + NEW}
 ver = wb.create_sheet('Verificación')
 
 # ---------- pandas base
@@ -209,7 +210,7 @@ MAP_RNG = f'Parámetros!$A${MAP_ROW + 1}:$B${MAP_ROW + len(teams)}'
 par.column_dimensions['A'].width = 56; par.column_dimensions['B'].width = 18; par.column_dimensions['C'].width = 26; par.column_dimensions['D'].width = 110
 par.freeze_panes = 'A2'
 PB = {k: f'Parámetros!$B${r}' for k, r in dict(costo_email=2, costo_wa=3, costo_push=4, costo_inapp=5, base_wa=6, usuarios_email=8,
-      min_email=11, min_push=12, min_wa=13, min_inapp=14, frac=15, lift=16, m_ab=17, m_noab=18, m_conv=19,
+      inapp_quitar=20, min_email=11, min_push=12, min_wa=13, min_inapp=14, frac=15, lift=16, m_ab=17, m_noab=18, m_conv=19,
       bajas_mil=26, f_prot=27, f_esc=28, env_esc=29, toques=30, aud=31, wa_noent=32, e5b=33, e7a=34, etapa_min=35, pros=36, dias=37).items()}
 e1equipo = e1.team.map(MAP)
 
@@ -272,7 +273,7 @@ def ticket_of(fam):
     m = re.search(r'-([A-Z]?[BTS]0?\d{3,5})-', fam); return m.group(1) if m else ''
 catp = pd.DataFrame(index=FAMS)
 catp['ticket'] = [ticket_of(f) for f in FAMS]
-catp['team'] = first.team; catp['equipo'] = catp.team.map(MAP); catp['prod'] = first.prod
+catp['team'] = first.team; catp['equipo'] = catp.team.map(MAP); catp['prod'] = first['prod']
 catp['tipo'] = ['cobranza' if t == 'Collections' else ('transaccional u operativa' if (f.startswith('Transaccional') or not re.search(TICKET_RE, f)) else 'promocional o lifecycle') for f, t in zip(FAMS, catp.team)]
 act = g1[g1.env > 0]
 catp['meses'] = act.groupby('fam').mes.nunique().reindex(FAMS).fillna(0)
@@ -410,6 +411,8 @@ apaga = (camp.senal == 'apagar o rehacer') & (camp.accion != 'No tocar')
 camp['ahorro_per_ent'] = np.where(apaga, camp.costo_ent, 0.0); camp['ahorro_per_env'] = np.where(apaga, camp.costo_env, 0.0)
 camp['ahorro_mes_ent'] = np.where(apaga & (camp.activo == 1), camp.costo_ent / camp.meses, 0.0); camp['ahorro_mes_env'] = np.where(apaga & (camp.activo == 1), camp.costo_env / camp.meses, 0.0)
 camp['msgs_ahorro'] = np.where(apaga & (camp.activo == 1), camp.env_mes, 0.0)
+camp['costo_mes_ent'] = np.where(camp.activo == 1, camp.costo_ent / camp.meses, 0.0); camp['costo_mes_env'] = np.where(camp.activo == 1, camp.costo_env / camp.meses, 0.0)
+camp['msgs_mes'] = np.where(camp.activo == 1, camp.env_mes, 0.0)
 # otros canales que responden (texto, solo para --lo-test)
 def otros(r):
     g = camp[(camp.fam == r.fam) & (camp.canal != r.canal) & (camp.env >= 1000) & camp.resp.notna() & camp.canal.isin(['email', 'push notification', 'in-app'])]
@@ -422,7 +425,7 @@ cm = WS['Campañas']
 CAMP_COLS = ['familia', 'canal', 'ticket', 'communication_ids', 'equipo', 'producto', 'tipo', 'audiencia (por nombre)', 'gancho (por nombre)',
  'envíos', 'meses con envíos', 'envíos_mes_prom', 'primer_mes', 'ultimo_mes', 'activo_sep', 'versiones (ids)', 'usuarios_aprox (suma de filas con envíos)', 'usuarios_por_envío (promedio)', 'toques_usuario_mes',
  'email_sent', 'email_delivery', 'email_open', 'email_click', 'email_unsubscribe', 'pn_send', 'pn_open', 'whatsapp_send', 'whatsapp_delivery', 'whatsapp_read', 'in_app_impression', 'in_app_click', 'banner_impression', 'banner_click', 'conversiones_fraccional (ref)',
- 'costo_mxn', 'wa_no_entregados', 'wa_no_entregado_mxn', 'entrega', 'apertura', 'clic', 'respuesta', 'bajas_por_mil', 'conv_por_mil (ref)',
+ 'costo_mxn', 'wa_no_entregados', 'wa_no_entregado_mxn', 'costo_mxn_mes', 'entrega', 'apertura', 'clic', 'respuesta', 'bajas_por_mil', 'conv_por_mil (ref)',
  'mínimo del canal', 'mediana envíos del canal', 'mediana respuesta del canal', 'volumen', 'señal', 'motivo', 'ahorro_mxn_periodo', 'ahorro_mxn_mes', 'msgs_mes_ahorrados',
  'abrieron (E7c)', 'no_abrieron (E7c)', 'abrieron_y_convirtieron (E7c)', 'no_abrieron_y_convirtieron (E7c)', 'conv_abren', 'conv_no_abren', 'lift', 'muestra_ok', 'mediana conv_abren del canal', 'mueve',
  'emails_a_dados_de_baja (E5b)', 'envios_con_etapa (E7a)', 'envios_etapa_bloqueada (E7a)', 'envios_sin_golden (E7a)', 'pct_etapa_conocida', 'envios_prospects (E7a)', 'pct_prospectos',
@@ -462,6 +465,7 @@ for i, r0 in camp.iterrows():
      'costo_mxn': '=' + costo_sumifs(K),
      'wa_no_entregados': f'=IF({B}="whatsapp",{x["whatsapp_send"]}-{x["whatsapp_delivery"]},0)',
      'wa_no_entregado_mxn': f'={x["wa_no_entregados"]}*{PB["costo_wa"]}',
+     'costo_mxn_mes': f'=IF({x["activo_sep"]}=1,IFERROR({x["costo_mxn"]}/{x["meses con envíos"]},0),0)',
      'entrega': f'=IF({B}="email",IFERROR({x["email_delivery"]}/{x["email_sent"]},""),IF({B}="whatsapp",IFERROR({x["whatsapp_delivery"]}/{x["whatsapp_send"]},""),""))',
      'apertura': f'=IF({B}="email",IFERROR({x["email_open"]}/{x["email_delivery"]},""),IF({B}="push notification",IFERROR({x["pn_open"]}/{x["pn_send"]},""),IF({B}="whatsapp",IFERROR({x["whatsapp_read"]}/{x["whatsapp_delivery"]},""),"")))',
      'clic': f'=IF({B}="email",IFERROR({x["email_click"]}/{x["email_delivery"]},""),IF({B}="in-app",IFERROR({x["in_app_click"]}/{x["in_app_impression"]},""),IF({B}="banner",IFERROR({x["banner_click"]}/{x["banner_impression"]},""),"")))',
@@ -519,7 +523,7 @@ for i, r0 in camp.iterrows():
         cm.cell(r, CAMP_COLS.index(cname) + 1, row[cname])
     for cname in ('entrega', 'apertura', 'clic', 'respuesta', 'conv_abren', 'conv_no_abren', 'pct_etapa_conocida', 'pct_prospectos', 'mínimo del canal', 'mediana respuesta del canal', 'mediana conv_abren del canal'):
         cm.cell(r, CAMP_COLS.index(cname) + 1).number_format = '0.00%'
-    for cname in ('costo_mxn', 'ahorro_mxn_periodo', 'ahorro_mxn_mes', 'envíos', 'envíos_mes_prom', 'wa_no_entregado_mxn'):
+    for cname in ('costo_mxn', 'ahorro_mxn_periodo', 'ahorro_mxn_mes', 'envíos', 'envíos_mes_prom', 'wa_no_entregado_mxn', 'costo_mxn_mes'):
         cm.cell(r, CAMP_COLS.index(cname) + 1).number_format = '#,##0'
 cm.freeze_panes = 'C2'; cm.auto_filter.ref = f'A1:{ML[CAMP_COLS[-1]]}{NCAMP + 1}'
 for cname in CAMP_COLS: cm.column_dimensions[ML[cname]].width = 60 if cname == 'familia' else (50 if cname in ('por_qué (resumen)', 'communication_ids') else 13)
@@ -993,6 +997,398 @@ LM2, m2a, m2b = table(ws, r0, 'M2. Por canal: cómo cambia el lift al alargar la
 ws.freeze_panes = 'A6'
 
 # =====================================================================================
+# ---------- v3: Estándares, Insights, Plan_accion, Vista_equipo
+# =====================================================================================
+def cs(col, eq=None):
+    """Suma de una columna de Campañas, total o del equipo eq (referencia de celda o texto entre comillas)."""
+    return f'SUM({cr(col)})' if eq is None else f'SUMIFS({cr(col)},{cr("equipo")},{eq})'
+def ratio(numcol, dencol, mult=''):
+    return lambda eq: f'IFERROR({cs(numcol, eq)}/{cs(dencol, eq)}{mult},"")'
+NOEQ = 'no se parte por equipo'
+DEF = 'Válido con los parámetros default. Si cambias Parámetros (mínimos, factores, muestra), esta fila sale REVISAR a propósito: el valor esperado está fijo con los defaults.'
+CATA = f'Catálogo!$A$2:$A${NC + 1}'
+def catc(col): return f'Catálogo!${CL[col]}$2:${CL[col]}${NC + 1}'
+SEL = 'Vista_equipo!$B$2'
+
+# ---------- Estándares
+ws = WS['Estándares']
+header(ws, 'Estándares y buenas prácticas: qué es cada métrica, dónde estamos, qué estándar y qué hacer',
+       'Campañas (sumas de E1 por familia × canal con el equipo del Catálogo), B_Canales (E4b), F_Solape (E6a), E_DespuesBaja (E5, E5b), H_Etapas (E7a), J_Canal (E7b), L_Baja (E8), Catálogo, Parámetros.',
+       'El valor actual es fórmula viva. El estándar propuesto (columna G) es editable: sale de benchmarks públicos de la industria (se toma el piso del rango), de Parámetros o de una propuesta interna; la columna I dice de dónde. Estado = compara el valor actual con el estándar en el sentido de la columna H. Las columnas por equipo (P a T) usan el equipo del Catálogo (mapeo de Parámetros); las métricas que vienen por usuario (E4b, E6a, E7b, E8 resumen) no se parten por equipo. Benchmarks: email promocional apertura 15 a 25 %, clic 1.5 a 3 %, baja menor a 0.3 %; push apertura 3 a 10 %; WhatsApp lectura 70 a 90 %, entrega mayor a 90 %; in-app clic 5 a 20 % (METRICAS.md). Son referencia, no juicio final: una audiencia fría responde menos por ser fría.')
+EST_COLS = ['#', 'tema', 'métrica u operación', 'qué es', 'cómo se calcula aquí', 'valor actual (todos los equipos)', 'estándar propuesto (editable)', 'sentido', 'de dónde sale el estándar', 'brecha (actual − estándar)', 'estado', 'qué significa quedarse debajo', 'qué hacer', 'fuente (E)', 'supuestos'] + EQUIPOS + ['equipos debajo del estándar']
+EL = {c: L(j) for j, c in enumerate(EST_COLS, start=1)}
+SUP_CAMP = 'Sumas de E1 por familia × canal (Campañas). Equipo = del Catálogo con el mapeo de Parámetros.'
+def h3_eq(eq): return f'IFERROR(INDEX(H_Etapas!$B${h3a}:$B${h3a + 4},MATCH({eq},H_Etapas!$A${h3a}:$A${h3a + 4},0)),"")'
+def e3_eq(eq): return f'IFERROR(INDEX(E_DespuesBaja!$E${e3a}:$E${e3a + 4},MATCH({eq},E_DespuesBaja!$A${e3a}:$A${e3a + 4},0)),"")'
+def l5_eq(eq): return f'IFERROR(INDEX(L_Baja!$C${l5a}:$C${l5a + 4},MATCH({eq},L_Baja!$A${l5a}:$A${l5a + 4},0)),"")'
+# (tema, métrica, qué es, cómo, f(eq) o texto, estándar, sentido, de dónde, significa, hacer, fuente, supuestos, formato)
+EST = [
+ ('Entrega', 'Entrega de email (entregados / enviados)', 'Qué parte de los emails enviados llegó a una bandeja.', 'SUM(email_delivery) / SUM(email_sent) de Campañas', ratio('email_delivery', 'email_sent'), 0.95, 'mayor es mejor',
+  'Benchmark de industria: 95 % o más. Debajo hay lista sucia o problema de reputación del dominio.', 'Rebotes: direcciones inválidas o dominio con mala reputación. Se paga por enviado (Parámetros B2): cada punto debajo es dinero en correos que no llegan y además baja la entrega de todos los equipos.', 'Quitar hard bounces y direcciones sin apertura en 12 meses; revisar SPF, DKIM y DMARC; no comprar ni importar listas.', 'E1', SUP_CAMP, 'pct'),
+ ('Email', 'Apertura de email (abiertos / entregados)', 'Qué parte de los emails entregados se abrió. Solo referencia: Apple Mail y Gmail abren solos.', 'SUM(email_open) / SUM(email_delivery) de Campañas', ratio('email_open', 'email_delivery'), 0.15, 'mayor es mejor',
+  'Benchmark promocional 15 a 25 % (piso). Inflado por aperturas automáticas: no se usa como señal, por eso la respuesta de email es el clic.', 'Asunto o remitente que no llaman; o la métrica está inflada y el clic dirá la verdad.', 'Probar asunto y preheader con prueba del 10 %; leer siempre junto con el clic.', 'E1', SUP_CAMP + ' Apertura inflada por Apple Mail Privacy Protection y Gmail.', 'pct'),
+ ('Email', 'Clic de email (clics / entregados) = respuesta email', 'Qué parte de los emails entregados tuvo clic. Es la respuesta que usa toda la auditoría en email.', 'SUM(email_click) / SUM(email_delivery) de Campañas', ratio('email_click', 'email_delivery'), 0.015, 'mayor es mejor',
+  'Benchmark promocional 1.5 a 3 % (piso). El mínimo interno para apagar es más bajo: Parámetros B11 (0.3 %); el estándar es la meta, el mínimo es el piso.', 'El contenido o la audiencia no interesan. Debajo del mínimo interno la campaña no tiene señal y se apaga o se rehace (Campañas, señal).', 'Plan_accion: Apagar las que no mueven, Rehacer o re-segmentar las que sí; probar oferta y asunto al 10 % antes del envío completo.', 'E1', SUP_CAMP, 'pct'),
+ ('Email', 'Bajas por mil emails entregados', 'Cuántos eventos de baja (email_unsubscribe) hay por cada mil emails entregados.', 'SUM(email_unsubscribe) / SUM(email_delivery) × 1000 de Campañas', ratio('email_unsubscribe', 'email_delivery', '*1000'), f'={PB["bajas_mil"]}', 'menor es mejor',
+  'Parámetros B26 (2.5 por mil). Benchmark de industria: menos de 3 por mil (0.3 %) en promocional.', 'Cada baja es un usuario que no vuelve a recibir NINGÚN email, también los útiles. Arriba del estándar la lista se desgasta más rápido de lo que crece.', 'Bajar frecuencia (Plan_accion), cuidar los primeros emails del usuario nuevo (L_Baja) y no mandar promocional a quien ya se dio de baja (E_DespuesBaja).', 'E1', SUP_CAMP + ' Eventos, no usuarios: un usuario puede generar varios eventos de baja.', 'num2'),
+ ('Push', 'Apertura de push (aperturas / enviados) = respuesta push', 'Qué parte de los push enviados se abrió.', 'SUM(pn_open) / SUM(pn_send) de Campañas', ratio('pn_open', 'pn_send'), 0.03, 'mayor es mejor',
+  'Benchmark 3 a 10 % de apertura directa (piso). Mínimo interno Parámetros B12 (0.75 %).', 'Un push que nadie abre gasta el permiso del usuario: desactiva las notificaciones y se pierde el canal, que no cuesta dinero pero sí atención.', 'Tope de 1 push promocional al día por usuario; apagar las familias con señal apagar; disparar por evento del usuario y no a toda la base.', 'E1', SUP_CAMP + ' Push no tiene entrega ni baja en la tabla.', 'pct'),
+ ('WhatsApp', 'Entrega de WhatsApp (entregados / enviados)', 'Qué parte de los WhatsApp enviados llegó al teléfono.', 'SUM(whatsapp_delivery) / SUM(whatsapp_send) de Campañas', ratio('whatsapp_delivery', 'whatsapp_send'), 0.90, 'mayor es mejor',
+  'Benchmark: más de 90 % de entrega. Meta cobra por entregado (Parámetros B6), pero el no entregado marca la base como sucia y, si se cobrara por enviado, costaría lo de la columna wa_no_entregado_mxn.', 'Números inválidos, sin WhatsApp o que bloquearon a la empresa. Debajo de 90 % la base necesita limpieza.', 'Limpiar base de WhatsApp (Plan_accion): quitar números con 3 no-entregas seguidas; verificar el número antes de meterlo al Canvas.', 'E1', SUP_CAMP, 'pct'),
+ ('WhatsApp', 'Lectura de WhatsApp (leídos / entregados) = respuesta WhatsApp', 'Qué parte de los WhatsApp entregados se leyó.', 'SUM(whatsapp_read) / SUM(whatsapp_delivery) de Campañas', ratio('whatsapp_read', 'whatsapp_delivery'), 0.70, 'mayor es mejor',
+  'Benchmark 70 a 90 % de lectura (piso). Mínimo interno Parámetros B13 (60 %).', 'Un WhatsApp entregado y no leído cuesta 1 MXN y no sirve. Si el usuario tiene apagadas las confirmaciones de lectura cuenta como no leído: la cifra es un piso.', 'Mandar WhatsApp solo a quien ya leyó uno antes (J_Canal) y en horario de respuesta; plantillas cortas y con una sola acción.', 'E1', SUP_CAMP + ' Confirmaciones de lectura apagadas cuentan como no leído.', 'pct'),
+ ('In-app', 'Clic de in-app (clics / impresiones) = respuesta in-app', 'Qué parte de las impresiones de la pieza dentro de la app tuvo clic.', 'SUM(in_app_click) / SUM(in_app_impression) de Campañas', ratio('in_app_click', 'in_app_impression'), f'={PB["inapp_quitar"]}', 'mayor es mejor',
+  'Parámetros B20 (5 %). Benchmark 5 a 20 % sobre impresiones.', 'La pieza estorba dentro de la app sin que nadie la toque.', 'Quitar la pieza o cambiar el disparador; una sola pieza in-app por sesión.', 'E1', SUP_CAMP, 'pct'),
+ ('Frecuencia', 'Toques de la misma comunicación por usuario al mes (envíos / usuarios del mes)', 'Cuántas veces al mes le llega la misma comunicación al mismo usuario, en promedio.', 'SUM(envíos) / SUM(usuarios_aprox) de Campañas', ratio('envíos', 'usuarios_aprox (suma de filas con envíos)'), 2, 'menor es mejor',
+  'Propuesta interna (lente G4): con 1 o 2 toques la respuesta se mantiene; de 3 en adelante cae y suben las bajas. Regla: máximo 2 toques de la misma comunicación por usuario al mes.', 'La misma pieza llega 3, 4 o 5 veces al mismo usuario en el mes: fatiga sin respuesta extra.', 'Frequency cap por Canvas: 2 por usuario por mes; re-entrada bloqueada 30 días.', 'E1', 'usuarios_aprox es APPROX_COUNT_DISTINCT del mes (error 1 a 2 %). Incluye cobranza y transaccional.', 'num2'),
+ ('Frecuencia', 'Mensajes por usuario al mes, todos los canales (E4b)', 'Mensajes que recibe un usuario en un mes, promedio sobre los usuarios con al menos una fila.', 'SUM(msgs totales) / SUM(usuarios con fila) de B_Canales B3 (9 meses)', f'IFERROR(SUM(B_Canales!$L${b3a}:$L${b3b})/SUM(B_Canales!$B${b3a}:$B${b3b}),"")', 20, 'menor es mejor',
+  'Umbral de presión de METRICAS: 5 mensajes por semana promocional + lifecycle, unos 20 al mes. Aquí se cuentan todos los canales y tipos, así que es un techo.', 'Arriba de 20 el usuario recibe casi un mensaje diario. La banda 41+ tiene más bajas por 100 usuarios que la banda 01-05 (B_Canales B3).', 'Tope global de frecuencia en Braze (frequency capping) por usuario: 5 a la semana promocional; transaccional y cobranza fuera del tope.', 'E4b', NOEQ + ' (E4b es por usuario). Incluye push e in-app, que no cuestan.', 'num2'),
+ ('Frecuencia', '% de usuarios con 41 o más mensajes al mes (E4b)', 'Qué parte de los usuarios con mensajes en el mes está en las bandas 41-80, 081-160 y 161+.', 'SUM(bandas 41+) / SUM(usuarios con fila) de B_Canales B3', f'IFERROR(SUM(B_Canales!$H${b3a}:$J${b3b})/SUM(B_Canales!$B${b3a}:$B${b3b}),"")', 0.05, 'menor es mejor',
+  'Propuesta interna: la cola de usuarios saturados no debería pasar del 5 %.', 'Hay un grupo que recibe más de un mensaje al día; concentra bajas y quejas.', 'Frequency cap global y revisar qué Canvas se acumulan en esos usuarios (F_Solape F4).', 'E4b', NOEQ + ' (E4b es por usuario).', 'pct'),
+ ('Solapamiento', '% de usuario-días con 3 o más familias distintas el mismo día (E6a)', 'De los días en que un usuario recibe algo, en qué parte le llegan 3 o más campañas distintas.', '(F_Solape B8 + B9 + B10) / B11', 'IFERROR((F_Solape!$B$8+F_Solape!$B$9+F_Solape!$B$10)/F_Solape!$B$11,"")', 0.10, 'menor es mejor',
+  'Propuesta interna (METRICAS: solapamiento = 3 o más campañas distintas el mismo día). Regla: máximo 2 familias por usuario por día.', 'Varios equipos le hablan al mismo usuario el mismo día; las bajas por mil usuario-días suben con las familias del día (F_Solape F1).', 'Exclusión mutua entre Canvas promocionales (no enviar si recibió otro promocional en 24 h); calendario único entre equipos; los pares que más chocan están en F_Solape F4.', 'E6a', NOEQ + ' (E6a es por usuario-día). Grano usuario-día.', 'pct'),
+ ('Bajas', 'Días hasta la baja, mediana, usuarios nuevos (E8 cohorte 1)', 'Cuántos días pasan entre el primer email del usuario y su baja (mediana), para usuarios cuyo primer email cae en el periodo.', 'L_Baja E6', 'L_Baja!$E$6', 90, 'mayor es mejor',
+  'Propuesta interna: un usuario nuevo debería durar al menos 90 días suscrito.', 'Se dan de baja en el primer mes: la secuencia de bienvenida quema la lista que acaba de entrar.', 'Revisar los primeros 5 emails del usuario nuevo (orden y frecuencia); la familia que llegó el día de la baja está en L_Baja L4.', 'E8', NOEQ + ' (E8 resumen es por usuario). PERCENTILE_APPROX.', 'num0'),
+ ('Bajas', 'Emails recibidos antes de la baja, mediana, usuarios nuevos (E8 cohorte 1)', 'Cuántos emails recibió el usuario nuevo antes de darse de baja (mediana).', 'L_Baja H6', 'L_Baja!$H$6', 10, 'mayor es mejor',
+  'Propuesta interna: si se van con menos de 10 emails no es cansancio acumulado, es el contenido o la audiencia de los primeros envíos.', 'La baja llega con pocos emails: el problema está en los primeros mensajes, no en la frecuencia.', 'Rediseñar la secuencia de los primeros 10 emails; empezar por lo útil (transaccional, educación) antes de lo promocional.', 'E8', NOEQ + ' (E8 resumen es por usuario). PERCENTILE_APPROX.', 'num0'),
+ ('Bajas', '% de usuarios nuevos que se dan de baja el mismo día del primer email (E8 cohorte 1)', 'De los usuarios nuevos con baja, qué parte se dio de baja el mismo día en que recibió su primer email.', f'L_Baja D{l2a} (banda 0 mismo día, cohorte 1)', f'L_Baja!$D${l2a}', 0.05, 'menor es mejor',
+  'Propuesta interna.', 'El primer email ya los echó: audiencia que no pidió el correo (leads, registros sin crédito) o asunto que no corresponde.', 'Confirmación de interés antes del primer promocional; no meter leads fríos a la secuencia de bienvenida; probar el primer email al 10 %.', 'E8', NOEQ + ' (E8 banda_dias es por usuario).', 'pct'),
+ ('Canal mudo', '% de mensajes a canal mudo (canal al que ese usuario nunca respondió, E7b enero a septiembre)', 'De todos los mensajes del periodo, qué parte fue por un canal al que el usuario nunca respondió (ni un clic, apertura o lectura en nueve meses).', f'J_Canal R{J7TOT} / H{J7TOT}', f'IFERROR(J_Canal!$R${J7TOT}/J_Canal!$H${J7TOT},"")', 0.20, 'menor es mejor',
+  'Propuesta interna: no más del 20 % de los mensajes a canales sin respuesta histórica.', 'Se paga y se satura un canal que para ese usuario no existe; en WhatsApp es dinero directo, en email son bajas.', 'Regla de canal preferido en Braze: si el usuario respondió a push o in-app y nunca a email, no mandar email promocional; misma regla para WhatsApp. Reactivación acotada a 3 toques en 30 días.', 'E7b', NOEQ + ' (E7b es por usuario). "Respondió" = clic email, apertura push, lectura WhatsApp o clic in-app; abrir un email sin clic no cuenta.', 'pct'),
+ ('Canal mudo', '% de usuarios que nunca respondieron a nada (E7b enero a septiembre)', 'De los usuarios que recibieron algo en nueve meses, qué parte no tuvo ni una respuesta en ningún canal.', f'J_Canal B{J7RES["% que no respondieron a nada"]}', f'J_Canal!$B${J7RES["% que no respondieron a nada"]}', 0.50, 'menor es mejor',
+  'Propuesta interna. En julio a septiembre (ventana de 90 días, J2) la cifra es más baja porque la ventana es más corta.', 'Más de la mitad de la base recibe mensajes y no reacciona a ninguno: la segmentación no está separando a quién vale la pena hablarle.', 'Reactivación acotada: 3 toques en 30 días a quien no responde; si sigue sin responder pasa a frecuencia mínima (1 al mes) o sale del promocional. Ver definición explícita de "nunca respondió" en Léeme.', 'E7b', NOEQ + ' (E7b es por usuario). Es un techo: confirmaciones de lectura de WhatsApp apagadas cuentan como no leído.', 'pct'),
+ ('Segmentación', 'Envíos promocionales a etapas bloqueadas: Blacklist, CC Freeze, REUS/ARCO (E7a)', 'Envíos de familias promocionales a usuarios que en ese momento estaban en una etapa que no debe recibir promoción.', 'H_Etapas B12 (total) y H3 por equipo', 'H_Etapas!$B$12', 0, 'menor es mejor',
+  'Regla de negocio: cero. Un usuario en Blacklist, con tarjeta congelada o con solicitud REUS/ARCO no debe recibir promoción.', 'Riesgo legal (ARCO) y de marca; además no convierten.', 'Excluir las tres etapas en el segmento de entrada de todo Canvas promocional (atributo de golden record); las 40 familias que más lo hacen están en H_Etapas H4.', 'E7a', 'Etapa del usuario al momento del envío; E7a cubre 37 % de los envíos con etapa conocida. Tipo promocional = regla por nombre y equipo (Catálogo). Por equipo: H_Etapas H3.', 'num0', h3_eq),
+ ('Segmentación', 'Emails promocionales a usuarios ya dados de baja (E5b)', 'Emails de familias promocionales enviados a usuarios después de su fecha de baja.', f'E_DespuesBaja C{E_TIPO_ROW["promocional o lifecycle"]} (total) y E3 columna E por equipo', f'E_DespuesBaja!$C${E_TIPO_ROW["promocional o lifecycle"]}', 0, 'menor es mejor',
+  'Regla de negocio y de Braze: cero. El transaccional y la cobranza sí pueden llegar después de la baja.', 'Quejas y marcado como spam, que daña la entrega de todos los equipos; además es un usuario que ya dijo que no.', 'Filtro de suscripción (subscribed u opted_in) en cada paso de email de cada Canvas promocional, nunca "todos"; la lista de familias está en E_DespuesBaja E4.', 'E5b', 'Tipo promocional = regla por nombre y equipo (Catálogo). Por equipo: E_DespuesBaja E3.', 'num0', e3_eq),
+ ('Segmentación', '% de dados de baja que vuelven a recibir email después (E5, cualquier tipo)', 'De los usuarios con baja, qué parte recibió al menos un email después de la baja dentro del periodo.', f'E_DespuesBaja M{E_TOTAL_ROW}', f'E_DespuesBaja!$M${E_TOTAL_ROW}', 0.10, 'menor es mejor',
+  'Propuesta interna: solo transaccional y cobranza deberían llegar después de la baja.', 'Una parte grande de los dados de baja sigue recibiendo email; si es promocional, es la fila anterior.', 'Misma acción que la fila anterior; revisar que el transaccional no lleve contenido promocional.', 'E5', NOEQ + ' (E5 es por usuario). Los meses finales tienen poco tiempo de observación.', 'pct'),
+ ('Envíos masivos', 'Campañas de email activas con 1 M o más de usuarios por envío', 'Filas de Campañas (familia × canal email) activas en septiembre cuyo promedio de usuarios por mes es 1 M o más (Parámetros B31).', 'COUNTIFS sobre Campañas: canal email, usuarios_por_envío ≥ B31, activo_sep = 1', lambda eq: f'COUNTIFS({cr("canal")},"email",{cr("usuarios_por_envío (promedio)")},">="&{PB["aud"]},{cr("activo_sep")},1' + ('' if eq is None else f',{cr("equipo")},{eq}') + ')', 0, 'menor es mejor',
+  'Propuesta interna (Parámetros B31): ningún envío a 1 M o más de usuarios sin prueba previa del 10 % y grupo de control.', 'Un envío masivo malo quema cientos de miles de usuarios de un golpe: en L_Baja L4 un solo email explica un tercio de las bajas de los usuarios nuevos.', 'Prueba al 10 % con 48 horas de lectura antes del envío completo; grupo de control del 10 %; segmentar en vez de mandar a toda la base.', 'E1', 'usuarios_por_envío = promedio mensual de usuarios_aprox (APPROX_COUNT_DISTINCT).', 'num0'),
+ ('Envíos masivos', 'Campañas con respuesta debajo del mínimo que siguen activas (señal apagar o rehacer, activas en septiembre, sin cobranza ni transaccional)', 'Filas de Campañas con señal "apagar o rehacer", activas en septiembre y con acción distinta de No tocar.', 'COUNTIFS sobre Campañas: señal, activo_sep, accion_tipo', lambda eq: f'COUNTIFS({cr("señal")},"apagar o rehacer",{cr("activo_sep")},1,{cr("accion_tipo")},"<>No tocar"' + ('' if eq is None else f',{cr("equipo")},{eq}') + ')', 0, 'menor es mejor',
+  'Regla interna (Parámetros B11 a B14): una campaña con volumen alto y respuesta debajo del mínimo de su canal no debería seguir corriendo.', 'Se sigue pagando y saturando usuarios con mensajes que no tienen respuesta.', 'Plan_accion: Apagar (no mueve), Rehacer o re-segmentar (sí mueve) o Limpiar base de WhatsApp.', 'E1', 'Depende de Parámetros (mínimos) y de las medianas por canal.', 'num0'),
+ ('Grupos de control', 'Campañas promocionales con grupo de control', 'Si cada Canvas promocional reserva un grupo que no recibe el mensaje para medir conversión incremental.', 'No se puede medir con estas extracciones (no hay marca de control en la tabla).', 'no medible con estas extracciones', '10 % de holdout en toda campaña promocional', '', 
+  'Práctica estándar de Braze (Control Group en Canvas) y de medición de incrementalidad.', 'Sin control no se sabe si la campaña mueve algo: la conversión "atribuida" puede ser gente que iba a convertir de todos modos (K_Abren y M_Ventanas: lift cercano a 1 en varias familias).', 'Activar Control Group del 10 % en cada Canvas promocional y leer conversión incremental, no conversión total.', '', 'La conversión de la tabla (is_converted) es de referencia.', 'txt'),
+ ('Nomenclatura', '% de familias con ticket (B0211, T2728, S0004) en Braze o en el nombre', 'Qué parte de las familias del Catálogo tiene ticket, ya sea en ticket_number o dentro del nombre.', '1 − COUNTBLANK(ticket) / COUNTA(familia) del Catálogo', lambda eq: (f'IFERROR(1-COUNTBLANK({catc("ticket")})/COUNTA({CATA}),"")' if eq is None else f'IFERROR(1-SUMPRODUCT(({catc("equipo")}={eq})*({catc("ticket")}=""))/COUNTIF({catc("equipo")},{eq}),"")'), 1, 'mayor es mejor',
+  'Regla interna de nomenclatura: toda pieza lleva su ticket.', 'Sin ticket no se sabe quién pidió la pieza ni se puede clasificar: aquí queda como transaccional u operativa aunque sea promocional.', 'Campo ticket_number obligatorio en Braze y ticket en el nombre con la forma Equipo-Producto-Ticket-Fecha-Nombre-Canal.', 'E1', 'El ticket sale de ticket_number si no es Other; si no, del nombre con regex; si no, vacío.', 'pct'),
+]
+EST_ROW0 = 6
+for j, c in enumerate(EST_COLS, start=1): ws.cell(5, j, c).font = bold
+ws.cell(4, 1, 'Una fila por métrica u operación. Columnas P a T: valor actual del equipo (mismo cálculo, filtrado por el equipo del Catálogo). Columna G editable.').font = bold
+EST_ROWS = {}
+for k, st in enumerate(EST):
+    r = EST_ROW0 + k
+    tema, met, que, como, f, std, sentido, fuente_std, signif, hacer, fuenteE, sup, fmt = st[:13]
+    f_eq = st[13] if len(st) > 13 else (f if callable(f) else None)
+    EST_ROWS[k + 1] = r
+    vals = {'#': k + 1, 'tema': tema, 'métrica u operación': met, 'qué es': que, 'cómo se calcula aquí': como,
+            'valor actual (todos los equipos)': ('=' + (f(None) if callable(f) else f)) if fmt != 'txt' else f,
+            'estándar propuesto (editable)': std, 'sentido': sentido, 'de dónde sale el estándar': fuente_std,
+            'brecha (actual − estándar)': f'=IF(AND(ISNUMBER({EL["valor actual (todos los equipos)"]}{r}),ISNUMBER({EL["estándar propuesto (editable)"]}{r})),{EL["valor actual (todos los equipos)"]}{r}-{EL["estándar propuesto (editable)"]}{r},"")',
+            'estado': f'=IF(NOT(ISNUMBER({EL["valor actual (todos los equipos)"]}{r})),"sin medir",IF(NOT(ISNUMBER({EL["estándar propuesto (editable)"]}{r})),"sin estándar",IF({EL["sentido"]}{r}="mayor es mejor",IF({EL["valor actual (todos los equipos)"]}{r}>={EL["estándar propuesto (editable)"]}{r},"cumple","debajo"),IF({EL["valor actual (todos los equipos)"]}{r}<={EL["estándar propuesto (editable)"]}{r},"cumple","debajo"))))',
+            'qué significa quedarse debajo': signif, 'qué hacer': hacer, 'fuente (E)': fuenteE, 'supuestos': sup}
+    for eq in EQUIPOS:
+        vals[eq] = ('=' + f_eq(f'{EL[eq]}$5')) if (callable(f_eq) and fmt != 'txt') else NOEQ
+    tr = f'{EL[EQUIPOS[0]]}{r}:{EL[EQUIPOS[-1]]}{r}'
+    vals['equipos debajo del estándar'] = f'=IF(OR(NOT(ISNUMBER({EL["estándar propuesto (editable)"]}{r})),COUNT({tr})=0),"",IF({EL["sentido"]}{r}="mayor es mejor",COUNTIF({tr},"<"&{EL["estándar propuesto (editable)"]}{r}),COUNTIF({tr},">"&{EL["estándar propuesto (editable)"]}{r})))'
+    for c, v in vals.items():
+        cc = ws.cell(r, EST_COLS.index(c) + 1, v)
+        if c in ('valor actual (todos los equipos)', 'estándar propuesto (editable)', 'brecha (actual − estándar)') or c in EQUIPOS:
+            cc.number_format = {'pct': '0.00%', 'num2': '#,##0.00', 'num0': '#,##0', 'txt': 'General'}[fmt]
+        if c in ('qué es', 'cómo se calcula aquí', 'de dónde sale el estándar', 'qué significa quedarse debajo', 'qué hacer', 'supuestos', 'métrica u operación'): cc.alignment = wrap
+EST_LAST = EST_ROW0 + len(EST) - 1
+ws.freeze_panes = 'D6'; ws.auto_filter.ref = f'A5:{EL[EST_COLS[-1]]}{EST_LAST}'
+for c, w in {'#': 4, 'tema': 13, 'métrica u operación': 40, 'qué es': 40, 'cómo se calcula aquí': 34, 'valor actual (todos los equipos)': 14, 'estándar propuesto (editable)': 14, 'sentido': 14, 'de dónde sale el estándar': 44, 'brecha (actual − estándar)': 12, 'estado': 10, 'qué significa quedarse debajo': 50, 'qué hacer': 50, 'fuente (E)': 8, 'supuestos': 44, 'equipos debajo del estándar': 12}.items():
+    ws.column_dimensions[EL[c]].width = w
+for eq in EQUIPOS: ws.column_dimensions[EL[eq]].width = 14
+
+# ---------- Insights
+ws = WS['Insights']
+header(ws, 'Insights: todos los hallazgos en una sola tabla con filtros (lente, equipo, producto, canal, tipo de hallazgo)',
+       'Cada cifra es una referencia viva a la celda de cálculo que la sostiene (columna O dice cuál); si cambian Parámetros o los datos, la cifra cambia. Las filas con equipo "todos" aplican a toda la operación; las filas con un equipo son la parte de ese equipo.',
+       'Confianza alta = conteo directo de eventos; media = usa usuarios aproximados, clasificación por nombre o medianas; baja = usa la conversión de referencia (is_converted). Tipo de hallazgo: gasto (dinero), fatiga (frecuencia y bajas), segmentación (a quién le llega), calidad de dato (nombres, tickets, campos), oportunidad (lo que sí funciona y se puede escalar). "Estándar relacionado" es el número de fila (#) en la pestaña Estándares. Supuestos generales: costos de Parámetros, base de cobro de WhatsApp en B6, usuarios aproximados, familia = nombre sin fecha.')
+INS_COLS = ['#', 'lente', 'equipo', 'producto', 'canal', 'tipo de hallazgo', 'hallazgo', 'cifra (fórmula viva)', 'unidad', 'fuente (E)', 'confianza', 'qué significa', 'qué hacer', 'estándar relacionado (#)', 'celda de origen', 'supuestos']
+IL = {c: L(j) for j, c in enumerate(INS_COLS, start=1)}
+INS = []
+def ins(lente, equipo, producto, canal, tipo, hallazgo, f, unidad, fuente, conf, signif, hacer, est='', sup=''):
+    INS.append((lente, equipo, producto, canal, tipo, hallazgo, f, unidad, fuente, conf, signif, hacer, est, sup))
+MDc = lambda col, r=7: f'Medianas!${MEDL[col]}${r}'
+B2 = lambda col, cnl: f'B_Canales!${LB2[col]}${B2ROW[cnl]}'
+SUPC = 'Costo con la base de cobro de Parámetros B6; push e in-app sin costo; costo fijo de Braze no incluido.'
+# B
+ins('B', 'todos', 'todos', 'todos', 'gasto', 'Costo variable total del periodo (email + WhatsApp)', f'=B_Canales!${LB2["costo_mxn"]}${b2a + 5}', 'MXN', 'E4a', 'alta', 'Es lo que se paga en nueve meses por email y WhatsApp con los costos unitarios de Parámetros.', 'Todo el ahorro de esta auditoría se mide contra esta cifra.', '', SUPC)
+ins('B', 'todos', 'todos', 'whatsapp', 'gasto', 'Parte del costo variable que es WhatsApp', f'={B2("% del costo", "whatsapp")}', '% del costo', 'E4a', 'alta', 'WhatsApp es la mayor parte del gasto aunque sea una parte chica de los envíos: cada mensaje cuesta 20 veces lo que un email.', 'Toda regla de ahorro empieza en WhatsApp: entrega, lectura y canal mudo.', '6', SUPC)
+ins('B', 'todos', 'todos', 'whatsapp', 'calidad de dato', 'WhatsApp enviados que no se entregaron en el periodo (mensajes)', f'={B2("whatsapp_send", "whatsapp")}-{B2("whatsapp_delivery", "whatsapp")}', 'mensajes', 'E4a', 'alta', 'Números inválidos o que bloquearon a la empresa. Con la base "entregado" no se pagan, pero la base está sucia.', 'Limpiar base de WhatsApp: quitar números con 3 no-entregas seguidas antes de volver a enviar.', '6', 'Base entregado (Parámetros B6).')
+ins('B', 'todos', 'todos', 'whatsapp', 'gasto', 'Lo que costarían esos WhatsApp no entregados si se cobrara por enviado', f'=SUM(B_Canales!$F${b4a}:$F${b4b})', 'MXN', 'E4a', 'alta', 'Es el escenario de las muestras anteriores (base enviado). Si el contrato cobra por enviado, este dinero se está tirando.', 'Confirmar con Meta o el proveedor la base real de cobro; si es por enviado, la limpieza es urgente.', '6', 'Costo por WhatsApp de Parámetros B3 sobre (enviados − entregados).')
+ins('B', 'todos', 'todos', 'whatsapp', 'calidad de dato', '% de entrega de WhatsApp en el periodo', f'={B2("% entrega WhatsApp", "whatsapp")}', '% entregados / enviados', 'E4a', 'alta', 'Debajo del 90 % la base necesita limpieza.', 'Ver estándar 6.', '6', '')
+ins('B', 'todos', 'todos', 'push notification', 'fatiga', 'Parte de todos los envíos que son push', f'={B2("% de los envíos", "push notification")}', '% de los envíos', 'E4a', 'alta', 'Más de la mitad del volumen es push, el canal que no cuesta dinero pero sí permiso del usuario.', 'Tope de 1 push promocional al día; apagar las familias push con señal apagar.', '5', '')
+ins('B', 'todos', 'todos', 'push notification', 'fatiga', 'Respuesta de push en el periodo (aperturas / enviados)', f'={B2("respuesta", "push notification")}', '% apertura', 'E4a', 'alta', 'Debajo del benchmark (3 %): la mayoría de los push no se abre.', 'Disparar push por evento del usuario y no a toda la base; ver Plan_accion canal push.', '5', '')
+ins('B', 'todos', 'todos', 'email', 'fatiga', 'Respuesta de email en el periodo (clics / entregados)', f'={B2("respuesta", "email")}', '% clic', 'E4a', 'alta', 'Debajo del benchmark promocional (1.5 %), arriba del mínimo interno (0.3 %).', 'Trabajar las familias con señal apagar o revisar en email (Plan_accion).', '3', '')
+ins('B', 'todos', 'todos', 'email', 'fatiga', 'Bajas de email usuario-mes en el periodo (CIFRA A)', f'={B2("bajas_email_usuarios (usuario-mes)", "email")}', 'usuarios-mes', 'E4a', 'alta', 'Un usuario cuenta en cada mes en que se dio de baja. Los usuarios únicos (CIFRA B) están en la lente E.', 'Bajar frecuencia y cuidar el primer email (lente L).', '4', 'Usuario-mes, no usuarios únicos.')
+ins('B', 'todos', 'todos', 'email', 'fatiga', 'Bajas por mil emails entregados en el periodo', f'={B2("bajas por mil entregados", "email")}', 'bajas por mil', 'E4a', 'alta', 'Arriba del estándar (2.5) la lista se desgasta más rápido de lo que crece.', 'Ver estándar 4.', '4', 'Eventos de baja, no usuarios.')
+ins('B', 'todos', 'todos', 'todos', 'fatiga', '% de usuarios con 41 o más mensajes al mes (promedio de los 9 meses)', f'=IFERROR(SUM(B_Canales!$H${b3a}:$J${b3b})/SUM(B_Canales!$B${b3a}:$B${b3b}),"")', '% usuarios', 'E4b', 'alta', 'Un grupo recibe más de un mensaje al día.', 'Frequency cap global (estándar 10 y 11).', '11', 'E4b cuenta filas por usuario.')
+ins('B', 'todos', 'todos', 'email', 'fatiga', 'Bajas de email por 100 usuarios en la banda 41+ mensajes al mes (promedio de meses)', f'=IFERROR(AVERAGE(B_Canales!$P${b3a}:$P${b3b}),"")', 'bajas por 100 usuarios', 'E4b', 'media', 'Comparar con la fila siguiente (banda 01-05): a más mensajes, más bajas por usuario. Eso es fatiga.', 'Frequency cap global; revisar qué Canvas se acumulan en esos usuarios.', '10', 'Promedio simple de 9 meses.')
+ins('B', 'todos', 'todos', 'email', 'fatiga', 'Bajas de email por 100 usuarios en la banda 01-05 mensajes al mes (promedio de meses)', f'=IFERROR(AVERAGE(B_Canales!$O${b3a}:$O${b3b}),"")', 'bajas por 100 usuarios', 'E4b', 'media', 'Referencia de la fila anterior.', '', '10', 'Promedio simple de 9 meses.')
+# Campañas / Medianas
+ins('C', 'todos', 'todos', 'todos', 'gasto', 'Campañas (familia × canal) con señal "apagar o rehacer": volumen alto y respuesta debajo del mínimo', f'={MDc("apagar o rehacer")}', 'campañas', 'E1', 'alta', 'Son las que gastan y no responden. Campañas, columna señal.', 'Plan_accion: Apagar, Rehacer o re-segmentar, Limpiar base de WhatsApp o Confirmar apagado según el caso.', '22', DEF)
+ins('C', 'todos', 'todos', 'todos', 'gasto', 'Ahorro al mes si se apagan las campañas con señal apagar que siguen activas (sin cobranza ni transaccional)', f'={MDc("ahorro_mxn_mes")}', 'MXN al mes', 'E1', 'alta', 'Techo: supone que se apaga todo lo que tiene esa señal, no solo lo que no mueve.', 'Ejecutar el Plan_accion en orden: Apagar primero, luego Limpiar y Rehacer.', '22', DEF + ' ' + SUPC)
+ins('C', 'todos', 'todos', 'todos', 'gasto', 'Ahorro del periodo (9 meses) con la misma regla', f'={MDc("ahorro_mxn_periodo")}', 'MXN', 'E1', 'alta', 'Lo que ya se gastó en campañas sin respuesta en estos nueve meses.', '', '22', DEF + ' ' + SUPC)
+ins('C', 'todos', 'todos', 'todos', 'fatiga', 'Mensajes al mes que dejan de salir si se apagan esas campañas', f'={MDc("msgs_mes_ahorrados")}', 'mensajes al mes', 'E1', 'alta', 'Menos presión sobre los usuarios además del ahorro.', '', '10', DEF)
+for a in ACCIONES:
+    ins('C', 'todos', 'todos', 'todos', 'oportunidad' if a in ('Proteger', 'Escalar') else ('calidad de dato' if a == 'No tocar' else 'gasto'), f'Campañas con acción "{a}"', f'={MDc(a)}', 'campañas', 'E1', 'alta', 'Conteo de filas de Campañas con esa acción (todos los canales).', 'Ver Plan_accion P1 (qué implica y cómo se ejecuta) y P4 (lista por campaña con ticket e ids).', '22', DEF)
+for k, cnl in enumerate(C4):
+    ins('C', 'todos', 'todos', cnl, 'fatiga', f'Mediana de respuesta de las campañas de {cnl}', f'=Medianas!${MEDL["mediana respuesta"]}${k + 2}', '% respuesta', 'E1', 'media', 'La mitad de las campañas del canal responde menos que esto. Es el corte de "revisar".', 'Comparar contra el mínimo (Parámetros) y el benchmark (Estándares).', {'email': '3', 'push notification': '5', 'whatsapp': '7', 'in-app': '8'}[cnl], 'Mediana sobre familias con respuesta medible.')
+ins('C', 'todos', 'todos', 'email', 'fatiga', 'Campañas de email con bajas por mil entregados en o arriba del umbral de Parámetros B26', f'=COUNTIFS({cr("canal")},"email",{cr("bajas_por_mil")},">="&{PB["bajas_mil"]})', 'campañas', 'E1', 'alta', 'Cada una está desgastando la lista.', 'Bajar frecuencia y revisar audiencia (Plan_accion, acción Bajar frecuencia).', '4', DEF)
+ins('C', 'todos', 'todos', 'email', 'segmentación', 'Campañas de email activas que mandan a 1 M o más de usuarios por envío', f'=Estándares!${EL["valor actual (todos los equipos)"]}${EST_ROWS[21]}', 'campañas', 'E1', 'media', 'Envíos masivos sin prueba previa: un solo email malo puede explicar un tercio de las bajas de usuarios nuevos (lente L).', 'Prueba al 10 % y grupo de control antes de cada envío masivo (estándar 21).', '21', 'usuarios_aprox promedio por mes.')
+# E
+ins('E', 'todos', 'todos', 'email', 'fatiga', 'Usuarios únicos que se dieron de baja de email en el periodo (CIFRA B)', f'=E_DespuesBaja!$B${E_TOTAL_ROW}', 'usuarios', 'E5', 'alta', 'Cada usuario una vez. Comparado con los usuarios con email (Parámetros B8) es la tasa de baja del periodo.', 'Lente L dice cuándo y con qué email se van.', '4', '')
+ins('E', 'todos', 'todos', 'email', 'segmentación', 'Emails enviados a usuarios ya dados de baja (todos los tipos)', f'=E_DespuesBaja!$C${E_TIPO_ROW["no está en E1"] + 1}', 'emails', 'E5b', 'alta', 'Incluye transaccional y cobranza, que sí pueden llegar.', 'La fila siguiente aísla lo promocional, que es lo grave.', '19', 'Tipo del Catálogo por nombre y equipo.')
+ins('E', 'todos', 'todos', 'email', 'segmentación', 'Emails PROMOCIONALES enviados a usuarios ya dados de baja', f'=E_DespuesBaja!$C${E_TIPO_ROW["promocional o lifecycle"]}', 'emails', 'E5b', 'alta', 'No debería pasar: el usuario pidió no recibir. Riesgo de spam y de queja.', 'Filtro de suscripción en cada paso de email de cada Canvas promocional (lista en E_DespuesBaja E4).', '19', 'Tipo del Catálogo por nombre y equipo.')
+ins('E', 'todos', 'todos', 'email', 'segmentación', '% de los dados de baja que recibió al menos un email después de la baja', f'=E_DespuesBaja!$M${E_TOTAL_ROW}', '% usuarios', 'E5', 'alta', 'Los meses finales tienen poco tiempo de observación: la cifra real es mayor.', 'Ver estándar 20.', '20', '')
+ins('E', 'todos', 'todos', 'email', 'fatiga', '% de los dados de baja que se vuelve a dar de baja después', f'=E_DespuesBaja!$S${E_TOTAL_ROW}', '% usuarios', 'E5', 'alta', 'Segunda baja = siguieron recibiendo y volvieron a decir que no.', '', '19', '')
+for k, eq in enumerate(EQUIPOS):
+    ins('E', eq, 'todos', 'email', 'segmentación', f'Emails promocionales a usuarios ya dados de baja de familias del equipo {eq}', f'=E_DespuesBaja!$E${e3a + k}', 'emails', 'E5b', 'alta', 'Parte del total de la fila "Emails PROMOCIONALES a dados de baja" que corresponde a este equipo.', 'Revisar el filtro de suscripción en los Canvas del equipo (E_DespuesBaja E4, columna equipo).', '19', 'Equipo del Catálogo con el mapeo de Parámetros.')
+# F
+ins('F', 'todos', 'todos', 'todos', 'fatiga', '% de usuario-días con 3 o más familias distintas el mismo día', '=IFERROR((F_Solape!$B$8+F_Solape!$B$9+F_Solape!$B$10)/F_Solape!$B$11,"")', '% usuario-días', 'E6a', 'alta', 'Varios equipos le hablan al mismo usuario el mismo día.', 'Exclusión mutua entre Canvas promocionales (24 h); calendario único.', '12', 'Grano usuario-día.')
+ins('F', 'todos', 'todos', 'email', 'fatiga', 'Bajas por mil usuario-días cuando el usuario recibe 1 sola familia en el día', '=F_Solape!$L$6', 'bajas por mil usuario-días', 'E6a', 'alta', 'Referencia para la fila siguiente.', '', '12', '')
+ins('F', 'todos', 'todos', 'email', 'fatiga', 'Bajas por mil usuario-días cuando el usuario recibe 3 o más familias en el día', '=IFERROR((F_Solape!$K$8+F_Solape!$K$9+F_Solape!$K$10)/(F_Solape!$B$8+F_Solape!$B$9+F_Solape!$B$10)*1000,"")', 'bajas por mil usuario-días', 'E6a', 'alta', 'Si es mayor que la fila anterior, el solapamiento produce bajas por sí mismo.', 'Máximo 2 familias por usuario por día (estándar 12).', '12', '')
+ins('F', 'todos', 'todos', 'todos', 'fatiga', f'Usuario-días en que chocan los dos equipos que más coinciden ({par_sum.index[0]}, entre los 1,000 pares más grandes)', f'=F_Solape!$C${f3a}', 'usuario-días', 'E6b', 'media', 'Quién choca con quién: la etiqueta del par sale de los datos actuales (F_Solape F3, primera fila).', 'Acordar calendario y exclusión mutua entre esos dos equipos primero; los 30 pares de familias concretos están en F_Solape F4.', '12', 'E6b trae solo los 1,000 pares más grandes (LIMIT).')
+ins('F', 'todos', 'todos', 'todos', 'fatiga', 'Usuario-días de pares donde AMBAS familias son promocionales (suma de los 1,000 pares)', f'=SUM(F_Solape!$F${f3a}:$F${f3b})', 'usuario-días', 'E6b', 'media', 'Choques evitables: dos promociones el mismo día al mismo usuario.', 'Regla de exclusión mutua promocional + promocional.', '12', 'Top 1,000 pares, no el total.')
+# G
+GROW = lambda a, cnl, base, keys, ncan=4: base + keys.index(a) * ncan + (C4.index(cnl) if ncan == 4 else ['email', 'push notification'].index(cnl))
+fria = 'fríos: dormants, inactivos, rezagados, never active'; activos = 'clientes activos y recurrentes'
+ins('G', 'todos', 'todos', 'email', 'segmentación', 'Respuesta de email a audiencias frías (dormants, inactivos, rezagados, never active), por el nombre de la comunicación', f'=G_Practicas!$G${GROW(fria, "email", g1a, AUDS)}', '% clic', 'E1', 'media', 'Las audiencias frías responden menos: mandarles lo mismo que a los activos no las despierta.', 'Reactivación acotada (3 toques en 30 días) con gancho distinto; después, frecuencia mínima.', '17', 'Audiencia por palabras clave en el nombre.')
+ins('G', 'todos', 'todos', 'email', 'oportunidad', 'Respuesta de email a clientes activos y recurrentes, por el nombre de la comunicación', f'=G_Practicas!$G${GROW(activos, "email", g1a, AUDS)}', '% clic', 'E1', 'media', 'Referencia de la fila anterior: la misma empresa, otra audiencia.', 'Concentrar el presupuesto de WhatsApp y email en quien responde.', '3', 'Audiencia por palabras clave en el nombre.')
+ins('G', 'todos', 'todos', 'email', 'segmentación', 'Respuesta de email cuando el envío va a 1 M o más de usuarios (banda de tamaño), sin cobranza ni transaccional', f'=G_Practicas!$G${GROW(TAM[3], "email", g3a, TAM, 2)}', '% clic', 'E1', 'media', 'Los envíos masivos responden menos que los chicos (comparar con la fila siguiente).', 'Segmentar en vez de mandar a toda la base; prueba al 10 % (estándar 21).', '21', 'Tamaño = usuarios_aprox del mes.')
+ins('G', 'todos', 'todos', 'email', 'oportunidad', 'Respuesta de email cuando el envío va a menos de 10 mil usuarios, sin cobranza ni transaccional', f'=G_Practicas!$G${GROW(TAM[0], "email", g3a, TAM, 2)}', '% clic', 'E1', 'media', 'Referencia de la fila anterior.', '', '21', '')
+ins('G', 'todos', 'todos', 'email', 'fatiga', 'Respuesta de email con 1 toque de la misma comunicación por usuario en el mes', f'=G_Practicas!$G${GROW("1", "email", g4a, TOQ, 2)}', '% clic', 'E1', 'media', 'Referencia para la fila siguiente.', '', '9', 'Filas de E1 con más de 1,000 usuarios.')
+ins('G', 'todos', 'todos', 'email', 'fatiga', 'Respuesta de email con 5 o más toques de la misma comunicación por usuario en el mes', f'=G_Practicas!$G${GROW("5+", "email", g4a, TOQ, 2)}', '% clic', 'E1', 'media', 'Repetir la misma pieza 5 veces no multiplica la respuesta y sí las bajas (columna H de G4).', 'Frequency cap de 2 toques por comunicación al mes (estándar 9).', '9', 'Filas de E1 con más de 1,000 usuarios.')
+ins('G', 'todos', 'todos', 'email', 'fatiga', 'Bajas por mil entregados con 5 o más toques de la misma comunicación en el mes', f'=G_Practicas!$H${GROW("5+", "email", g4a, TOQ, 2)}', 'bajas por mil', 'E1', 'media', 'Comparar con la banda 1 toque (G4, columna H).', '', '9', '')
+ins('G', 'todos', 'todos', 'todos', 'fatiga', 'Usuarios que recibieron 321 o más mensajes en los nueve meses', f'=G_Practicas!$B${g5a + 8}', 'usuarios', 'E3', 'alta', 'Más de un mensaje al día durante nueve meses.', 'Frequency cap global.', '10', 'E3 cuenta filas por usuario.')
+ins('G', 'todos', 'todos', 'email', 'fatiga', 'Eventos de baja de email por 100 usuarios en la banda 321+ mensajes', f'=G_Practicas!$F${g5a + 8}', 'bajas por 100 usuarios', 'E3', 'alta', 'Comparar con la banda 01-05 (fila siguiente): fatiga.', '', '10', '')
+ins('G', 'todos', 'todos', 'email', 'fatiga', 'Eventos de baja de email por 100 usuarios en la banda 01-05 mensajes', f'=G_Practicas!$F${g5a + 1}', 'bajas por 100 usuarios', 'E3', 'alta', 'Referencia de la fila anterior.', '', '10', '')
+# H
+ins('H', 'todos', 'todos', 'todos', 'segmentación', 'Envíos promocionales a etapas bloqueadas (Blacklist + CC Freeze + REUS/ARCO)', '=H_Etapas!$B$12', 'envíos', 'E7a', 'alta', 'Usuarios que no deben recibir promoción la están recibiendo. Riesgo legal (ARCO) y de marca.', 'Excluir las tres etapas en el segmento de entrada de todo Canvas promocional (H_Etapas H4 lista las 40 familias).', '18', 'Etapa al momento del envío; E7a cubre 37 % de los envíos.')
+ins('H', 'todos', 'todos', 'todos', 'segmentación', 'Envíos promocionales a usuarios en Blacklist', '=H_Etapas!$B$6', 'envíos', 'E7a', 'alta', '', 'Excluir etapa 3.Blacklist.', '18', '')
+ins('H', 'todos', 'todos', 'todos', 'segmentación', 'Envíos promocionales a usuarios con tarjeta Kpay congelada (CC Freeze)', '=H_Etapas!$B$7', 'envíos', 'E7a', 'alta', 'Es el bloque más grande de las etapas bloqueadas.', 'Excluir etapa 4.Kpay CC Freeze.', '18', '')
+ins('H', 'todos', 'todos', 'todos', 'segmentación', 'Envíos promocionales a usuarios con solicitud REUS o ARCO', '=H_Etapas!$B$8', 'envíos', 'E7a', 'alta', 'Riesgo legal directo: el usuario pidió no ser contactado o ejerció derechos ARCO.', 'Excluir etapa 6.Reus or Arco y auditar los Canvas que lo hicieron.', '18', '')
+ins('H', 'todos', 'todos', 'todos', 'segmentación', 'Envíos promocionales a prospectos sin crédito (7.Prospects)', '=H_Etapas!$B$9', 'envíos', 'E7a', 'alta', 'No es error, pero vale preguntar si la oferta aplica a quien no tiene crédito.', 'Revisar Campañas, columna pct_prospectos: familias con más del 60 % a prospectos.', '', '')
+for k, eq in enumerate(EQUIPOS):
+    ins('H', eq, 'todos', 'todos', 'segmentación', f'Envíos promocionales a etapas bloqueadas de familias del equipo {eq}', f'=H_Etapas!$B${h3a + k}', 'envíos', 'E7a', 'alta', 'Parte del total de etapas bloqueadas que corresponde a este equipo.', 'Excluir las tres etapas en los Canvas del equipo.', '18', 'Equipo del Catálogo con el mapeo de Parámetros.')
+# J
+J7 = lambda lab: f'J_Canal!$B${J7RES[lab]}'; J9 = lambda lab: f'J_Canal!$B${J9RES[lab]}'
+ins('J', 'todos', 'todos', 'todos', 'segmentación', '% de usuarios que NUNCA respondieron a nada en nueve meses (ni clic en email, ni apertura de push, ni lectura de WhatsApp, ni clic in-app)', '=' + J7('% que no respondieron a nada'), '% usuarios', 'E7b', 'alta', 'Casi tres de cada cuatro usuarios reciben mensajes y no reaccionan a ninguno. Es un techo: abrir un email sin clic no cuenta y las confirmaciones de lectura de WhatsApp apagadas cuentan como no leído.', 'Reactivación acotada (3 toques en 30 días); después, frecuencia mínima o fuera del promocional.', '17', 'Ver definición explícita en Léeme.')
+ins('J', 'todos', 'todos', 'todos', 'segmentación', 'Usuarios que nunca respondieron a nada (enero a septiembre)', '=' + J7('Usuarios que no respondieron a nada ("ninguno")'), 'usuarios', 'E7b', 'alta', '', '', '17', '')
+ins('J', 'todos', 'todos', 'todos', 'gasto', 'Mensajes enviados a quienes nunca respondieron a nada', '=' + J7('Mensajes a quienes no respondieron a nada'), 'mensajes', 'E7b', 'alta', 'Volumen que no produjo ni una respuesta.', '', '16', '')
+ins('J', 'todos', 'todos', 'todos', 'gasto', 'Costo de los mensajes a quienes nunca respondieron a nada', '=' + J7('Costo de los mensajes a quienes no respondieron a nada'), 'MXN', 'E7b', 'alta', 'Dinero en email y WhatsApp a usuarios que no reaccionaron en nueve meses.', 'Es el ahorro máximo de una regla de canal preferido + reactivación acotada.', '16', SUPC)
+ins('J', 'todos', 'todos', 'todos', 'gasto', 'Mensajes a canal mudo (canal al que ese usuario nunca respondió, incluye a los que no responden a nada)', '=' + J7('Mensajes a canal mudo (incluye a los que no responden a nada)'), 'mensajes', 'E7b', 'alta', 'Para ese usuario el canal no existe.', 'Regla de canal preferido en Braze (estándar 16).', '16', '')
+ins('J', 'todos', 'todos', 'todos', 'gasto', 'Costo de los mensajes a canal mudo', '=' + J7('Costo de mensajes a canal mudo'), 'MXN', 'E7b', 'alta', '', '', '16', SUPC)
+ins('J', 'todos', 'todos', 'email', 'segmentación', 'Emails a usuarios que SÍ responden a otro canal pero nunca hicieron clic en un email', '=' + J7('Emails a usuarios que responden a otro canal pero nunca hicieron clic en un email'), 'emails', 'E7b', 'alta', 'El usuario sí reacciona (push, in-app, WhatsApp) pero no por email: ese email es ruido pagado.', 'Para esos usuarios, mover lo promocional al canal que sí responde.', '16', '')
+ins('J', 'todos', 'todos', 'whatsapp', 'gasto', 'WhatsApp entregados a usuarios que responden a otro canal pero nunca leyeron un WhatsApp', '=' + J7('WhatsApp entregados a usuarios que responden a otro canal pero nunca leyeron un WhatsApp'), 'mensajes', 'E7b', 'alta', 'Cuesta 1 MXN cada uno y el usuario ya mostró por dónde sí responde.', 'Sacar de WhatsApp a quien responde por otro canal y nunca leyó uno.', '16', '')
+ins('J', 'todos', 'todos', 'whatsapp', 'calidad de dato', '% de entrega de WhatsApp entre quienes nunca respondieron a nada', '=' + J7('% entrega WhatsApp entre quienes no respondieron a nada'), '% entregados / enviados', 'E7b', 'alta', 'Comparar con la fila siguiente: la base muda también es la base que no recibe.', 'Limpieza de WhatsApp empezando por este grupo.', '6', '')
+ins('J', 'todos', 'todos', 'whatsapp', 'calidad de dato', '% de entrega de WhatsApp entre quienes sí leen WhatsApp', '=' + J7('% entrega WhatsApp entre quienes sí leen WhatsApp'), '% entregados / enviados', 'E7b', 'alta', 'Referencia de la fila anterior.', '', '6', '')
+ins('J', 'todos', 'todos', 'todos', 'segmentación', '% de usuarios que no respondieron a nada en julio a septiembre (ventana de 90 días)', '=' + J9('% que no respondieron a nada'), '% usuarios', 'E9b', 'alta', 'Más bajo que en nueve meses porque la ventana es más corta, pero sigue siendo la mayoría.', 'Misma regla de reactivación acotada.', '17', 'Solo respuestas y mensajes del trimestre.')
+ins('J', 'todos', 'todos', 'todos', 'gasto', 'Costo de los mensajes a quienes no respondieron a nada en julio a septiembre', '=' + J9('Costo de los mensajes a quienes no respondieron a nada'), 'MXN', 'E9b', 'alta', 'Gasto trimestral en usuarios mudos: dividido entre 3 es el ahorro mensual posible.', '', '16', SUPC)
+# K
+for k, cnl in enumerate(C4):
+    ins('K', 'todos', 'todos', cnl, 'oportunidad', f'Familias de {cnl} con muestra suficiente donde abrir casi no cambia la conversión (lift menor a Parámetros B16)', f'=K_Abren!$G${6 + k}', 'familias', 'E7c', 'baja', 'En esas familias quien abre convierte casi igual que quien no abre: el mensaje no mueve. Si además la respuesta está debajo del mínimo, se apaga.', 'Lista en K_Abren K2; acción en Plan_accion.', '23', 'Conversión de referencia (is_converted); solo compara grupos dentro de la misma campaña.')
+    ins('K', 'todos', 'todos', cnl, 'oportunidad', f'Mediana del lift (convierten los que abren / los que no abren) en {cnl}, familias con muestra', f'=K_Abren!$F${6 + k}', 'veces', 'E7c', 'baja', 'Cuánto más convierte quien abre que quien no abre, en la familia típica del canal.', '', '23', 'Conversión de referencia.')
+# L
+ins('L', 'todos', 'todos', 'email', 'fatiga', 'Usuarios nuevos (primer email dentro del periodo) que se dieron de baja', '=L_Baja!$C$6', 'usuarios', 'E8', 'alta', 'Cohorte limpia: días y emails exactos.', '', '13', '')
+ins('L', 'todos', 'todos', 'email', 'fatiga', 'Días hasta la baja, mediana, usuarios nuevos', '=L_Baja!$E$6', 'días', 'E8', 'media', 'Se van en el primer mes.', 'Rediseñar la secuencia de bienvenida (estándar 13).', '13', 'PERCENTILE_APPROX.')
+ins('L', 'todos', 'todos', 'email', 'fatiga', 'Emails recibidos antes de la baja, mediana, usuarios nuevos', '=L_Baja!$H$6', 'emails', 'E8', 'media', 'Pocos emails bastan para la baja: el problema está en los primeros envíos.', 'Estándar 14.', '14', 'PERCENTILE_APPROX.')
+ins('L', 'todos', 'todos', 'email', 'fatiga', '% de usuarios nuevos que se dan de baja el mismo día del primer email', f'=L_Baja!$D${l2a}', '% de la cohorte 1', 'E8', 'alta', 'El primer email ya los echó.', 'Confirmación de interés antes del primer promocional (estándar 15).', '15', '')
+ins('L', 'todos', 'todos', 'email', 'segmentación', f'Familia que llegó el día de la baja a más usuarios nuevos (la primera fila de L_Baja L4: {fdb.clave.iloc[0]})', f'=L_Baja!$A${l4a}', 'familia', 'E8', 'alta', 'Un solo email explica una parte muy grande de las bajas de usuarios nuevos (fila siguiente).', 'Revisar esa pieza: audiencia, asunto, frecuencia; ticket e ids en L_Baja L4 y Catálogo.', '21', 'Clave estática: si se recarga E8, la primera fila puede cambiar.')
+ins('L', 'todos', 'todos', 'email', 'segmentación', 'Usuarios nuevos que recibieron esa familia el día de su baja', f'=L_Baja!$F${l4a}', 'usuarios', 'E8', 'alta', '', '', '21', 'Doble conteo si recibió dos familias ese día.')
+ins('L', 'todos', 'todos', 'email', 'segmentación', '% de las bajas de usuarios nuevos que explica esa familia', f'=L_Baja!$G${l4a}', '% de la cohorte 1', 'E8', 'alta', 'Casi un tercio de las bajas de nuevos con un solo email.', 'Prueba al 10 % y grupo de control antes de envíos masivos (estándar 21).', '21', '')
+for k, eq in enumerate(EQUIPOS):
+    ins('L', eq, 'todos', 'email', 'fatiga', f'Bajas de usuarios nuevos cuya familia del día de la baja es del equipo {eq}', f'=L_Baja!$C${l5a + k}', 'usuarios (con doble conteo)', 'E8', 'media', 'Qué equipo mandó el email que llegó el día de la baja. Pasa de 100 % por el doble conteo.', 'Revisar en L_Baja L4 las familias del equipo con más usuarios.', '13', 'Equipo del Catálogo; doble conteo.')
+# M
+for k, cnl in enumerate(C4):
+    ins('M', 'todos', 'todos', cnl, 'oportunidad', f'Mediana del lift a 7 días en {cnl} (familias con muestra)', f'=M_Ventanas!$D${m2a + k}', 'veces', 'E9a', 'baja', 'Comparar con la fila siguiente: si el lift cae al alargar la ventana, la conversión iba a pasar de todos modos.', '', '23', 'Conversión de referencia.')
+    ins('M', 'todos', 'todos', cnl, 'oportunidad', f'Mediana del lift a fin de periodo en {cnl} (familias con muestra)', f'=M_Ventanas!$G${m2a + k}', 'veces', 'E9a', 'baja', 'Ver fila anterior.', 'Grupo de control del 10 % para medir incrementalidad real (estándar 23).', '23', 'Conversión de referencia.')
+# por producto y por equipo (Campañas)
+prods = catp['prod'].value_counts().index.tolist()
+for pr in prods:
+    ins('C', 'todos', pr, 'todos', 'gasto', f'Costo del periodo de las campañas del producto {pr}', f'=SUMIFS({cr("costo_mxn")},{cr("producto")},"{pr}")', 'MXN', 'E1', 'alta', 'Producto = product_service de la primera fila de la familia en E1.', '', '', SUPC)
+    ins('C', 'todos', pr, 'todos', 'gasto', f'Ahorro al mes posible en campañas del producto {pr}', f'=SUMIFS({cr("ahorro_mxn_mes")},{cr("producto")},"{pr}")', 'MXN al mes', 'E1', 'alta', '', 'Plan_accion P4 filtrando por producto.', '22', DEF)
+    ins('C', 'todos', pr, 'email', 'fatiga', f'Respuesta de email de las campañas del producto {pr} (clics / entregados)', f'=IFERROR(SUMIFS({cr("email_click")},{cr("producto")},"{pr}")/SUMIFS({cr("email_delivery")},{cr("producto")},"{pr}"),"")', '% clic', 'E1', 'alta', '', '', '3', '')
+for eq in EQUIPOS:
+    q = f'"{eq}"'
+    ins('C', eq, 'todos', 'todos', 'gasto', f'Costo del periodo de las campañas del equipo {eq}', f'={cs("costo_mxn", q)}', 'MXN', 'E1', 'alta', 'Suma de costo_mxn de Campañas del equipo.', '', '', SUPC)
+    ins('C', eq, 'todos', 'todos', 'gasto', f'Costo al mes de las campañas activas del equipo {eq}', f'={cs("costo_mxn_mes", q)}', 'MXN al mes', 'E1', 'alta', 'Costo del periodo / meses con envíos, solo campañas activas en septiembre.', '', '', SUPC)
+    ins('C', eq, 'todos', 'todos', 'gasto', f'Ahorro al mes posible en campañas del equipo {eq}', f'={cs("ahorro_mxn_mes", q)}', 'MXN al mes', 'E1', 'alta', 'Campañas del equipo con señal apagar, activas, sin cobranza ni transaccional.', 'Plan_accion P3 y P4 (filtrar por equipo) o Vista_equipo.', '22', DEF)
+    ins('C', eq, 'todos', 'todos', 'gasto', f'Campañas del equipo {eq} con señal "apagar o rehacer"', f'=COUNTIFS({cr("equipo")},{q},{cr("señal")},"apagar o rehacer")', 'campañas', 'E1', 'alta', '', 'Vista_equipo, bloque V2.', '22', DEF)
+    ins('C', eq, 'todos', 'email', 'fatiga', f'Respuesta de email del equipo {eq} (clics / entregados)', f'={ratio("email_click", "email_delivery")(q)}', '% clic', 'E1', 'alta', 'Comparar con el estándar 3 y con la mediana del canal.', '', '3', '')
+    ins('C', eq, 'todos', 'email', 'fatiga', f'Bajas por mil emails entregados del equipo {eq}', f'={ratio("email_unsubscribe", "email_delivery", "*1000")(q)}', 'bajas por mil', 'E1', 'alta', '', 'Bajar frecuencia si pasa de Parámetros B26.', '4', '')
+    ins('C', eq, 'todos', 'push notification', 'fatiga', f'Apertura de push del equipo {eq}', f'={ratio("pn_open", "pn_send")(q)}', '% apertura', 'E1', 'alta', '', '', '5', '')
+    ins('C', eq, 'todos', 'whatsapp', 'calidad de dato', f'Entrega de WhatsApp del equipo {eq}', f'={ratio("whatsapp_delivery", "whatsapp_send")(q)}', '% entregados / enviados', 'E1', 'alta', '', 'Limpiar base de WhatsApp si está debajo de 90 %.', '6', '')
+    ins('C', eq, 'todos', 'whatsapp', 'fatiga', f'Lectura de WhatsApp del equipo {eq}', f'={ratio("whatsapp_read", "whatsapp_delivery")(q)}', '% leídos / entregados', 'E1', 'alta', '', '', '7', '')
+INS_ROW0 = 6
+for j, c in enumerate(INS_COLS, start=1): ws.cell(5, j, c).font = bold
+ws.cell(4, 1, 'Filtra por lente, equipo, producto, canal o tipo de hallazgo. equipo = "todos" aplica a toda la operación.').font = bold
+for k, (lente, equipo, producto, canal, tipo, hallazgo, f, unidad, fuente, conf, signif, hacer, est, sup) in enumerate(INS):
+    r = INS_ROW0 + k
+    vals = [k + 1, lente, equipo, producto, canal, tipo, hallazgo, f, unidad, fuente, conf, signif, hacer, est, f[1:] if f.startswith('=') else f, sup]
+    for j, v in enumerate(vals, start=1):
+        cc = ws.cell(r, j, v)
+        if j == 8:
+            u = unidad.lower()
+            cc.number_format = '0.00%' if u.startswith('%') else ('#,##0.00' if ('por mil' in u or 'veces' in u or 'por 100' in u) else '#,##0')
+        if j in (7, 12, 13, 16): cc.alignment = wrap
+INS_LAST = INS_ROW0 + len(INS) - 1
+ws.freeze_panes = 'H6'; ws.auto_filter.ref = f'A5:{IL[INS_COLS[-1]]}{INS_LAST}'
+for c, w in {'#': 4, 'lente': 6, 'equipo': 14, 'producto': 12, 'canal': 14, 'tipo de hallazgo': 14, 'hallazgo': 60, 'cifra (fórmula viva)': 14, 'unidad': 18, 'fuente (E)': 8, 'confianza': 9, 'qué significa': 50, 'qué hacer': 50, 'estándar relacionado (#)': 10, 'celda de origen': 40, 'supuestos': 40}.items():
+    ws.column_dimensions[IL[c]].width = w
+
+# ---------- Plan_accion
+ws = WS['Plan_accion']
+header(ws, 'Plan de acción: resumen por acción y lista por campaña con ticket e ids (todo fórmula sobre Campañas)',
+       'Campañas (accion_tipo, envíos, costo, ahorro), Parámetros.',
+       'La acción de cada campaña sale de la regla de Campañas (ver Léeme, "accion_tipo"). Ahorro = costo de las campañas con señal "apagar o rehacer" que no son cobranza ni transaccional; es un techo (supone apagar todo lo que tiene esa señal). Mensajes y costo "al mes" = solo campañas activas en septiembre, costo del periodo / meses con envíos. Si cambias Parámetros, las acciones y este plan se recalculan.')
+PA_H = ['acción', 'qué implica', 'campañas (filas familia × canal)', 'de las cuales activas en septiembre', 'familias distintas', 'envíos del periodo', 'mensajes al mes (activas)', 'costo del periodo (MXN)', 'costo al mes (MXN, activas)', 'ahorro al mes si se ejecuta (MXN)', 'ahorro del periodo (MXN)', 'mensajes al mes que dejan de salir', 'orden sugerido', 'cómo se ejecuta en Braze']
+IMPL = {'Apagar': ('Volumen alto, respuesta debajo del mínimo del canal y el mensaje no mueve a quien lo abre. Se detiene.', 1, 'Pausar o archivar el Canvas o la campaña; quitar de los calendarios recurrentes.'),
+        'Confirmar apagado': ('Señal apagar pero ya no envía en septiembre: confirmar que esté archivado para que no reviva.', 2, 'Buscar por communication_id en Braze y archivar si sigue activo o programado.'),
+        'Limpiar base de WhatsApp': ('WhatsApp con respuesta baja o mucho no entregado. Antes de apagar, quitar números que no reciben o no leen.', 3, 'Segmento de exclusión: números con 3 no-entregas seguidas o sin lectura en 90 días; verificar número antes de entrar al Canvas.'),
+        'Bajar frecuencia': ('Bajas altas o 4.5 o más toques por usuario al mes.', 4, 'Frequency cap en el Canvas (máximo 2 por usuario al mes); re-entrada bloqueada 30 días.'),
+        'Rehacer o re-segmentar': ('Respuesta baja pero el mensaje sí mueve a quien lo abre, o audiencia de 1 M o más por envío: cambiar audiencia, asunto u oferta.', 5, 'Nuevo segmento (quitar fríos y canal mudo), prueba al 10 % con grupo de control, luego envío completo.'),
+        'Escalar': ('Respuesta alta con poco volumen: ampliar audiencia por pasos midiendo respuesta.', 6, 'Duplicar la audiencia en cada corte semanal mientras la respuesta se mantenga arriba de la mediana del canal.'),
+        'Proteger': ('Respuesta alta con volumen: no tocar sin prueba; documentar qué hace bien.', 7, 'Congelar cambios sin prueba A/B; documentar audiencia, gancho y frecuencia como referencia para los demás.'),
+        'Seguir igual': ('Sin señal: se mantiene y se revisa en el siguiente corte.', 8, 'Nada por ahora.'),
+        'No tocar': ('Cobranza y transaccional u operativa: fuera del alcance de esta auditoría.', 9, 'Nada. Solo revisar que no lleven contenido promocional.')}
+def pa_row(rr, crit_a, extra=''):
+    c_ = f'{cr("accion_tipo")},{crit_a}{extra}'
+    return [f'=COUNTIFS({c_})', f'=COUNTIFS({c_},{cr("activo_sep")},1)', (None if LO_TEST else f'=IFERROR(COUNTA(UNIQUE(FILTER({cr("familia")},{cr("accion_tipo")}={crit_a}{extra}))),0)'),
+            f'=SUMIFS({cr("envíos")},{c_})', f'=SUMIFS({cr("envíos_mes_prom")},{c_},{cr("activo_sep")},1)', f'=SUMIFS({cr("costo_mxn")},{c_})', f'=SUMIFS({cr("costo_mxn_mes")},{c_})', f'=SUMIFS({cr("ahorro_mxn_mes")},{c_})', f'=SUMIFS({cr("ahorro_mxn_periodo")},{c_})', f'=SUMIFS({cr("msgs_mes_ahorrados")},{c_})']
+rows = []
+for k, a in enumerate(ACCIONES):
+    rr = 6 + k
+    r_ = pa_row(rr, f'$A{rr}')
+    rows.append([a, IMPL[a][0]] + r_ + [IMPL[a][1], IMPL[a][2]])
+rr = 6 + len(ACCIONES)
+rows.append(['total', ''] + [f'=SUM({L(j)}6:{L(j)}{rr - 1})' for j in range(3, 13)] + ['', ''])
+LPA, pa1a, pa1b = table(ws, 4, 'P1. Resumen por acción', PA_H, rows, int_cols=tuple(PA_H[2:12]))
+PA_TOT = pa1b
+r0 = pa1b + 3
+tot_ = lambda col: f'{LPA[col]}{PA_TOT}'
+res = [('Mensajes al mes hoy (campañas activas en septiembre, promedio por mes)', f'=SUMIFS({cr("envíos_mes_prom")},{cr("activo_sep")},1)', '#,##0'),
+       ('Costo al mes hoy (campañas activas en septiembre)', f'=SUM({cr("costo_mxn_mes")})', '#,##0'),
+       ('Ahorro al mes si se ejecuta el plan (Apagar, Limpiar, Rehacer y Confirmar sobre las que tienen señal apagar)', f'={tot_("ahorro al mes si se ejecuta (MXN)")}', '#,##0'),
+       ('% del costo al mes que se ahorra', f'=IFERROR({tot_("ahorro al mes si se ejecuta (MXN)")}/SUM({cr("costo_mxn_mes")}),"")', '0.00%'),
+       ('Mensajes al mes que dejan de salir', f'={tot_("mensajes al mes que dejan de salir")}', '#,##0'),
+       ('% de los mensajes al mes que dejan de salir', f'=IFERROR({tot_("mensajes al mes que dejan de salir")}/SUMIFS({cr("envíos_mes_prom")},{cr("activo_sep")},1),"")', '0.00%'),
+       ('Campañas a tocar (Apagar + Confirmar apagado + Limpiar base de WhatsApp + Bajar frecuencia + Rehacer o re-segmentar)', '=' + '+'.join(f'{LPA["campañas (filas familia × canal)"]}{6 + ACCIONES.index(a)}' for a in ['Apagar', 'Confirmar apagado', 'Limpiar base de WhatsApp', 'Bajar frecuencia', 'Rehacer o re-segmentar']), '#,##0'),
+       ('Campañas a cuidar (Proteger + Escalar)', '=' + '+'.join(f'{LPA["campañas (filas familia × canal)"]}{6 + ACCIONES.index(a)}' for a in ['Proteger', 'Escalar']), '#,##0')]
+ws.cell(r0, 1, 'P2. Totales').font = bold
+PA_RES = {}
+for k, (lab, f, fmt) in enumerate(res):
+    ws.cell(r0 + 1 + k, 1, lab); cc = ws.cell(r0 + 1 + k, 2, f); cc.number_format = fmt; PA_RES[lab] = r0 + 1 + k
+r0 = r0 + len(res) + 3
+PA3_H = ['equipo', 'acción', 'campañas (filas familia × canal)', 'de las cuales activas en septiembre', 'envíos del periodo', 'mensajes al mes (activas)', 'costo del periodo (MXN)', 'costo al mes (MXN, activas)', 'ahorro al mes si se ejecuta (MXN)', 'ahorro del periodo (MXN)', 'mensajes al mes que dejan de salir']
+rows = []
+for eq in EQUIPOS:
+    for a in ACCIONES:
+        rr = r0 + 2 + len(rows); c_ = f'{cr("accion_tipo")},$B{rr},{cr("equipo")},$A{rr}'
+        rows.append([eq, a, f'=COUNTIFS({c_})', f'=COUNTIFS({c_},{cr("activo_sep")},1)', f'=SUMIFS({cr("envíos")},{c_})', f'=SUMIFS({cr("envíos_mes_prom")},{c_},{cr("activo_sep")},1)', f'=SUMIFS({cr("costo_mxn")},{c_})', f'=SUMIFS({cr("costo_mxn_mes")},{c_})', f'=SUMIFS({cr("ahorro_mxn_mes")},{c_})', f'=SUMIFS({cr("ahorro_mxn_periodo")},{c_})', f'=SUMIFS({cr("msgs_mes_ahorrados")},{c_})'])
+LPA3, pa3a, pa3b = table(ws, r0, 'P3. Por equipo × acción (equipo del Catálogo con el mapeo de Parámetros)', PA3_H, rows, int_cols=tuple(PA3_H[2:]))
+r0 = pa3b + 3
+P4_COLS = ['accion_tipo', 'familia', 'canal', 'equipo', 'producto', 'ticket', 'communication_ids', 'tipo', 'envíos', 'envíos_mes_prom', 'activo_sep', 'costo_mxn', 'costo_mxn_mes', 'ahorro_mxn_mes', 'respuesta', 'mínimo del canal', 'mediana respuesta del canal', 'bajas_por_mil', 'mueve', 'por_qué (resumen)']
+spill(ws, r0, 'P4. Lista por campaña con ticket e ids, en orden de ahorro al mes y envíos (acciones distintas de Seguir igual y No tocar; lista viva)', P4_COLS,
+      f'=SORT(FILTER({{{",".join(cr(c) for c in P4_COLS)}}},({cr("accion_tipo")}<>"Seguir igual")*({cr("accion_tipo")}<>"No tocar")),{P4_COLS.index("ahorro_mxn_mes") + 1},FALSE,{P4_COLS.index("envíos") + 1},FALSE)',
+      'Para una campaña: buscar el ticket o el communication_id en Braze, aplicar "cómo se ejecuta" de P1 según la acción, y leer por_qué para el contexto.')
+PA_P4 = r0
+ws.freeze_panes = 'A6'
+for col, w in zip('ABCDEFGHIJKLMN', (26, 60, 14, 14, 14, 14, 14, 16, 16, 16, 16, 16, 10, 70)): ws.column_dimensions[col].width = w
+for rr_ in range(6, 6 + len(ACCIONES)):
+    ws.cell(rr_, 2).alignment = wrap; ws.cell(rr_, 14).alignment = wrap
+
+# ---------- Vista_equipo
+ws = WS['Vista_equipo']
+ws.cell(1, 1, 'Vista por equipo: elige el equipo en B2 y toda la pestaña se recalcula').font = bold
+ws.cell(2, 1, 'Equipo seleccionado (elige en B2):').font = bold
+ws.cell(2, 2, EQUIPOS[0]).font = bold
+dv2 = DataValidation(type='list', formula1='"' + ','.join(EQUIPOS) + '"', allow_blank=False); ws.add_data_validation(dv2); dv2.add('B2')
+ws.cell(3, 1, 'Equipo = equipo del Catálogo (mapeo de Parámetros). Mensajes y costo de Campañas (sumas de E1); emails a dados de baja de E_DespuesBaja E3; etapas bloqueadas de H_Etapas H3; bajas de nuevos de L_Baja L5. Lo que viene por usuario (E4b, E6a, E7b, E9b, E8 resumen) no se parte por equipo. Las listas (V5 a V8) son fórmulas SORT y FILTER vivas. Costos con la base de cobro de Parámetros B6.').alignment = wrap
+S_ = '$B$2'
+def tsum(col): return f'SUMIFS({cr(col)},{cr("equipo")},{S_})'
+V1 = [('Familias en el Catálogo', f'=COUNTIF({catc("equipo")},{S_})', '#,##0', 'COUNTIF en Catálogo, columna equipo'),
+      ('Campañas (filas familia × canal con envíos)', f'=COUNTIF({cr("equipo")},{S_})', '#,##0', 'COUNTIF en Campañas, columna equipo'),
+      ('Campañas activas en septiembre', f'=COUNTIFS({cr("equipo")},{S_},{cr("activo_sep")},1)', '#,##0', ''),
+      ('Envíos del periodo', f'={tsum("envíos")}', '#,##0', 'SUMIFS envíos'),
+      ('% de los envíos de toda la operación', f'=IFERROR({tsum("envíos")}/SUM({cr("envíos")}),"")', '0.00%', ''),
+      ('Mensajes al mes (campañas activas en septiembre, promedio por mes)', f'=SUMIFS({cr("envíos_mes_prom")},{cr("equipo")},{S_},{cr("activo_sep")},1)', '#,##0', 'SUMIFS envíos_mes_prom con activo_sep = 1'),
+      ('Costo del periodo (MXN)', f'={tsum("costo_mxn")}', '#,##0', 'SUMIFS costo_mxn'),
+      ('% del costo de toda la operación', f'=IFERROR({tsum("costo_mxn")}/SUM({cr("costo_mxn")}),"")', '0.00%', ''),
+      ('Costo al mes (MXN, campañas activas)', f'={tsum("costo_mxn_mes")}', '#,##0', 'SUMIFS costo_mxn_mes'),
+      ('Ahorro al mes si se ejecuta el plan (MXN)', f'={tsum("ahorro_mxn_mes")}', '#,##0', 'SUMIFS ahorro_mxn_mes'),
+      ('% del costo al mes del equipo que se ahorra', f'=IFERROR({tsum("ahorro_mxn_mes")}/{tsum("costo_mxn_mes")},"")', '0.00%', ''),
+      ('Ahorro del periodo (MXN)', f'={tsum("ahorro_mxn_periodo")}', '#,##0', ''),
+      ('Mensajes al mes que dejan de salir', f'={tsum("msgs_mes_ahorrados")}', '#,##0', ''),
+      ('WhatsApp no entregados (mensajes)', f'={tsum("wa_no_entregados")}', '#,##0', ''),
+      ('Respuesta email (clics / entregados)', f'=IFERROR({tsum("email_click")}/{tsum("email_delivery")},"")', '0.00%', 'Estándar 3'),
+      ('Bajas por mil emails entregados', f'=IFERROR({tsum("email_unsubscribe")}/{tsum("email_delivery")}*1000,"")', '#,##0.00', 'Estándar 4'),
+      ('Apertura push (aperturas / enviados)', f'=IFERROR({tsum("pn_open")}/{tsum("pn_send")},"")', '0.00%', 'Estándar 5'),
+      ('Entrega WhatsApp (entregados / enviados)', f'=IFERROR({tsum("whatsapp_delivery")}/{tsum("whatsapp_send")},"")', '0.00%', 'Estándar 6'),
+      ('Lectura WhatsApp (leídos / entregados)', f'=IFERROR({tsum("whatsapp_read")}/{tsum("whatsapp_delivery")},"")', '0.00%', 'Estándar 7'),
+      ('Clic in-app (clics / impresiones)', f'=IFERROR({tsum("in_app_click")}/{tsum("in_app_impression")},"")', '0.00%', 'Estándar 8'),
+      ('Emails promocionales a usuarios ya dados de baja (E5b)', '=' + e3_eq(S_), '#,##0', 'E_DespuesBaja E3, columna E'),
+      ('Envíos promocionales a etapas bloqueadas (E7a)', '=' + h3_eq(S_), '#,##0', 'H_Etapas H3, columna B'),
+      ('Bajas de usuarios nuevos cuya familia del día de la baja es del equipo (E8, con doble conteo)', '=' + l5_eq(S_), '#,##0', 'L_Baja L5, cohorte 1')]
+ws.cell(5, 1, 'V1. Resumen del equipo').font = bold
+ws.cell(5, 2, 'valor').font = bold; ws.cell(5, 3, 'cómo se calcula').font = bold
+VE_RES = {}
+for k, (lab, f, fmt, how) in enumerate(V1):
+    rr = 6 + k; ws.cell(rr, 1, lab); cc = ws.cell(rr, 2, f); cc.number_format = fmt; ws.cell(rr, 3, how); VE_RES[lab] = rr
+r0 = 6 + len(V1) + 2
+VE_H2 = ['acción', 'campañas', 'activas en septiembre', 'envíos del periodo', 'mensajes al mes (activas)', 'costo del periodo (MXN)', 'costo al mes (MXN, activas)', 'ahorro al mes (MXN)', 'qué implica']
+rows = []
+for k, a in enumerate(ACCIONES):
+    rr = r0 + 2 + k; c_ = f'{cr("accion_tipo")},$A{rr},{cr("equipo")},{S_}'
+    rows.append([a, f'=COUNTIFS({c_})', f'=COUNTIFS({c_},{cr("activo_sep")},1)', f'=SUMIFS({cr("envíos")},{c_})', f'=SUMIFS({cr("envíos_mes_prom")},{c_},{cr("activo_sep")},1)', f'=SUMIFS({cr("costo_mxn")},{c_})', f'=SUMIFS({cr("costo_mxn_mes")},{c_})', f'=SUMIFS({cr("ahorro_mxn_mes")},{c_})', IMPL[a][0]])
+rr = r0 + 2 + len(ACCIONES)
+rows.append(['total'] + [f'=SUM({L(j)}{r0 + 2}:{L(j)}{rr - 1})' for j in range(2, 9)] + [''])
+LV2, v2a, v2b = table(ws, r0, 'V2. Campañas del equipo por acción', VE_H2, rows, int_cols=tuple(VE_H2[1:8]))
+r0 = v2b + 3
+VE_H3 = ['canal', 'campañas', 'envíos del periodo', 'respuesta del equipo en el canal', 'mediana del canal (todos los equipos)', 'mínimo del canal (Parámetros)', 'costo del periodo (MXN)', 'ahorro al mes (MXN)']
+rows = []
+for k, cnl in enumerate(CANALES):
+    rr = r0 + 2 + k; c_ = f'{cr("canal")},$A{rr},{cr("equipo")},{S_}'
+    rows.append([cnl, f'=COUNTIFS({c_})', f'=SUMIFS({cr("envíos")},{c_})', f'=IFERROR(SUMIFS({cr(NUMR[cnl])},{c_})/SUMIFS({cr(DEN[cnl])},{c_}),"")' if cnl != 'banner' else '', '=' + med_lookup(f'$A{rr}', 'mediana respuesta'), '=' + min_formula(f'$A{rr}'), f'=SUMIFS({cr("costo_mxn")},{c_})', f'=SUMIFS({cr("ahorro_mxn_mes")},{c_})'])
+LV3, v3a, v3b = table(ws, r0, 'V3. Por canal', VE_H3, rows, pct_cols=('respuesta del equipo en el canal', 'mediana del canal (todos los equipos)', 'mínimo del canal (Parámetros)'), int_cols=('campañas', 'envíos del periodo', 'costo del periodo (MXN)', 'ahorro al mes (MXN)'))
+r0 = v3b + 3
+VE_H4 = ['#', 'métrica u operación', 'valor del equipo', 'estándar propuesto', 'sentido', 'estado del equipo', 'valor de toda la operación', 'qué hacer']
+rows = []
+for k in range(len(EST)):
+    er = EST_ROW0 + k; rr = r0 + 2 + k
+    rows.append([f'=Estándares!$A${er}', f'=Estándares!${EL["métrica u operación"]}${er}', f'=INDEX(Estándares!${EL[EQUIPOS[0]]}${er}:${EL[EQUIPOS[-1]]}${er},1,MATCH({S_},Estándares!${EL[EQUIPOS[0]]}$5:${EL[EQUIPOS[-1]]}$5,0))', f'=Estándares!${EL["estándar propuesto (editable)"]}${er}', f'=Estándares!${EL["sentido"]}${er}',
+                 f'=IF(NOT(ISNUMBER(C{rr})),IF(C{rr}="{NOEQ}","{NOEQ}","sin medir"),IF(NOT(ISNUMBER(D{rr})),"sin estándar",IF(E{rr}="mayor es mejor",IF(C{rr}>=D{rr},"cumple","debajo"),IF(C{rr}<=D{rr},"cumple","debajo"))))', f'=Estándares!${EL["valor actual (todos los equipos)"]}${er}', f'=Estándares!${EL["qué hacer"]}${er}'])
+LV4, v4a, v4b = table(ws, r0, 'V4. Estándares: dónde está el equipo (valor del equipo contra el estándar de la pestaña Estándares)', VE_H4, rows)
+for k, st in enumerate(EST):
+    fmt = st[12]; rr = v4a + k
+    for col in ('C', 'D', 'G'): ws[f'{col}{rr}'].number_format = {'pct': '0.00%', 'num2': '#,##0.00', 'num0': '#,##0', 'txt': 'General'}[fmt]
+ws.cell(v4b + 1, 1, 'Debajo del estándar (cuántas filas)'); ws.cell(v4b + 1, 2, f'=COUNTIF(F{v4a}:F{v4b},"debajo")')
+r0 = v4b + 4
+TOP_COLS = ['familia', 'canal', 'ticket', 'communication_ids', 'tipo', 'envíos', 'envíos_mes_prom', 'activo_sep', 'costo_mxn', 'respuesta', 'mínimo del canal', 'bajas_por_mil', 'señal', 'accion_tipo']
+topf = lambda extra, sortcol: f'=IFERROR(ARRAY_CONSTRAIN(SORT(FILTER({{{",".join(cr(c) for c in TOP_COLS)}}},{cr("equipo")}={S_}{extra}),{TOP_COLS.index(sortcol) + 1},FALSE),10,{len(TOP_COLS)}),"sin campañas")'
+spill(ws, r0, 'V5. Las 10 campañas del equipo con más envíos', TOP_COLS, topf('', 'envíos'), 'Lista viva (SORT y FILTER sobre Campañas).')
+VE_V5 = r0; r0 += 14
+spill(ws, r0, 'V6. Los 10 emails del equipo con más bajas por mil entregados (al menos 1,000 entregados)', TOP_COLS, topf(f',{cr("canal")}="email",{cr("email_delivery")}>=1000,ISNUMBER({cr("bajas_por_mil")})', 'bajas_por_mil'), 'Lista viva.')
+VE_V6 = r0; r0 += 14
+INS_SEL = INS_COLS[:14]
+spill(ws, r0, 'V7. Insights del equipo (los del equipo y los que aplican a todos)', INS_SEL,
+      f'=FILTER(Insights!$A${INS_ROW0}:${IL[INS_SEL[-1]]}${INS_LAST},(Insights!${IL["equipo"]}${INS_ROW0}:${IL["equipo"]}${INS_LAST}={S_})+(Insights!${IL["equipo"]}${INS_ROW0}:${IL["equipo"]}${INS_LAST}="todos"))',
+      'Lista viva sobre Insights. Las cifras son las mismas celdas vivas.')
+VE_V7 = r0; r0 += len(INS) - 5 * len(EQUIPOS) + 2 * 5 + 6  # globales + los del equipo + margen
+spill(ws, r0, 'V8. Todas las campañas del equipo con acción (sin Seguir igual ni No tocar), por ahorro al mes y envíos', P4_COLS,
+      f'=IFERROR(SORT(FILTER({{{",".join(cr(c) for c in P4_COLS)}}},{cr("equipo")}={S_},({cr("accion_tipo")}<>"Seguir igual")*({cr("accion_tipo")}<>"No tocar")),{P4_COLS.index("ahorro_mxn_mes") + 1},FALSE,{P4_COLS.index("envíos") + 1},FALSE),"sin campañas con acción")',
+      'Lista viva. Igual que Plan_accion P4 filtrada por el equipo.')
+VE_V8 = r0
+ws.freeze_panes = 'A4'
+for col, w in zip('ABCDEFGHIJKLMN', (58, 18, 40, 16, 16, 16, 16, 16, 16, 16, 14, 14, 14, 14)): ws.column_dimensions[col].width = w
+ws.cell(3, 1).alignment = wrap
+
+
+# =====================================================================================
 # ---------- Verificación
 # =====================================================================================
 e4a = E['E4a']; mes4 = e4a.grano == 'mes'
@@ -1262,6 +1658,65 @@ add('M_Ventanas', 'M_Ventanas', 'M1 filas con muestra_ok = 1', f'=SUM(M_Ventanas
 for k, cnl in enumerate(C4):
     add('M_Ventanas', 'M_Ventanas', f'M2 {cnl}: familias con muestra', f'=M_Ventanas!$C${m2a + k}', int(e9m[e9g.index.get_level_values("canal") == cnl].sum()), DEF)
 
+# ----- bloque 6: pestañas nuevas de v3 (Estándares, Insights, Plan_accion, Vista_equipo)
+VE_NOTE = 'Válido con Marketing en Vista_equipo!B2 (el default). Si cambias el selector, esta fila sale REVISAR a propósito.'
+def est_v(n, col='valor actual (todos los equipos)'): return f'=Estándares!${EL[col]}${EST_ROWS[n]}'
+mk = camp.equipo == 'Marketing'
+add('Estándares', 'Estándares', 'Filas de estándares', f'=COUNTA(Estándares!$A${EST_ROW0}:$A${EST_LAST})', len(EST), 'Una por métrica u operación.')
+add('Estándares', 'Estándares', 'Valores actuales con error de fórmula', f'=SUMPRODUCT(--ISERROR(Estándares!${EL["valor actual (todos los equipos)"]}${EST_ROW0}:${EL["valor actual (todos los equipos)"]}${EST_LAST}))', 0, 'Debe ser 0.')
+add('Estándares', 'Estándares', 'Filas con estado "sin medir"', f'=COUNTIF(Estándares!${EL["estado"]}${EST_ROW0}:${EL["estado"]}${EST_LAST},"sin medir")', sum(1 for st in EST if st[12] == 'txt'), 'Solo grupos de control (no medible con estas extracciones).')
+add('Estándares', 'Estándares', '#1 entrega de email (entregados / enviados)', est_v(1), float(camp.ed.sum() / camp.es.sum()), 'Sumas de Campañas.', 1e-6)
+add('Estándares', 'Estándares', '#3 clic de email (clics / entregados)', est_v(3), float(camp.ec.sum() / camp.ed.sum()), '', 1e-6)
+add('Estándares', 'Estándares', '#3 clic de email, columna Marketing', est_v(3, 'Marketing'), float(camp.ec[mk].sum() / camp.ed[mk].sum()), 'Equipo del Catálogo con el mapeo de Parámetros.', 1e-6)
+add('Estándares', 'Estándares', '#4 bajas por mil emails entregados', est_v(4), float(camp.eu.sum() / camp.ed.sum() * 1000), '', 1e-6)
+add('Estándares', 'Estándares', '#5 apertura de push (aperturas / enviados)', est_v(5), float(camp.po.sum() / camp.ps.sum()), '', 1e-6)
+add('Estándares', 'Estándares', '#6 entrega de WhatsApp (entregados / enviados)', est_v(6), float(camp.wd.sum() / camp.ws.sum()), '', 1e-6)
+add('Estándares', 'Estándares', '#7 lectura de WhatsApp (leídos / entregados)', est_v(7), float(camp.wr.sum() / camp.wd.sum()), '', 1e-6)
+add('Estándares', 'Estándares', '#8 clic de in-app (clics / impresiones)', est_v(8), float(camp.ic.sum() / camp.ii.sum()), '', 1e-6)
+add('Estándares', 'Estándares', '#9 toques por usuario al mes (envíos / usuarios_aprox)', est_v(9), float(camp.env.sum() / camp.usr.sum()), 'usuarios_aprox sumado sobre filas con envíos.', 1e-6)
+add('Estándares', 'Estándares', '#18 envíos promocionales a etapas bloqueadas (igual a H_Etapas B12)', est_v(18), float(a7.env[a7.etapa.isin(BLOQUEADAS) & (a7.tipo == 'promocional o lifecycle')].sum()), 'Tipo del Catálogo.')
+add('Estándares', 'Estándares', '#19 emails promocionales a dados de baja (igual a E_DespuesBaja E2)', est_v(19), float(e5bt.em[e5bt.tipo == 'promocional o lifecycle'].sum()), 'Tipo del Catálogo.')
+add('Estándares', 'Estándares', '#19 emails promocionales a dados de baja, columna Marketing', est_v(19, 'Marketing'), float(e5bt.em[e5bt.equipo == 'Marketing'].sum()), 'E_DespuesBaja E3: todos los tipos del equipo (igual que la fila E3 de Verificación).')
+add('Estándares', 'Estándares', '#21 campañas de email activas con 1 M o más usuarios por envío', est_v(21), int(((camp.canal == 'email') & (camp.activo == 1) & (camp.usr_mean >= 1e6)).sum()), DEF)
+add('Estándares', 'Estándares', '#22 campañas con señal apagar o rehacer, activas, sin No tocar', est_v(22), int(((camp.senal == 'apagar o rehacer') & (camp.activo == 1) & (camp.accion != 'No tocar')).sum()), DEF)
+add('Estándares', 'Estándares', '#24 % de familias con ticket', est_v(24), float(1 - catp.ticket.fillna('').eq('').sum() / NC), 'ticket_number de Braze o regex sobre el nombre.', 1e-6)
+add('Insights', 'Insights', 'Filas de insights', f'=COUNTA(Insights!$A${INS_ROW0}:$A${INS_LAST})', len(INS), '')
+add('Insights', 'Insights', 'Cifras con error de fórmula', f'=SUMPRODUCT(--ISERROR(Insights!${IL["cifra (fórmula viva)"]}${INS_ROW0}:${IL["cifra (fórmula viva)"]}${INS_LAST}))', 0, 'Debe ser 0. Una cifra vacía ("") no es error: la métrica no aplica.')
+add('Insights', 'Insights', 'Insights que aplican a todos los equipos (equipo = "todos")', f'=COUNTIF(Insights!${IL["equipo"]}${INS_ROW0}:${IL["equipo"]}${INS_LAST},"todos")', sum(1 for x in INS if x[1] == 'todos'), '')
+for eq in EQUIPOS:
+    add('Insights', 'Insights', f'Insights del equipo {eq}', f'=COUNTIF(Insights!${IL["equipo"]}${INS_ROW0}:${IL["equipo"]}${INS_LAST},"{eq}")', sum(1 for x in INS if x[1] == eq), '')
+cpa = lambda col: f'=Plan_accion!${LPA[col]}${PA_TOT}'
+add('Plan_accion', 'Plan_accion', 'P1 total campañas (suma de las 9 acciones)', cpa('campañas (filas familia × canal)'), NCAMP, 'Toda campaña tiene exactamente una acción.')
+add('Plan_accion', 'Plan_accion', 'P1 total activas en septiembre', cpa('de las cuales activas en septiembre'), int(camp.activo.sum()), '')
+add('Plan_accion', 'Plan_accion', 'P1 total envíos del periodo (igual a E1)', cpa('envíos del periodo'), float(camp.env.sum()), '')
+add('Plan_accion', 'Plan_accion', 'P1 total mensajes al mes (activas)', cpa('mensajes al mes (activas)'), float(camp.msgs_mes.sum()), 'envíos_mes_prom de las activas en septiembre.')
+add('Plan_accion', 'Plan_accion', 'P1 total costo del periodo (base seleccionada)', cpa('costo del periodo (MXN)'), base_if(float(camp.costo_ent.sum()), float(camp.costo_env.sum())), '')
+add('Plan_accion', 'Plan_accion', 'P1 total costo al mes (activas, base seleccionada)', cpa('costo al mes (MXN, activas)'), base_if(float(camp.costo_mes_ent.sum()), float(camp.costo_mes_env.sum())), '')
+add('Plan_accion', 'Plan_accion', 'P1 total ahorro al mes (base seleccionada)', cpa('ahorro al mes si se ejecuta (MXN)'), base_if(float(camp.ahorro_mes_ent.sum()), float(camp.ahorro_mes_env.sum())), DEF)
+add('Plan_accion', 'Plan_accion', 'P1 total mensajes al mes que dejan de salir', cpa('mensajes al mes que dejan de salir'), float(camp.msgs_ahorro.sum()), DEF)
+for a in ACCIONES:
+    add('Plan_accion', 'Plan_accion', f'P1 campañas con acción {a}', f'=Plan_accion!${LPA["campañas (filas familia × canal)"]}${6 + ACCIONES.index(a)}', int((camp.accion == a).sum()), DEF)
+add('Plan_accion', 'Plan_accion', 'P2 mensajes al mes hoy', f'=Plan_accion!$B${PA_RES["Mensajes al mes hoy (campañas activas en septiembre, promedio por mes)"]}', float(camp.msgs_mes.sum()), '')
+add('Plan_accion', 'Plan_accion', 'P2 ahorro al mes si se ejecuta el plan', f'=Plan_accion!$B${PA_RES["Ahorro al mes si se ejecuta el plan (Apagar, Limpiar, Rehacer y Confirmar sobre las que tienen señal apagar)"]}', base_if(float(camp.ahorro_mes_ent.sum()), float(camp.ahorro_mes_env.sum())), DEF)
+add('Plan_accion', 'Plan_accion', 'P3 suma de campañas (5 equipos × 9 acciones)', f'=SUM(Plan_accion!${LPA3["campañas (filas familia × canal)"]}${pa3a}:${LPA3["campañas (filas familia × canal)"]}${pa3b})', NCAMP, '')
+add('Plan_accion', 'Plan_accion', 'P3 suma de ahorro al mes (base seleccionada)', f'=SUM(Plan_accion!${LPA3["ahorro al mes si se ejecuta (MXN)"]}${pa3a}:${LPA3["ahorro al mes si se ejecuta (MXN)"]}${pa3b})', base_if(float(camp.ahorro_mes_ent.sum()), float(camp.ahorro_mes_env.sum())), DEF)
+for eq in EQUIPOS:
+    add('Plan_accion', 'Plan_accion', f'P3 {eq}: campañas (suma de sus 9 acciones)', f'=SUMIFS(Plan_accion!${LPA3["campañas (filas familia × canal)"]}${pa3a}:${LPA3["campañas (filas familia × canal)"]}${pa3b},Plan_accion!$A${pa3a}:$A${pa3b},"{eq}")', int((camp.equipo == eq).sum()), '')
+vv = lambda lab: f'=Vista_equipo!$B${VE_RES[lab]}'
+add('Vista_equipo', 'Vista_equipo', 'V1 familias en el Catálogo (Marketing)', vv('Familias en el Catálogo'), int((catp.equipo == 'Marketing').sum()), VE_NOTE)
+add('Vista_equipo', 'Vista_equipo', 'V1 campañas (Marketing)', vv('Campañas (filas familia × canal con envíos)'), int(mk.sum()), VE_NOTE)
+add('Vista_equipo', 'Vista_equipo', 'V1 envíos del periodo (Marketing)', vv('Envíos del periodo'), float(camp.env[mk].sum()), VE_NOTE)
+add('Vista_equipo', 'Vista_equipo', 'V1 costo del periodo (Marketing, base seleccionada)', vv('Costo del periodo (MXN)'), base_if(float(camp.costo_ent[mk].sum()), float(camp.costo_env[mk].sum())), VE_NOTE)
+add('Vista_equipo', 'Vista_equipo', 'V1 ahorro al mes (Marketing, base seleccionada)', vv('Ahorro al mes si se ejecuta el plan (MXN)'), base_if(float(camp.ahorro_mes_ent[mk].sum()), float(camp.ahorro_mes_env[mk].sum())), VE_NOTE + ' ' + DEF)
+add('Vista_equipo', 'Vista_equipo', 'V1 respuesta email (Marketing)', vv('Respuesta email (clics / entregados)'), float(camp.ec[mk].sum() / camp.ed[mk].sum()), VE_NOTE, 1e-6)
+add('Vista_equipo', 'Vista_equipo', 'V1 emails promocionales a dados de baja (Marketing)', vv('Emails promocionales a usuarios ya dados de baja (E5b)'), float(e5bt.em[e5bt.equipo == 'Marketing'].sum()), VE_NOTE + ' Igual que E_DespuesBaja E3.')
+add('Vista_equipo', 'Vista_equipo', 'V2 total campañas del equipo (Marketing)', f'=Vista_equipo!$B${v2b}', int(mk.sum()), VE_NOTE)
+add('Vista_equipo', 'Vista_equipo', 'V2 total ahorro al mes del equipo (Marketing, base seleccionada)', f'=Vista_equipo!${LV2["ahorro al mes (MXN)"]}${v2b}', base_if(float(camp.ahorro_mes_ent[mk].sum()), float(camp.ahorro_mes_env[mk].sum())), VE_NOTE + ' ' + DEF)
+add('Vista_equipo', 'Vista_equipo', 'V3 suma de campañas por canal (Marketing)', f'=SUM(Vista_equipo!$B${v3a}:$B${v3b})', int(mk.sum()), VE_NOTE)
+add('Vista_equipo', 'Vista_equipo', 'V4 filas de estándares', f'=COUNTA(Vista_equipo!$A${v4a}:$A${v4b})', len(EST), '')
+add('Vista_equipo', 'Vista_equipo', 'V4 valor del equipo, estándar #3 clic de email (Marketing)', f'=Vista_equipo!$C${v4a + 2}', float(camp.ec[mk].sum() / camp.ed[mk].sum()), VE_NOTE, 1e-6)
+add('Vista_equipo', 'Vista_equipo', 'V4 valores del equipo con error de fórmula', f'=SUMPRODUCT(--ISERROR(Vista_equipo!$C${v4a}:$C${v4b}))', 0, 'Debe ser 0.')
+
 # ----- escribir Verificación
 H = ['#', 'grupo', 'pestaña', 'qué se comprueba', 'valor en este Sheets (fórmula)', 'valor esperado (pandas sobre el CSV)', 'diferencia (debe ser 0)', 'estado', 'qué significa la cifra y por qué puede diferir', 'tolerancia']
 for j, h in enumerate(H, start=1): ver.cell(1, j, h).font = bold
@@ -1285,10 +1740,11 @@ for col, w in zip('ABCDEFGHIJ', (5, 14, 16, 62, 22, 22, 16, 18, 110, 10)): ver.c
 # ---------- Léeme
 # =====================================================================================
 R = []
-R.append(['Auditoría Braze Kueski: datos, catálogo, campañas y cálculo por lente (archivo ' + VERSION + ', etapa 2 de 3)'])
+R.append(['Auditoría Braze Kueski: datos, catálogo, campañas y cálculo por lente (archivo ' + VERSION + ', etapa 3 de 3)'])
+R.append(['Cambios v3 respecto a v2b', 'Cuatro pestañas nuevas al frente: Vista_equipo (selector en B2), Insights (una sola pestaña con filtros), Plan_accion y Estándares. En Campañas se agregó la columna costo_mxn_mes (costo del periodo / meses con envíos, solo activas en septiembre) para los totales "al mes" del plan. Parámetros!B20 (clic mínimo in-app para quitar la pieza) ahora se usa como estándar #8. Verificación creció con un bloque para las pestañas nuevas. Nada de v2b cambió de lugar ni de fórmula.'])
 R.append(['Cambios v2b respecto a v2', 'En Google Sheets v2 salían 9 filas en REVISAR (181, 293, 294, 296, 297, 347 a 350). Causa única: la comunicación sin nombre de E1 llega como null en E7a, E7c, E9a y E8 y no cruzaba. Ahora se llama "(sin nombre)" en todas las pestañas y su ticket queda vacío. Nada más cambió.'])
 R.append([''])
-R.append(['Qué es este archivo', 'Todo lo de v1 (queries E1 a E9b pegadas completas, Parámetros, Verificación) más el Catálogo de familias, la tabla de Campañas (una fila por familia × canal con señal y acción), Medianas por canal y una pestaña de cálculo por lente (B, E, F, G, H, J, K, L, M). Todo es fórmula sobre las pestañas crudas: si cambias un parámetro o pegas datos nuevos, todo se recalcula. En v3 se agregan Estándares y buenas prácticas, Insights con filtros, Plan de acción y Vista_equipo.'])
+R.append(['Qué es este archivo', 'Todo lo de v1 (queries E1 a E9b pegadas completas, Parámetros, Verificación) más el Catálogo de familias, la tabla de Campañas (una fila por familia × canal con señal y acción), Medianas por canal y una pestaña de cálculo por lente (B, E, F, G, H, J, K, L, M). Todo es fórmula sobre las pestañas crudas: si cambias un parámetro o pegas datos nuevos, todo se recalcula. Más las cuatro pestañas de v3: Estándares y buenas prácticas, Insights con filtros, Plan de acción y Vista_equipo con selector.'])
 R.append(['Fuente', 'analytics_engineering_production.xplore._dim_braze_users_and_communications (Databricks). Sin identificadores de usuario: todo viene agregado.'])
 R.append(['Periodo', '1 de enero a 30 de septiembre de 2026 (event_date). E9b solo julio a septiembre.'])
 R.append(['Fecha de corrida', f'Queries corridas por el usuario el {HOY}. E3, E4b, E7b y E9b en versión 2 (agregan WhatsApp entregado y quitan costo).'])
@@ -1299,8 +1755,12 @@ R.append([''])
 R.append(['Orden de las pestañas y qué hay en cada una', ''])
 for name, desc in [
  ('Parámetros', 'Costos, base de cobro de WhatsApp (B6), mínimos de respuesta por canal (B11 a B14), reglas de acción (B15 a B19, B26 a B37) y la tabla de mapeo de equipos (abajo). Todo lo editable está aquí; ninguna pestaña de cálculo tiene números escritos a mano salvo las claves de familia en Catálogo, Campañas, L4 y M1.'),
- ('Catálogo', 'Una fila por familia (1,829): ticket, communication_ids, versiones, equipo original y equipo mapeado, producto, canales, tipo, audiencia y gancho por nombre, primer y último mes, activa_sep, meses, envíos, costo, si está en E2 y las acciones que le salieron en Campañas. Para buscar una campaña por ticket (B0211, T2728) o por UUID, filtra aquí.'),
- ('Campañas', 'Una fila por familia × canal con envíos > 0 (1,917). Métricas crudas sumadas de E1, tasas, costo, señal (volumen × respuesta contra mínimo y mediana), motivo, ahorro si se apaga, bloque E7c (abren vs no abren, lift, mueve), E5b (emails a dados de baja), E7a (etapas), otros canales que sí responden, accion_tipo y por_qué en texto. Filtra por equipo, canal, señal o acción.'),
+ ('Vista_equipo', 'Elige el equipo en B2 (lista: Marketing, Product Growth, Sales, Collections, Others) y toda la pestaña se recalcula: V1 resumen (familias, campañas, envíos, costo, ahorro, respuesta por canal, E5b, E7a, E8), V2 campañas del equipo por acción, V3 por canal contra la mediana y el mínimo, V4 cada estándar con el valor del equipo y si cumple, V5 las 10 campañas con más envíos, V6 los 10 emails con más bajas por mil, V7 insights del equipo y los globales, V8 todas las campañas del equipo con acción (ticket e ids incluidos). V5 a V8 son listas vivas con SORT y FILTER.'),
+ ('Insights', 'Una fila por hallazgo con filtros: lente (B, C, E, F, G, H, J, K, L, M), equipo ("todos" = toda la operación), producto, canal, tipo de hallazgo, hallazgo en una frase, cifra (fórmula viva que apunta a la celda de la lente ya verificada), unidad, fuente E, confianza, qué significa, qué hacer, estándar relacionado (# de Estándares) y celda de origen (la fórmula escrita como texto, para ir a verla).'),
+ ('Plan_accion', 'P1 resumen por acción (campañas, activas, familias, envíos, mensajes al mes, costo, ahorro, orden sugerido y cómo se ejecuta en Braze); P2 totales (mensajes y costo al mes hoy, ahorro, % que se ahorra, campañas a tocar y a cuidar); P3 equipo × acción; P4 lista viva por campaña con ticket, communication_ids, por_qué, en orden de ahorro al mes y envíos (sin Seguir igual ni No tocar). Ahorro es un techo: supone apagar todo lo que tiene señal apagar o rehacer.'),
+ ('Estándares', 'Una fila por métrica u operación (24): qué es, cómo se calcula aquí, valor actual (fórmula viva), estándar propuesto (columna G, EDITABLE: benchmark público, Parámetros o propuesta interna; la columna I dice cuál), sentido, brecha, estado (cumple o debajo), qué significa quedarse debajo, qué hacer, fuente E, supuestos, y columnas P a T con el valor por equipo (las métricas por usuario no se parten por equipo). Columna U cuenta cuántos equipos están debajo. Es la base del playbook.'),
+ ('Catálogo', f'Una fila por familia ({NC:,}): ticket, communication_ids, versiones, equipo original y equipo mapeado, producto, canales, tipo, audiencia y gancho por nombre, primer y último mes, activa_sep, meses, envíos, costo, si está en E2 y las acciones que le salieron en Campañas. Para buscar una campaña por ticket (B0211, T2728) o por UUID, filtra aquí.'),
+ ('Campañas', f'Una fila por familia × canal con envíos > 0 ({NCAMP:,}). Métricas crudas sumadas de E1, tasas, costo, señal (volumen × respuesta contra mínimo y mediana), motivo, ahorro si se apaga, bloque E7c (abren vs no abren, lift, mueve), E5b (emails a dados de baja), E7a (etapas), otros canales que sí responden, accion_tipo y por_qué en texto. Filtra por equipo, canal, señal o acción.'),
  ('Medianas', 'Por canal: mediana de envíos (corte de volumen alto), mediana de respuesta, mediana de conv_abren, conteo de familias por señal y por acción, envíos, costo y ahorro. Fila 7 totales.'),
  ('B_Canales', 'Lente B. Mes × canal (envíos, respuesta, bajas, costo), total por canal, concentración de mensajes por usuario (E4b) y entrega de WhatsApp por mes.'),
  ('E_DespuesBaja', 'Lente E. Cohorte de dados de baja por mes y qué email recibieron después (E5); emails a dados de baja por tipo y equipo de la familia (E5b); lista de familias promocionales que lo hicieron.'),
@@ -1368,7 +1828,9 @@ for s_ in ['Costos: 0.05 MXN por email enviado y 1.00 MXN por WhatsApp entregado
     R.append(['', s_])
 R.append([''])
 R.append(['Cómo actualizar si se vuelve a correr una query', 'Pegar el CSV completo en su pestaña desde A1 (encabezado incluido), sin borrar las columnas derivadas; arrastrar las fórmulas derivadas hasta la última fila; si cambió el número de filas, los rangos de todas las fórmulas están acotados a la última fila actual y hay que extenderlos (lo más práctico es regenerar el archivo con scripts/build_sheets_v2.py); anotar aquí el nuevo md5 y la fecha.'])
-R.append(['Qué sigue', 'v3: Estándares y buenas prácticas (qué significa cada métrica, qué estándar y qué hacer), Insights en una sola pestaña con filtros por lente y equipo, Plan de acción y Vista_equipo con selector.'])
+R.append(['Cómo usar Vista_equipo', 'Cambia la celda B2 (lista desplegable). Lo que se recalcula al instante: V1 a V4. Las listas V5 a V8 (SORT y FILTER) tardan unos segundos. Si una lista dice "sin campañas", el equipo no tiene filas con ese criterio. Para compartir con un equipo: duplica la pestaña (clic derecho, Duplicar), fija B2 en su equipo y comparte el archivo; o pon B2 en su equipo y exporta a PDF.'])
+R.append(['Pendiente del usuario', 'Costo fijo de Braze (Parámetros B7 vacío): falta saber a qué corresponden "$7,020 al mes" y "32,474 créditos". Con eso se prorratea por envío o por usuario activo (METRICAS, lente I).'])
+R.append(['Qué sigue', 'Con el Sheets cerrado (v3 ok): 1) Playbook de Braze: nomenclatura (Equipo-Producto-Ticket-Fecha-Nombre-Canal), reglas de frecuencia y solapamiento, canal por usuario, etapas y suscripción excluidas, grupos de control, checklist antes de lanzar y guía para crear algo nuevo (a quién, por qué canal, cuántas veces, con qué gancho, cómo medir). Cada fila de Estándares se vuelve una regla. 2) Deck estilo consultor (business case): gráficas, qué funciona y qué no, insights, findings, costo de no hacer nada y plan con ahorro. Para "cuándo" (hora y día de la semana) hace falta una extracción nueva (E10); con las actuales solo se ve por mes y semana.'])
 for i, row in enumerate(R, start=1):
     for j, v in enumerate(row, start=1):
         c_ = leeme.cell(i, j, v); c_.alignment = Alignment(wrap_text=True, vertical='top')
@@ -1379,12 +1841,12 @@ for col in 'CDEFGH': leeme.column_dimensions[col].width = 30
 # ---------- orden final y guardar
 # MINIFS, MAXIFS y TEXTJOIN necesitan el prefijo _xlfn. en el xlsx (estándar OOXML). Google Sheets lo quita al importar; LibreOffice lo exige.
 _XLFN = re.compile(r'(?<![\w.])(MINIFS|MAXIFS|TEXTJOIN)\(')
-for ws_ in [WS[n_] for n_ in CALC] + [ver]:
+for ws_ in [WS[n_] for n_ in CALC + NEW] + [ver]:
     for row_ in ws_.iter_rows():
         for c_ in row_:
             if isinstance(c_.value, str) and c_.value.startswith('=') and _XLFN.search(c_.value):
                 c_.value = _XLFN.sub(r'_xlfn.\1(', c_.value)
-wb._sheets = [leeme, par] + [WS[n_] for n_ in CALC] + [INFO[t]['ws'] for t, *_ in TABS] + [ver]
+wb._sheets = [leeme, par] + [WS[n_] for n_ in NEW] + [WS[n_] for n_ in CALC] + [INFO[t]['ws'] for t, *_ in TABS] + [ver]
 wb.save(OUT)
 print('guardado', OUT, os.path.getsize(OUT) // 1024, 'KB; filas verificación', len(V), '; familias', NC, '; campañas', NCAMP)
 print('señales', camp.senal.value_counts().to_dict()); print('acciones', camp.accion.value_counts().to_dict())
