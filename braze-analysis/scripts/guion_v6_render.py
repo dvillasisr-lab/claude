@@ -53,7 +53,7 @@ h1{font-size:30px;line-height:1.15;margin:0;letter-spacing:-.02em;text-wrap:bala
 .sl ul li{margin:1px 0}
 .sl .sw{grid-column:2;font-size:13.5px;color:var(--ink)}
 .sl .sw b{color:var(--blue);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;margin-right:6px}
-.sl.close{background:var(--blue-soft);border-radius:6px;padding:10px 10px;border-bottom:0}
+.sl.close{background:var(--blue-soft);border-radius:6px;padding:10px 10px 10px 0;border-bottom:0}
 .open{font-size:14px;color:var(--ink-2)} .open li{margin:4px 0}
 @media (max-width:720px){.scqa,.method{grid-template-columns:1fr 1fr}}
 @media (max-width:440px){.scqa,.method{grid-template-columns:1fr}.sl{grid-template-columns:2.4em minmax(0,1fr)}}
@@ -91,6 +91,10 @@ def main():
             for s in sub["sl"]:
                 n += 1; o.append(slide(n, s))
         o.append("</section>")
+    if m.get("conflictos"):
+        o.append('<section class="box"><h2>Cifras que no cuadran entre fuentes y hay que decidir antes de diseñar</h2><ol class="open">' + "".join(f"<li><b>{E(k)}.</b> {E(v)}</li>" for k, v in m["conflictos"]) + "</ol></section>")
+    if m.get("definiciones"):
+        o.append('<section class="box"><h2>Palabras que la sala puede malinterpretar</h2><ul class="open">' + "".join(f"<li><b>{E(k)}:</b> {E(v)}</li>" for k, v in m["definiciones"]) + "</ul></section>")
     if m.get("abiertas"):
         o.append('<section class="box"><h2>Lo que necesito que decidas</h2><ol class="open">' + "".join(f"<li>{E(x)}</li>" for x in m["abiertas"]) + "</ol></section>")
     o.append("</div>")
