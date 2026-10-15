@@ -1,17 +1,5 @@
 # Playbook de Braze para Kueski
 
-Versión 4. 15 de octubre de 2026. Documento operativo: sugiere qué mandar, a quién, por qué canal, qué día y cuántas veces. Las sugerencias salen de nueve meses de envíos (enero a septiembre de 2026, 3,439 comunicaciones) y de 18 extracciones de Databricks. No son reglas fijas: cada equipo decide y las ajusta con sus propias pruebas. El análisis que las sostiene está aparte, en el Sheets `braze_auditoria_v4` y en `ANALISIS_BRAZE_KUESKI.md`.
-
-## Cómo usar este documento
-
-- **Vas a mandar algo:** sección 0. Busca tu caso en la tabla y te sugiere canal, día, veces, segmento, exclusiones y control. En la versión web el resolvedor lo arma con cinco respuestas.
-- **Vas a crear algo nuevo:** ve a la sección 6 y sigue los 9 pasos. Antes de activar, pasa el checklist de la sección 7.
-- **Quieres mejorar algo que ya existe:** busca la pieza en la pestaña Campañas del Sheets, lee su acción y aplica la sección 8.
-- **Vas a poner orden en Braze:** secciones 1 (nombres), 2 (a quién no se le escribe) y 3 (cuántas veces). Se configuran una vez.
-- **Vas a configurar la cuenta de Braze:** sección 11. Dieciocho ajustes que se hacen una vez y protegen todo lo demás.
-- **Quieres ver el dato detrás de una sugerencia:** no está aquí. Está en el Sheets `braze_auditoria_v4` (pestaña Insights) y en el archivo de análisis.
-- **Solo tienes cinco minutos:** lee las 12 reglas de abajo y el checklist de la sección 7. Con eso ya no rompes nada.
-
 ## Las 12 reglas en una página
 
 1. **Una pieza se llama** `Ticket-Producto-Audiencia-Gancho`. Sin ticket no se activa.
