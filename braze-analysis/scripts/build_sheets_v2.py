@@ -12,7 +12,8 @@ from openpyxl.styles import Font, Alignment
 
 LO_TEST = '--lo-test' in sys.argv
 D = 'data/'
-OUT = 'sheets/braze_auditoria_v2_lo_test.xlsx' if LO_TEST else 'sheets/braze_auditoria_v2.xlsx'
+VERSION = 'v2b'
+OUT = f'sheets/braze_auditoria_{VERSION}_lo_test.xlsx' if LO_TEST else f'sheets/braze_auditoria_{VERSION}.xlsx'
 HOY = '14 de octubre de 2026'
 
 TABS = [
@@ -56,7 +57,7 @@ TICKET_RE = r'-[A-Z]?[BTS]0?\d{3,5}-'
 
 def md5(p): return hashlib.md5(open(p, 'rb').read()).hexdigest()
 def read(path): return pd.read_csv(path, dtype=str, keep_default_na=False)
-def fam_pd(s): return s.str.replace(r'-\d{8}-', '-', regex=True)
+def fam_pd(s): return s.str.replace(r'-\d{8}-', '-', regex=True).replace({'null': '(sin nombre)', '': '(sin nombre)'})
 def clasif(name, rules):
     for lab, rx in rules:
         if re.search(rx, name, re.I): return lab
@@ -126,7 +127,7 @@ ver = wb.create_sheet('Verificación')
 # ---------- pandas base
 e1 = E['E1']
 e1name = e1.communication_name.replace('null', '')
-e1f_raw = fam_pd(e1name.where(e1name != '', None)).fillna('(sin nombre)-' + e1.communication_id)
+e1f_raw = fam_pd(e1name)
 e1mes = e1.mes.str[:7]; e1env = num('E1', 'envios'); e1usr = num('E1', 'usuarios_aprox')
 # Familias que solo cambian en mayúsculas/minúsculas (p. ej. "...-in-App" y "...-in-app") son la misma familia:
 # SUMIFS, COUNTIF y VLOOKUP de Sheets no distinguen mayúsculas, así que la réplica pandas tampoco debe hacerlo.
@@ -136,7 +137,7 @@ def _build_canon():
     g_ = pd.DataFrame(dict(f=e1f_raw, e=e1env)).groupby('f').e.sum().sort_values(ascending=False)
     for f in g_.index: m.setdefault(f.lower(), f)
     for s_ in [fam_pd(E['E2'].nombre), fam_pd(E['E5b'].familia), fam_pd(E['E6b'].familia_a), fam_pd(E['E6b'].familia_b),
-               fam_pd(E['E7a'].familia), fam_pd(E['E7c'].familia), E['E9a'].familia, E['E8'].clave]:
+               fam_pd(E['E7a'].familia), fam_pd(E['E7c'].familia), fam_pd(E['E9a'].familia), fam_pd(E['E8'].clave)]:
         for f in s_.unique(): m.setdefault(f.lower(), f)
     return m
 CANON = _build_canon()
@@ -215,8 +216,8 @@ e1equipo = e1.team.map(MAP)
 # ---------- derivadas en pestañas crudas
 def fam_formula(l, namecol, idcol=None):
     if idcol:
-        return lambda r, l=l: f'=IF({l[namecol]}{r}="","(sin nombre)-"&{l[idcol]}{r},REGEXREPLACE({l[namecol]}{r},"-\\d{{8}}-","-"))'
-    return lambda r, l=l: f'=REGEXREPLACE({l[namecol]}{r},"-\\d{{8}}-","-")'
+        pass  # el id ya no forma parte del nombre: hay una sola comunicación sin nombre y así cruza igual en todas las pestañas
+    return lambda r, l=l: f'=IF({l[namecol]}{r}="","(sin nombre)",REGEXREPLACE({l[namecol]}{r},"-\\d{{8}}-","-"))'
 
 add_derived('E1', 'familia (derivada)', fam_formula(None, 'communication_name', 'communication_id'), e1f_raw.tolist())
 add_derived('E1', 'mes_clave (derivada)', lambda r, l: f'=LEFT({l["mes"]}{r},7)')
@@ -237,7 +238,7 @@ add_derived('E6b', 'familia_b (derivada)', fam_formula(None, 'familia_b'), fam_p
 add_derived('E7a', 'familia (derivada)', fam_formula(None, 'familia'), fam_pd(E['E7a'].familia).tolist())
 add_derived('E7c', 'familia (derivada)', fam_formula(None, 'familia'), fam_pd(E['E7c'].familia).tolist())
 add_derived('E9a', 'familia (derivada)', fam_formula(None, 'familia'), fam_pd(E['E9a'].familia).tolist())
-add_derived('E8', 'familia (derivada)', lambda r, l: f'=IF({l["bloque"]}{r}="familia_dia_baja",IF({l["clave"]}{r}="","(sin familia)",{l["clave"]}{r}),"")')
+add_derived('E8', 'familia (derivada)', lambda r, l: f'=IF({l["bloque"]}{r}="familia_dia_baja",IF({l["clave"]}{r}="","(sin nombre)",{l["clave"]}{r}),"")')
 
 # ---------- Catálogo (una fila por familia de E1)
 FAMS = sorted(e1f.unique())
@@ -266,6 +267,7 @@ g1 = pd.DataFrame(dict(fam=e1f, team=e1.team, prod=e1.product_service, ticket=e1
 first = g1.groupby('fam', sort=True).first()
 def ticket_of(fam):
     t = first.loc[fam, 'ticket']
+    if t == 'null': t = ''
     if t != 'Other': return t
     m = re.search(r'-([A-Z]?[BTS]0?\d{3,5})-', fam); return m.group(1) if m else ''
 catp = pd.DataFrame(index=FAMS)
@@ -900,7 +902,7 @@ header(ws, 'Lente L. En cuántos días se dan de baja y cuántos emails recibier
 def e8c(col): return rng('E8', col)
 BLQ = e8c('bloque'); CLV = e8c('clave'); COH = e8c('cohorte_limpia'); USR8 = e8c('usuarios')
 def s8(col, bloque, clave_ref, coh): return f'SUMIFS({e8c(col)},{BLQ},"{bloque}",{CLV},{clave_ref},{COH},{coh})'
-# Para familia_dia_baja la clave se cruza por la columna familia (derivada), que convierte la clave vacía (null) en "(sin familia)".
+# Para familia_dia_baja la clave se cruza por la columna familia (derivada), que convierte la clave vacía (null) en "(sin nombre)".
 def s8f(col, clave_ref, coh): return f'SUMIFS({e8c(col)},{BLQ},"familia_dia_baja",{e8c("familia (derivada)")},{clave_ref},{COH},{coh})'
 H = ['cohorte_limpia', 'qué es', 'usuarios', 'dias_prom', 'dias_mediana', 'dias_p90', 'emails_prom', 'emails_mediana', 'familias_prom', '% de los usuarios únicos con baja (E5)']
 rows = []
@@ -929,7 +931,7 @@ for coh in (1, 0):
         rows.append([b, coh, f'={s8("usuarios", "banda_emails", f"$A{rr}", f"$B{rr}")}', f'=IFERROR(C{rr}/$C${L_COH_ROW[coh]},"")', f'=SUM(D${first_r}:D{rr})', f'={s8("dias_prom", "banda_emails", f"$A{rr}", f"$B{rr}")}', f'={s8("dias_mediana", "banda_emails", f"$A{rr}", f"$B{rr}")}', f'={s8("familias_prom", "banda_emails", f"$A{rr}", f"$B{rr}")}'])
 LL3, l3a, l3b = table(ws, r0, 'L3. Emails recibidos antes de la baja por cohorte', H, rows, pct_cols=('% de la cohorte', '% acumulado'), int_cols=('usuarios',))
 r0 = l3b + 3
-e8 = E['E8']; fdb = e8[e8.bloque == 'familia_dia_baja'].copy(); fdb['clave'] = canon(fdb.clave.replace({'null': '(sin familia)', '': '(sin familia)'})); fdb['u'] = pd.to_numeric(fdb.usuarios); fdb['c'] = fdb.cohorte_limpia.astype(int)
+e8 = E['E8']; fdb = e8[e8.bloque == 'familia_dia_baja'].copy(); fdb['clave'] = canon(fdb.clave.replace({'null': '(sin nombre)', '': '(sin nombre)'})); fdb['u'] = pd.to_numeric(fdb.usuarios); fdb['c'] = fdb.cohorte_limpia.astype(int)
 fdb = fdb.sort_values(['c', 'u'], ascending=[False, False])
 H = ['familia del día de la baja', 'cohorte_limpia', 'ticket', 'equipo', 'tipo', 'usuarios', '% de la cohorte', 'dias_mediana', 'dias_prom', 'emails_prom', 'familias_prom']
 rows = []
@@ -937,7 +939,7 @@ for k, (_, fr) in enumerate(fdb.iterrows()):
     rr = r0 + 2 + k
     rows.append([fr.clave, fr.c, '=' + cat_lookup(f'$A{rr}', 'ticket'), '=' + cat_lookup(f'$A{rr}', 'equipo'), '=' + cat_lookup(f'$A{rr}', 'tipo'), f'={s8f("usuarios", f"$A{rr}", f"$B{rr}")}',
                  f'=IFERROR(F{rr}/IF($B{rr}=1,$C${L_COH_ROW[1]},$C${L_COH_ROW[0]}),"")', f'={s8f("dias_mediana", f"$A{rr}", f"$B{rr}")}', f'={s8f("dias_prom", f"$A{rr}", f"$B{rr}")}', f'={s8f("emails_prom", f"$A{rr}", f"$B{rr}")}', f'={s8f("familias_prom", f"$A{rr}", f"$B{rr}")}'])
-LL4, l4a, l4b = table(ws, r0, 'L4. Familia que llegó el día de la baja (cohorte 1 primero, de mayor a menor). Las claves son estáticas: si se recarga E8, pegar aquí las claves nuevas. "(sin familia)" = fila de E8 con clave vacía (null en la query): usuarios cuyo email del día de la baja no tiene nombre de familia.', H, rows, pct_cols=('% de la cohorte',), int_cols=('usuarios',))
+LL4, l4a, l4b = table(ws, r0, 'L4. Familia que llegó el día de la baja (cohorte 1 primero, de mayor a menor). Las claves son estáticas: si se recarga E8, pegar aquí las claves nuevas. "(sin nombre)" = fila de E8 con clave vacía (null en la query): la comunicación sin nombre de E1.', H, rows, pct_cols=('% de la cohorte',), int_cols=('usuarios',))
 L4R = lambda col: trng(ws, LL4, col, l4a, l4b)
 r0 = l4b + 3
 H = ['equipo', 'cohorte_limpia', 'bajas (usuarios, con doble conteo)', '% de la cohorte', 'familias en la lista']
@@ -962,7 +964,7 @@ ws = WS['M_Ventanas']
 header(ws, 'Lente M. Abren contra no abren con ventanas de conversión a 7, 30, 90 días y fin de periodo',
        'E9a (familia × canal, ya sin fecha en el nombre), Catálogo, Parámetros (muestra mínima y lift mínimo).',
        'Misma lógica que K pero la conversión se cuenta dentro de 7, 30 o 90 días después del envío, o hasta el fin del periodo. Un lift que cae al alargar la ventana dice que la conversión iba a pasar de todos modos. Muestra suficiente = abrieron y no abrieron por arriba de Parámetros filas 17 y 18, y conversiones a 90 días por arriba de la fila 19. Conversión de referencia (is_converted), para comparar grupos, no para atribuir.')
-e9 = E['E9a']; e9k = pd.DataFrame(dict(fam=canon(e9.familia), canal=e9.canal, env=num('E9a', 'envios_usuario_dia'))).sort_values(['env', 'fam'], ascending=[False, True])
+e9 = E['E9a']; e9k = pd.DataFrame(dict(fam=canon(fam_pd(e9.familia)), canal=e9.canal, env=num('E9a', 'envios_usuario_dia'))).sort_values(['env', 'fam'], ascending=[False, True])
 def e9r(col): return rng('E9a', col)
 H = ['familia', 'canal', 'ticket', 'equipo', 'tipo', 'envios_usuario_dia', 'abrieron', 'no_abrieron', 'conv_abren_7', 'conv_no_abren_7', 'lift_7', 'conv_abren_30', 'conv_no_abren_30', 'lift_30', 'conv_abren_90', 'conv_no_abren_90', 'lift_90', 'conv_abren_fin', 'conv_no_abren_fin', 'lift_fin', 'muestra_ok']
 rows = []
@@ -1015,7 +1017,8 @@ add('E1 totales', 'E1', 'Suma de costo_mxn precalculado (NO USAR: WhatsApp sobre
 add('E1 totales', 'E1', 'Celdas vacías en monto_filas (eran null en Databricks)', f'=COUNTBLANK({rng("E1","monto_filas")})', int((e1.monto_filas == 'null').sum()), 'null = sin conversiones con monto. Se dejó vacío para que SUM funcione.')
 add('E1 totales', 'E1', 'Filas con envíos = 0', f'=COUNTIF({rng("E1","envios")},0)', int((e1env == 0).sum()), 'Meses con aperturas o bajas de envíos anteriores pero sin envío nuevo. Las campañas activas se cuentan con envíos > 0.')
 add('E1 totales', 'E1', 'Filas con ticket_number = "Other"', f'=COUNTIF({rng("E1","ticket_number")},"Other")', int((e1.ticket_number == 'Other').sum()), 'Sin ticket en Braze. El Catálogo lo saca del nombre con regex cuando se puede.')
-add('E1 totales', 'E1', 'Filas sin communication_name (una comunicación sin nombre, 3 meses)', f'=COUNTBLANK({rng("E1","communication_name")})', int((e1.communication_name == 'null').sum()), 'Un solo communication_id. En familia (derivada) aparece como "(sin nombre)-id".')
+add('E1 totales', 'E1', 'Filas sin communication_name (una comunicación sin nombre, 3 meses)', f'=COUNTBLANK({rng("E1","communication_name")})', int((e1.communication_name == 'null').sum()), 'Un solo communication_id. En familia (derivada) aparece como "(sin nombre)" en E1, E7a, E7c, E9a y E8 (en esas pestañas viene como null).')
+add('E1 derivadas', 'E1', 'communication_id distintos sin nombre (deben ser 1 para que "(sin nombre)" sea una sola familia)', f'=COUNTA(UNIQUE(FILTER({rng("E1","communication_id")},{rng("E1","communication_name")}="")))', int(e1[e1.communication_name.isin(['null', ''])].communication_id.nunique()), 'Si pasa de 1, "(sin nombre)" junta varias comunicaciones y hay que separarlas por id.')
 add('E1 derivadas', 'E1', 'communication_id distintos', f'=COUNTA(UNIQUE({rng("E1","communication_id")}))', int(e1.communication_id.nunique()), '')
 add('E1 derivadas', 'E1', 'familias distintas (incluye "(sin nombre)")', f'=COUNTA(UNIQUE({rng("E1","familia (derivada)")}))', int(e1f.nunique()), 'familia = nombre sin la fecha -AAAAMMDD-. Comprueba que REGEXREPLACE evaluó en todas las filas. Debe ser igual a las filas del Catálogo.' + UQ, CASE_PAIRS)
 add('E1 derivadas', 'E1', 'Filas con mes_clave con forma 2026-MM', f'=COUNTIF({rng("E1","mes_clave (derivada)")},"2026-*")', int(e1mes.str.startswith('2026').sum()), 'Debe ser igual a las filas.')
@@ -1087,7 +1090,7 @@ for tab, c_, ex in [('E7a','envios','E7a agrupa por familia × canal × etapa; 0
 add('E2', 'E2', 'Piezas tipo canvas', f'=COUNTIF({rng("E2","tipo_pieza")},"canvas")', int((E['E2'].tipo_pieza == 'canvas').sum()), '')
 add('E2', 'E2', 'Piezas tipo campaign', f'=COUNTIF({rng("E2","tipo_pieza")},"campaign")', int((E['E2'].tipo_pieza == 'campaign').sum()), '')
 add('E2', 'E2', 'Familias distintas en el catálogo', f'=COUNTA(UNIQUE({rng("E2","familia (derivada)")}))', int(canon(fam_pd(E['E2'].nombre)).nunique()), 'Más que en E1 porque E2 trae piezas que no enviaron en el periodo.' + UQ, int(fam_pd(E['E2'].nombre).nunique() - canon(fam_pd(E['E2'].nombre)).nunique()))
-add('E2', 'E2 vs E1', 'Ids de E2 que sí enviaron en el periodo (están en E1)', f'=SUMPRODUCT(--(COUNTIF({rng("E1","communication_id")},{rng("E2","communication_id")})>0))', int(E['E2'].communication_id.isin(e1.communication_id).sum()), '3,438 de 6,144. El id sin nombre de E1 no está en E2.')
+add('E2', 'E2 vs E1', 'Ids de E2 que sí enviaron en el periodo (están en E1)', f'=SUMPRODUCT(--(COUNTIF({rng("E1","communication_id")},{rng("E2","communication_id")})>0))', int(E['E2'].communication_id.isin(e1.communication_id).sum()), '3,438 de 6,144. El id de la comunicación sin nombre de E1 no está en E2.')
 # familias con fecha en las pestañas crudas
 for tab, col in [('E5b', 'familia'), ('E7a', 'familia'), ('E7c', 'familia'), ('E9a', 'familia'), ('E6b', 'familia_a')]:
     d = E[tab][col]
@@ -1200,7 +1203,7 @@ add('H_Etapas', 'H_Etapas', 'H1 total envíos (igual a E7a)', '=H_Etapas!$F$11',
 add('H_Etapas', 'H_Etapas', 'H1 envíos a etapas bloqueadas (3 + 4 + 6)', '=H_Etapas!$F$12', float(a7.env[a7.etapa.isin(BLOQUEADAS)].sum()), '')
 add('H_Etapas', 'H_Etapas', 'H1 envíos promocionales a etapas bloqueadas', '=H_Etapas!$B$12', float(a7.env[a7.etapa.isin(BLOQUEADAS) & (a7.tipo == 'promocional o lifecycle')].sum()), 'Lo que no debería pasar.')
 add('H_Etapas', 'H_Etapas', 'H1 envíos sin_golden', '=H_Etapas!$F$10', float(a7.env[a7.etapa == 'sin_golden'].sum()), '')
-add('H_Etapas', 'H_Etapas', 'H1 envíos de familias que no están en E1', '=H_Etapas!$E$11', float(a7.env[a7.tipo == 'no está en E1'].sum()), 'Una familia de E7a no aparece en E1.')
+add('H_Etapas', 'H_Etapas', 'H1 envíos de familias que no están en E1', '=H_Etapas!$E$11', float(a7.env[a7.tipo == 'no está en E1'].sum()), 'Debe ser 0: la familia null de E7a es la comunicación sin nombre de E1 y cruza como "(sin nombre)".')
 add('H_Etapas', 'H_Etapas', 'H2 suma de envíos (4 canales × 5 etapas)', f'=SUM(H_Etapas!$C${h2a}:$C${h2b})', float(a7.env[a7.canal.isin(C4)].sum()), 'Sin banner.')
 add('H_Etapas', 'H_Etapas', 'H3 suma promocional a bloqueadas por equipo', f'=SUM(H_Etapas!$B${h3a}:$B${h3b})', float(a7.env[a7.etapa.isin(BLOQUEADAS) & (a7.tipo == 'promocional o lifecycle')].sum()), 'Igual a H1 fila 12 columna B.')
 # J
@@ -1249,7 +1252,7 @@ for eq in EQUIPOS:
     add('L_Baja', 'L_Baja', f'L5 cohorte 1, equipo {eq}: bajas', f'=L_Baja!$C${l5a + EQUIPOS.index(eq)}', float(fdb.u[(fdb.c == 1) & (fdb.equipo == eq)].sum()), 'Con el mapeo de Parámetros y el tipo del Catálogo.')
 add('L_Baja', 'L_Baja', 'L6 cohorte 1, promocional o lifecycle: bajas', f'=L_Baja!$C${l6a}', float(fdb.u[(fdb.c == 1) & (fdb.tipo == 'promocional o lifecycle')].sum()), '')
 # M
-e9g = pd.DataFrame(dict(fam=canon(e9.familia), canal=e9.canal, env=num('E9a','envios_usuario_dia'), ab=num('E9a','abrieron'), a90=num('E9a','ab_conv_90'), n90=num('E9a','no_conv_90'))).groupby(['fam', 'canal']).sum()
+e9g = pd.DataFrame(dict(fam=canon(fam_pd(e9.familia)), canal=e9.canal, env=num('E9a','envios_usuario_dia'), ab=num('E9a','abrieron'), a90=num('E9a','ab_conv_90'), n90=num('E9a','no_conv_90'))).groupby(['fam', 'canal']).sum()
 e9g['noab'] = e9g.env - e9g.ab; e9m = ((e9g.ab >= 1000) & (e9g.noab >= 1000) & (e9g.a90 + e9g.n90 >= 100))
 mi = INFO['M_Ventanas']
 add('M_Ventanas', 'M_Ventanas', 'M1 filas (familia × canal de E9a)', f'=COUNTA(M_Ventanas!$A${mi["first"]}:$A${mi["last"]})', mi['filas'], '')
@@ -1282,7 +1285,8 @@ for col, w in zip('ABCDEFGHIJ', (5, 14, 16, 62, 22, 22, 16, 18, 110, 10)): ver.c
 # ---------- Léeme
 # =====================================================================================
 R = []
-R.append(['Auditoría Braze Kueski: datos, catálogo, campañas y cálculo por lente (archivo v2, etapa 2 de 3)'])
+R.append(['Auditoría Braze Kueski: datos, catálogo, campañas y cálculo por lente (archivo ' + VERSION + ', etapa 2 de 3)'])
+R.append(['Cambios v2b respecto a v2', 'En Google Sheets v2 salían 9 filas en REVISAR (181, 293, 294, 296, 297, 347 a 350). Causa única: la comunicación sin nombre de E1 llega como null en E7a, E7c, E9a y E8 y no cruzaba. Ahora se llama "(sin nombre)" en todas las pestañas y su ticket queda vacío. Nada más cambió.'])
 R.append([''])
 R.append(['Qué es este archivo', 'Todo lo de v1 (queries E1 a E9b pegadas completas, Parámetros, Verificación) más el Catálogo de familias, la tabla de Campañas (una fila por familia × canal con señal y acción), Medianas por canal y una pestaña de cálculo por lente (B, E, F, G, H, J, K, L, M). Todo es fórmula sobre las pestañas crudas: si cambias un parámetro o pegas datos nuevos, todo se recalcula. En v3 se agregan Estándares y buenas prácticas, Insights con filtros, Plan de acción y Vista_equipo.'])
 R.append(['Fuente', 'analytics_engineering_production.xplore._dim_braze_users_and_communications (Databricks). Sin identificadores de usuario: todo viene agregado.'])
@@ -1318,7 +1322,7 @@ for tab, fname, desc, grano, _ in TABS:
     R.append([tab, fname, i['md5'], i['filas'], grano, desc, ', '.join(i['derived']) or 'ninguna', nul])
 R.append([''])
 R.append(['Columnas derivadas', ''])
-R.append(['familia (derivada)', 'Nombre de la comunicación sin la fecha "-AAAAMMDD-" (REGEXREPLACE). Agrupa las copias que Braze crea con fecha distinta para la misma campaña. Si la comunicación no tiene nombre, queda "(sin nombre)-" seguido del communication_id. CORRECCIÓN respecto a v1: E5b, E6b, E7a y E7c traen la familia CON fecha (la query no la quitó), por eso tienen su propia columna familia (derivada) y todo cruce usa esa columna, nunca la original. E9a y E8 sí vienen sin fecha. La pestaña Verificación cuenta cuántas filas traen fecha en cada una. MAYÚSCULAS: hay familias que solo cambian en mayúsculas/minúsculas (por ejemplo "...-CuestaEnero-in-App" y "...-CuestaEnero-in-app", o "AmazonPrimeDays" y "AmazonPrimedays"); SUMIFS, COUNTIF y VLOOKUP de Sheets no distinguen mayúsculas, así que se tratan como UNA sola familia: en E1 son ' + str(CASE_PAIRS) + ' pares y el Catálogo tiene ' + str(NC) + ' filas (una por familia). En E8 (familia_dia_baja) hay una fila con clave vacía (null en la query, 1,227 usuarios de la cohorte 1): la columna familia (derivada) la nombra "(sin familia)" para que no se pierda.'])
+R.append(['familia (derivada)', 'Nombre de la comunicación sin la fecha "-AAAAMMDD-" (REGEXREPLACE). Agrupa las copias que Braze crea con fecha distinta para la misma campaña. Si la comunicación no tiene nombre, queda "(sin nombre)": hay UNA sola comunicación sin nombre en E1 (su id está en la columna communication_ids del Catálogo; 325 mil envíos de email, equipo Others) y en E7a, E7c, E9a y E8 llega como null, así que con ese nombre cruza en todas las pestañas. Si algún día hubiera más de una, se juntarían en esa fila (Verificación lo vigila: "communication_id distintos sin nombre"). CORRECCIÓN respecto a v1: E5b, E6b, E7a y E7c traen la familia CON fecha (la query no la quitó), por eso tienen su propia columna familia (derivada) y todo cruce usa esa columna, nunca la original. E9a y E8 sí vienen sin fecha. La pestaña Verificación cuenta cuántas filas traen fecha en cada una. MAYÚSCULAS: hay familias que solo cambian en mayúsculas/minúsculas (por ejemplo "...-CuestaEnero-in-App" y "...-CuestaEnero-in-app", o "AmazonPrimeDays" y "AmazonPrimedays"); SUMIFS, COUNTIF y VLOOKUP de Sheets no distinguen mayúsculas, así que se tratan como UNA sola familia: en E1 son ' + str(CASE_PAIRS) + ' pares y el Catálogo tiene ' + str(NC) + ' filas (una por familia). En E8 (familia_dia_baja) hay una fila con clave vacía (null en la query, 1,227 usuarios de la cohorte 1): la columna familia (derivada) la nombra "(sin familia)" para que no se pierda.'])
 R.append(['mes_clave y mes_num (derivadas)', 'mes_clave = primeros 7 caracteres de la fecha ("2026-06"). mes_num = el mes como número (6), para que MINIFS y MAXIFS calculen primer y último mes. En E4a las filas de grano semana llevan el mes de la fecha de inicio de la semana.'])
 R.append(['equipo (derivada)', 'E1 trae 11 equipos (team). La tabla de mapeo al final de Parámetros los lleva a 5 para la vista por equipo: Marketing, Product Growth, Sales, Collections y Others (Compliance, Acquisition, CX, B2B, NPS y Security caen en Others). Es editable: cambia la columna B del mapeo y todo se recalcula. El Catálogo guarda también el equipo original.'])
 R.append(['tipo (derivada)', 'cobranza si el equipo original es Collections; transaccional u operativa si el nombre empieza con "Transaccional" o no trae un ticket con forma -B0211- / -T2728- / -S0004-; promocional o lifecycle todo lo demás. Es una regla por nombre, no un dato de Braze: una familia promocional sin ticket queda como transaccional. Se puede corregir a mano en el Catálogo (la columna es fórmula; si la sobreescribes, anótalo aquí).'])
