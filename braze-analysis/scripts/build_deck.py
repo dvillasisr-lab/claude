@@ -616,6 +616,8 @@ def svg_heatmap(ex, W=760):
     labw, top = ex.get("labw", 130), 26
     rshare = ex.get("row_share")
     rsw = 110 if rshare else 0
+    if ex.get("tint"):
+        top += 18
     cw = (W - labw - 10 - rsw) / len(cols)
     rh = 40 if len(rws) <= 6 else 32
     sh = 78 if share else 0
@@ -631,7 +633,13 @@ def svg_heatmap(ex, W=760):
             o.append(f'<rect x="{x:.1f}" y="{y+56-bh:.1f}" width="{cw*0.6:.1f}" height="{bh:.1f}" rx="2" fill="#{GRAY}"/>')
             o.append(f'<text x="{x+cw*0.3:.1f}" y="{y+56-bh-4:.1f}" text-anchor="middle" class="c-val c-sm">{v:.0f} %</text>')
         y += sh
-    o.append(f'<text x="{labw}" y="{y+2}" class="c-lab">{esc(ex.get("label",""))}</text>')
+    o.append(f'<text x="{labw}" y="{y+2-(16 if ex.get("tint") else 0)}" class="c-lab">{esc(ex.get("label",""))}</text>')
+    if ex.get("tint"):
+        lx = labw
+        for name, col in ex.get("tint_legend", [("Mensajes a un canal que el usuario nunca abrió", "#" + RED), ("Canal en el que sí responde", TEAL), ("Mezcla", "#" + GRAY)]):
+            o.append(f'<rect x="{lx:.1f}" y="{y-7}" width="10" height="10" rx="2" fill="{col}" fill-opacity="0.75"/>')
+            o.append(f'<text x="{lx+14:.1f}" y="{y+2}" class="c-note">{esc(name)}</text>')
+            lx += len(name) * 6.2 + 34
     y += 10
     for j, c in enumerate(cols):
         o.append(f'<text x="{labw+j*cw+cw/2:.1f}" y="{y+12}" text-anchor="middle" class="c-cat">{esc(c)}</text>')
@@ -654,13 +662,21 @@ def svg_heatmap(ex, W=760):
         o.append(f'<text x="{labw-10}" y="{yy+rh/2+4:.1f}" text-anchor="end" class="c-cat" style="font-weight:{700 if i==0 else 400}">{esc(r)}</text>')
         for j, v in enumerate(M[i]):
             x = labw + j * cw
+            if ex.get("triangle") and j < i:
+                continue
             if v is None:
                 o.append(f'<rect x="{x+1:.1f}" y="{yy+1}" width="{cw-2:.1f}" height="{rh-2}" fill="var(--paper-2)"/>')
                 continue
             if cs:
                 lo, hi = colrange[j]
             t = (v - lo) / (hi - lo) if hi > lo else 0
-            fill = _mix("#FFFFFF", "#" + ACCENT, 0.08 + 0.92 * t)
+            tint = ex.get("tint")
+            if tint:
+                kind = tint[i][j] if isinstance(tint[i], (list, tuple)) else tint[i]
+                base = {"bad": "#" + RED, "ok": TEAL, "mix": "#" + GRAY}.get(kind, "#" + ACCENT)
+                fill = _mix("#FFFFFF", base, 0.10 + 0.90 * t)
+            else:
+                fill = _mix("#FFFFFF", "#" + ACCENT, 0.08 + 0.92 * t)
             o.append(f'<rect x="{x+1:.1f}" y="{yy+1}" width="{cw-2:.1f}" height="{rh-2}" fill="{fill}"/>')
             o.append(f'<text x="{x+cw/2:.1f}" y="{yy+rh/2+4:.1f}" text-anchor="middle" class="c-val c-sm" style="fill:{"#fff" if t>0.55 else "#"+INK}">{esc(fmtv(v, fmts[j] if fmts else fmt))}</text>')
         if rshare:
@@ -1010,11 +1026,653 @@ def svg_barcause(ex, W=1000):
     return "".join(o)
 
 
-RASTER_TYPES = ("regress", "hist", "candle", "idxgrid", "stackbar", "barcause", "hbarmult")
+# ---- Gráficas multivariable (deck v6): mekko, coordenadas paralelas, pendientes, Lorenz, dispersión conectada,
+#      burbujas, tiras por gancho, Pareto, matriz de puntos, insistencia, áreas apiladas con acumulado ----
+import math as _m
+
+TEAL = "#1F9E89"
+
+
+def _tc(groups):
+    """Color por grupo: equipos con la paleta fija; otros grupos ordinales con rampa."""
+    from deck_data import TEAMS
+    if all(g in TEAMS for g in groups):
+        return {g: PAL[TEAMS.index(g)] for g in groups}
+    if all(g in CHAN_COL for g in groups):
+        return {g: CHAN_COL[g] for g in groups}
+    return {g: PAL[i % len(PAL)] for i, g in enumerate(groups)}
+
+
+CHAN_COL = {"Email": PAL[0], "Push": "#7C5CC4", "WhatsApp": TEAL, "In-app": "#A8720F", "WhatsApp entregado": TEAL}
+
+
+def _axis_y(o, x0, y0, w, h, lo, hi, fmt, ticks=4, grid=True):
+    nlo, nhi, step = _nice_axis(lo, hi, ticks)
+    Y = lambda v: y0 + h - (v - lo) / (hi - lo) * h
+    for gv in _ticks(nlo, nhi, step):
+        if gv < lo - 1e-9 or gv > hi + 1e-9:
+            continue
+        if grid:
+            o.append(f'<line x1="{x0}" y1="{Y(gv):.1f}" x2="{x0+w}" y2="{Y(gv):.1f}" class="c-grid"/>')
+        o.append(f'<text x="{x0-6}" y="{Y(gv)+4:.1f}" text-anchor="end" class="c-note">{esc(fmtv(gv, fmt))}</text>')
+    return Y
+
+
+def _logx(x0, w, xmin, xmax):
+    return lambda v: x0 + (_m.log10(max(v, xmin)) - _m.log10(xmin)) / (_m.log10(xmax) - _m.log10(xmin)) * w
+
+
+def _xticks_log(o, X, x0, y0, h, xmin, xmax, ticks):
+    for xv, xl in ticks:
+        if xmin <= xv <= xmax:
+            o.append(f'<line x1="{X(xv):.1f}" y1="{y0}" x2="{X(xv):.1f}" y2="{y0+h}" class="c-grid"/><text x="{X(xv):.1f}" y="{y0+h+16}" text-anchor="middle" class="c-cat">{esc(xl)}</text>')
+
+
+LOGTICKS = [(1e4, "10 mil"), (1e5, "100 mil"), (1e6, "1 M"), (1e7, "10 M"), (1e8, "100 M")]
+
+
+def _place_labels(o, items, x0, w, y0, h, cls="c-note", fill="var(--ink)", avoid=None, cw=6.4, lh=13):
+    """items: [x, y, text, anchor_pref, (r opcional)]. Coloca cada etiqueta en la primera posición libre
+    alrededor del punto (derecha, izquierda, arriba, abajo y diagonales), sin pisar otras etiquetas ni
+    los círculos marcados en avoid [(x, y, r)], y dibuja una guía fina cuando queda lejos del punto."""
+    placed = []
+    avoid = list(avoid or [])
+    def hit(b):
+        for q in placed:
+            if b[0] < q[2] and b[2] > q[0] and b[1] < q[3] and b[3] > q[1]:
+                return True
+        for (cx, cy, r) in avoid:
+            nx, ny = max(b[0], min(cx, b[2])), max(b[1], min(cy, b[3]))
+            if (nx - cx) ** 2 + (ny - cy) ** 2 < (r + 1) ** 2:
+                return True
+        return False
+    for it in sorted(items, key=lambda q: q[1]):
+        x, y, t, pref = it[0], it[1], it[2], it[3]
+        r = it[4] if len(it) > 4 else 6
+        tw = cw * len(t) + 2
+        cands = []
+        for k in range(0, 9):
+            d = r + 6 + 14 * k
+            for ddx, ddy in ((1, 0), (-1, 0), (0, -1), (0, 1), (1, -0.7), (-1, -0.7), (1, 0.7), (-1, 0.7)):
+                ax = x + ddx * d
+                ay = y + ddy * d
+                anc = "start" if ddx > 0 else ("end" if ddx < 0 else "middle")
+                bx0 = ax if anc == "start" else (ax - tw if anc == "end" else ax - tw / 2)
+                b = (bx0, ay - lh / 2, bx0 + tw, ay + lh / 2)
+                if b[0] < x0 - 40 or b[2] > x0 + w + 60 or b[1] < y0 - 14 or b[3] > y0 + h + 10:
+                    continue
+                cands.append((k, (pref != anc and ddx != 0), b, ax, ay, anc, d))
+        cands.sort(key=lambda c: (c[0], c[1]))
+        pick = None
+        for c in cands:
+            if not hit(c[2]):
+                pick = c
+                break
+        if pick is None:
+            continue
+        k, _, b, ax, ay, anc, d = pick
+        placed.append(b)
+        if d > r + 12:
+            ex_ = ax if anc == "middle" else (ax - 2 if anc == "start" else ax + 2)
+            o.append(f'<line x1="{x:.1f}" y1="{y:.1f}" x2="{ex_:.1f}" y2="{ay:.1f}" stroke="#{INK2}" stroke-width="0.8" stroke-opacity="0.7"/>')
+        o.append(f'<text x="{ax:.1f}" y="{ay+4:.1f}" text-anchor="{anc}" class="{cls} c-halo" style="fill:{fill}">{esc(t)}</text>')
+
+
+# 1. Mekko: ancho = parte del total por categoría; dentro, apilado por segmento ---------------------------------
+def svg_mekko(ex, W=1000):
+    panels, segs = ex["panels"], ex["segments"]
+    cols = _tc(segs)
+    Hh = 360
+    o = [f'<svg viewBox="0 0 {W} {Hh}" class="chart" role="img" preserveAspectRatio="xMinYMin meet">']
+    _legend(o, 10, 16, segs, [cols[s] for s in segs])
+    pw = (W - 60) / len(panels)
+    for pi, p in enumerate(panels):
+        x0, y0, w, h = 10 + pi * (pw + 40), 54, pw - 20, 220
+        o.append(f'<text x="{x0}" y="{y0-10}" class="c-lab">{esc(p["title"])}</text>')
+        tots = [sum(r) for r in p["rows"]]
+        T = sum(tots) or 1
+        x = x0
+        narrow = []
+        zero = [cat for cat, t_ in zip(p["cats"], tots) if t_ <= 0]
+        for ci, (cat, row) in enumerate(zip(p["cats"], p["rows"])):
+            if tots[ci] <= 0:
+                continue
+            cw = w * tots[ci] / T
+            y = y0
+            for si, v in enumerate(row):
+                sh = h * v / tots[ci] if tots[ci] else 0
+                if sh > 0:
+                    o.append(f'<rect x="{x+1:.1f}" y="{y:.1f}" width="{max(0, cw-2):.1f}" height="{max(0, sh-1):.1f}" fill="{cols[segs[si]]}" fill-opacity="0.9"/>')
+                    if sh > 16 and cw > 44:
+                        o.append(f'<text x="{x+cw/2:.1f}" y="{y+sh/2+4:.1f}" text-anchor="middle" class="c-val c-sm" style="fill:#fff">{esc(fmtv(v, p.get("fmt", "M")))}</text>')
+                y += sh
+            share = 100 * tots[ci] / T
+            lab = f'{cat} {share:.0f} %'
+            if cw < 70:
+                narrow.append((x + cw / 2, lab, fmtv(tots[ci], p.get("fmt", "M"))))
+            else:
+                o.append(f'<text x="{x+cw/2:.1f}" y="{y0+h+18:.1f}" text-anchor="middle" class="c-cat" style="font-weight:600">{esc(lab)}</text>')
+                o.append(f'<text x="{x+cw/2:.1f}" y="{y0+h+34:.1f}" text-anchor="middle" class="c-note">{esc(fmtv(tots[ci], p.get("fmt", "M")))}</text>')
+            x += cw
+        for ni, (xc, lab, tot_) in enumerate(narrow):
+            yy = y0 + h + 52 + 15 * ni
+            o.append(f'<line x1="{xc:.1f}" y1="{y0+h+2}" x2="{xc:.1f}" y2="{yy-4}" class="c-grid"/>')
+            o.append(f'<text x="{xc-6:.1f}" y="{yy:.1f}" text-anchor="end" class="c-cat" style="font-weight:600">{esc(lab)} <tspan class="c-note" style="font-weight:400">{esc(tot_)}</tspan></text>')
+        if zero:
+            o.append(f'<text x="{x0+w}" y="{y0+h+52:.1f}" text-anchor="end" class="c-note">{esc(" y ".join(zero))}: sin costo</text>')
+        if p.get("note"):
+            o.append(f'<text x="{x0}" y="{Hh-6}" class="c-note">{esc(p["note"])}</text>')
+    o.append("</svg>")
+    return "".join(o)
+
+
+# 2. Coordenadas paralelas: un eje por variable, una línea por entidad --------------------------------------------
+def svg_parallel(ex, W=1000):
+    axes, lines = ex["axes"], ex["lines"]
+    names = [l["name"] for l in lines]
+    cols = _tc(names) if not ex.get("ramp") else dict(zip(names, _ramp(len(names))))
+    cols.update(ex.get("colors", {}))
+    emph = set(ex.get("emph", names))
+    Hh = 330
+    o = [f'<svg viewBox="0 0 {W} {Hh}" class="chart" role="img" preserveAspectRatio="xMinYMin meet">']
+    if ex.get("label"):
+        o.append(f'<text x="10" y="16" class="c-lab">{esc(ex["label"])}</text>')
+    _legend(o, 10, 36, names, [cols[n] if n in emph else "#" + GRAY for n in names])
+    n = len(axes)
+    x0, y0, h = 120, 70, 200
+    gap = (W - x0 - 100) / (n - 1)
+    pos = []
+    for ai, a in enumerate(axes):
+        vals = [l["vals"][ai] for l in lines if l["vals"][ai] is not None]
+        lo, hi = min(vals), max(vals)
+        if a.get("lo") is not None: lo = a["lo"]
+        if a.get("hi") is not None: hi = a["hi"]
+        pad = (hi - lo) * 0.08 or 1
+        lo2, hi2 = lo - pad, hi + pad
+        inv = a.get("invert", False)
+        def Y(v, lo2=lo2, hi2=hi2, inv=inv):
+            t = (v - lo2) / (hi2 - lo2)
+            return y0 + h - t * h if not inv else y0 + t * h
+        x = x0 + ai * gap
+        pos.append((x, Y))
+        o.append(f'<line x1="{x:.1f}" y1="{y0}" x2="{x:.1f}" y2="{y0+h}" stroke="#D5D9E0" stroke-width="1.5"/>')
+        o.append(f'<text x="{x:.1f}" y="{y0-14}" text-anchor="middle" class="c-cat" style="font-weight:700;fill:var(--ink)">{esc(a["name"])}</text>')
+        o.append(f'<text x="{x:.1f}" y="{y0+h+18}" text-anchor="middle" class="c-note">{esc(a.get("sub", "mejor arriba"))}</text>')
+    for l in lines:
+        col = cols[l["name"]] if l["name"] in emph else "#" + GRAY
+        d, prev = "", False
+        for ai, v in enumerate(l["vals"]):
+            if v is None:
+                prev = False
+                continue
+            d += f'{"L" if prev else "M"}{pos[ai][0]:.1f},{pos[ai][1](v):.1f} '
+            prev = True
+        o.append(f'<path d="{d}" fill="none" stroke="{col}" stroke-width="{3 if l["name"] in emph else 1.5}" stroke-opacity="{0.95 if l["name"] in emph else 0.7}"/>')
+    # etiquetas de valor por eje, separadas
+    for ai, a in enumerate(axes):
+        items = []
+        for l in lines:
+            v = l["vals"][ai]
+            if v is None:
+                continue
+            x, Y = pos[ai]
+            col = cols[l["name"]] if l["name"] in emph else "#" + INK2
+            o.append(f'<circle cx="{x:.1f}" cy="{Y(v):.1f}" r="4.5" fill="{col}" stroke="#fff" stroke-width="1.5"/>')
+            items.append([Y(v), x, fmtv(v, a.get("fmt", "x1")), col])
+        items = _spread(items, 13, y0 - 2, y0 + h + 2)
+        side = "end" if ai == n - 1 else "start"
+        for yy, x, t, col in items:
+            o.append(f'<text x="{x + (-8 if side == "end" else 8):.1f}" y="{yy+4:.1f}" text-anchor="{side}" class="c-val c-sm c-halo" style="fill:{col}">{esc(t)}</text>')
+    if ex.get("note"):
+        o.append(f'<text x="10" y="{Hh-6}" class="c-note">{esc(ex["note"])}</text>')
+    o.append("</svg>")
+    return "".join(o)
+
+
+# 3. Pendientes: dos momentos, una línea por entidad -------------------------------------------------------------
+def _slope_panel(o, x0, y0, w, h, p):
+    items = p["items"]
+    a_lab, b_lab = p["cols"]
+    fmt = p.get("fmt", "pct0")
+    vals = [v for it in items for v in (it["a"], it["b"])]
+    lo, hi = p.get("ymin", min(vals) - 3), p.get("ymax", max(vals) + 3)
+    Y = lambda v: y0 + h - (v - lo) / (hi - lo) * h
+    xa, xb = x0 + 150, x0 + w - 150
+    o.append(f'<text x="{x0}" y="{y0-12}" class="c-lab">{esc(p["title"])}</text>')
+    for x, lab in ((xa, a_lab), (xb, b_lab)):
+        o.append(f'<line x1="{x}" y1="{y0}" x2="{x}" y2="{y0+h}" stroke="#D5D9E0"/>')
+        o.append(f'<text x="{x}" y="{y0+h+18}" text-anchor="middle" class="c-cat" style="font-weight:700;fill:var(--ink)">{esc(lab)}</text>')
+    if p.get("ref"):
+        o.append(f'<line x1="{xa}" y1="{Y(p["ref"][0]):.1f}" x2="{xb}" y2="{Y(p["ref"][0]):.1f}" class="c-ref"/><text x="{(xa+xb)/2:.1f}" y="{Y(p["ref"][0])-5:.1f}" text-anchor="middle" class="c-note c-halo">{esc(p["ref"][1])}</text>')
+    thr = p.get("drop", 4)
+    la, lb = [], []
+    for it in items:
+        drop = it["a"] - it["b"]
+        bad = drop >= thr
+        col = "#" + RED if bad else ("#" + GRAY if not it.get("emph") else PAL[0])
+        sw = 1.5 + 4 * _m.sqrt(it.get("w", 1) / max(1e-9, max(q.get("w", 1) for q in items)))
+        o.append(f'<line x1="{xa}" y1="{Y(it["a"]):.1f}" x2="{xb}" y2="{Y(it["b"]):.1f}" stroke="{col}" stroke-width="{sw:.1f}" stroke-opacity="0.9"/>')
+        for x, v in ((xa, it["a"]), (xb, it["b"])):
+            o.append(f'<circle cx="{x}" cy="{Y(v):.1f}" r="4.5" fill="{col}" stroke="#fff" stroke-width="1.5"/>')
+        la.append([Y(it["a"]), xa, f'{it["name"]}  {fmtv(it["a"], fmt)}', col])
+        lb.append([Y(it["b"]), xb, f'{fmtv(it["b"], fmt)}  {it["name"]}' + (f' ({it["sub"]})' if it.get("sub") else ""), col])
+    for yy, x, t, col in _spread(la, 14, y0, y0 + h):
+        o.append(f'<text x="{x-10}" y="{yy+4:.1f}" text-anchor="end" class="c-val c-sm" style="fill:{col}">{esc(t)}</text>')
+    for yy, x, t, col in _spread(lb, 14, y0, y0 + h):
+        o.append(f'<text x="{x+10}" y="{yy+4:.1f}" class="c-val c-sm" style="fill:{col}">{esc(t)}</text>')
+
+
+def svg_slope(ex, W=1000):
+    panels = ex["panels"]
+    Hh = 330
+    o = [f'<svg viewBox="0 0 {W} {Hh}" class="chart" role="img" preserveAspectRatio="xMinYMin meet">']
+    pw = (W - 20) / len(panels)
+    for pi, p in enumerate(panels):
+        _slope_panel(o, 10 + pi * pw, 40, pw - 20, 240, p)
+    if ex.get("note"):
+        o.append(f'<text x="10" y="{Hh-6}" class="c-note">{esc(ex["note"])}</text>')
+    o.append("</svg>")
+    return "".join(o)
+
+
+# 4. Lorenz: concentración acumulada ------------------------------------------------------------------------------
+def svg_lorenz(ex, W=1000):
+    pts, series = ex["pts"], ex["series"]
+    Hh = 340
+    o = [f'<svg viewBox="0 0 {W} {Hh}" class="chart" role="img" preserveAspectRatio="xMinYMin meet">']
+    x0, y0, w, h = 70, 50, 520, 240
+    cols = [PAL[0], "#" + RED, TEAL]
+    o.append(f'<text x="{x0}" y="18" class="c-lab">{esc(ex["label"])}</text>')
+    _legend(o, x0, 36, series, cols)
+    X = lambda v: x0 + v / 100 * w
+    Y = _axis_y(o, x0, y0, w, h, 0, 100, "pct0", 5)
+    for t in (0, 20, 40, 60, 80, 100):
+        o.append(f'<text x="{X(t):.1f}" y="{y0+h+16}" text-anchor="middle" class="c-cat">{t} %</text>')
+    o.append(f'<text x="{x0+w/2:.1f}" y="{y0+h+34}" text-anchor="middle" class="c-note">{esc(ex.get("xlab", "% de los usuarios, ordenados de más a menos mensajes recibidos"))}</text>')
+    o.append(f'<line x1="{X(0)}" y1="{Y(0):.1f}" x2="{X(100)}" y2="{Y(100):.1f}" class="c-ref"/><text x="{X(62)}" y="{Y(58):.1f}" class="c-note" transform="rotate(-24 {X(62)} {Y(58):.1f})">si todos recibieran lo mismo</text>')
+    for si, name in enumerate(series):
+        d = " ".join(f'{"M" if i == 0 else "L"}{X(p["x"]):.1f},{Y(p["y"][si]):.1f}' for i, p in enumerate(pts))
+        o.append(f'<path d="{d}" fill="none" stroke="{cols[si]}" stroke-width="2.5"/>')
+        for p in pts[1:]:
+            o.append(f'<circle cx="{X(p["x"]):.1f}" cy="{Y(p["y"][si]):.1f}" r="3.5" fill="{cols[si]}" stroke="#fff" stroke-width="1.2"/>')
+    # guías en los puntos marcados
+    for gi in ex.get("mark", []):
+        p = pts[gi]
+        o.append(f'<line x1="{X(p["x"]):.1f}" y1="{y0}" x2="{X(p["x"]):.1f}" y2="{y0+h}" class="c-ref"/>')
+        o.append(f'<text x="{X(p["x"])+5:.1f}" y="{y0+12}" class="c-val c-sm">{esc(f"{p['x']:.0f} % de los usuarios")}</text>')
+        o.append(f'<text x="{X(p["x"])+5:.1f}" y="{y0+26}" class="c-note">{esc(f"({p['lab']} mensajes en 9 meses)")}</text>')
+        for si in range(len(series)):
+            o.append(f'<text x="{X(p["x"])+6:.1f}" y="{Y(p["y"][si])-5:.1f}" class="c-val c-sm" style="fill:{cols[si]}">{p["y"][si]:.0f} %</text>')
+    # tabla lateral: banda, usuarios, mensajes
+    tx, ty = x0 + w + 60, y0
+    o.append(f'<text x="{tx}" y="{ty-10}" class="c-lab">{esc(ex.get("side_title", "Por banda de mensajes en 9 meses"))}</text>')
+    o.append(f'<text x="{tx}" y="{ty+10}" class="c-note">Banda</text><text x="{tx+130}" y="{ty+10}" text-anchor="end" class="c-note">Usuarios</text><text x="{tx+220}" y="{ty+10}" text-anchor="end" class="c-note">Mensajes</text><text x="{tx+300}" y="{ty+10}" text-anchor="end" class="c-note">Por usuario</text>')
+    for i, p in enumerate(pts[1:]):
+        yy = ty + 30 + i * 22
+        o.append(f'<text x="{tx}" y="{yy}" class="c-cat">{esc(p["lab"])}</text><text x="{tx+130}" y="{yy}" text-anchor="end" class="c-val c-sm">{p["users"]/1e6:.2f} M</text><text x="{tx+220}" y="{yy}" text-anchor="end" class="c-val c-sm">{p["msgs"]/1e6:.0f} M</text><text x="{tx+300}" y="{yy}" text-anchor="end" class="c-val c-sm">{p["msgs"]/max(1,p["users"]):.0f}</text>')
+    o.append("</svg>")
+    return "".join(o)
+
+
+# 5. Dispersión conectada: puntos en orden (meses o bandas), flecha del primero al último --------------------------
+def _conn_panel(o, x0, y0, w, h, p):
+    pts = p["pts"]
+    xs, ys = [q["x"] for q in pts], [q["y"] for q in pts]
+    xlo, xhi, xs_ = _nice_axis(0 if p.get("xzero", False) else min(xs) * 0.85, max(xs) * 1.08, 4)
+    ylo, yhi, ys_ = _nice_axis(p.get("ymin", min(ys) * 0.8 if min(ys) > 0 else 0), max(ys) * 1.12, 4)
+    X = lambda v: x0 + (v - xlo) / (xhi - xlo) * w
+    Y = lambda v: y0 + h - (v - ylo) / (yhi - ylo) * h
+    o.append(f'<text x="{x0}" y="{y0-12}" class="c-lab" style="fill:{PAL[0]}">{esc(p["title"])}</text>')
+    for gv in _ticks(ylo, yhi, ys_):
+        o.append(f'<line x1="{x0}" y1="{Y(gv):.1f}" x2="{x0+w}" y2="{Y(gv):.1f}" class="c-grid"/><text x="{x0-6}" y="{Y(gv)+4:.1f}" text-anchor="end" class="c-note">{esc(fmtv(gv, p.get("yfmt", "pct1")))}</text>')
+    for gv in _ticks(xlo, xhi, xs_):
+        o.append(f'<text x="{X(gv):.1f}" y="{y0+h+14}" text-anchor="middle" class="c-note">{esc(fmtv(gv, p.get("xfmt", "int")))}</text>')
+    o.append(f'<text x="{x0+w/2:.1f}" y="{y0+h+30}" text-anchor="middle" class="c-note">{esc(p.get("xlab", ""))}</text>')
+    o.append(f'<text x="{x0-4}" y="{y0-2}" text-anchor="end" class="c-note" transform="rotate(-90 {x0-4} {y0-2})"></text>')
+    cols = _ramp(len(pts))
+    d = " ".join(f'{"M" if i == 0 else "L"}{X(q["x"]):.1f},{Y(q["y"]):.1f}' for i, q in enumerate(pts))
+    o.append(f'<path d="{d}" fill="none" stroke="#{GRAY}" stroke-width="1.8"/>')
+    hl = set(p.get("hl", [0, len(pts) - 1]))
+    items, avoid = [], []
+    for i, q in enumerate(pts):
+        big = i in hl
+        r_ = 7 if big else 4.5
+        o.append(f'<circle cx="{X(q["x"]):.1f}" cy="{Y(q["y"]):.1f}" r="{r_}" fill="{cols[i]}" stroke="#fff" stroke-width="1.5"/>')
+        avoid.append((X(q["x"]), Y(q["y"]), r_))
+        if big or p.get("label_all"):
+            t = q["lab"] + (f'  {fmtv(q["y"], p.get("yfmt", "pct1"))}' if big else "")
+            items.append([X(q["x"]), Y(q["y"]), t, "start" if X(q["x"]) < x0 + w * 0.6 else "end", r_])
+    _place_labels(o, items, x0, w, y0, h, "c-val c-sm", avoid=avoid)
+
+
+def svg_connscatter(ex, W=1000):
+    panels = ex["panels"]
+    n = len(panels)
+    ncol = min(n, ex.get("ncol", 4 if n > 2 else n))
+    nrow = (n + ncol - 1) // ncol
+    ph = 190 if nrow == 1 else 150
+    Hh = nrow * (ph + 70) + 10
+    o = [f'<svg viewBox="0 0 {W} {Hh}" class="chart" role="img" preserveAspectRatio="xMinYMin meet">']
+    pw = (W - 20) / ncol
+    for i, p in enumerate(panels):
+        x0 = 60 + (i % ncol) * pw
+        y0 = 30 + (i // ncol) * (ph + 70)
+        _conn_panel(o, x0, y0, pw - 80, ph, p)
+    if ex.get("note"):
+        o.append(f'<text x="10" y="{Hh-4}" class="c-note">{esc(ex["note"])}</text>')
+    o.append("</svg>")
+    return "".join(o)
+
+
+# 6. Burbujas: x logarítmica, y lineal, tamaño = tercera variable, color = grupo ---------------------------------
+def _bubble_panel(o, x0, y0, w, h, p, cols):
+    pts = p["pts"]
+    xmin, xmax = p.get("xmin", 1e5), p.get("xmax", 5e7)
+    ymax = p.get("ymax", max(q["y"] for q in pts) * 1.1)
+    ymin = p.get("ymin", 0)
+    X = _logx(x0, w, xmin, xmax)
+    Y = lambda v: y0 + h - (min(v, ymax) - ymin) / (ymax - ymin) * h
+    o.append(f'<text x="{x0}" y="{y0-12}" class="c-lab">{esc(p["title"])}</text>')
+    _axis_y(o, x0, y0, w, h, ymin, ymax, p.get("fmt", "pct1"), 4)
+    _xticks_log(o, X, x0, y0, h, xmin, xmax, p.get("xticks", LOGTICKS))
+    o.append(f'<text x="{x0+w/2:.1f}" y="{y0+h+32}" text-anchor="middle" class="c-note">{esc(p.get("xlab", "Mensajes (escala logarítmica)"))}</text>')
+    if p.get("ref"):
+        rv, rl = p["ref"]
+        o.append(f'<line x1="{x0}" y1="{Y(rv):.1f}" x2="{x0+w}" y2="{Y(rv):.1f}" class="c-ref"/><text x="{x0+w}" y="{Y(rv)-4:.1f}" text-anchor="end" class="c-note">{esc(rl)}</text>')
+    smax = max(q.get("size", 1) for q in pts) or 1
+    rmax = p.get("rmax", 22)
+    order = sorted(pts, key=lambda q: -q.get("size", 1))
+    for q in order:
+        r = max(3, rmax * _m.sqrt(q.get("size", 1) / smax))
+        col = cols.get(q["g"], "#999")
+        dim = q.get("dim", False)
+        o.append(f'<circle cx="{X(q["x"]):.1f}" cy="{Y(q["y"]):.1f}" r="{r:.1f}" fill="{"#"+GRAY if dim else col}" fill-opacity="{0.35 if dim else 0.55}" stroke="{"#"+GRAY if dim else col}" stroke-width="1"/>')
+    items, seen = [], set()
+    for q in p.get("labels", []):
+        if q["label"] in seen:
+            continue
+        seen.add(q["label"])
+        rq = max(3, rmax * _m.sqrt(q.get("size", 1) / smax))
+        items.append([X(q["x"]), Y(q["y"]), q["label"], "end" if X(q["x"]) > x0 + w * 0.7 else "start", rq])
+    big = [(X(q["x"]), Y(q["y"]), max(3, rmax * _m.sqrt(q.get("size", 1) / smax))) for q in order[:40]]
+    _place_labels(o, items, x0, w, y0, h, "c-val c-sm", avoid=big)
+    if p.get("annot"):
+        for ax, ay, t in p["annot"]:
+            o.append(f'<text x="{x0+ax*w:.1f}" y="{y0+ay*h:.1f}" class="c-note">{esc(t)}</text>')
+
+
+def svg_bubble(ex, W=1000):
+    panels, groups = ex["panels"], ex["groups"]
+    cols = _tc(groups)
+    Hh = 340
+    o = [f'<svg viewBox="0 0 {W} {Hh}" class="chart" role="img" preserveAspectRatio="xMinYMin meet">']
+    x = _legend(o, 60, 16, groups, [cols[g] for g in groups])
+    if ex.get("size_label"):
+        o.append(f'<text x="{x+10}" y="20" class="c-note">{esc("Tamaño del círculo: " + ex["size_label"])}</text>')
+    pw = (W - 60) / len(panels)
+    for pi, p in enumerate(panels):
+        _bubble_panel(o, 60 + pi * pw, 54, pw - 50, 220, p, cols)
+    if ex.get("note"):
+        o.append(f'<text x="60" y="{Hh-4}" class="c-note">{esc(ex["note"])}</text>')
+    o.append("</svg>")
+    return "".join(o)
+
+
+# 7. Tiras por categoría: cada familia un punto en x logarítmica, promedio ponderado marcado --------------------
+def svg_strip(ex, W=1000):
+    rws = ex["rows"]
+    labw, x0 = 230, 250
+    w = W - x0 - 40
+    rh = ex.get("rh", 40)
+    top = 60
+    Hh = top + len(rws) * rh + 40
+    o = [f'<svg viewBox="0 0 {W} {Hh}" class="chart" role="img" preserveAspectRatio="xMinYMin meet">']
+    xmin, xmax = ex.get("xmin", 0.03), ex.get("xmax", 12)
+    X = _logx(x0, w, xmin, xmax)
+    o.append(f'<text x="10" y="18" class="c-lab">{esc(ex["label"])}</text>')
+    o.append(f'<text x="{x0+w}" y="18" text-anchor="end" class="c-note">{esc(ex.get("size_label", "Tamaño del punto: emails entregados"))}</text>')
+    for xv, xl in ex.get("xticks", [(0.05, "0.05 %"), (0.1, "0.1 %"), (0.3, "0.3 %"), (1, "1 %"), (3, "3 %"), (10, "10 %")]):
+        o.append(f'<line x1="{X(xv):.1f}" y1="{top-8}" x2="{X(xv):.1f}" y2="{top+len(rws)*rh}" class="c-grid"/><text x="{X(xv):.1f}" y="{top-14}" text-anchor="middle" class="c-cat">{esc(xl)}</text>')
+    for rv, rl, col in ex.get("refs", []):
+        o.append(f'<line x1="{X(rv):.1f}" y1="{top-8}" x2="{X(rv):.1f}" y2="{top+len(rws)*rh}" stroke="{col}" stroke-width="1.5" stroke-dasharray="4 3"/><text x="{X(rv)+4:.1f}" y="{top+len(rws)*rh+16}" class="c-note" style="fill:{col}">{esc(rl)}</text>')
+    smax = max(q["size"] for r in rws for q in r["pts"])
+    for i, r in enumerate(rws):
+        yc = top + i * rh + rh / 2
+        dim = r.get("dim")
+        o.append(f'<text x="{labw}" y="{yc+4}" text-anchor="end" class="c-cat" style="font-weight:600;fill:{"var(--ink-3)" if dim else "var(--ink)"}">{esc(r["gancho"])}</text>')
+        o.append(f'<text x="{labw}" y="{yc+16}" text-anchor="end" class="c-note">{esc(r.get("sub") or f"{r['n']} familias · {r['vol']/1e6:.0f} M")}</text>')
+        for qi, q in enumerate(r["pts"]):
+            rr = max(2.5, 11 * _m.sqrt(q["size"] / smax))
+            jit = ((qi * 7) % 9 - 4) * (rh / 2 - 8) / 4 if ex.get("jitter") else 0
+            o.append(f'<circle cx="{X(max(q["x"], xmin)):.1f}" cy="{yc+jit:.1f}" r="{rr:.1f}" fill="#{GRAY}" fill-opacity="0.45"/>')
+        col = "#" + INK2 if dim else PAL[0]
+        o.append(f'<line x1="{X(r["wmean"]):.1f}" y1="{yc-11}" x2="{X(r["wmean"]):.1f}" y2="{yc+11}" stroke="{col}" stroke-width="3"/>')
+        o.append(f'<text x="{X(r["wmean"]):.1f}" y="{yc-14}" text-anchor="middle" class="c-val c-sm" style="fill:{col}">{fmtv(r["wmean"], "pct2")}</text>')
+        for q in r.get("labels", []):
+            o.append(f'<text x="{X(q["x"])+6:.1f}" y="{yc+15}" class="c-note" style="fill:var(--ink)">{esc(q["label"])}</text>')
+    o.append(f'<text x="{x0}" y="{Hh-6}" class="c-note">{esc(ex.get("note", "Gris: cada familia de email; línea azul: promedio ponderado del gancho. Escala logarítmica."))}</text>')
+    o.append("</svg>")
+    return "".join(o)
+
+
+# 8. Pareto: familias por volumen (rango logarítmico) y % acumulado de volumen y de respuestas -------------------
+def svg_pareto(ex, W=1000):
+    panels = ex["panels"]
+    Hh = 340
+    o = [f'<svg viewBox="0 0 {W} {Hh}" class="chart" role="img" preserveAspectRatio="xMinYMin meet">']
+    _legend(o, 60, 16, ["% acumulado del volumen", "% acumulado de las respuestas"], [PAL[0], TEAL])
+    pw = (W - 60) / len(panels)
+    for pi, p in enumerate(panels):
+        x0, y0, w, h = 60 + pi * pw, 54, pw - 60, 210
+        pts = p["pts"]
+        n = len(pts)
+        X = _logx(x0, w, 1, n)
+        Y = _axis_y(o, x0, y0, w, h, 0, 100, "pct0", 5)
+        o.append(f'<text x="{x0}" y="{y0-12}" class="c-lab">{esc(p["title"])}</text>')
+        for xv in (1, 3, 10, 30, 100, 300, 1000):
+            if xv <= n:
+                o.append(f'<text x="{X(xv):.1f}" y="{y0+h+16}" text-anchor="middle" class="c-cat">{xv}</text>')
+        o.append(f'<text x="{x0+w/2:.1f}" y="{y0+h+32}" text-anchor="middle" class="c-note">{esc(f"Familias ordenadas de mayor a menor volumen ({n} en total, escala logarítmica)")}</text>')
+        dv = " ".join(f'{"M" if i == 0 else "L"}{X(i+1):.1f},{Y(q["vol"]):.1f}' for i, q in enumerate(pts))
+        dr = " ".join(f'{"M" if i == 0 else "L"}{X(i+1):.1f},{Y(q["resp"]):.1f}' for i, q in enumerate(pts))
+        area = dv + " " + " ".join(f'L{X(i+1):.1f},{Y(q["resp"]):.1f}' for i, q in reversed(list(enumerate(pts)))) + " Z"
+        o.append(f'<path d="{area}" fill="{PAL[0]}" fill-opacity="0.08"/>')
+        o.append(f'<path d="{dv}" fill="none" stroke="{PAL[0]}" stroke-width="2.5"/><path d="{dr}" fill="none" stroke="{TEAL}" stroke-width="2.5"/>')
+        k = p.get("mark", 10)
+        q = pts[k - 1]
+        o.append(f'<line x1="{X(k):.1f}" y1="{y0}" x2="{X(k):.1f}" y2="{y0+h}" class="c-ref"/>')
+        o.append(f'<text x="{X(k)+6:.1f}" y="{Y(q["vol"])-6:.1f}" class="c-val c-sm" style="fill:{PAL[0]}">{esc(f"{k} familias: {q['vol']:.0f} % del volumen")}</text>')
+        o.append(f'<text x="{X(k)+6:.1f}" y="{Y(q["resp"])+14:.1f}" class="c-val c-sm" style="fill:{TEAL}">{esc(f"{q['resp']:.0f} % de las respuestas")}</text>')
+        li = p.get("label_idx", [0, 1, 2])
+        for n_, i in enumerate(li):
+            q = pts[i]
+            o.append(f'<circle cx="{X(i+1):.1f}" cy="{Y(q["vol"]):.1f}" r="4" fill="{PAL[0]}" stroke="#fff" stroke-width="1.2"/>')
+            o.append(f'<text x="{X(i+1):.1f}" y="{Y(q["vol"])-8:.1f}" text-anchor="middle" class="c-val c-sm c-halo">{i+1}</text>')
+            o.append(f'<text x="{x0+w}" y="{y0+h-8-14*(len(li)-1-n_):.1f}" text-anchor="end" class="c-note" style="fill:var(--ink)">{i+1}. {esc(q["label"])}  {fmtv(q["rate"], p.get("fmt", "pct2"))}</text>')
+    if ex.get("note"):
+        o.append(f'<text x="60" y="{Hh-4}" class="c-note">{esc(ex["note"])}</text>')
+    o.append("</svg>")
+    return "".join(o)
+
+
+# 9. Matriz de puntos: filas x columnas, tamaño del punto = valor, número dentro; columna de total ---------------
+def svg_dotmatrix(ex, W=1000):
+    rws, cols = ex["rows"], ex["cols"]
+    labw = ex.get("labw", 250)
+    rh, top = 36, 56
+    tw = 150 if ex.get("row_total_label") else 0
+    cw = (W - labw - tw - 30) / len(cols)
+    Hh = top + len(rws) * rh + 30
+    o = [f'<svg viewBox="0 0 {W} {Hh}" class="chart" role="img" preserveAspectRatio="xMinYMin meet">']
+    o.append(f'<text x="10" y="18" class="c-lab">{esc(ex["label"])}</text>')
+    for j, c in enumerate(cols):
+        o.append(f'<text x="{labw+j*cw+cw/2:.1f}" y="{top-10}" text-anchor="middle" class="c-cat" style="font-weight:600">{esc(c)}</text>')
+    if tw:
+        o.append(f'<text x="{labw+len(cols)*cw+tw-10:.1f}" y="{top-10}" text-anchor="end" class="c-cat" style="font-weight:600">{esc(ex["row_total_label"])}</text>')
+    vmax = max(max(r["vals"]) for r in rws) or 1
+    groups = sorted(set(r.get("g") for r in rws if r.get("g")))
+    cols_ = _tc(groups) if groups else {}
+    for i, r in enumerate(rws):
+        yc = top + i * rh + rh / 2
+        col = cols_.get(r.get("g"), PAL[0])
+        if i % 2 == 0:
+            o.append(f'<rect x="{labw-6}" y="{yc-rh/2:.1f}" width="{len(cols)*cw+tw+6:.1f}" height="{rh}" fill="#F6F7F9"/>')
+        o.append(f'<text x="{labw-12}" y="{yc+4:.1f}" text-anchor="end" class="c-cat" style="fill:var(--ink)">{esc(r["label"])}</text>')
+        if r.get("sub"):
+            o.append(f'<text x="{labw-12}" y="{yc+16:.1f}" text-anchor="end" class="c-note">{esc(r["sub"])}</text>')
+        for j, v in enumerate(r["vals"]):
+            if v:
+                rr = 5 + 10 * _m.sqrt(v / vmax)
+                cx_ = labw + j * cw + cw / 2
+                txt = fmtv(v, ex.get("fmt", "int"))
+                o.append(f'<circle cx="{cx_:.1f}" cy="{yc:.1f}" r="{rr:.1f}" fill="{col}" fill-opacity="0.85"/>')
+                if rr >= 4 + 3.6 * len(txt):
+                    o.append(f'<text x="{cx_:.1f}" y="{yc+4:.1f}" text-anchor="middle" class="c-val c-sm" style="fill:#fff">{esc(txt)}</text>')
+                else:
+                    o.append(f'<text x="{cx_+rr+4:.1f}" y="{yc+4:.1f}" class="c-val c-sm" style="fill:{col}">{esc(txt)}</text>')
+        if tw:
+            o.append(f'<text x="{labw+len(cols)*cw+tw-10:.1f}" y="{yc+4:.1f}" text-anchor="end" class="c-val" style="fill:{col}">{esc(r["total"])}</text>')
+    if ex.get("note"):
+        o.append(f'<text x="10" y="{Hh-6}" class="c-note">{esc(ex["note"])}</text>')
+    o.append("</svg>")
+    return "".join(o)
+
+
+# 10. Insistencia: pequeños múltiplos; respuesta mensual contra el mínimo y envíos después de fallar -------------
+def svg_insist(ex, W=1000):
+    cells = ex["cells"]
+    ncol = 3
+    nrow = (len(cells) + ncol - 1) // ncol
+    cw, ch = (W - 20) / ncol, 150
+    Hh = nrow * ch + 30
+    o = [f'<svg viewBox="0 0 {W} {Hh}" class="chart" role="img" preserveAspectRatio="xMinYMin meet">']
+    cats = ex["cats"]
+    from deck_data import TEAMS
+    for i, c in enumerate(cells):
+        x0 = 60 + (i % ncol) * cw
+        y0 = 40 + (i // ncol) * ch
+        w, h = cw - 80, 80
+        col = PAL[TEAMS.index(c["team"])] if c["team"] in TEAMS else PAL[0]
+        o.append(f'<text x="{x0}" y="{y0-22}" class="c-lab" style="fill:{col}">{esc(c["title"])}</text>')
+        o.append(f'<text x="{x0}" y="{y0-8}" class="c-note">{esc(c["sub"])}</text>')
+        vals = [v for v in c["resp"] if v is not None]
+        hi = max(max(vals), c["min"] * 1.3) * 1.15
+        Y = lambda v, hi=hi: y0 + h - v / hi * h
+        slot = w / len(cats)
+        xf = x0 + c["fail"] * slot + slot / 2
+        o.append(f'<rect x="{xf:.1f}" y="{y0}" width="{x0+w-xf:.1f}" height="{h}" fill="#{RED}" fill-opacity="0.08"/>')
+        o.append(f'<line x1="{x0}" y1="{Y(c["min"]):.1f}" x2="{x0+w}" y2="{Y(c["min"]):.1f}" class="c-ref"/><text x="{x0+w/2:.1f}" y="{Y(c["min"])-4:.1f}" text-anchor="middle" class="c-note c-halo">mínimo {fmtv(c["min"], c["fmt"])}</text>')
+        pts = [(x0 + j * slot + slot / 2, Y(v)) for j, v in enumerate(c["resp"]) if v is not None]
+        d = " ".join(f'{"M" if k == 0 else "L"}{x:.1f},{y:.1f}' for k, (x, y) in enumerate(pts))
+        o.append(f'<path d="{d}" fill="none" stroke="{col}" stroke-width="2.2"/>')
+        for j, v in enumerate(c["resp"]):
+            if v is None:
+                continue
+            x = x0 + j * slot + slot / 2
+            o.append(f'<circle cx="{x:.1f}" cy="{Y(v):.1f}" r="{5 if j == c["fail"] else 3}" fill="{"#"+RED if j == c["fail"] else col}" stroke="#fff" stroke-width="1.2"/>')
+            if j in (c["fail"], 0, len(cats) - 1) and j != c["fail"] + 0.5:
+                o.append(f'<text x="{x:.1f}" y="{Y(v)-8:.1f}" text-anchor="middle" class="c-val c-sm">{esc(fmtv(v, c["fmt"]))}</text>')
+            o.append(f'<text x="{x:.1f}" y="{y0+h+14}" text-anchor="middle" class="c-cat">{esc(cats[j])}</text>')
+        anc = "end" if xf > x0 + w * 0.45 else "start"
+        o.append(f'<text x="{(x0+w) if anc == "end" else xf+4:.1f}" y="{y0+h+30}" text-anchor="{anc}" class="c-val c-sm" style="fill:#{RED}">{esc(c["after"])}</text>')
+    o.append("</svg>")
+    return "".join(o)
+
+
+# 11. Áreas apiladas por mes con acumulado a la derecha ----------------------------------------------------------
+def svg_areacum(ex, W=1000):
+    cats, series = ex["cats"], ex["series"]
+    Hh = 330
+    o = [f'<svg viewBox="0 0 {W} {Hh}" class="chart" role="img" preserveAspectRatio="xMinYMin meet">']
+    names = [s[0] for s in series]
+    cols = _tc(names) if not ex.get("ramp") else dict(zip(names, _ramp(len(names))))
+    x0, y0, w, h = 60, 60, 560, 220
+    o.append(f'<text x="{x0}" y="18" class="c-lab">{esc(ex["label"])}</text>')
+    _legend(o, x0, 38, names, [cols[n] for n in names])
+    n = len(cats)
+    tot = [sum(s[1][i] for s in series) for i in range(n)]
+    Y = _axis_y(o, x0, y0, w, h, 0, max(tot) * 1.15, ex.get("fmt", "M"), 4)
+    slot = w / n
+    Xc = lambda i: x0 + i * slot + slot / 2
+    base = [0.0] * n
+    for name, vals in series:
+        top_ = [base[i] + vals[i] for i in range(n)]
+        d = " ".join(f'{"M" if i == 0 else "L"}{Xc(i):.1f},{Y(top_[i]):.1f}' for i in range(n)) + " " + " ".join(f'L{Xc(i):.1f},{Y(base[i]):.1f}' for i in reversed(range(n))) + " Z"
+        o.append(f'<path d="{d}" fill="{cols[name]}" fill-opacity="0.75" stroke="#fff" stroke-width="1"/>')
+        base = top_
+    for i, c in enumerate(cats):
+        o.append(f'<text x="{Xc(i):.1f}" y="{y0+h+16}" text-anchor="middle" class="c-cat">{esc(c)}</text>')
+        if i in set(ex.get("highlight", [])) or i in (0, n - 1):
+            o.append(f'<text x="{Xc(i):.1f}" y="{Y(tot[i])-6:.1f}" text-anchor="middle" class="c-val c-sm">{esc(fmtv(tot[i], ex.get("fmt", "M")))}</text>')
+    # acumulado
+    cx0, cw_ = x0 + w + 90, W - x0 - w - 120
+    cum = ex["cum"]
+    o.append(f'<text x="{cx0}" y="{y0-10}" class="c-lab">{esc(ex["cum_label"])}</text>')
+    Y2 = _axis_y(o, cx0, y0, cw_, h, 0, max(cum) * 1.15, ex.get("cum_fmt", "MXN"), 4)
+    slot2 = cw_ / n
+    d = " ".join(f'{"M" if i == 0 else "L"}{cx0+i*slot2+slot2/2:.1f},{Y2(v):.1f}' for i, v in enumerate(cum))
+    o.append(f'<path d="{d} L{cx0+(n-1)*slot2+slot2/2:.1f},{Y2(0):.1f} L{cx0+slot2/2:.1f},{Y2(0):.1f} Z" fill="#{RED}" fill-opacity="0.1"/>')
+    o.append(f'<path d="{d}" fill="none" stroke="#{RED}" stroke-width="2.5"/>')
+    for i, v in enumerate(cum):
+        if i % 2 == 0:
+            o.append(f'<text x="{cx0+i*slot2+slot2/2:.1f}" y="{y0+h+16}" text-anchor="middle" class="c-cat">{esc(cats[i])}</text>')
+    o.append(f'<circle cx="{cx0+(n-1)*slot2+slot2/2:.1f}" cy="{Y2(cum[-1]):.1f}" r="5" fill="#{RED}" stroke="#fff" stroke-width="1.5"/>')
+    o.append(f'<text x="{cx0+(n-1)*slot2+slot2/2-8:.1f}" y="{Y2(cum[-1])-10:.1f}" text-anchor="end" class="c-val" style="fill:#{RED}">{esc(fmtv(cum[-1], ex.get("cum_fmt", "MXN")) + " MXN")}</text>')
+    if ex.get("note"):
+        o.append(f'<text x="{x0}" y="{Hh-6}" class="c-note">{esc(ex["note"])}</text>')
+    o.append("</svg>")
+    return "".join(o)
+
+
+# 12. Combinación de paneles: líneas y burbujas lado a lado --------------------------------------------------------
+def svg_combo(ex, W=1000):
+    panels = ex["panels"]
+    Hh = ex.get("H", 330)
+    o = [f'<svg viewBox="0 0 {W} {Hh}" class="chart" role="img" preserveAspectRatio="xMinYMin meet">']
+    tw = sum(p.get("w", 1) for p in panels)
+    x = 60
+    lnames = [tuple(s[0] for s in p["series"]) for p in panels if p["kind"] == "line" and p.get("legend")]
+    shared = len(lnames) > 1 and len(set(lnames)) == 1
+    if shared:
+        p0 = next(p for p in panels if p["kind"] == "line")
+        _legend(o, 60, 30, list(lnames[0]), p0.get("cols") or PAL)
+    for p in panels:
+        pw = (W - 60) * p.get("w", 1) / tw
+        w, y0, h = pw - 70, 60, 210
+        if p["kind"] == "line":
+            cols = p.get("cols")
+            if p.get("legend") and not shared:
+                _legend(o, x, 30, [s[0] for s in p["series"]], cols or PAL)
+            _line_multi(o, x, y0, w, h, p["cats"], p["series"], p.get("fmt", ""), p["title"], p.get("ymin"), p.get("ymax"), p.get("ref"), set(p.get("hl", [])), p.get("end_labels", True), p.get("point_labels"), cat_every=p.get("cat_every", 1), markers=p.get("markers", True), cols=cols, emph=p.get("emph"))
+            if p.get("xlab"):
+                o.append(f'<text x="{x+w/2:.1f}" y="{y0+h+34}" text-anchor="middle" class="c-note">{esc(p["xlab"])}</text>')
+        elif p["kind"] == "bubble":
+            cols = _tc(p["groups"])
+            _legend(o, x, 30, p["groups"], [cols[g] for g in p["groups"]])
+            _bubble_panel(o, x, y0, w, h, p, cols)
+        elif p["kind"] == "conn":
+            _conn_panel(o, x, y0, w, h, p)
+        elif p["kind"] == "slope":
+            _slope_panel(o, x, y0, w, h, p)
+        x += pw
+    if ex.get("note"):
+        o.append(f'<text x="60" y="{Hh-4}" class="c-note">{esc(ex["note"])}</text>')
+    o.append("</svg>")
+    return "".join(o)
+
+
+NEW_TYPES = {"mekko": svg_mekko, "parallel": svg_parallel, "slope": svg_slope, "lorenz": svg_lorenz, "connscatter": svg_connscatter,
+             "bubble": svg_bubble, "strip": svg_strip, "pareto": svg_pareto, "dotmatrix": svg_dotmatrix, "insist": svg_insist,
+             "areacum": svg_areacum, "combo": svg_combo}
+
+
+RASTER_TYPES = ("regress", "hist", "candle", "idxgrid", "stackbar", "barcause", "hbarmult") + tuple(NEW_TYPES)
 
 
 def render_exhibit(ex):
     t = ex["type"]
+    if t in NEW_TYPES:
+        return NEW_TYPES[t](ex)
     if t == "regress":
         return svg_regress(ex)
     if t == "hist":
@@ -1087,12 +1745,16 @@ body{margin:0;background:var(--chrome);color:var(--ink);font-family:var(--font);
 .toc a{display:inline-block;padding:3px 10px;border:1px solid currentColor;border-radius:999px;text-decoration:none;font-size:12.5px;opacity:.85}
 .toc a:hover,.toc a:focus-visible{opacity:1;outline:2px solid var(--accent);outline-offset:1px}
 .slide{container-type:inline-size;aspect-ratio:16/9;width:100%%;background:var(--paper);color:var(--ink);border-radius:6px;box-shadow:0 1px 2px rgba(0,0,0,.08),0 6px 24px rgba(0,0,0,.06);position:relative;overflow:hidden;scroll-margin-top:12px}
-.s{position:absolute;inset:0;padding:3.8cqi 4.6cqi 3.2cqi;display:flex;flex-direction:column;gap:1.2cqi}
+.s{position:absolute;inset:0;padding:3.6cqi 4.6cqi 3cqi;display:flex;flex-direction:column;gap:1.2cqi}
+.slide.v5 .s{gap:.85cqi}
 .tracker{position:absolute;top:2.2cqi;right:4.6cqi;font-size:1.25cqi;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
 .num{position:absolute;bottom:1.8cqi;right:4.6cqi;font-size:1.25cqi;color:var(--ink-3);font-variant-numeric:tabular-nums}
 h2.t{margin:0;font-size:2.5cqi;line-height:1.2;font-weight:600;letter-spacing:-.01em;text-wrap:balance;max-width:84cqi;color:var(--ink)}
 h2.t.t-long{font-size:2.2cqi;max-width:88cqi} h2.t.t-xl{font-size:1.95cqi;max-width:90cqi} h2.t::after{content:"";display:block;width:6cqi;height:.35cqi;background:var(--accent);margin-top:.7cqi;border-radius:2px}
 .body{flex:1;display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:3.4cqi;min-height:0}
+.body.v5{grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:2.4cqi}
+.slide.v5 .kpi .k-lab{font-size:1.02cqi;line-height:1.2} .slide.v5 .kpi .k-big{font-size:2.1cqi} .slide.v5 .kpis{padding-bottom:.45cqi;margin-bottom:.2cqi}
+.body.v5 .tbl{font-size:1.1cqi;line-height:1.25} .body.v5 .tbl th{font-size:.95cqi;padding:.3cqi .6cqi .3cqi 0} .body.v5 .tbl td{padding:.36cqi .6cqi .36cqi 0} .body.v5 .tblwrap{max-height:100%%;overflow:hidden}
 .body.full{grid-template-columns:minmax(0,1fr)}
 .ex{min-width:0;min-height:0;font-size:1.5cqi}
 .side{min-width:0;font-size:1.42cqi;line-height:1.38;color:var(--ink-2);display:flex;flex-direction:column;gap:.9cqi}
@@ -1106,10 +1768,28 @@ h2.t.t-long{font-size:2.2cqi;max-width:88cqi} h2.t.t-xl{font-size:1.95cqi;max-wi
 .hc b{color:var(--ink);font-size:1.02cqi;letter-spacing:.1em;text-transform:uppercase;margin-right:.6cqi}
 .hc .tag{display:inline-block;font-size:1.0cqi;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--bad);background:var(--bad-bg);padding:.05cqi .5cqi;border-radius:.3cqi;margin-right:.5cqi;vertical-align:.1cqi}
 .hc .tag.ok{color:var(--ok);background:var(--ok-bg)}
+.why{min-width:0;min-height:0;display:flex;flex-direction:column;gap:.38cqi;font-size:1.02cqi;line-height:1.28;color:var(--ink-2)}
+.why h4{margin:0 0 .1cqi;font-size:.9cqi;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.why p{margin:0;padding-left:1.5cqi;position:relative}
+.why p::before{content:attr(data-n);position:absolute;left:0;top:.08cqi;width:1.1cqi;height:1.1cqi;border-radius:50%%;background:var(--accent-soft);color:var(--accent);font-size:.78cqi;font-weight:700;display:flex;align-items:center;justify-content:center}
+.why p.root{color:var(--ink);font-weight:600;padding-left:1.5cqi}
+.why p.root::before{background:var(--bad);color:#fff}
+.why .tag{display:block;width:max-content;max-width:100%%;font-size:.84cqi;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--bad);background:var(--bad-bg);padding:.05cqi .5cqi;border-radius:.3cqi;margin-bottom:.2cqi}
+.why .tag.ok{color:var(--ok);background:var(--ok-bg)}
+.why.why-s{font-size:.96cqi;gap:.3cqi} .why.why-xs{font-size:.9cqi;gap:.26cqi;line-height:1.25}
+.hc.hc3{grid-template-columns:1.12fr 1.25fr .95fr;gap:.25cqi 1.8cqi;font-size:.98cqi;line-height:1.27;margin-top:0;padding-top:.45cqi}
+.hc.hc3>div{min-width:0}
+.hc.hc3 b{display:inline-block;margin-bottom:.2cqi}
+.hc.hc3 .leg{font-size:.85cqi;color:var(--ink-3);margin-left:.2cqi}
+.hc.hc3 p{margin:0 0 .15cqi;padding-left:1.5cqi;position:relative}
+.hc.hc3 div:not(:first-child) p{padding-left:0}
+.hc.hc3 p i{position:absolute;left:0;top:.1cqi;font-style:normal;font-weight:700;font-size:.85cqi;color:var(--accent);background:var(--accent-soft);border-radius:.25cqi;padding:0 .35cqi;line-height:1.3}
 .kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.6cqi 2.4cqi;margin:0 0 .4cqi;padding-bottom:.6cqi;border-bottom:1px solid var(--rule)} .kpi{display:flex;align-items:baseline;gap:.9cqi;min-width:0} .kpis ~ .body .side{font-size:1.25cqi;gap:.7cqi}
 .kpi .k-big{font-size:2.4cqi;font-weight:700;letter-spacing:-.02em;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums;flex:0 0 auto;white-space:nowrap}
 .kpi .k-lab{font-size:1.12cqi;color:var(--ink-2);line-height:1.22;min-width:0}
 .sowhat{display:flex;gap:1.4cqi;align-items:flex-start;background:var(--accent-soft);border-left:.4cqi solid var(--accent);padding:.8cqi 1.4cqi;margin-top:.6cqi;font-size:1.4cqi;line-height:1.32;color:var(--ink)}
+.slide.v5 .sowhat{font-size:1.2cqi;padding:.55cqi 1.2cqi;margin-top:.1cqi;line-height:1.3}
+.slide.v5 .src{padding-top:.5cqi}
 .sowhat b{flex:0 0 auto;color:var(--accent);font-size:1.1cqi;letter-spacing:.1em;text-transform:uppercase;padding-top:.3cqi}
 .c-lab{font-size:15px;font-weight:600;fill:var(--ink)}
 .c-cat{font-size:13.5px;fill:var(--ink-2)}
@@ -1117,6 +1797,7 @@ h2.t.t-long{font-size:2.2cqi;max-width:88cqi} h2.t.t-xl{font-size:1.95cqi;max-wi
 .c-val.c-sm{font-size:12px}
 .c-val.c-hl{fill:var(--accent)}
 .c-note{font-size:11px;fill:var(--ink-3)}
+.c-halo{paint-order:stroke;stroke:#fff;stroke-width:3px;stroke-linejoin:round}
 .c-grid{stroke:var(--rule);stroke-width:1}
 .c-ref{stroke:var(--ink-3);stroke-width:1;stroke-dasharray:4 4}
 .tblwrap{overflow:auto;max-height:50cqi}
@@ -1176,11 +1857,12 @@ JS = """
   // Ajuste fino: si una tabla o lista de reglas invade la banda So what, reduce su tamaño de letra por pasos.
   function fit(){
     slides.forEach(function(s){
-      var sw=s.querySelector('.hc')||s.querySelector('.sowhat')||s.querySelector('.src'); var ex=s.querySelector('.ex'); var side=s.querySelector('.side');
+      var sw=s.querySelector('.hc')||s.querySelector('.sowhat')||s.querySelector('.src'); var ex=s.querySelector('.ex'); var side=s.querySelector('.side')||s.querySelector('.why');
       if(!sw||!ex)return;
       [ex,side].forEach(function(el){
         if(!el)return;
         var big=el.querySelector('.tbl,.rules,.stats')||el; var z=1; var k=0; big.style.zoom='';
+        if(big.classList.contains('why')){big.style.fontSize='';var fs=parseFloat(getComputedStyle(big).fontSize);while(k<12&&big.getBoundingClientRect().bottom>sw.getBoundingClientRect().top-2){fs*=0.94;big.style.fontSize=fs+'px';k++;}return;}
         while(k<10&&big.getBoundingClientRect().bottom>sw.getBoundingClientRect().top-2){z*=0.95;big.style.zoom=z;k++;}
       });
     });
@@ -1192,6 +1874,9 @@ JS = """
 })();
 """
 
+
+CAUSA_SHORT = {"saturacion": "saturación", "solape": "solape entre equipos", "producto": "producto u oferta", "audiencia": "audiencia sin segmento",
+               "canal": "canal equivocado", "operacion": "operación", "medicion": "sin medición", "metodo": "método"}
 
 CAUSA_TAGS = {
     "saturacion": "Saturación: muchas piezas el mismo día",
@@ -1218,10 +1903,42 @@ def kpis_html(s):
     return '<div class="kpis">' + "".join(f'<div class="kpi"><div class="k-big">{esc(b)}</div><div class="k-lab">{esc(l)}</div></div>' for b, l in k) + "</div>"
 
 
+HIP_LAB = (("A", "Analítica"), ("O", "Operativa"), ("G", "Gobierno"))
+
+
+def why_html(s):
+    """Cadena de los 5 porqués: qué pasó, por qué, ..., causa raíz (con su etiqueta de mecanismo)."""
+    pq = s.get("porques") or []
+    load = sum(len(t) for t in pq) + (120 if len(s.get("title", "")) > 185 else 0) + (60 if s.get("kpis") else 0)
+    size = " why-xs" if load > 650 else (" why-s" if load > 560 else "")
+    o = [f'<div class="why{size}"><h4>Qué pasó y por qué</h4>']
+    for i, t in enumerate(pq):
+        root = i == len(pq) - 1
+        tag = s.get("causa_tag")
+        chip = f'<span class="tag{" ok" if tag == "metodo" else ""}">Causa raíz · {esc(CAUSA_SHORT.get(tag, tag or ""))}</span>' if root and tag else ""
+        o.append(f'<p class="{"root" if root else ""}" data-n="{i+1}">{chip}{esc(t)}</p>')
+    o.append("</div>")
+    return "".join(o)
+
+
+def hc3_html(s):
+    hip = s.get("hipotesis") or ()
+    if isinstance(hip, str):
+        hip = (hip,)
+    h = "".join(f'<p><i>{HIP_LAB[i][0]}</i>{esc(t)}</p>' for i, t in enumerate(hip))
+    return ('<div class="hc hc3">'
+            f'<div><b>Hipótesis</b><span class="leg">A analítica · O operativa · G gobierno</span>{h}</div>'
+            f'<div><b>Cómo lo resolvemos</b><p>{esc(s.get("como", ""))}</p></div>'
+            f'<div><b>Si lo resolvemos</b><p>{esc(s.get("impacto", ""))}</p></div>'
+            "</div>")
+
+
 def sowhat(s):
     t = s.get("sowhat")
     hc = ""
-    if s.get("hipotesis") or s.get("causa") or s.get("impacto"):
+    if s.get("como") or isinstance(s.get("hipotesis"), (list, tuple)):
+        hc = hc3_html(s)
+    elif s.get("hipotesis") or s.get("causa") or s.get("impacto"):
         hc = ('<div class="hc">'
               + (f'<p><b>Hipótesis</b>{esc(s["hipotesis"])}</p>' if s.get("hipotesis") else "<p></p>")
               + (causa_html(s) if s.get("causa") else "<p></p>")
@@ -1251,9 +1968,13 @@ def build_html():
         else:
             side = s.get("side") or []
             ex = render_exhibit(s["exhibit"])
-            sidehtml = "".join(f"<p>{esc(b)}</p>" for b in side)
-            body = f'{kpis_html(s)}<div class="body{"" if side else " full"}"><div class="ex">{ex}</div>{"<div class=\"side\">"+sidehtml+"</div>" if side else ""}</div>'
-            o.append(f'<section class="slide" id="s{i}"><div class="s"><div class="tracker">{esc(s.get("tracker",""))}</div><h2 class="t{" t-long" if len(s["title"]) > 150 else ""}{" t-xl" if len(s["title"]) > 215 else ""}">{esc(s["title"])}</h2>{body}{sowhat(s)}<div class="src">{esc(s.get("source",""))}</div></div><div class="num">{i}</div></section>')
+            if s.get("porques"):
+                sidehtml = why_html(s)
+                body = f'{kpis_html(s)}<div class="body v5"><div class="ex">{ex}</div>{sidehtml}</div>'
+            else:
+                sidehtml = "".join(f"<p>{esc(b)}</p>" for b in side)
+                body = f'{kpis_html(s)}<div class="body{"" if side else " full"}"><div class="ex">{ex}</div>{"<div class=\"side\">"+sidehtml+"</div>" if side else ""}</div>'
+            o.append(f'<section class="slide{" v5" if s.get("porques") else ""}" id="s{i}"><div class="s"><div class="tracker">{esc(s.get("tracker",""))}</div><h2 class="t{" t-long" if len(s["title"]) > 150 else ""}{" t-xl" if len(s["title"]) > 215 else ""}">{esc(s["title"])}</h2>{body}{sowhat(s)}<div class="src">{esc(s.get("source",""))}</div></div><div class="num">{i}</div></section>')
     o.append("</div>")
     o.append(f"<script>{JS}</script>")
     path = os.path.join(OUT, "BRAZE_KUESKI_DECK.html")
@@ -1323,7 +2044,51 @@ def build_pptx():
         s.shadow.inherit = False
         return s
 
+    def why_box(slide, s, x, y, w, h):
+        pq = s.get("porques") or []
+        box = slide.shapes.add_textbox(Inches(x), Inches(y), Inches(w), Inches(h))
+        tf = box.text_frame
+        tf.word_wrap = True
+        tf.margin_left = tf.margin_right = Inches(0.02)
+        size = 9.5 if sum(len(t) for t in pq) < 520 else (9 if sum(len(t) for t in pq) < 640 else 8.5)
+        p = tf.paragraphs[0]
+        r = p.add_run(); r.text = "QUÉ PASÓ Y POR QUÉ"; r.font.size = Pt(7.5); r.font.bold = True; r.font.color.rgb = C("8A909B"); r.font.name = FONT
+        p.space_after = Pt(3)
+        for i, t in enumerate(pq):
+            root = i == len(pq) - 1
+            p = tf.add_paragraph(); p.space_after = Pt(3.5)
+            r = p.add_run(); r.text = f"{i+1}.  "; r.font.size = Pt(size); r.font.bold = True; r.font.color.rgb = C(RED if root else ACCENT); r.font.name = FONT
+            if root and s.get("causa_tag"):
+                r = p.add_run(); r.text = "CAUSA RAÍZ · " + CAUSA_SHORT.get(s["causa_tag"], s["causa_tag"]).upper() + "  "; r.font.size = Pt(7); r.font.bold = True; r.font.color.rgb = C(RED); r.font.name = FONT
+            r = p.add_run(); r.text = t; r.font.size = Pt(size); r.font.bold = root; r.font.color.rgb = C(INK if root else INK2); r.font.name = FONT
+
+    def hc3_box(slide, s):
+        ln = slide.shapes.add_connector(1, Inches(0.6), Inches(5.3), Inches(12.73), Inches(5.3))
+        ln.line.color.rgb = C("E3E6EB")
+        hip = s.get("hipotesis") or ()
+        cols = ((3.9, "HIPÓTESIS", None), (4.4, "CÓMO LO RESOLVEMOS", s.get("como", "")), (3.6, "SI LO RESOLVEMOS", s.get("impacto", "")))
+        x = 0.6
+        for j, (wj, lab, txt) in enumerate(cols):
+            box = slide.shapes.add_textbox(Inches(x), Inches(5.33), Inches(wj - 0.12), Inches(0.76))
+            tf = box.text_frame
+            tf.word_wrap = True
+            tf.margin_left = tf.margin_right = Inches(0.02)
+            tf.margin_top = tf.margin_bottom = Inches(0.01)
+            p = tf.paragraphs[0]
+            r = p.add_run(); r.text = lab; r.font.size = Pt(7); r.font.bold = True; r.font.color.rgb = C(INK); r.font.name = FONT
+            if j == 0:
+                for k, t in enumerate(hip):
+                    p = tf.add_paragraph()
+                    r = p.add_run(); r.text = HIP_LAB[k][0] + "  "; r.font.size = Pt(7); r.font.bold = True; r.font.color.rgb = C(ACCENT); r.font.name = FONT
+                    r = p.add_run(); r.text = t; r.font.size = Pt(7.5); r.font.color.rgb = C(INK2); r.font.name = FONT
+            else:
+                p = tf.add_paragraph()
+                r = p.add_run(); r.text = txt; r.font.size = Pt(7.5 if len(txt) < 330 else 7); r.font.color.rgb = C(INK2); r.font.name = FONT
+            x += wj + 0.08
+
     def hc_box(slide, s):
+        if s.get("como") or isinstance(s.get("hipotesis"), (list, tuple)):
+            return hc3_box(slide, s)
         if not (s.get("hipotesis") or s.get("causa") or s.get("impacto")):
             return
         ln = slide.shapes.add_connector(1, Inches(0.6), Inches(5.42), Inches(12.73), Inches(5.42))
@@ -1956,10 +2721,14 @@ def build_pptx():
         else:
             chrome(sl, i, s.get("tracker", ""), s["title"], s.get("source", ""))
             side = s.get("side") or []
-            eh = 3.3 if (s.get("hipotesis") or s.get("causa") or s.get("impacto")) else 4.05
+            new = bool(s.get("porques"))
+            eh = 3.2 if new else (3.3 if (s.get("hipotesis") or s.get("causa") or s.get("impacto")) else 4.05)
             dy = kpis_box(sl, s)
             eh -= dy
-            if side:
+            if new:
+                exhibit(sl, s["exhibit"], 0.6, 1.95 + dy, 7.6, eh, i)
+                why_box(sl, s, 8.45, 1.95 + dy, 4.3, eh)
+            elif side:
                 exhibit(sl, s["exhibit"], 0.6, 1.95 + dy, 7.4, eh, i)
                 bullets(sl, 8.3, 1.95 + dy, 4.45, eh, side, 10.5 if eh > 3.5 else 9.5, INK2)
             else:

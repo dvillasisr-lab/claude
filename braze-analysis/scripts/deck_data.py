@@ -748,3 +748,471 @@ def canal_equipo():
     return {"cats": [n for _, n in canales], "teams": TEAMS,
             "env": [[env[(c, t)] / 1e6 for t in TEAMS] for c, _ in canales],
             "cost": [[cost[(c, t)] / 1e6 for t in TEAMS] for c, _ in canales]}
+
+
+# ---- Bloque 5: datos para gráficas multivariable (deck v6) ---------------------
+def _short_fam(name, n=30):
+    toks = [q for q in re.split(r"[-]", name) if q and q.upper() not in ("N/A", "NA", "CANVAS", "E", "FULL_ROLLOUT", "MAIL", "PUSH", "IA")
+            and not re.fullmatch(r"\d{6,8}|[A-Z]\d{3,5}", q)]
+    s = " ".join(toks[2:]) if len(toks) > 2 else " ".join(toks)
+    return s.replace("_", " ")[:n]
+
+
+def patron_matrix():
+    """Canal al que responde el usuario (filas) contra mensajes recibidos por canal (columnas), en M (E7b)."""
+    R = rows("e7b_patron_respuesta.csv")
+    groups = ["Ninguno", "Solo WhatsApp", "Solo in-app", "Solo email", "Solo push", "Dos o más canales"]
+    cols = ["Email", "Push", "WhatsApp entregado", "In-app"]
+    agg = {g: [0.0] * 5 for g in groups}
+    resp = {"Ninguno": set(), "Solo WhatsApp": {"WhatsApp entregado"}, "Solo in-app": {"In-app"}, "Solo email": {"Email"}, "Solo push": {"Push"}, "Dos o más canales": set(cols)}
+    for r in R:
+        flags = (int(r["resp_email"]), int(r["resp_push"]), int(r["resp_wa"]), int(r["resp_inapp"]))
+        n = sum(flags)
+        if n == 0:
+            g = "Ninguno"
+        elif n >= 2:
+            g = "Dos o más canales"
+        else:
+            g = ["Solo email", "Solo push", "Solo WhatsApp", "Solo in-app"][flags.index(1)]
+        v = agg[g]
+        v[0] += f(r["msgs_email"]); v[1] += f(r["msgs_push"]); v[2] += f(r["msgs_wa_entregados"]); v[3] += f(r["msgs_inapp"]); v[4] += f(r["usuarios"])
+    tu = sum(v[4] for v in agg.values())
+    M = [[agg[g][j] / 1e6 for j in range(4)] for g in groups]
+    tint = [[("mix" if g == "Dos o más canales" else ("ok" if c in resp[g] else "bad")) for c in cols] for g in groups]
+    mute = cost_mute = 0.0
+    for r in R:
+        fl = (int(r["resp_email"]), int(r["resp_push"]), int(r["resp_wa"]), int(r["resp_inapp"]))
+        ms = (f(r["msgs_email"]), f(r["msgs_push"]), f(r["msgs_wa_entregados"]), f(r["msgs_inapp"]))
+        mute += sum(m for fg, m in zip(fl, ms) if not fg)
+        cost_mute += (0.05 * ms[0] if not fl[0] else 0) + (1.0 * ms[2] if not fl[2] else 0)
+    tot = sum(agg[g][j] for g in groups for j in range(4))
+    return {"rows": groups, "cols": cols, "matrix": M, "tint": tint, "row_share": [100 * agg[g][4] / tu for g in groups],
+            "mute": mute / 1e6, "mute_share": 100 * mute / tot, "cost_mute": cost_mute / 1e6}
+
+
+def mudos_mes_canal():
+    """Envíos por mes y canal a usuarios que nunca respondieron, y costo acumulado (E16)."""
+    env = defaultdict(float); cost = defaultdict(float)
+    for r in rows("e16_sin_respuesta.csv"):
+        if r["respondio_alguna_vez"] != "0" or r["canal"] == "banner":
+            continue
+        m = mes_idx(r["mes"])
+        env[(r["canal"], m)] += f(r["envios"]); cost[m] += f(r["costo_mxn"])
+    canales = [("email", "Email"), ("push notification", "Push"), ("whatsapp", "WhatsApp"), ("in-app", "In-app")]
+    series = [(n, [env[(c, m)] / 1e6 for m in range(9)]) for c, n in canales]
+    cum, acc = [], 0.0
+    for m in range(9):
+        acc += cost[m]; cum.append(acc / 1e6)
+    return {"cats": MESES, "series": series, "cum_cost": cum, "tot": sum(env.values()) / 1e6}
+
+
+def bloqueados_familias(min_bloq=40_000):
+    """Por familia: envíos totales, envíos a etapas bloqueadas y su porcentaje (E7a)."""
+    BL = ("4.Kpay CC Freeze", "6.Reus or Arco", "3.Blacklist")
+    agg = defaultdict(lambda: [0.0, 0.0, None])
+    for r in rows("e7a_familia_canal_etapa.csv"):
+        k = r["familia"]
+        v = agg[k]
+        e = f(r["envios"])
+        v[0] += e
+        if r["etapa"] in BL:
+            v[1] += e
+        v[2] = team_of(r["equipo"])
+    def promo(k, t):
+        return t in ("Marketing", "Sales", "Product Growth") or (t == "Others" and re.search(r"-[BTS]\d{3,5}-", k) and "Compliance" not in k)
+    pts = []
+    for k, v in agg.items():
+        if v[1] >= min_bloq and v[0] > 0 and promo(k, v[2]):
+            pts.append({"x": v[0], "y": 100 * v[1] / v[0], "size": v[1], "g": v[2], "name": k, "label": _short_fam(k)})
+    pts.sort(key=lambda p: -p["size"])
+    by_team = defaultdict(float)
+    for k, v in agg.items():
+        if promo(k, v[2]):
+            by_team[v[2]] += v[1]
+    return {"pts": pts, "tot": sum(by_team.values()) / 1e6, "by_team": {t: v / 1e6 for t, v in by_team.items()}}
+
+
+def entrega_equipo_mes(min_sent=50_000):
+    """Entrega (%) de email y WhatsApp por equipo y mes (E1)."""
+    agg = defaultdict(lambda: [0.0, 0.0, 0.0, 0.0])
+    for r in rows("e1_comunicacion_mes_canal.csv"):
+        v = agg[(team_of(r["team"]), mes_idx(r["mes"]))]
+        v[0] += f(r["email_sent"]); v[1] += f(r["email_delivery"]); v[2] += f(r["whatsapp_send"]); v[3] += f(r["whatsapp_delivery"])
+    out = {"email": [], "wa": []}
+    for t in TEAMS:
+        em = [100 * agg[(t, m)][1] / agg[(t, m)][0] if agg[(t, m)][0] >= min_sent else None for m in range(9)]
+        wa = [100 * agg[(t, m)][3] / agg[(t, m)][2] if agg[(t, m)][2] >= min_sent else None for m in range(9)]
+        if any(v is not None for v in em):
+            out["email"].append((t, em))
+        if any(v is not None for v in wa):
+            out["wa"].append((t, wa))
+    return out
+
+
+def lorenz():
+    """Curva de concentración: % acumulado de usuarios (de más a menos mensajes) contra % de mensajes, bajas y conversiones (E3)."""
+    order = ["321+", "161-320", "081-160", "41-80", "21-40", "11-20", "06-10", "01-05"]
+    labels = {"321+": "321 o más", "161-320": "161 a 320", "081-160": "81 a 160", "41-80": "41 a 80", "21-40": "21 a 40", "11-20": "11 a 20", "06-10": "6 a 10", "01-05": "1 a 5"}
+    d = defaultdict(lambda: [0.0] * 4)
+    for r in rows("e3_usuarios_distribucion.csv"):
+        b = r["banda_msgs"]
+        if b in order:
+            v = d[b]; v[0] += f(r["usuarios"]); v[1] += f(r["msgs"]); v[2] += f(r["bajas_email"]); v[3] += f(r["usuarios_con_conversion"])
+    tot = [sum(d[b][i] for b in order) for i in range(4)]
+    pts, acc = [{"x": 0, "y": [0, 0, 0], "lab": ""}], [0.0] * 4
+    for b in order:
+        for i in range(4):
+            acc[i] += d[b][i]
+        pts.append({"x": 100 * acc[0] / tot[0], "y": [100 * acc[1] / tot[1], 100 * acc[2] / tot[2], 100 * acc[3] / tot[3]], "lab": labels[b], "users": d[b][0], "msgs": d[b][1]})
+    return {"pts": pts, "series": ["Mensajes", "Bajas de email", "Usuarios que convirtieron"]}
+
+
+def bajas_dias():
+    """Bajas de nuevos: distribución acumulada por días desde el alta y por emails recibidos; familias del día de la baja (E8)."""
+    dd = defaultdict(float); de = defaultdict(float); fam = defaultdict(lambda: [0.0, 0.0])
+    for r in rows("e8_dias_hasta_baja.csv"):
+        u = f(r["usuarios"])
+        if r["cohorte_limpia"] != "1":
+            continue
+        if r["bloque"] == "banda_dias":
+            dd[r["clave"]] += u
+        elif r["bloque"] == "banda_emails":
+            de[r["clave"]] += u
+        elif r["bloque"] == "familia_dia_baja":
+            v = fam[r["clave"]]; v[0] += u; v[1] += u * f(r["dias_mediana"])
+    od = ["0 mismo día", "1 a 7", "08 a 30", "31 a 90", "91 a 180", "181+"]
+    oe = ["01", "02 a 3", "04 a 10", "11 a 30", "31+"]
+    td, te = sum(dd.values()), sum(de.values())
+    cum_d, acc = [], 0.0
+    for b in od:
+        acc += dd[b]; cum_d.append(100 * acc / td)
+    cum_e, acc = [], 0.0
+    for b in oe:
+        acc += de[b]; cum_e.append(100 * acc / te)
+    fams = sorted(fam.items(), key=lambda kv: -kv[1][0])[:10]
+    pts = [{"x": v[1] / v[0], "y": v[0] / 1e3, "g": team_of(k.split("-")[0]), "name": k, "label": _short_fam(k, 26)} for k, v in fams]
+    return {"dias": {"cats": ["Mismo día", "1 a 7", "8 a 30", "31 a 90", "91 a 180", "181 o más"], "cum": cum_d},
+            "emails": {"cats": ["1", "2 a 3", "4 a 10", "11 a 30", "31 o más"], "cum": cum_e},
+            "fams": pts, "tot": td}
+
+
+def bajas_familias(min_deliv=300_000):
+    """Por familia de email: entregados, bajas por mil y bajas totales (E1)."""
+    pc = defaultdict(lambda: [0.0, 0.0, None])
+    for r in rows("e1_comunicacion_mes_canal.csv"):
+        if r["canal"] != "email":
+            continue
+        d = f(r["email_delivery"])
+        if d == 0:
+            continue
+        v = pc[_fam(r["communication_name"])]
+        v[0] += d; v[1] += f(r["email_unsubscribe"]); v[2] = team_of(r["team"])
+    pts = [{"x": v[0], "y": 1000 * v[1] / v[0], "size": v[1], "g": v[2], "name": k, "label": _short_fam(k)} for k, v in pc.items() if v[0] >= min_deliv]
+    pts.sort(key=lambda p: -p["size"])
+    tot = sum(v[1] for v in pc.values())
+    return {"pts": pts, "tot": tot, "top8_share": 100 * sum(p["size"] for p in pts[:8]) / tot}
+
+
+def pasos_canvas(top=7, min_steps=6):
+    """Canvas largos: % de usuarios que llega a cada paso y apertura del paso (E15)."""
+    cv = defaultdict(lambda: defaultdict(lambda: [0.0, 0.0]))
+    meta = {}
+    for r in rows("e15_embudo_pasos.csv"):
+        n = r["canvas_name"]
+        if n in ("", "null"):
+            continue
+        o = int(f(r["orden_aprox"]))
+        v = cv[n][o]; v[0] = max(v[0], f(r["usuarios"])); v[1] += f(r["usuarios_abrieron"])
+        meta[n] = team_of(r["team"])
+    lines = []
+    for n, steps in cv.items():
+        if len(steps) < min_steps:
+            continue
+        ords = sorted(steps)
+        u1 = max(steps[o][0] for o in ords)
+        if u1 < 100_000:
+            continue
+        reach = [100 * steps[o][0] / u1 for o in ords[:12]]
+        opn = [100 * min(steps[o][1], steps[o][0]) / steps[o][0] if steps[o][0] else None for o in ords[:12]]
+        lines.append({"name": n, "label": _short_fam(n, 26), "team": meta[n], "u1": u1, "n_steps": len(steps), "reach": reach, "open": opn})
+    lines.sort(key=lambda q: -q["u1"])
+    return lines[:top]
+
+
+def antiguedad_usuario():
+    """Por antigüedad: push y emails por usuario en 9 meses, apertura de push y clic de email (E12)."""
+    bands = ["0. menos de 1 mes", "1. 1 a 3 meses", "2. 3 a 6 meses", "3. 6 a 12 meses", "4. 1 a 2 años", "5. más de 2 años"]
+    labels = ["< 1 mes", "1 a 3 m", "3 a 6 m", "6 a 12 m", "1 a 2 años", "> 2 años"]
+    agg = defaultdict(lambda: [0.0, 0.0, 0.0])
+    for r in rows("e12_antiguedad.csv"):
+        b = r["banda_antiguedad"]
+        if b not in bands or r["canal"] not in ("email", "push notification"):
+            continue
+        v = agg[(b, r["canal"])]; v[0] += f(r["envios"]); v[1] += f(r["usuarios_aprox"]); v[2] += f(r["respuestas"])
+    out = {"labels": labels, "push": [], "email": []}
+    for b, l in zip(bands, labels):
+        p = agg[(b, "push notification")]; e = agg[(b, "email")]
+        out["push"].append({"lab": l, "x": p[0] / max(1, p[1]), "y": 100 * p[2] / max(1, p[0])})
+        out["email"].append({"lab": l, "x": e[0] / max(1, e[1]), "y": 100 * e[2] / max(1, e[0])})
+    return out
+
+
+def gancho_strip(min_deliv=200_000):
+    """Por gancho: cada familia de email como un punto (clic, entregados) y el promedio ponderado del gancho (E1)."""
+    pc = defaultdict(lambda: [0.0, 0.0, None])
+    for r in rows("e1_comunicacion_mes_canal.csv"):
+        if r["canal"] != "email":
+            continue
+        v = pc[_fam(r["communication_name"])]
+        v[0] += f(r["email_delivery"]); v[1] += f(r["email_click"]); v[2] = team_of(r["team"])
+    ganchos = [g for g, _ in _GANCHOS] + ["Otro"]
+    rows_ = []
+    for g in ganchos:
+        pts = [{"x": 100 * v[1] / v[0], "size": v[0], "g": v[2], "name": k, "label": _short_fam(k, 22)} for k, v in pc.items() if v[0] >= min_deliv and gancho_of(k) == g]
+        if len(pts) < 2:
+            continue
+        tot = sum(p["size"] for p in pts); wm = sum(p["x"] * p["size"] for p in pts) / tot
+        rows_.append({"gancho": g, "pts": pts, "wmean": wm, "vol": tot, "n": len(pts)})
+    rows_.sort(key=lambda q: -q["wmean"])
+    return rows_
+
+
+def tamano_toques(min_deliv=200_000):
+    """Por familia de email: tamaño de audiencia por envío, toques por usuario y clic (E1)."""
+    pc = defaultdict(lambda: [0.0, 0.0, 0.0, 0.0, 0, None])
+    for r in rows("e1_comunicacion_mes_canal.csv"):
+        if r["canal"] != "email" or f(r["envios"]) <= 0:
+            continue
+        v = pc[_fam(r["communication_name"])]
+        v[0] += f(r["email_delivery"]); v[1] += f(r["email_click"]); v[2] += f(r["envios"]); v[3] += f(r["usuarios_aprox"]); v[4] += 1; v[5] = team_of(r["team"])
+    pts = []
+    for k, v in pc.items():
+        if v[0] < min_deliv or v[3] <= 0:
+            continue
+        toques = v[2] / v[3]
+        band = "1 toque" if toques < 1.5 else ("2 toques" if toques < 2.5 else "3 o más toques")
+        pts.append({"x": v[3] / v[4], "y": 100 * v[1] / v[0], "g": band, "size": v[0], "name": k, "label": _short_fam(k, 22), "toques": toques})
+    return pts
+
+
+def insisten_familias(top=6):
+    """Familias que siguieron enviando después de caer debajo del mínimo: respuesta y envíos por mes (E1)."""
+    per = defaultdict(lambda: defaultdict(lambda: [0.0, 0.0, 0.0]))
+    team = {}
+    for r in rows("e1_comunicacion_mes_canal.csv"):
+        c = r["canal"]
+        if c not in MINIMOS:
+            continue
+        b, rr = _resp_cols(c)
+        k = (_fam(r["communication_name"]), c)
+        v = per[k][mes_idx(r["mes"])]
+        v[0] += f(r[b]); v[1] += f(r[rr]); v[2] += f(r["envios"])
+        team[k] = team_of(r["team"])
+    out = []
+    for k, months in per.items():
+        resp = [100 * months[m][1] / months[m][0] if months[m][0] >= 20_000 else None for m in range(9)]
+        env = [months[m][2] / 1e6 for m in range(9)]
+        fail = None; after = 0.0
+        for m in range(9):
+            if fail is not None:
+                after += env[m]
+            elif months[m][0] >= 50_000 and resp[m] is not None and resp[m] < MINIMOS[k[1]]:
+                fail = m
+        if fail is not None and after > 0:
+            out.append({"fam": k[0], "canal": k[1], "team": team[k], "resp": resp, "env": env, "fail": fail, "after": after, "min": MINIMOS[k[1]], "label": _short_fam(k[0], 28)})
+    out.sort(key=lambda q: -q["after"])
+    return out[:top]
+
+
+def pareto_piezas():
+    """Por canal: familias ordenadas por volumen y % acumulado de volumen y de respuestas (E1)."""
+    out = {}
+    for c, name in (("email", "Email"), ("push notification", "Push")):
+        b, rr = _resp_cols(c)
+        pc = defaultdict(lambda: [0.0, 0.0])
+        for r in rows("e1_comunicacion_mes_canal.csv"):
+            if r["canal"] != c:
+                continue
+            v = pc[_fam(r["communication_name"])]; v[0] += f(r[b]); v[1] += f(r[rr])
+        lst = sorted(pc.items(), key=lambda kv: -kv[1][0])
+        tb, tr = sum(v[0] for _, v in lst), sum(v[1] for _, v in lst)
+        cum, ab, ar = [], 0.0, 0.0
+        for k, v in lst:
+            ab += v[0]; ar += v[1]
+            cum.append({"name": k, "label": _short_fam(k, 22), "vol": 100 * ab / tb, "resp": 100 * ar / tr, "rate": 100 * v[1] / v[0] if v[0] else 0, "base": v[0]})
+        out[name] = {"pts": cum, "n": len(lst), "tot_base": tb}
+    return out
+
+
+def versiones_mes(top=8):
+    """Familias con más versiones: cuántas comunicaciones nuevas se crearon cada mes y cuánto enviaron (E2, E1)."""
+    first = {}
+    for r in rows("e2_catalogo.csv"):
+        fs = r["first_sent"]
+        if fs and fs[:4] == "2026":
+            first[r["communication_id"]] = (_fam(r["nombre"]), mes_idx(fs), team_of(r["team_limpio"]))
+    cnt = defaultdict(lambda: [0] * 9); team = {}
+    for cid, (fam, m, t) in first.items():
+        if m < 9:
+            cnt[fam][m] += 1; team[fam] = t
+    env = defaultdict(lambda: [0.0] * 9)
+    for r in rows("e1_comunicacion_mes_canal.csv"):
+        env[_fam(r["communication_name"])][mes_idx(r["mes"])] += f(r["envios"])
+    fams = sorted(cnt.items(), key=lambda kv: -sum(kv[1]))[:top]
+    return {"cats": MESES, "rows": [{"fam": k, "label": _short_fam(k, 34), "team": team[k], "n": v, "env": [x / 1e6 for x in env[k]], "tot": sum(v)} for k, v in fams],
+            "n_fam5": sum(1 for v in cnt.values() if sum(v) >= 5)}
+
+
+def acciones_equipo():
+    """Campañas activas por equipo y acción del plan (hallazgos/muestra_c_familias.csv)."""
+    import csv as _csv
+    p = os.path.join(os.path.dirname(DATA), "hallazgos", "muestra_c_familias.csv")
+    acts = ["Apagar", "Limpiar base de WhatsApp", "Rehacer o re-segmentar", "Bajar frecuencia", "Proteger", "Escalar"]
+    n = defaultdict(int); msgs = defaultdict(float)
+    with open(p, newline="", encoding="utf-8") as fh:
+        for r in _csv.DictReader(fh):
+            if r["activo_sep"] != "1":
+                continue
+            t = team_of(r["team"]); a = r["accion_tipo"]
+            if a in acts:
+                n[(t, a)] += 1; msgs[(t, a)] += f(r["envios_mes_prom"])
+    return {"cols": acts, "rows": TEAMS, "n": [[n[(t, a)] for a in acts] for t in TEAMS], "msgs": [[msgs[(t, a)] / 1e6 for a in acts] for t in TEAMS]}
+
+
+def segmentos_scatter(top=12):
+    """Segmentos de Braze: envíos, respuesta sobre envíos y conversiones por mil (E11)."""
+    agg = defaultdict(lambda: [0.0, 0.0, 0.0, defaultdict(float)])
+    for r in rows("e11_segmentacion.csv"):
+        v = agg[r["segment"]]; e = f(r["envios"])
+        v[0] += e; v[1] += f(r["respuestas"]); v[2] += f(r["conversiones_filas"]); v[3][team_of(r["team"])] += e
+    lst = sorted(agg.items(), key=lambda kv: -kv[1][0])[:top]
+    return [{"x": v[0], "y": 100 * v[1] / v[0] if v[0] else 0, "size": v[2], "g": max(v[3], key=v[3].get), "name": k, "label": k, "conv_mil": 1000 * v[2] / v[0] if v[0] else 0} for k, v in lst]
+
+
+def sin_ticket_mes():
+    """% de envíos sin ticket por equipo y mes (E1)."""
+    SIN = ("", "null", "Other", "N/A", "T0000", "T000")
+    agg = defaultdict(lambda: [0.0, 0.0])
+    for r in rows("e1_comunicacion_mes_canal.csv"):
+        v = agg[(team_of(r["team"]), mes_idx(r["mes"]))]; e = f(r["envios"])
+        v[0] += e
+        if (r["ticket_number"] or "") in SIN:
+            v[1] += e
+    series = []
+    for t in TEAMS:
+        series.append((t, [100 * agg[(t, m)][1] / agg[(t, m)][0] if agg[(t, m)][0] > 50_000 else None for m in range(9)]))
+    tot = sum(v[0] for v in agg.values()); sin = sum(v[1] for v in agg.values())
+    return {"cats": MESES, "series": series, "share": 100 * sin / tot, "sin": sin / 1e6}
+
+
+def push_junio_scatter():
+    """Push de junio: cada familia como punto (envíos, apertura); nuevas en junio contra existentes (E1)."""
+    jun = defaultdict(lambda: [0.0, 0.0, None]); may = defaultdict(float)
+    for r in rows("e1_comunicacion_mes_canal.csv"):
+        if r["canal"] != "push notification":
+            continue
+        m = mes_idx(r["mes"]) + 1
+        k = _fam(r["communication_name"])
+        if m == 6:
+            v = jun[k]; v[0] += f(r["pn_send"]); v[1] += f(r["pn_open"]); v[2] = team_of(r["team"])
+        if m == 5:
+            may[k] += f(r["pn_send"])
+    pts = []
+    for k, v in jun.items():
+        if v[0] < 100_000:
+            continue
+        pts.append({"x": v[0], "y": 100 * v[1] / v[0], "size": v[0], "g": v[2], "name": k, "label": _short_fam(k, 24), "new": may.get(k, 0) == 0})
+    pts.sort(key=lambda p: -p["x"])
+    return pts
+
+
+def wa_slope():
+    """WhatsApp: lectura por grupo de audiencia y por equipo, enero a junio contra julio a septiembre (E1)."""
+    g = defaultdict(lambda: [[0.0, 0.0], [0.0, 0.0]]); t = defaultdict(lambda: [[0.0, 0.0], [0.0, 0.0]])
+    for r in rows("e1_comunicacion_mes_canal.csv"):
+        if r["canal"] != "whatsapp":
+            continue
+        h = 0 if mes_idx(r["mes"]) < 6 else 1
+        d, rd = f(r["whatsapp_delivery"]), f(r["whatsapp_read"])
+        g[_aud_grupo(r["communication_name"])][h][0] += d; g[_aud_grupo(r["communication_name"])][h][1] += rd
+        t[team_of(r["team"])][h][0] += d; t[team_of(r["team"])][h][1] += rd
+    def pack(d):
+        out = []
+        for k, (a, b) in d.items():
+            if a[0] < 100_000 or b[0] < 100_000:
+                continue
+            out.append({"name": k, "a": 100 * a[1] / a[0], "b": 100 * b[1] / b[0], "va": a[0] / 1e6, "vb": b[0] / 1e6})
+        return sorted(out, key=lambda q: -q["vb"])
+    return {"grupos": pack(g), "equipos": pack(t)}
+
+
+def choque_matriz():
+    """Usuario-días con dos piezas el mismo día, por par de equipos (E6b), en M."""
+    pc = pares_choque()
+    teams = TEAMS + ["Transaccional"]
+    M = [[0.0] * len(teams) for _ in teams]
+    for (a, b), v in pc["by_team"]:
+        i, j = teams.index(a), teams.index(b)
+        M[i][j] += v / 1e6
+        if i != j:
+            M[j][i] += v / 1e6
+    tot = pc["tot"] / 1e6
+    return {"rows": teams, "cols": teams, "matrix": M, "tot": tot, "same_share": pc["same_share"]}
+
+
+def pasos_scatter(min_users=5_000):
+    """Pasos de Canvas: usuarios que llegan al paso y apertura, por orden del paso (E15)."""
+    pts = []
+    for r in rows("e15_embudo_pasos.csv"):
+        u = f(r["usuarios"])
+        if u < min_users or r["canvas_name"] in ("", "null"):
+            continue
+        o = int(f(r["orden_aprox"]))
+        band = "Paso 1" if o <= 1 else ("Paso 2" if o == 2 else ("Pasos 3 y 4" if o <= 4 else "Paso 5 o más"))
+        pts.append({"x": u, "y": 100 * min(f(r["usuarios_abrieron"]), u) / u, "g": band, "name": r["canvas_name"], "label": _short_fam(r["canvas_name"], 24), "team": team_of(r["team"]), "orden": o})
+    bands = ["Paso 1", "Paso 2", "Pasos 3 y 4", "Paso 5 o más"]
+    stats = {}
+    for b in bands:
+        bp = [p for p in pts if p["g"] == b]
+        tu = sum(p["x"] for p in bp)
+        stats[b] = {"n": len(bp), "wopen": sum(p["x"] * p["y"] for p in bp) / tu if tu else 0, "under1": sum(1 for p in bp if p["y"] < 1)}
+    return {"pts": pts, "bands": bands, "stats": stats, "under1": sum(1 for p in pts if p["y"] < 1 and p["x"] >= 1000)}
+
+
+def pruebas_mes():
+    """Pruebas, copias y QA que llegaron a usuarios reales: envíos por mes y equipo, y las piezas más grandes (E1)."""
+    pat = re.compile(r"prueba|test|\bqa\b|copy of|copia|dummy|demo", re.I)
+    agg = defaultdict(float); fam = defaultdict(lambda: [0.0, None, set(), ""])
+    n_comm = set()
+    for r in rows("e1_comunicacion_mes_canal.csv"):
+        n = r["communication_name"] or ""
+        if not pat.search(n):
+            continue
+        e = f(r["envios"])
+        if e <= 0:
+            continue
+        t = team_of(r["team"]); m = mes_idx(r["mes"])
+        agg[(t, m)] += e; n_comm.add(r["communication_id"])
+        v = fam[_fam(n)]; v[0] += e; v[1] = t; v[2].add(MESES[m]); v[3] = r["canal"]
+    series = [(t, [agg[(t, m)] / 1e6 for m in range(9)]) for t in TEAMS if sum(agg[(t, m)] for m in range(9)) > 0]
+    top = sorted(fam.items(), key=lambda kv: -kv[1][0])[:6]
+    return {"cats": MESES, "series": series, "n": len(n_comm), "tot": sum(agg.values()) / 1e6,
+            "top": [{"fam": k, "label": _short_fam(k, 30), "team": v[1], "env": v[0], "meses": ", ".join(sorted(v[2], key=MESES.index)), "canal": v[3]} for k, v in top]}
+
+
+def orden_equipo(top=8):
+    """Orden por equipo crudo (sub-equipos de Others incluidos): piezas, sin ticket, sin convención y envíos (E2, E1)."""
+    piezas = defaultdict(lambda: {"n": 0, "sin_ticket": 0, "sin_conv": 0, "env": 0.0, "clean": None})
+    idk = {}
+    for r in rows("e2_catalogo.csv"):
+        k = r["team_limpio"] or r["team"]
+        idk[r["communication_id"]] = k
+        v = piezas[k]
+        v["n"] += 1; v["sin_ticket"] += r["tiene_ticket"] != "1"; v["sin_conv"] += r["nombre_sigue_convencion"] != "1"; v["clean"] = team_of(r["team"])
+    for r in rows("e1_comunicacion_mes_canal.csv"):
+        k = idk.get(r["communication_id"])
+        if k in piezas:
+            piezas[k]["env"] += f(r["envios"])
+    lst = [{"label": k, "g": v["clean"], "n": v["n"], "sin_ticket": v["sin_ticket"], "sin_conv": v["sin_conv"], "env": v["env"] / 1e6} for k, v in piezas.items() if v["n"] >= 20]
+    lst.sort(key=lambda q: -(q["sin_ticket"] + q["sin_conv"]))
+    return lst[:top]

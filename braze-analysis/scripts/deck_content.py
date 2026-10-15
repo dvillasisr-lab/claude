@@ -1243,3 +1243,28 @@ for _s in SLIDES:
                 _s["causa_tag"], _s["impacto"] = _tag, _i
                 break
 _SIN_HC = [i + 1 for i, _s in enumerate(SLIDES) if _s.get("kind") == "content" and not (_s.get("hipotesis") and _s.get("causa_tag") and _s.get("impacto"))]
+
+# --- Narrativa v5: título insight, 5 porqués, hipótesis A/O/G, cómo, impacto y exhibits nuevos ---
+from deck_narrative import NARR
+from deck_exhibits import EXHIBITS
+_CONTENT_IDX = {i for i, _s in enumerate(SLIDES, 1) if _s.get("kind") == "content"}
+_BAD = sorted(set(NARR) - _CONTENT_IDX)
+assert not _BAD, f"NARR apunta a láminas que no son de contenido: {_BAD}"
+for _i, _s in enumerate(SLIDES, 1):
+    _n = NARR.get(_i)
+    if not _n:
+        continue
+    _s["title"] = _n["t"]
+    _s["porques"] = list(_n["pq"])
+    _s["causa_tag"] = _n["tag"]
+    _s["hipotesis"] = tuple(_n["hip"])
+    _s["como"] = _n["como"]
+    _s["impacto"] = _n["imp"]
+    _s["sowhat"] = _n["sw"]
+    if "kpis" in _n:
+        _s["kpis"] = list(_n["kpis"])
+    if "ex" in _n:
+        _s["exhibit"] = EXHIBITS[_n["ex"]]()
+    _s.pop("side", None)
+    _s.pop("causa", None)
+_SIN_HC = [i + 1 for i, _s in enumerate(SLIDES) if _s.get("kind") == "content" and not (_s.get("porques") and _s.get("como") and _s.get("impacto") and _s.get("causa_tag"))]
