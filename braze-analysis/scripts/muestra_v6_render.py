@@ -34,6 +34,21 @@ h2{margin:0;font-size:2.3cqi;line-height:1.18;font-weight:600;letter-spacing:-.0
 .sw b{flex:0 0 auto;font-size:.85cqi;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
 .src{font-size:.88cqi;color:var(--ink-3);display:flex;justify-content:space-between;gap:2cqi}
 .note{font-size:13px;color:var(--ink-2);max-width:90ch}
+/* Teléfono: la lámina deja de ser 16:9 y se apila para que se lea */
+@media (max-width:720px){
+ .slide{aspect-ratio:auto;container-type:normal}
+ .s{position:static;padding:20px 16px;gap:12px}
+ h2{font-size:20px;line-height:1.25}
+ .ctx{grid-template-columns:1fr;gap:8px;padding:10px 0}
+ .ctx div{font-size:13.5px}.ctx b{font-size:11px}
+ .body{grid-template-columns:1fr;gap:14px}
+ .ex svg{width:100%;height:auto}
+ .side h4,.root b,.sw b{font-size:11px}
+ .side li{font-size:14px;padding-left:26px}.side li::before{width:18px;height:18px;font-size:11px}
+ .root{font-size:14px;padding:8px 12px;border-left-width:3px}
+ .sw{font-size:15px;padding:10px 12px;flex-direction:column;gap:4px}
+ .src{font-size:11.5px}
+}
 """
 
 def slide(i, d):
@@ -51,7 +66,7 @@ def main():
     o = ['<title>Muestras de estilo Braze v6</title>', '<meta name="claude:viewport-fit-sides" content="cover">',
          '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">',
-         f'<style>{CSS}</style><div class="deck"><div class="top"><b>Tres láminas de muestra de estilo</b><span>Panorama, diagnóstico y plan. Versión 2 con tu feedback: título a todo lo ancho, sin título arriba a la derecha, cada cifra con su unidad y lenguaje llano.</span></div>']
+         f'<style>{CSS}</style><div class="deck"><div class="top"><b>Tres láminas de muestra de estilo</b><span>Panorama, diagnóstico y plan. Versión 3: el panorama en una sola gráfica de barras con línea; en el teléfono las láminas se apilan para que se lean.</span></div>']
     o += [slide(i, d) for i, d in enumerate(ds, 1)]
     o.append("</div>")
     OUT.write_text("".join(o), encoding="utf-8")
