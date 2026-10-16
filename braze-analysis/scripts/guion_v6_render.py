@@ -53,6 +53,13 @@ h1{font-size:30px;line-height:1.15;margin:0;letter-spacing:-.02em;text-wrap:bala
 .sl ul li{margin:1px 0}
 .sl .sw{grid-column:2;font-size:13.5px;color:var(--ink)}
 .sl .sw b{color:var(--blue);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;margin-right:6px}
+.ctx{grid-column:2;display:grid;grid-template-columns:max-content minmax(0,1fr);gap:3px 12px;margin:4px 0 2px;font-size:13.5px}
+.ctx dt{color:var(--ink-3);font-size:12px;letter-spacing:.04em;text-transform:uppercase;padding-top:2px}
+.ctx dd{margin:0;color:var(--ink)}
+.resp{grid-column:2;font-size:13.5px;color:var(--ink);background:var(--green-soft);border-radius:4px;padding:6px 10px;margin-top:4px}
+.resp b{color:var(--green);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;margin-right:8px}
+.nota{grid-column:2;font-size:12px;color:var(--ink-3)}
+@media (max-width:520px){.ctx{grid-template-columns:1fr}.ctx dd{margin-bottom:4px}}
 .sl.close{background:var(--blue-soft);border-radius:6px;padding:10px 10px 10px 0;border-bottom:0}
 .open{font-size:14px;color:var(--ink-2)} .open li{margin:4px 0}
 @media (max-width:720px){.scqa,.method{grid-template-columns:1fr 1fr}}
@@ -67,8 +74,12 @@ def slide(n, s):
     o = [f'<div class="{cls}"><div class="no">{n}</div><div class="t">{E(s["t"])}</div>',
          f'<div class="meta">{"".join(chips)}</div>']
     if s.get("viz"): o.append(f'<div class="viz"><b>Gráfica:</b> {E(s["viz"])}</div>')
+    if s.get("ctx"):
+        o.append('<dl class="ctx">' + "".join(f"<dt>{E(k)}</dt><dd>{E(v)}</dd>" for k, v in s["ctx"]) + "</dl>")
     if s.get("h"): o.append("<ul>" + "".join(f"<li>{E(x)}</li>" for x in s["h"]) + "</ul>")
     if s.get("sw"): o.append(f'<div class="sw"><b>So what</b>{E(s["sw"])}</div>')
+    if s.get("resp"): o.append(f'<div class="resp"><b>Tu comentario</b>{E(s["resp"])}</div>')
+    if s.get("nota"): o.append(f'<div class="nota">{E(s["nota"])}</div>')
     o.append("</div>")
     return "".join(o)
 
