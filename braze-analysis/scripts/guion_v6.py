@@ -389,3 +389,19 @@ SECCIONES = [
    S("Supuestos de costo: WhatsApp por entregado, email por enviado, costo fijo de Braze como X", tipo="Tabla"),
  ])]),
 ]
+
+# --- Borrador 4: secciones reescritas con los comentarios del usuario (scripts/guion_v6_parts/pN_*.py) ---
+import importlib.util as _ilu, pathlib as _pl
+_PARTS = [("p1_apertura_canales", ["0", "I", "II"]), ("p2_equipos", ["III"]), ("p3_volumen_tiempo", ["IV", "V"]),
+          ("p4_audiencia_comportamiento", ["VI", "VII"]), ("p5_contenido_practicas", ["VIII", "IX", "X"]),
+          ("p6_medicion_caso_plan", ["XI", "XII", "XIII", "A"])]
+_dir = _pl.Path(__file__).resolve().parent / "guion_v6_parts"
+_new = []
+for _name, _cubre in _PARTS:
+    _f = _dir / f"{_name}.py"
+    if _f.exists():
+        _spec = _ilu.spec_from_file_location(_name, _f); _m = _ilu.module_from_spec(_spec); _spec.loader.exec_module(_m)
+        _new += _m.SECS
+    else:
+        _new += [s for s in SECCIONES if s["n"] in _cubre]
+SECCIONES = _new
