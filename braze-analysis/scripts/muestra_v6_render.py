@@ -16,7 +16,7 @@ body{background:var(--desk);color:var(--ink);font-family:var(--font);padding-lef
 .slide{container-type:inline-size;aspect-ratio:16/9;width:100%;background:var(--paper);border-radius:4px;box-shadow:0 1px 2px rgba(11,18,32,.08);position:relative;overflow:hidden}
 .s{position:absolute;inset:0;padding:3.2cqi 4.2cqi 2.2cqi;display:flex;flex-direction:column;gap:.9cqi}
 .trk{position:absolute;top:1.9cqi;right:4.2cqi;font-size:1.0cqi;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);max-width:50cqi;text-align:right}
-h2{margin:0;font-size:2.35cqi;line-height:1.18;font-weight:600;letter-spacing:-.012em;max-width:80cqi;text-wrap:balance}
+h2{margin:0;font-size:2.3cqi;line-height:1.18;font-weight:600;letter-spacing:-.012em;max-width:none;text-wrap:pretty}
 .ctx{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.6cqi;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:.7cqi 0}
 .ctx div{font-size:.94cqi;line-height:1.3;color:var(--ink-2)}
 .ctx b{display:block;font-size:.82cqi;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin-bottom:.2cqi}
@@ -38,7 +38,7 @@ h2{margin:0;font-size:2.35cqi;line-height:1.18;font-weight:600;letter-spacing:-.
 
 def slide(i, d):
     lec = "".join(f"<li>{E(x)}</li>" for x in d["lecturas"])
-    return (f'<section class="slide" aria-label="Lámina {i}"><div class="s"><div class="trk">{E(d["seccion"])}</div>'
+    return (f'<section class="slide" aria-label="Lámina {i}"><div class="s">'
             f'<h2>{E(d["titulo"])}</h2>'
             f'<div class="ctx"><div><b>Qué se manda</b>{E(d["que"])}</div><div><b>Quién</b>{E(d["quien"])}</div><div><b>A quién</b>{E(d["a_quien"])}</div></div>'
             f'<div class="body"><div class="ex">{d["svg"]}</div><div class="side"><h4>Qué dice la gráfica</h4><ol>{lec}</ol>'
@@ -51,7 +51,7 @@ def main():
     o = ['<title>Muestras de estilo Braze v6</title>', '<meta name="claude:viewport-fit-sides" content="cover">',
          '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>',
          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">',
-         f'<style>{CSS}</style><div class="deck"><div class="top"><b>Tres láminas de muestra de estilo</b><span>Panorama, diagnóstico y plan. Mismo marco para todo el deck: contexto arriba, gráfica a la izquierda, lecturas y causa a la derecha, so what abajo.</span></div>']
+         f'<style>{CSS}</style><div class="deck"><div class="top"><b>Tres láminas de muestra de estilo</b><span>Panorama, diagnóstico y plan. Versión 2 con tu feedback: título a todo lo ancho, sin título arriba a la derecha, cada cifra con su unidad y lenguaje llano.</span></div>']
     o += [slide(i, d) for i, d in enumerate(ds, 1)]
     o.append("</div>")
     OUT.write_text("".join(o), encoding="utf-8")
