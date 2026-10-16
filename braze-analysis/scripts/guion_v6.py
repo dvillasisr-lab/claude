@@ -25,7 +25,7 @@ META = dict(
         ("Formatos", "Varían según el mensaje: cifra grande, gráfica completa, comparación, matriz 2x2, mapa de calor, pequeños múltiplos, ficha de equipo y cierre de sección."),
     ],
     conflictos=[
-        ("Ahorro del plan", "La nota de campañas dice 3.2 M MXN al mes (340 familias promocionales, 89 activas, Product Growth 59 %). El deck dice 1.6 M MXN al mes (582 campañas, Product Growth 81 %). La diferencia viene de cobrar WhatsApp enviado o entregado y de qué acciones se cuentan. Propongo una sola cifra con WhatsApp por entregado."),
+        ("Ahorro del plan (resuelto)", "Reemplaza 1.6 M y 3.2 M por una sola cifra: hasta 2.34 M MXN al mes con WhatsApp por entregado y septiembre como base; 1.48 M es recorte seguro y 0.85 M es recuperación de dormants y churn a medir con grupo de control antes de cortar. 3.2 M cobraba WhatsApp enviado y perdía lecturas tardías; 1.6 M solo contaba apagar y dejaba fuera canal preferido y exclusiones."),
         ("WhatsApp que no llega", "Varias notas dicen que pagamos 14.2 M MXN por WhatsApp no entregado. Si Meta cobra solo el entregado, ese costo es cero; el daño es la calidad del número. Propongo dejar de decir que se pagó."),
         ("Costo total", "57.7 M MXN (deck) contra 58.3 M (nota de canal preferido) con WhatsApp por entregado; 71.9 a 72.5 M si se cobra por enviado. WhatsApp pesa 71 % o 77 % según la base."),
         ("Mensajes a quien nunca respondió", "97.5 M mensajes y cero conversiones (deck) contra 159.5 M y 0.08 % de conversión (nota J). Hay que fijar una definición."),
@@ -53,7 +53,7 @@ META = dict(
     abiertas=[
         "¿El libro amarillo es 'Storytelling with Data' de Cole Nussbaumer Knaflic o 'The Pyramid Principle' de Barbara Minto? Hoy uso Minto para la historia y Nussbaumer para las gráficas.",
         "¿Te sirve el orden en tres actos o prefieres otro de los que usamos en otros proyectos?",
-        "¿Qué cifra de ahorro usamos? Ver la primera cifra que no cuadra.",
+        "¿Te sirve separar el ahorro en recorte seguro y recuperación a medir?",
         "Marca las láminas que quitarías, moverías o te faltan. Con eso hago tres láminas de muestra de estilo.",
     ],
 )

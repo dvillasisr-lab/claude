@@ -29,7 +29,7 @@ SECS = [
        ("Quién", "Marketing y Product Growth mandan 66 % de los mensajes y ponen 84 % del gasto de WhatsApp; Sales, Collections y Others el resto."),
        ("A quién", "Leads y registrados sin crédito, bases frías (ex clientes dormants e inactivos y leads que nunca activaron) y clientes activos."),
        ("Ejemplos", "Tasa 0 por email a nuevos registrados (Product Growth, 35 M emails, 0.28 % de clic); rescate Tasa 0 por WhatsApp a leads rezagados (Marketing, 844 MXN por conversión); BillPay Intro a 16 M personas en junio (Others)."),
-       ("Impacto", "57.7 M MXN en nueve meses, 6.4 M MXN al mes en promedio. El plan vale [1.6 M MXN al mes por reconciliar], cerca de una cuarta parte del gasto mensual."),
+       ("Impacto", "57.7 M MXN en nueve meses, 6.4 M MXN al mes en promedio. El plan vale hasta 2.34 M MXN al mes (28 M al año): 1.48 M de recorte seguro y 0.85 M de recuperación a medir con grupo de control antes de cortar."),
      ],
      h=[
        "Qué pasa: 667 M mensajes y 6.4 M MXN al mes; cada mil mensajes traen hoy 54 respuestas contra 84 en enero.",
@@ -38,8 +38,8 @@ SECS = [
        "A quien queremos recuperar (dormants) le seguimos escribiendo, pero por el canal más barato que sí usa, con pocos toques, presupuesto con tope y un grupo de control que diga si de verdad regresa.",
      ],
      sw="El problema es la forma de operar, no una campaña; por eso se corrige con reglas comunes y no apagando todo.",
-     resp="'Recuperamos la respuesta' quería decir volver a que cada mensaje responda como en enero; lo quitamos. Sobre los 1.6 M MXN al mes: son cerca de 25 % del gasto mensual promedio (6.4 M MXN) y no incluyen el costo fijo de Braze. La cifra todavía se reconcilia con los 3.2 M MXN de la nota de campañas. Y sobre los dormants: no proponemos dejar de buscarlos, sino hacerlo más barato y medir si regresan.",
-     nota="Gasto con WhatsApp por entregado: 57.7 M MXN / 9 = 6.4 M al mes. 1.6 M es 25 % de ese promedio y 38 % del gasto de septiembre por entregado (4.2 M); el '33 %' del deck sale de septiembre con WhatsApp por enviado (4.96 M). Ver META['conflictos'], Ahorro del plan.",
+     resp="'Recuperamos la respuesta' quería decir volver a que cada mensaje responda como en enero; lo quitamos. Sobre el ahorro: ya reconciliado, son hasta 2.34 M MXN al mes (28 M al año), 36 % del gasto mensual promedio (6.4 M MXN) y 55 % del de septiembre; de eso, 1.48 M es recorte seguro y 0.85 M recuperación a medir. No incluye el costo fijo de Braze. Y sobre los dormants: no proponemos dejar de buscarlos, sino hacerlo más barato y medir si regresan.",
+     nota="Gasto con WhatsApp por entregado: 57.7 M MXN / 9 = 6.4 M al mes. 2.34 M es 36 % de ese promedio y 55 % del gasto de septiembre por entregado (4.23 M). Reemplaza a los 1.6 M del deck y a los 3.2 M de la nota de campañas; el puente está en el anexo.",
      estado="rehacer",
      cierre=False,
    ),
@@ -52,7 +52,7 @@ SECS = [
        ("Quién", "Todos los equipos; Marketing y Product Growth concentran el cambio."),
        ("A quién", "Bloqueados y dados de baja (fuera), dormants y leads fríos (plan de recuperación con tope), activos (su canal)."),
        ("Ejemplos", "Referral a Dormants de Marketing a tarjeta KPay congelada (1.96 M emails); WhatsApp a Churn 12 meses de Product Growth (2,255 MXN por conversión); push RescateFinesDeSemana de Marketing (13.4 M push, 0.76 %)."),
-       ("Impacto", "Ver bloques; los ahorros se traslapan y no se suman. Total del plan [1.6 M MXN al mes por reconciliar]."),
+       ("Impacto", "Ver bloques; los ahorros se traslapan y no se suman. Total del plan: hasta 2.34 M MXN al mes, 1.48 M seguro y 0.85 M a medir."),
      ],
      h=[
        "1. Audiencias: excluir a quien no debe recibir promoción (tarjeta congelada, lista negra, REUS o ARCO, dados de baja: 44 M envíos promocionales en 9 meses) y separar al dormant (ex cliente) del lead que nunca activó.",
