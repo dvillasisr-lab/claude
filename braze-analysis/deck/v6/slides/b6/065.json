@@ -4,24 +4,24 @@
  "seccion": "La gente responde a lo que ya empezó y se va cuando insistimos",
  "titulo": "Por qué pasa: diseñamos los mensajes por lo que queremos vender, no por lo que la persona hizo",
  "porques": [
-  "439 mil personas se dieron de baja del email en nueve meses, nueve de cada diez el día de un correo promocional.",
-  "Porque la misma persona recibe las ofertas de varios equipos a la vez: el nuevo, correos de 4.2 campañas antes de irse; la base vieja, 17 correos antes de irse, sobre todo de Tasa 0 y referidos.",
-  "Porque cada campaña nace de lo que queremos vender (Tasa 0, referidos, BillPay), aunque el recordatorio de algo empezado responde 2.99 % por correo y las ofertas 0.22 a 0.53 %.",
-  "Porque Braze no tiene a la mano lo que la persona hizo (registro a medias, compra en curso, días sin usar, si tiene la app) ni un límite de mensajes por persona entre equipos.",
-  "Causa raíz: nadie es dueño del recorrido completo de cada persona ni mide contra un grupo sin mensajes; cada equipo cuida su campaña y nadie ve el cansancio ni cuánto suma."
+  "439 mil personas dejaron el correo; nueve de cada diez, con una promoción.",
+  "La persona recibe ofertas de varios equipos: el nuevo, de 4.2 campañas.",
+  "Cada campaña nace de lo que queremos vender: recordatorio 3.0 %, oferta 0.5 %.",
+  "Braze no sabe qué empezó la persona ni si tiene la app, y no hay límite por persona.",
+  "Causa raíz: nadie es dueño del recorrido completo ni mide con un grupo sin mensajes."
  ],
  "hipotesis": {
-  "A": "Si cada promoción sale por algo que hizo la persona, la respuesta del correo se acerca a la del recordatorio (3.0 %) y las bajas de nuevos bajan.",
-  "O": "Una sola secuencia de bienvenida para KCash y KPay, con un correo al día como máximo y salida a los 90 días sin abrir, reduce bajas sin perder registros terminados.",
-  "G": "Un dueño del recorrido del cliente, con calendario común y grupo sin mensajes obligatorio, evita que cada equipo sume su oferta sobre la de otro."
+  "A": "Si cada promoción sale por algo que hizo la persona, el clic se acerca al del recordatorio (3.0 %).",
+  "O": "Una sola bienvenida, un correo al día y salida a los 90 días sin abrir bajan las bajas de nuevos.",
+  "G": "Un dueño del recorrido, con calendario común y grupo sin mensajes, evita apilar ofertas."
  },
  "como": [
-  "Semanas 1 y 2. Datos y CRM cargan a diario en Braze la etapa del registro, la compra en curso, los días sin usar y si tiene la app. Métrica: % de campañas armadas por una acción.",
-  "Semanas 2 a 4. Marketing y Acquisition unen sus recordatorios de registro en un solo Canvas: un correo al día, tres en la primera semana; nada de BillPay ni Tasa 0 al nuevo hasta que abra. Métrica: bajas por cada mil nuevos.",
-  "Semanas 2 a 6. Cada equipo en sus Canvas: máximo dos mensajes por campaña al mes, el segundo solo a quien no abrió, y salida tras 90 días sin abrir, también en recuperación. Métrica: bajas por cada mil personas.",
-  "Semanas 4 a 8. Grupo sin mensajes de 10 % en cada campaña promocional, leído a 7 y a 90 días; lo que solo adelanta la compra pasa a push o in-app. Métrica: conversión contra el grupo sin mensajes."
+  "Semanas 1 y 2: Datos carga en Braze registro a medias, compra y app. Métrica: % de campañas.",
+  "Semanas 2 a 4: Marketing y Acquisition, un solo Canvas de registro. Métrica: bajas de nuevos.",
+  "Semanas 2 a 6: dos mensajes por campaña al mes, salida a 90 días. Métrica: bajas por persona.",
+  "Semanas 4 a 8: grupo sin mensajes de 10 % en cada promoción. Métrica: conversión a 7 y 90 días."
  ],
- "impacto": "Hoy se dan de baja 20 mil nuevos al mes, 57 % con BillPay o los recordatorios de registro: es la parte que se corrige primero. Además, 1.1 M MXN al mes de WhatsApp van a campañas donde la compra solo se adelanta; el grupo sin mensajes dirá cuánto de eso se puede quitar.",
- "sowhat": "Escribir por lo que la persona hizo, por el canal que usa y con pocos mensajes; y medir cada campaña contra un grupo que no recibe nada.",
- "fuente": "Fuente: Braze, E7b (patrón de respuesta), E8 (días hasta la baja), E1 (envíos por campaña, mes y canal) y E9a (quien abre contra quien no, a 7 y 90 días), enero a septiembre 2026. WhatsApp a 1.00 MXN por entregado."
+ "impacto": "Hoy 20 mil nuevos al mes se dan de baja, 57 % con BillPay o el registro; y 1.1 M MXN al mes de WhatsApp solo adelantan.",
+ "sowhat": "Escribir por lo que la persona hizo, por su canal y con pocos mensajes; medir contra un grupo sin mensajes.",
+ "fuente": "Fuente: Braze, E7b (patrón de respuesta), E8 (días hasta la baja), E1 (envíos por campaña) y E9a (quien abre contra quien no), enero a septiembre 2026."
 }

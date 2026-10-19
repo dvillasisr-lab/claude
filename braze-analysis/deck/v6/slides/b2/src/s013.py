@@ -1,5 +1,5 @@
-"""Lámina 13: Cash, MXN por conversión por WhatsApp contra correo, por audiencia y por tema (mancuernas, eje logarítmico),
-con cuántas veces más cuesta WhatsApp y su gasto."""
+"""Lámina 13 (ronda 2): mancuernas por campaña de Cash que manda por WhatsApp y por correo: MXN por conversión en cada canal.
+Las 20 campañas con más gasto de WhatsApp; en las 50 que usan los dos canales, WhatsApp sale más caro en todas."""
 import math
 from b2base import *
 
@@ -7,96 +7,93 @@ d = load_b()
 c = d[d.product_service == 'Cash']
 cpc = lambda g: g.costo.sum() / max(1, g.conversiones_fraccional.sum())
 w, e = c[c.canal == 'whatsapp'], c[c.canal == 'email']
-pa = c[c.canal.isin(['push notification', 'in-app'])]
-TOT = dict(wa=cpc(w), em=cpc(e), wc=w.costo.sum() / 1e6, ec=e.costo.sum() / 1e6, wk=w.conversiones_fraccional.sum() / 1e3, ek=e.conversiones_fraccional.sum() / 1e3)
-print('total', {k: round(v, 1) for k, v in TOT.items()}, 'veces', TOT['wa'] / TOT['em'], 'push+inapp conv', pa.conversiones_fraccional.sum())
-AUD = [('activos', 'Clientes activos'), ('leads', 'Leads'), ('nuevos', 'Registrados nuevos'), ('frios', 'Bases frías')]
-TEM = [('tasa0', 'Tasa 0'), ('referidos', 'Referidos'), ('recordatorio', 'Recordatorios'), ('descuento', 'Descuentos'), ('otros', 'Otras ofertas')]
-rows = []
-for key, col, lst in (('aud', 'Por audiencia', AUD), ('gan', 'Por tema', TEM)):
-    rows.append(('h', col))
-    for k, lab in lst:
-        ww, ee = w[w[key] == k], e[e[key] == k]
-        rows.append(('r', lab, cpc(ww), cpc(ee), ww.costo.sum() / 1e6, 100 * ww.costo.sum() / w.costo.sum()))
-for r in rows:
-    print(r if r[0] == 'h' else (r[1], round(r[2], 1), round(r[3], 1), round(r[2] / r[3], 1), round(r[4], 1), round(r[5], 0)))
-eqw = w.groupby('equipo').costo.sum() / w.costo.sum() * 100
-eqe = e.groupby('equipo').costo.sum() / e.costo.sum() * 100
-print('equipo WA', eqw.round(0).to_dict(), 'email', eqe.round(1).to_dict())
-fam = w.groupby('fam').apply(lambda g: pd.Series({'c': g.costo.sum() / 1e6, 'cpc': cpc(g)}))
-resc = fam.loc[[i for i in fam.index if 'Leads_BBDDRezagada-RescateTasa0-N/A' in i]].iloc[0]
-print('rescate', resc.to_dict())
+TOT = dict(wa=cpc(w), em=cpc(e))
+g = c[c.canal.isin(['whatsapp', 'email'])].groupby(['fam', 'canal']).agg(env=('envios', 'sum'), cost=('costo', 'sum'),
+                                                                          cv=('conversiones_fraccional', 'sum'), team=('equipo', 'first')).reset_index()
+g = g[(g.env >= 3e4) & (g.cv >= 3)]
+g['y'] = g.cost / g.cv
+p = g.pivot(index='fam', columns='canal', values='y').dropna()
+p['r'] = p.whatsapp / p.email
+p['cw'] = g[g.canal == 'whatsapp'].set_index('fam').cost.reindex(p.index)
+p['team'] = g.drop_duplicates('fam').set_index('fam').team.reindex(p.index)
+p = p.sort_values('cw', ascending=False)
+NB, NW = len(p), int((p.r > 1).sum())
+share = p.cw.sum() / w.costo.sum()
+print('total', TOT, TOT['wa'] / TOT['em'], 'campañas', NB, NW, 'mediana', p.r.median(), 'gasto cubierto', share)
+NAME = {
+    'Leads_BBDDRezagada-NarrativaTasa0-N/A': 'Tasa 0 a leads rezagados',
+    'Leads_BBDDRezagada-RescateTasa0-N/A': 'Rescate Tasa 0 a leads rezagados',
+    'Recurrentes_ClienteKCashCompraKCash-ReferralProgram': 'Referidos a clientes de KCash',
+    'Recurrentes_Inactivos-DescuentoDirecto': 'Descuento a clientes inactivos',
+    'Leads-BBDDHotLeadsW1RescateTasa0': 'Rescate Tasa 0 a leads recientes, semana 1',
+    'Canvas-Leads-ReferralProgram-N/A': 'Referidos a leads',
+    'Leads_BBDDHotLeadsW1-RescateTasa0': 'Rescate Tasa 0 a leads recientes, semana 1 (v2)',
+    'Nuevos_NeverActive-InstallmentsNoCash': 'Registrados que nunca activaron',
+    'B0301-CANVAS-Active-Retargeting_Installments_SP': 'Recordatorio de Installments a activos',
+    'Recurrentes_Dormants-ReferralProgram': 'Referidos a ex clientes',
+    'Leads-BBDDHotLeadsW2RescateTasa0': 'Rescate Tasa 0 a leads recientes, semana 2',
+    'Nuevos_MPNeverCash-Tasa0-N/A': 'Tasa 0 a registrados sin préstamo',
+    'Active-RecurrentesRetargeting_Installments': 'Recordatorio de Installments a recurrentes',
+    'Leads_1erLoanKCash-ReferralProgram': 'Referidos tras el primer préstamo',
+    'Leads_Todos-ReferralProgram': 'Referidos a todos los leads',
+    'Recurrentes_Eligibles-CuestaEnero': 'Cuesta de enero a clientes elegibles',
+    'SeQuedanStepOffering': 'Quien se quedó en la oferta',
+    'Marketing-KCash-B0301-CANVAS-Active-NuevosRetargeting': 'Recordatorio de Installments a nuevos',
+    'Leads_BBDDRezagada-Tasa0-N/A': 'Tasa 0 a leads rezagados (v2)',
+    'Leads_BBDDHotLeadsW2-RescateTasa0': 'Rescate Tasa 0 a leads recientes, semana 2 (v2)',
+}
+def nm(f):
+    for k, v in NAME.items():
+        if k in f:
+            return v
+    return None
+top = p.head(20).copy()
+top['nm'] = [nm(f) for f in top.index]
+assert top.nm.notna().all(), top[top.nm.isna()].index.tolist()
+print(top[['nm', 'whatsapp', 'email', 'r', 'cw', 'team']].round(1).to_string())
 
-S = Svg('Mancuernas: MXN por conversión de Cash por WhatsApp y por correo, por audiencia y por tema; WhatsApp cuesta más en todas las filas.')
-X0, X1 = 150, 560
-LO, HI = math.log10(2), math.log10(1000)
-sx = lambda v: X0 + (X1 - X0) * (math.log10(v) - LO) / (HI - LO)
-# leyenda
-S.circle(5, 14, 5.5, BLUE, '')
-S.t(15, 18, 'WhatsApp', 11.5, INK, w=600)
-S.circle(95, 14, 5.5, GREEN, '')
-S.t(105, 18, 'Correo', 11.5, INK, w=600)
-S.t(170, 18, 'MXN por cada conversión de Cash, en escala que crece por múltiplos', 11, SEC)
-C1, C2 = 640, 752
-S.t(C1, 44, 'WhatsApp cuesta', 10.5, SEC, 'end')
-S.t(C1, 57, 'más que el correo', 10.5, SEC, 'end')
-S.t(C2, 44, 'Gasto WhatsApp', 10.5, SEC, 'end')
-S.t(C2, 57, 'M MXN', 10.5, SEC, 'end')
-YT = 66
-# fila total
-yy = 86
-S.rect(0, yy - 15, 780, 26, '#F3F5F8')
-S.t(0, yy + 2, 'Todo Cash', 11.5, INK, w=700)
-S.line(sx(TOT['em']), yy - 2, sx(TOT['wa']), yy - 2, G2, 3)
-S.circle(sx(TOT['em']), yy - 2, 6, GREEN, ' stroke="#FFFFFF" stroke-width="2"')
-S.circle(sx(TOT['wa']), yy - 2, 6, BLUE, ' stroke="#FFFFFF" stroke-width="2"')
-S.t(sx(TOT['em']) - 10, yy + 2, f'{TOT["em"]:.0f}', 11, GREEN, 'end', 700, halo=True)
-S.t(sx(TOT['wa']) + 10, yy + 2, f'{TOT["wa"]:.0f}', 11, BLUE, 'start', 700, halo=True)
-S.t(C1, yy + 2, f'{TOT["wa"]/TOT["em"]:.1f} veces', 11.5, INK, 'end', 700)
-S.t(C2, yy + 2, f'{TOT["wc"]:.1f}', 11.5, INK, 'end', 700)
-yy += 30
-top = yy
-# primera pasada: posiciones
-pos = []
-for r in rows:
-    if r[0] == 'h':
-        yy += 8; pos.append(yy); yy += 24
-    else:
-        pos.append(yy); yy += 25
-for v in (3, 10, 30, 100, 300, 1000):
-    S.line(sx(v), top, sx(v), yy - 8, GRID)
-    S.t(sx(v), yy + 8, f'{v:,}', 10.5, SEC, 'middle')
-for r, yy in zip(rows, pos):
-    if r[0] == 'h':
-        S.t(0, yy + 2, r[1], 10.5, SEC, w=600)
-        S.line(0, yy + 8, 780, yy + 8, GRID)
-        continue
-    _, lab, wa, em, gc, gp = r
-    big = gp >= 15
-    S.t(0, yy + 2, lab, 11.5, INK if big else TXT, w=600 if big else 400)
-    S.line(sx(em), yy - 2, sx(wa), yy - 2, G2, 3)
-    S.circle(sx(em), yy - 2, 5.5, GREEN, ' stroke="#FFFFFF" stroke-width="2"')
-    S.circle(sx(wa), yy - 2, 5.5, BLUE, ' stroke="#FFFFFF" stroke-width="2"')
-    S.t(sx(em) - 9, yy + 2, f'{em:.0f}' if em >= 10 else f'{em:.1f}', 11, GREEN, 'end', 600, halo=True)
-    S.t(sx(wa) + 9, yy + 2, f'{wa:,.0f}', 11, BLUE, 'start', 600, halo=True)
-    S.t(C1, yy + 2, f'{wa/em:.1f} veces', 11.5, INK if big else TXT, 'end', 600 if big else 400)
-    S.t(C2, yy + 2, f'{gc:.1f}', 11.5, INK if big else TXT, 'end', 600 if big else 400)
-print('alto final', yy + 24)
+S = Svg(f'Mancuernas: MXN por conversión de Cash por WhatsApp y por correo en las 20 campañas con más gasto de WhatsApp que usan los dos canales; '
+        f'WhatsApp cuesta más en las {NW} de {NB}.')
+S.circle(5, 14, 5.5, BLUE, ''); S.t(15, 18, 'WhatsApp', 11.5, INK, w=600)
+S.circle(95, 14, 5.5, GREEN, ''); S.t(105, 18, 'Correo', 11.5, INK, w=600)
+S.t(170, 18, 'MXN por conversión de Cash en la misma campaña (escala que crece por múltiplos)', 11, SEC)
+NX, X0, X1 = 258, 270, 628
+LO, HI = math.log10(1), math.log10(10000)
+sx = lambda v: X0 + (X1 - X0) * (math.log10(min(max(v, 1), 10000)) - LO) / (HI - LO)
+C1, C2 = 690, 778
+Y0, RH = 56, 15.2
+S.t(C1, Y0 - 8, 'WhatsApp / correo', 10.5, SEC, 'end')
+S.t(C2, Y0 - 8, 'Gasto WhatsApp', 10.5, SEC, 'end')
+YB = Y0 + RH * len(top)
+for v in (1, 10, 100, 1000, 10000):
+    S.line(sx(v), Y0 - 2, sx(v), YB, GRID)
+    S.t(sx(v), YB + 14, f'{v:,}', 10.5, SEC, 'middle')
+COLT = {'Marketing': INK, 'Product Growth': INK}
+for i, (f, q) in enumerate(top.iterrows()):
+    y = Y0 + RH * i + RH / 2
+    S.t(NX, y + 3.8, q.nm, 10.5, INK if q.team == 'Marketing' else TXT, 'end')
+    S.line(sx(q.email), y, sx(q.whatsapp), y, G2, 2.5)
+    S.circle(sx(q.email), y, 4.2, GREEN, ' stroke="#FFFFFF" stroke-width="1.2"')
+    S.circle(sx(q.whatsapp), y, 4.2, BLUE, ' stroke="#FFFFFF" stroke-width="1.2"')
+    S.t(C1, y + 3.8, f'{q.r:.1f} veces', 10.5, INK, 'end', 600 if q.r >= 5 else 400)
+    S.t(C2, y + 3.8, f'{q.cw/1e6:.2f} M MXN', 10.5, TXT, 'end')
+S.t(0, YB + 14, 'Negro: Marketing. Gris: Product Growth.', 10.5, SEC)
+S.t(0, YB + 34, f'En las {NB} campañas de Cash que usan los dos canales, WhatsApp sale más caro en {NW}; la mitad, más de {p.r.median():.0f} veces.',
+    11.5, BLUE, 'start', 700)
 svg = S.done()
-R = dict((r[1], r) for r in rows if r[0] == 'r')
 save(13, dict(
     kind='grafica',
-    titulo='Una conversión de Cash por WhatsApp cuesta más de siete veces lo que cuesta por correo, y pasa con todas las audiencias',
-    que=f'Por WhatsApp a Cash: Tasa 0 ({R["Tasa 0"][5]:.0f} % del gasto), referidos ({R["Referidos"][5]:.0f} %) y recordatorios ({R["Recordatorios"][5]:.0f} %). Por correo: ofertas, Tasa 0, recordatorios y cobranza.',
-    quien=f'WhatsApp de Cash: Marketing {eqw["Marketing"]:.0f} % del gasto y Product Growth {eqw["Product Growth"]:.0f} %. Correo de Cash: Product Growth {eqe["Product Growth"]:.0f} %, Marketing {eqe["Marketing"]:.0f} %, Collections {eqe["Collections"]:.0f} %.',
-    a_quien='Clientes activos, leads, registrados nuevos y bases frías (ex clientes y leads que nunca activaron) con producto Cash (préstamo personal).',
+    titulo=f'En la misma campaña de Cash, la conversión por WhatsApp cuesta más que por correo en {NW} de {NB}',
+    que='Tasa 0, referidos, descuentos y recordatorios de Cash (préstamo personal).',
+    quien='Marketing pone 73 % del WhatsApp de Cash y Product Growth 27 %.',
+    a_quien='Leads rezagados y recientes, ex clientes, registrados sin préstamo y clientes activos.',
     lecturas=[
-        f'Todo Cash: WhatsApp {TOT["wc"]:.1f} M MXN y {TOT["wk"]:.0f} mil conversiones, {TOT["wa"]:.0f} MXN cada una. Correo {TOT["ec"]:.1f} M MXN y {TOT["ek"]:.0f} mil, {TOT["em"]:.0f} MXN cada una.',
-        f'Con la misma audiencia WhatsApp cuesta de {R["Leads"][2]/R["Leads"][3]:.0f} a {R["Clientes activos"][2]/R["Clientes activos"][3]:.0f} veces más: clientes activos {R["Clientes activos"][2]:.0f} contra {R["Clientes activos"][3]:.1f} MXN; bases frías {R["Bases frías"][2]:.0f} contra {R["Bases frías"][3]:.0f}.',
-        f'Tasa 0 es lo más caro en los dos canales: {R["Tasa 0"][2]:.0f} MXN por WhatsApp y {R["Tasa 0"][3]:.0f} por correo. Push e in-app traen {pa.conversiones_fraccional.sum()/1e3:.0f} mil conversiones de Cash sin costo.',
+        f'Todo Cash: {TOT["wa"]:.0f} MXN por conversión en WhatsApp y {TOT["em"]:.0f} en correo, {TOT["wa"]/TOT["em"]:.1f} veces.',
+        f'Campaña por campaña la mitad cuesta más de {p.r.median():.0f} veces; Tasa 0 a rezagados: {top.iloc[0].whatsapp:.0f} contra {top.iloc[0].email:.0f} MXN.',
+        f'El recordatorio de Installments a activos: {top[top.nm.str.startswith("Recordatorio de Installments a activos")].iloc[0].r:.0f} veces; ahí el correo basta.',
     ],
-    causa='WhatsApp es el canal por defecto para vender Cash, aun con quien responde al correo o a la app, porque nadie compara cuánto cuesta cada conversión en cada canal.',
-    sowhat='Para Cash, primero correo, push e in-app; WhatsApp solo donde esos no llegan o donde el monto del préstamo lo paga.',
-    fuente=f'{FUENTE_E1}; producto Cash. Conversión: préstamo de Cash en los 7 días después del mensaje, repartido entre los mensajes que la persona recibió ese día; no prueba que el mensaje lo causó. WhatsApp a 1.00 MXN por entregado, email a 0.05 MXN por enviado, sin licencia de Braze.',
+    causa='WhatsApp es el canal por defecto para Cash aun con quien responde al correo; nadie compara costo por conversión entre canales.',
+    sowhat='Para Cash, primero correo, push e in-app; WhatsApp solo donde esos no llegan o el préstamo lo paga.',
+    fuente=f'{FUENTE_E1}; producto Cash. Campañas con 30 mil o más mensajes en cada canal. Conversión a 7 días repartida; no prueba causa.',
     svg=svg,
 ))

@@ -8,3 +8,4 @@ cd /home/user/claude/braze-analysis/deck/v6/slides/b2/src
 [ -f s$N.py ] && python3 s$N.py 2>&1 | grep -v Warning | tail -${TAILN:-30}
 cd /home/user/claude/braze-analysis/scripts && python3 deck_v6_render.py --solo ../deck/v6/slides/b2/$N.json $R/$N.html >/dev/null
 cd /home/user/claude/braze-analysis/deck/v6/tools && NODE_PATH=/opt/node-tools/node_modules node check.js $R/$N.html $R/$N.png
+python3 /home/user/claude/braze-analysis/deck/v6/tools/lint.py /home/user/claude/braze-analysis/deck/v6/slides/b2/$N.json

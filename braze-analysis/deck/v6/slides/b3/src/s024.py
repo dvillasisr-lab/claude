@@ -74,15 +74,15 @@ svg = S.done()
 mn, mv, pv = RES[('Marketing', 1)], RES[('Marketing', 0)], RES[('Product Growth', 0)]
 save(24, dict(kind='grafica',
   titulo='Marketing pierde a los usuarios nuevos en días; Product Growth pierde a la base vieja en meses',
-  que='El día de la baja llega, en nuevos: el recordatorio de terminar el registro (Veriff, datos personales), el rescate de Tasa 0 y el lanzamiento de BillPay. En la base vieja: Tasa 0 a registrados, referidos, Installments y descuentos a inactivos.',
-  quien='Marketing y Product Growth. Others por un solo correo: el lanzamiento de BillPay (NewProducts) a toda la base.',
-  a_quien='Nuevos: su primer correo llegó de febrero en adelante (158.5 mil bajas). Base vieja: ya recibían correo en enero (242.3 mil bajas).',
+  que='Nuevos: recordatorio de registro, Tasa 0, BillPay. Base vieja: Tasa 0, referidos.',
+  quien='Marketing y Product Growth; Others por un solo correo de BillPay.',
+  a_quien='Nuevos: primer correo desde febrero (158.5 mil bajas). Base vieja: enero (242.3 mil).',
   lecturas=[
-   f'Nuevos: Marketing pierde {mn[0]/1e3:.0f} mil en {mn[1]} días (mediana) con {mn[2]:.0f} correos, uno a dos al día. La mitad se va el día del recordatorio de terminar el registro y otros 20 mil con el rescate de Tasa 0.',
-   f'Base vieja: Marketing pierde {mv[0]/1e3:.0f} mil en {mv[1]} días con {mv[2]:.0f} correos (referidos y Tasa 0); Product Growth {pv[0]/1e3:.1f} mil en {pv[1]} días con {pv[2]:.0f} correos, unos dos por semana.',
-   'El lanzamiento de BillPay se llevó 49 mil nuevos con un solo correo: casi un tercio de todas las bajas de nuevos.'],
-  causa='Marketing junta varios recordatorios diarios sobre quien apenas se registró; Product Growth repite ofertas de crédito durante meses a quien nunca lo pidió. Ninguno tiene un límite de mensajes por persona a la semana.',
-  sowhat='Para el nuevo: límite de un correo al día y tres la primera semana. Para la base vieja: menos ofertas de crédito a quien no las pidió.',
-  fuente='Fuente: Braze, días y correos hasta la baja (E8, versión 3) por campaña que llegó el día de la baja; 400.8 mil bajas de correo, enero a septiembre 2026. Días = mediana ponderada; correos = promedio. Una baja cuenta en dos campañas si ese día le llegaron dos. Solo el correo registra la baja.',
+   f'Nuevos: Marketing pierde {mn[0]/1e3:.0f} mil en {mn[1]} días con {mn[2]:.0f} correos; la mitad con el recordatorio de registro.',
+   f'Base vieja: Product Growth pierde {pv[0]/1e3:.1f} mil en {pv[1]} días con {pv[2]:.0f} correos, unos dos por semana.',
+   'El lanzamiento de BillPay se llevó 49 mil nuevos con un solo correo: casi un tercio de sus bajas.'],
+  causa='Marketing junta recordatorios diarios sobre el recién llegado; Product Growth repite ofertas de crédito durante meses.',
+  sowhat='Nuevo: un correo al día y tres la primera semana. Base vieja: menos ofertas de crédito no pedidas.',
+  fuente='Fuente: Braze, días y correos hasta la baja (E8 v3) por campaña que llegó ese día; 400.8 mil bajas, enero a septiembre 2026. Días: mediana; correos: promedio.',
   svg=svg))
 check(24)

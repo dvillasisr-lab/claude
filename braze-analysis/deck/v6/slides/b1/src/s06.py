@@ -1,79 +1,81 @@
-"""Lámina 6: promociones contra avisos de servicio y cobranza. Izquierda: parte de cada tipo en mensajes, gasto y conversiones.
-Derecha: respuesta de cada tipo (pequeños múltiplos, cada grupo con su escala). Tipo por la regla del Sheets (base_p1)."""
-from comun import load, write, Svg, INK, TXT, SEC, BLUE, GREEN, G1, GRID, FUENTE_E1, COSTO
+"""Lámina 6: promociones contra avisos de servicio y cobranza. Franja de puntos: cada punto es una campaña (todas sus versiones)
+con 100 mil o más entregados; panel de correo (clic) y de push (apertura) con la misma escala logarítmica; barra = promedio ponderado,
+línea punteada = mediana. Tipo por la regla del Sheets (base_p1)."""
+import zlib
+import numpy as np
+from comun import load, write, Svg, INK, TXT, SEC, GRID, BLUE, BLUE2, GREEN, GREEN2, G1, G2, FUENTE_E1
 
 d = load()
-TIP = [('promocional', 'Promoción', BLUE), ('transaccional', 'Aviso de servicio', GREEN), ('cobranza', 'Cobranza', G1)]
-t = d.groupby('tipo').agg(env=('envios', 'sum'), cost=('costo', 'sum'), conv=('conversiones_fraccional', 'sum'),
-                          ed=('email_delivery', 'sum'), ec=('email_click', 'sum'), ps=('pn_send', 'sum'), po=('pn_open', 'sum'),
-                          eu=('email_unsubscribe', 'sum'))
-sh = t[['env', 'cost', 'conv']] / t[['env', 'cost', 'conv']].sum()
-m = {'clic': 1000 * t.ec / t.ed, 'push': 1000 * t.po / t.ps, 'conv': 1000 * t.conv / t.env, 'baja': 1000 * t.eu / t.ed}
-p = d[d.tipo == 'promocional']
-gan = p.groupby('gan').envios.sum() / p.envios.sum()
-peq = p.groupby('equipo').envios.sum() / p.envios.sum()
-pau = p.groupby('aud').envios.sum() / p.envios.sum(); pauc = p.groupby('aud').costo.sum() / p.costo.sum()
-wa99 = d[(d.canal == 'whatsapp')].groupby('tipo').envios.sum(); wa99 = wa99['promocional'] / wa99.sum()
-ia99 = d[(d.canal == 'in-app')].groupby('tipo').envios.sum(); ia99 = ia99['promocional'] / ia99.sum()
-print(sh.round(3), {k: v.round(1).to_dict() for k, v in m.items()}, gan.round(3).to_dict(), peq.round(3).to_dict(), pau.round(3).to_dict(), pauc.round(3).to_dict(), wa99, ia99)
+TIP = [('promocional', 'Promoción', BLUE2, BLUE), ('transaccional', 'Aviso de servicio', GREEN2, GREEN), ('cobranza', 'Cobranza', G2, INK)]
+CAN = [('email', 'Correo: clic de cada 100 correos entregados', 'email_delivery', 'email_click'),
+       ('push notification', 'Push: apertura de cada 100 push enviados', 'pn_send', 'pn_open')]
+NOM = {('email', 'Lending-KCash-B0211-CANVAS-Nuevos_RegistradosPay-Tasa0-N/A'): 'Tasa 0 a nuevos registrados',
+       ('email', 'NewProducts-Kueski-T0000-E-Portfolio_BillPay_Intro_Full_Rollout'): 'Presentación de BillPay',
+       ('email', 'Transaccional-KPay-Mail-Payment-Confirmation-20240821'): 'Confirmación de pago KPay',
+       ('push notification', 'Marketing-KCash-B0391-CANVAS-Leads_BDDMarketing-RescateFinesDeSemana-N/A'): 'Rescate de fin de semana a leads',
+       ('push notification', 'Payment Received - Push'): 'Pago recibido',
+       ('push notification', 'Collections-KCash-T000-CANVAS-Precobranza-ecosystem'): 'Precobranza'}
+t = d.groupby('tipo').agg(env=('envios', 'sum'), cost=('costo', 'sum'), conv=('conversiones_fraccional', 'sum'))
+sh = t / t.sum()
+P = {}
+for c, _, b, r in CAN:
+    g = d[d.canal == c].groupby(['fam', 'tipo']).agg(b=(b, 'sum'), r=(r, 'sum')).reset_index()
+    g = g[g.b >= 100000].copy(); g['rr'] = 100 * g.r / g.b
+    w = d[d.canal == c].groupby('tipo')[[b, r]].sum(); w = 100 * w[r] / w[b]
+    P[c] = (g, w)
+ratio = {c: P[c][1]['transaccional'] / P[c][1]['promocional'] for c in P}
+print(sh.round(3), ratio, {c: P[c][0].groupby('tipo').rr.agg(['count', 'median']).round(2).to_dict() for c in P})
 
-S = Svg('Parte de promociones, avisos de servicio y cobranza en mensajes, gasto y conversiones atribuidas, y la respuesta de cada tipo')
-x = 0
-for k, lab, col in TIP:
-    S.rect(x, 4, 10, 10, col); S.t(x + 15, 13, lab, 11.5, TXT); x += 15 + len(lab) * 6.3 + 20
-# --- izquierda: barras al 100 %
-S.t(0, 44, 'Parte de cada tipo de mensaje', 11.5, INK, w=600)
-Y0, Y1 = 64, 372; BW = 62
-COLS = [('env', 'Mensajes'), ('cost', 'Gasto en MXN'), ('conv', 'Conversiones'), ]
-for i, (k, lab) in enumerate(COLS):
-    x0 = 8 + i * 110; top = Y0; small = []
-    for tk, tl, col in TIP:
-        v = sh.loc[tk, k]; h = (Y1 - Y0) * v
-        S.rect(x0, top, BW, h - 2, col)
-        if h > 20:
-            S.t(x0 + BW / 2, top + h / 2 + 4, f'{v * 100:.0f} %', 11.5 if tk != 'promocional' else 13, '#FFFFFF' if tk != 'cobranza' else INK, 'middle', 600)
-        else:
-            small.append([top + h / 2 + 4, f'{v * 100:.0f} %'])
-        top += h
-    for j in range(len(small) - 2, -1, -1):  # separa etiquetas chicas de abajo hacia arriba
-        small[j][0] = min(small[j][0], small[j + 1][0] - 13)
-    for yy, s_ in small:
-        S.t(x0 + BW + 5, yy, s_, 10.5, SEC, 'start')
-    S.t(x0 + BW / 2, Y1 + 18, lab, 11.5, INK if k == 'cost' else TXT, 'middle', 600 if k == 'cost' else 400)
-S.t(8 + 2 * 110 + BW / 2, Y1 + 33, 'atribuidas', 11.5, TXT, 'middle')
-# --- derecha: respuesta por tipo, cada grupo con su escala
-X0, XW = 372, 350
-S.t(X0, 44, 'Respuesta de cada tipo de mensaje', 11.5, INK, w=600)
-GR = [('clic', 'Clics por cada mil correos entregados', 1), ('push', 'Aperturas por cada mil push', 1),
-      ('conv', 'Conversiones atribuidas por cada mil mensajes', 1), ('baja', 'Bajas por cada mil correos entregados', 1)]
-y = 70
-for gk, glab, dec in GR:
-    S.t(X0, y, glab, 11, TXT if gk != 'baja' else SEC, w=600 if gk in ('clic', 'push') else 400)
-    vmax = max(m[gk]); y += 8
-    for tk, tl, col in TIP:
-        v = m[gk][tk]; w = XW * v / vmax
-        S.rect(X0, y, w, 13, col)
-        S.t(X0 + w + 6, y + 11, f'{v:.{dec}f}', 11, INK if tk == 'promocional' else SEC, 'start', 700 if tk == 'promocional' else 400)
-        y += 16
-    y += 30
-S.line(X0, 56, X0, 368, GRID)
+S = Svg('Respuesta de cada campaña por tipo de mensaje, correo y push, en escala logarítmica')
+S.t(0, 14, 'Cada punto es una campaña con 100 mil o más entregados (tamaño = entregados).', 11, TXT)
+S.rect(470, 4, 3, 13, INK); S.t(478, 14, 'promedio ponderado', 11, TXT)
+S.line(600, 4, 600, 17, INK, 1.2, ' stroke-dasharray="2 2"'); S.t(606, 14, 'mediana', 11, TXT)
+XL, XR = 132, 700
+LO, HI = -2, np.log10(20)
+xx = lambda v: XL + (XR - XL) * (np.log10(max(v, 0.01)) - LO) / (HI - LO)
+ROWH = 47
+y = 34
+for c, ctit, _, _ in CAN:
+    g, w = P[c]
+    S.t(0, y + 12, ctit, 12, INK, 'start', 600)
+    y0 = y + 22
+    for i, (tk, tl, cp, cb) in enumerate(TIP):
+        yc = y0 + i * ROWH + ROWH / 2
+        S.line(XL, yc, XR, yc, GRID)
+        gg = g[g.tipo == tk]
+        S.t(XL - 10, yc - 1, tl, 11.5, INK if tk == 'promocional' else TXT, 'end', 600 if tk == 'promocional' else 400)
+        S.t(XL - 10, yc + 12, f'{len(gg)} campañas', 10.5, SEC, 'end')
+        for _, z in gg.sort_values('b', ascending=False).iterrows():
+            j = (zlib.crc32(z.fam.encode()) % 1000) / 1000 - 0.5
+            rad = 1.8 + 5.5 * np.sqrt(z.b / 35e6)
+            S.o.append(f'<circle cx="{xx(z.rr):.1f}" cy="{yc + j * 22:.1f}" r="{rad:.1f}" fill="{cp}" fill-opacity="0.75" stroke="#fff" stroke-width="0.6"/>')
+        med = gg.rr.median(); S.line(xx(med), yc - 15, xx(med), yc + 15, INK, 1.2, ' stroke-dasharray="2 2"')
+        S.rect(xx(w[tk]) - 1.5, yc - 15, 3, 30, cb)
+        S.t(XR + 8, yc + 4, f'{w[tk]:.2f} %', 12 if tk != 'cobranza' else 11.5, cb, 'start', 700)
+        for (cc, fam), nm in NOM.items():
+            if cc == c and fam in set(gg.fam):
+                z = gg[gg.fam == fam].iloc[0]; px = xx(z.rr)
+                anchor = 'end' if px > 560 else 'start'
+                dy = -14
+                if nm == 'Presentación de BillPay': anchor = 'end'
+                S.t(px + (-8 if anchor == 'end' else 8), yc + dy, f'{nm} {z.rr:.2f} %' if z.rr < 1 else f'{nm} {z.rr:.1f} %', 10.5, INK, anchor, 600, halo=True)
+    y = y0 + 3 * ROWH + 6
+    for v, lab in ((0.01, '0.01 %'), (0.1, '0.1 %'), (1, '1 %'), (10, '10 %')):
+        S.t(xx(v), y + 6, lab, 10.5, SEC, 'middle')
+    y += 18
+S.t(XR + 8, 30, 'Ponderado', 10.5, SEC, 'start', 600)
 
-r_clic = m['clic']['transaccional'] / m['clic']['promocional']; r_push = m['push']['transaccional'] / m['push']['promocional']
-print('veces', r_clic, r_push, m['conv']['transaccional'] / m['conv']['promocional'])
+e = P['email'][1]; p = P['push notification'][1]
 write(6, dict(kind='grafica',
-    titulo='Nueve de cada diez pesos se van en promociones, que por correo y push responden casi cinco veces menos que los avisos de servicio',
-    que=(f'Promoción: Tasa 0 ({gan["tasa0"] * 100:.0f} % del volumen promocional), referidos ({gan["referidos"] * 100:.0f} %), recordatorios de algo empezado ({gan["recordatorio"] * 100:.0f} %), '
-         f'descuentos ({gan["descuento"] * 100:.0f} %) y lanzamientos ({gan["lanzamiento"] * 100:.0f} %). Avisos: confirmación de pago, contratos, desembolso. Cobranza: antes y después del vencimiento.'),
-    quien=(f'Promoción: Marketing {peq["Marketing"] * 100:.0f} % del volumen promocional, Product Growth {peq["Product Growth"] * 100:.0f} %, Sales {peq["Sales"] * 100:.0f} % y Others {peq["Others"] * 100:.0f} %. '
-           'Avisos de servicio: Others (avisos de KPay y KCash). Cobranza: Collections.'),
-    a_quien=(f'Promoción: leads {pau["leads"] * 100:.0f} % del volumen promocional, clientes activos {pau["activos"] * 100:.0f} %, ex clientes y leads que nunca activaron '
-             f'{pau["frios"] * 100:.0f} % (pero {pauc["frios"] * 100:.0f} % del gasto promocional).'),
+    titulo='Las promociones responden casi cinco veces menos que los avisos por correo y push, y son casi todo el gasto',
+    que='Promoción: Tasa 0, referidos, descuentos. Aviso: pago, contrato, desembolso.',
+    quien='Promociones: Marketing y Product Growth. Avisos: Others. Cobranza: Collections.',
+    a_quien='Promociones a leads, registrados y ex clientes; avisos a quien hizo algo.',
     lecturas=[
-        f'Las promociones son {sh.loc["promocional", "env"] * 100:.0f} % de los mensajes y {sh.loc["promocional", "cost"] * 100:.0f} % del gasto ({t.cost["promocional"] / 1e6:.1f} M MXN en nueve meses), pero traen {sh.loc["promocional", "conv"] * 100:.0f} % de las conversiones. Los avisos son {sh.loc["transaccional", "env"] * 100:.0f} % de los mensajes y traen {sh.loc["transaccional", "conv"] * 100:.0f} %.',
-        f'Por correo, una promoción tiene {m["clic"]["promocional"]:.0f} clics por cada mil correos y un aviso {m["clic"]["transaccional"]:.0f}. Por push, {m["push"]["promocional"]:.0f} aperturas por cada mil contra {m["push"]["transaccional"]:.0f}. El aviso de pago de KPay tiene 38 clics por cada mil correos.',
-        f'Las promociones también provocan más bajas: {m["baja"]["promocional"]:.1f} por cada mil correos contra {m["baja"]["transaccional"]:.1f} de los avisos. Casi todo el WhatsApp y el in-app ({min(wa99, ia99) * 100:.0f} %) es promoción.'],
-    causa='Las promociones salen a listas grandes aunque la persona no haya hecho nada; los avisos salen porque hizo algo (pagó, firmó, recibió su préstamo) y por eso los espera y los abre.',
-    sowhat='El gasto y la mejora están en las promociones; los avisos de servicio y la cobranza quedan fuera del límite de mensajes por persona.',
-    fuente=(f'{FUENTE_E1}. Tipo por la regla del Sheets: Collections = cobranza; nombre que empieza con "Transaccional" o sin ticket = aviso; lo demás, promoción (algunas sin ticket no son avisos). '
-            f'Conversión atribuida = conversiones fraccionales de E1. {COSTO}.'),
+        f'Promociones: {sh.loc["promocional", "env"] * 100:.0f} % de los mensajes, {sh.loc["promocional", "cost"] * 100:.0f} % del gasto y {sh.loc["promocional", "conv"] * 100:.0f} % de las conversiones.',
+        f'Correo: promoción {e["promocional"]:.2f} % de clic contra {e["transaccional"]:.2f} % del aviso. Push: {p["promocional"]:.2f} % contra {p["transaccional"]:.2f} %.',
+        'Tasa 0 a nuevos registrados: 33 M correos con 0.28 % de clic, debajo de casi todos los avisos.'],
+    causa='Las promociones salen a listas grandes sin que la persona haya hecho nada; el aviso sale porque pagó o firmó, y lo espera.',
+    sowhat='La mejora está en las promociones; avisos y cobranza quedan fuera del límite de mensajes por persona.',
+    fuente=f'{FUENTE_E1}. Tipo por regla del Sheets: Collections = cobranza; "Transaccional" o sin ticket = aviso; lo demás, promoción. Clic sobre entregados.',
     svg=S.done()))

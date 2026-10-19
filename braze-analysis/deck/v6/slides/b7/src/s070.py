@@ -48,17 +48,17 @@ for f, r in t8.iterrows():
 S.t(0, 408, f"Tamaño del círculo = bajas en el año. Más de {YM} bajas por mil se dibuja en {YM}.", 10.5, SEC)
 pg = t8[t8.equipo == "Product Growth"]; mk = t8[t8.equipo == "Marketing"]
 J = dict(
-    titulo=f"Ocho campañas de email causan un tercio de las bajas del correo, y seis de ellas casi no reciben clics",
-    que="Promociones: lanzamiento de BillPay, Tasa 0 (dos), referidos, sorteo AnotayGana, Cuesta de Enero y crédito en plazos. Además, el recordatorio de verificar identidad (Veriff).",
-    quien=f"Product Growth {len(pg)} campañas ({pg.uns.sum()/1e3:.0f} mil bajas), Marketing {len(mk)} ({mk.uns.sum()/1e3:.0f} mil) y Others 1 (BillPay, {t8[t8.equipo=='Others'].uns.sum()/1e3:.0f} mil).",
-    a_quien="Toda la base (BillPay, AnotayGana), leads (referidos, Tasa 0 a rezagados, Veriff, Cuesta de Enero) y registrados que nunca tomaron crédito (Tasa 0 a registrados de KPay, crédito en plazos).",
+    titulo="Ocho campañas de email causan un tercio de las bajas del correo, y seis casi no reciben clics",
+    que="BillPay, Tasa 0, referidos, AnotayGana, Cuesta de Enero, crédito en plazos y Veriff.",
+    quien=f"Product Growth {len(pg)} campañas, Marketing {len(mk)} y Others 1 (BillPay).",
+    a_quien="Toda la base, leads y registrados que nunca tomaron crédito.",
     lecturas=[
-        f"Las ocho suman {t8.uns.sum()/1e3:.0f} mil de {T/1e6:.2f} M bajas ({t8.pct.sum():.0f} %). Seis reciben menos de 10 clics por cada mil correos; las otras dos son Veriff y la Tasa 0 contada como historia.",
-        f"La Tasa 0 contada como historia a leads rezagados causa {t8.loc[[i for i in t8.index if 'NarrativaTasa0' in i][0],'bpm']:.0f} bajas por cada mil correos, casi tres veces la campaña típica; referidos a leads, {t8.loc[[i for i in t8.index if 'B0326' in i][0],'bpm']:.1f}.",
-        "BillPay se mandó una vez a toda la base en junio y quedó como la campaña con más bajas del año. Quien se da de baja ya no recibe ningún correo: es un cliente que dejamos de poder contactar.",
+        f"Las ocho suman {t8.uns.sum()/1e3:.0f} mil de {T/1e6:.2f} M bajas ({t8.pct.sum():.0f} %); seis reciben menos de 10 clics por mil.",
+        f"Tasa 0 contada como historia a rezagados: {t8.loc[[i for i in t8.index if 'NarrativaTasa0' in i][0],'bpm']:.0f} bajas por mil correos; la típica, {MED:.1f}.",
+        f"BillPay se mandó una vez a toda la base y causó {t8.loc[[i for i in t8.index if 'BillPay' in i][0],'uns']/1e3:.0f} mil bajas.",
     ],
-    causa="Se manda la misma promoción por correo a listas enteras (toda la base, todos los leads) sin ver si la persona abre: a quien no le interesa, se da de baja.",
-    sowhat="Las bajas no salen de todo el email: salen de ocho envíos a listas grandes que además casi no responden. Achicarlos protege el contacto con millones de personas.",
-    fuente=f"Fuente: Braze, envíos por campaña, mes y canal, enero a septiembre 2026; {len(big)} campañas de email con 300 mil correos entregados o más. Bajas = eventos de baja atribuidos a la campaña ({T/1e6:.2f} M en el año, incluye los registrados en meses sin envío de esa campaña); no son personas únicas (439 mil personas se dieron de baja).",
+    causa="Se manda la misma promoción a listas enteras sin ver si abren; a quien no le interesa, se da de baja.",
+    sowhat="Quien se da de baja ya no recibe correos: achicar estos ocho envíos protege el contacto.",
+    fuente=f"Fuente: Braze, envíos por campaña y canal, ene a sep 2026; {len(big)} campañas de email con 300 mil correos o más. Bajas = eventos atribuidos a la campaña, no personas.",
     svg=S.out())
 write(70, J)

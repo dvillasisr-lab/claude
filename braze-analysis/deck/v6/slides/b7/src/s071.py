@@ -49,17 +49,17 @@ S.t(0, 410, f"Tamaño = correos entregados. Bajas contadas en los meses en que l
 V = r[r.familia.str.contains("Retargeting_Veriff")].iloc[0]
 rec = r[r.tema == "Recordatorio de registro"]
 J = dict(
-    titulo="Hay correos que la gente sí toca pero que causan muchas bajas: la mitad de esas bajas viene de recordatorios que llegan hasta cinco veces al mes",
-    que="Recordatorios de terminar el registro (verificar identidad, datos personales, NIP, dirección), Tasa 0 contada como historia, boletines, Cuesta de Enero y avisos.",
-    quien=f"Marketing {eqr.loc['Marketing','n']:.0f} de {len(r)} campañas ({eqr.loc['Marketing','env']/1e6:.0f} M correos, {eqr.loc['Marketing','pu']:.0f} % de estas bajas); Others {eqr.loc['Others','n']:.0f} (Acquisition de KPay, cumpleaños, avisos); Product Growth {eqr.loc['Product Growth','n']:.0f}.",
-    a_quien=f"Sobre todo leads que acaban de empezar su registro ({(r.etapa=='Leads (no terminaron registro)').sum()} de {len(r)} campañas).",
+    titulo="Hay correos que la gente sí toca pero causan muchas bajas: la mitad viene de recordatorios repetidos",
+    que="Recordatorios de registro, Tasa 0 contada como historia, boletines y avisos.",
+    quien=f"Marketing {eqr.loc['Marketing','n']:.0f} de {len(r)} campañas, Others {eqr.loc['Others','n']:.0f} y Product Growth {eqr.loc['Product Growth','n']:.0f}.",
+    a_quien="Sobre todo leads que acaban de empezar su registro.",
     lecturas=[
-        f"{len(r)} campañas, {r.envios.sum()/1e6:.1f} M correos y unas {r.uns.sum()/1e3:.0f} mil bajas. Reciben {10*(r.clic_pct*r.envios).sum()/r.envios.sum():.0f} clics por cada mil correos (la mitad de las campañas recibe menos de {10*MEDC:.0f}) y causan 2.5 bajas por mil o más; la típica, {MEDB:.1f}.",
-        f"Las {hi.sum()} que llegan dos o más veces al mes a la misma persona causan {100*r[hi].uns.sum()/r.uns.sum():.0f} % de esas bajas; casi todas son recordatorios de registro. Veriff: {V.toques_usuario_mes:.1f} correos al mes, {10*V.clic_pct:.0f} clics y {V.bajas_por_mil:.1f} bajas por mil.",
-        "El contenido funciona (la gente hace clic); lo que molesta es la repetición. Por eso aquí no se quita el mensaje: se espacia.",
+        f"{len(r)} campañas reciben {10*(r.clic_pct*r.envios).sum()/r.envios.sum():.0f} clics por mil correos y causan 2.5 bajas por mil o más; la típica, {MEDB:.1f}.",
+        f"Las {hi.sum()} que llegan dos o más veces al mes a la misma persona causan {100*r[hi].uns.sum()/r.uns.sum():.0f} % de esas bajas.",
+        f"Veriff: {V.toques_usuario_mes:.1f} correos al mes por persona, {10*V.clic_pct:.0f} clics y {V.bajas_por_mil:.1f} bajas por mil.",
     ],
-    causa="Los recordatorios de registro mandan un correo nuevo en cada paso pendiente y no hay un límite de mensajes por persona a la semana: quien no terminó su registro recibe unos cinco correos al mes de cada recordatorio.",
-    sowhat="Un mensaje bueno que llega demasiadas veces hace que la gente se dé de baja y ya no podamos escribirle por correo. Bajarlo a dos correos al mes y no mandarlo a quien no abrió los últimos tres.",
-    fuente=f"Fuente: Braze, envíos por campaña y canal, enero a septiembre 2026; {len(x)} campañas de email con 100 mil correos o más. Bajas por cada mil correos entregados, contando las bajas de los meses en que la campaña envió (por eso la típica es {MEDB:.1f} y no la de la lámina anterior). Correos al mes = correos entre personas que lo recibieron, promedio mensual.",
+    causa="Cada paso pendiente manda su correo y no hay límite de mensajes por persona a la semana.",
+    sowhat="El mensaje sirve; lo que molesta es la repetición: dos correos al mes y no a quien no abre.",
+    fuente=f"Fuente: Braze, envíos por campaña y canal, ene a sep 2026; {len(x)} campañas de email con 100 mil correos o más. Bajas en los meses en que la campaña envió.",
     svg=S.out())
 write(71, J)

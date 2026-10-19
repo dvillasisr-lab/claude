@@ -58,16 +58,16 @@ S.t(PX, y + 74, f'la más baja del año (mayo {cj["open_mes"][5]:.2f} %).', 10.5
 
 bpt = bp.sum()
 write(41, dict(kind='grafica', seccion='V. El ritmo lo marcan los lanzamientos, no el cliente',
- titulo=f'Junio sumó {cj["new_env"]/1e6:.0f} M push nuevos de cuatro equipos y casi nadie los abrió: {cj["new_open"]:.2f} %, contra {cj["old_open"]:.2f} % del push que ya existía',
- que='Lanzamiento de BillPay (intro, tres recordatorios y Onboarding de Billpayments), recordatorio de TopUps, Anota y Gana, Mundial y Día del Padre, Comercio del día, referidos y Hot Sale. Todo promocional.',
- quien=f'Push nuevo de junio: Marketing {jn.loc["Marketing","pn_send"]/1e6:.1f} M, NewProducts {jn.loc["Others","pn_send"]/1e6:.1f} M, Product Growth {jn.loc["Product Growth","pn_send"]/1e6:.1f} M y Sales {jn.loc["Sales","pn_send"]/1e6:.1f} M.',
- a_quien='Toda la base y leads: cada push a toda la base llegó a entre 1.2 y 3.2 M personas.',
+ titulo=f'Junio sumó {cj["new_env"]/1e6:.0f} M push nuevos de cuatro equipos y casi nadie los abrió: {cj["new_open"]:.2f} %',
+ que='BillPay y sus recordatorios, TopUps, Anota y Gana, Mundial, Día del Padre, Hot Sale',
+ quien='Marketing, NewProducts, Product Growth y Sales',
+ a_quien='Toda la base y leads: cada push llegó a entre 1.2 y 3.2 M personas',
  lecturas=[
-  f'Push de junio: {cj["jun"]/1e6:.1f} M, {100*(cj["jun"]/cj["may"]-1):.0f} % más que mayo. En el índice, la semana del 15 de junio llegó a {cells["Push"]["vmax"]:.0f} (3.4 veces enero) y la apertura cayó a {cells["Push"]["rmin"]:.0f}.',
-  f'El tema que más pesó fue BillPay: {bpt:.1f} M push en junio entre NewProducts y Marketing. NewProducts mandó tres recordatorios en 11 días a los mismos 1.6 M (abre 0.65 %).',
-  'La semana del 8 de junio tres equipos mandaron push a toda la base a la vez: NewProducts (TopUps y BillPay), Product Growth (Anota y Gana) y Marketing (Mundial).',
+  f'Semana del 15 de junio: push a {cells["Push"]["vmax"]:.0f} (3.4 veces enero) y apertura a {cells["Push"]["rmin"]:.0f}.',
+  f'El push que ya existía abrió {cj["old_open"]:.2f} %; el nuevo, {cj["new_open"]:.2f} %.',
+  f'BillPay sumó {bpt:.1f} M push en junio entre NewProducts y Marketing.',
  ],
- causa='Cada equipo lanzó su campaña de junio sin ver las de los demás, y el mismo lanzamiento (BillPay) salió por dos equipos y cuatro veces en un mes.',
- sowhat='Un lanzamiento no debería salir a toda la base por dos equipos y cuatro veces en un mes: un solo dueño y una sola secuencia.',
- fuente='Fuente: Braze, E4a por semana y canal (índice: promedio de las semanas de enero = 100) y E1 por campaña y mes, enero a septiembre 2026. Push nuevo = la campaña no mandó push en mayo. Apertura sobre push enviados.',
+ causa='Cada equipo lanzó su campaña de junio sin ver las de los demás; BillPay salió por dos equipos.',
+ sowhat='Un lanzamiento debe tener un solo dueño y una sola secuencia, no cuatro push en un mes.',
+ fuente='Fuente: Braze, E4a por semana y canal (índice: semanas de enero = 100) y E1 por campaña y mes, 2026. Push nuevo = la campaña no mandó push en mayo.',
  svg=S.svg()))

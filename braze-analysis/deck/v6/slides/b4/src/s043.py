@@ -51,16 +51,16 @@ i8 = wks.index('2026-06-08'); S.t(cx(i8) + 2, ry(clic['2026-06-08']) - 10, f'{cl
 iM = wks.index('2026-05-25'); S.t(cx(iM) - 8, ry(clic['2026-05-25']) + 16, f'{clic["2026-05-25"]:.2f} %', 11, TXT, 'middle', 400, halo=True)
 
 write(43, dict(kind='grafica', seccion='V. El ritmo lo marcan los lanzamientos, no el cliente',
- titulo='Un solo correo hundió la semana: con BillPay Intro el clic cayó a un tercio y a la semana siguiente volvió a lo normal',
- que='BillPay Intro: lanzamiento de BillPay (pago de servicios) por correo a toda la base. Promocional.',
- quien='NewProducts (en Others).',
- a_quien=f'{bi.envios/1e6:.1f} M personas, casi toda la base con correo, incluidas las que nunca habían respondido.',
+ titulo='Un solo correo hundió la semana: con BillPay Intro el clic cayó a un tercio y luego volvió',
+ que='BillPay Intro: lanzamiento de BillPay por correo a toda la base',
+ quien='NewProducts (en Others)',
+ a_quien=f'{bi.envios/1e6:.1f} M personas, incluidas las que nunca habían respondido',
  lecturas=[
-  f'BillPay Intro salió el lunes 1 de junio: {share:.0f} % de los correos de esa semana, apertura {100*bi.email_open/bi.email_delivery:.1f} %, clic {100*bi.email_click/bi.email_delivery:.2f} % y {costo:.1f} M MXN de costo.',
-  f'Semana del 1 de junio: {clic[B]:.2f} % de clic contra {clic["2026-06-08"]:.2f} % la siguiente; sin BillPay habría tenido {sin[B]:.2f} %. Sin ese correo, junio hizo {jun_sin:.2f} % de clic, igual o mejor que mayo ({cm["2026-05-01"]:.2f} %).',
-  f'Medir por mes promedia el golpe y llega cuatro semanas tarde: junio cerró en {cm["2026-06-01"]:.2f} % y se leyó en julio, con los recordatorios de BillPay por push ya enviados. En push pasó igual: las semanas del 8 y 15 de junio abrieron {po["2026-06-08"]:.2f} % y {po["2026-06-15"]:.2f} %.',
+  f'BillPay Intro fue {share:.0f} % del correo de la semana del 1 de junio, con {100*bi.email_click/bi.email_delivery:.2f} % de clic.',
+  f'Semana: {clic[B]:.2f} % con BillPay, {sin[B]:.2f} % sin él; la siguiente, {clic["2026-06-08"]:.2f} %.',
+  f'El reporte mensual mostró {cm["2026-06-01"]:.2f} % en julio, cuatro semanas tarde.',
  ],
- causa='No hay una lectura semanal por campaña ni una regla que frene un envío a toda la base cuando su primera semana no responde.',
- sowhat='Hace falta una lectura semanal por campaña: si un envío de más de 1 M de personas no llega a 3 clics por cada mil correos (o 7.5 aperturas por cada mil push) en su primera semana, se frena lo que sigue.',
- fuente='Fuente: Braze, E4a por semana y mes (correo) y E1 (BillPay Intro: envíos, entregados, aperturas y clics de junio), 2026. Supone que BillPay Intro salió completo la semana del 1 de junio (primer envío ese día). Clic sobre correos entregados; costo a 0.05 MXN por correo enviado. Junio sin BillPay Intro da 0.92 % (el guion decía 0.89 %) y mayo 0.86 % (decía 0.84 %).',
+ causa='No hay lectura semanal por campaña ni regla que frene un envío a toda la base que no responde.',
+ sowhat='Si un envío de más de 1 M no llega a 3 clics por mil correos en su primera semana, se frena.',
+ fuente='Fuente: Braze, E4a por semana y mes (correo) y E1 (BillPay Intro, junio 2026). Supone que BillPay Intro salió completo la semana del 1 de junio. Clic sobre entregados.',
  svg=S.svg()))

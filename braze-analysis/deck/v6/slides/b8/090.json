@@ -3,25 +3,24 @@
  "kind": "cierre",
  "titulo": "Por qué pasa: Braze no tiene dueño ni reglas comunes, y cada equipo lo opera a su manera",
  "porques": [
-  "No sabemos cuánto vende Braze: solo 1 de 3,228 Canvas tuvo grupo de control de verdad.",
-  "No hay control porque no es obligatorio y nadie es dueño de la medición; tampoco hay una sola definición de conversión.",
-  "Nadie es dueño porque activar no exige equipo ni ticket: 748 comunicaciones no tienen ninguno.",
-  "Y solo el email registra bajas: en push y WhatsApp no vemos a quién perdemos.",
-  "Causa raíz: Braze se repartió por equipos sin un administrador central ni reglas comunes de medición y gobierno."
+  "No sabemos cuánto vende Braze: 1 de 3,228 Canvas tuvo grupo de control.",
+  "No hay control porque no es obligatorio ni hay una sola definición de conversión.",
+  "Nadie es dueño: activar no exige equipo ni ticket (748 comunicaciones sin ellos).",
+  "Solo el correo registra bajas: en push y WhatsApp no vemos a quién perdemos.",
+  "Causa raíz: Braze se repartió por equipos sin un administrador ni reglas comunes."
  ],
  "hipotesis": {
-  "A": "Si cada promoción lleva 10 % de grupo de control y una sola definición de conversión, en 8 semanas sabremos qué campañas venden.",
-  "O": "Si activar exige equipo y ticket, las comunicaciones sin dueño bajan de 748 a 0 y cada una tiene a quién preguntar.",
-  "G": "Si un comité quincenal de 30 minutos revisa calendario y resultados, las decisiones se toman con datos y no con opiniones."
+  "A": "Con 10 % de control y una definición de conversión, en 8 semanas sabremos qué vende.",
+  "O": "Si activar exige equipo y ticket, las comunicaciones sin dueño bajan de 748 a 0.",
+  "G": "Un comité quincenal de 30 minutos decide con datos y no con opiniones."
  },
  "como": [
-  "Semana 1: MarTech prende el grupo de control nativo de Braze (10 %, 5 % si pasa de 1 M de personas) en toda campaña promocional. Métrica: campañas con control, hoy 0 %, meta 100 % en 90 días.",
-  "Semana 2: Datos fija la definición de conversión (crédito otorgado en 7 días) y la publica en el tablero.",
-  "Semana 2: MarTech bloquea la activación sin equipo ni ticket en el nombre. Métrica: comunicaciones sin equipo, hoy 748, meta 0.",
-  "Semana 3: CRM arranca el comité quincenal con el calendario de todos los equipos; cada equipo es dueño de sus campañas.",
-  "Mes 2: Datos pide a Braze (Currents) la baja de push y WhatsApp con fecha y campaña."
+  "Semana 1: MarTech prende el control nativo (10 %) en toda promoción. Meta: 100 % en 90 días.",
+  "Semana 2: Datos fija la definición de conversión: crédito otorgado en 7 días.",
+  "Semana 2: MarTech bloquea activar sin equipo ni ticket. Meta: 0 comunicaciones sin dueño.",
+  "Semana 3: CRM arranca el comité quincenal con el calendario de todos los equipos."
  ],
- "impacto": "Decidir con datos los 0.85 M MXN al mes que hoy no se pueden probar, y poner dueño a 84.7 M mensajes que hoy no tienen responsable.",
- "sowhat": "Sin dueño y sin grupo de control, cualquier ahorro o inversión en Braze se discute con opiniones; con ellos, en 90 días cada campaña tiene equipo, ticket y resultado medido.",
- "fuente": "Fuente: E13 (grupos de control), E2 y E1 (equipo, ticket y envíos), E4a y E17 (bajas y banderas), enero a septiembre 2026; ahorro a medir de la lámina 92."
+ "impacto": "Decidir con datos 0.85 M MXN al mes y poner dueño a 84.7 M mensajes.",
+ "sowhat": "Con dueño y grupo de control, en 90 días cada campaña tiene equipo, ticket y resultado medido.",
+ "fuente": "Fuente: E13 (control), E2 y E1 (equipo, ticket y envíos), E5 y E17 (bajas), enero a septiembre 2026."
 }

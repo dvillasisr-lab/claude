@@ -2,27 +2,26 @@
  "n": 20,
  "seccion": "Pagamos el canal más caro y desaprovechamos el que más responde",
  "kind": "cierre",
- "titulo": "Por qué pasa: el canal se elige por equipo y por costumbre, no por quién responde ni por cuánto cuesta cada respuesta",
+ "titulo": "Por qué pasa: el canal lo elige cada equipo por costumbre, no por quién responde ni por lo que cuesta",
  "porques": [
-  "WhatsApp se lleva 41.0 M MXN en nueve meses, 71 % del gasto, y 39 % va a ex clientes y leads que nunca activaron, donde cada conversión cuesta 629 MXN.",
-  "59 % de los mensajes salen por un canal al que esa persona nunca respondió, y 47 % del volumen de promoción no llega a lo mínimo aceptable.",
-  "Cada equipo usa el canal que acostumbra: WhatsApp para rescates, push para ofertas porque no cuesta, correo para todo. In-app, que más conversiones trae, no pasa de 5 % de los mensajes de ningún equipo.",
-  "Nadie compara cuánto cuesta cada conversión en cada canal ni mide cada campaña contra un mínimo común; cada equipo ve solo su campaña.",
-  "Causa raíz: Braze no guarda por qué canal responde cada persona y no hay una regla de canal por costo, así que nadie puede elegir el canal por persona."
+  "WhatsApp se lleva 71 % del gasto y 39 % va a bases frías, a 629 MXN por conversión.",
+  "59 % de los mensajes van por un canal al que esa persona nunca respondió.",
+  "In-app es el que más convierte y ningún equipo le da más de 5 % de sus mensajes.",
+  "Nadie compara costo por conversión entre canales ni mide cada campaña contra un mínimo.",
+  "Causa raíz: Braze no guarda el canal al que responde cada persona ni hay regla por costo."
  ],
  "hipotesis": {
-  "A": "Si cada persona recibe los mensajes por el canal al que respondió en 90 días, suben las respuestas por cada mil mensajes y baja el gasto sin perder conversiones. Se prueba con un grupo que sigue igual.",
-  "O": "Si WhatsApp solo sale a quien lo leyó en 90 días, con presupuesto mensual con límite por equipo, y push solo a quien abrió uno en 60 días, dejamos de pagar y de mandar mensajes que nadie lee.",
-  "G": "Si un responsable de canales revisa cada mes las campañas contra el mínimo aceptable y el costo por conversión, las que no llegan se rehacen o se quitan en lugar de repetirse."
+  "A": "Mandar por el canal al que cada quien respondió en 90 días sube la respuesta y baja el gasto.",
+  "O": "WhatsApp solo a quien lo leyó en 90 días y push a quien abrió en 60 dejan de pagar lo que nadie lee.",
+  "G": "Un responsable revisa cada mes campañas contra el mínimo y costo por conversión."
  },
  "como": [
-  "Semanas 1 y 2: en Braze, atributo de canal preferido (última respuesta en 90 días) y segmentos de quien leyó WhatsApp en 90 días o abrió push en 60. Marketing con el equipo de datos. Métrica: personas con canal.",
-  "Semana 3: en los Canvas de Marketing y Product Growth, WhatsApp solo a ese segmento, con presupuesto con límite y 10 % sin mensajes. Métrica: MXN por conversión.",
-  "Semanas 3 y 4: referidos, lanzamientos y recordatorios primero por in-app; sin app, por correo. Métrica: conversiones por cada mil mensajes.",
-  "Semana 4: quitar de WhatsApp los números que no recibieron en 90 días. Métrica: entrega arriba de 80 % (hoy 74 %).",
-  "Cada mes: tablero de campañas contra el mínimo; dos meses sin llegar, se rehacen o se quitan. Métrica: promoción debajo del mínimo (hoy 47 %)."
+  "Semanas 1 y 2: atributo de canal preferido y segmentos por lectura reciente en Braze; Marketing.",
+  "Semana 3: en los Canvas, WhatsApp solo a ese segmento, con límite y 10 % sin envío.",
+  "Semana 4: quitar números de WhatsApp sin entrega en 90 días; meta de entrega 80 % (hoy 74 %).",
+  "Cada mes: rehacer o quitar campañas debajo del mínimo; hoy son 47 % del volumen de promoción."
  ],
- "impacto": "Canal por persona: 75 M mensajes y 3.1 M MXN menos por trimestre. WhatsApp solo a quien lo leyó: hasta 2.2 M MXN por trimestre. Se traslapan; caben en el ahorro total de hasta 2.34 M MXN al mes.",
- "sowhat": "Elegir el canal por persona y por costo por respuesta baja el gasto sin dejar de buscar a nadie: a los ex clientes se les sigue escribiendo por el canal más barato que sí usan, con un grupo sin mensajes para medir.",
- "fuente": "Fuente: láminas 11 a 19; Braze, envíos por campaña, mes y canal, y mensajes y respuesta por persona, enero a septiembre 2026. Los ahorros se traslapan y no se suman. Falta saber quién tiene la app (token de push o inicio de sesión por persona)."
+ "impacto": "Canal por persona: 75 M mensajes y 3.1 M MXN menos por trimestre, dentro de los 2.34 M MXN al mes del plan.",
+ "sowhat": "Elegir el canal por persona y por costo baja el gasto sin dejar de buscar a los ex clientes.",
+ "fuente": "Fuente: láminas 11 a 19; Braze, envíos por campaña y respuesta por persona, enero a septiembre 2026. Los ahorros se traslapan y no se suman."
 }

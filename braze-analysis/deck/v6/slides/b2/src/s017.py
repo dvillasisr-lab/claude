@@ -1,112 +1,79 @@
-"""Lámina 17: WhatsApp no entregado por equipo, partido por audiencia, con la entrega de cada tramo;
-a la derecha, entrega mensual contra 80 % (mínimo) y 90 % (estándar)."""
+"""Lámina 17 (ronda 2): cada punto es una campaña de WhatsApp: enviados (x, escala por múltiplos) contra % que llegó (y),
+color por audiencia; líneas en 80 % (mínimo) y 90 % (estándar); entrega ponderada de bases frías y de activos; campañas nombradas."""
+import math
 from b2base import *
 
 d = load_b()
 w = d[d.canal == 'whatsapp'].copy()
 w['nod'] = w.whatsapp_send - w.whatsapp_delivery
-AUD = [('frios', 'Bases frías', BLUE), ('leads', 'Leads', BLUE2), ('activos', 'Clientes activos', G1), ('otro', 'Otros', G2)]
-w['a4'] = np.where(w.aud.isin(['frios', 'leads', 'activos']), w.aud, 'otro')
-EQ = ['Marketing', 'Product Growth', 'Sales', 'Others']
-nod = w.pivot_table(index='equipo', columns='a4', values='nod', aggfunc='sum').fillna(0).loc[EQ] / 1e6
-snd = w.pivot_table(index='equipo', columns='a4', values='whatsapp_send', aggfunc='sum').fillna(0).loc[EQ]
-dlv = w.pivot_table(index='equipo', columns='a4', values='whatsapp_delivery', aggfunc='sum').fillna(0).loc[EQ]
-ent = 100 * dlv / snd.replace(0, np.nan)
 NT, ST = w.nod.sum() / 1e6, w.whatsapp_send.sum() / 1e6
-na = w.groupby('a4').nod.sum() / 1e6
-ne = w.groupby('equipo').nod.sum() / 1e6
-ee = w.groupby('equipo').apply(lambda g: 100 * g.whatsapp_delivery.sum() / g.whatsapp_send.sum())
+na = w.groupby('aud').nod.sum() / w.nod.sum() * 100
+ent_a = w.groupby('aud').apply(lambda g: 100 * g.whatsapp_delivery.sum() / g.whatsapp_send.sum())
+fa = w.groupby('fam').agg(s=('whatsapp_send', 'sum'), dl=('whatsapp_delivery', 'sum'), nod=('nod', 'sum'), aud=('aud', 'first'), team=('equipo', 'first')).reset_index()
+fa['ent'] = 100 * fa.dl / fa.s
+top10 = fa.nod.nlargest(10).sum() / fa.nod.sum()
+gt3 = 100 * w[w.gan.isin(['tasa0', 'descuento', 'referidos'])].nod.sum() / w.nod.sum()
+sel = fa[fa.s >= 2e4].copy()
+sel['a3'] = np.where(sel.aud.isin(['frios', 'activos']), sel.aud, 'otro')
 mm = w.groupby('m').apply(lambda g: 100 * g.whatsapp_delivery.sum() / g.whatsapp_send.sum())
-gt = 100 * w.groupby('gan').nod.sum() / w.nod.sum()
-fam = w.groupby('fam').agg(nod=('nod', 'sum'), s=('whatsapp_send', 'sum'), dl=('whatsapp_delivery', 'sum'))
-fam['ent'] = 100 * fam.dl / fam.s
-top10 = fam.nod.nlargest(10).sum() / fam.nod.sum()
-print(nod.round(2)); print(ent.round(1)); print('total', NT, ST, NT / ST, 'aud', (100 * na / NT).round(1).to_dict(), 'eq', ne.round(2).to_dict(), (100 * ne / NT).round(0).to_dict())
-print('entrega eq', ee.round(1).to_dict(), 'mes', mm.round(1).to_dict(), 'tema', gt.round(0).to_dict(), 'top10', top10)
-k = lambda s: fam.loc[[i for i in fam.index if s in i]].sort_values('nod').iloc[-1]
-resc = k('Leads_BBDDRezagada-RescateTasa0'); nev = k('Nuevos_NeverActive'); ina = k('Recurrentes_Inactivos-DescuentoDirecto'); dor = k('Recurrentes_Dormants-ReferralProgram')
-print('ej', resc.nod / 1e6, resc.ent, nev.ent, ina.ent, dor.ent)
-e9 = pd.read_csv('/home/user/claude/braze-analysis/data/e7b_patron_respuesta.csv')
-nr = e9[(e9.resp_email == 0) & (e9.resp_push == 0) & (e9.resp_wa == 0) & (e9.resp_inapp == 0)]
+e7 = pd.read_csv('/home/user/claude/braze-analysis/data/e7b_patron_respuesta.csv')
+nr = e7[(e7[['resp_email', 'resp_push', 'resp_wa', 'resp_inapp']].sum(axis=1) == 0)]
 ent_nr = 100 * nr.msgs_wa_entregados.sum() / nr.msgs_wa.sum()
-print('entrega a quien nunca responde', ent_nr)
-
-S = Svg('Izquierda: millones de WhatsApp no entregados por equipo y audiencia, con la entrega de cada tramo. '
-        'Derecha: entrega mensual de WhatsApp contra 80 % y 90 %.')
-S.t(0, 16, 'WhatsApp que no llegaron, millones, enero a septiembre', 12, INK, w=600)
+print('no llegaron', NT, ST, NT / ST, 'aud %', na.round(1).to_dict(), 'entrega', ent_a.round(1).to_dict(), 'top10', top10, 'n', len(sel), sel.s.sum() / w.whatsapp_send.sum())
+print('mes', mm.round(1).to_dict(), 'nr', ent_nr)
+COL = {'frios': BLUE, 'activos': GREEN, 'otro': G2}
+S = Svg('Cada punto es una campaña de WhatsApp: mensajes enviados contra cuántos de cada cien llegaron; las de bases frías quedan abajo del mínimo de 80 %.')
 lx = 0
-for a, lab, col in AUD:
-    S.rect(lx, 25, 10, 10, col)
-    txt = f'{lab} {na.get(a, 0):.1f} M'
-    S.t(lx + 14, 34, txt, 11, INK if a == 'frios' else TXT, w=600 if a == 'frios' else 400)
-    lx += 14 + tw(txt, 11) + 8
-S.t(0, 52, 'Dentro de la barra: de cada cien WhatsApp enviados a ese grupo, cuántos llegaron.', 10.5, SEC)
-BX0, BX1 = 104, 372
-VM = 9
-sx = lambda v: BX0 + (BX1 - BX0) * v / VM
-for v in range(0, 10, 2):
-    S.line(sx(v), 70, sx(v), 336, GRID)
-    S.t(sx(v), 350, f'{v} M', 10.5, SEC, 'middle')
-for i, eq in enumerate(EQ):
-    y = 84 + i * 64
-    hi = eq in ('Marketing', 'Product Growth')
-    S.t(BX0 - 8, y + 19, eq, 11.5, INK if hi else TXT, 'end', 600 if hi else 400)
-    x = BX0
-    for a, lab, col in AUD:
-        v = nod.loc[eq].get(a, 0)
-        ww = sx(v) - BX0
-        if ww <= 0.3:
-            continue
-        S.rect(x, y, ww - (1.5 if ww > 3 else 0), 28, col)
-        if ww >= 34:
-            S.t(x + ww / 2, y + 18.5, f'{ent.loc[eq, a]:.0f} %', 10.5, '#FFFFFF' if col == BLUE else INK, 'middle', 600)
-        x += ww
-    S.t(x + 6, y + 13, f'{ne[eq]:.1f} M · {100*ne[eq]/NT:.0f} %', 11.5, INK if hi else TXT, 'start', 600 if hi else 400)
-    S.t(x + 6, y + 27, f'llega {ee[eq]:.0f} %', 10.5, SEC)
-S.t(0, 380, f'{NT:.1f} M de {ST:.1f} M WhatsApp no llegaron ({100*NT/ST:.0f} %); {100*na["frios"]/NT:.0f} % iban a bases frías.', 11.5, INK, w=600)
-S.t(0, 398, 'No cuesta: Meta cobra solo el entregado. Sí dice que esos números ya no sirven.', 11, TXT)
-S.line(458, 8, 458, 404, GRID)
-# ===== entrega mensual
-X0, X1, Y0, Y1 = 500, 770, 70, 330
-LOY, HIY = 60, 95
-sxm = lambda i: X0 + (X1 - X0) * i / 8
-sym = lambda v: Y1 - (Y1 - Y0) * (v - LOY) / (HIY - LOY)
-S.t(474, 16, 'De cada cien enviados, cuántos llegaron', 12, INK, w=600)
-S.t(474, 34, 'Por mes', 10.5, SEC)
-for v in (60, 70, 80, 90):
-    S.line(X0, sym(v), X1, sym(v), GRID)
-    S.t(X0 - 6, sym(v) + 4, f'{v} %', 10.5, SEC, 'end')
-S.line(X0, sym(90), X1, sym(90), GREEN, 1.2, ' stroke-dasharray="4 4"')
-S.t(X1, sym(90) - 6, 'Estándar: 90 %', 10.5, GREEN, 'end', 600, halo=True)
-S.line(X0, sym(80), X1, sym(80), INK, 1, ' stroke-dasharray="4 4" opacity="0.6"')
-S.t(X1, sym(80) - 6, 'Mínimo: 80 %', 10.5, INK, 'end', 600, halo=True)
-MES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep']
-pts = ' '.join(f'{sxm(i):.1f},{sym(mm[i+1]):.1f}' for i in range(9))
-S.raw(f'<polyline points="{pts}" fill="none" stroke="{BLUE}" stroke-width="2.2"/>')
-for i in range(9):
-    v = mm[i + 1]
-    hi = i + 1 in (1, 4, 5, 9)
-    S.circle(sxm(i), sym(v), 4.5 if hi else 3.5, BLUE, ' stroke="#FFFFFF" stroke-width="1.5"')
-    if hi:
-        S.t(sxm(i), sym(v) + 17, f'{v:.0f}', 11, BLUE, 'middle', 700, halo=True)
-    S.t(sxm(i), Y1 + 16, MES[i], 10.5, TXT, 'middle')
-S.t(474, 380, f'Tocó fondo en abril y mayo ({mm[4]:.0f} % y {mm[5]:.0f} %)', 11, INK, w=600)
-S.t(474, 398, f'y aun así salieron {w[w.m==4].whatsapp_send.sum()/1e6:.1f} M y {w[w.m==5].whatsapp_send.sum()/1e6:.1f} M WhatsApp.', 11, TXT)
+for k, lab in (('frios', 'Bases frías'), ('activos', 'Clientes activos'), ('otro', 'Leads y otros')):
+    S.circle(lx + 5, 14, 5, COL[k], '')
+    txt = f'{lab}: llega {ent_a.get(k, 100*w[~w.aud.isin(["frios","activos"])].whatsapp_delivery.sum()/w[~w.aud.isin(["frios","activos"])].whatsapp_send.sum()):.0f} %'
+    S.t(lx + 14, 18, txt, 11.5, INK if k != 'otro' else TXT, w=600 if k != 'otro' else 400)
+    lx += 14 + tw(txt, 11.5, 600) + 18
+S.t(0, 36, 'Cada punto es una campaña con todas sus versiones; el tamaño es lo que no llegó. Campañas con 20 mil o más envíos.', 10.5, SEC)
+X0, X1, Y0, Y1 = 50, 760, 58, 364
+XL, XH = math.log10(2e4), math.log10(6e6)
+sx = lambda v: X0 + (X1 - X0) * (math.log10(v) - XL) / (XH - XL)
+YL, YH = 30, 100
+sy = lambda v: Y1 - (Y1 - Y0) * (min(max(v, YL), YH) - YL) / (YH - YL)
+for v in (30, 40, 50, 60, 70, 80, 90, 100):
+    S.line(X0, sy(v), X1, sy(v), GRID)
+    S.t(X0 - 8, sy(v) + 4, f'{v} %', 11, SEC, 'end')
+for v, lab in ((2e4, '20 mil'), (1e5, '100 mil'), (3e5, '300 mil'), (1e6, '1 M'), (3e6, '3 M')):
+    S.line(sx(v), Y1, sx(v), Y1 + 4, G1)
+    S.t(sx(v), Y1 + 17, lab, 11, SEC, 'middle')
+S.t(X1, Y1 + 34, 'WhatsApp enviados por campaña en nueve meses (escala que crece por múltiplos)', 10.5, SEC, 'end')
+S.t(X0 - 44, Y0 - 10, 'De cada cien enviados, cuántos llegaron', 11, SEC)
+S.line(X0, sy(90), X1, sy(90), GREEN, 1.2, ' stroke-dasharray="5 4"')
+S.t(X1 - 2, sy(90) - 6, 'Estándar: 90 %', 11, GREEN, 'end', 700, halo=True)
+S.line(X0, sy(80), X1, sy(80), INK, 1.2, ' stroke-dasharray="5 4" opacity="0.7"')
+S.t(X1 - 2, sy(80) - 6, 'Mínimo: 80 %', 11, INK, 'end', 700, halo=True)
+for q in sel.sort_values('nod', ascending=False).itertuples():
+    S.circle(sx(q.s), sy(q.ent), 2.2 + 3.2 * math.sqrt(q.nod / 1e6), COL[q.a3], ' fill-opacity="0.8" stroke="#FFFFFF" stroke-width="1"')
+NAMES = [('Leads_BBDDRezagada-RescateTasa0-N/A', 'Rescate Tasa 0 a rezagados (Marketing)', -14, 26, 'end'),
+         ('Nuevos_NeverActive-InstallmentsNoCash', 'Registrados que nunca activaron (Product Growth)', -14, 6, 'end'),
+         ('Recurrentes_Inactivos-DescuentoDirecto', 'Descuento a clientes inactivos (Product Growth)', -14, -18, 'end'),
+         ('Recurrentes_ClienteKCashCompraKCash-ReferralProgram', 'Referidos a clientes KCash (Marketing)', -14, -10, 'end')]
+for key, lab, dx, dy, an in NAMES:
+    q = sel[sel.fam.str.contains(key, regex=False)].sort_values('s').iloc[-1]
+    x, y = sx(q.s), sy(q.ent)
+    S.line(x, y, x + dx * 0.7, y + dy * 0.7 - 3, INK, 0.7)
+    S.t(x + dx, y + dy, f'{lab}: {q.ent:.0f} %', 11, INK, an, 600, halo=True)
+    print(lab, round(q.s / 1e6, 2), round(q.ent, 1), round(q.nod / 1e6, 2))
 svg = S.done()
-
+resc = sel[sel.fam.str.contains('Leads_BBDDRezagada-RescateTasa0-N/A', regex=False)].iloc[0]
 save(17, dict(
     kind='grafica',
-    titulo='Uno de cada cuatro WhatsApp no llega, y la mitad de los que no llegan iban a ex clientes y a leads que nunca activaron',
-    que=f'Lo que no llega es sobre todo Tasa 0 ({gt["tasa0"]:.0f} % de lo no entregado), descuentos ({gt["descuento"]:.0f} %) y referidos ({gt["referidos"]:.0f} %).',
-    quien=f'Marketing {ne["Marketing"]:.1f} M WhatsApp no entregados ({100*ne["Marketing"]/NT:.0f} %), Product Growth {ne["Product Growth"]:.1f} M WhatsApp ({100*ne["Product Growth"]/NT:.0f} %), Sales {ne["Sales"]:.1f} M WhatsApp ({100*ne["Sales"]/NT:.0f} %). Llega: Sales {ee["Sales"]:.0f} %, Marketing {ee["Marketing"]:.0f} %, Product Growth {ee["Product Growth"]:.0f} %.',
-    a_quien=f'Pesa más la base que el equipo: Marketing entrega {ent.loc["Marketing","frios"]:.0f} % a bases frías y {ent.loc["Marketing","activos"]:.0f} % a clientes activos; Sales {ent.loc["Sales","leads"]:.0f} % a leads y {ent.loc["Sales","activos"]:.0f} % a activos.',
+    titulo='Uno de cada cuatro WhatsApp no llega, y la mitad de los que no llegan iban a bases frías',
+    que=f'Tasa 0, descuentos y referidos: {gt3:.0f} % de lo que no llegó.',
+    quien=f'Marketing y Product Growth: 87 % de los WhatsApp que no llegaron.',
+    a_quien=f'Bases frías: ex clientes y leads viejos; les llega {ent_a["frios"]:.0f} % contra {ent_a["activos"]:.0f} % a activos.',
     lecturas=[
-        f'{NT:.1f} M de {ST:.1f} M WhatsApp no llegaron: {100*NT/ST:.0f} %. Diez campañas explican {100*top10:.0f} %; la mayor es el rescate de Tasa 0 a leads rezagados de Marketing, {resc.nod/1e6:.1f} M sin llegar.',
-        f'A quien nunca responde por ningún canal solo le llega {ent_nr:.0f} % de los WhatsApp. Registrados que nunca activaron (Product Growth): {nev.ent:.0f} %.',
-        'No cuesta dinero, pero dice que la base está sucia: números que ya no existen, sin WhatsApp o que nos bloquearon. Hoy no sabemos cuántos son bloqueos.',
+        f'{NT:.1f} M de {ST:.1f} M WhatsApp no llegaron ({100*NT/ST:.0f} %); {na["frios"]:.0f} % iban a bases frías.',
+        f'Diez campañas explican {100*top10:.0f} %; la mayor, rescate Tasa 0 a rezagados: {resc.nod/1e6:.1f} M sin llegar.',
+        f'A quien nunca responde por ningún canal le llega {ent_nr:.0f} %. No cuesta (Meta cobra lo entregado), pero la base está sucia.',
     ],
-    causa='Las listas de ex clientes y leads viejos no se limpian: se manda a números que dejaron de existir o de usar WhatsApp, y nadie revisa la entrega antes de volver a mandar.',
-    sowhat='Limpiar la base de WhatsApp de ex clientes y leads viejos antes de mandar más: quitar a quien no recibió en 90 días.',
-    fuente=f'{FUENTE_E1}; personas por respuesta en nueve meses. No entregado = enviado menos entregado. El motivo (número inválido, sin WhatsApp, bloqueo) y la calidad del número ante Meta necesitan el registro de por qué no se entregó cada WhatsApp, que no está en los datos.',
+    causa='Las listas de ex clientes y leads viejos no se limpian: se manda a números que ya no existen o no usan WhatsApp.',
+    sowhat='Limpiar la base de WhatsApp antes de mandar más: quitar a quien no recibió ninguno en 90 días.',
+    fuente=f'{FUENTE_E1}; E7b. No llegó = enviado menos entregado. El motivo (número inválido, sin WhatsApp, bloqueo) no está en los datos.',
     svg=svg,
 ))

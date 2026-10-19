@@ -48,17 +48,17 @@ yy = TOP + RH * 10 + 12
 S.t(0, yy, f"Barra gris: de 0 a {BMAX/1e6:.0f} M mensajes al mes (más se dibuja al tope).", 10.5, SEC)
 S.t(0, yy + 15, "Cada versión es una copia con otra fecha en el nombre; casi todas son Canvas que mandan por varios canales.", 10.5, SEC)
 J = dict(
-    titulo=f"En vez de medir una campaña, la copiamos cada mes: {len(G)} campañas sacaron cinco o más versiones este año",
-    que="Tasa 0, ofertas para que vuelva el ex cliente, promociones de comercios KPay y referidos, sobre todo. Promociones.",
-    quien=f"Product Growth {eqG.loc['Product Growth','f']} campañas y {eqG.loc['Product Growth','v']} versiones; Marketing {eqG.loc['Marketing','f']} y {eqG.loc['Marketing','v']}; Sales {eqG.loc['Sales','f']} y {eqG.loc['Sales','v']}; Others {eqG.loc['Others','f']} y {eqG.loc['Others','v']}.",
-    a_quien="Registrados que nunca tomaron crédito, leads, ex clientes inactivos y clientes recurrentes.",
+    titulo=f"En vez de medir una campaña la copiamos cada mes: {len(G)} campañas sacaron cinco o más versiones",
+    que="Tasa 0, ofertas para volver, comercios KPay y referidos.",
+    quien=f"Product Growth {eqG.loc['Product Growth','f']} campañas, Marketing {eqG.loc['Marketing','f']}, Sales {eqG.loc['Sales','f']} y Others {eqG.loc['Others','f']}.",
+    a_quien="Registrados sin crédito, leads, ex clientes y recurrentes.",
     lecturas=[
-        f"Esas {len(G)} campañas sacaron {G.n.sum()} versiones nuevas en 2026 y, con todas sus versiones, mandaron {envG.envios.sum()/1e6:.0f} M mensajes: {100*envG.envios.sum()/e.envios.sum():.0f} % del año.",
-        f"Las versiones viejas no se apagan: en septiembre {(sp>=2).sum()} campañas tenían dos o más versiones enviando al mismo tiempo ({sp[sp>=2].sum()} versiones). A la misma persona le puede llegar dos veces lo mismo.",
-        "Tasa 0 a quien nunca usó KCash sacó una o dos versiones nuevas cada mes; Cuesta de Enero, 20 en tres meses. Cada copia empieza de cero: nadie compara la nueva contra la anterior.",
+        f"Sacaron {G.n.sum()} versiones nuevas en 2026 y mandaron {envG.envios.sum()/1e6:.0f} M mensajes, {100*envG.envios.sum()/e.envios.sum():.0f} % del año.",
+        f"En septiembre {(sp>=2).sum()} campañas tenían dos o más versiones enviando a la vez ({sp[sp>=2].sum()} versiones).",
+        "Tasa 0 a quien nunca usó KCash sacó una o dos versiones cada mes; nadie compara la nueva con la anterior.",
     ],
-    causa="En Braze es más fácil duplicar un Canvas y cambiarle la fecha que leer cómo le fue al anterior; no hay regla de una sola versión viva por campaña.",
-    sowhat="Copiar es más fácil que medir, y por eso la campaña que no responde se repite cada mes. Una sola versión viva por campaña y comparar antes de copiar.",
-    fuente="Fuente: Braze, catálogo de comunicaciones (fecha del primer envío en 2026) y envíos por comunicación, mes y canal, enero a septiembre 2026. Campaña = nombre sin la fecha; versión = cada comunicación con su propia fecha. 184 campañas tienen cinco o más versiones contando años anteriores.",
+    causa="Duplicar un Canvas y cambiar la fecha es más fácil que leer cómo le fue al anterior.",
+    sowhat="Una sola versión viva por campaña, y comparar contra la anterior antes de copiar.",
+    fuente="Fuente: Braze, catálogo (primer envío en 2026) y envíos por comunicación y mes, ene a sep 2026. Campaña = nombre sin fecha; versión = cada copia con su fecha.",
     svg=S.out())
 write(74, J)

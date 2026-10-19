@@ -61,16 +61,16 @@ panel(400, 'push notification', fp, fp2, 14, (2, 4, 6, 8, 10, 12), 3.0, (0, 1, 2
        ('08/10', 13.8, 2.35, 'end', '10 ago: 12 M push, 1.22 %', 'prueba de QA y Billpayments')])
 
 write(40, dict(kind='grafica', seccion='V. El ritmo lo marcan los lanzamientos, no el cliente',
- titulo=f'Las semanas con más mensajes son semanas de lanzamientos, y en ellas la respuesta cae: cada millón de correos de más baja el clic {abs(fe["b"]):.2f} puntos',
- que='Lanzamientos y campañas de temporada a casi toda la base: BillPay, Hot Sale, Comercio del día, Mundial y Día del Padre, Anota y Gana y regreso a clases. Promocional.',
- quien='Marketing está en las cinco semanas pico y NewProducts explica la más grande (BillPay Intro); Sales en Hot Sale y regreso a clases. Junio tuvo 44 M mensajes más que el promedio de enero a abril: 26 M de NewProducts y 20 M de Marketing.',
- a_quien='Envíos a toda la base, leads y recurrentes de KPay.',
+ titulo=f'Las semanas con más mensajes son semanas de lanzamientos, y en ellas la respuesta cae',
+ que='Lanzamientos a toda la base: BillPay, Hot Sale, Comercio del día, Mundial, Día del Padre',
+ quien='Marketing en las cinco semanas pico; NewProducts en la más grande; Sales en Hot Sale',
+ a_quien='Envíos a toda la base, leads y recurrentes de KPay',
  lecturas=[
-  f'Con 5 M correos en la semana se espera {fe["a"]+fe["b"]*5:.2f} % de clic; con 25 M, {fe["a"]+fe["b"]*25:.2f} %. Sin las semanas de junio la relación se mantiene (R² {fe2["r2"]:.2f}): no es solo BillPay.',
-  f'En las cinco semanas de lanzamientos el push abrió {pk_p:.2f} % contra {ot_p:.2f} % el resto, y el clic de correo fue {pk_e:.2f} % contra {ot_e:.2f} %.',
-  f'En WhatsApp el volumen no mueve la lectura (R² {fw["r2"]:.2f}). En las semanas pico entra gente que casi nunca responde: es volumen más audiencia fría.',
+  f'Cada millón de correos de más en la semana baja el clic {abs(fe["b"]):.2f} puntos (R² {fe["r2"]:.2f}); sin junio, R² {fe2["r2"]:.2f}.',
+  f'En las 5 semanas de lanzamientos el push abrió {pk_p:.2f} % contra {ot_p:.2f} % el resto.',
+  f'1 de junio: BillPay Intro a 16.1 M personas dejó la semana en 0.36 % de clic.',
  ],
- causa='Cada equipo fija la fecha de su lanzamiento sin ver la de los demás, y los lanzamientos salen a toda la base la misma semana.',
- sowhat='El volumen no se decide semana a semana: se acumula porque nadie ve el calendario completo de lanzamientos.',
- fuente='Fuente: Braze, E4a por semana y canal, 38 semanas completas (5 de enero a 21 de septiembre 2026); clic sobre correos entregados y apertura sobre push enviados. Es correlación, no un experimento. Campañas de cada semana: E1 con primer y último envío de E2 (campañas que duran 10 días o menos).',
+ causa='Cada equipo fija la fecha de su lanzamiento sin ver la de los demás.',
+ sowhat='El volumen se acumula porque nadie ve el calendario completo de lanzamientos.',
+ fuente='Fuente: Braze, E4a por semana y canal, 38 semanas (5 de enero a 21 de septiembre 2026); clic sobre entregados, apertura sobre enviados. Es correlación, no experimento.',
  svg=S.svg()))

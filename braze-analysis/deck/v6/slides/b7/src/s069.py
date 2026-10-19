@@ -16,59 +16,49 @@ gw = w.groupby("et").agg(d=("whatsapp_delivery", "sum"), conv=("conversiones_fil
 f = e[e.fam.str.contains("B0331|B0332|B0333") & e.fam.str.contains("KPay")]
 print(gw.round(1), f.envios.sum() / 1e6, f.costo.sum() / 1e6)
 
-OF = [("SinOferta", "Sin oferta"), ("Cupon", "Cupón"), ("DtoTasa", "Descuento en tasa"), ("CuponDtoTasa", "Cupón y descuento en tasa"), ("CuponPlazosConIntereses", "Cupón y plazos con interés")]
+import math
+k = k[k.usuarios >= 1000].copy(); k["pm"] = 1000 * k.usuarios_convirtieron / k.usuarios; k["con"] = k.of != "SinOferta"
 PAN = [("B0331", "3 meses sin compra"), ("B0332", "6 meses sin compra"), ("B0333", "12 meses sin compra")]
-S = SVG("Conversiones por cada mil personas en el programa de recuperación de KPay, por oferta y por meses sin compra, y costo por conversión de WhatsApp según a quién va")
-LX, PW, PG = 172, 110, 12
-TOP, RH = 92, 40
-VM = 8.0
-S.t(0, 14, "Conversiones por cada mil personas que recibieron el paso, según la oferta", 12, INK, w=600)
-S.t(0, 30, "Programa de recuperación de KPay de Product Growth: mismo Canvas, distinta rama de oferta", 10.5, SEC)
-for j, (st, nm) in enumerate(PAN):
-    x0 = LX + j * (PW + PG); xs = lambda v, x0=x0: x0 + PW * v / VM
-    S.t(x0, TOP - 30, nm, 12, INK, w=700)
-    S.t(x0, TOP - 16, f"Total {gs.loc[st,'pm']:.1f} por mil", 11, BLUE if st != "B0333" else INK, w=600)
-    for v in (0, 4, 8):
-        S.line(xs(v), TOP - 6, xs(v), TOP + RH * len(OF) - 10, GRID)
-        S.t(xs(v), TOP + RH * len(OF) + 4, f"{v}", 10.5, SEC, "middle")
-    for i, (key, lab) in enumerate(OF):
-        y = TOP + RH * i
-        v = g.loc[(st, key), "pm"]
-        S.rect(x0, y, xs(v) - x0, 16, MARK if key == "SinOferta" else BLUE)
-        S.t(xs(v) + 4, y + 12, f"{v:.1f}", 11, INK, w=600)
-for i, (key, lab) in enumerate(OF):
-    y = TOP + RH * i
-    S.t(0, y + 12, lab, 11.5, INK if key == "SinOferta" else TXT, w=600 if key == "SinOferta" else 400)
-S.t(LX, TOP + RH * len(OF) + 18, "por cada mil personas", 10.5, SEC)
-# cuarto panel
-P4 = 600; P4W = 120; VM4 = 200
-xs4 = lambda v: P4 + P4W * v / VM4
-S.line(P4 - 18, 44, P4 - 18, 330, GRID)
-S.t(P4 - 4, TOP - 30, "MXN por conversión", 12, INK, w=700)
-S.t(P4 - 4, TOP - 16, "de WhatsApp, según a quién va", 11, SEC)
-ST = [("Clientes activos y recurrentes", "Activos"), ("Leads (no terminaron registro)", "Leads"), ("Registrados sin crédito o nuevos", "Registrados sin crédito"), ("Ex clientes inactivos", "Ex clientes inactivos")]
-for i, (key, lab) in enumerate(ST):
-    y = TOP + 50 * i
-    v = gw.loc[key, "cpc"]
-    S.t(P4 - 4, y + 4, lab, 11.5, INK, w=600)
-    S.rect(P4 - 4, y + 10, xs4(v) - P4, 14, BLUE if key == "Ex clientes inactivos" else MARK)
-    S.t(xs4(v) - 4 + 5, y + 21, f"{v:.0f}", 11.5, INK, w=700)
-S.t(0, 376, "Conversión de referencia: solicitud o préstamo, sobre todo de KCash; no mide la compra en KPay.", 10.5, SEC)
-S.t(0, 392, "La rama sin oferta compara ofertas entre sí, no mensaje contra no mandar nada.", 10.5, SEC)
-S.t(0, 408, "Ex clientes KPay pueden no tener la app: sin app no reciben push ni in-app.", 10.5, SEC)
+S = SVG("Conversiones por cada mil personas de cada paso del programa de recuperación de KPay, por meses sin compra y con o sin oferta")
+S.legend([("Paso con oferta (cupón, descuento o plazos)", BLUE, "ci"), ("Paso sin oferta", MARK, "ci"), ("Mediana", INK, "ln")], 0, 14, 16)
+S.t(0, 32, "Cada punto es un paso de un Canvas (semana, canal y oferta) con mil personas o más", 10.5, SEC)
+X0, X1 = 200, 760
+L0, L1 = math.log10(0.1), math.log10(40)
+xs = lambda v: X0 + (X1 - X0) * (math.log10(max(v, 0.1)) - L0) / (L1 - L0)
+TOP, RH, SH = 62, 104, 40
+Yb = TOP + RH * 3 - 12
+for v, l in ((0.1, "0"), (0.3, "0.3"), (1, "1"), (3, "3"), (10, "10"), (30, "30")):
+    S.line(xs(v), TOP - 6, xs(v), Yb, GRID); S.t(xs(v), Yb + 14, l, 10.5, SEC, "middle")
+S.t(X1, Yb + 30, "Conversiones por cada mil personas del paso (escala que multiplica; sin conversiones, a la izquierda)", 10.5, SEC, "end")
+for i, (st, nm) in enumerate(PAN):
+    y0 = TOP + RH * i
+    S.t(0, y0 + 22, nm, 12, INK, w=700)
+    S.t(0, y0 + 38, f"{gs.loc[st,'pm']:.1f} conversiones por mil", 10.5, BLUE if st != "B0333" else SEC, w=600)
+    S.t(0, y0 + 52, f"{int((k.st==st).sum())} pasos", 10.5, SEC)
+    for j, con in enumerate([True, False]):
+        yc = y0 + 18 + SH * j
+        d = k[(k.st == st) & (k.con == con)]
+        S.t(X0 - 8, yc + 4, "con oferta" if con else "sin oferta", 10.5, TXT, "end")
+        for n_, (_, r) in enumerate(d.iterrows()):
+            jy = ((n_ * 7) % 11 - 5) * 2.2
+            S.circle(xs(r.pm), yc + jy, 2.4, BLUE if con else MARK, "#FFFFFF", 0.5, ' fill-opacity="0.75"')
+        md = d.pm.median()
+        S.line(xs(md), yc - 15, xs(md), yc + 15, INK, 3)
+        S.t(xs(md) + 5, yc - 9, f"{md:.1f}", 11, INK, "start", 700, halo=True)
+    if i < 2: S.line(0, y0 + RH - 6, 780, y0 + RH - 6, GRID)
 r3, r12 = gs.loc["B0331", "pm"], gs.loc["B0333", "pm"]
 J = dict(
-    titulo=f"Recuperar clientes sí vale, pero con medida: a 12 meses sin compra se convierte {r3/r12:.0f} veces menos que a 3, y la oferta casi no cambia el resultado",
-    que="Promoción para recuperar clientes de KPay: el mismo Canvas con ramas sin oferta, con cupón, con descuento en tasa y con plazos con intereses, algunas solo para Amazon.",
-    quien="Product Growth: oferta a ex clientes KPay con 3, 6 y 12 meses sin compra (B0331, B0332 y B0333, con y sin oferta).",
-    a_quien="Ex clientes KPay: 3 meses sin compra, 6 meses y 12 meses (churn). Se les escribe para recuperarlos.",
+    titulo=f"Recuperar sí vale, con medida: a 12 meses sin compra se convierte {r3/r12:.0f} veces menos que a 3, con o sin oferta",
+    que="Recuperación de KPay: mismo Canvas con y sin oferta (cupón, descuento, plazos).",
+    quien="Product Growth (B0331, B0332 y B0333).",
+    a_quien="Ex clientes KPay con 3, 6 y 12 meses sin compra.",
     lecturas=[
-        f"A 3 meses sin compra convierten {r3:.1f} de cada mil; a 6, {gs.loc['B0332','pm']:.1f}; a 12, {r12:.1f}. El tiempo sin comprar pesa mucho más que la oferta.",
-        f"Sin oferta convierte casi igual que con oferta: a 3 meses {g.loc[('B0331','SinOferta'),'pm']:.1f} por mil contra {g.loc['B0331'].drop('SinOferta').pm.min():.1f} a {g.loc['B0331'].pm.max():.1f} con oferta; a 12 meses {g.loc[('B0333','SinOferta'),'pm']:.1f} contra {g.loc['B0333'].drop('SinOferta').pm.min():.1f} a {g.loc['B0333'].pm.max():.1f}.",
-        f"Por WhatsApp, cada conversión cuesta {gw.loc['Clientes activos y recurrentes','cpc']:.0f} MXN con clientes activos y {gw.loc['Ex clientes inactivos','cpc']:.0f} MXN con ex clientes inactivos: once veces más.",
+        f"A 3 meses convierten {r3:.1f} de cada mil; a 6, {gs.loc['B0332','pm']:.1f}; a 12, {r12:.1f}.",
+        f"Mediana por paso a 3 meses: {k[(k.st=='B0331')&k.con].pm.median():.1f} por mil con oferta y {k[(k.st=='B0331')&~k.con].pm.median():.1f} sin oferta.",
+        f"Por WhatsApp, una conversión cuesta {gw.loc['Clientes activos y recurrentes','cpc']:.0f} MXN con activos y {gw.loc['Ex clientes inactivos','cpc']:.0f} MXN con ex clientes.",
     ],
-    causa="El programa manda la misma secuencia larga, por los cuatro canales y con WhatsApp, sin importar cuánto lleva la persona sin comprar, y no hay un grupo sin mensajes para saber cuánto recupera.",
-    sowhat="Gastar más donde todavía se recupera (3 meses) y, a 6 y 12 meses, email o in-app con uno o dos toques al mes, WhatsApp solo a quien lee, presupuesto con límite y 10 % sin mensajes.",
-    fuente=f"Fuente: Braze, embudo por paso de Canvas (B0331, B0332 y B0333, 45 Canvas) y envíos por campaña, enero a septiembre 2026. El programa mandó {f.envios.sum()/1e6:.1f} M mensajes y costó {f.costo.sum()/1e6:.1f} M MXN. WhatsApp a 1.00 MXN por entregado. Etapa por el nombre de la campaña.",
+    causa="Se manda la misma secuencia sin importar cuánto lleva la persona sin comprar, y sin grupo sin mensajes.",
+    sowhat="Más esfuerzo a 3 meses; a 6 y 12, canal barato, pocos toques y presupuesto con límite.",
+    fuente=f"Fuente: Braze, embudo por paso de Canvas (B0331 a B0333) y envíos por canal, ene a sep 2026. Conversión: solicitud o préstamo, sobre todo de KCash; no mide la compra en KPay.",
     svg=S.out())
 write(69, J)

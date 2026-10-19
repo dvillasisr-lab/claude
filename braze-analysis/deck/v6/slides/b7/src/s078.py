@@ -51,17 +51,17 @@ for i, (_, c) in enumerate(cells.iterrows()):
     S.t(x0 - 12, y0 + h + 31, f"{c.after/1e6:.1f} M mensajes después" + (f" · {c.acost/1e6:.1f} M MXN" if c.acost > 5e4 else ""), 11, BLUE, w=700)
     S.t(x0 - 12, y0 + h + 45, f"{un}; punteada: mínimo {mn:g}", 10.5, SEC)
 J = dict(
-    titulo="Uno de cada cinco mensajes salió de campañas que un mes antes ya habían respondido menos de lo mínimo",
-    que=f"Promociones: Tasa 0 ({tx.get('Tasa 0',0)/1e6:.0f} M mensajes), referidos ({tx.get('Referidos',0)/1e6:.0f} M mensajes), ofertas para que vuelva el ex cliente ({tx.get('Oferta para volver',0)/1e6:.0f} M) y crédito en plazos ({tx.get('Uso y recompra del crédito',0)/1e6:.0f} M).",
-    quien=f"Product Growth {eqx.loc['Product Growth','a']/1e6:.0f} M mensajes ({100*eqx.loc['Product Growth','a']/eqt['Product Growth']:.0f} % de su volumen), Marketing {eqx.loc['Marketing','a']/1e6:.0f} M ({100*eqx.loc['Marketing','a']/eqt['Marketing']:.0f} %), Others {eqx.loc['Others','a']/1e6:.0f} M y Sales {eqx.loc['Sales','a']/1e6:.0f} M.",
-    a_quien=f"Registrados que nunca tomaron crédito ({ex_.loc['Registrados sin crédito o nuevos','a']/1e6:.0f} M mensajes), leads ({ex_.loc['Leads (no terminaron registro)','a']/1e6:.0f} M mensajes) y ex clientes inactivos ({ex_.loc['Ex clientes inactivos','a']/1e6:.0f} M y {ex_.loc['Ex clientes inactivos','c']/1e6:.1f} M MXN).",
+    titulo="Uno de cada cinco mensajes salió de campañas que un mes antes ya respondían menos de lo mínimo",
+    que="Tasa 0, referidos, ofertas para volver y crédito en plazos.",
+    quien=f"Product Growth {eqx.loc['Product Growth','a']/1e6:.0f} M mensajes, Marketing {eqx.loc['Marketing','a']/1e6:.0f} M, Others y Sales menos.",
+    a_quien="Registrados sin crédito, leads y ex clientes inactivos.",
     lecturas=[
-        f"Sin contar cobranza, {X.after.sum()/1e6:.0f} M mensajes ({100*X.after.sum()/TOT:.0f} % del año) y {X.acost.sum()/1e6:.1f} M MXN salieron después de que la campaña cayó debajo de lo mínimo: {cx.loc['email','a']/1e6:.0f} M correos, {cx.loc['push notification','a']/1e6:.0f} M push y {cx.loc['whatsapp','a']/1e6:.1f} M WhatsApp ({cx.loc['whatsapp','c']/1e6:.1f} M MXN).",
-        "Tasa 0 a registrados de KPay cayó debajo en febrero y siguió siete meses más casi igual: nada en el proceso obliga a revisarla.",
-        f"Si cada campaña se hubiera detenido dos meses después de caer debajo, se habrían evitado {X.after2.sum()/1e6:.0f} M mensajes y {X.acost2.sum()/1e6:.1f} M MXN. {(X.lastm==9).sum()} de estas campañas seguían enviando en septiembre.",
+        f"{X.after.sum()/1e6:.0f} M mensajes ({100*X.after.sum()/TOT:.0f} % del año) y {X.acost.sum()/1e6:.1f} M MXN salieron ya debajo de lo mínimo.",
+        "Tasa 0 a registrados de KPay cayó debajo en febrero y siguió siete meses casi igual.",
+        f"Con salida a los dos meses se evitaban {X.after2.sum()/1e6:.0f} M mensajes y {X.acost2.sum()/1e6:.1f} M MXN.",
     ],
-    causa="Las campañas se apagan cuando termina la promoción, no cuando dejan de responder: no hay una regla de salida ni alguien encargado de revisar la respuesta cada mes.",
-    sowhat="La campaña que no responde no se detiene sola: hay que ponerle una regla de salida (dos meses debajo de lo mínimo, se rehace o se apaga).",
-    fuente="Fuente: Braze, envíos por campaña, canal y mes, enero a septiembre 2026. Cae debajo: primer mes con 50 mil personas o más y menos de 3 clics por mil correos, 7.5 aperturas por mil push, 6 de cada 10 WhatsApp leídos o 1 de cada 10 in-app con clic; cuenta lo enviado en los meses siguientes. Sin cobranza ni avisos (con ellos, 149 M mensajes y 10.0 M MXN). WhatsApp a 1.00 MXN por entregado.",
+    causa="Las campañas se apagan cuando acaba la promoción, no cuando dejan de responder.",
+    sowhat="La campaña que no responde no se detiene sola: dos meses debajo de lo mínimo y se rehace o apaga.",
+    fuente="Fuente: Braze, envíos por campaña, canal y mes, ene a sep 2026. Cae debajo: primer mes con 50 mil personas o más bajo lo mínimo. Sin cobranza ni avisos. WhatsApp a 1.00 MXN por entregado.",
     svg=S.out())
 write(78, J)

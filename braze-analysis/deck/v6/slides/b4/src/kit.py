@@ -57,3 +57,18 @@ def write(n, d):
     for k in ('titulo', 'que', 'quien', 'a_quien', 'causa', 'sowhat', 'fuente', 'impacto'):
         if k in d and re.search('[–—→]', str(d[k])): print('AVISO guion o flecha en', k)
     print('escrito', p)
+
+def diamond(S, x, y, r, fill, stroke='#FFFFFF'):
+    S.raw(f'<path d="M {x:.1f} {y-r:.1f} L {x+r:.1f} {y:.1f} L {x:.1f} {y+r:.1f} L {x-r:.1f} {y:.1f} Z" fill="{fill}" stroke="{stroke}" stroke-width="1.2"/>')
+
+def ols(xs, ys):
+    xs, ys = np.asarray(xs, float), np.asarray(ys, float)
+    b, a = np.polyfit(xs, ys, 1); yh = a + b * xs
+    r2 = 1 - ((ys - yh) ** 2).sum() / ((ys - ys.mean()) ** 2).sum()
+    return dict(a=a, b=b, r2=r2, n=len(xs))
+
+def lab(S, x, y, tx, ty, l1, l2=None, anchor='start', col=INK):
+    """Etiqueta con línea guía del punto (x, y) al texto (tx, ty)."""
+    S.line(x, y, tx + (-3 if anchor == 'start' else 3), ty - 4, SEC, 0.7)
+    S.t(tx, ty, l1, 10.5, col, anchor, 700, halo=True)
+    if l2: S.t(tx, ty + 12.5, l2, 10.5, TXT, anchor, 400, halo=True)

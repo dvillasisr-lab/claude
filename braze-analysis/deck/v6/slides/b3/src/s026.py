@@ -26,76 +26,66 @@ for z in (t0, dd, dw, hs): print(z.f_a[:50], z.canal_a, z.f_b[:50], z.canal_b, z
 cd = x[x.familia.str.contains('comerciodel', case=False)].groupby('equipo').envios.sum() / 1e6; print(cd.round(1).to_dict())
 a = pd.read_csv(R + 'data/e6a_solape_dia_mes.csv')
 g = a.groupby('banda_familias_dia').agg(ud=('usuario_dias', 'sum'), msgs=('msgs', 'sum'), baja=('usuario_dias_con_baja', 'sum'))
-g['mpd'] = g.msgs / g.ud; g['bpm'] = 1000 * g.baja / g.ud; g['pct'] = 100 * g.ud / g.ud.sum(); print(g.round(3))
-S = Svg('Usuario-días con promociones de dos equipos el mismo día, ejemplos de la misma oferta y bajas según campañas recibidas en el día')
-S.t(0, 16, 'Personas por día con promociones de dos equipos a la vez', 12.5, INK, w=600)
-S.t(0, 32, 'Millones de usuario-días, enero a septiembre', 11, SEC)
-TE = ['Marketing', 'Product Growth', 'Sales', 'Others']
-CX, CY, CS = 104, 70, 56
-VM = max(v for k, v in M.items() if k[0] != k[1])
-def mix(c1, c2, t):
-    a = [int(c1[i:i + 2], 16) for i in (1, 3, 5)]; b = [int(c2[i:i + 2], 16) for i in (1, 3, 5)]
-    return '#' + ''.join(f'{round(a[i] + (b[i] - a[i]) * t):02X}' for i in range(3))
-for j, t in enumerate(TE):
-    S.t(CX + CS * j + CS / 2, CY - 6, t if t != 'Product Growth' else 'Product G.', 10.5, SEC, 'middle')
-for i, ti in enumerate(TE):
-    S.t(CX - 8, CY + CS * i + CS / 2 + 4, ti, 11, INK, 'end', w=600)
-    for j, tj in enumerate(TE):
-        if j > i: continue
-        v = M.get(tuple(sorted([ti, tj])), 0)
-        same = i == j
-        fill = '#EEF0F4' if same else mix('#FFFFFF', BLUE, 0.12 + 0.88 * v / VM)
-        S.r(CX + CS * j + 1, CY + CS * i + 1, CS - 2, CS - 2, fill)
-        dark = (not same) and v / VM > 0.45
-        S.t(CX + CS * j + CS / 2, CY + CS * i + CS / 2 + 4, f'{v/1e6:.1f}', 12 if not same else 11, '#FFFFFF' if dark else (SEC if same else INK), 'middle', w=600 if not same else 400)
-S.t(CX, CY + CS * 4 + 18, 'Gris: dentro del mismo equipo.', 10.5, SEC)
-S.t(CX, CY + CS * 4 + 32, f'Entre equipos: {BTW/1e6:.1f} M de {TOT/1e6:.1f} M ({100*BTW/TOT:.0f} %).', 10.5, SEC)
-# ejemplos
-EX0 = 372
-S.t(EX0, 16, 'La misma oferta a la misma persona el mismo día', 12.5, INK, w=600)
-ej = [('Tasa 0', f'Product Growth a registrados y Marketing a anónimos, por push: {t0.usuarios_aprox/1e3:.0f} mil personas en agosto'),
-      ('Descuento y referidos', f'a los mismos ex clientes: hasta {dd.usuarios_aprox/1e3:.0f} mil por correo y {dw.usuarios_aprox/1e3:.0f} mil con dos WhatsApp, el mismo día'),
-      ('Promociones de KPay', f'Hot Sale de Marketing y de Sales por push a {hs.usuarios_aprox/1e3:.0f} mil clientes; Comercio del día: {cd["Marketing"]:.1f} M y {cd["Sales"]:.1f} M envíos')]
-y = 36
-import textwrap
-for k, (h, txt) in enumerate(ej):
-    S.r(EX0, y + 2, 3, 30, BLUE)
-    S.t(EX0 + 10, y + 12, h, 11.5, INK, w=600)
-    lines = textwrap.wrap(txt, 62)
-    for q, ln in enumerate(lines[:2]): S.t(EX0 + 10, y + 26 + 13 * q, ln, 10.5, TXT)
-    y += 26 + 13 * min(len(lines), 2) + 8
-# escalera
-LY0, LY1 = 268, 360; LX0, LX1 = EX0 + 40, 760
-S.t(EX0, 236, 'Más campañas el mismo día, más bajas', 12.5, INK, w=600)
-S.t(EX0, 252, 'Bajas por cada mil usuario-días, según campañas que recibe en el día', 11, SEC)
-BS = ['1', '2', '3 a 4', '5 a 7', '8+']
-ys = lambda v: LY1 - (LY1 - LY0) * v / 0.8
-for v in (0, 0.4, 0.8):
-    S.l(LX0, ys(v), LX1, ys(v), GRID); S.t(LX0 - 6, ys(v) + 4, f'{v:.1f}', 10.5, SEC, 'end')
-xb = lambda i: LX0 + 20 + (LX1 - LX0 - 40) * i / 4
-pts = [(xb(i), ys(g.loc[b, 'bpm'])) for i, b in enumerate(BS)]
-S.raw('<polyline points="' + ' '.join(f'{a:.1f},{b:.1f}' for a, b in pts) + f'" fill="none" stroke="{MRK}" stroke-width="2"/>')
-for i, b in enumerate(BS):
-    hi = b in ('8+',)
-    S.c(pts[i][0], pts[i][1], 5, BLUE if hi else MRK)
-    S.t(pts[i][0], pts[i][1] - 9, f"{g.loc[b, 'bpm']:.2f}", 11, INK, 'middle', w=600, halo=True)
-    S.t(pts[i][0], LY1 + 15, b, 10.5, INK, 'middle', w=600)
-    S.t(pts[i][0], LY1 + 29, f"{g.loc[b, 'mpd']:.1f}", 10.5, SEC, 'middle')
-S.t(LX0 - 6, LY1 + 15, 'Campañas', 10.5, SEC, 'end'); S.t(LX0 - 6, LY1 + 29, 'Mensajes', 10.5, SEC, 'end')
-S.t(EX0, 412, 'Usuario-día: una persona en un día. Promoción según el tipo del catálogo.', 10.5, SEC)
+g['mpd'] = g.msgs / g.ud; g['bpm'] = 1000 * g.baja / g.ud; print(g.round(3))
+import math, random
+for s_ in 'ab': pr['tm_' + s_] = [tema_of(z) for z in pr['f_' + s_]]
+bt = pr[pr.eq_a != pr.eq_b].copy()
+bt['par'] = [' + '.join(sorted([u, v])) for u, v in zip(bt.eq_a, bt.eq_b)]
+bt['same'] = bt.tm_a == bt.tm_b
+PARS = (bt.groupby('par').usuario_dias_juntas.sum().sort_values(ascending=False)).index.tolist()
+NOMB = {'Product Growth + Sales': 'Product Growth y Sales', 'Marketing + Product Growth': 'Marketing y Product Growth', 'Marketing + Sales': 'Marketing y Sales',
+        'Marketing + Others': 'Marketing y Others', 'Others + Sales': 'Others y Sales', 'Others + Product Growth': 'Others y Product Growth'}
+CASOS = [('B0211-CANVAS-Nuevos_RegistradosPay', 'B0171-CANVAS-Anonimos-RescateTasa0', 'push notification', 'Tasa 0 de los dos, por push'),
+         ('B0209-CANVAS-Recurrentes_Inactivos', 'B0326-Canvas-Recurrentes_Dormants', 'email', 'Descuento y referidos al mismo ex cliente'),
+         ('B0492-CANVAS-Recurrentes-HotSale', 'B0493-CANVAS-Recurrentes-HotSaleKUESKI', 'push notification', 'Hot Sale de los dos, por push'),
+         ('B0440-CANVAS-Todos-AnotayGana', 'BillPay_Intro_Full', 'push notification', 'Anota y gana y BillPay el mismo día')]
+rnd = random.Random(5)
+S = Svg('Pares de campañas de dos equipos que le llegan a la misma persona el mismo día, por par de equipos')
+S.t(0, 16, 'Cada punto es un par de promociones de dos equipos que llegan a la misma persona el mismo día', 12.5, INK, w=600)
+S.c(6, 34, 4.5, BLUE, stroke='none'); S.t(15, 38, 'Las dos con el mismo tema u oferta', 11.5)
+S.c(232, 34, 4.5, MRK, stroke='none'); S.t(241, 38, 'Temas distintos', 11.5)
+X0, X1 = 150, 650
+LO, HI = math.log10(2e4), math.log10(2e6)
+xs = lambda v: X0 + (X1 - X0) * (math.log10(min(max(v, 2e4), 2e6)) - LO) / (HI - LO)
+TOP, RH = 62, 52
+YB = TOP + RH * len(PARS)
+for v, lab in [(3e4, '30 mil'), (1e5, '100 mil'), (3e5, '300 mil'), (1e6, '1 M')]:
+    S.l(xs(v), TOP - 4, xs(v), YB - 4, GRID); S.t(xs(v), YB + 10, lab, 10.5, SEC, 'middle')
+S.t(X1, YB + 24, 'Personas que reciben las dos el mismo día (escala logarítmica)', 10.5, SEC, 'end')
+S.t(780, TOP - 8, 'Usuario-días · mismo tema', 10.5, SEC, 'end')
+for i, pp in enumerate(PARS):
+    d = bt[bt.par == pp]
+    y0 = TOP + RH * i; cy = y0 + 32
+    if i: S.l(0, y0, 780, y0, GRID)
+    S.t(0, cy - 2, NOMB.get(pp, pp), 11.5, INK, w=600); S.t(0, cy + 12, f'{len(d)} pares', 10.5, SEC)
+    for r in d.sort_values('same').itertuples():
+        S.c(xs(r.usuarios_aprox), cy + rnd.uniform(-9, 9), 3.2, BLUE if r.same else MRK, stroke='#FFFFFF', sw=0.6, op=0.8)
+    ud = d.usuario_dias_juntas.sum(); sm = d[d.same].usuario_dias_juntas.sum()
+    S.t(780, cy - 2, f'{ud/1e6:.1f} M', 12, INK, 'end', w=600)
+    S.t(780, cy + 12, f'{100*sm/ud:.0f} % mismo tema', 10.5, BLUE if sm / ud > 0.3 else SEC, 'end', w=600)
+    for pa, pb, ch, nm in CASOS:
+        z = d[(d.f_a.str.contains(pa) & d.f_b.str.contains(pb)) | (d.f_a.str.contains(pb) & d.f_b.str.contains(pa))]
+        z = z[(z.canal_a == ch) | (z.canal_b == ch)]
+        if len(z):
+            z = z.sort_values('usuarios_aprox', ascending=False).iloc[0]
+            x = xs(z.usuarios_aprox)
+            S.c(x, cy, 5, BLUE if z.same else INK, sw=1.5)
+            anc = 'end' if (x > 420 or 'Tasa 0' in nm) else 'start'
+            S.t(x + (-8 if anc == 'end' else 8), y0 + 13, (f'{nm}: {z.usuarios_aprox/1e6:.1f} M' if z.usuarios_aprox >= 1e6 else f'{nm}: {z.usuarios_aprox/1e3:.0f} mil'), 10.5, INK, anc, w=600, halo=True)
+            print(pp, nm, z.usuarios_aprox, z.same)
 svg = S.done()
-pm = g.loc[['3 a 4', '5 a 7', '8+'], 'pct'].sum()
+ms = bt[bt.par == 'Marketing + Sales']; msame = 100 * ms[ms.same].usuario_dias_juntas.sum() / ms.usuario_dias_juntas.sum()
 save(26, dict(kind='grafica',
-  titulo='Dos equipos le mandan la misma oferta a la misma persona el mismo día: Tasa 0, descuentos y promociones de KPay',
-  que='Tasa 0 de dos equipos; descuento directo y referidos al mismo ex cliente; las mismas promociones de comercios que aceptan KPay (Comercio del día, Hot Sale, Amazon, Cuponera) de Marketing y de Sales.',
-  quien='Marketing con Sales y Marketing con Product Growth, sobre todo. Others aparece por el lanzamiento de BillPay a toda la base.',
-  a_quien='Registrados sin crédito y anónimos (Tasa 0), ex clientes inactivos y dormidos (descuento y referidos), clientes recurrentes de KPay (promociones).',
+  titulo='Dos equipos mandan la misma oferta a la misma persona el mismo día: Tasa 0, descuentos y promociones de KPay',
+  que='Tasa 0 de dos equipos, descuento y referidos al mismo ex cliente, promociones de KPay.',
+  quien='Marketing con Sales y con Product Growth, sobre todo.',
+  a_quien='Registrados y anónimos, ex clientes dormidos, clientes recurrentes de KPay.',
   lecturas=[
-   f'{100*BTW/TOT:.0f} % de las veces que una persona recibe dos promociones el mismo día, vienen de equipos distintos. Marketing y Sales suman {M[("Marketing","Sales")]/1e6:.1f} M usuario-días; Marketing y Product Growth, {M[("Marketing","Product Growth")]/1e6:.1f} M.',
-   f'Con una campaña en el día la persona recibe un mensaje; con tres o cuatro, {g.loc["3 a 4","mpd"]:.1f}; con ocho o más, {g.loc["8+","mpd"]:.0f}. Uno de cada once usuario-días tiene tres o más campañas.',
-   f'La baja pasa de {g.loc["1","bpm"]:.2f} por mil usuario-días con una campaña a {g.loc["8+","bpm"]:.2f} con ocho o más, casi el doble. Con dos WhatsApp el mismo día se pagan los dos si se entregan.'],
-  causa='Nadie es dueño de la gente que no ha hecho nada ni de las promociones de KPay, y no hay un calendario común: cada equipo programa sus envíos sin ver lo que mandan los demás.',
-  sowhat='Un solo dueño por oferta y por grupo de personas, y un calendario común que impida dos promociones el mismo día a la misma persona.',
-  fuente='Fuente: Braze, pares de campañas que coinciden el mismo día (E6b, los mil pares con más coincidencias, no el total) y campañas por persona y día (E6a), enero a septiembre 2026. No tenemos la respuesta ni la baja de cada par; la respuesta sube con más campañas porque las reciben los más activos.',
+   f'{100*BTW/TOT:.0f} % de las veces que alguien recibe dos promociones el mismo día vienen de dos equipos distintos.',
+   f'Marketing y Sales: {M[("Marketing","Sales")]/1e6:.1f} M usuario-días, {msame:.0f} % con promociones de KPay en las dos campañas.',
+   f'Con una campaña al día se dan de baja {g.loc["1","bpm"]:.2f} por mil usuario-días; con ocho o más, {g.loc["8+","bpm"]:.2f}.'],
+  causa='Nadie es dueño de la gente que no ha hecho nada ni de las promociones de KPay, y no hay calendario común.',
+  sowhat='Un dueño por oferta y por grupo de personas, y un calendario que impida dos promociones el mismo día.',
+  fuente='Fuente: Braze, pares de campañas que coinciden el mismo día (E6b, los mil pares con más coincidencias) y campañas por persona y día (E6a), enero a septiembre 2026.',
   svg=svg))
 check(26)

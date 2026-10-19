@@ -27,6 +27,8 @@ S.circle(5, 14, 5, BLUE, '')
 S.t(15, 18, 'Abre menos de 1 de cada 100', 11.5, INK, w=600)
 S.circle(205, 14, 5, G1, '')
 S.t(215, 18, 'Abre 1 o más de cada 100', 11.5, TXT)
+S.line(398, 7, 398, 21, INK, 2.4)
+S.t(406, 18, 'Apertura de todo el push del equipo', 11.5, TXT)
 S.t(0, 36, 'Cada punto es una campaña con todas sus versiones; el tamaño es el número de push enviados.', 10.5, SEC)
 EQ = ['Marketing', 'Others', 'Product Growth', 'Sales', 'Collections']
 X0, X1 = 112, 560
@@ -58,6 +60,9 @@ for k, e_ in enumerate(EQ):
     for q in g.itertuples():
         jit = rng.uniform(-13, 13)
         S.circle(sx(q.ab), yc + jit, r(q.env), BLUE if q.bajo else G1, ' fill-opacity="0.75" stroke="#FFFFFF" stroke-width="0.8"')
+    med = float(np.average(g.ab, weights=g.env))
+    S.line(sx(med), yc - 19, sx(med), yc + 19, INK, 2.4)
+    S.t(sx(med), yc - 22, f'{med:.1f} %', 10.5, INK, 'middle', 700, halo=True)
     S.t(C1, yc - 2, (f'{eq.loc[e_, "bajo"]:.1f}' if eq.loc[e_, "bajo"] < 1 else f'{eq.loc[e_, "bajo"]:.0f}') + f' M de {eq.loc[e_, "env"]:.0f} M', 11.5, INK if hi else TXT, 'end', 600 if hi else 400)
     S.t(C1, yc + 12, f'{eq.loc[e_, "share_bajo"]:.0f} % del total', 10.5, SEC, 'end')
     S.t(C2, yc + 4, f'{eq.loc[e_, "pct"]:.0f} %', 12, BLUE if eq.loc[e_, 'pct'] >= 50 else INK, 'end', 700)
@@ -69,17 +74,17 @@ pr = camp('Payment Received'); ai = camp('Active-Retargeting_Installments'); pc 
 print(rf.env, rf.ab, an.env, an.ab, pg.env, pg.ab, pr.ab, ai.ab, pc.ab, qs.fam, qs.ab)
 save(16, dict(
     kind='grafica',
-    titulo='Más de la mitad del push va en campañas que abre menos de 1 de cada 100, y dos terceras partes de ese push son de Marketing',
-    que=f'Debajo de 1 %: Tasa 0 ({gan["tasa0"]:.0f} % de su push), lanzamientos ({gan["lanzamiento"]:.0f} %), rescates y recordatorios a toda la base ({gan["recordatorio"]:.0f} %), referidos ({gan["referidos"]:.0f} %). Arriba: avisos de pago, cobranza y recordatorios a clientes activos.',
-    quien=f'Parte del push de cada equipo debajo de 1 %: Marketing {eq.loc["Marketing","pct"]:.0f} %, Others {eq.loc["Others","pct"]:.0f} %, Product Growth {eq.loc["Product Growth","pct"]:.0f} %, Sales {eq.loc["Sales","pct"]:.0f} %, Collections {eq.loc["Collections","pct"]:.0f} %.',
-    a_quien=f'Leads: {aud["leads"]:.0f} % de su push debajo de 1 %; bases frías {aud["frios"]:.0f} %; clientes activos {aud["activos"]:.0f} %; cartera en cobranza {aud["cobranza"]:.0f} %.',
+    titulo='La mitad del push va en campañas que casi nadie abre, y dos terceras partes de ese push son de Marketing',
+    que='Tasa 0, lanzamientos, rescates de fin de semana y referidos.',
+    quien=f'Marketing pone {eq.loc["Marketing","bajo"]:.0f} M de los {B:.0f} M push que abre menos de 1 de cada 100.',
+    a_quien=f'Leads ({aud["leads"]:.0f} % de su push abre menos de 1 %) y bases frías ({aud["frios"]:.0f} %).',
     lecturas=[
-        f'Marketing manda {eq.loc["Marketing","env"]:.0f} M push, la mitad del canal, y {eq.loc["Marketing","bajo"]:.0f} M push van en campañas que abre menos de 1 de cada 100. El rescate de fin de semana a leads: {rf.env/1e6:.1f} M push y {rf.ab:.2f} % de apertura.',
-        f'Lo que se abre es lo que la persona espera: el aviso de pago recibido ({pr.ab:.0f} %), el recordatorio de Installments a clientes activos ({ai.ab:.0f} %) y la precobranza ({pc.ab:.1f} %).',
-        f'La apertura de todo el push es {100*fa.op.sum()/fa.env.sum():.2f} % y ningún mes pasó de {mes.max():.1f} %.',
+        f'{B:.0f} M de {T:.0f} M push ({100*B/T:.0f} %) van en campañas que abre menos de 1 de cada 100 personas.',
+        f'Rescate de fin de semana a leads de Marketing: {rf.env/1e6:.1f} M push y {rf.ab:.2f} % de apertura.',
+        f'Sí se abren los que la persona espera: pago recibido {pr.ab:.0f} %, Installments a activos {ai.ab:.0f} %.',
     ],
-    causa='El push se usa para mandar ofertas a toda la lista de leads y de ex clientes porque no cuesta, sin fijarse en si esa persona abrió un push en meses.',
-    sowhat='Push solo a quien abrió uno en los últimos 60 días y con una razón para esa persona; para el resto, otro canal o ninguno.',
-    fuente=f'{FUENTE_E1}. Apertura directa de push sobre enviados; la apertura influida no está en los datos. Puntos: {len(sel)} campañas con 100 mil o más push ({100*sel.env.sum()/fa.env.sum():.0f} % del canal). {B:.0f} M push contando cada campaña con todas sus versiones; contando cada versión mensual aparte son 146 M push.',
+    causa='El push se usa para mandar ofertas a toda la lista porque no cuesta, sin ver si esa persona abrió uno en meses.',
+    sowhat='Push solo a quien abrió uno en 60 días y con una razón para esa persona; para el resto, otro canal.',
+    fuente=f'{FUENTE_E1}. Apertura directa sobre enviados. {len(sel)} campañas con 100 mil o más push ({100*sel.env.sum()/fa.env.sum():.0f} % del canal).',
     svg=svg,
 ))

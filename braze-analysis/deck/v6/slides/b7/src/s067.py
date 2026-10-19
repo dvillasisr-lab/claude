@@ -76,17 +76,17 @@ for i, (f, r) in enumerate(t.iterrows()):
     S.tspans(cx, cy, [(f"{i+1}. {r.nom}", col, 600), (f" · {r.equipo} · ", SEC, 400), (f"{r.pb:.1f} % / {r.pr:.1f} %", INK, 600)], 10.5)
 S.t(0, 412, f"Azul: las siete promociones, {P.pb.sum():.0f} % de los correos y {P.pr.sum():.0f} % de los clics. Verde: recordatorio y aviso de pago. Gris: cobranza.", 10.5, SEC)
 J = dict(
-    titulo=f"Siete de los diez correos con más envíos son promociones a listas grandes: se llevan {P.pb.sum():.0f} % del email y solo {P.pr.sum():.0f} % de los clics",
-    que="Promociones: Tasa 0, lanzamiento de BillPay, crédito en plazos, referidos, descuento para volver, sorteo AnotayGana y recomendaciones de Shopping. Además, cobranza, el recordatorio de Veriff y la confirmación de pago.",
-    quien=f"Product Growth tiene 4 de las 10 ({t[t.equipo=='Product Growth'].pb.sum():.0f} % del email y {t[t.equipo=='Product Growth'].pr.sum():.0f} % de los clics); Others 3 (BillPay, Shopping, confirmación de pago); Marketing 2 (Veriff y referidos); Collections 1.",
-    a_quien="Las siete promociones van a listas: registrados que nunca tomaron crédito, leads, ex clientes inactivos y toda la base. Las dos que responden van a quien acaba de hacer algo.",
+    titulo=f"Siete de los diez correos más grandes son promociones a listas: {P.pb.sum():.0f} % del email y solo {P.pr.sum():.0f} % de los clics",
+    que="Tasa 0, BillPay, crédito en plazos, referidos, descuentos, AnotayGana y Shopping.",
+    quien="Product Growth 4 de las 10, Others 3, Marketing 2 y Collections 1.",
+    a_quien="Registrados sin crédito, leads, ex clientes y toda la base.",
     lecturas=[
-        f"Tasa 0 a registrados de KPay es {t.iloc[0].pb:.0f} % de todo el email y {t.iloc[0].pr:.0f} % de los clics: {10*t.iloc[0].rate:.1f} clics por cada mil correos, menos de lo mínimo aceptable (3).",
-        f"Las dos que sí responden van a alguien que acaba de hacer algo: Veriff ({10*t.loc[[i for i in t.index if 'Veriff' in i][0],'rate']:.0f} clics por mil) a quien dejó el registro a medias y la confirmación de pago ({10*t.loc[[i for i in t.index if 'Payment' in i][0],'rate']:.0f}) a quien acaba de pagar.",
-        f"En push pasa lo mismo: las diez con más envíos son {tp.pb.sum():.0f} % del push y {tp.pr.sum():.0f} % de las aperturas; {int((tp.equipo=='Marketing').sum())} son de Marketing a leads (rescate de fin de semana, Tasa 0, referidos, BillPay).",
+        f"Tasa 0 a registrados de KPay: {t.iloc[0].pb:.0f} % del email, {t.iloc[0].pr:.0f} % de los clics y {10*t.iloc[0].rate:.1f} clics por mil.",
+        f"Veriff ({10*t.loc[[i for i in t.index if 'Veriff' in i][0],'rate']:.0f} clics por mil) y la confirmación de pago ({10*t.loc[[i for i in t.index if 'Payment' in i][0],'rate']:.0f}) van a quien acaba de hacer algo.",
+        f"En push, las diez más grandes son {tp.pb.sum():.0f} % del volumen y {tp.pr.sum():.0f} % de las aperturas; {int((tp.equipo=='Marketing').sum())} son de Marketing.",
     ],
-    causa="Las campañas más grandes se arman para listas (todos los registrados, toda la base) y no por algo que la persona hizo; como el correo cuesta 5 centavos, nadie pone límite al tamaño.",
-    sowhat="Un tercio del email se va en siete promociones que casi nadie abre ni toca: son las primeras que hay que rehacer o achicar.",
-    fuente=f"Fuente: Braze, envíos por campaña, mes y canal, enero a septiembre 2026; {len(x):,} campañas de email (campaña = todas sus versiones). Porcentajes sobre correos entregados y clics del año. Push: aperturas sobre push enviados.",
+    causa="Las campañas grandes salen a listas, no por algo que hizo la persona, y nadie limita su tamaño.",
+    sowhat="Un tercio del email se va en siete promociones que casi nadie toca: son las primeras a rehacer.",
+    fuente=f"Fuente: Braze, envíos por campaña y canal, ene a sep 2026; {len(x):,} campañas de email y {len(xp)} de push. Clics sobre correos entregados; aperturas sobre push enviados.",
     svg=S.out())
 write(67, J)

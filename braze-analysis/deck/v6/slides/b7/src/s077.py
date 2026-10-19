@@ -40,35 +40,56 @@ r326 = a[a.fam.str.contains("B0326-Canvas-Recurrentes_Dormants")]
 ab = a.groupby("etapa").envios.sum()
 print({k: (round(v["msgs"] / 1e6, 1), round(v["mxn"] / 1e6, 2)) for k, v in P.items()})
 print(bp_cpm, bp_uns, b211.fail, b211.frate, b211.after, b333w, b333e, qa_o, qa.envios.sum(), r326.envios.sum(), ab.to_dict(), vv.max())
-TEAMC = ["Product Growth", "Marketing", "Sales", "Others", "Collections"]
-TL = {"Product Growth": "Product Growth", "Marketing": "Marketing", "Sales": "Sales", "Others": "Others", "Collections": "Collec&shy;tions"}
+import math
 NAMES = [
- ("masivo", "Mandar la misma promoción a más de un millón de personas al mes", "Lanzamiento de BillPay a toda la base", f"{bp_cpm:.0f} clic por mil correos y {bp_uns/1e3:.0f} mil bajas"),
- ("insiste", "Seguir mandando lo que ya no respondió lo mínimo", "Tasa 0 a registrados de KPay sin crédito", f"Debajo de lo mínimo desde febrero y {b211.after/1e6:.0f} M correos más"),
- ("wa", "Mandar WhatsApp (1 MXN cada uno) a quien no lo lee", "Oferta a ex clientes KPay, 12 meses sin compra", f"{b333w:,.0f} MXN por conversión contra {b333e:.0f} por correo"),
- ("copiar", "Copiar la campaña cada mes en vez de medir la anterior", f"Tasa 0 a quien nunca usó KCash ({vv.max()} versiones)", "La copia vieja sigue enviando; nadie sabe cuál funciona"),
- ("pruebas", "Probar con clientes o dejar copias con nombre de prueba", "Recordatorio de registro QA-KPay", f"{qa.envios.sum()/1e6:.1f} M push con {qa_o:.1f} aperturas por mil"),
- ("bloq", "Promociones a tarjeta KPay congelada, lista negra o a quien pidió no recibir", "Referidos a ex clientes de KPay", f"{ab.get('4.Kpay CC Freeze',0)/1e6:.0f} M a tarjetas que no pueden comprar; riesgo legal"),
- ("largos", "Canvas de más de 20 pasos, una rama por oferta y canal", "Recuperación de ex clientes KPay y Cuesta de Enero", "Hasta 120 mensajes distintos; la mitad del push bajo lo mínimo"),
- ("ticket", "Promociones sin ticket, sin un dueño que responda", "BillPay y recomendaciones semanales de Shopping", "Nadie las revisa ni las apaga"),
+ ("masivo", "A más de un millón al mes", "BillPay a toda la base", f"{bp_cpm:.0f} clic por mil y {bp_uns/1e3:.0f} mil bajas"),
+ ("insiste", "Seguir con lo que no responde", "Tasa 0 a registrados sin crédito", f"debajo desde febrero; {b211.after/1e6:.0f} M correos más"),
+ ("wa", "WhatsApp a quien no lo lee", "Ex clientes KPay, 12 meses", f"{b333w:,.0f} MXN por conversión contra {b333e:.0f} por email"),
+ ("copiar", "Copiar en vez de medir", "Rescate Tasa 0 a leads rezagados", f"{vv.get('Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0-N/A', 0)} versiones; la vieja sigue enviando"),
+ ("pruebas", "Pruebas y copias a clientes", "QA-KPay recordatorio", f"{qa.envios.sum()/1e6:.1f} M push, {qa_o:.1f} aperturas por mil"),
+ ("bloq", "Promociones a bloqueados", "Referidos a ex clientes KPay", f"{ab.get('4.Kpay CC Freeze',0)/1e6:.0f} M a tarjetas congeladas"),
+ ("largos", "Canvas de más de 20 pasos", "Recuperación KPay, Cuesta de Enero", "hasta 120 mensajes distintos"),
+ ("ticket", "Promociones sin ticket ni dueño", "BillPay y Shopping semanal", "nadie las revisa ni las apaga"),
 ]
-fm = lambda v: "" if v < 0.05e6 else f"{v/1e6:.1f} M"
-rows = []
-for i, (k, que, quien, porque) in enumerate(NAMES, 1):
-    t = P[k]["t"].msgs; lead = t.idxmax()
-    cells = "".join(f'<td class="num" style="{"background:#1F4FD8;color:#FFFFFF;font-weight:700" if tm == lead else "color:#3B4556"}">{fm(t.get(tm, 0))}</td>' for tm in TEAMC)
-    rows.append(f'<tr><td style="width:25%"><b>{i}.</b> {que}</td><td class="num" style="width:12%;white-space:nowrap"><b>{P[k]["msgs"]/1e6:.0f} M</b> · {P[k]["mxn"]/1e6:.1f} M MXN</td>{cells}'
-                f'<td style="width:18%">{quien}</td><td style="width:20%;color:#3B4556">{porque}</td></tr>')
-html = ('<table style="font-size:.9cqi"><tr><th>Qué se hace mal</th><th class="num">Mensajes · gasto</th>' + "".join(f'<th class="num" style="width:5%">{TL[tm]}</th>' for tm in TEAMC) +
-        '<th>Campaña que más pesa</th><th>Por qué cuesta</th></tr>' + "".join(rows) + '</table>'
-        '')
+S = SVG("Ocho malas prácticas: cada punto es una campaña en esa práctica según sus mensajes; en azul las del equipo que más pesa")
+S.legend([("Campaña del equipo que más pesa en la práctica", BLUE, "ci"), ("Campaña de otro equipo", MARK2, "ci")], 0, 14, 16)
+X0, X1 = 196, 500
+L0, L1 = math.log10(1e4), math.log10(5e7)
+xs = lambda v: X0 + (X1 - X0) * (math.log10(min(max(v, 1e4), 5e7)) - L0) / (L1 - L0)
+TOP, RH = 62, 45
+Yb = TOP + RH * len(NAMES) - 14
+S.t((X0 + X1) / 2, 34, "Mensajes de cada campaña (escala que multiplica)", 10.5, SEC, "middle", 600)
+for v, l in ((1e4, "10 mil"), (1e5, "100 mil"), (1e6, "1 M"), (1e7, "10 M")):
+    S.line(xs(v), TOP - 12, xs(v), Yb, GRID); S.t(xs(v), TOP - 16, l, 10.5, SEC, "middle")
+S.t(0, TOP - 16, "Qué se hace mal", 10.5, SEC, w=600)
+S.t(516, TOP - 16, "Quién más pesa · peor caso · por qué", 10.5, SEC, w=600)
+for i, (k, que, caso, porque) in enumerate(NAMES):
+    yc = TOP + RH * i + 8
+    t = P[k]["t"].msgs; lead = t.idxmax(); tp = P[k]["top"]
+    S.t(0, yc + 2, f"{i+1}. {que}", 11, INK, w=700)
+    S.t(0, yc + 16, f"{P[k]['msgs']/1e6:.0f} M mensajes · {P[k]['mxn']/1e6:.1f} M MXN", 10.5, SEC)
+    d = tp[tp.msgs > 0]
+    for j, (f, r) in enumerate(d.sort_values("msgs").iterrows()):
+        jy = ((j * 7) % 9 - 4) * 2.2
+        S.circle(xs(r.msgs), yc + 6 + jy, 2.8, BLUE if r["eq"] == lead else MARK2, "#FFFFFF", 0.5, ' fill-opacity="0.85"')
+    w0 = d.iloc[0]
+    S.circle(xs(w0.msgs), yc + 6, 5, BLUE if w0["eq"] == lead else MARK, "#FFFFFF", 1.4)
+    S.tspans(516, yc - 4, [(f"{lead} {t.max()/1e6:.0f} M", BLUE, 700), (f" de {P[k]['msgs']/1e6:.0f} M", SEC, 400)], 11)
+    S.t(516, yc + 9, caso, 10.5, INK, w=600)
+    S.t(516, yc + 22, porque, 10.5, TXT)
+    if i < len(NAMES) - 1: S.line(0, yc + 29, 780, yc + 29, GRID)
 J = dict(
-    kind="html", ancho_completo=True,
-    titulo="Ocho hábitos que cuestan dinero y clientes: Product Growth y Marketing encabezan cinco, y Others los envíos a toda la base, las pruebas y lo que no tiene dueño",
+    titulo="Ocho hábitos cuestan dinero y clientes; Product Growth y Marketing encabezan cinco de ellos",
     que="Promociones en las ocho prácticas; cobranza y avisos de pago no se cuentan.",
-    quien="Product Growth en insistir, WhatsApp que no se lee y Canvas largos; Marketing en copiar y en promociones a bloqueados; Others en envíos a toda la base, pruebas y sin ticket.",
-    a_quien="Leads, registrados sin crédito, ex clientes inactivos, toda la base y gente que no puede o no quiere recibir promociones.",
-    sowhat="No es una campaña mala: son hábitos que se repiten en los mismos equipos, y cada uno tiene un dueño que puede corregirlo.",
-    fuente="Celdas: millones de mensajes de cada equipo; en azul, el que más pesa. Las prácticas se traslapan: no se suman. Fuente: Braze, envíos por comunicación, mes y canal, catálogo, etapa del usuario (golden dataset, 37 % de los envíos) y pasos de Canvas, enero a septiembre 2026. WhatsApp a 1.00 MXN por entregado; email a 0.05 por enviado.",
-    html=html)
+    quien="Product Growth y Marketing encabezan cinco; Others, las otras tres.",
+    a_quien="Leads, registrados sin crédito, ex clientes, toda la base y bloqueados.",
+    lecturas=[
+        f"Seguir con lo que no responde: {P['insiste']['msgs']/1e6:.0f} M mensajes y {P['insiste']['mxn']/1e6:.1f} M MXN; Product Growth pone la mitad.",
+        f"WhatsApp a quien no lo lee: {P['wa']['msgs']/1e6:.0f} M mensajes pero {P['wa']['mxn']/1e6:.1f} M MXN, casi todo de Product Growth.",
+        f"Others encabeza envíos a toda la base, pruebas y promociones sin ticket, sobre todo BillPay.",
+    ],
+    causa="Nadie revisa respuesta contra volumen por campaña, y las reglas de envío no existen o no se cumplen.",
+    sowhat="No es una campaña mala: son hábitos que se repiten en los mismos equipos y tienen dueño.",
+    fuente="Fuente: Braze, envíos, catálogo, etapa del usuario (golden dataset) y pasos de Canvas, ene a sep 2026. Las prácticas se traslapan: no se suman. WhatsApp a 1.00 MXN por entregado.",
+    svg=S.out())
 write(77, J)

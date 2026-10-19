@@ -1,140 +1,89 @@
-"""Lámina 11: WhatsApp es 8 % de los mensajes y 71 % del gasto; dentro de WhatsApp, gasto por equipo y tema.
-Izquierda: dos columnas 100 % (mensajes contra gasto) por canal. Derecha: barras apiladas de gasto de WhatsApp por equipo y tema."""
+"""Lámina 11 (ronda 2): Pareto de las 342 campañas de WhatsApp ordenadas por gasto: acumulado del gasto contra acumulado de
+conversiones. Cada punto es una campaña, color por equipo; las más caras van nombradas."""
+import math
 from b2base import *
 
 d = load_b()
-# ---- canal: parte de mensajes y de gasto
-v = d.groupby('canal').envios.sum()
-c = d.groupby('canal').costo.sum()
-VT, CT = v.sum(), c.sum()
-grp = {'whatsapp': 'WhatsApp', 'email': 'Email', 'push notification': 'Push e in-app', 'in-app': 'Push e in-app'}
-vs = v.groupby(v.index.map(grp)).sum() / VT * 100
-cs = c.groupby(c.index.map(grp)).sum() / CT * 100
-cm = c.groupby(c.index.map(grp)).sum() / 1e6
-# ---- WhatsApp por equipo y tema
 w = d[d.canal == 'whatsapp']
-TEMA = {'tasa0': 'Tasa 0', 'referidos': 'Referidos', 'descuento': 'Descuentos', 'recordatorio': 'Recordatorios',
-        'otros': 'Otras ofertas de comercios', 'lanzamiento': 'Lanzamientos', 'xsell': 'Lanzamientos'}
-w = w.assign(tema=w.gan.map(TEMA))
-ct = pd.crosstab(w.equipo, w.tema, values=w.costo, aggfunc='sum').fillna(0) / 1e6
-EQ = ['Marketing', 'Product Growth', 'Sales', 'Others']
-ct = ct.loc[EQ]
-WT = w.costo.sum() / 1e6
-ve = d.groupby(['equipo', 'canal']).envios.sum().unstack().fillna(0)
-ce = d.groupby(['equipo', 'canal']).costo.sum().unstack().fillna(0)
-wa_msgs = 100 * ve.whatsapp / ve.sum(axis=1)
-wa_cost = 100 * ce.whatsapp / ce.sum(axis=1)
-tema_pct = 100 * w.groupby('tema').costo.sum() / w.costo.sum()
-mkpg = ct.loc[['Marketing', 'Product Growth']].sum().sum()
-au_ = w.groupby('aud').costo.sum() / 1e6
-print('canal msgs %', vs.round(1).to_dict(), 'gasto %', cs.round(1).to_dict(), 'M MXN', cm.round(1).to_dict())
-print(ct.round(2)); print('total WA', round(WT, 1), 'MK+PG', round(mkpg, 1), round(100 * mkpg / WT, 1))
-print('WA en mensajes del equipo', wa_msgs.round(1).to_dict(), 'en gasto', wa_cost.round(1).to_dict())
-print('tema %', tema_pct.round(1).to_dict())
-print('frios', w[w.aud == 'frios'].costo.sum() / 1e6, 'activos', w[w.aud == 'activos'].costo.sum() / 1e6, 'leads', w[w.aud == 'leads'].costo.sum() / 1e6)
+CT, WT = d.costo.sum() / 1e6, w.costo.sum() / 1e6
+VT, WV = d.envios.sum(), w.envios.sum()
+fa = w.groupby('fam').agg(c=('costo', 'sum'), team=('equipo', 'first'), gan=('gan', 'first'), aud=('aud', 'first'),
+                          conv=('conversiones_fraccional', 'sum')).sort_values('c', ascending=False).reset_index()
+fa['cum'] = 100 * fa.c.cumsum() / fa.c.sum()
+fa['cumv'] = 100 * fa.conv.cumsum() / fa.conv.sum()
+fa['rk'] = np.arange(1, len(fa) + 1)
+N50 = int((fa.cum < 50).sum() + 1)
+top = fa.head(N50)
+teams50 = top.team.value_counts()
+eqc = w.groupby('equipo').costo.sum() / 1e6
+mkpg = 100 * (eqc['Marketing'] + eqc['Product Growth']) / WT
+print('WA', WT, CT, 100 * WT / CT, 'msgs', 100 * WV / VT, 'N50', N50, teams50.to_dict(), 'conv en esas', top.cumv.iloc[-1], 'mk+pg', mkpg)
+print(top[['fam', 'c', 'team', 'gan', 'aud', 'cum', 'cumv']].assign(c=lambda x: x.c / 1e6).round(2).to_string())
+r10 = fa.iloc[9]
+print('top10', r10.cum, r10.cumv)
 
-S = Svg('A la izquierda, parte de cada canal en los mensajes y en el gasto: WhatsApp es 8 % de los mensajes y 71 % del gasto. '
-        'A la derecha, gasto de WhatsApp por equipo y tema, en millones de MXN.')
-# ===== panel izquierdo
-S.t(0, 16, 'Parte de cada canal, enero a septiembre', 12, INK, w=600)
-Y0, Y1 = 66, 372
-H = Y1 - Y0
-cols = [('Mensajes', vs, f'{VT/1e6:.0f} M mensajes', 18), ('Gasto', cs, f'{CT/1e6:.1f} M MXN', 132)]
-ORD = [('WhatsApp', BLUE), ('Email', G1), ('Push e in-app', G2)]
-BW = 66
-segs = {}
-for name, s, tot, x in cols:
-    S.t(x + BW / 2, Y0 - 24, name, 11.5, INK, 'middle', 600)
-    S.t(x + BW / 2, Y0 - 9, tot, 11, SEC, 'middle')
-    yy = Y0
-    for lab, col in ORD:
-        hh = H * s.get(lab, 0) / 100
-        S.rect(x, yy, BW, hh - (1.5 if hh > 2 else 0), col)
-        segs[(name, lab)] = (yy, yy + hh)
-        yy += hh
-# conectores de WhatsApp entre columnas
-a0, a1 = segs[('Mensajes', 'WhatsApp')]
-b0, b1 = segs[('Gasto', 'WhatsApp')]
-S.raw(f'<path d="M{18+BW},{a0} L132,{b0} L132,{b1-1.5} L{18+BW},{a1-1.5} Z" fill="{BLUE}" opacity="0.12"/>')
-# etiquetas
-for name, s, tot, x in cols:
-    for lab, col in ORD:
-        y0, y1 = segs[(name, lab)]
-        pct = s.get(lab, 0)
-        if y1 - y0 >= 30:
-            fill = '#FFFFFF' if col == BLUE else INK
-            S.t(x + BW / 2, (y0 + y1) / 2 - 2, lab if lab != 'Push e in-app' else 'Push e', 11, fill, 'middle', 600)
-            S.t(x + BW / 2, (y0 + y1) / 2 + 12, f'{pct:.0f} %' if lab != 'Push e in-app' else f'in-app {pct:.0f} %', 11, fill, 'middle')
-        elif y1 - y0 >= 16:
-            fill = '#FFFFFF' if col == BLUE else INK
-            S.t(x + BW / 2, (y0 + y1) / 2 + 4, f'{pct:.0f} %', 11, fill, 'middle', 600)
-S.t(132 + BW / 2, Y1 + 16, 'Push e in-app: 0 MXN', 10.5, SEC, 'middle')
-S.t(132 + BW + 6, (b0 + b1) / 2 + 4, f'{cm["WhatsApp"]:.1f} M', 11, BLUE, 'start', 600)
-S.t(132 + BW + 6, (b0 + b1) / 2 + 18, 'MXN', 11, BLUE, 'start', 600)
-S.t(132 + BW + 6, (segs[('Gasto', 'Email')][0] + segs[('Gasto', 'Email')][1]) / 2 + 4, f'{cm["Email"]:.1f} M', 11, SEC)
-S.t(132 + BW + 6, (segs[('Gasto', 'Email')][0] + segs[('Gasto', 'Email')][1]) / 2 + 18, 'MXN', 11, SEC)
-S.line(256, 8, 256, 404, GRID)
-
-# ===== panel derecho
-X0 = 272
-S.t(X0, 16, 'Gasto de WhatsApp por equipo y tema, millones de MXN', 12, INK, w=600)
-TORD = [('Tasa 0', BLUE), ('Referidos', BLUE2), ('Descuentos', GREEN), ('Recordatorios', GREEN2),
-        ('Otras ofertas de comercios', G1), ('Lanzamientos', G2)]
-# leyenda en dos filas dentro del panel
-lx, ly = X0, 34
-for i, (lab, col) in enumerate(TORD):
-    if i == 3:
-        lx, ly = X0, 52
-    S.rect(lx, ly - 9, 10, 10, col)
-    txt = f'{lab} · {tema_pct[lab]:.0f} %'
-    S.t(lx + 15, ly, txt, 11, TXT)
-    lx += 15 + tw(txt, 11) + 10
-BX0, BX1 = X0 + 104, 612
-VMAX = 24
-sx = lambda val: BX0 + (BX1 - BX0) * val / VMAX
-for vv in (0, 5, 10, 15, 20):
-    S.line(sx(vv), 82, sx(vv), 336, GRID)
-    S.t(sx(vv), 350, f'{vv}', 10.5, SEC, 'middle')
-S.t(BX1, 350, 'M MXN', 10.5, SEC, 'start')
-RY = [92, 154, 216, 278]
-BH = 28
-for eq, y in zip(EQ, RY):
-    hi = eq in ('Marketing', 'Product Growth')
-    S.t(BX0 - 8, y + BH / 2 + 4, eq, 11.5, INK if hi else TXT, 'end', 600 if hi else 400)
-    x = BX0
-    for lab, col in TORD:
-        val = ct.loc[eq].get(lab, 0)
-        ww = sx(val) - BX0
-        if ww <= 0:
-            continue
-        S.rect(x, y, ww - (1.5 if ww > 3 else 0), BH, col)
-        if ww >= 30:
-            S.t(x + ww / 2, y + BH / 2 + 4, f'{val:.1f}', 10.5, '#FFFFFF' if col in (BLUE, GREEN) else INK, 'middle', 600)
-        x += ww
-    tot = ct.loc[eq].sum()
-    S.t(x + 6, y + BH / 2 + 4, f'{tot:.1f} M MXN · {100*tot/WT:.0f} %', 11.5, INK if hi else TXT, 'start', 600 if hi else 400)
-    S.t(BX0, y + BH + 14, f'WhatsApp es {wa_msgs[eq]:.0f} % de sus mensajes y {wa_cost[eq]:.0f} % de su gasto', 10.5, SEC, halo=True)
-# llave Marketing + Product Growth
-S.line(X0 + 2, RY[0], X0 + 2, RY[1] + BH + 18, INK, 1.5)
-S.line(X0 + 2, RY[0], X0 + 8, RY[0], INK, 1.5)
-S.line(X0 + 2, RY[1] + BH + 18, X0 + 8, RY[1] + BH + 18, INK, 1.5)
-S.t(X0, 378, f'Marketing y Product Growth: {mkpg:.1f} M MXN, {100*mkpg/WT:.0f} % del gasto de WhatsApp.', 11.5, INK, w=600)
-S.t(X0, 396, f'El bloque más grande: Tasa 0 de Marketing, {ct.loc["Marketing","Tasa 0"]:.1f} M MXN, todo a leads.', 11, TXT)
+COL = {'Marketing': BLUE, 'Product Growth': GREEN, 'Sales': G1, 'Others': G1}
+S = Svg(f'Curva de Pareto de las {len(fa)} campañas de WhatsApp ordenadas por gasto: acumulado del gasto contra acumulado de conversiones; '
+        f'{N50} campañas suman la mitad del gasto.')
+lx = 0
+for lab, col in (('Marketing', BLUE), ('Product Growth', GREEN), ('Sales y Others', G1)):
+    S.circle(lx + 5, 14, 5, col, '')
+    S.t(lx + 14, 18, lab, 11.5, INK if col != G1 else TXT, w=600 if col != G1 else 400)
+    lx += 14 + tw(lab, 11.5, 600) + 18
+S.line(lx + 4, 14, lx + 26, 14, INK, 2)
+S.t(lx + 32, 18, '% acumulado del gasto', 11.5, INK, w=600)
+lx += 32 + tw('% acumulado del gasto', 11.5, 600) + 16
+S.line(lx, 14, lx + 22, 14, G1, 2, ' stroke-dasharray="4 3"')
+S.t(lx + 28, 18, '% acumulado de conversiones', 11.5, TXT)
+X0, X1, Y0, Y1 = 50, 760, 50, 370
+LO, HI = 0, math.log10(len(fa))
+sx = lambda r: X0 + (X1 - X0) * (math.log10(r) - LO) / (HI - LO)
+sy = lambda v: Y1 - (Y1 - Y0) * v / 100
+for v in (0, 25, 50, 75, 100):
+    S.line(X0, sy(v), X1, sy(v), GRID)
+    S.t(X0 - 8, sy(v) + 4, f'{v} %', 11, SEC, 'end')
+for r in (1, 3, 10, 30, 100, 300):
+    S.line(sx(r), Y1, sx(r), Y1 + 4, G1)
+    S.t(sx(r), Y1 + 17, f'{r}', 11, SEC, 'middle')
+S.t(X1, Y1 + 34, f'Campañas de WhatsApp ordenadas de mayor a menor gasto ({len(fa)} en total, escala que crece por múltiplos)', 10.5, SEC, 'end')
+# zona entre curvas para las N50
+S.line(sx(N50), sy(0), sx(N50), sy(50), INK, 1, ' stroke-dasharray="3 3" opacity="0.6"')
+S.line(X0, sy(50), sx(N50), sy(50), INK, 1, ' stroke-dasharray="3 3" opacity="0.6"')
+pc = ' '.join(f'{sx(r):.1f},{sy(v):.1f}' for r, v in zip(fa.rk, fa.cumv))
+S.raw(f'<polyline points="{pc}" fill="none" stroke="{G1}" stroke-width="2" stroke-dasharray="4 3"/>')
+pg = ' '.join(f'{sx(r):.1f},{sy(v):.1f}' for r, v in zip(fa.rk, fa.cum))
+S.raw(f'<polyline points="{pg}" fill="none" stroke="{INK}" stroke-width="1.6"/>')
+for q in fa.itertuples():
+    S.circle(sx(q.rk), sy(q.cum), 4.2 if q.rk <= N50 else 2.4, COL[q.team], ' stroke="#FFFFFF" stroke-width="1"')
+S.t(sx(N50) + 8, sy(50) + 18, f'{N50} campañas: 50 % del gasto', 11.5, INK, w=700, halo=True)
+S.t(sx(N50) + 8, sy(50) + 33, f'y {top.cumv.iloc[-1]:.0f} % de las conversiones', 11.5, TXT, halo=True)
+NAMES = {0: 'Tasa 0 a leads rezagados (Marketing), 4.0 M MXN', 1: 'Rescate Tasa 0 a rezagados (Marketing), 3.3 M MXN',
+         2: 'Ex clientes de un año (Product Growth), 1.7 M MXN'}
+for i, lab in NAMES.items():
+    q = fa.iloc[i]
+    x, y = sx(q.rk), sy(q.cum)
+    ty = 92 + i * 30
+    S.line(x, y - 5, x + 26, ty + 4, INK, 0.7)
+    S.t(x + 30, ty + 8, f'{i+1}. {lab}', 11, INK, w=600, halo=True)
+S.t(X1, sy(100) + 30, f'WhatsApp: {100*WV/VT:.0f} % de los mensajes y {100*WT/CT:.0f} % del gasto ({WT:.1f} M MXN)', 11.5, BLUE, 'end', 700, halo=True)
 svg = S.done()
+# confirma los nombres con las cifras
+for i in NAMES:
+    print(NAMES[i], fa.iloc[i].fam, round(fa.iloc[i].c / 1e6, 2))
 
 save(11, dict(
     kind='grafica',
-    titulo='Siete de cada diez pesos del gasto en mensajes se van en WhatsApp, y Marketing y Product Growth ponen casi todo en promociones',
-    que='Casi solo promociones (99.5 % del gasto de WhatsApp): Tasa 0, ofertas de comercios de KPay, referidos y descuentos. Recordatorios de algo que la persona empezó: 5 %.',
-    quien=f'Marketing {ct.loc["Marketing"].sum():.1f} M MXN, Product Growth {ct.loc["Product Growth"].sum():.1f} M MXN, Sales {ct.loc["Sales"].sum():.1f} M MXN y Others {ct.loc["Others"].sum():.1f} M MXN en nueve meses. Collections no usa WhatsApp.',
-    a_quien=f'Ex clientes y leads que nunca activaron (bases frías) {au_["frios"]:.1f} M MXN, {100*au_["frios"]/WT:.0f} % del gasto de WhatsApp; clientes activos {au_["activos"]:.1f} M MXN ({100*au_["activos"]/WT:.0f} %); leads {au_["leads"]:.1f} M MXN ({100*au_["leads"]/WT:.0f} %).',
+    titulo=f'Siete de cada diez pesos van a WhatsApp, y la mitad de ese gasto se concentra en {N50} campañas',
+    que='Promociones: Tasa 0, referidos, descuentos y ofertas de comercios de KPay.',
+    quien=f'Marketing y Product Growth ponen {mkpg:.0f} % del gasto de WhatsApp; Sales el resto.',
+    a_quien='Leads rezagados, ex clientes, leads recientes y clientes activos de KPay y KCash.',
     lecturas=[
-        f'Un WhatsApp entregado cuesta 1.00 MXN y un correo 0.05 MXN, veinte veces menos. Por eso WhatsApp es {vs["WhatsApp"]:.0f} % de los mensajes y {cs["WhatsApp"]:.0f} % del gasto: {WT:.1f} M de {CT/1e6:.1f} M MXN.',
-        f'Marketing y Product Growth ponen {mkpg:.1f} M MXN, {100*mkpg/WT:.0f} % del gasto de WhatsApp. El bloque más grande es Tasa 0 de Marketing, {ct.loc["Marketing","Tasa 0"]:.1f} M MXN, todo a leads que no han pedido crédito.',
-        f'En cada equipo WhatsApp es una parte chica de los mensajes y la mayor parte del gasto: en Marketing {wa_msgs["Marketing"]:.0f} % de sus mensajes y {wa_cost["Marketing"]:.0f} % de su gasto.',
+        f'{100*WT/CT:.0f} % del gasto ({WT:.1f} M MXN) por {100*WV/VT:.0f} % de los mensajes: un WhatsApp cuesta 20 veces un correo.',
+        f'{N50} campañas suman la mitad del gasto y solo {top.cumv.iloc[-1]:.0f} % de las conversiones; {teams50.get("Marketing",0)+teams50.get("Product Growth",0)} son de Marketing o Product Growth.',
+        f'Las dos más caras son Tasa 0 a leads rezagados de Marketing: {(fa.c.iloc[0]+fa.c.iloc[1])/1e6:.1f} M MXN en nueve meses.',
     ],
-    causa='Cada equipo manda por WhatsApp sus promociones más importantes porque es el canal que más se lee, sin un presupuesto con límite ni una regla de a quién vale la pena mandárselo.',
-    sowhat='La pregunta no es si WhatsApp sirve, sino a quién se lo mandamos: con clientes activos paga, con ex clientes y leads viejos no (siguiente lámina).',
-    fuente=f'{FUENTE_E1}. Gasto: WhatsApp a 1.00 MXN por entregado, email a 0.05 MXN por enviado, push e in-app sin costo; sin licencia de Braze. Tema y audiencia según el nombre de la campaña; lanzamientos incluye venta cruzada.',
+    causa='Cada equipo manda por WhatsApp sus promociones grandes porque se lee más, sin presupuesto con límite ni regla de a quién.',
+    sowhat='El gasto se decide en pocas campañas: revisar esas primero (siguiente lámina: a quién van).',
+    fuente=f'{FUENTE_E1}. WhatsApp a 1.00 MXN por entregado, correo a 0.05 MXN por enviado. Conversión atribuida por Braze a 7 días.',
     svg=svg,
 ))

@@ -1,83 +1,72 @@
-"""Lámina 57: quien abre compra antes, no siempre más (E9a, muestra_m). Izquierda: veces que convierte más quien abre que quien no
-abre, a 7, 30 y 90 días, mediana por canal (campañas promocionales con muestra). Derecha: parte del volumen medido en campañas donde la
-ventaja solo adelanta (1.5 veces o más a 7 días y menos de 1.5 a 90), por equipo y por tema."""
+"""Lámina 57 (ronda 2): pendientes con muchas líneas, un panel por canal con la misma escala. Cada línea es una campaña promocional
+(E9a, muestra_m, con muestra suficiente): cuántas veces más convierte quien abre que quien no abre, a 7, 30 y 90 días. Azul = la ventaja
+solo adelanta (1.5 veces o más a 7 días y menos de 1.5 a 90); línea negra = mediana del canal."""
 from comun import *
 
 c = pd.read_csv(H / 'muestra_c_familias.csv'); tipo = c.groupby('familia').tipo.first()
 m = pd.read_csv(H / 'muestra_m_ventanas.csv')
 m = m[m.muestra == True].copy()
-m['tipo'] = m.familia.map(tipo).fillna('?'); m['tema'] = m.familia.map(gancho_of)
-m['eq'] = m.familia.str.split('-').str[0].map(lambda x: TEAM.get(x, x))
-m['adel'] = (m.lift_7 >= 1.5) & (m.lift_90 < 1.5)
+m['tipo'] = m.familia.map(tipo); m['eq'] = m.familia.str.split('-').str[0].map(lambda x: TEAM.get(x, x))
+m['adel'] = (m.lift_7 >= 1.5) & (m.lift_90 < 1.5); m['nom'] = m.familia.map(nombre); m['tema'] = m.familia.map(gancho_of)
 pm = m[m.tipo == 'promocional o lifecycle'].copy()
 N, NA = len(pm), int(pm.adel.sum()); V, VA = pm.envios_usuario_dia.sum(), pm[pm.adel].envios_usuario_dia.sum()
 med = pm.groupby('canal')[['lift_7', 'lift_30', 'lift_90']].median()
 gro = pm.assign(ga=pm.ca_90 / pm.ca_7, gn=pm.cn_90 / pm.cn_7).groupby('canal')[['ga', 'gn']].median()
-def parte(k):
-    g = pm.groupby(k).apply(lambda d: pd.Series({'v': d.envios_usuario_dia.sum(), 'a': d[d.adel].envios_usuario_dia.sum(), 'l90': d.lift_90.median(), 'ca90': d.ca_90.median()}))
-    g['p'] = 100 * g.a / g.v; return g
-eq, te = parte('eq'), parte('tema')
-# WhatsApp pagado en campañas que solo adelantan (E1, por entregado)
-e1 = load_e1()
-adw = set(pm[pm.adel & (pm.canal == 'whatsapp')].familia)
-wa_ad = e1[(e1.canal == 'whatsapp') & e1.familia.isin(adw)].whatsapp_delivery.sum()
-ex = pm.set_index(['familia', 'canal'])
-def X(f, ch): q = ex.loc[(f, ch)]; return q.ca_7, q.cn_7, q.ca_90, q.cn_90
-vf = X('Marketing-KCash-B0000-CANVAS-Leads_LeftFunnel-Retargeting_Veriff', 'email')
-ins = X('Lending-KCash-B0301-CANVAS-Active-Retargeting_Installments_SP', 'email')
-print(med.round(2)); print(gro.round(2)); print(eq.round(2)); print(te.round(2)); print(N, NA, V / 1e6, VA / 1e6, 'wa', wa_ad / 1e6, vf, ins)
+eqp = pm.groupby('eq').apply(lambda d: 100 * d[d.adel].envios_usuario_dia.sum() / d.envios_usuario_dia.sum())
+tep = pm.groupby('tema').apply(lambda d: 100 * d[d.adel].envios_usuario_dia.sum() / d.envios_usuario_dia.sum())
+print(N, NA, med.round(2), eqp.round(1).to_dict(), tep.round(1).to_dict())
 
-s = SVG('Veces que convierte más quien abre que quien no abre, a 7, 30 y 90 días, por canal; y parte del volumen en campañas donde la ventaja solo adelanta la compra, por equipo y tema')
-CH = [('push notification', 'Push', BLUE), ('email', 'Email', M1), ('whatsapp', 'WhatsApp', GREEN)]
-s.t(0, 16, 'Cuántas veces más convierte quien abre que quien no abre', 12, INK, w=600)
-s.t(0, 32, 'Mediana de las campañas promocionales de cada canal', 10.5, SEC)
-X0, X1, Y0, Y1 = 40, 300, 62, 350
-xs = {7: X0, 30: X0 + (X1 - X0) * 0.4, 90: X1}
-ys = lambda v: Y1 - (Y1 - Y0) * (v - 1) / 2.25
-for v in (1, 1.5, 2, 2.5, 3):
-    s.line(X0, ys(v), X1, ys(v)); s.t(X0 - 8, ys(v) + 4, f'{v:g}', 11, SEC, 'end')
-s.line(X0, ys(1), X1, ys(1), M1, 1)
-s.t(X1, ys(1) - 6, '1 = quien abre compra igual que quien no', 10.5, SEC, 'end')
-for d, x in xs.items(): s.t(x, Y1 + 18, f'{d} días', 11.5, TXT, 'middle')
-for key, lab, col in CH:
-    v = [med.loc[key, f'lift_{d}'] for d in (7, 30, 90)]
-    pts = ' '.join(f'{xs[d]:.1f},{ys(q):.1f}' for d, q in zip((7, 30, 90), v))
-    s.raw(f'<polyline points="{pts}" fill="none" stroke="{col}" stroke-width="2.5"/>')
-    for d, q in zip((7, 30, 90), v): s.circle(xs[d], ys(q), 4.5, col)
-    s.t(xs[7] - 0 + 10, ys(v[0]) - 8, f'{v[0]:.1f}', 11.5, INK, 'start', 600, halo=True)
-    s.t(xs[90] + 9, ys(v[2]) + 4, f'{v[2]:.1f}  {lab}', 11.5, INK, 'start', 600, halo=True)
-# panel derecho: barras 100 % por equipo y tema
-PX, PW = 420, 300
-s.t(PX, 16, 'Volumen medido en campañas donde la ventaja solo adelanta', 12, INK, w=600)
-s.legend([(BLUE, 'Solo adelanta la compra', 'rect'), (M2, 'La ventaja se sostiene', 'rect')], PX, 24, size=11)
-rows = [('Por equipo', None)] + [(n, eq.loc[k]) for k, n in (('Sales', 'Sales'), ('Marketing', 'Marketing'), ('Product Growth', 'Product Growth'))] + \
-       [('Por tema', None)] + [(n, te.loc[k]) for k, n in (('Recordatorio de algo empezado', 'Recordatorio de algo empezado'), ('Referidos', 'Referidos'),
-                                                         ('Descuento, cupón u oferta', 'Descuentos y cupones'), ('Tasa 0', 'Tasa 0'))]
-y = 62
-for name, q in rows:
-    if q is None:
-        s.t(PX, y + 8, name, 11, SEC, w=600); y += 16; continue
-    s.t(PX, y + 10, name, 11.5, INK, w=600)
-    s.t(780, y + 10, f'{q.v/1e6:.0f} M', 11, SEC, 'end')
-    by = y + 16; wa = PW * q.a / q.v
-    s.rect(PX, by, wa, 14, BLUE); s.rect(PX + wa + (1.5 if wa > 0 else 0), by, PW - wa - (1.5 if wa > 0 else 0), 14, M2)
-    s.t(PX + wa + 6 if wa < 60 else PX + 6, by + 11, f'{q.p:.0f} %', 11.5, INK if wa < 60 else '#FFFFFF', w=600)
-    y += 40
-s.t(780, 52, 'Volumen', 10.5, SEC, 'end')
-s.t(0, 400, f'Ventaja: conversión de quien abre entre la de quien no abre. {N} campañas promocionales por canal con al menos 1,000 personas por lado.', 10.5, SEC)
-s.t(0, 414, f'Solo adelanta: 1.5 veces o más a 7 días y menos de 1.5 a 90 ({NA} campañas). Volumen: millones de envíos por persona y día.', 10.5, SEC)
+s = SVG('Cada línea es una campaña: cuántas veces más convierte quien abre que quien no abre, a 7, 30 y 90 días, un panel por canal')
+s.t(0, 14, 'Cuántas veces más convierte quien abre que quien no abre, por campaña', 12, INK, w=600)
+s.legend([(BLUE, f'Solo adelanta la compra ({NA} campañas)', 'line'), (M1, 'La ventaja se sostiene', 'line'), (INK, 'Mediana del canal', 'line')], 0, 24, size=11)
+Y0, Y1 = 66, 356
+ys = logmap(0.8, 20, Y1, Y0)
+PAN = [('email', 'Correo'), ('push notification', 'Push'), ('whatsapp', 'WhatsApp')]
+PW = 248
+LB = {('email', 'Verificar identidad'): 12, ('email', 'Pagar compra a meses'): 8.5, ('push notification', 'Pagar compra a meses'): 12, ('push notification', 'Verificar identidad'): 8.5}
+for k, (ch, h) in enumerate(PAN):
+    x0 = 30 + k * (PW + 12); xd = {7: x0 + 6, 30: x0 + 6 + (PW - 80) * 0.42, 90: x0 + PW - 86}
+    d = pm[pm.canal == ch]
+    s.t(x0, 54, f'{h}: {len(d)} campañas', 11.5, INK, w=600)
+    for v in (1, 2, 5, 10, 20):
+        s.line(x0, ys(v), xd[90] + 4, ys(v)); s.t(x0 - 4, ys(v) + 4, f'{v}', 10.5, SEC, 'end')
+    s.line(x0, ys(1), xd[90] + 4, ys(1), M1, 1)
+    for dd, x in xd.items(): s.t(x, Y1 + 16, f'{dd} días', 10.5, TXT, 'middle')
+    for adel in (False, True):
+        for _, q in d[d.adel == adel].iterrows():
+            pts = ' '.join(f'{xd[dd]:.1f},{ys(q[f"lift_{dd}"]):.1f}' for dd in (7, 30, 90))
+            s.raw(f'<polyline points="{pts}" fill="none" stroke="{BLUE if adel else M2}" stroke-width="{0.9 if adel else 0.7}" stroke-opacity="{0.55 if adel else 0.6}"/>')
+    mv = [med.loc[ch, f'lift_{dd}'] for dd in (7, 30, 90)]
+    s.raw(f'<polyline points="{" ".join(f"{xd[dd]:.1f},{ys(v):.1f}" for dd, v in zip((7, 30, 90), mv))}" fill="none" stroke="{INK}" stroke-width="2.5"/>')
+    for dd, v in zip((7, 30, 90), mv): s.circle(xd[dd], ys(v), 3.5, INK)
+    s.t(xd[7] + 4, ys(mv[0]) - 8, f'{mv[0]:.1f}', 11.5, INK, 'start', 700, halo=True)
+    s.t(xd[90] + 8, ys(mv[2]) + 4, f'{mv[2]:.1f}', 11.5, INK, 'start', 700, halo=True)
+    gn = gro.loc[ch]
+    s.t(xd[90] + 8, ys(mv[2]) + 18, 'no abre', 10.5, SEC, 'start', halo=True)
+    s.t(xd[90] + 8, ys(mv[2]) + 30, f'x{gn.gn:.1f}', 10.5, SEC, 'start', halo=True)
+    for (cc, n), yl in LB.items():
+        if cc != ch: continue
+        q = d[d.nom == n]
+        if not len(q): continue
+        q = q.sort_values('envios_usuario_dia').iloc[-1]
+        pts = ' '.join(f'{xd[dd]:.1f},{ys(q[f"lift_{dd}"]):.1f}' for dd in (7, 30, 90))
+        s.raw(f'<polyline points="{pts}" fill="none" stroke="{GREEN}" stroke-width="2.2"/>')
+        s.line(xd[30], ys(yl) + 3, xd[30], ys(q.lift_30), M1, 0.8)
+        s.t(xd[30] - 30, ys(yl), f'{n}: {q.lift_7:.1f} a {q.lift_90:.1f}', 10.5, GREEN, 'start', 600, halo=True)
+s.t(0, 400, 'Veces = conversión de quien abre entre la de quien no abre. Campañas promocionales con 1,000 personas y 100 conversiones por lado.', 10.5, SEC)
+s.t(0, 414, 'Escala logarítmica. Solo adelanta: 1.5 veces o más a 7 días y menos de 1.5 a 90. No abre: cuánto crece su compra de 7 a 90 días.', 10.5, SEC)
 
 write(57, dict(
-    titulo='Quien abre compra antes, pero no siempre más: a 90 días su ventaja sobre quien no abre se reduce a la mitad',
-    que='Recordatorios de algo empezado (verificar identidad, pagar la compra a meses), promociones de comercios de Sales a sus clientes recurrentes y referidos a clientes.',
-    quien=f'Sales ({eq.loc["Sales","p"]:.0f} % de su volumen está en campañas que solo adelantan), Marketing ({eq.loc["Marketing","p"]:.0f} %) y Product Growth ({eq.loc["Product Growth","p"]:.0f} %).',
+    titulo='Quien abre compra antes, pero no siempre más: a 90 días su ventaja se reduce a la mitad',
+    que='Recordatorios de registro y de pago a meses, promociones de comercios y referidos.',
+    quien=f'Sales ({eqp["Sales"]:.0f} % de su volumen solo adelanta), Marketing ({eqp["Marketing"]:.0f} %), Product Growth ({eqp["Product Growth"]:.0f} %).',
     a_quien='Clientes y registrados que ya iban a comprar o a terminar su registro.',
     lecturas=[
-        f'La ventaja de quien abre baja de {med.loc["email","lift_7"]:.1f} a {med.loc["email","lift_90"]:.1f} veces en email, de {med.loc["push notification","lift_7"]:.1f} a {med.loc["push notification","lift_90"]:.1f} en push y de {med.loc["whatsapp","lift_7"]:.1f} a {med.loc["whatsapp","lift_90"]:.1f} en WhatsApp.',
-        f'Se achica porque quien no abrió también compra después: de 7 a 90 días su conversión se multiplica por {gro.gn.min():.1f} a {gro.gn.max():.1f}, y la de quien abrió por {gro.ga.min():.1f} a {gro.ga.max():.1f}. El mensaje movió la fecha, no la decisión.',
-        f'Lo que más adelanta son los recordatorios: {te.loc["Recordatorio de algo empezado","p"]:.0f} % de su volumen. Ejemplo: verificar identidad por email (Marketing), {vf[0]:.1f} % contra {vf[1]:.1f} % a 7 días y {vf[2]:.1f} % contra {vf[3]:.1f} % a 90. Por WhatsApp esas campañas costaron {wa_ad/1e6:.1f} M MXN en nueve meses.',
+        f'En correo la ventaja baja de {med.loc["email","lift_7"]:.1f} a {med.loc["email","lift_90"]:.1f} veces; en push, de {med.loc["push notification","lift_7"]:.1f} a {med.loc["push notification","lift_90"]:.1f}; en WhatsApp, de {med.loc["whatsapp","lift_7"]:.1f} a {med.loc["whatsapp","lift_90"]:.1f}.',
+        f'Quien no abre también compra después: su conversión crece {gro.gn.min():.1f} a {gro.gn.max():.1f} veces de 7 a 90 días.',
+        f'{NA} de {N} campañas solo adelantan; en recordatorios, {tep["Recordatorio de algo empezado"]:.0f} % del volumen.',
     ],
-    causa='Juzgamos cada campaña por cuánto compra quien la abre, sin un grupo que no reciba nada. Quien abre ya iba a comprar, así que el mensaje parece vender más de lo que vende.',
-    sowhat='Solo un grupo sin mensajes dice cuánto suma una campaña; mientras tanto, lo que solo adelanta la compra va por push e in-app, que no cuestan.',
-    fuente=f'Fuente: Braze, quien abre contra quien no abre a 7, 30 y 90 días por campaña y canal (E9a), enero a septiembre 2026. En {NA} de {N} campañas promocionales por canal la ventaja casi desaparece a 90 días: {VA/1e6:.0f} M de {V/1e6:.0f} M envíos medidos. WhatsApp a 1.00 MXN por entregado (E1).',
+    causa='Juzgamos cada campaña por cuánto compra quien la abre, sin un grupo que no reciba nada.',
+    sowhat='Solo un grupo sin mensajes dice cuánto suma; lo que solo adelanta va por push e in-app.',
+    fuente=f'Fuente: Braze, quien abre contra quien no abre a 7, 30 y 90 días por campaña y canal (E9a), enero a septiembre 2026. {VA/1e6:.0f} M de {V/1e6:.0f} M envíos medidos solo adelantan.',
     svg=s.svg()))

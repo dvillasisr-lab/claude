@@ -32,35 +32,54 @@ for col in ("g", "ev"):
 vol = P.groupby("g").envios.sum(); volev = P.groupby("ev").envios.sum()
 clk_share = R[("Con motivo", "email")][1] / (R[("Con motivo", "email")][1] + R[("Sin motivo", "email")][1])
 print(volev / 1e6, 100 * volev / volev.sum(), clk_share, {k: round(v[0], 2) for k, v in R.items() if k[0] in ("Con motivo", "Sin motivo")})
-CH = [("email", 10, "clics por mil correos"), ("push notification", 10, "aperturas por mil push"), ("in-app", 1, "% in-app con clic"), ("whatsapp", 1, "% WhatsApp leídos")]
-def cell(g, canal, k):
-    v = R.get((g, canal), (np.nan, 0))[0]
-    if np.isnan(v): return '<td class="num" style="color:#A3AAB5">sin envío</td>'
-    base = R[("Sin motivo", canal)][0]; ratio = v / base
-    sty = "color:#127A5B;font-weight:700" if ratio >= 2 else ("color:#6B7484" if ratio < 1 else "")
-    val = k * v
-    return f'<td class="num" style="{sty}">{val:.1f}</td>' if val < 10 else f'<td class="num" style="{sty}">{val:.0f}</td>'
-rows = []
-for t, _, ex in TRIG:
-    rows.append(f'<tr><td><b>{t}</b></td><td style="color:#6B7484">{ex}</td><td class="num">{vol[t]/1e6:.1f} M</td>' + "".join(cell(t, c, k) for c, k, _ in CH) + "</tr>")
-sumrow = (f'<tr style="background:#E9F4EF"><td colspan="2"><b>Todos los que salen porque la persona hizo algo</b> ({100*volev["Con motivo"]/volev.sum():.0f} % del volumen; {100*clk_share:.0f} % de los clics de correo)</td><td class="num"><b>{volev["Con motivo"]/1e6:.0f} M</b></td>' + "".join(cell("Con motivo", c, k) for c, k, _ in CH) + "</tr>")
-basrow = (f'<tr style="background:#F1F3F6"><td colspan="2"><b>Sin motivo: le llega porque está en una lista</b></td><td class="num"><b>{volev["Sin motivo"]/1e6:.0f} M</b></td>' + "".join(f'<td class="num"><b>{(k*R[("Sin motivo", c)][0]):.1f}</b></td>' if k * R[("Sin motivo", c)][0] < 10 else f'<td class="num"><b>{(k*R[("Sin motivo", c)][0]):.0f}</b></td>' for c, k, _ in CH) + "</tr>")
-html = ('<table style="font-size:.95cqi"><tr><th>Qué hizo la persona</th><th>Campaña de ejemplo</th><th class="num">Mensajes</th><th class="num">Email: clics por mil</th><th class="num">Push: aperturas por mil</th><th class="num">In-app: % con clic</th><th class="num">WhatsApp: % leído</th></tr>'
-        + "".join(rows) + sumrow + basrow + '</table><div style="margin-top:.4cqi;font-size:.8cqi;color:#6B7484">En verde: dos veces o más la respuesta de lo que sale a una lista; en gris: menos que eso.</div>')
-em = R[("Con motivo", "email")][0] / R[("Sin motivo", "email")][0]
+import math
+F = {}
+for canal in ("email", "push notification"):
+    b_, r_ = RESP[canal]
+    f = P[P.canal == canal].groupby(["fam", "ev"]).agg(base=(b_, "sum"), resp=(r_, "sum"), env=("envios", "sum"), eq=("equipo", "first")).reset_index()
+    f = f[f.base >= 50000].copy(); f["pm"] = 1000 * f.resp / f.base
+    F[canal] = f
+    print(canal, f.groupby("ev").pm.median().to_dict(), f.ev.value_counts().to_dict())
+S = SVG("Campañas promocionales de email y de push: mensajes contra respuesta; en verde las que salen porque la persona hizo algo")
+S.legend([("Sale porque la persona hizo algo", GREEN, "ci"), ("Sale a una lista", MARK2, "ci"), ("Mediana de cada grupo", INK, "ln")], 0, 14, 16)
+LBL = {"email": [("Leads_LeftFunnel-Retargeting_Veriff", "Recordatorio Veriff", -8), ("Precobranza-ecosystem", "Precobranza KCash", -8), ("Active-Retargeting_Installments_SP", "Meses sin intereses a activos", 16)],
+       "push notification": [("RetargetingOffering-Canceló", "Oferta a quien canceló", -99), ("Active-Retargeting_Installments_SP", "Meses sin intereses a activos", -8), ("Precobranza-ecosystem", "Precobranza KCash", 16)]}
+def panel(x0, w, canal, title, unit, ymin, ymax):
+    f = F[canal]; y0, h = 64, 270
+    L0, L1 = math.log10(5e4), math.log10(5e7)
+    X = lambda v: x0 + w * (math.log10(min(v, 5e7)) - L0) / (L1 - L0)
+    Y = lambda v: y0 + h - h * (math.log10(min(max(v, ymin), ymax)) - math.log10(ymin)) / (math.log10(ymax) - math.log10(ymin))
+    S.t(x0, y0 - 16, title, 12, INK, w=700)
+    for v in (0.1, 1, 10, 100):
+        if ymin <= v <= ymax: S.line(x0, Y(v), x0 + w, Y(v), GRID); S.t(x0 - 6, Y(v) + 4, f"{v:g}", 10.5, SEC, "end")
+    for v, l, an in ((5e4, "50 mil", "start"), (1e6, "1 M", "middle"), (1e7, "10 M", "middle")):
+        S.t(X(v), y0 + h + 14, l, 10.5, SEC, an)
+    for _, q in f[f.ev == "Sin motivo"].iterrows(): S.circle(X(q.env), Y(q.pm), 2.4, MARK2, sw=0)
+    for _, q in f[f.ev == "Con motivo"].iterrows(): S.circle(X(q.env), Y(q.pm), 3.4, GREEN, "#FFFFFF", 0.8)
+    for ev, col in (("Con motivo", GREEN), ("Sin motivo", INK)):
+        md = f[f.ev == ev].pm.median()
+        S.line(x0, Y(md), x0 + w, Y(md), col, 1.5, ' stroke-dasharray="5 3"')
+        S.t(x0 + w, Y(md) - 4, f"mediana {md:.1f}" if md < 10 else f"mediana {md:.0f}", 10.5, col, "end", 700, halo=True)
+    for k, lab, dy in LBL[canal]:
+        q = f[f.fam.str.contains(k, regex=False)].sort_values("env").iloc[-1]
+        if dy == -99: S.t(X(q.env) + 6, Y(q.pm) + 4, lab, 10.5, INK, "start", 600, halo=True)
+        else: S.t(X(q.env) - 5, Y(q.pm) + dy, lab, 10.5, INK, "end", 600, halo=True)
+    S.t(x0 + w / 2, y0 + h + 28, f"Mensajes de la campaña (escala que multiplica)", 10.5, SEC, "middle")
+panel(40, 330, "email", "Email: clics por cada mil correos", "Clics", 0.1, 100)
+panel(446, 330, "push notification", "Push: aperturas por cada mil push", "Aperturas", 1, 300)
+S.t(0, 410, "Campañas promocionales con 50 mil mensajes o más; sin avisos de pago ni cobranza salvo precobranza.", 10.5, SEC)
 J = dict(
-    kind="html", ancho_completo=True,
-    titulo="Los mensajes que salen porque la persona hizo algo responden siete veces más en correo que los que salen a una lista, y hoy son la minoría",
-    que="Recordatorios de algo empezado, aviso de pago por vencer, sugerencias después de una compra, oferta a quien canceló, bienvenida, aniversario y regreso a los 45 días.",
-    quien="Marketing (recordatorio de registro, oferta a quien canceló), Product Growth (meses sin intereses a activos, 45 días, Temu, aniversario, bienvenida KPay) y Collections (precobranza).",
-    a_quien="Personas en un momento concreto: se registró, compró, tiene un pago, canceló o lleva un tiempo sin volver.",
+    titulo="Los mensajes que salen porque la persona hizo algo responden siete veces más en correo que los de una lista",
+    que="Recordatorios, precobranza, ofertas tras comprar o cancelar, bienvenida y 45 días.",
+    quien="Marketing, Product Growth y Collections (precobranza).",
+    a_quien="Quien se registró, compró, tiene un pago, canceló o lleva tiempo sin volver.",
     lecturas=[
-        f"Con {100*volev['Con motivo']/volev.sum():.0f} % de los mensajes se llevan {100*clk_share:.0f} % de los clics de correo: {10*R[('Con motivo','email')][0]:.0f} clics por mil contra {10*R[('Sin motivo','email')][0]:.1f} ({em:.1f} veces). En push, {10*R[('Con motivo','push notification')][0]:.0f} aperturas por mil contra {10*R[('Sin motivo','push notification')][0]:.0f}.",
-        "Fuera de los avisos de pago, la precobranza y los meses sin intereses a clientes activos son las campañas grandes que mejor responden en Braze.",
-        "No todo motivo funciona igual: el aniversario y la compra en un comercio responden poco por correo. El WhatsApp se lee igual con o sin motivo.",
+        f"Son {100*volev['Con motivo']/volev.sum():.0f} % de los mensajes y {100*clk_share:.0f} % de los clics de correo.",
+        f"Correo: {10*R[('Con motivo','email')][0]:.0f} clics por mil contra {10*R[('Sin motivo','email')][0]:.1f}; push: {10*R[('Con motivo','push notification')][0]:.0f} aperturas por mil contra {10*R[('Sin motivo','push notification')][0]:.0f}.",
+        "No todo motivo funciona igual: aniversario y compra en comercio responden poco por correo.",
     ],
-    causa="La mayoría de las promociones nace de una lista (todos los registrados, toda la base) y no de algo que la persona hizo; por eso 88 % del volumen responde como lista.",
-    sowhat=f"Con {100*volev['Con motivo']/volev.sum():.0f} % del volumen se llevan {100*clk_share:.0f} % de los clics de correo. Cada promoción nueva debe nacer de algo que hizo la persona, no de una lista.",
-    fuente="Fuente: Braze, envíos por campaña, mes y canal, enero a septiembre 2026. El motivo se infiere del nombre de la campaña (no tenemos el evento de entrada del Canvas). Sin avisos de pago, BillPay ni cobranza salvo precobranza. Quien recibe por algo que hizo ya es más activo: la diferencia no prueba cuánto vende el mensaje sin un grupo sin mensajes.",
-    html=html)
+    causa="La mayoría de las promociones nace de una lista y no de algo que hizo la persona.",
+    sowhat="Cada promoción nueva debe nacer de algo que hizo la persona, no de una lista.",
+    fuente="Fuente: Braze, envíos por campaña y canal, ene a sep 2026. Motivo inferido del nombre de la campaña. Quien hizo algo ya es más activo: sin grupo sin mensajes no se sabe cuánto vende.",
+    svg=S.out())
 write(81, J)

@@ -1,74 +1,68 @@
-"""Lámina 5: cuánto cuesta Braze en mensajes (cifra grande) y el embudo por canal con su gasto. E1 con base_p1; personas de E3."""
-import pandas as pd
-from comun import load, write, ROOT, BLUE, INK, SEC, FUENTE_E1, COSTO
+"""Lámina 5: cuánto cuesta Braze en mensajes. Pareto de campañas (todas sus versiones y canales) ordenadas de mayor a menor gasto:
+gasto, conversiones atribuidas y mensajes acumulados. Arriba, tres cifras grandes. E1 con base_p1."""
+import numpy as np
+from comun import load, write, Svg, INK, TXT, SEC, GRID, BLUE, GREEN, G1, FUENTE_E1
 
 d = load()
-s = d[['email_sent', 'email_delivery', 'email_open', 'email_click', 'pn_send', 'pn_open', 'whatsapp_send', 'whatsapp_delivery',
-       'whatsapp_read', 'in_app_impression', 'in_app_click', 'envios', 'costo', 'conversiones_fraccional']].sum() / 1e6
-cv = d.groupby('canal').conversiones_fraccional.sum() / 1e6
-cs = d.groupby('canal').costo.sum() / 1e6
-ce = d.groupby('canal').envios.sum() / d.envios.sum()
-eq = (d.groupby('equipo').envios.sum() / d.envios.sum()).sort_values(ascending=False)
-fams, comms = d.fam.nunique(), d.communication_id.nunique()
-e3 = pd.read_csv(ROOT / 'data/e3_usuarios_distribucion.csv'); pers = e3.usuarios.sum()
-p15 = e3[e3.banda_msgs == '01-05'].usuarios.sum() / pers
-mes = s.costo / 9
-print(s.round(2).to_dict(), cv.round(3).to_dict(), cs.round(2).to_dict(), eq.round(3).to_dict(), fams, comms, pers, p15)
+f = d.groupby('fam').agg(cost=('costo', 'sum'), conv=('conversiones_fraccional', 'sum'), env=('envios', 'sum'), eq=('equipo', 'first')).sort_values('cost', ascending=False)
+f['cc'] = f.cost.cumsum() / f.cost.sum(); f['cv'] = f.conv.cumsum() / f.conv.sum(); f['ce'] = f.env.cumsum() / f.env.sum()
+N = len(f); n50 = int((f.cc < 0.5).sum()) + 1; npay = int((f.cost > 0).sum())
+mes = d.costo.sum() / 9; wa = d[d.canal == 'whatsapp'].costo.sum() / d.costo.sum()
+r50 = f.iloc[n50 - 1]
+print(N, n50, npay, r50.cc, r50.cv, r50.ce, mes, wa)
+NOM = {'Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-NarrativaTasa0-N/A': 'Tasa 0 a leads rezagados (Marketing)',
+       'Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0-N/A': 'Rescate Tasa 0 a leads rezagados (Marketing)',
+       'Lending-KCash-B0209-CANVAS-Recurrentes_Inactivos-DescuentoDirecto-N/A': 'Descuento a inactivos (Product Growth)'}
 
-def barras():
-    """Tres barras al 100 %: parte de cada canal en mensajes, gasto y conversiones atribuidas."""
-    from comun import Svg, TXT, GREEN, GREEN2, G2
-    ORD = [('email', 'Correo', G2), ('push notification', 'Push', BLUE), ('whatsapp', 'WhatsApp', GREEN), ('in-app', 'In-app', GREEN2)]
-    env = d.groupby('canal').envios.sum(); env = env / env.sum()
-    gas = cs / cs.sum(); con = cv / cv.sum()
-    S = Svg('Parte de cada canal en los mensajes, el gasto y las conversiones atribuidas', 780, 106)
-    x = 0
-    for k, lab, col in ORD:
-        S.rect(x, 2, 10, 10, col); S.t(x + 15, 11, lab, 11.5, TXT); x += 15 + len(lab) * 6.6 + 18
-    X0, X1 = 170, 776
-    for i, (lab, ser) in enumerate([('Mensajes', env), ('Gasto en MXN', gas), ('Conversiones atribuidas', con)]):
-        y = 24 + i * 28; base = X0
-        S.t(X0 - 10, y + 14, lab, 11.5, INK if i == 1 else TXT, 'end', 600 if i == 1 else 400)
-        for k, _, col in ORD:
-            v = float(ser.get(k, 0)); w = (X1 - X0) * v
-            if w <= 0: continue
-            S.rect(base, y, w - 2, 20, col)
-            if w > 34:
-                S.t(base + w / 2, y + 14, f'{v * 100:.0f} %', 11.5, '#FFFFFF' if col in (BLUE, GREEN) else INK, 'middle', 600)
-            base += w
-    return S.done().replace('<svg ', '<svg style="height:auto;width:100%;margin-top:.7cqi" ', 1)
+S = Svg('Campañas ordenadas de mayor a menor gasto: porcentaje acumulado del gasto, de las conversiones atribuidas y de los mensajes')
+# cifras grandes
+STATS = [(f'{mes / 1e6:.1f} M MXN', 'al mes en mensajes, sin licencia'), (f'{n50} campañas', f'de {N:,} se llevan la mitad del gasto'),
+         (f'{r50.cv * 100:.0f} %', f'de las conversiones vienen de esas {n50}')]
+for i, (b, l) in enumerate(STATS):
+    x = i * 262
+    S.t(x, 30, b, 26, BLUE if i == 1 else INK, 'start', 700); S.t(x, 50, l, 11.5, TXT)
+# leyenda
+SER = [('cc', 'Gasto en MXN', BLUE, 2.6), ('cv', 'Conversiones atribuidas', GREEN, 2.2), ('ce', 'Mensajes', G1, 1.8)]
+lx = 0
+for k, lab, col, w in SER:
+    S.line(lx, 80, lx + 20, 80, col, 2.5); S.t(lx + 26, 84, lab, 11.5, TXT); lx += 26 + len(lab) * 6.3 + 22
+S.t(780, 84, '% acumulado', 11, SEC, 'end')
+X0, X1, Y0, Y1 = 40, 770, 100, 372
+lmax = np.log10(N)
+xx = lambda i: X0 + (X1 - X0) * np.log10(i) / lmax
+yy = lambda v: Y1 - (Y1 - Y0) * v
+for v in (0, .25, .5, .75, 1):
+    S.line(X0, yy(v), X1, yy(v), GRID); S.t(X0 - 6, yy(v) + 4, f'{v * 100:.0f} %', 11, SEC, 'end')
+for t in (1, 3, 10, 30, 100, 300, 1000):
+    S.line(xx(t), Y1, xx(t), Y1 + 4, G1); S.t(xx(t), Y1 + 17, f'{t:,}', 11, SEC, 'middle')
+S.t(X1, Y1 + 33, f'Campañas ordenadas de mayor a menor gasto ({N:,}; escala logarítmica)', 10.5, SEC, 'end')
+idx = np.unique(np.round(np.logspace(0, lmax, 400)).astype(int))
+for k, lab, col, w in SER[::-1]:
+    S.poly([(xx(i), yy(f[k].iloc[i - 1])) for i in idx], col, w)
+# corte en la mitad del gasto
+S.line(xx(n50), Y0, xx(n50), Y1, INK, 1, ' stroke-dasharray="3 3"')
+S.circle(xx(n50), yy(r50.cc), 4.5, BLUE); S.circle(xx(n50), yy(r50.cv), 4.5, GREEN)
+S.t(xx(n50) + 8, yy(r50.cc) - 6, f'{n50} campañas: {r50.cc * 100:.0f} % del gasto', 11.5, BLUE, 'start', 700, halo=True)
+S.t(xx(n50) + 8, yy(r50.cv) + 16, f'y {r50.cv * 100:.0f} % de las conversiones', 11.5, GREEN, 'start', 700, halo=True)
+# las tres que más gastan
+for i in range(3):
+    r = f.iloc[i]
+    S.circle(xx(i + 1), yy(r.cc), 3.5, BLUE)
+    S.t(xx(1) + 4, Y0 + 14 + i * 15, f'{i + 1}. {NOM[f.index[i]]}: {r.cost / 1e6:.1f} M MXN', 11, INK if i == 0 else TXT, 'start', 600 if i == 0 else 400)
+for i in range(3):
+    S.t(xx(i + 1), yy(f.iloc[i].cc) + 16, f'{i + 1}', 10.5, SEC, 'middle', 600, halo=True)
+S.t(xx(npay), yy(1) - 6, f'Desde la {npay}: solo push e in-app, sin costo', 10.5, SEC, 'end', 400, halo=True)
 
-M = lambda v: f'{v:.1f} M'
-NA = f'<span style="color:{SEC}">no aplica</span>'
-ND = f'<span style="color:{SEC}">sin dato</span>'
-def tr(c, cells, bold=False):
-    st = ' style="font-weight:700"' if bold else ''
-    return f'<tr{st}><td>{c}</td>' + ''.join(f'<td class="num">{x}</td>' for x in cells) + '</tr>'
-html = (
-    f'<div style="display:flex;align-items:baseline;gap:1.4cqi;margin-bottom:.6cqi"><div class="big">{mes:.1f} M MXN</div>'
-    f'<div class="bigl" style="margin:0">al mes solo en mensajes, sin contar la licencia de Braze.<br>{s.costo:.1f} M MXN de enero a septiembre.</div></div>'
-    '<table><tr><th>Canal</th><th class="num">Enviados</th><th class="num">Entregados</th><th class="num">Abiertos, leídos o vistos</th>'
-    '<th class="num">Clics</th><th class="num">Conversiones atribuidas</th><th class="num">Gasto en 9 meses</th></tr>'
-    + tr('Correo', [M(s.email_sent), M(s.email_delivery), M(s.email_open), M(s.email_click), f'{cv["email"]:.2f} M', f'{cs["email"]:.1f} M MXN'])
-    + tr('Push', [M(s.pn_send), ND, M(s.pn_open), NA, f'{cv["push notification"]:.2f} M', '0 MXN'])
-    + tr('WhatsApp', [M(s.whatsapp_send), M(s.whatsapp_delivery), M(s.whatsapp_read), NA, f'{cv["whatsapp"]:.2f} M',
-                      f'<span style="color:{BLUE};font-weight:700">{cs["whatsapp"]:.1f} M MXN</span>'])
-    + tr('In-app', [M(s.in_app_impression), NA, M(s.in_app_impression), M(s.in_app_click), f'{cv["in-app"]:.2f} M', '0 MXN'])
-    + tr('Total', [M(s.envios), '', '', '', f'{s.conversiones_fraccional:.2f} M', f'{s.costo:.1f} M MXN'], bold=True)
-    + '</table>'
-    + barras())
-
-write(5, dict(kind='html',
-    titulo=f'Braze nos cuesta {mes:.1f} M MXN al mes solo en mensajes, sin contar la licencia, y la mayor parte se va en WhatsApp',
-    que=f'{s.envios:.0f} M mensajes en nueve meses: {ce["email"] * 100:.0f} % correo, {ce["push notification"] * 100:.0f} % push, {ce["whatsapp"] * 100:.0f} % WhatsApp y {ce["in-app"] * 100:.0f} % in-app.',
-    quien=(f'Cinco equipos desde unas {round(fams, -2):,.0f} campañas con todas sus versiones ({comms:,} si cada versión mensual cuenta aparte). '
-           f'Marketing manda {eq["Marketing"] * 100:.0f} %, Product Growth {eq["Product Growth"] * 100:.0f} %, Others {eq["Others"] * 100:.0f} %, Sales {eq["Sales"] * 100:.0f} % y Collections {eq["Collections"] * 100:.0f} %.'),
-    a_quien=f'{pers / 1e6:.1f} M personas recibieron al menos un mensaje; {p15 * 100:.0f} % de ellas recibió de 1 a 5 en nueve meses.',
-    html=html,
+write(5, dict(kind='grafica',
+    titulo=f'Braze nos cuesta {mes / 1e6:.1f} M MXN al mes solo en mensajes, y la mitad se va en unas pocas campañas de WhatsApp',
+    que='Rescates de Tasa 0, descuentos a inactivos y referidos, casi todo por WhatsApp.',
+    quien='Marketing y Product Growth: son dueños de las campañas que más gastan.',
+    a_quien='Leads rezagados, ex clientes inactivos y registrados sin crédito.',
     lecturas=[
-        f'WhatsApp es {ce["whatsapp"] * 100:.0f} % de los mensajes y {cs["whatsapp"] / s.costo * 100:.0f} % del gasto: {cs["whatsapp"]:.1f} M MXN por {s.whatsapp_delivery:.0f} M mensajes entregados. El correo pone el resto, {cs["email"]:.1f} M MXN.',
-        f'De cada mil correos entregados, {1000 * s.email_open / s.email_delivery:.0f} se abren y {1000 * s.email_click / s.email_delivery:.0f} tienen clic. De cada mil push se abren {1000 * s.pn_open / s.pn_send:.0f}. In-app no cuesta y {100 * s.in_app_click / s.in_app_impression:.0f} de cada 100 vistas tienen clic.',
-        f'{s.conversiones_fraccional:.1f} M conversiones atribuidas: solicitud o préstamo en los 7 días siguientes, repartida entre los mensajes de ese día. Sirve de referencia, no prueba que el mensaje vendió.'],
-    causa=f'El gasto se reparte entre cinco equipos y unas {round(fams, -2):,.0f} campañas, y no hay presupuesto de mensajes por equipo: cada quien ve su campaña y nadie ve el total.',
-    sowhat='Es un gasto del tamaño de una línea de negocio y nadie lo ve completo: necesita un dueño y un presupuesto por equipo.',
-    fuente=f'{FUENTE_E1} (E1); personas de E3. {COSTO}. Conversión atribuida = conversiones fraccionales de E1. El costo fijo de Braze (licencia) no está incluido. Campañas = nombre sin la fecha. Tabla en millones de mensajes salvo el gasto; push no reporta entregados; el total incluye 0.2 M de banners.'))
+        f'{n50} de {N:,} campañas se llevan {r50.cc * 100:.0f} % del gasto y traen {r50.cv * 100:.0f} % de las conversiones atribuidas.',
+        f'Las dos de Tasa 0 a leads rezagados de Marketing suman {(f.cost.iloc[0] + f.cost.iloc[1]) / 1e6:.1f} M MXN en nueve meses.',
+        f'WhatsApp es {wa * 100:.0f} % del gasto. Desde la campaña {npay} todo es push e in-app, sin costo.'],
+    causa='No hay presupuesto de mensajes por equipo ni por campaña: cada equipo ve sus clics, nadie ve el gasto total.',
+    sowhat='Revisar unas 20 campañas mueve la mitad del gasto: ahí empieza el plan.',
+    fuente=f'{FUENTE_E1}. Campaña = nombre sin fecha, todos sus canales. Conversión atribuida = fraccional. WhatsApp 1.00 MXN por entregado, email 0.05 MXN.',
+    svg=S.done()))

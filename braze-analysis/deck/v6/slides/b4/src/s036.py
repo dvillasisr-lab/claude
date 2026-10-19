@@ -1,72 +1,52 @@
-"""Lámina 36: choques promocionales por pareja de equipos y nombre de audiencia (E6b, 1,000 pares más frecuentes)."""
-import pandas as pd
+"""Lámina 36 (ronda 2): franja de puntos por pareja de equipos distintos. Cada punto es una pareja de campañas promocionales
+de dos equipos el mismo día a la misma persona (E6b); azul si las dos usan el mismo nombre de audiencia."""
+import math, pandas as pd, numpy as np
 from kit import *
 from e6b import load
 p = load(); pp = p[p.promo2].copy(); P = pp.usuario_dias_juntas.sum()
-pp['same_aud'] = pp.ag_a == pp.ag_b
-g = pp.groupby('pair').apply(lambda d: pd.Series({'M': d.usuario_dias_juntas.sum() / 1e6,
-        'same': 100 * d[d.same_aud].usuario_dias_juntas.sum() / d.usuario_dias_juntas.sum()}))
-cross = pp[pp.ta != pp.tb].usuario_dias_juntas.sum()
-print(g.round(1), cross / 1e6, 100 * cross / P)
-TEAMS = ['Marketing', 'Sales', 'Product Growth', 'Others']
-TEMA = {  # tema principal de cada pareja, leído de los pares de E6b
- 'Marketing + Marketing': ['Comercio', 'del día y', 'registro'], 'Sales + Sales': ['Comercio', 'del día y', 'Hot Sale'],
- 'Product Growth + Product Growth': ['Tasa 0,', 'inactivos y', 'temporada'], 'Others + Others': ['Comercios', 'con pruebas', 'de QA'],
- 'Marketing + Sales': ['Hot Sale con', 'Hot Sale'], 'Marketing + Product Growth': ['Inactivos con', 'referidos;', 'Tasa 0'],
- 'Marketing + Others': ['BillPay con', 'prueba de QA'], 'Product Growth + Sales': ['Comercios con', 'temporada'],
- 'Others + Product Growth': ['Anota y Gana', 'con BillPay'], 'Others + Sales': ['Hot Sale con', 'BillPay']}
-S = Svg('Matriz de equipos con millones de personas-día de choque promocional y tema principal; y parte de los choques entre equipos con el mismo nombre de audiencia')
-S.t(0, 16, 'Millones de personas-día con dos promociones a la vez, por pareja de equipos', 11.5, INK, w=600)
-S.t(0, 32, 'Tema principal escrito en cada celda. Color más intenso, más choques.', 10.5, SEC)
-LX, CW, RH, Y0 = 100, 92, 74, 66
-SHORT = {'Marketing': 'Marketing', 'Sales': 'Sales', 'Product Growth': 'Product Growth', 'Others': 'Others'}
-for j, t in enumerate(TEAMS):
-    S.t(LX + CW * (j + 0.5), Y0 - 8, SHORT[t], 11, TXT, 'middle', 600)
-for i, ti in enumerate(TEAMS):
-    S.t(LX - 8, Y0 + RH * (i + 0.5) + 4, SHORT[ti], 11, TXT, 'end', 600)
-    for j, tj in enumerate(TEAMS):
-        x, y = LX + CW * j, Y0 + RH * i
-        if j < i:
-            S.rect(x + 1, y + 1, CW - 2, RH - 2, '#F4F6F9'); continue
-        k = ' + '.join(sorted([ti, tj])); v = g.loc[k, 'M']
-        op = 0.10 + 0.85 * v / g.M.max()
-        S.raw(f'<rect x="{x+1:.1f}" y="{y+1:.1f}" width="{CW-2:.1f}" height="{RH-2:.1f}" fill="{BLUE}" fill-opacity="{op:.2f}"/>')
-        col = '#FFFFFF' if op > 0.5 else INK
-        S.t(x + 8, y + 20, f'{v:.1f} M', 13, col, 'start', 700)
-        for n, l in enumerate(TEMA[k]):
-            S.t(x + 8, y + 36 + 13.5 * n, l, 10.5, col if op > 0.5 else TXT)
-S.t(LX, Y0 + RH * 4 + 18, 'Debajo de la diagonal, la misma pareja.', 10.5, SEC)
-# panel derecho: mismo nombre de audiencia
-PX = 500
-S.t(PX, 16, 'Choques entre equipos distintos:', 11.5, INK, w=600)
-S.t(PX, 32, '¿le dan el mismo nombre a la audiencia?', 11.5, INK, w=600)
-S.rect(PX, 46, 10, 10, BLUE); S.t(PX + 14, 55, 'Mismo nombre', 10.5, TXT); S.rect(PX + 104, 46, 10, 10, G2); S.t(PX + 118, 55, 'Nombre distinto', 10.5, TXT)
-BX0, BX1 = PX, 770; y = 78
-for k, lab in [('Marketing + Sales', 'Marketing con Sales'), ('Marketing + Product Growth', 'Marketing con Product Growth'),
-               ('Marketing + Others', 'Marketing con Others'), ('Product Growth + Sales', 'Product Growth con Sales'),
-               ('Others + Product Growth', 'Product Growth con Others')]:
-    v, M = g.loc[k, 'same'], g.loc[k, 'M']
-    S.t(BX0, y + 10, lab, 11, INK, 'start', 600); S.t(BX1, y + 10, f'{M:.1f} M personas-día', 10.5, SEC, 'end')
-    w = (BX1 - BX0) * v / 100
-    S.rect(BX0, y + 16, max(w - 1, 0), 18, BLUE); S.rect(BX0 + w + 1, y + 16, BX1 - BX0 - w - 1, 18, G2)
-    if w > 40: S.t(BX0 + w - 5, y + 29.5, f'{v:.0f} %', 11, '#FFFFFF', 'end', 700)
-    else: S.t(BX0 + w + 5, y + 29.5, f'{v:.0f} %', 11, INK, 'start', 700)
-    y += 52
-S.t(PX, y + 8, 'Nombre distinto, misma gente: los "anónimos" de', 10.5, SEC)
-S.t(PX, y + 22, 'Marketing son los "registrados" de Product Growth;', 10.5, SEC)
-S.t(PX, y + 36, 'los "dormants" de uno son los "inactivos" del otro.', 10.5, SEC)
-
+x = pp[pp.ta != pp.tb].copy(); x['same'] = x.ag_a == x.ag_b; C = x.usuario_dias_juntas.sum()
+ROWS = [('Marketing + Sales', 'Marketing con Sales'), ('Marketing + Product Growth', 'Marketing con Product Growth'),
+        ('Marketing + Others', 'Marketing con Others'), ('Product Growth + Sales', 'Product Growth con Sales'),
+        ('Others + Sales', 'Sales con Others'), ('Others + Product Growth', 'Product Growth con Others')]
+st = {k: (100 * x[(x.pair == k) & x.same].usuario_dias_juntas.sum() / x[x.pair == k].usuario_dias_juntas.sum(), x[x.pair == k].usuario_dias_juntas.sum() / 1e6, int((x.pair == k).sum())) for k, _ in ROWS}
+print(st, C / 1e6, P / 1e6, 100 * C / P)
+S = Svg('Franja de puntos por pareja de equipos: cada punto es una pareja de campañas promocionales de dos equipos el mismo día a la misma persona; azul si usan el mismo nombre de audiencia')
+S.circle(6, 15, 4.5, BLUE); S.t(15, 19, 'Las dos campañas usan el mismo nombre de audiencia', 11, TXT)
+S.circle(326, 15, 4.5, G1); S.t(335, 19, 'Nombre distinto, misma persona', 11, TXT)
+S.t(0, 38, 'Cada punto: dos campañas de equipos distintos el mismo día a la misma persona.', 10.5, SEC)
+X0, X1 = 190, 640
+lo, hi_ = math.log10(15000), math.log10(2e6)
+sx = lambda v: X0 + (X1 - X0) * (math.log10(v) - lo) / (hi_ - lo)
+RY, RH = 64, 50
+for v, l in ((20000, '20 mil'), (50000, '50 mil'), (100000, '100 mil'), (250000, '250 mil'), (500000, '500 mil'), (1000000, '1 M')):
+    S.line(sx(v), RY - 6, sx(v), RY + RH * 6, GRID); S.t(sx(v), RY + RH * 6 + 16, l, 10.5, SEC, 'middle')
+S.t((X0 + X1) / 2, RY + RH * 6 + 32, 'Personas que recibieron las dos campañas el mismo día (escala logarítmica)', 10.5, SEC, 'middle')
+S.t(X1 + 14, RY - 10, 'Mismo nombre', 10.5, SEC)
+rng = np.random.default_rng(3)
+for i, (k, l) in enumerate(ROWS):
+    yc = RY + RH * i + RH / 2; d = x[x.pair == k]
+    S.t(X0 - 12, yc + 4, l, 11, INK, 'end', 600 if i < 2 else 400)
+    S.line(X0, yc + RH / 2, X1, yc + RH / 2, GRID)
+    for _, q in d.sort_values('same').iterrows():
+        S.circle(sx(q.usuarios_aprox), yc + rng.uniform(-14, 14), 2.8, BLUE if q.same else G1, '#FFFFFF', 0.6)
+    v, M, n = st[k]
+    S.t(X1 + 14, yc + 2, f'{v:.0f} %', 15, BLUE if v >= 50 else INK, 'start', 700)
+    S.t(X1 + 14, yc + 16, f'{M:.1f} M personas-día', 10.5, SEC)
+q = x[x.familia_a.str.contains('B0211') & x.familia_b.str.contains('B0171-CANVAS-Anonimos')].sort_values('usuarios_aprox').iloc[-1]
+yc = RY + RH * 1.5
+S.circle(sx(q.usuarios_aprox), yc, 4.5, INK, '#FFFFFF', 1.5)
+lab(S, sx(q.usuarios_aprox), yc, sx(1.7e6), yc - 18, 'Tasa 0 a registrados y Rescate Tasa 0', f'a anónimos: {q.usuarios_aprox/1e3:.0f} mil personas, misma oferta', 'end')
 write(36, dict(kind='grafica', seccion='IV. La misma persona, demasiadas veces',
- titulo='Marketing, Sales y Product Growth le escriben a la misma gente, pero cada equipo le pone otro nombre a la audiencia',
- que='Marketing con Sales: Hot Sale, Comercio del día y cashback para KPay. Marketing con Product Growth: Tasa 0, descuentos y referidos para KCash. Product Growth con Sales: Anota y Gana contra Hot Sale. Todo promocional.',
- quien='Marketing, Sales, Product Growth y NewProducts (en Others), con el lanzamiento de BillPay.',
- a_quien='Recurrentes y activos de KPay (Marketing y Sales). Registrados, anónimos, inactivos y dormants de KCash (Product Growth y Marketing).',
+ titulo='Marketing, Sales y Product Growth le escriben a la misma gente, pero cada equipo nombra distinto la audiencia',
+ que='Hot Sale, Comercio del día, Tasa 0, descuentos, referidos, Anota y Gana y BillPay',
+ quien='Marketing, Sales, Product Growth y NewProducts (en Others)',
+ a_quien='Recurrentes de KPay; registrados, anónimos, inactivos y dormants de KCash',
  lecturas=[
-  f'{100*cross/P:.0f} % del choque promocional es entre equipos distintos: {cross/1e6:.0f} M de {P/1e6:.0f} M personas-día. El más grande es Marketing con Sales ({g.loc["Marketing + Sales","M"]:.1f} M).',
-  f'Marketing y Sales usan el mismo nombre de audiencia en {g.loc["Marketing + Sales","same"]:.0f} % de sus choques: los recurrentes de KPay. Marketing y Product Growth, solo en {g.loc["Marketing + Product Growth","same"]:.0f} %, aunque es la misma gente.',
-  'En agosto, Tasa 0 a registrados (Product Growth) y Rescate Tasa 0 a anónimos (Marketing) le llegaron por push a las mismas 124 mil personas el mismo día, unos cuatro días cada una.',
+  f'{100*C/P:.0f} % del choque promocional es entre equipos distintos: {C/1e6:.0f} M de {P/1e6:.0f} M personas-día.',
+  f'Marketing y Sales usan el mismo nombre en {st["Marketing + Sales"][0]:.0f} % de sus choques: recurrentes de KPay.',
+  f'Marketing y Product Growth, solo {st["Marketing + Product Growth"][0]:.0f} %: "anónimos" de uno son "registrados" del otro.',
  ],
- causa='Cada equipo arma y nombra su audiencia por su cuenta y nadie excluye a quien ya recibió la campaña de otro equipo; el nombre esconde que es la misma persona.',
- sowhat='Hace falta un dueño por audiencia y exclusiones entre equipos para que una persona no reciba la misma oferta de dos equipos.',
- fuente='Fuente: Braze, E6b (1,000 pares de campañas más frecuentes el mismo día, enero a septiembre 2026; muestra, no universo). Audiencia tomada del nombre de la campaña y agrupada; la columna misma_audiencia de E6b no se usa porque compara el tipo de campaña, no la audiencia.',
+ causa='Cada equipo arma y nombra su audiencia por su cuenta y nadie excluye a quien ya recibió la campaña de otro equipo.',
+ sowhat='Un dueño por audiencia y exclusiones entre equipos para no mandar la misma oferta dos veces.',
+ fuente='Fuente: Braze, E6b (1,000 pares más frecuentes el mismo día, enero a septiembre 2026; muestra). Audiencia tomada del nombre de la campaña y agrupada.',
  svg=S.svg()))

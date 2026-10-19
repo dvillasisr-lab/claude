@@ -1,77 +1,73 @@
-"""Lámina 49: escalera de recuperación por tiempo sin usar el producto. Izquierda: MXN por conversión del mismo día (E1).
-Derecha: % que convirtió en los 90 días siguientes, quien abrió contra quien no (E9a, muestra_m; correo, push y WhatsApp).
-Grupo sin mensajes: E13."""
-from b5_svg import *
+"""Lámina 49 (ronda 2). Dos paneles iguales (correo | WhatsApp). Cada punto es una campaña de recuperación (ex clientes o leads que nunca
+activaron; 100 mil o más mensajes en el canal; con muestra de E9a). x = % de quienes NO abrieron que convirtió en los 90 días siguientes
+(qué tan cerca está la base de volver sola); y = MXN por conversión del mismo día (E1). Escalas log; recta por mínimos cuadrados sobre log10."""
+import math, re
 import pandas as pd
+from b5_svg import *
 
-P = D['prog']; C = D['control']; A = D['abre']; X = D['ex_email_noabre']
-# parte del gasto de 12 meses que es WhatsApp
-e1 = pd.read_csv('/home/user/claude/braze-analysis/data/e1_comunicacion_mes_canal.csv')
-q = e1[e1.communication_name.fillna('').str.contains('-B0333-|-B0207-')]
-wa12 = 100 * q.whatsapp_delivery.sum() / (q.whatsapp_delivery.sum() + 0.05 * q.email_sent.sum())
-
-SECS = [('Ex clientes, por tiempo sin usar KCash o KPay', ['30a90', '3m', '6m', '12m'], BLUE),
-        ('Ex clientes sin plazo definido', ['inact', 'dorm'], BLUEL),
-        ('Leads que nunca activaron', ['b0171', 'b0223'], MARK2)]
-LAB = {'30a90': '30 a 90 días', '3m': '3 meses', '6m': '6 meses', '12m': '12 meses o más', 'inact': 'Inactivos (descuento directo)',
-       'dorm': 'Dormants (referidos)', 'b0171': 'Rescate con Tasa 0', 'b0223': 'Installments a never active'}
-S = Svg('Por programa de recuperación: pesos por conversión del mismo día y porcentaje que convirtió en los 90 días siguientes entre quien abrió y quien no abrió el mensaje.')
-BX0, BX1, BMAX = 196, 400, 700
-bx = lambda v: BX0 + (BX1 - BX0) * min(v, BMAX) / BMAX
-DX0, DX1, DMAX = 470, 752, 50
-dx = lambda v: DX0 + (DX1 - DX0) * v / DMAX
-S.t(BX0, 14, 'MXN por conversión del mismo día', 12, INK, w=600)
-S.t(DX0, 14, '% que convirtió en los 90 días siguientes', 12, INK, w=600)
-S.circle(DX0 + 5, 30, 5, INK); S.t(DX0 + 15, 34, 'Abrió el mensaje', 11, TXT)
-S.circle(DX0 + 135, 30, 5, MARK); S.t(DX0 + 145, 34, 'No lo abrió', 11, TXT)
-y = 52; RH = 35
-rows_y = []
-for head, ks, col in SECS:
-    S.t(0, y + 10, head, 11, SEC, w=600)
-    y += 17
-    for k in ks:
-        p = P[k]; yc = y + RH / 2 - 3
-        S.t(0, yc - 1, LAB[k], 12, INK, w=600)
-        S.t(0, yc + 13, f'{p["equipo"]} · {M(p["env"])} M mensajes', 10.5, SEC)
-        bw = bx(p['mxn_conv']) - BX0
-        S.rect(BX0, yc - 7, bw, 14, col)
-        if p['mxn_conv'] > BMAX:  # barra cortada
-            S.raw(f'<path d="M{BX1 - 22:.1f} {yc + 9:.1f} l6 -18 M{BX1 - 15:.1f} {yc + 9:.1f} l6 -18" stroke="#FFFFFF" stroke-width="3"/>')
-        if p['mxn_conv'] > BMAX: S.t(BX1 - 28, yc + 4, fmt(p['mxn_conv']), 12, INK, 'end', 600, halo=True)
-        else: S.t(BX0 + bw + 6, yc + 4, fmt(p['mxn_conv']), 12, INK, w=600)
-        a, b = p['ca90'], p['cn90']
-        S.line(dx(b), yc, dx(a), yc, GRID, 3)
-        S.circle(dx(b), yc, 5, MARK); S.circle(dx(a), yc, 5, INK)
-        S.t(dx(a) + 9, yc + 4, f'{a:.0f} %' if a >= 1 else f'{a:.1f} %', 11, INK, w=600)
-        S.t(dx(b) - 9, yc + 4, f'{b:.0f} %' if b >= 1 else f'{b:.1f} %', 11, SEC, 'end')
-        rows_y.append(yc)
-        y += RH
-    y += 2
-AX = y + 2
-for v in (0, 25, 50):
-    S.line(dx(v), 46, dx(v), AX - 8)
-    S.t(dx(v), AX + 6, f'{v} %', 10.5, SEC, 'middle')
-S.line(BX0, 46, BX0, AX - 8, MARK)
-for v in (0, 350, 700):
-    S.t(bx(v), AX + 6, f'{v}', 10.5, SEC, 'middle')
+t = pd.read_csv(H / 'b5_camp.csv')
+r = t[t.g.isin(['ex', 'nunca']) & t.canal.isin(['email', 'whatsapp']) & (t.muestra == True) & (t.env >= 100000) & (t.conv > 20)].copy()
+REC = r'B0208|B0331|B0332|B0206|202600903'
+r['cl'] = [('rec' if re.search(REC, f) else 'ex') if g == 'ex' else 'nunca' for f, g in zip(r.familia, r.g)]
+COL = {'rec': BLUE, 'ex': BLUEL, 'nunca': MARK}
+C = D['control']; P = D['prog']
+S = Svg('Dos paneles, correo y WhatsApp. Cada punto es una campaña de recuperación: porcentaje de quienes no abrieron que convirtió en 90 días contra pesos por conversión, con recta y R cuadrada.')
+lx = 0
+for k, lab in [('rec', 'Ex clientes de hasta 6 meses'), ('ex', 'Ex clientes de 12 meses o sin plazo'), ('nunca', 'Leads que nunca activaron')]:
+    S.circle(lx + 5, 12, 5, COL[k], '#FFFFFF', 1); S.t(lx + 15, 16, lab, 11, TXT); lx += 15 + len(lab) * 6.1 + 18
+S.t(W, 16, 'Tamaño: mensajes', 10.5, SEC, 'end')
+PAN = [('email', 'Correo', 40, 370), ('whatsapp', 'WhatsApp', 420, 750)]
+Y0, Y1 = 58, 362
+sy = logx(5, 10000, Y1, Y0)
+LAB = {'Lending-KCash-B0208-CANVAS-Recurrentes_Inactivos30a90dias-SinYConDescuentoEscalonado-N/A|email': (8, -8, 'start'),
+       'Lending-KCash-B0223-CANVAS-Nuevos_NeverActive-InstallmentsNoCash-N/A|email': (10, 4, 'start'),
+       'Lending-KCash-B0209-CANVAS-Recurrentes_Inactivos-DescuentoDirecto-N/A|email': (10, 12, 'start'),
+       'Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta-N/A|whatsapp': (10, 4, 'start'),
+       'Lending-KCash-B0223-CANVAS-Nuevos_NeverActive-InstallmentsNoCash-N/A|whatsapp': (10, 4, 'start'),
+       'Lending-KPay-B0332-CANVAS-HardInactive_6MesesInactividad-ConSinOferta-N/A|whatsapp': (-10, -8, 'end'),
+       'Lending-KCash-B0209-CANVAS-Recurrentes_Inactivos-DescuentoDirecto-N/A|whatsapp': (-10, 14, 'end')}
+STATS = {}
+for c, tit, X0, X1 in PAN:
+    sx = logx(0.1, 50, X0, X1)
+    d = r[r.canal == c]
+    S.t(X0, 44, f'{tit}: {len(d)} campañas', 12, INK, w=600)
+    for v in (10, 100, 1000, 10000):
+        S.line(X0, sy(v), X1, sy(v)); S.t(X0 - 4, sy(v) + 4, fmt(v), 10.5, SEC, 'end')
+    for v, lab in [(0.1, '0.1 %'), (1, '1 %'), (10, '10 %'), (50, '50 %')]:
+        S.line(sx(v), Y0, sx(v), Y1); S.t(sx(v), Y1 + 15, lab, 10.5, SEC, 'middle')
+    a0, b0, r2 = fit([math.log10(v) for v in d.cn_90], [math.log10(v) for v in d.mxn_conv])
+    STATS[c] = (r2, len(d), b0)
+    xa, xb = d.cn_90.min(), d.cn_90.max()
+    S.line(sx(xa), sy(10 ** (a0 + b0 * math.log10(xa))), sx(xb), sy(10 ** (a0 + b0 * math.log10(xb))), INK, 1.5)
+    S.t(X1, Y0 + 12, f'R² = {r2:.2f}', 11.5, INK, 'end', 600, halo=True)
+    for q in d.sort_values('env', ascending=False).itertuples():
+        S.circle(sx(q.cn_90), sy(q.mxn_conv), 2.5 + 6 * (q.env / 13.5e6) ** 0.5, COL[q.cl], '#FFFFFF', 1)
+    for q in d.itertuples():
+        k = f'{q.familia}|{c}'
+        if k in LAB:
+            dx, dy, an = LAB[k]
+            S.t(sx(q.cn_90) + dx, sy(q.mxn_conv) + dy, f'{nombre(q.familia)}: {fmt(q.mxn_conv)}', 10.5, INK, an, 600, halo=True)
+S.t(40, Y1 + 32, '% de quienes no abrieron el mensaje que convirtió en los 90 días siguientes (escala log)', 10.5, SEC)
+S.t(W, Y1 + 32, 'Vertical: MXN por conversión (log)', 10.5, SEC, 'end')
 SVG = S.done()
 
-ex, nu = D['grupos']['ex'], D['grupos']['nunca']
-fe = D['frio_equipo']
+re_, rw = STATS['email'], STATS['whatsapp']
 guarda(49, dict(
     kind='grafica',
-    titulo='Recuperar al cliente que se fue funciona si llegamos pronto; cada mes de espera encarece la conversión',
-    que='Mensajes para recuperar: descuento directo, descuento escalonado, cupón, "con o sin oferta", referidos y Tasa 0, por correo, push, WhatsApp e in-app.',
-    quien=f'Product Growth manda casi toda la recuperación de ex clientes ({M(fe["ex|Product Growth"]["env"])} M de {M(ex["env"])} M mensajes). Marketing manda referidos a dormants y el rescate con Tasa 0 a leads ({M(fe["nunca|Marketing"]["env"])} M de {M(nu["env"])} M).',
-    a_quien='Ex clientes con 30 a 90 días, 3, 6 o 12 meses sin usar KCash o KPay; dormants; y leads que se registraron y nunca tomaron crédito.',
+    titulo='Recuperar sale barato si llegamos pronto: mientras más fría la base, más cara cada conversión',
+    que='Descuento directo, descuento escalonado, "con o sin oferta", referidos y Tasa 0',
+    quien='Product Growth (ex clientes) y Marketing (referidos a dormants, rescate Tasa 0 a leads)',
+    a_quien='Ex clientes con 1 a 12 meses sin usar KCash o KPay, dormants y leads que nunca activaron',
     lecturas=[
-        f'Mientras más reciente la inactividad, más barata la conversión: {P["30a90"]["mxn_conv"]:.0f} MXN a los 30 a 90 días, {P["3m"]["mxn_conv"]:.0f} a los 3 meses, {P["6m"]["mxn_conv"]:.0f} a los 6 y {P["12m"]["mxn_conv"]:.0f} a los 12, donde {wa12:.0f} % del gasto es WhatsApp.',
-        f'Quien se fue hace poco vuelve aunque no abra: {P["30a90"]["cn90"]:.0f} % de quienes no abrieron el mensaje convirtió en 90 días; a los 12 meses, {P["12m"]["cn90"]:.1f} %. Quien abre convierte más (correo de inactivos: {A["b0209_email"]["ca90"]:.1f} % contra {A["b0209_email"]["cn90"]:.1f} %).',
-        f'Sin un grupo sin mensajes no sabemos cuántos habrían vuelto solos. De {C["canvas"]} Canvas de recuperación, {C["con_control"]} lo tienen, todos del rescate Tasa 0 y con {C["min"]} a {C["max"]} personas. Los de ex clientes, ninguno.',
+        f'Inactivos 30 a 90 días: 26 % vuelve aunque no abra y la conversión cuesta 11 MXN por correo.',
+        f'Churn 12 meses: 2 % vuelve sin abrir y su WhatsApp cuesta 2,255 MXN por conversión; R² {re_[0]:.2f} en correo.',
+        f'Sin grupo sin mensajes no sabemos cuánto es efecto del mensaje: de {C["canvas"]} Canvas, {C["con_control"]} lo tienen.',
     ],
-    causa=f'La recuperación se arma por oferta y no por el tiempo que la persona lleva sin usar el producto, y ningún programa deja a un grupo sin mensajes. Por eso el programa de 12 meses gasta {M(P["12m"]["costo"])} M MXN, casi todo en WhatsApp, en la conversión más cara.',
-    sowhat='No se trata de dejar de buscar a los ex clientes sino de ordenarlo: primero a quien se fue hace poco, con límite de gasto por programa y un grupo sin mensajes que diga cuánto recupera.',
-    fuente=f'Fuente: Braze E1 (campaña, canal y mes) y E9a (conversión a 90 días de quien abre contra quien no, correo, push y WhatsApp), enero a septiembre 2026; E13 (grupos de control). Conversión del mismo día: se reparte entre los mensajes del día; es referencia. 6 meses = B0332, B0206 y su variante; 12 meses = B0333 y B0207. El guion decía 673 Canvas de recuperación; con la misma regla de nombres salen {C["canvas"]}.',
+    causa='La recuperación se arma por oferta, no por meses sin uso, y ningún programa de ex clientes deja un grupo sin mensajes.',
+    sowhat='Ordenar, no dejar de buscar: primero quien se fue hace poco, con límite de gasto y un grupo sin mensajes.',
+    fuente=f'Fuente: Braze E1 y E9a (conversión a 90 días de quien abre y quien no), E13 (control), enero a septiembre 2026. Recta sobre log10; n = {re_[1]} y {rw[1]}. El guion decía 673 Canvas; salen {C["canvas"]}.',
     svg=SVG,
 ))
-print({k: (round(p['mxn_conv']), round(p['ca90'], 1), round(p['cn90'], 1)) for k, p in P.items()}, round(wa12))
+print(STATS)
+q = r[r.familia.str.contains('B0208') & (r.canal == 'email')].iloc[0]; print('b0208', q.cn_90, q.mxn_conv)
+q = r[r.familia.str.contains('B0333') & (r.canal == 'whatsapp')].iloc[0]; print('b0333', q.cn_90, q.mxn_conv)

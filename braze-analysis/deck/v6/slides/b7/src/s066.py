@@ -1,91 +1,63 @@
-"""Lámina 66: campañas que no responden lo mínimo, por tema y equipo (burbujas), con lo que sigue enviando en septiembre y el gasto.
-Fuente: hallazgos/muestra_c_familias.csv (señal por campaña y canal) con WhatsApp por entregado; E1 para septiembre."""
+"""Lámina 66: dispersión de campañas por canal con 100 mil mensajes o más: mensajes en el año (x, log) contra respuesta en veces
+lo mínimo de su canal (y, log). Azul: no responde lo mínimo y manda mucho (señal de muestra_c), oscuro si sigue enviando en septiembre.
+Fuente: hallazgos/muestra_c_familias.csv con WhatsApp por entregado; E1 para septiembre."""
+import math
 from b7 import *
 
 c = load_c(); e = load_e1()
-TOT, TOTC = c.envios.sum(), c.costo_ent.sum()
-seg = c.groupby(c.senal.fillna("normal")).agg(env=("envios", "sum"), costo=("costo_ent", "sum"), n=("familia", "size"))
-a = c[c.senal == "apagar o rehacer"]
-p = a[a.tipo == "promocional o lifecycle"].copy()
-# septiembre (E1) de las promocionales activas
+TOT = c.envios.sum()
+no = c[c.senal == "apagar o rehacer"]
+p = no[no.tipo == "promocional o lifecycle"]
 s9 = e[e.m == 9].groupby(["fam", "canal"]).agg(env9=("envios", "sum"), c9=("costo", "sum")).reset_index()
 pa = p[p.activo_sep == 1].merge(s9, left_on=["familia", "canal"], right_on=["fam", "canal"], how="left")
-print("no responde", seg.loc["apagar o rehacer"].to_dict(), "promo", len(p), p.envios.sum() / 1e6, p.costo_ent.sum() / 1e6)
-print("activas sep", len(pa), pa.env9.sum() / 1e6, pa.c9.sum() / 1e6, "volumen anual activas", pa.envios.sum() / 1e6)
-eq = p.groupby("equipo").agg(env=("envios", "sum"), c=("costo_ent", "sum")); eq["pe"] = 100 * eq.env / eq.env.sum(); eq["pc"] = 100 * eq.c / eq.c.sum(); print(eq)
-et = p.groupby("etapa").agg(env=("envios", "sum"), c=("costo_ent", "sum")); et["pe"] = 100 * et.env / et.env.sum(); et["pc"] = 100 * et.c / et.c.sum(); print(et)
-
-GR = {"Tasa 0": "Tasa 0", "Promociones de comercios KPay": "Promociones de comercios KPay", "Referidos": "Referidos (invita a un amigo)",
-      "BillPay y recargas": "Lanzamiento de BillPay y recargas", "Oferta para volver": "Ofertas para que vuelva el ex cliente",
-      "Uso y recompra del crédito": "Crédito en plazos y recompra", "Fechas y temporadas": "Fechas, temporadas y sorteos",
-      "Sorteos y concursos": "Fechas, temporadas y sorteos", "Novedades y recomendaciones": "Novedades y recomendaciones"}
-p["g"] = p.tema.map(GR).fillna("Otros temas")
-ROWS = list(p.groupby("g").envios.sum().sort_values(ascending=False).index)
-ROWS = [r for r in ROWS if r != "Otros temas"] + ["Otros temas"]
-COLS = ["Marketing", "Product Growth", "Sales", "Others"]
-tot = p.groupby(["g", "equipo"]).envios.sum(); act = p[p.activo_sep == 1].groupby(["g", "equipo"]).envios.sum()
-rg = p.groupby("g").agg(env=("envios", "sum"), c=("costo_ent", "sum")); rga = p[p.activo_sep == 1].groupby("g").envios.sum()
-print(rg.assign(act=rga).div(1e6).round(2))
-
-S = SVG("Mensajes de campañas promocionales que no responden lo mínimo, por tema y equipo, con la parte que sigue enviando en septiembre y el gasto en MXN por tema")
-# franja superior: los 667 M por respuesta
-S.t(0, 13, f"Los {TOT/1e6:.0f} M mensajes del año según cuánto responde la campaña que los mandó", 12, INK, w=600)
-SEGS = [("apagar o rehacer", "No responde lo mínimo y manda mucho", BLUE), ("revisar", "Responde poco o con bajas", BLUEL),
-        ("normal", "Responde normal", MARK2), ("proteger", "Responde bien", GREEN), ("escalar", "", GREENL)]
-X0, X1 = 0, 780; x = X0
-for k, lab, col in SEGS:
-    w = (X1 - X0) * seg.loc[k, "env"] / TOT
-    S.rect(x, 22, w - 1.5, 16, col)
-    if k == "apagar o rehacer":
-        S.t(x + 6, 34, f"{seg.loc[k,'env']/1e6:.0f} M mensajes ({100*seg.loc[k,'env']/TOT:.0f} %) y {seg.loc[k,'costo']/1e6:.1f} M MXN", 11.5, "#FFFFFF", w=600)
-    if lab:
-        S.t(x, 52, lab if k != "apagar o rehacer" else "", 10.5, SEC)
-        if k != "apagar o rehacer": S.t(x, 65, f"{seg.loc[k,'env']/1e6:.0f} M", 10.5, INK, w=600)
-    x += w
-S.t(0, 52, "Abajo, solo esta parte, sin cobranza ni avisos:", 10.5, BLUE, w=600)
-S.t(0, 65, f"{len(p)} campañas promocionales, {p.envios.sum()/1e6:.0f} M mensajes", 10.5, INK, w=600)
-
-# matriz
-TOP, RH = 116, 29.5; CX = {k: 272 + 84 * i for i, k in enumerate(COLS)}
-RMAX, VMAX = 14.5, 45e6
-r_of = lambda v: RMAX * (v / VMAX) ** 0.5
-S.t(0, TOP - 26, "Tema de la campaña", 11, SEC, w=600)
-for k in COLS:
-    S.t(CX[k], TOP - 26, k, 11, INK, "middle", 600)
-BX0, BX1, BV = 612, 708, 7e6
-S.t(BX0, TOP - 26, "M MXN en el año", 11, SEC, w=600)
-S.t(780, TOP - 26, "Sigue en sep.", 11, SEC, "end", 600)
-for i, g in enumerate(ROWS):
-    y = TOP + RH * i
-    hi = g in ("Tasa 0", "Promociones de comercios KPay", "Referidos (invita a un amigo)")
-    S.line(0, y + RH / 2, 780, y + RH / 2, GRID)
-    S.t(0, y + 4, g, 11.5, INK if hi else TXT, w=600 if hi else 400)
-    for k in COLS:
-        v = tot.get((g, k), 0); va = act.get((g, k), 0)
-        if v < 0.05e6: continue
-        S.circle(CX[k], y, r_of(v), BLUEL, sw=0)
-        if va > 0.05e6: S.circle(CX[k], y, r_of(va), BLUE, sw=0)
-        if v >= 4e6: S.t(CX[k] + r_of(v) + 4, y + 4, f"{v/1e6:.0f}", 11, INK, w=600 if hi else 400, halo=True)
-    cv = rg.loc[g, "c"]
-    S.rect(BX0, y - 6, (BX1 - BX0) * cv / BV, 12, BLUE if hi or g.startswith("Ofertas") else MARK)
-    S.t(BX0 + (BX1 - BX0) * cv / BV + 5, y + 4, f"{cv/1e6:.1f}", 11, INK, w=600 if hi else 400)
-    S.t(780, y + 4, f"{100*rga.get(g,0)/rg.loc[g,'env']:.0f} %", 11, INK if hi else SEC, "end", 600 if hi else 400)
-# leyenda de burbujas
-yl = TOP + RH * len(ROWS) - 2
-S.circle(6, yl, 6, BLUEL, sw=0); S.t(17, yl + 4, "Millones de mensajes en el año (número junto a la burbuja)", 10.5, TXT)
-S.circle(336, yl, 6, BLUE, sw=0); S.t(347, yl + 4, "Parte de campañas que siguen enviando en septiembre", 10.5, TXT)
+tg = p.groupby("tema").envios.sum()
+x = c[c.envios >= 100000].copy(); x["vx"] = (x.respuesta_pct / x.canal.map(MIN)).clip(lower=0.02)
+x["no"] = x.senal == "apagar o rehacer"
+print(no.envios.sum() / 1e6, no.costo_ent.sum() / 1e6, len(pa), pa.env9.sum() / 1e6, pa.c9.sum() / 1e6, tg.sort_values(ascending=False).head(4) / 1e6)
+eq = p.groupby("equipo").agg(env=("envios", "sum"), c=("costo_ent", "sum")); eq["pc"] = 100 * eq.c / eq.c.sum()
+S = SVG("Campañas por canal: mensajes en el año contra respuesta en veces lo mínimo; en azul las que no responden lo mínimo y mandan mucho")
+S.legend([("No responde lo mínimo y sigue en septiembre", BLUE, "ci"), ("No responde y ya se detuvo", BLUEL, "ci"), ("Resto de campañas", MARK2, "ci")], 0, 14, 16)
+X0, X1, Y0, Y1 = 44, 770, 40, 372
+L0, L1 = math.log10(1e5), math.log10(5e7)
+YL0, YL1 = math.log10(0.03), math.log10(30)
+xs = lambda v: X0 + (X1 - X0) * (math.log10(v) - L0) / (L1 - L0)
+ys = lambda v: Y1 - (Y1 - Y0) * (math.log10(min(max(v, 0.03), 30)) - YL0) / (YL1 - YL0)
+for v, l in ((0.03, "0.03"), (0.1, "0.1"), (0.3, "0.3"), (1, "1"), (3, "3"), (10, "10"), (30, "30")):
+    S.line(X0, ys(v), X1, ys(v), GRID); S.t(X0 - 6, ys(v) + 4, l, 10.5, SEC, "end")
+for v, l in ((1e5, "100 mil"), (1e6, "1 M"), (1e7, "10 M"), (5e7, "50 M")):
+    S.t(xs(v), Y1 + 14, l, 10.5, SEC, "middle" if v not in (1e5, 5e7) else ("start" if v == 1e5 else "end"))
+S.t(X1, Y1 + 30, "Mensajes de la campaña en el año (escala que multiplica)", 10.5, SEC, "end")
+S.t(X0 + 4, Y0 - 6, "Veces lo mínimo de su canal", 10.5, SEC)
+S.rect(X0, ys(1), X1 - X0, Y1 - ys(1), "#F3F6FD")
+S.line(X0, ys(1), X1, ys(1), INK, 1.2, ' stroke-dasharray="4 4"')
+S.t(X0 + 4, ys(1) + 14, "Lo mínimo aceptable", 10.5, INK, "start", 600, halo=True)
+for _, q in x[~x.no].iterrows(): S.circle(xs(q.envios), ys(q.vx), 2.6, MARK2, sw=0)
+for _, q in x[x.no].sort_values("activo_sep").iterrows(): S.circle(xs(q.envios), ys(q.vx), 3.4, BLUE if q.activo_sep == 1 else BLUEL, "#FFFFFF", 0.8)
+LAB = [("B0211-CANVAS-Nuevos_RegistradosPay", "email", "Tasa 0 a registrados sin crédito · Product Growth", 762, 124),
+       ("B0326-Canvas-Leads-ReferralProgram", "email", "Referidos a leads · Marketing", 520, 150),
+       ("Anonimos-RescateTasa0", "push notification", "Rescate Tasa 0 a anónimos · Marketing", 520, 176),
+       ("BillPay_Intro", "email", "Lanzamiento de BillPay · Others", 762, 300),
+       ("B0223-CANVAS-Nuevos_NeverActive", "email", "Crédito en plazos a quien nunca lo activó · Product Growth", 600, 330)]
+for k, ch, lab, lx, ly in LAB:
+    q = x[x.familia.str.contains(k, regex=False) & (x.canal == ch)].sort_values("envios").iloc[-1]
+    px, py = xs(q.envios), ys(q.vx)
+    S.line(px, py, lx + 3, ly - 4, MARK, 1)
+for k, ch, lab, lx, ly in LAB:
+    S.t(lx, ly, lab, 10.5, INK, "end", 600, halo=True)
+S.t(X1 - 4, Y0 + 14, "Arriba de la línea: responde lo mínimo o más", 10.5, SEC, "end", halo=True)
+S.t(X1 - 4, Y1 - 8, f"Azul: {no.envios.sum()/1e6:.0f} M mensajes ({100*no.envios.sum()/TOT:.0f} % del año) y {no.costo_ent.sum()/1e6:.1f} M MXN", 11, BLUE, "end", 700, halo=True)
 J = dict(
-    titulo="Casi la mitad de los mensajes del año salió de campañas que casi nadie responde: Tasa 0, promociones de comercios y referidos",
-    que=f"Promociones: Tasa 0 de KCash ({rg.loc['Tasa 0','env']/1e6:.0f} M mensajes), promociones de comercios KPay ({rg.loc['Promociones de comercios KPay','env']/1e6:.0f} M), referidos ({rg.loc['Referidos (invita a un amigo)','env']/1e6:.0f} M), lanzamiento de BillPay ({rg.loc['Lanzamiento de BillPay y recargas','env']/1e6:.0f} M) y ofertas para que vuelva el ex cliente ({rg.loc['Ofertas para que vuelva el ex cliente','env']/1e6:.0f} M).",
-    quien=f"Marketing {eq.loc['Marketing','env']/1e6:.0f} M mensajes ({eq.loc['Marketing','pe']:.0f} %) y Product Growth {eq.loc['Product Growth','env']/1e6:.0f} M ({eq.loc['Product Growth','pe']:.0f} %, pero {eq.loc['Product Growth','pc']:.0f} % del dinero). Others {eq.loc['Others','env']/1e6:.0f} M (BillPay y Shopping) y Sales {eq.loc['Sales','env']/1e6:.0f} M.",
-    a_quien=f"Leads que no terminaron su registro ({et.loc['Leads (no terminaron registro)','env']/1e6:.0f} M), registrados que nunca tomaron crédito ({et.loc['Registrados sin crédito o nuevos','env']/1e6:.0f} M), ex clientes inactivos ({et.loc['Ex clientes inactivos','env']/1e6:.0f} M, {et.loc['Ex clientes inactivos','pc']:.0f} % del dinero) y envíos a todos sin segmento ({et.loc['Todos (sin segmento)','env']/1e6:.0f} M).",
+    titulo="Casi la mitad de los mensajes salió de campañas que no responden lo mínimo: Tasa 0, comercios y referidos",
+    que="Promociones: Tasa 0, comercios KPay, referidos, BillPay y ofertas para volver.",
+    quien=f"Marketing y Product Growth ({eq.loc['Product Growth','pc']:.0f} % del gasto); Others y Sales, menos.",
+    a_quien="Leads, registrados sin crédito, ex clientes inactivos y toda la base.",
     lecturas=[
-        f"Tasa 0 es el tema más grande: {rg.loc['Tasa 0','env']/1e6:.0f} M mensajes y {rg.loc['Tasa 0','c']/1e6:.1f} M MXN, y {100*rga['Tasa 0']/rg.loc['Tasa 0','env']:.0f} % sale de campañas que siguen enviando en septiembre. Lo mandan Product Growth ({tot[('Tasa 0','Product Growth')]/1e6:.0f} M) y Marketing ({tot[('Tasa 0','Marketing')]/1e6:.0f} M).",
-        f"Promociones de comercios KPay se reparten entre Marketing ({tot[('Promociones de comercios KPay','Marketing')]/1e6:.0f} M) y Sales ({tot[('Promociones de comercios KPay','Sales')]/1e6:.0f} M); referidos es todo de Marketing. BillPay (Others) ya casi se detuvo.",
-        f"Las ofertas para que vuelva el ex cliente son pocos mensajes ({rg.loc['Ofertas para que vuelva el ex cliente','env']/1e6:.0f} M) pero {rg.loc['Ofertas para que vuelva el ex cliente','c']/1e6:.1f} M MXN, porque van por WhatsApp. A ellos se les sigue escribiendo para recuperarlos, por un canal más barato.",
+        f"Tasa 0 suma {tg['Tasa 0']/1e6:.0f} M mensajes debajo de lo mínimo; comercios KPay {tg['Promociones de comercios KPay']/1e6:.0f} M y referidos {tg['Referidos']/1e6:.0f} M.",
+        f"{len(pa)} de estas campañas seguían en septiembre: {pa.env9.sum()/1e6:.0f} M mensajes y {pa.c9.sum()/1e6:.1f} M MXN ese mes.",
+        f"Product Growth pone {eq.loc['Product Growth','pc']:.0f} % del gasto, por el WhatsApp a ex clientes y registrados.",
     ],
-    causa=f"Las promociones se lanzan a listas grandes (leads, registrados sin crédito, toda la base) y nadie revisa si responden: {len(pa)} de estas campañas por canal seguían enviando en septiembre, {pa.env9.sum()/1e6:.0f} M mensajes y {pa.c9.sum()/1e6:.1f} M MXN ese mes.",
-    sowhat="El desperdicio no está repartido: está en cinco temas, sobre todo de Marketing y Product Growth, dirigidos a gente que todavía no es cliente o que ya se fue.",
-    fuente=f"Fuente: Braze, envíos por campaña y canal, enero a septiembre 2026 (1,918 campañas por canal). No responde lo mínimo y manda mucho: menos de 3 clics por mil correos, 7.5 aperturas por mil push, 6 de cada 10 WhatsApp leídos o 1 de cada 10 in-app, con envíos iguales o mayores a la mediana de su canal. Responde bien: 1.5 veces la campaña típica de su canal o más. Tema por el nombre de la campaña. WhatsApp a 1.00 MXN por entregado, email a 0.05 por enviado.",
+    causa="Las promociones salen a listas grandes y nadie revisa si responden; se detienen cuando acaba la promoción.",
+    sowhat="El desperdicio está en pocas campañas grandes a quien aún no es cliente o ya se fue.",
+    fuente="Fuente: Braze, envíos por campaña y canal, ene a sep 2026; campañas con 100 mil mensajes o más. Mínimo: 3 clics por mil correos, 7.5 aperturas por mil push, 60 % de WhatsApp leídos, 10 % de in-app con clic.",
     svg=S.out())
 write(66, J)

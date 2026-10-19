@@ -1,62 +1,65 @@
-"""Lámina 50: casi la mitad del gasto de WhatsApp va a recuperar ex clientes y leads que nunca activaron, donde cada conversión cuesta más.
-Izquierda: gasto de WhatsApp entregado por grupo (M MXN y % del canal). Derecha: MXN por conversión del mismo día, WhatsApp contra correo (E1)."""
+"""Lámina 50 (ronda 2). Arriba: 3 cifras del WhatsApp a bases frías. Gráfica: cada punto es una campaña de WhatsApp (50 mil o más
+entregados, más de 5 conversiones); x = WhatsApp entregados (log), y = MXN por conversión del mismo día (log); azul = ex clientes y
+leads que nunca activaron; líneas = mediana de cada lado (E1). WhatsApp a 1.00 MXN por entregado."""
+import pandas as pd
 from b5_svg import *
 
-GC = D['gc']; G = D['grupos']; T = D['tot']; WP = D['wa_prog']; FE = D['frio_equipo']
-ORD = ['nunca', 'ex', 'activos', 'leads', 'todos', 'nuevos', 'transaccional']
-LAB = {'nunca': 'Leads que nunca activaron', 'ex': 'Ex clientes inactivos', 'activos': 'Activos y recurrentes', 'leads': 'Leads y registrados',
-       'todos': 'Todos y otros', 'nuevos': 'Nuevos y onboarding', 'transaccional': 'Avisos transaccionales'}
-S = Svg('Por grupo de audiencia: gasto en WhatsApp entregado en millones de pesos, y pesos por conversión del mismo día por WhatsApp y por correo.')
-BX0, BX1, BMAX = 182, 372, 15
-bx = lambda v: BX0 + (BX1 - BX0) * v / BMAX
-DX0, DX1, DMAX = 452, 742, 600
-dx = lambda v: DX0 + (DX1 - DX0) * v / DMAX
-S.t(BX0, 14, 'Gasto en WhatsApp entregado', 12, INK, w=600)
-S.t(BX0, 30, 'M MXN, enero a septiembre', 10.5, SEC)
-S.t(DX0, 14, 'MXN por conversión del mismo día', 12, INK, w=600)
-S.circle(DX0 + 5, 26, 5, BLUE); S.t(DX0 + 15, 30, 'WhatsApp', 11, TXT)
-S.circle(DX0 + 95, 26, 5, MARK); S.t(DX0 + 105, 30, 'Correo', 11, TXT)
-TOP, RH = 56, 46
-for i, g in enumerate(ORD):
-    yc = TOP + RH * i + 14
-    w, e = GC[f'{g}|whatsapp'], GC[f'{g}|email']
-    cold = g in ('nunca', 'ex')
-    S.t(0, yc - 2, LAB[g], 12, INK, w=600 if cold else 400)
-    S.t(0, yc + 13, f'Llega {w["entrega"]:.0f} % del WhatsApp', 10.5, SEC)
-    S.rect(BX0, yc - 8, max(bx(w['costo'] / 1e6) - BX0, 1.5), 16, BLUE if cold else MARK2)
-    S.t(bx(w['costo'] / 1e6) + 6, yc + 4, f'{M(w["costo"])} M ({100 * w["costo"] / T["wa"]:.0f} %)', 11.5, INK if cold else SEC, w=600 if cold else 400)
-    a, b = w['mxn_conv'], e['mxn_conv']
-    S.line(dx(b), yc, dx(a), yc, GRID, 3)
-    S.circle(dx(b), yc, 5, MARK); S.circle(dx(a), yc, 5.5, BLUE if cold else BLUEL)
-    S.t(dx(a) + 9, yc + 4, fmt(a), 11.5, INK, w=600 if cold else 400)
-    if dx(a) - dx(b) > 34:
-        S.t(dx(b) - 9, yc + 4, fmt(b), 11, SEC, 'end') if dx(b) - DX0 > 22 else S.t(dx(b), yc + 19, fmt(b), 11, SEC, 'middle')
-AX = TOP + RH * len(ORD)
-for v in (0, 200, 400, 600):
-    S.line(dx(v), 42, dx(v), AX - 12)
-    S.t(dx(v), AX + 2, f'{v}', 10.5, SEC, 'middle')
-for v in (0, 5, 10, 15):
-    S.t(bx(v), AX + 2, f'{v} M' if v else '0', 10.5, SEC, 'middle')
-S.line(BX0, 42, BX0, AX - 12, MARK)
+GC = D['gc']; T = D['tot']
+t = pd.read_csv(H / 'b5_camp.csv')
+w = t[(t.canal == 'whatsapp') & (t.base >= 50000) & (t.conv > 5)].copy()
+w['fr'] = w.g.isin(['ex', 'nunca'])
+wa_fr = GC['ex|whatsapp']['costo'] + GC['nunca|whatsapp']['costo']
+conv_fr = GC['ex|whatsapp']['conv'] + GC['nunca|whatsapp']['conv']
+mf, mr = med(list(w[w.fr].mxn_conv)), med(list(w[~w.fr].mxn_conv))
+ma = med(list(w[w.g == 'activos'].mxn_conv))
+S = Svg('Arriba, tres cifras del WhatsApp a ex clientes y leads que nunca activaron. Abajo, cada punto es una campaña de WhatsApp: mensajes entregados contra pesos por conversión, con la mediana de cada grupo.')
+kpis(S, [(f'{100*wa_fr/T["wa"]:.0f} %', 'del gasto de WhatsApp va', 'a ex clientes y leads fríos'),
+          (f'{M(wa_fr)} M', 'MXN en nueve meses,', 'por mensaje entregado'),
+          (f'{100*conv_fr/T["conv"]:.1f} %', 'de las conversiones', 'sale de ahí')])
+
+S.t(0, 72, 'MXN por conversión; cada punto es una campaña de WhatsApp', 12, INK, w=600)
+S.circle(W - 320, 68, 5, BLUE, '#FFFFFF', 1); S.t(W - 310, 72, 'Ex clientes y nunca activaron', 11, TXT)
+S.circle(W - 138, 68, 5, GREEN, '#FFFFFF', 1); S.t(W - 128, 72, 'Activos', 11, TXT)
+S.circle(W - 68, 68, 5, MARK, '#FFFFFF', 1); S.t(W - 58, 72, 'Resto', 11, TXT)
+X0, X1, Y0, Y1 = 50, 760, 90, 372
+sx = logx(50000, 20e6, X0, X1); sy = logx(10, 10000, Y1, Y0)
+for v in (10, 100, 1000, 10000):
+    S.line(X0, sy(v), X1, sy(v)); S.t(X0 - 6, sy(v) + 4, fmt(v), 10.5, SEC, 'end')
+for v, lab in [(1e5, '100 mil'), (1e6, '1 M'), (1e7, '10 M')]:
+    S.line(sx(v), Y0, sx(v), Y1); S.t(sx(v), Y1 + 15, lab, 10.5, SEC, 'middle')
+S.t(X1, Y1 + 30, 'WhatsApp entregados por campaña (escala log)', 10.5, SEC, 'end')
+for q in w.sort_values('fr').itertuples():
+    S.circle(sx(q.base), sy(q.mxn_conv), 4.5 if q.fr else 3.5, BLUE if q.fr else (GREEN if q.g == 'activos' else MARK), '#FFFFFF', 1)
+for m_, col, lab, dy in [(mf, BLUE, f'Mediana ex clientes y nunca activaron: {fmt(mf)} MXN', -6), (ma, GREEN, f'Mediana activos: {fmt(ma)} MXN', 14)]:
+    S.line(X0, sy(m_), X1, sy(m_), col, 1.5)
+    S.t(X0 + 4, sy(m_) + dy, lab, 11, INK, w=600, halo=True)
+NAMED = {('Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0-N/A'): (-8, -8, 'end'),
+         ('Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta-N/A'): (8, -6, 'start'),
+         ('Lending-KCash-B0209-CANVAS-Recurrentes_Inactivos-DescuentoDirecto-N/A'): (8, 14, 'start'),
+         ('Lending-KCash-B0223-CANVAS-Nuevos_NeverActive-InstallmentsNoCash-N/A'): (8, 4, 'start'),
+         ('Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-NarrativaTasa0-N/A'): (8, 14, 'start')}
+for q in w.itertuples():
+    if q.familia in NAMED:
+        dx, dy, an = NAMED[q.familia]
+        S.t(sx(q.base) + dx, sy(q.mxn_conv) + dy, f'{nombre(q.familia)}: {fmt(q.mxn_conv)}', 10.5, INK, an, 600, halo=True)
+top_act = w[w.g == 'activos'].sort_values('base', ascending=False).iloc[0]
+S.t(sx(top_act.base) + 8, sy(top_act.mxn_conv) + 14, f'{nombre(top_act.familia)}: {fmt(top_act.mxn_conv)}', 10.5, INK, 'start', 600, halo=True)
 SVG = S.done()
 
-wa_fr = GC['ex|whatsapp']['costo'] + GC['nunca|whatsapp']['costo']
-conv_fr_wa = GC['ex|whatsapp']['conv'] + GC['nunca|whatsapp']['conv']
-pi_ex = GC['ex|push notification']['conv'] + GC['ex|in-app']['conv']
-mk = FE['ex|Marketing']['costo'] + FE['nunca|Marketing']['costo']; pg = FE['ex|Product Growth']['costo'] + FE['nunca|Product Growth']['costo']
 guarda(50, dict(
     kind='grafica',
-    titulo='Casi la mitad del WhatsApp se gasta en recuperar a quien ya no nos usa, justo donde cada conversión cuesta más',
-    que='Rescate con Tasa 0 a leads rezagados, descuento directo y "con o sin oferta" a inactivos y churn, referidos a dormants e Installments a never active. Todo promocional.',
-    quien=f'Marketing pone {M(mk)} M MXN en esta recuperación, {M(WP["b0171"]["costo"])} M solo en el WhatsApp del rescate con Tasa 0. Product Growth pone {M(pg)} M MXN.',
-    a_quien='Dos bases frías distintas: ex clientes que dejaron de usar KCash o KPay (inactivos de 1 a 12 meses, dormants, churn) y leads que se registraron y nunca tomaron crédito.',
+    titulo='Casi la mitad del WhatsApp se gasta en recuperar a quien ya no nos usa, donde cada conversión cuesta más',
+    que='Rescate con Tasa 0, "con o sin oferta", descuento a inactivos y referidos a dormants',
+    quien='Marketing (rescate Tasa 0 a leads) y Product Growth (inactivos y churn)',
+    a_quien='Ex clientes que dejaron KCash o KPay y leads que se registraron y nunca tomaron crédito',
     lecturas=[
-        f'Leads que nunca activaron y ex clientes se llevan {M(wa_fr)} M MXN de WhatsApp entregado, {100*wa_fr/T["wa"]:.0f} % del canal, y traen {100*conv_fr_wa/T["conv"]:.1f} % de las conversiones del mismo día.',
-        f'En ex clientes cada conversión cuesta {GC["ex|whatsapp"]["mxn_conv"]:.0f} MXN por WhatsApp y {GC["ex|email"]["mxn_conv"]:.0f} por correo; push e in-app no cuestan y traen {mil(pi_ex)} mil conversiones. En leads que nunca activaron, {GC["nunca|whatsapp"]["mxn_conv"]:.0f} y {GC["nunca|email"]["mxn_conv"]:.0f} MXN.',
-        f'En activos el WhatsApp sí rinde: {GC["activos|whatsapp"]["conv_mil"]:.1f} conversiones por cada mil mensajes, contra {GC["ex|whatsapp"]["conv_mil"]:.1f} en ex clientes y {GC["nunca|whatsapp"]["conv_mil"]:.1f} en leads que nunca activaron.',
+        f'Mediana por campaña: {fmt(mf)} MXN por conversión en ex clientes y leads fríos; {fmt(ma)} MXN en activos.',
+        f'Rescate Tasa 0 a rezagados (Marketing): {M(w[w.familia.str.contains("B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0")].base.sum())} M WhatsApp entregados a {fmt(w[w.familia=="Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0-N/A"].mxn_conv.iloc[0])} MXN por conversión.',
+        f'Ex clientes: {GC["ex|email"]["mxn_conv"]:.0f} MXN por conversión por correo contra {GC["ex|whatsapp"]["mxn_conv"]:.0f} por WhatsApp; push e in-app no cuestan.',
     ],
-    causa='WhatsApp es el canal que más se lee, por eso se usa para insistir. Pero en estas bases la lectura casi no se vuelve préstamo, a uno de cada tres ya no le llega y ningún programa tiene un límite de gasto.',
-    sowhat='WhatsApp para recuperar solo a quien leyó uno en los últimos 90 días; al resto, primero correo, push o in-app, con un grupo sin mensajes para medir.',
-    fuente=f'Fuente: Braze E1 (campaña, canal y mes), enero a septiembre 2026. WhatsApp a 1.00 MXN por entregado, correo a 0.05 MXN por enviado. Ejemplos: WhatsApp del rescate Tasa 0 (B0171) {M(WP["b0171"]["send"])} M enviados y {WP["b0171"]["mxn"]:.0f} MXN por conversión; de churn 12 meses (B0333) {fmt(WP["b0333"]["mxn"])}. La versión anterior decía 23 M MXN y un tercio del WhatsApp porque cobraba por enviado.',
+    causa='WhatsApp es lo que más se lee y se usa para insistir; en bases frías la lectura casi no se vuelve préstamo.',
+    sowhat='WhatsApp para recuperar solo a quien leyó uno en 90 días; al resto, correo, push o in-app.',
+    fuente='Fuente: Braze E1 (campaña, canal y mes), enero a septiembre 2026. WhatsApp a 1.00 MXN por entregado. Campañas con 50 mil o más entregados. La versión anterior cobraba por enviado (23 M MXN).',
     svg=SVG,
 ))
+print(mf, mr, ma, len(w), w.fr.sum())

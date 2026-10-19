@@ -1,7 +1,7 @@
 """Base común del bloque b6 (láminas 56 a 65, sección VII: comportamiento del usuario).
 Lee solo CSV del repo (data/ y hallazgos/). Paleta, ayudante de SVG y escritura del JSON de cada lámina.
 Costo: email 0.05 MXN por enviado, WhatsApp 1.00 MXN por entregado, push e in-app 0."""
-import json, pathlib, re, sys
+import json, math, pathlib, re, sys
 import numpy as np
 import pandas as pd
 
@@ -117,3 +117,66 @@ def write(n, d):
     p = OUT / f'{n:03d}.json'
     p.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding='utf-8')
     print('escrito', p)
+
+
+def por_campana(e, canales=('email', 'push notification', 'whatsapp', 'in-app')):
+    """Una fila por campaña (familia sin fecha) y canal: envíos, base, respuesta, bajas, personas aproximadas."""
+    x = e[e.canal.isin(canales)].copy()
+    x['b'] = np.select([x.canal.eq(c) for c in RESP], [x[RESP[c][0]] for c in RESP], 0)
+    x['r'] = np.select([x.canal.eq(c) for c in RESP], [x[RESP[c][1]] for c in RESP], 0)
+    g = x.groupby(['familia', 'canal']).agg(env=('envios', 'sum'), b=('b', 'sum'), r=('r', 'sum'), u=('email_unsubscribe', 'sum'),
+                                             dl=('email_delivery', 'sum'), usr=('usuarios_aprox', 'sum'), costo=('costo', 'sum'),
+                                             equipo=('equipo', 'first'), grupo=('grupo', 'first'), tipo=('tipo', 'first')).reset_index()
+    g['resp'] = 100 * g.r / g.b.replace(0, np.nan)
+    g['baja'] = 1000 * g.u / g.dl.replace(0, np.nan)
+    return g
+
+
+def recta(x, y, w=None):
+    """Mínimos cuadrados y R²."""
+    x, y = np.asarray(x, float), np.asarray(y, float)
+    b, a = np.polyfit(x, y, 1, w=None if w is None else np.sqrt(w))
+    yh = a + b * x; r2 = 1 - ((y - yh) ** 2).sum() / ((y - y.mean()) ** 2).sum()
+    return a, b, r2
+
+
+def logmap(v0, v1, p0, p1):
+    """Escala logarítmica de [v0, v1] a [p0, p1]."""
+    a, b = math.log10(v0), math.log10(v1)
+    return lambda v: p0 + (p1 - p0) * (math.log10(min(max(v, v0), v1)) - a) / (b - a)
+
+
+def fmt(v):
+    return f'{v:g}' if v >= 1 else f'{v:.2g}'
+
+
+NOMBRES = [(r'BillPay_Intro', 'Lanzamiento BillPay'), (r'LeftFunnel-Retargeting_Veriff', 'Verificar identidad'),
+           (r'LeftFunnel-Retargeting_PersonalInfo', 'Completar datos'), (r'LeftFunnel-Retargeting_NIP$', 'Poner NIP'),
+           (r'AccountCreation', 'Crear cuenta KPay'), (r'NIPconCupon', 'NIP con cupón KPay'),
+           (r'B0211-CANVAS-Nuevos_RegistradosPay', 'Tasa 0 a registrados'), (r'B0171-CANVAS-Anonimos-RescateTasa0', 'Rescate Tasa 0 a anónimos'),
+           (r'B0171-CANVAS-Leads_BBDDRezagada-NarrativaTasa0', 'Tasa 0 a leads rezagados'),
+           (r'B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0', 'Rescate Tasa 0 a rezagados'),
+           (r'Lending-KCash-B0301-CANVAS-Active-Retargeting_Installments', 'Pagar compra a meses'),
+           (r'Marketing-KCash-B0301-CANVAS-Active-NuevosRetargeting', 'Compra a meses a nuevos'),
+           (r'KCash-B0326-Canvas-Leads-ReferralProgram', 'Referidos a leads'), (r'KCash-B0326-Canvas-Recurrentes_Dormants', 'Referidos a dormants'),
+           (r'B0223', 'Meses a quien nunca activó'), (r'B0209', 'Descuento a inactivos'), (r'B0333', 'Recuperar churn 12 meses'),
+           (r'Payment-Confirmation', 'Confirmación de pago'), (r'Collections-KCash-T000-CANVAS-BKT1', 'Cobranza BKT1'),
+           (r'FraudRisk', 'Rechazo por fraude'), (r'B0335', 'Promos de comercios'), (r'B0337', 'Cuesta de enero'),
+           (r'B0440', 'AnotayGana'), (r'B0312', 'Navidad a elegibles'), (r'Payment Received', 'Pago recibido'),
+           (r'Sales-KPay-B0585-CANVAS-Recurrentes-Comerciodeldia', 'Comercio del día (Sales)'),
+           (r'Marketing-KPay-B0561-CANVAS-Leads-Comerciodeldia', 'Comercio del día a leads')]
+
+
+def nombre(f):
+    for rx, n in NOMBRES:
+        if re.search(rx, str(f)): return n
+    return None
+
+
+def etiqueta(s, x, y, txt, dx, dy, anchor='start', sub=None, col=INK):
+    """Nombre sobre la gráfica con línea guía corta al punto."""
+    tx, ty = x + dx, y + dy
+    if abs(dx) > 8 or abs(dy) > 10:
+        s.line(x, y, tx - (3 if anchor == 'start' else -3 if anchor == 'end' else 0), ty - 4, M1, 0.8)
+    s.t(tx, ty, txt, 11, col, anchor, 600, halo=True)
+    if sub: s.t(tx, ty + 12, sub, 10.5, SEC, anchor, halo=True)

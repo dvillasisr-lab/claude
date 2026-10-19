@@ -51,17 +51,17 @@ panel(36, 330, "email", "Email: clics por cada mil correos", "clics", 60)
 panel(442, 330, "push notification", "Push: aperturas por cada mil push", "aperturas", 160)
 S.t(0, 414, "Arriba de 60 clics o de 160 aperturas por mil se dibuja en el borde superior.", 10.5, SEC)
 J = dict(
-    titulo="Solo uno de cada ocho correos grandes responde bien, y los hay de todos los tamaños: los separa el motivo del envío, no el tamaño",
-    que=f"Todo el email y el push con volumen: {len(xe)} correos y {len(xp)} push de 200 mil o más (cada versión de una campaña con su fecha).",
-    quien=f"De los {int(xe.g.sum())} correos que responden bien: Others (avisos de pago) {int((xe.g & (xe.equipo=='Others')).sum())}, Marketing {int((xe.g & (xe.equipo=='Marketing')).sum())} (recordatorios de registro), Collections {int((xe.g & (xe.equipo=='Collections')).sum())}, Product Growth {int((xe.g & (xe.equipo=='Product Growth')).sum())} y Sales {int((xe.g & (xe.equipo=='Sales')).sum())}.",
-    a_quien="Los que responden bien van a quien está a la mitad de algo: empezó su registro, tiene un pago por vencer o acaba de pagar. Los demás, a listas de leads, registrados o clientes de KPay.",
+    titulo="Solo uno de cada ocho correos grandes responde bien, y los hay de todos los tamaños",
+    que=f"{len(xe)} correos y {len(xp)} push con 200 mil mensajes o más.",
+    quien=f"Responden bien sobre todo los de Others (avisos), Marketing y Collections.",
+    a_quien="Los buenos van a quien empezó su registro, tiene un pago o acaba de pagar.",
     lecturas=[
-        f"{int(xe.g.sum())} de {len(xe)} correos reciben 15 clics por mil o más (cinco veces lo mínimo); en push, {int(xp.g.sum())} de {len(xp)} llegan a 30 aperturas por mil. Hay buenos y malos de 200 mil y de varios millones.",
-        f"Los que responden bien son avisos de pago ({tg.get('Transaccional',0)}), recordatorios de registro ({tg.get('Recordatorio de registro',0)} de {tn.get('Recordatorio de registro',0)}), cobranza ({tg.get('Cobranza',0)}) y crédito a clientes activos ({tg.get('Uso y recompra del crédito',0)}). De {tn.get('Promociones de comercios KPay',0)} promociones de comercios KPay y {tn.get('Referidos',0)} de referidos, ninguno.",
-        f"{len(below)} correos ni siquiera llegan a lo mínimo (3 clics por mil): son {100*below.base.sum()/xe.base.sum():.0f} % de estos correos y {100*below.resp.sum()/xe.resp.sum():.0f} % de sus clics.",
+        f"{int(xe.g.sum())} de {len(xe)} correos llegan a 15 clics por mil; en push, {int(xp.g.sum())} de {len(xp)} llegan a 30 aperturas por mil.",
+        f"Los buenos: avisos de pago ({tg.get('Transaccional',0)}), recordatorios ({tg.get('Recordatorio de registro',0)}), cobranza ({tg.get('Cobranza',0)}); de {tn.get('Promociones de comercios KPay',0)} de comercios KPay, ninguno.",
+        f"{len(below)} correos no llegan a lo mínimo: {100*below.base.sum()/xe.base.sum():.0f} % de estos correos y {100*below.resp.sum()/xe.resp.sum():.0f} % de sus clics.",
     ],
-    causa="La gente responde al mensaje que tiene que ver con algo que está haciendo; la promoción que le llega porque está en una lista la ignora, sea la lista chica o grande.",
-    sowhat="Para que un correo responda no hay que hacerlo más chico: hay que mandarlo por una razón de la persona.",
-    fuente="Fuente: Braze, envíos por comunicación, mes y canal, enero a septiembre 2026; versiones de email y push con 200 mil mensajes o más. Clics sobre correos entregados; aperturas sobre push enviados. Responde bien: 15 clics por mil correos o 30 aperturas por mil push (cuatro a cinco veces lo mínimo). Tema por el nombre de la campaña.",
+    causa="La gente responde a lo que tiene que ver con algo que está haciendo, no a la promoción de una lista.",
+    sowhat="Para que un correo responda no hay que achicarlo: hay que mandarlo por una razón de la persona.",
+    fuente="Fuente: Braze, envíos por comunicación y canal, ene a sep 2026. Responde bien: 15 clics por mil correos o 30 aperturas por mil push. Tema por el nombre.",
     svg=S.out())
 write(72, J)

@@ -26,43 +26,48 @@ g = s.groupby('g').agg(pd_=('usuario_dias_juntas', 'sum'), pers=('usuarios_aprox
                         ww=('usuario_dias_juntas', lambda x: x[s.loc[x.index, 'ww']].sum())).sort_values('pd_', ascending=False)
 g['cwa'] = g.ww * ent
 print(g)
-ROWS = [
- ('B0444', 'Mundial y Referidos', 'Versiones del mismo push'),
- ('B0171', 'Rescate Tasa 0', 'Dos audiencias; WhatsApp doble'),
- ('disbursed', 'Aviso de desembolso KCash', 'Dos versiones del correo'),
- ('B0326', 'Referidos', 'Versiones de correo y push'),
- ('B0333', 'Churn de 12 meses', 'Tres versiones del WhatsApp'),
- ('B0440', 'Anota y Gana', 'Versión KCash y versión KPay'),
- ('B0493', 'Hot Sale KUESKIPROMO', 'El mismo push el 27 y el 29 de mayo'),
- ('B0490', 'Amazon antes del Hot Sale', 'Dos versiones; push y correo'),
- ('B0223', 'Nunca activos', 'Correo y WhatsApp el mismo día'),
-]
-TEAMC = {'Marketing': BLUE, 'Product Growth': GREEN, 'Sales': INK, 'Others': SEC}
-h = ['<table><tr><th>Campaña</th><th>Equipo</th><th>Qué se repite</th><th class="num">Personas-día</th><th class="num">WhatsApp de más</th></tr>']
-used = 0
-for k, name, what in ROWS:
-    r = g.loc[k]; used += r.pd_
-    team_lab = {'Product Growth': 'Prod. Growth'}.get(r.team, r.team) if k != 'disbursed' else 'Sin equipo'
-    col = TEAMC.get(r.team, SEC) if k != 'disbursed' else SEC
-    cwa = f'{r.cwa/1e3:.0f} mil MXN' if r.cwa > 0 else '0 MXN'
-    pers = f'{r.pers/1e6:.2f} M' if r.pers >= 1e6 else f'{r.pers/1e3:.0f} mil'
-    h.append(f'<tr><td>{name}</td><td style="color:{col};font-weight:600">{team_lab}</td><td>{what}</td><td class="num">{r.pd_/1e6:.2f} M</td><td class="num">{cwa}</td></tr>')
-rest = TOT - used; rest_cwa = costo - sum(g.loc[k].cwa for k, *_ in ROWS)
-h.append(f'<tr><td>Otras {len(g) - len(ROWS)} campañas</td><td></td><td></td><td class="num">{rest/1e6:.2f} M</td><td class="num">{rest_cwa/1e3:.0f} mil MXN</td></tr>' if rest_cwa > 500 else
-         f'<tr><td>Otras {len(g) - len(ROWS)} campañas</td><td></td><td></td><td class="num">{rest/1e6:.2f} M</td><td class="num"></td></tr>')
-h.append(f'<tr><td style="font-weight:700">Total medido</td><td></td><td></td><td class="num" style="font-weight:700">{TOT/1e6:.1f} M</td><td class="num" style="font-weight:700">{costo/1e6:.2f} M MXN</td></tr></table>')
+s['vez'] = s.usuario_dias_juntas / s.usuarios_aprox
+s['kind'] = ['ww' if w else ('mismo' if ca == cb else 'dos') for w, ca, cb in zip(s.ww, s.canal_a, s.canal_b)]
+print(s.sort_values('vez', ascending=False).head(8)[['familia_a', 'familia_b', 'kind', 'usuarios_aprox', 'vez', 'meses']].to_string())
+COLK = {'ww': GREEN, 'mismo': BLUE, 'dos': G1}
+S = Svg('Dispersión: cada punto es una campaña que le llegó dos veces el mismo día a la misma persona; personas contra veces por persona en el periodo')
+S.circle(6, 15, 4.5, GREEN); S.t(15, 19, 'WhatsApp dos veces (se paga cada uno)', 11, TXT)
+S.circle(246, 15, 4.5, BLUE); S.t(255, 19, 'Dos push o dos correos iguales', 11, TXT)
+S.circle(450, 15, 4.5, G1); S.t(459, 19, 'La misma campaña por dos canales', 11, TXT)
+S.t(0, 38, f'{len(s)} repeticiones; tamaño = personas-día repetidas.', 10.5, SEC)
+import math
+X0, X1, Y0, Y1 = 44, 770, 60, 352
+lo, hi_ = math.log10(15000), math.log10(2e6); ylo, yhi = math.log10(0.8), math.log10(14)
+sx = lambda v: X0 + (X1 - X0) * (math.log10(v) - lo) / (hi_ - lo); sy = lambda v: Y1 - (Y1 - Y0) * (math.log10(v) - ylo) / (yhi - ylo)
+for v in (1, 2, 4, 8):
+    S.line(X0, sy(v), X1, sy(v)); S.t(X0 - 6, sy(v) + 4, f'{v}', 10.5, SEC, 'end')
+S.t(X0 + 2, Y0 - 6, 'Días con la repetición por persona (escala logarítmica)', 10.5, SEC)
+for v, l in ((20000, '20 mil'), (50000, '50 mil'), (100000, '100 mil'), (250000, '250 mil'), (500000, '500 mil'), (1000000, '1 M')):
+    S.line(sx(v), Y1, sx(v), Y1 + 5, SEC); S.t(sx(v), Y1 + 18, l, 10.5, SEC, 'middle')
+S.line(X0, Y1, X1, Y1, SEC); S.t((X0 + X1) / 2, Y1 + 33, 'Personas que recibieron la campaña dos veces el mismo día (escala logarítmica)', 10.5, SEC, 'middle')
+for _, q in s.sort_values('usuario_dias_juntas', ascending=False).iterrows():
+    S.circle(sx(q.usuarios_aprox), sy(max(q.vez, 0.85)), 3 + 9 * math.sqrt(q.usuario_dias_juntas / 1.2e6), COLK[q.kind], '#FFFFFF', 1)
+def nm(k1, k2, kind, tx, ty, l1, l2, anc='start'):
+    q = s[s.familia_a.str.contains(k1) & s.familia_b.str.contains(k2) & (s.kind == kind)].sort_values('usuario_dias_juntas').iloc[-1]
+    lab(S, sx(q.usuarios_aprox), sy(max(q.vez, 0.85)), sx(tx), sy(ty), l1, l2, anc)
+nm('BBDDHotLeadsW1RescateTasa0', 'BBDDRezagada-RescateTasa0', 'ww', 300000, 5.5, 'Rescate Tasa 0 (Marketing), 1 jun', '112 mil personas, dos WhatsApp unas 3 veces')
+nm('Anonimos-RescateTasa0', 'BBDDRezagada-RescateTasa0', 'mismo', 60000, 12, 'Rescate Tasa 0 por push (Marketing)', 'anónimos y rezagados, 11 días por persona')
+nm('Churn_12MesesInactividad', 'Churn_12MesesInactividad', 'ww', 22000, 2.6, 'Churn de 12 meses (Product Growth)', 'tres versiones del WhatsApp en abril')
+nm('disbursed', 'disbursed', 'mismo', 1.6e6, 3.2, 'Aviso de desembolso de KCash', 'dos versiones, 600 mil, 4 meses', 'end')
+nm('ReferralProgram', 'BAUMundial', 'mismo', 1.9e6, 1.3, 'Mundial y Referidos (Marketing)', '11 jun, dos push a 1.13 M', 'end')
+nm('HotSaleKUESKIPROMOEnterprise', 'HotSaleKUESKIPROMOEnterprise', 'mismo', 130000, 1.6, 'Hot Sale (Sales): el mismo push', '27 y 29 de mayo a 326 mil', 'start')
 
-write(37, dict(kind='html', seccion='IV. La misma persona, demasiadas veces',
- titulo=f'La misma campaña le llega dos veces el mismo día a la misma persona, y solo el WhatsApp repetido costó {costo/1e6:.2f} M MXN',
- que='La misma campaña en dos versiones, dos audiencias o dos canales: Rescate Tasa 0, Mundial y Referidos, Hot Sale, Comercio del día, churn por WhatsApp, nunca activos y el aviso de desembolso.',
- quien=f'Marketing {byteam["Marketing"]:.1f} M de {TOT/1e6:.1f} M personas-día repetidas; Product Growth {byteam["Product Growth"]:.1f} M; Sales {byteam["Sales"]:.1f} M; aviso de desembolso de KCash (transaccional, sin equipo en el nombre) {byteam["Others"]:.1f} M.',
- a_quien='Hot leads y base rezagada (Marketing), churn de 12 meses y nunca activos (Product Growth), recurrentes de KPay (Sales) y clientes que acaban de recibir su préstamo.',
+write(37, dict(kind='grafica', seccion='IV. La misma persona, demasiadas veces',
+ titulo=f'La misma campaña le llega dos veces el mismo día a la misma persona; el WhatsApp repetido costó {costo/1e6:.2f} M MXN',
+ que='Rescate Tasa 0, Mundial y Referidos, Hot Sale, churn, nunca activos y aviso de desembolso',
+ quien='Marketing (6 de cada 10), Product Growth, Sales y el aviso de desembolso de KCash',
+ a_quien='Hot leads y base rezagada, churn, recurrentes de KPay y clientes con préstamo nuevo',
  lecturas=[
-  f'{mismo/10:.0f} de cada diez repeticiones son en el mismo canal: dos push o dos correos iguales el mismo día.',
-  'Se lanza la misma campaña por audiencia o por día sin excluir a quien ya la recibió, y la versión vieja sigue activa cuando se crea la nueva.',
-  f'WhatsApp repetido: {ww/1e6:.2f} M envíos de más; con la entrega real de esas campañas ({100*ent:.0f} %) son {costo/1e6:.2f} M MXN en 9 meses, unos {costo/9/1e3:.0f} mil MXN al mes.',
+  f'{TOT/1e6:.1f} M personas-día con la misma campaña repetida; {mismo/10:.0f} de cada 10 en el mismo canal.',
+  f'WhatsApp repetido: {ww/1e6:.2f} M envíos de más, {costo/1e6:.2f} M MXN en 9 meses (unos {costo/9/1e3:.0f} mil MXN al mes).',
+  'Se lanza la misma campaña por audiencia o por día sin excluir a quien ya la recibió.',
  ],
- causa='No hay una regla en Braze que impida mandar la misma campaña dos veces el mismo día a la misma persona, ni alguien que apague la versión vieja.',
- sowhat='Una regla de Braze (no repetir la misma campaña a la misma persona el mismo día) y apagar versiones viejas lo resuelve sin tocar el contenido.',
- fuente=f'Fuente: Braze, E6b (1,000 pares de campañas más frecuentes el mismo día; {TOT/1e6:.1f} M de {ALL/1e6:.0f} M personas-día, {100*TOT/ALL:.0f} %, es un mínimo). Misma campaña = mismo nombre sin fecha o mismo ticket del mismo equipo, sin tickets genéricos. Entrega de WhatsApp: E1, a 1.00 MXN por entregado.',
- html=''.join(h)))
+ causa='Braze no impide repetir la misma campaña el mismo día y nadie apaga la versión vieja al crear la nueva.',
+ sowhat='Una regla de Braze (no repetir campaña el mismo día) y apagar versiones viejas lo resuelve.',
+ fuente=f'Fuente: Braze, E6b (1,000 pares más frecuentes, enero a septiembre 2026; es un mínimo) y E1 (entrega de WhatsApp {100*ent:.0f} %, a 1.00 MXN por entregado). Misma campaña = mismo nombre sin fecha o mismo ticket.',
+ svg=S.svg()))

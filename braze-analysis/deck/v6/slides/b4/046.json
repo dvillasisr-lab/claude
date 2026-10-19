@@ -4,25 +4,24 @@
  "seccion": "V. El ritmo lo marcan los lanzamientos, no el cliente",
  "titulo": "Por qué pasa: no hay un límite semanal de mensajes ni una revisión semanal, y los lanzamientos no se coordinan",
  "porques": [
-  "La semana del 1 de junio el clic de correo cayó a 0.36 % y la siguiente volvió a 1.05 %; en junio salieron 43 M push nuevos que abrieron 0.87 %.",
-  "Los picos de volumen son lanzamientos y temporadas a toda la base (BillPay, Hot Sale, Mundial, Día del Padre, Navidad) que caen la misma semana.",
-  "Cada equipo fija la fecha de su lanzamiento sin ver la de los demás; BillPay salió por dos equipos y cuatro veces en un mes.",
-  "El reporte es mensual: promedia el golpe y se lee cuatro semanas tarde, cuando ya salió lo que sigue.",
-  "Causa raíz: no hay un calendario único de lanzamientos ni un límite semanal de mensajes por canal con dueño que lo vigile."
+  "El 1 de junio el clic cayó a 0.36 %; en junio salieron 43 M push nuevos.",
+  "Los picos son lanzamientos y temporadas a toda la base que caen la misma semana.",
+  "Cada equipo fija su fecha sin ver las de los demás; BillPay salió por dos equipos.",
+  "El reporte es mensual: promedia el golpe y llega cuatro semanas tarde.",
+  "Causa raíz: no hay calendario único ni límite semanal por canal con dueño."
  ],
  "hipotesis": {
-  "A": "Si limitamos los correos de la semana, el clic sube: cada millón de correos de más en la semana lo baja 0.05 puntos (R² 0.60).",
-  "O": "Si cada envío de más de 1 M de personas sale primero a 10 % y se lee en su primera semana, un correo como BillPay Intro se frena antes de llegar a 16.1 M.",
-  "G": "Si un solo equipo de CRM administra el calendario, no caen tres lanzamientos a toda la base en la misma semana; el día de la semana se decide solo con prueba."
+  "A": "Con menos correos por semana sube el clic: cada millón de más lo baja 0.05 puntos.",
+  "O": "Si todo envío de más de 1 M sale primero a 10 %, un correo como BillPay Intro se frena a tiempo.",
+  "G": "Con un solo dueño del calendario no caen tres lanzamientos a toda la base la misma semana."
  },
  "como": [
-  "Semana 1, Braze (límite de velocidad de envío y límite global de frecuencia): límite semanal por canal y máximo un envío a toda la base por semana. Equipo de CRM.",
-  "Semana 2: calendario único de lanzamientos para Marketing, Sales, Product Growth y NewProducts; ningún envío de más de 1 M sin fecha aprobada. Dueño: CRM.",
-  "Semana 3, Braze (pruebas A/B con grupo sin mensajes): todo envío de más de 1 M sale primero a 10 %; sigue solo si llega a 3 clics por cada mil correos o 7.5 aperturas por cada mil push.",
-  "Semana 4: lectura semanal por campaña con alerta en la primera semana. Métrica: clic de correo y apertura de push por semana, y bajas por semana.",
-  "Día de la semana: no mover envíos sin probar la misma campaña en dos días con grupo sin mensajes; el lunes se arregla quitando el envío a toda la base, no el lunes."
+  "Semana 1, Braze: límite semanal por canal y un solo envío a toda la base por semana. CRM.",
+  "Semana 2: calendario único de lanzamientos de los cuatro equipos, con fecha aprobada. CRM.",
+  "Semana 3, Braze: todo envío de más de 1 M sale primero a 10 % con grupo sin mensajes.",
+  "Semana 4: lectura semanal por campaña con alerta; el día se cambia solo con prueba."
  ],
- "impacto": "Evitar semanas como la del 1 de junio: sin BillPay Intro su clic habría sido 0.79 % y no 0.36 %; ese correo costó 0.8 M MXN y desde él se dieron de baja 58 mil personas.",
+ "impacto": "Evitar semanas como la del 1 de junio: un correo de 0.8 M MXN y 58 mil personas dadas de baja.",
  "sowhat": "Coordinar las fechas vale más que elegir el día.",
- "fuente": "Fuente: Braze, enero a septiembre 2026: E4a (serie semanal), E1 (campañas por mes), E8 (personas que se dieron de baja desde BillPay Intro), E10 (día de la semana); regresión semanal de 38 semanas."
+ "fuente": "Fuente: Braze, enero a septiembre 2026: E4a (serie semanal), E1 (campañas por mes), E8 (bajas desde BillPay Intro) y E10 (día de la semana)."
 }

@@ -1,72 +1,62 @@
-"""Lámina 62: respuesta por tema y canal (E1, promocionales; tema por el nombre con la regla de la muestra G). Filas = tema, columnas =
-millones de correos, clic del correo, apertura del push y clic del in-app; dos campañas de ejemplo por tema."""
+"""Lámina 62 (ronda 2): cada punto es una campaña promocional (100 mil o más enviados), en dos paneles con la misma lógica: correo y push.
+Enviados contra respuesta; verde = recordatorio de algo empezado, gris = oferta nueva; mediana de cada grupo y mínimo aceptable del canal.
+Tema por el nombre con la regla de la muestra G (E1)."""
 from comun import *
 
-e = load_e1()
-e['gg'] = e.communication_name.map(gan_g)
-p = e[~e.grupo.isin(['cobranza', 'transaccional'])]
-T = [('recordatorio', 'Recordatorio de algo empezado'), ('tasa0', 'Tasa 0'), ('descuento', 'Descuentos y cupones'), ('referidos', 'Referidos'), ('lanzamiento', 'Lanzamientos y boletines')]
-CH = [('email', 'Clic del correo'), ('push notification', 'Apertura del push'), ('in-app', 'Clic del in-app')]
-MIN = {'email': 0.3, 'push notification': 0.75, 'in-app': 10}
-val = {(g, c): resp(p[(p.gg == g) & (p.canal == c)], c) for g, _ in T for c, _ in CH}
-vol = {g: p[(p.gg == g) & (p.canal == 'email')].envios.sum() / 1e6 for g, _ in T}
-def fr(f, c):
-    x = e[(e.familia == f) & (e.canal == c)]; return resp(x, c)
-EX = {'recordatorio': [('Verificar identidad', 'Marketing-KCash-B0000-CANVAS-Leads_LeftFunnel-Retargeting_Veriff'),
-                       ('Pagar compra a meses', 'Lending-KCash-B0301-CANVAS-Active-Retargeting_Installments_SP')],
-      'tasa0': [('Tasa 0 a registrados', 'Lending-KCash-B0211-CANVAS-Nuevos_RegistradosPay-Tasa0-N/A')],
-      'descuento': [('Descuento a inactivos', 'Lending-KCash-B0209-CANVAS-Recurrentes_Inactivos-DescuentoDirecto-N/A'),
-                    ('Cuponera de Sales', None)],
-      'referidos': [('Referidos a leads', 'Marketing-KCash-B0326-Canvas-Leads-ReferralProgram-N/A'),
-                    ('Referidos a dormants', 'Marketing-KCash-B0326-Canvas-Recurrentes_Dormants-ReferralProgram-N/A')],
-      'lanzamiento': [('BillPay a toda la base', 'NewProducts-Kueski-T0000-E-Portfolio_BillPay_Intro_Full_Rollout')]}
-b392 = e[e.familia.str.contains('Sales-KPay-B0392-CANVAS-Leads-Cuponera') & (e.canal == 'email')]
-exs = {}
-for g, lst in EX.items():
-    out = []
-    for lab, f in lst:
-        if f is None: out.append((lab, resp(b392, 'email'), None)); continue
-        out.append((lab, fr(f, 'email'), fr(f, 'push notification') if e[(e.familia == f) & (e.canal == 'push notification')].pn_send.sum() > 1e5 else None))
-    exs[g] = out
-print({k: round(v, 2) for k, v in val.items()}, vol, exs)
+e = load_e1(); e['gg'] = e.communication_name.map(gan_g)
+p = e[~e.grupo.isin(['cobranza', 'transaccional']) & (e.tipo == 'promocional o lifecycle')]
+g = por_campana(p, ('email', 'push notification'))
+g['gg'] = g.familia.map(gan_g); g['rec'] = g.gg == 'recordatorio'; g['nom'] = g.familia.map(nombre)
+g = g[(g.b >= 1e5) & (g.resp > 0)]
+pool = {(c, r): 100 * g[(g.canal == c) & (g.rec == r)].r.sum() / g[(g.canal == c) & (g.rec == r)].b.sum() for c in ('email', 'push notification') for r in (True, False)}
+med = g.groupby(['canal', 'rec']).resp.median()
+tem = {t: resp(p[(p.gg == t) & (p.canal == 'email')], 'email') for t in ('recordatorio', 'tasa0', 'descuento', 'referidos', 'lanzamiento')}
+ia = {t: resp(p[(p.gg == t) & (p.canal == 'in-app')], 'in-app') for t in ('referidos',)}
+print(g.groupby(['canal', 'rec']).size().to_dict(), med.round(2).to_dict(), {k: round(v, 2) for k, v in pool.items()}, {k: round(v, 2) for k, v in tem.items()}, ia)
 
-s = SVG('Respuesta por tema del mensaje: millones de correos, clic del correo, apertura del push y clic del in-app; recordatorio de algo empezado contra ofertas nuevas')
-COLS = [(290, 380, 'Correos', 'M', 60), (400, 530, 'Clic del correo', '%', 3.4), (550, 660, 'Apertura del push', '%', 2.5), (680, 780, 'Clic del in-app', '%', 80)]
-for x0, x1, h, u, mx in COLS:
-    s.t(x0, 16, h, 12, INK, w=600)
-    s.t(x0, 31, 'millones' if u == 'M' else '% de los enviados', 10.5, SEC)
-TOP, RH = 62, 64
-for i, (g, name) in enumerate(T):
-    y = TOP + RH * i; col = GREEN if g == 'recordatorio' else M1
-    s.t(0, y + 12, name, 12, INK, w=600)
-    for j, (lab, em, pu) in enumerate(exs[g][:2]):
-        txt = f'{lab}: correo {em:.2f} %' + (f', push {pu:.1f} %' if pu is not None and pu >= 1 else (f', push {pu:.2f} %' if pu is not None else ''))
-        s.t(0, y + 28 + 13 * j, txt, 10.5, SEC)
-    s.line(0, y + RH - 10, 780, y + RH - 10, GRID)
-    for k, (x0, x1, h, u, mx) in enumerate(COLS):
-        v = vol[g] if k == 0 else val[(g, CH[k - 1][0])]
-        w = (x1 - x0 - 34) * v / mx
-        s.rect(x0, y + 2, w, 14, col)
-        s.t(x0 + w + 5, y + 13, f'{v:.0f} M' if k == 0 else (f'{v:.1f} %' if v >= 1 else f'{v:.2f} %'), 11.5, INK, w=600)
-for k, (x0, x1, h, u, mx) in enumerate(COLS[1:]):
-    m = MIN[CH[k][0]]; xm = x0 + (x1 - x0 - 34) * m / mx
-    s.line(xm, 42, xm, TOP + RH * 5 - 10, INK, 1)
-    s.t(xm + 3, 51, f'mínimo {m:g} %', 10.5, INK)
-s.t(0, 400, 'Tema según el nombre de la campaña; sin cobranza ni avisos. La línea negra marca lo mínimo aceptable de cada canal: 3 clics por cada mil correos,', 10.5, SEC)
-s.t(0, 414, '7.5 aperturas por cada mil push y 1 de cada 10 in-app con clic.', 10.5, SEC)
+s = SVG('Cada punto es una campaña promocional: enviados contra respuesta, en correo y en push; recordatorios en verde, ofertas en gris')
+s.legend([(GREEN, 'Recordatorio de algo empezado', 'dot'), (M1, 'Oferta nueva: Tasa 0, referidos, descuentos, lanzamientos', 'dot')], 0, 4, size=11)
+PAN = [('email', 'Correo: clic por campaña', 0, 0.3), ('push notification', 'Push: apertura por campaña', 400, 0.75)]
+Y0, Y1 = 50, 362
+ys = logmap(0.02, 30, Y1, Y0)
+LB = {'email': {'Verificar identidad': (10, -18, 'start'), 'Pagar compra a meses': (-10, -34, 'end'), 'Tasa 0 a registrados': (-10, 26, 'end'),
+                'Lanzamiento BillPay': (-10, 22, 'end'), 'Referidos a leads': (-14, 30, 'end')},
+      'push notification': {'Verificar identidad': (10, -14, 'start'), 'Pagar compra a meses': (-10, -14, 'end'), 'Tasa 0 a registrados': (-40, 34, 'end'),
+                            'Rescate Tasa 0 a anónimos': (-20, 56, 'end')}}
+for ch, h, x0, mn in PAN:
+    X0, X1 = x0 + 40, x0 + 372
+    xs = logmap(1e5, 4e7, X0, X1)
+    s.t(x0, 36, h, 12, INK, w=600)
+    for v in (0.03, 0.1, 0.3, 1, 3, 10, 30):
+        s.line(X0, ys(v), X1, ys(v)); s.t(X0 - 5, ys(v) + 4, f'{fmt(v)} %', 10.5, SEC, 'end')
+    for v, lab in ((1e5, '100 mil'), (1e6, '1 M'), (1e7, '10 M')):
+        s.line(xs(v), Y0, xs(v), Y1); s.t(xs(v), Y1 + 15, lab, 10.5, SEC, 'middle')
+    s.t(X1, Y1 + 30, 'Enviados en nueve meses', 10.5, SEC, 'end')
+    d = g[g.canal == ch]
+    for _, q in d.sort_values('rec').iterrows():
+        s.circle(xs(q.b), ys(q.resp), 3.6 if q.rec else 3, GREEN if q.rec else M1, ring=q.rec, extra='' if q.rec else ' fill-opacity="0.7"')
+    s.line(X0, ys(mn), X1, ys(mn), INK, 1); s.t(X1, ys(mn) + 13, f'mínimo {mn:g} %', 10.5, INK, 'end', halo=True)
+    for r, col in ((True, GREEN), (False, SEC)):
+        y = ys(med[(ch, r)]); s.line(X0, y, X1, y, col, 1.4)
+        s.t(X0 + 3, y - 4, f'mediana {med[(ch, r)]:.2f} %', 10.5, col, 'start', 600, halo=True)
+    for n, (dx, dy, an) in LB[ch].items():
+        c = d[d.nom == n]
+        if not len(c): continue
+        q = c.sort_values('b').iloc[-1]
+        etiqueta(s, xs(q.b), ys(q.resp), n, dx, dy, an)
+s.t(0, 414, 'Campañas promocionales con 100 mil o más enviados. Escalas logarítmicas. Clic sobre entregados; apertura sobre enviados.', 10.5, SEC)
 
-ofe = [val[(g, 'email')] for g, _ in T[1:]]
 write(62, dict(
     titulo='La gente responde cuando le recordamos lo que dejó a medias, no cuando le ofrecemos algo nuevo',
-    que='Recordatorio: algo que la persona ya empezó y no terminó (verificar identidad, completar datos, poner NIP, crear cuenta, pagar su compra a meses). Oferta nueva: algo que no pidió (Tasa 0, referidos, lanzamientos, cupones).',
-    quien='Recordatorios: Marketing (registro de KCash), Acquisition (registro de KPay) y Product Growth (compras a meses). Ofertas: todos los equipos.',
-    a_quien='Recordatorios a quien empezó su registro o tiene una compra en curso; ofertas a listas completas de leads, registrados y clientes.',
+    que='Recordatorios: terminar el registro, pagar la compra a meses. Ofertas: Tasa 0, referidos.',
+    quien='Recordatorios de Marketing, Acquisition y Product Growth; ofertas de todos los equipos.',
+    a_quien='Recordatorios a quien empezó algo; ofertas a listas completas de leads y clientes.',
     lecturas=[
-        f'Por correo el recordatorio responde {val[("recordatorio","email")]:.2f} % y las ofertas {min(ofe):.2f} a {max(ofe):.2f} %: entre {val[("recordatorio","email")]/max(ofe):.0f} y {val[("recordatorio","email")]/min(ofe):.0f} veces menos. Tasa 0 es el tema con más correos ({vol["tasa0"]:.0f} M correos).',
-        f'Por push el recordatorio abre {val[("recordatorio","push notification")]:.2f} % en promedio y hasta {exs["recordatorio"][1][2]:.0f} % en la compra a meses; la Tasa 0, {val[("tasa0","push notification")]:.2f} %.',
-        f'Referidos no funciona por correo ({val[("referidos","email")]:.2f} %) pero sí dentro de la app ({val[("referidos","in-app")]:.0f} % de clic en in-app): el tema sirve donde la persona ya está. Ojo: el recordatorio adelanta más de lo que suma (lámina 57).',
+        f'Por correo el recordatorio responde {tem["recordatorio"]:.2f} %; las ofertas, de {min(v for k, v in tem.items() if k != "recordatorio"):.2f} a {max(v for k, v in tem.items() if k != "recordatorio"):.2f} %.',
+        f'Por push, la mediana del recordatorio abre {med[("push notification", True)]:.1f} % y la de la oferta {med[("push notification", False)]:.1f} %.',
+        f'Referidos no funciona por correo ({tem["referidos"]:.2f} %) pero sí en la app: {ia["referidos"]:.0f} % de clic en in-app.',
     ],
-    causa='Las campañas nacen de lo que queremos vender este mes, no de lo que cada persona dejó a medias; Braze no tiene a la mano esa información para la mayoría de los equipos.',
-    sowhat='El gancho principal es lo que la persona dejó a medias; Tasa 0 y novedades solo con un grupo claro de personas, y referidos dentro de la app.',
-    fuente='Fuente: Braze, envíos por campaña, mes y canal (E1), enero a septiembre 2026, sin cobranza ni avisos. Tema por el nombre (regla de la muestra G). Ejemplos: Marketing B0000, Product Growth B0301, B0211 y B0209, Sales B0392, Marketing B0326, NewProducts BillPay. El deck anterior decía 3.09 % para el recordatorio con otra clasificación; con esta regla da 2.99 %.',
+    causa='Las campañas nacen de lo que queremos vender este mes, no de lo que cada persona dejó a medias.',
+    sowhat='El gancho es lo que la persona dejó a medias; Tasa 0 y novedades solo a un grupo claro.',
+    fuente='Fuente: Braze, envíos por campaña, mes y canal (E1), enero a septiembre 2026, sin cobranza ni avisos. Tema por el nombre (regla de la muestra G).',
     svg=s.svg()))

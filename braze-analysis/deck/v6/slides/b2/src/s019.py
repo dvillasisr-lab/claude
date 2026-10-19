@@ -1,5 +1,6 @@
-"""Lámina 19: matriz equipo x canal con la parte del volumen de promoción en campañas que no llegan a lo mínimo aceptable
-(y cuántas campañas son); a la derecha, el mismo corte por tema y por audiencia en barras 100 %."""
+"""Lámina 19 (ronda 2): pequeños múltiplos por canal (misma escala): cada punto es una campaña de promoción (50 mil o más
+entregados): mensajes (x) contra respuesta en veces el mínimo aceptable del canal (y, 1 = justo el mínimo). Azul: debajo."""
+import math
 from b2base import *
 
 d = load_b()
@@ -8,96 +9,69 @@ fa = d.groupby(['fam', 'canal']).agg(b=('b', 'sum'), r=('r', 'sum'), env=('envio
                                     gan=('gan', 'first'), aud=('aud', 'first'), last=('m', 'max')).reset_index()
 fa['pct'] = 100 * fa.r / fa.b.replace(0, np.nan)
 fa['bajo'] = fa.pct < fa.canal.map(MIN)
-fa = fa[fa.b >= 5e4]
-f = lambda g: pd.Series({'n': len(g), 'nb': g.bajo.sum(), 'pc': 100 * g.bajo.mean(), 'env': g.env.sum() / 1e6, 'envb': g[g.bajo].env.sum() / 1e6,
+fa = fa[fa.b >= 5e4].copy()
+fa['ix'] = fa.pct / fa.canal.map(MIN)
+f = lambda g: pd.Series({'n': len(g), 'nb': g.bajo.sum(), 'env': g.env.sum() / 1e6, 'envb': g[g.bajo].env.sum() / 1e6,
                          'pv': 100 * g[g.bajo].env.sum() / g.env.sum(), 'cb': g[g.bajo].costo.sum() / 1e6})
-tot = f(fa)
-ec = fa.groupby(['eq', 'canal']).apply(f)
-eqs = fa.groupby('eq').apply(f)
-chs = fa.groupby('canal').apply(f)
-gn = fa.groupby('gan').apply(f)
-au = fa.groupby('aud').apply(f)
-sep = (fa.bajo & (fa['last'] == 9)).sum()
-print('total', tot.round(1).to_dict(), 'sept', sep)
-print(ec.round(1)); print(eqs.round(1)); print(chs.round(1)); print(gn.round(1)); print(au.round(1))
-big = fa[fa.bajo].sort_values('env', ascending=False).head(6)
-print(big[['fam', 'canal', 'eq', 'env', 'pct']].assign(env=lambda x: x.env / 1e6).round(2).to_string())
-
-S = Svg('Matriz equipo por canal: parte del volumen de promoción en campañas que no llegan a lo mínimo aceptable y cuántas campañas son. '
-        'A la derecha, el mismo corte por tema y por audiencia.')
-S.t(0, 16, 'Parte del volumen de promoción en campañas que no llegan a lo mínimo aceptable', 12, INK, w=600)
-S.t(0, 33, 'Mínimo: 3 clics por cada mil correos, 7.5 aperturas por cada mil push, 6 de cada 10 WhatsApp leídos, 1 de cada 10 in-app con clic.', 10.5, SEC)
-CH = [('email', 'Correo'), ('push notification', 'Push'), ('whatsapp', 'WhatsApp'), ('in-app', 'In-app')]
-EQ = ['Marketing', 'Product Growth', 'Sales', 'Others']
-CX0, CW_, RH, Y0 = 128, 74, 56, 76
-for j, (_, cl) in enumerate(CH + [('', 'Todos')]):
-    S.t(CX0 + CW_ * j + CW_ / 2 + (8 if j == 4 else 0), Y0 - 10, cl, 11.5, INK, 'middle', 600)
-def col(p):
-    t = min(1, max(0, p / 85))
-    a_, b_ = (0xF3, 0xF5, 0xF8), (0x1F, 0x4F, 0xD8)
-    return '#%02X%02X%02X' % tuple(round(a_[k] + (b_[k] - a_[k]) * t) for k in range(3)), t > 0.5
-def cell(x, y, g, bold=False):
-    c_, dark = col(g.pv)
-    S.rect(x, y + 1, CW_ - 2, RH - 2, c_)
-    S.t(x + CW_ / 2 - 1, y + 24, f'{g.pv:.0f} %', 13, '#FFFFFF' if dark else INK, 'middle', 700)
-    S.t(x + CW_ / 2 - 1, y + 40, f'{g.envb:.0f} de {g.env:.0f} M', 10.5, '#FFFFFF' if dark else TXT, 'middle')
-for i, e_ in enumerate(EQ):
-    y = Y0 + RH * i
-    S.t(CX0 - 8, y + 26, e_, 11.5, INK, 'end', 600)
-    S.t(CX0 - 8, y + 40, f'{int(eqs.loc[e_, "nb"])} de {int(eqs.loc[e_, "n"])} campañas', 10.5, SEC, 'end')
-    for j, (c, _) in enumerate(CH):
-        if (e_, c) in ec.index and ec.loc[(e_, c), 'env'] > 0.5:
-            cell(CX0 + CW_ * j, y, ec.loc[(e_, c)])
-        else:
-            S.rect(CX0 + CW_ * j, y + 1, CW_ - 2, RH - 2, '#FFFFFF', f' stroke="{GRID}"')
-            S.t(CX0 + CW_ * j + CW_ / 2 - 1, y + 32, 'poco', 10.5, SEC, 'middle')
-    cell(CX0 + CW_ * 4 + 8, y, eqs.loc[e_])
-y = Y0 + RH * 4 + 8
-S.t(CX0 - 8, y + 26, 'Todos', 11.5, INK, 'end', 700)
-S.t(CX0 - 8, y + 40, f'{int(tot.nb)} de {int(tot.n)} campañas', 10.5, SEC, 'end')
-for j, (c, _) in enumerate(CH):
-    cell(CX0 + CW_ * j, y, chs.loc[c])
-cell(CX0 + CW_ * 4 + 8, y, tot)
-S.rect(CX0 + CW_ * 4 + 7, y, CW_, RH, 'none', f' stroke="{INK}" stroke-width="1.5"')
-S.t(0, 404, 'En cada celda: millones de mensajes en esas campañas de los millones del grupo.', 10.5, SEC)
-# ===== derecha: por tema y audiencia
-X0 = 528
-S.line(X0 - 14, 46, X0 - 14, 404, GRID)
-BX0, BX1 = X0 + 104, 742
-TEM = [('lanzamiento', 'Lanzamientos'), ('tasa0', 'Tasa 0'), ('referidos', 'Referidos'), ('descuento', 'Descuentos'), ('recordatorio', 'Recordatorios')]
-AUD = [('frios', 'Bases frías'), ('leads', 'Leads'), ('activos', 'Clientes activos')]
-yy = 62
-for head, lst, src in (('Por tema', TEM, gn), ('Por audiencia', AUD, au)):
-    S.t(X0, yy, head, 10.5, SEC, w=600)
-    yy += 12
-    for k, lab in lst:
-        g = src.loc[k]
-        hi = g.pv >= 50
-        S.t(BX0 - 8, yy + 13, lab, 11, INK if hi else TXT, 'end', 600 if hi else 400)
-        wb = (BX1 - BX0) * g.pv / 100
-        S.rect(BX0, yy + 2, wb - 1, 16, BLUE if hi else BLUE2)
-        S.rect(BX0 + wb, yy + 2, (BX1 - BX0) - wb, 16, '#E9ECF1')
-        S.t(BX1 + 6, yy + 14, f'{g.pv:.0f} %', 11, INK if hi else TXT, 'start', 700 if hi else 400)
-        yy += 27
-    yy += 10
-S.line(BX0 + (BX1 - BX0) * 0.5, 70, BX0 + (BX1 - BX0) * 0.5, yy - 12, INK, 1, ' stroke-dasharray="3 3" opacity="0.5"')
-S.t(BX0 + (BX1 - BX0) * 0.5, yy, 'mitad', 10.5, SEC, 'middle')
+tot = f(fa); chs = fa.groupby('canal').apply(f); eqs = fa.groupby('eq').apply(f); gn = fa.groupby('gan').apply(f); au = fa.groupby('aud').apply(f)
+sep = int((fa.bajo & (fa['last'] == 9)).sum())
+print(tot.round(1).to_dict(), 'sept', sep); print(chs.round(1)); print(fa.ix.describe())
+CH = [('email', 'Correo', 'mínimo: 3 clics por cada mil'), ('push notification', 'Push', 'mínimo: 7.5 aperturas por cada mil'),
+      ('whatsapp', 'WhatsApp', 'mínimo: 6 de cada 10 leídos'), ('in-app', 'In-app', 'mínimo: 1 de cada 10 con clic')]
+S = Svg('Cuatro paneles, uno por canal, con la misma escala: cada punto es una campaña de promoción, mensajes contra respuesta en veces el mínimo aceptable; '
+        'en azul las que quedan debajo.')
+S.circle(5, 14, 5, BLUE, ''); S.t(15, 18, 'Responde menos que el mínimo aceptable', 11.5, INK, w=600)
+S.circle(270, 14, 5, G1, ''); S.t(280, 18, 'Llega al mínimo o más', 11.5, TXT)
+S.t(430, 18, 'Tamaño: gasto en MXN (correo y WhatsApp)', 10.5, SEC)
+PW, PH = 340, 130
+POS = [(46, 70), (46 + PW + 34, 70), (46, 70 + PH + 58), (46 + PW + 34, 70 + PH + 58)]
+XL, XH = math.log10(5e4), math.log10(4e7)
+YL, YH = math.log10(0.05), math.log10(20)
+NAMES = {'email': [('Nuevos_RegistradosPay-Tasa0', 'Tasa 0 a registrados sin crédito (Product Growth)'), ('BillPay_Intro', 'Lanzamiento BillPay (Others)')],
+         'push notification': [('Anonimos-RescateTasa0', 'Rescate Tasa 0 a anónimos (Marketing)'), ('Marketing-KCash-B0326-Canvas-Leads-ReferralProgram', 'Referidos a leads (Marketing)')],
+         'whatsapp': [('Nuevos_NeverActive-InstallmentsNoCash', 'Nunca activaron (Product Growth)')],
+         'in-app': [('LanzamientoBillpayments_Onboarding', 'BillPay (Marketing)')]}
+for (c, lab, mn), (px, py) in zip(CH, POS):
+    sx = lambda v: px + PW * (math.log10(min(max(v, 5e4), 4e7)) - XL) / (XH - XL)
+    sy = lambda v: py + PH - PH * (math.log10(min(max(v, 0.05), 20)) - YL) / (YH - YL)
+    g = fa[fa.canal == c].sort_values('env', ascending=False)
+    k = chs.loc[c]
+    S.t(px, py - 18, f'{lab}: {int(k.nb)} de {int(k.n)} campañas debajo, {k.pv:.0f} % de sus mensajes', 11.5, INK, w=700)
+    S.rect(px, sy(1), PW, py + PH - sy(1), BLUE, ' opacity="0.05"')
+    for v in (0.1, 1, 10):
+        S.line(px, sy(v), px + PW, sy(v), GRID if v != 1 else BLUE, 1 if v != 1 else 1.2, '' if v != 1 else ' stroke-dasharray="4 3"')
+        S.t(px - 6, sy(v) + 4, f'{v:g}', 10.5, SEC if v != 1 else BLUE, 'end', 400 if v != 1 else 700)
+    S.t(px, py - 5, mn[0].upper() + mn[1:], 10.5, BLUE, 'start', 600)
+    for v, t in ((1e5, '100 mil'), (1e6, '1 M'), (1e7, '10 M')):
+        S.line(sx(v), py + PH, sx(v), py + PH + 4, G1)
+        S.t(sx(v), py + PH + 15, t, 10.5, SEC, 'middle')
+    S.line(px, py + PH, px + PW, py + PH, G1)
+    for q in g.itertuples():
+        rr = 2.0 + 2.4 * math.sqrt(q.costo / 1e6) if c in ('email', 'whatsapp') else 2.4
+        S.circle(sx(q.env), sy(q.ix), rr, BLUE if q.bajo else G1, ' fill-opacity="0.75" stroke="#FFFFFF" stroke-width="0.7"')
+    for j, (key, nm) in enumerate(NAMES.get(c, [])):
+        q = g[g.fam.str.contains(key, regex=False)].iloc[0]
+        x, y = sx(q.env), sy(q.ix)
+        ty = py + PH - 26 - 14 * j
+        right = c == 'in-app'
+        S.line(x, y, x + (10 if right else -10), ty + 2, INK, 0.6)
+        S.t(x + (12 if right else -12), ty + 4, nm, 10.5, INK, 'start' if right else 'end', 600, halo=True)
+        print(c, nm, round(q.env / 1e6, 1), round(q.pct, 2))
+S.t(46, 416, 'Eje vertical: respuesta en veces el mínimo aceptable del canal (1 = justo el mínimo), escala por múltiplos. Horizontal: mensajes de la campaña.', 10.5, SEC)
 svg = S.done()
-pg = big[big.fam.str.contains('Nuevos_RegistradosPay-Tasa0')].iloc[0]
-bp = big[big.fam.str.contains('BillPay_Intro')].iloc[0]
 save(19, dict(
     kind='grafica',
-    titulo='Casi la mitad de los mensajes de promoción salen en campañas que no responden ni lo mínimo aceptable, y muchas siguen saliendo',
-    que=f'Debajo del mínimo: lanzamientos ({gn.loc["lanzamiento","pv"]:.0f} % de su volumen), Tasa 0 ({gn.loc["tasa0","pv"]:.0f} %), referidos ({gn.loc["referidos","pv"]:.0f} %), descuentos ({gn.loc["descuento","pv"]:.0f} %). Recordatorios de algo que la persona empezó: solo {gn.loc["recordatorio","pv"]:.0f} %.',
-    quien=f'Parte de su volumen de promoción debajo del mínimo: Others {eqs.loc["Others","pv"]:.0f} %, Product Growth {eqs.loc["Product Growth","pv"]:.0f} %, Marketing {eqs.loc["Marketing","pv"]:.0f} %, Sales {eqs.loc["Sales","pv"]:.0f} %. Collections no tiene promociones.',
-    a_quien=f'Leads y bases frías: la mitad de sus campañas no llega al mínimo ({au.loc["leads","pv"]:.0f} % y {au.loc["frios","pv"]:.0f} % del volumen). Clientes activos: una de cada cuatro ({au.loc["activos","pv"]:.0f} %).',
+    titulo='Casi la mitad del volumen de promoción sale en campañas que no responden ni lo mínimo aceptable',
+    que=f'Lanzamientos ({gn.loc["lanzamiento","pv"]:.0f} % de su volumen), Tasa 0 ({gn.loc["tasa0","pv"]:.0f} %), referidos ({gn.loc["referidos","pv"]:.0f} %).',
+    quien=f'Others {eqs.loc["Others","pv"]:.0f} % de su promoción, Product Growth {eqs.loc["Product Growth","pv"]:.0f} %, Marketing {eqs.loc["Marketing","pv"]:.0f} %, Sales {eqs.loc["Sales","pv"]:.0f} %.',
+    a_quien=f'Leads ({au.loc["leads","pv"]:.0f} % de su volumen) y bases frías ({au.loc["frios","pv"]:.0f} %); clientes activos {au.loc["activos","pv"]:.0f} %.',
     lecturas=[
-        f'{int(tot.nb)} de {int(tot.n)} campañas de promoción por canal no llegan al mínimo: {tot.envb:.0f} M mensajes ({tot.pv:.0f} % del volumen) y {tot.cb:.1f} M MXN. {sep} seguían mandando en septiembre.',
-        f'El correo es lo peor: {chs.loc["email","pc"]:.0f} % de sus campañas y {chs.loc["email","pv"]:.0f} % de su volumen. Push {chs.loc["push notification","pv"]:.0f} %, in-app {chs.loc["in-app","pv"]:.0f} % y WhatsApp {chs.loc["whatsapp","pv"]:.0f} % del volumen.',
-        f'Lo más grande: Tasa 0 por correo a registrados sin crédito de Product Growth ({pg.env/1e6:.0f} M correos, {10*pg.pct:.1f} clics por cada mil) y el lanzamiento de BillPay por correo de Others ({bp.env/1e6:.0f} M correos, {10*bp.pct:.1f} clics por cada mil).',
+        f'{int(tot.nb)} de {int(tot.n)} campañas no llegan al mínimo: {tot.envb:.0f} M mensajes ({tot.pv:.0f} %) y {tot.cb:.1f} M MXN.',
+        f'El correo es el peor: {chs.loc["email","pv"]:.0f} % de sus mensajes de promoción van en campañas debajo del mínimo.',
+        f'{sep} de esas campañas seguían saliendo en septiembre.',
     ],
-    causa='Nadie mide cada campaña contra un mínimo común: una campaña sigue saliendo mes tras mes aunque casi nadie le responda.',
-    sowhat='Revisar cada mes las campañas contra el mínimo: las que no llegan se rehacen o se quitan; si van a ex clientes, primero se prueba con un grupo sin mensajes.',
-    fuente=f'{FUENTE_E1}. Universo: {int(tot.n)} campañas de promoción por canal (todas sus versiones) con 50 mil o más mensajes entregados o vistos en el periodo. Celdas con menos de 0.5 M mensajes: "poco". Gasto: WhatsApp a 1.00 MXN por entregado, email a 0.05 MXN por enviado.',
+    causa='Nadie mide cada campaña contra un mínimo común: sigue saliendo mes tras mes aunque casi nadie le responda.',
+    sowhat='Revisar cada mes contra el mínimo: rehacer o quitar; a ex clientes, primero probar con un grupo sin envío.',
+    fuente=f'{FUENTE_E1}. {int(tot.n)} campañas de promoción por canal con 50 mil o más mensajes entregados o vistos. Gasto con WhatsApp por entregado.',
     svg=svg,
 ))

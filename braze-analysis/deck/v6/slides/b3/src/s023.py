@@ -69,15 +69,15 @@ for i, (eq, (nb, b), (nw, w)) in enumerate(PARES):
 svg = S.done()
 save(23, dict(kind='grafica',
   titulo='Dentro de cada equipo, a quién y por qué canal se manda hace que el mismo producto responda hasta 32 veces más',
-  que='El mismo producto o la misma oferta a personas distintas o por canales distintos: Installments, cobranza, referidos, promociones de KPay y el lanzamiento de BillPay.',
-  quien='Los cinco equipos. Others es BillPay (NewProducts), avisos de KPay y KCash, recomendaciones de Shopping y pruebas de QA.',
-  a_quien='La campaña que responde va a quien ya empezó algo (un préstamo, un pago por vencer, una compra) o llega por in-app; la que no, a toda la base o a quien no ha hecho nada.',
+  que='El mismo producto a otra gente o por otro canal: Installments, cobranza, BillPay.',
+  quien='Los cinco equipos.',
+  a_quien='La que responde va a quien ya empezó algo o llega por in-app; la otra, a toda la base.',
   lecturas=[
-   'Mismo producto, otra persona: Installments responde 2.78 % de clic en correo a quien ya lo empezó y 0.10 % a registrados que nunca activaron. Precobranza 4.3 % contra 0.14 % de la cobranza con atraso mayor.',
-   'Mismo mensaje, otro canal: el lanzamiento de BillPay tuvo 85 % de clic en in-app y 0.11 % por correo. Anota y gana: 76 % en in-app y 0.19 % por correo.',
-   'Entre campañas de correo, saber a quién va explica 54 % de la diferencia de respuesta y el tema 52 %; saber qué equipo la manda, solo 12 %.'],
-  causa='Cada equipo usa la misma lista y el mismo canal para casi todos sus temas. El resultado lo decide a quién se le escribe y por dónde, no el equipo que lo manda.',
-  sowhat='No hace falta cambiar de dueño las campañas: hay que llevar cada tema a la persona y al canal donde ya responde.',
-  fuente='Fuente: Braze, envíos por campaña, mes y canal, enero a septiembre 2026; campañas con 50 mil o más mensajes entregados. Mínimo aceptable: 3 clics por cada mil correos, 7.5 aperturas por cada mil push, 6 de cada 10 WhatsApp leídos, 1 de cada 10 in-app con clic. Diferencia explicada: varianza ponderada por entregados en 303 campañas de correo; los factores se traslapan.',
+   'Installments: 2.78 % de clic a quien ya lo empezó y 0.10 % a quien nunca activó, en el mismo correo.',
+   'BillPay: 85 % de clic por in-app y 0.11 % por correo. Anota y gana: 76 % y 0.19 %.',
+   'A quién va explica 54 % de la diferencia de respuesta entre correos; el equipo que lo manda, 12 %.'],
+  causa='Cada equipo usa la misma lista y el mismo canal para casi todo; el resultado lo decide a quién y por dónde.',
+  sowhat='No hace falta cambiar de dueño las campañas: hay que llevar cada tema a quien y por donde ya responde.',
+  fuente='Fuente: Braze, envíos por campaña, mes y canal, enero a septiembre 2026; campañas con 50 mil o más entregados. Diferencia explicada: varianza ponderada en 303 campañas de correo.',
   svg=svg))
 check(23)

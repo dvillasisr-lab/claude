@@ -30,7 +30,7 @@ def lab(r):
         return 'Solo ' + ch[0]
     return ', '.join(ch[:-1]) + ' e ' + ch[-1] if ch[-1].startswith('in') else ', '.join(ch[:-1]) + ' y ' + ch[-1]
 a['lab'] = a.apply(lab, axis=1).map(lambda x: x[0].upper() + x[1:])
-a = a.sort_values('msgs', ascending=False)
+a = a.sort_values('msgs', ascending=False).reset_index(drop=True)
 TOP = a.head(8)
 REST = a.iloc[8:]
 M, C = a.msgs.sum(), a.costo.sum()
@@ -48,76 +48,57 @@ print('90d sin ningún: otro', br.otro.sum() / 1e6, br.otro_costo.sum() / 1e6)
 print(TOP[['lab', 'usuarios', 'msgs', 'otro', 'costo']].assign(msgs=lambda x: x.msgs / 1e6).round(2).to_string())
 print('rest', REST.usuarios.sum(), REST.msgs.sum() / 1e6)
 
-S = Svg('Mapa de calor: millones de mensajes por patrón de respuesta de la persona y canal enviado; en azul, mensajes por un canal al que esa persona nunca respondió.')
-S.rect(0, 6, 12, 12, '#DCE5FB'); S.rect(2, 8, 8, 8, BLUE)
-S.t(18, 16, 'Por un canal al que esa persona nunca respondió', 11.5, INK, w=600)
-S.rect(330, 6, 12, 12, '#DDF0E8'); S.rect(332, 8, 8, 8, GREEN)
-S.t(348, 16, 'Por un canal al que sí respondió', 11.5, TXT)
-S.t(0, 34, 'Millones de mensajes de enero a septiembre, según por qué canal respondió cada persona alguna vez (clic, apertura o lectura).', 10.5, SEC)
-LX, CX0, CW_, RH, Y0 = 0, 150, 70, 30, 72
-S.t(LX, Y0 - 10, 'Responde por', 10.5, SEC, w=600)
-for j, (_, _, cl) in enumerate(CHS):
-    S.t(CX0 + CW_ * j + CW_ / 2, Y0 - 10, cl, 11, INK, 'middle', 600)
-K1, K2, K3 = 520, 632, 720
-S.t(K1, Y0 - 22, 'Personas', 10.5, SEC, 'end'); S.t(K1, Y0 - 10, 'millones', 10.5, SEC, 'end')
-S.t(K2, Y0 - 22, 'Mensajes por canal', 10.5, SEC, 'end'); S.t(K2, Y0 - 10, 'sin respuesta', 10.5, SEC, 'end')
-S.t(K3 + 56, Y0 - 22, 'Gasto', 10.5, SEC, 'end'); S.t(K3 + 56, Y0 - 10, 'M MXN', 10.5, SEC, 'end')
-rows = [(r.lab, r) for r in TOP.itertuples()]
-for i, (lb, r) in enumerate(rows):
-    y = Y0 + RH * i
+S = Svg('Mancuernas por patrón de respuesta de la persona: mensajes por un canal al que responde contra mensajes totales; '
+        'la distancia son mensajes por un canal al que nunca respondió.')
+S.circle(5, 14, 5.5, GREEN, ''); S.t(15, 18, 'Mensajes por un canal al que esa persona sí responde', 11.5, INK, w=600)
+S.circle(345, 14, 5.5, BLUE, ''); S.t(355, 18, 'Total de mensajes', 11.5, INK, w=600)
+S.rect(490, 9, 24, 10, '#C7D4F6'); S.t(520, 18, 'Por un canal sin respuesta', 11.5, TXT)
+S.t(0, 36, 'Una fila por patrón: por qué canales respondió la persona alguna vez (clic, apertura o lectura), enero a septiembre.', 10.5, SEC)
+LX, X0, X1 = 186, 196, 590
+VM = 170
+sx = lambda v: X0 + (X1 - X0) * v / VM
+Y0, RH = 64, 18.6
+rows = a.copy()
+rows['ok'] = rows.msgs - rows.otro
+YB = Y0 + RH * len(rows)
+for v in range(0, 171, 40):
+    S.line(sx(v), Y0 - 4, sx(v), YB, GRID)
+    S.t(sx(v), YB + 14, f'{v} M', 10.5, SEC, 'middle')
+S.t(X1, YB + 30, 'Millones de mensajes en nueve meses', 10.5, SEC, 'end')
+K1, K2 = 668, 778
+S.t(K1, Y0 - 8, 'Personas', 10.5, SEC, 'end')
+S.t(K2, Y0 - 20, 'Por canal', 10.5, SEC, 'end')
+S.t(K2, Y0 - 8, 'sin respuesta', 10.5, SEC, 'end')
+for i, r in enumerate(rows.itertuples()):
+    y = Y0 + RH * i + RH / 2
     big = r.lab in ('Ningún canal', 'Solo WhatsApp')
-    S.t(LX, y + RH / 2 + 4, lb, 11, INK if big else TXT, w=600 if big else 400)
-    for j, (c, m, cl) in enumerate(CHS):
-        v = getattr(r, m) / 1e6
-        ok = getattr(r, 'resp_' + c) == 1
-        S.rect(CX0 + CW_ * j, y + 1, CW_ - 2, RH - 2, '#DDF0E8' if ok else '#DCE5FB')
-        S.t(CX0 + CW_ * j + CW_ / 2 - 1, y + RH / 2 + 4, f'{v:.1f}', 11, GREEN if ok else BLUE, 'middle', 600 if v >= 10 else 400)
-    S.t(K1, y + RH / 2 + 4, f'{r.usuarios/1e6:.2f}', 11, INK if big else TXT, 'end')
-    S.t(K2, y + RH / 2 + 4, f'{100*r.otro/r.msgs:.0f} %', 11, INK if big else TXT, 'end', 600 if big else 400)
-    S.t(K3 + 56, y + RH / 2 + 4, f'{r.costo/1e6:.1f}', 11, INK if big else TXT, 'end', 600 if big else 400)
-y = Y0 + RH * len(rows)
-S.t(LX, y + RH / 2 + 4, f'Otras 8 combinaciones', 11, TXT)
-for j, (c, m, cl) in enumerate(CHS):
-    v = REST[m].sum() / 1e6
-    no = (REST[m] * (1 - REST['resp_' + c])).sum() / 1e6
-    S.rect(CX0 + CW_ * j, y + 1, CW_ - 2, RH - 2, '#F3F5F8')
-    S.t(CX0 + CW_ * j + CW_ / 2 - 1, y + RH / 2 + 4, f'{v:.1f}', 11, TXT, 'middle')
-S.t(K1, y + RH / 2 + 4, f'{REST.usuarios.sum()/1e6:.2f}', 11, TXT, 'end')
-S.t(K2, y + RH / 2 + 4, f'{100*REST.otro.sum()/REST.msgs.sum():.0f} %', 11, TXT, 'end')
-S.t(K3 + 56, y + RH / 2 + 4, f'{REST.costo.sum()/1e6:.1f}', 11, TXT, 'end')
-y += RH + 4
-S.line(0, y, 780, y, INK, 1)
-y += 4
-S.t(LX, y + RH / 2 + 4, 'Total nueve meses', 11.5, INK, w=700)
-for j, (c, m, cl) in enumerate(CHS):
-    S.t(CX0 + CW_ * j + CW_ / 2 - 1, y + RH / 2 + 4, f'{a[m].sum()/1e6:.0f}', 11, INK, 'middle', 600)
-S.t(K1, y + RH / 2 + 4, f'{a.usuarios.sum()/1e6:.1f}', 11, INK, 'end', 600)
-S.t(K2, y + RH / 2 + 4, f'{100*a.otro.sum()/M:.0f} %', 12, BLUE, 'end', 700)
-S.t(K3 + 56, y + RH / 2 + 4, f'{C/1e6:.1f}', 11, INK, 'end', 600)
-y += RH
-S.t(LX, y + RH / 2 + 4, 'Julio a septiembre', 11.5, INK, w=700)
-for j, (c, m, cl) in enumerate(CHS):
-    S.t(CX0 + CW_ * j + CW_ / 2 - 1, y + RH / 2 + 4, f'{b[m].sum()/1e6:.0f}', 11, INK, 'middle', 600)
-S.t(K1, y + RH / 2 + 4, f'{b.usuarios.sum()/1e6:.1f}', 11, INK, 'end', 600)
-S.t(K2, y + RH / 2 + 4, f'{100*b.otro.sum()/b.msgs.sum():.0f} %', 12, BLUE, 'end', 700)
-S.t(K3 + 56, y + RH / 2 + 4, f'{b.costo.sum()/1e6:.1f}', 11, INK, 'end', 600)
-print('alto', y + RH)
+    S.t(LX, y + 4, r.lab, 10.5, INK if big else TXT, 'end', 600 if big else 400)
+    S.rect(sx(r.ok / 1e6), y - 4, sx(r.msgs / 1e6) - sx(r.ok / 1e6), 8, '#C7D4F6')
+    S.circle(sx(r.ok / 1e6), y, 4.5, GREEN, ' stroke="#FFFFFF" stroke-width="1.2"')
+    S.circle(sx(r.msgs / 1e6), y, 4.5, BLUE, ' stroke="#FFFFFF" stroke-width="1.2"')
+    if r.msgs / 1e6 >= 25:
+        S.t(sx(r.msgs / 1e6) + 8, y + 4, f'{r.msgs/1e6:.0f} M', 10.5, INK, 'start', 600 if big else 400)
+    S.t(K1, y + 4, f'{r.usuarios/1e6:.2f} M' if r.usuarios >= 1e5 else f'{r.usuarios/1e3:.0f} mil', 10.5, TXT, 'end')
+    S.t(K2, y + 4, f'{100*r.otro/r.msgs:.0f} %', 10.5, BLUE if r.otro / r.msgs >= 0.5 else TXT, 'end', 700 if big else 400)
+S.t(0, YB + 46, f'Total: {a.otro.sum()/1e6:.0f} M de {M/1e6:.0f} M mensajes ({100*a.otro.sum()/M:.0f} %) por un canal sin respuesta de esa persona; '
+    f'julio a septiembre: {100*b.otro.sum()/b.msgs.sum():.0f} %.', 11.5, BLUE, 'start', 700)
+print('alto', YB + 46)
 svg = S.done()
 
 ning = a[a.nresp == 0].iloc[0]
 save(18, dict(
     kind='grafica',
-    titulo='Seis de cada diez mensajes van por un canal al que esa persona nunca ha respondido: el canal lo elige el equipo, no la persona',
-    que='Sobre todo correo y push con promociones, a personas que responden por otro canal o por ninguno.',
-    quien='Todos los equipos. Los datos de respuesta por persona no traen el equipo ni la campaña, así que no se puede repartir por equipo.',
-    a_quien=f'{resp.usuarios.sum()/1e6:.1f} M personas responden por algún canal; {e_otro.usuarios.sum()/1e6:.1f} M de ellas nunca dieron clic en un correo. {ning.usuarios/1e6:.1f} M personas no respondieron por ninguno en nueve meses.',
+    titulo='Seis de cada diez mensajes van por un canal al que esa persona nunca ha respondido',
+    que='Sobre todo correo y push con promociones.',
+    quien='Todos los equipos; el dato por persona no trae equipo ni campaña.',
+    a_quien=f'{resp.usuarios.sum()/1e6:.1f} M personas que responden por algún canal y {ning.usuarios/1e6:.1f} M que no responden por ninguno.',
     lecturas=[
-        f'{a.otro.sum()/1e6:.0f} M de {M/1e6:.0f} M mensajes ({100*a.otro.sum()/M:.0f} %) fueron por un canal sin respuesta de esa persona, con {a.otro_costo.sum()/1e6:.1f} M MXN. De julio a septiembre ya es {100*b.otro.sum()/b.msgs.sum():.0f} %.',
-        f'Quien solo lee WhatsApp ({100*sw.usuarios/a.usuarios.sum():.0f} % de las personas) recibió {sw.msgs_email/1e6:.0f} M correos y {sw.msgs_push/1e6:.0f} M push que nunca abrió, y se lleva {100*sw.costo/C:.0f} % del gasto.',
-        f'Mandar a quien sí responde solo por su canal de los últimos 90 días quita {br.otro.sum()/1e6:.0f} M mensajes y {br.otro_costo.sum()/1e6:.1f} M MXN por trimestre.',
+        f'{a.otro.sum()/1e6:.0f} M de {M/1e6:.0f} M mensajes ({100*a.otro.sum()/M:.0f} %) por un canal sin respuesta: {a.otro_costo.sum()/1e6:.1f} M MXN.',
+        f'Quien solo lee WhatsApp recibió {sw.msgs_email/1e6:.0f} M correos y {sw.msgs_push/1e6:.0f} M push que nunca abrió.',
+        f'Mandar solo por el canal de los últimos 90 días quita {br.otro.sum()/1e6:.0f} M mensajes y {br.otro_costo.sum()/1e6:.1f} M MXN por trimestre.',
     ],
-    causa='Braze no guarda por qué canal responde cada persona, así que nadie puede elegirlo: cada equipo manda por el canal que acostumbra.',
-    sowhat='Guardar en Braze el canal al que cada persona respondió en 90 días y mandar por ese; elegir el canal por persona, no por equipo.',
-    fuente='Fuente: Braze, mensajes y respuesta por persona, enero a septiembre 2026 y julio a septiembre 2026 (90 días). Responder = clic de correo o in-app, apertura de push, lectura de WhatsApp. Mensajes enviados, hayan llegado o no. Gasto: WhatsApp a 1.00 MXN por entregado, correo a 0.05 MXN por enviado.',
+    causa='Braze no guarda por qué canal responde cada persona, así que cada equipo manda por el canal que acostumbra.',
+    sowhat='Guardar en Braze el canal al que cada persona respondió en 90 días y mandar por ese.',
+    fuente='Fuente: Braze, mensajes y respuesta por persona, enero a septiembre y julio a septiembre 2026. Mensajes enviados; WhatsApp a 1.00 MXN por entregado.',
     svg=svg,
 ))

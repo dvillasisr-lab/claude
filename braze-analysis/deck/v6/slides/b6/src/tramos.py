@@ -45,48 +45,36 @@ def wmed(d):
     return d.dias_mediana[c >= d.usuarios.sum() / 2].iloc[0]
 
 
-def grafica(coh, equipos, resalta, label, nota_tramo, sub='Personas que se dieron de baja, por días desde su primer correo'):
-    """resalta(clave) -> True si la campaña es de lo que prueba el título (azul)."""
+def grafica(coh, equipos, resalta, label, etiquetas, sub):
+    """Franja por equipo: cada punto es una campaña que llegó el día de la baja; x = mediana de días desde el primer correo
+    (escala logarítmica de días + 1), tamaño = personas que se dieron de baja. Raya negra = mediana del equipo."""
     bd, res, l = datos(coh)
     tot = res.usuarios
     s = SVG(label)
-    X0, X1 = 118, 780
-    cw = (X1 - X0) / len(TRAMOS)
-    cx = lambda i: X0 + cw * (i + 0.5)
-    # panel de arriba
     s.t(0, 14, sub, 12, INK, w=600)
-    vmax = max(bd.usuarios) * 1.12
-    YB, YT = 128, 34
-    vy = lambda v: YB - (YB - YT) * v / vmax
-    for i, (k, lab, a, b) in enumerate(TRAMOS):
-        q = bd.loc[k]; p = 100 * q.usuarios / tot
-        col = BLUE if nota_tramo(i) else M2
-        s.rect(cx(i) - cw * 0.3, vy(q.usuarios), cw * 0.6, YB - vy(q.usuarios), col)
-        s.t(cx(i), vy(q.usuarios) - 6, f'{q.usuarios/1e3:.0f} mil · {p:.0f} %', 11.5, INK, 'middle', 600)
-        s.t(cx(i), YB + 15, lab, 11.5, TXT, 'middle', 600)
-        s.t(cx(i), YB + 30, f'{q.emails_prom:.1f} correos', 11, SEC, 'middle')
-    s.line(X0, YB, X1, YB, M1)
-    s.t(0, YB + 15, 'Días', 11, SEC); s.t(0, YB + 30, 'Recibidos antes', 11, SEC)
-    # panel de abajo: equipo x tramo
-    YT2 = 186
-    s.t(0, YT2 - 8, 'Campaña que llegó el día de la baja, por equipo (tamaño: personas que se dieron de baja)', 12, INK, w=600)
-    RH = (398 - YT2) / len(equipos)
-    rmax = max(l.groupby(['team', 'tramo']).usuarios.sum())
-    rad = lambda u: max(3.5, 15 * (u / rmax) ** 0.5)
+    X0, X1 = 150, 700
+    xs = lambda d: X0 + (X1 - X0) * math.log10(d + 1) / math.log10(301)
+    TOP = 64; RH = (352 - TOP) / len(equipos)
+    m30 = 100 * bd.loc[['0 mismo día', '1 a 7', '08 a 30'], 'usuarios'].sum() / tot
+    s.rect(xs(0), TOP - 10, xs(30) - xs(0), RH * len(equipos), '#EEF2FC')
+    s.t(xs(0) + 4, TOP - 14, f'Primer mes: {m30:.0f} % de las bajas', 11, BLUE, 'start', 600)
+    for d, lab in ((0, '0'), (1, '1'), (3, '3'), (7, '7'), (30, '30'), (90, '90'), (180, '180'), (300, '300')):
+        s.line(xs(d), TOP - 10, xs(d), TOP - 10 + RH * len(equipos)); s.t(xs(d), TOP + RH * len(equipos) + 6, lab, 10.5, SEC, 'middle')
+    s.t(X1, TOP + RH * len(equipos) + 21, 'Días desde el primer correo hasta la baja (mediana de cada campaña)', 10.5, SEC, 'end')
+    s.t(780, TOP - 14, 'Parte de las bajas', 10.5, SEC, 'end')
+    umax = l.usuarios.max()
     for j, eqn in enumerate(equipos):
-        y = YT2 + RH * (j + 0.5)
+        yc = TOP + RH * j + RH / 2 - 6
         le = l[l.team == eqn]
-        s.t(0, y - 8, eqn, 12, INK, w=600)
-        s.t(0, y + 7, f'{100*le.usuarios.sum()/tot:.0f} % de las bajas', 11, SEC)
-        s.t(0, y + 21, f'mediana: día {wmed(le):.0f}', 11, SEC)
-        s.line(X0, y + RH / 2, X1, y + RH / 2, GRID)
-        for i, (k, *_r) in enumerate(TRAMOS):
-            c = le[le.tramo == k]
-            if not len(c): continue
-            u = c.usuarios.sum(); top = c.sort_values('usuarios', ascending=False).iloc[0]
-            col = BLUE if resalta(top.clave) else M1
-            x0 = X0 + cw * i
-            s.circle(x0 + 18, y - 6, rad(u), col, ring=False)
-            s.t(x0 + 38, y - 2, f'{u/1e3:.1f} mil' if u < 1e4 else f'{u/1e3:.0f} mil', 11.5, INK, w=600)
-            s.t(x0 + 3, y + 21, top.corto, 10.5, TXT)
+        s.t(0, yc - 2, eqn, 12, INK, w=600); s.t(0, yc + 12, f'{len(le)} campañas', 10.5, SEC)
+        s.line(0, yc + RH / 2 + 1, 780, yc + RH / 2 + 1, GRID)
+        for i, (_, q) in enumerate(le.sort_values('usuarios', ascending=False).iterrows()):
+            y = yc + ((i * 7) % 15 - 7)
+            s.circle(xs(q.dias_mediana), y, 3 + 13 * math.sqrt(q.usuarios / umax), BLUE if resalta(q.clave) else M1, extra=' fill-opacity="0.85"')
+            if q.clave in etiquetas:
+                dx, dy, an = etiquetas[q.clave]
+                etiqueta(s, xs(q.dias_mediana), y, corto(q.clave), dx, dy, an, sub=f'{q.usuarios/1e3:.0f} mil, día {q.dias_mediana}')
+        md = wmed(le)
+        s.rect(xs(md) - 1.5, yc - 14, 3, 28, INK)
+        s.t(780, yc + 4, f'{100*le.usuarios.sum()/tot:.0f} %', 13, INK, 'end', 600)
     return s, bd, res, l

@@ -1,5 +1,6 @@
-"""Lámina 52: correos promocionales que siguen llegando después de darse de baja (E5b), por campaña, equipo, tema y meses.
-Arriba: los 1.42 M correos después de la baja partidos en cobranza, avisos y promociones."""
+"""Lámina 52 (ronda 2). Arriba: 3 cifras de correos después de la baja (E5b). Gráfica: franja por tipo y equipo; cada punto es una
+campaña (Canvas con fecha) que mandó correos a gente ya dada de baja; x = correos después de la baja (log). Gris = cobranza y avisos,
+que sí proceden; azul = promociones (Marketing en azul fuerte)."""
 import re
 import pandas as pd
 from b5_svg import *
@@ -7,73 +8,59 @@ from b5_svg import *
 R = '/home/user/claude/braze-analysis/'
 c = pd.read_csv(R + 'hallazgos/muestra_c_familias.csv'); tipo = c.groupby('familia').tipo.first()
 b = pd.read_csv(R + 'data/e5b_comms_despues_baja.csv')
-b['f'] = b.familia.map(lambda s: re.sub(r'-\d{8,9}-', '-', s)); b['tipo'] = b.f.map(tipo)
-p = b[b.tipo == 'promocional o lifecycle'].copy()
-PROGS = [('B0171.*Leads_BBDDRezagada-RescateTasa0', 'Rescate con Tasa 0 a leads rezagados', 'Tasa 0'),
-         ('B0326.*Leads-ReferralProgram', 'Referidos a leads', 'Referidos'),
-         ('B0171.*HotLeadsW1', 'Rescate con Tasa 0 a hot leads', 'Tasa 0'),
-         ('B0211', 'Tasa 0 a registrados de Pay', 'Tasa 0'),
-         ('Newsletter', 'Newsletters', 'Lanzamientos y novedades'),
-         ('Veriff$', 'Recordatorio de verificar identidad (Veriff)', 'Terminar el registro'),
-         ('BillPay', 'Lanzamiento de BillPay', 'Lanzamiento'),
-         ('B0392', 'Cuponera de descuentos de marzo', 'Descuentos'),
-         ('WeeklyRecommendations', 'Recomendaciones semanales de Shopping', 'Recomendaciones')]
-def prog(f):
-    for rx, lab, _ in PROGS:
-        if re.search(rx, f): return lab
-    return 'Resto (31 campañas)'
-p['prog'] = p.f.map(prog)
-g = p.groupby('prog').agg(e=('emails_despues_de_baja', 'sum'), meses=('meses', 'sum'), eq=('equipo', 'first'), n=('f', 'size'))
-g['meses'] = g.meses.clip(upper=9)
-TEMA = {lab: t for _, lab, t in PROGS}
-orden = [lab for _, lab, _ in PROGS]
-orden = sorted(orden, key=lambda k: -g.loc[k, 'e']) + ['Resto (31 campañas)']
-nresto = int(g.loc['Resto (31 campañas)', 'n'])
-g = g.rename(index={'Resto (31 campañas)': f'Resto ({nresto} campañas)'}); orden[-1] = f'Resto ({nresto} campañas)'
+b['f'] = b.familia.map(lambda s: re.sub(r'-\d{8,9}-', '-', s)); b['tipo'] = b.f.map(tipo).fillna('?')
+b['eq'] = b.equipo.replace({'Acquisition': 'Others'})
 TOT = b.emails_despues_de_baja.sum(); TIP = b.groupby('tipo').emails_despues_de_baja.sum()
-promo = TIP['promocional o lifecycle']; cob = TIP['cobranza']; tra = TIP['transaccional u operativa']
-eqs = p.groupby('equipo').emails_despues_de_baja.sum()
-S = Svg('Correos que llegaron después de darse de baja: arriba, partidos en cobranza, avisos y promociones; abajo, las campañas promocionales con más correos, por equipo, tema y meses.')
-S.t(0, 14, f'{M(TOT, 2)} M correos llegaron a gente que ya se había dado de baja', 12, INK, w=600)
-x = 0
-for v, col, lab in [(cob, MARK2, 'Cobranza'), (tra, MARK2, 'Avisos de pago y contratos'), (promo, BLUE, 'Promociones')]:
-    w = W * v / TOT
-    S.rect(x, 22, w - 2, 22, col)
-    if lab != 'Promociones': S.t(x + 6, 37, f'{lab}: {mil(v)} mil ({100*v/TOT:.0f} %)', 11, INK)
-    x += w
-S.t(W, 60, f'Promociones: {mil(promo)} mil ({100*promo/TOT:.0f} %)', 11.5, INK, 'end', 600)
-S.t(0, 60, 'Cobranza y avisos sí proceden después de la baja. Las promociones no.', 10.5, SEC)
-S.line(0, 72, W, 72, GRID)
-S.t(0, 92, 'Correos promocionales después de la baja, por campaña', 12, INK, w=600)
-S.rect(400, 83, 10, 10, BLUE); S.t(414, 92, 'Marketing', 11, TXT)
-S.rect(490, 83, 10, 10, MARK); S.t(504, 92, 'Otros equipos', 11, TXT)
-X0, X1 = 250, 520; mx = g.e.max()
-for i, k in enumerate(orden):
-    r = g.loc[k]; y = 104 + 29 * i
-    S.t(X0 - 8, y + 12, k, 11.5, INK if r['eq'] == 'Marketing' else TXT, 'end', 600 if r['eq'] == 'Marketing' else 400)
-    w = (X1 - X0) * r.e / mx
-    col = BLUE if r['eq'] == 'Marketing' else (MARK2 if k.startswith('Resto') else MARK)
-    S.rect(X0, y + 2, w, 15, col)
-    eq = r['eq'] if r['eq'] != 'Others' else 'Others'
-    extra = '' if k.startswith('Resto') else f' · {TEMA[k]} · {eq}'
-    S.t(X0 + w + 6, y + 14, f'{r.e/1e3:.1f} mil', 11.5, INK, w=600)
-    S.t(X0 + w + 60, y + 14, (f'{int(r.meses)} meses' if r.meses > 1 else '1 mes') + extra if not k.startswith('Resto') else 'varios equipos', 10.5, SEC)
+promo = TIP['promocional o lifecycle']; cob, tra = TIP['cobranza'], TIP['transaccional u operativa']
+pb = b[b.tipo == 'promocional o lifecycle']; eqs = pb.groupby('eq').emails_despues_de_baja.sum()
+ROWS = [('Cobranza', b[b.tipo == 'cobranza'], MARK), ('Avisos de pago y contratos', b[b.tipo == 'transaccional u operativa'], MARK),
+        ('Promos de Marketing', pb[pb['eq'] == 'Marketing'], BLUE), ('Promos de Product Growth', pb[pb['eq'] == 'Product Growth'], BLUEL),
+        ('Promos de Sales', pb[pb['eq'] == 'Sales'], BLUEL), ('Promos de Others', pb[pb['eq'] == 'Others'], BLUEL)]
+S = Svg('Arriba, tres cifras de los correos que llegan después de darse de baja. Abajo, cada punto es una campaña: correos que mandó a gente ya dada de baja, por tipo de mensaje y equipo.')
+kpis(S, [(f'{M(TOT, 2)} M', 'correos llegaron después', 'de darse de baja'),
+         (f'{100*(cob+tra)/TOT:.0f} %', 'son cobranza y avisos:', 'esos sí proceden'),
+         (f'{mil(promo)} mil', f'promociones; {mil(eqs["Marketing"])} mil', 'de Marketing')])
+S.t(0, 72, 'Correos después de la baja; cada punto es una campaña', 12, INK, w=600)
+X0, X1 = 170, 650
+sx = logx(100, 300000, X0, X1)
+TOP, RH = 96, 46
+for v, lab in [(100, '100'), (1000, '1 mil'), (10000, '10 mil'), (100000, '100 mil')]:
+    S.line(sx(v), TOP - 8, sx(v), TOP + RH * len(ROWS) - 14); S.t(sx(v), TOP + RH * len(ROWS), lab, 10.5, SEC, 'middle')
+S.t(W, TOP - 10, 'Total', 10.5, SEC, 'end')
+NAMED = {'B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0': ('Rescate Tasa 0 a rezagados', 8, -9, 'start'), 'Retargeting_Veriff': ('Veriff, 9 meses seguidos', -8, 22, 'end'),
+         'Portfolio_BillPay_Intro': ('Lanzamiento de BillPay', 8, -9, 'start'), 'B0211': ('Tasa 0 a registrados', 8, -9, 'start'), 'BKT1': ('Cobranza de atraso menor', -8, -9, 'end')}
+done = set()
+for i, (lab, d, col) in enumerate(ROWS):
+    yc = TOP + RH * i + 12
+    S.t(X0 - 10, yc + 4, lab, 11.5, INK, 'end', 600 if col == BLUE else 400)
+    S.t(X0 - 10, yc + 18, f'{len(d)} campañas', 10.5, SEC, 'end')
+    d = d.sort_values('emails_despues_de_baja')
+    offs = swarm([sx(v) for v in d.emails_despues_de_baja], 3.6, 15)
+    for q, o in zip(d.itertuples(), offs):
+        S.circle(sx(q.emails_despues_de_baja), yc + o, 3.6, col, '#FFFFFF', 0.8)
+    tot = d.emails_despues_de_baja.sum()
+    S.t(W, yc + 4, f'{tot/1e3:,.0f} mil', 12, INK, 'end', 600)
+    for q in d.sort_values('emails_despues_de_baja', ascending=False).itertuples():
+        for k, n in NAMED.items():
+            if k in q.f and k not in done:
+                done.add(k); nm, dx, dy, an = n
+                S.t(sx(q.emails_despues_de_baja) + dx, yc + dy, nm, 10.5, INK, an, 600, halo=True)
 SVG = S.done()
 
 guarda(52, dict(
     kind='grafica',
     titulo='A quien se dio de baja le siguen llegando promociones de Tasa 0 y referidos, casi todas de Marketing',
-    que=f'Correo promocional: Tasa 0 ({mil(D["baja"]["tema"]["Tasa 0"])} mil), lanzamientos y newsletters ({mil(D["baja"]["tema"]["Lanzamiento y novedades"])} mil), referidos ({mil(D["baja"]["tema"]["Referidos"])} mil), descuentos y cupones ({mil(D["baja"]["tema"]["Descuento, cupón u oferta"])} mil) y recordatorio de terminar el registro ({mil(D["baja"]["tema"]["Recordatorio de algo empezado"])} mil).',
-    quien=f'Marketing {mil(eqs["Marketing"])} mil, Product Growth {mil(eqs["Product Growth"])} mil, Sales {mil(eqs["Sales"])} mil, Others {mil(eqs["Others"])} mil (BillPay y Shopping) y Acquisition {mil(eqs["Acquisition"])} mil.',
-    a_quien=f'{mil(D["baja"]["usuarios"])} mil personas que ya se habían dado de baja del correo, sobre todo leads y registrados que nunca tomaron crédito.',
+    que='Correo promocional: Tasa 0, newsletters, referidos, cupones y recordatorio de registro',
+    quien=f'Marketing ({mil(eqs["Marketing"])} de {mil(promo)} mil), Product Growth, Sales y Others',
+    a_quien=f'{mil(pb.usuarios_aprox.sum())} mil personas que ya se habían dado de baja del correo',
     lecturas=[
-        f'De {M(TOT, 2)} M correos que llegaron después de la baja, {100*(cob+tra)/TOT:.0f} % son cobranza o avisos de pago y contratos, que sí proceden. {mil(promo)} mil son promociones a {mil(D["baja"]["usuarios"])} mil personas.',
-        f'{mil(eqs["Marketing"])} de {mil(promo)} mil son de Marketing: rescate con Tasa 0 a leads, referidos y newsletters. El recordatorio de Veriff siguió llegando los nueve meses. Solo {fmt(D["baja"]["clics"])} personas hicieron clic.',
-        'Lo más probable: son Canvas largos que revisan la suscripción solo al entrar y no en cada paso, así que quien se da de baja a la mitad recibe los correos que faltan.',
+        f'{100*(cob+tra)/TOT:.0f} % de lo que llega tras la baja es cobranza y avisos de pago: eso sí procede.',
+        f'{mil(promo)} mil promociones; la mayor, rescate con Tasa 0 a leads rezagados (Marketing), {pb[pb.f.str.contains("Leads_BBDDRezagada-RescateTasa0")].emails_despues_de_baja.sum()/1e3:.1f} mil.',
+        'El recordatorio de Veriff siguió llegando nueve meses seguidos a quien ya se había dado de baja.',
     ],
-    causa='El filtro de suscripción está en la entrada del Canvas y no en cada paso de correo. Nadie revisa qué llega después de la baja porque el volumen es chico.',
-    sowhat='Es un ajuste de configuración, no una decisión de negocio: poner el filtro de suscripción en cada paso de correo de esos Canvas se corrige en una semana.',
-    fuente=f'Fuente: Braze E5b (correos después de la baja), enero a septiembre 2026; tipo de mensaje del catálogo de campañas (muestra C) y tema por el nombre. 79 a 80 mil según se cuenten {fmt(TIP.get("?", 0) if "?" in TIP else 682)} correos sin tipo. Pesa en la reputación del dominio aunque el volumen sea chico.',
+    causa='El filtro de suscripción está en la entrada del Canvas y no en cada paso de correo (lo más probable).',
+    sowhat='Ajuste de configuración, no de negocio: filtro de suscripción en cada paso de correo, en una semana.',
+    fuente='Fuente: Braze E5b (correos después de la baja), enero a septiembre 2026; tipo de mensaje del catálogo de campañas (muestra C). Cada punto es un Canvas con su fecha.',
     svg=SVG,
 ))
-print(g.sort_values('e', ascending=False))
+print(len(b), {lab: len(d) for lab, d, _ in ROWS})

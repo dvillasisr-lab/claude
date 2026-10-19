@@ -55,17 +55,17 @@ for i, b in enumerate(rows):
     if i < len(rows) - 1: S.line(0, TOP + RH * (i + 1) - 6, 780, TOP + RH * (i + 1) - 6, GRID)
 S.t(0, 412, f"El Canvas más largo del programa tiene {int(big.p)} mensajes distintos: 40 push, 40 in-app, 30 correos y 10 WhatsApp, en cuatro semanas y cinco ofertas.", 10.5, TXT)
 J = dict(
-    titulo="Los Canvas para recuperar clientes de KPay tienen hasta 120 mensajes distintos, y casi la mitad de sus push no llega a lo mínimo de aperturas",
-    que="Promoción para recuperar clientes de KPay: cuatro semanas de mensajes por cuatro canales, con cinco ofertas (sin oferta, cupón, descuento en tasa y combinaciones), cada una también solo para Amazon.",
-    quien=f"Product Growth: {(L.team=='Lending').sum()} de los {len(L)} Canvas con más de 20 pasos (el otro es una copia de uno de ellos); {int(L.prog.sum())} son este programa.",
-    a_quien="Ex clientes KPay con 3, 6 y 12 meses sin compra. Se les escribe para recuperarlos; muchos pueden no tener la app, y sin app no reciben push.",
+    titulo="Los Canvas para recuperar clientes KPay tienen hasta 120 mensajes y la mitad de su push no llega a lo mínimo",
+    que="Recuperación de KPay: 4 semanas, 4 canales y 5 ofertas, cada una también para Amazon.",
+    quien=f"Product Growth: {(L.team=='Lending').sum()} de {len(L)} Canvas con más de 20 pasos.",
+    a_quien="Ex clientes KPay con 3, 6 y 12 meses sin compra; muchos sin la app.",
     lecturas=[
-        f"{int((pp.pm<MINP).sum())} de los {len(pp)} pasos de push del programa abren menos de 7.5 por cada mil; en otros Canvas, {int((po.pm<MINP).sum())} de {len(po)}. En promedio abren {1000*pp.ab.sum()/pp.usuarios.sum():.0f} por mil contra {1000*po.ab.sum()/po.usuarios.sum():.0f}.",
-        f"Los 120 pasos no son 120 mensajes a la misma persona: son mensajes distintos por semana, canal y oferta; cada quien recibe su rama, unos 5 a 10 mensajes al mes.",
-        f"En el programa completo el correo recibe {P.loc['email','pm']:.1f} clics por cada mil (lo mínimo es 3), el WhatsApp se lee {P.loc['whatsapp','pm']/10:.0f} % y el in-app {P.loc['in-app','pm']:.0f} clics por mil (mínimo 100). El push del programa pasa apenas en promedio ({P.loc['push notification','pm']:.1f} por mil).",
+        f"{int((pp.pm<MINP).sum())} de {len(pp)} pasos de push del programa abren menos de 7.5 por mil; en otros Canvas, {int((po.pm<MINP).sum())} de {len(po)}.",
+        f"Promedio: {1000*pp.ab.sum()/pp.usuarios.sum():.0f} aperturas por mil en el programa contra {1000*po.ab.sum()/po.usuarios.sum():.0f} en otros Canvas.",
+        f"Correo del programa: {P.loc['email','pm']:.1f} clics por mil (mínimo 3); WhatsApp leído {P.loc['whatsapp','pm']/10:.0f} %.",
     ],
-    causa="Cada oferta nueva se agrega como otra rama del mismo Canvas, por cuatro canales y cuatro semanas, sin quitar los pasos que nadie abre ni medir contra un grupo sin mensajes.",
-    sowhat="Más pasos no recuperan más: el programa necesita dos o tres ofertas, el canal que la persona sí usa, quitar los pasos que no llegan a lo mínimo y un grupo sin mensajes.",
-    fuente=f"Fuente: Braze, embudo por paso de Canvas (posición del paso aproximada) y envíos por campaña y canal de B0331, B0332 y B0333, enero a septiembre 2026; el programa mandó {f.envios.sum()/1e6:.1f} M mensajes y costó {f.costo.sum()/1e6:.1f} M MXN. Mínimo: 7.5 aperturas por mil push, 3 clics por mil correos, 6 de cada 10 WhatsApp leídos, 1 de cada 10 in-app con clic.",
+    causa="Cada oferta nueva se agrega como otra rama del Canvas, sin quitar los pasos que nadie abre.",
+    sowhat="Más pasos no recuperan más: dos o tres ofertas, el canal que la persona usa y un grupo sin mensajes.",
+    fuente=f"Fuente: Braze, embudo por paso de Canvas y envíos por canal de B0331 a B0333, ene a sep 2026; pasos de push con 5 mil personas o más. Posición del paso aproximada.",
     svg=S.out())
 write(73, J)

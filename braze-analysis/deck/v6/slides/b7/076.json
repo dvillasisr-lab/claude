@@ -3,24 +3,24 @@
  "kind": "cierre",
  "titulo": "Por qué pasa: nadie compara volumen contra respuesta, y copiar una campaña es más fácil que medirla",
  "porques": [
-  "Casi la mitad de los mensajes del año (293 M mensajes) salió de campañas que no responden lo mínimo, con 23.0 M MXN de gasto.",
-  "Son promociones a listas grandes (Tasa 0, comercios KPay, referidos, BillPay) dirigidas a leads, registrados sin crédito y ex clientes; Product Growth y Marketing ponen 77 % de ese volumen.",
-  "Nadie revisa si una campaña responde: se detiene cuando termina la promoción, no cuando deja de funcionar.",
-  "Cuando una campaña no funciona se copia con otra fecha: 74 campañas sacaron cinco o más versiones y en septiembre 43 tenían versiones viejas enviando a la vez.",
-  "Causa raíz: las campañas se juzgan por cuántos mensajes salen y no por cuánta gente responde, y nadie es dueño de ese número ni de la decisión de apagar."
+  "293 M mensajes, casi la mitad del año, salieron de campañas que no responden lo mínimo.",
+  "Son promociones a listas grandes; Product Growth y Marketing ponen 77 % de ese volumen.",
+  "Una campaña se detiene cuando acaba la promoción, no cuando deja de responder.",
+  "Si no funciona, se copia con otra fecha: 74 campañas sacaron cinco o más versiones.",
+  "Causa raíz: se juzga cuánto sale y no cuánto responde, y nadie es dueño de ese número."
  ],
  "hipotesis": {
-  "A": "Si cada campaña se compara contra lo mínimo de su canal, 89 campañas promocionales activas quedan debajo y concentran 2.1 M MXN al mes; las que salen por algo que hizo la persona responden hasta siete veces más.",
-  "O": "Duplicar un Canvas y cambiarle la fecha es más rápido que leer cómo le fue al anterior, y la versión vieja se queda encendida.",
-  "G": "No hay una revisión mensual de volumen contra respuesta ni una regla que diga quién apaga una campaña que no responde."
+  "A": "89 campañas activas no responden lo mínimo y gastan 2.1 M MXN al mes.",
+  "O": "Duplicar un Canvas es más rápido que leer cómo le fue, y la versión vieja sigue encendida.",
+  "G": "No hay revisión mensual de respuesta ni una regla que diga quién apaga."
  },
  "como": [
-  "Semana 1: CRM publica un tablero con las 20 campañas con más mensajes contra lo mínimo de su canal, por equipo. Métrica: % de mensajes en campañas que responden lo mínimo.",
-  "Semana 2: Product Growth y Marketing rehacen o detienen las campañas que llevan dos meses debajo de lo mínimo; en Braze, al lanzar una versión nueva se archiva la anterior.",
-  "Semana 3: los programas para recuperar ex clientes pasan a email o in-app primero, WhatsApp solo a quien leyó uno en 90 días, presupuesto mensual con límite y 10 % sin mensajes. Métrica: MXN por conversión.",
-  "Mes 2 en adelante: revisión mensual con los dueños de cada campaña; si no responde lo mínimo dos meses seguidos, se rehace o se apaga."
+  "Semana 1: CRM publica las 20 campañas más grandes contra lo mínimo de su canal, por equipo.",
+  "Semana 2: Product Growth y Marketing rehacen o detienen las que llevan dos meses debajo.",
+  "Semana 3: en Braze, al lanzar una versión nueva se archiva la anterior.",
+  "Cada mes: revisión con dueños; dos meses debajo de lo mínimo, se rehace o se apaga."
  ],
- "impacto": "Las 89 campañas promocionales activas que no responden mandaron 28 M mensajes y costaron 2.1 M MXN en septiembre. Rehacerlas o detenerlas recorta ese gasto; en las de recuperación, solo si el grupo sin mensajes muestra que no recuperan.",
- "sowhat": "Medir antes de copiar: una revisión mensual de volumen contra respuesta, una sola versión viva por campaña y una regla para apagar lo que no responde.",
- "fuente": "Fuente: láminas 66 a 75. Braze, envíos por campaña, mes y canal y catálogo de comunicaciones, enero a septiembre 2026. WhatsApp a 1.00 MXN por entregado; email a 0.05 por enviado."
+ "impacto": "Las 89 campañas activas que no responden costaron 2.1 M MXN y 28 M mensajes en septiembre.",
+ "sowhat": "Medir antes de copiar: revisión mensual, una versión viva por campaña y regla de apagado.",
+ "fuente": "Fuente: láminas 66 a 75. Braze, envíos por campaña, mes y canal y catálogo, ene a sep 2026. WhatsApp a 1.00 MXN por entregado."
 }

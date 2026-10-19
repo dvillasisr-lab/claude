@@ -32,10 +32,10 @@ S = Svg('Dispersión de campañas de correo con un millón o más de envíos: ap
 lx = 0
 for k in ('promo', 'record', 'aviso'):
     S.circle(lx + 5, 14, 5, COL[k], '')
-    txt = f'{LAB[k]}: {bycl.loc[k, "ctor"]:.1f}'
+    txt = LAB[k]
     S.t(lx + 14, 18, txt, 11, INK if k != 'aviso' else TXT, w=600 if k != 'aviso' else 400)
     lx += 14 + tw(txt, 11, 600) + 14
-S.t(0, 36, 'Cada punto es una campaña con todas sus versiones; el tamaño es el número de correos enviados. Cifra de la leyenda: clics por cada cien que abren.', 10.5, SEC)
+S.t(0, 36, 'Cada punto es una campaña con todas sus versiones; el tamaño es el número de correos enviados.', 10.5, SEC)
 X0, X1, Y0, Y1 = 50, 486, 72, 360
 XM = 80
 LO, HI = math.log10(0.15), math.log10(25)
@@ -53,7 +53,12 @@ S.t(X1, Y1 + 36, 'Abren de cada cien que reciben el correo', 11, SEC, 'end')
 # zona "se abre y no se usa": menos de 3 clics por cada cien que abren
 S.rect(X0, sy(3), X1 - X0, Y1 - sy(3), BLUE, ' opacity="0.06"')
 S.line(X0, sy(3), X1, sy(3), BLUE, 1, ' stroke-dasharray="4 4"')
-S.t(X1 - 4, sy(3) + 16, 'Menos de 3 clics por cada cien que abren', 11, BLUE, 'end', 600, halo=True)
+S.t(X0 + 4, Y1 - 6, 'Zona: menos de 3 clics por cada cien que abren', 10.5, BLUE, 'start', 600, halo=True)
+MED = fa.groupby('cl').ctor.median()
+print('medianas', MED.round(2).to_dict(), fa.groupby('cl').size().to_dict())
+for k in ('promo', 'record'):
+    S.line(X0, sy(MED[k]), X1, sy(MED[k]), COL[k], 1.6)
+    S.t(X1 - 4, sy(MED[k]) - 5, f'Mediana de {"promociones" if k == "promo" else "recordatorios"}: {MED[k]:.1f}', 10.5, COL[k], 'end', 700, halo=True)
 r = lambda env: 2.5 + 2.6 * math.sqrt(env)
 for p in fa.itertuples():
     S.circle(sx(p.ab), sy(p.ctor), r(p.env), COL[p.cl], ' fill-opacity="0.85" stroke="#FFFFFF" stroke-width="1.2"')
@@ -88,16 +93,16 @@ ref = fa[fa.fam.str.contains('Canvas-Leads-ReferralProgram') & fa.fam.str.starts
 save(15, dict(
     kind='grafica',
     titulo='El correo se abre pero no se usa: de cada cien personas que abren una promoción, menos de tres hacen clic',
-    que='Promociones: referidos, Tasa 0, descuentos, lanzamientos y ofertas de comercios. Las que sí se usan: recordatorios de algo que la persona empezó (registro, verificación, préstamo a meses) y avisos de servicio.',
-    quien=f'Clics por cada cien que abren: Sales {byeq.loc["Sales","ctor"]:.1f}, Product Growth {byeq.loc["Product Growth","ctor"]:.1f}, Marketing {byeq.loc["Marketing","ctor"]:.1f}, Collections {byeq.loc["Collections","ctor"]:.1f}, Others {byeq.loc["Others","ctor"]:.1f}.',
-    a_quien=f'Clics por cada cien que abren: bases frías {byaud.loc["frios","ctor"]:.1f}, clientes activos {byaud.loc["activos","ctor"]:.1f}, leads {byaud.loc["leads","ctor"]:.1f}, registrados nuevos {byaud.loc["nuevos","ctor"]:.1f}.',
+    que='Referidos, Tasa 0, descuentos, lanzamientos y ofertas de comercios.',
+    quien=f'Clics por cada cien que abren: Sales {byeq.loc["Sales","ctor"]:.1f}, Product Growth {byeq.loc["Product Growth","ctor"]:.1f}, Marketing {byeq.loc["Marketing","ctor"]:.1f}.',
+    a_quien='Leads, registrados sin crédito, ex clientes y toda la cartera de KPay.',
     lecturas=[
-        f'Las promociones se llevan {bytipo.loc["promocional","env"]:.0f} M de {tot.env:.0f} M correos. Las abre {bytipo.loc["promocional","ab"]:.0f} % y de cada cien que abren, {bytipo.loc["promocional","ctor"]:.1f} hacen clic.',
-        f'El mismo canal hace {bycl.loc["record","ctor"]:.0f} clics por cada cien aperturas cuando recuerda algo que la persona empezó, y {bygan.loc["referidos","ctor"]:.1f} cuando la invita a traer a un amigo.',
-        f'Mientras más grande el envío del mes, menos clic: {bk["10 a 100 mil"]:.1f} por cada cien que abren con 10 a 100 mil personas y {bk["más de 1 M"]:.1f} con más de 1 M personas.',
+        f'{bytipo.loc["promocional","env"]:.0f} M correos de promoción: abre {bytipo.loc["promocional","ab"]:.0f} % y de cada cien que abren, {bytipo.loc["promocional","ctor"]:.1f} hacen clic.',
+        f'Recordar algo que la persona empezó: {bycl.loc["record","ctor"]:.0f} clics por cada cien que abren; invitar a un amigo: {bygan.loc["referidos","ctor"]:.1f}.',
+        f'Mientras más grande el envío, menos clic: {bk["10 a 100 mil"]:.1f} con 10 a 100 mil personas, {bk["más de 1 M"]:.1f} con más de 1 M.',
     ],
-    causa='Se manda la misma oferta a listas enormes que no la pidieron; el asunto atrae la apertura, pero el contenido no le sirve a quien lo abre.',
-    sowhat='No es la entrega ni el asunto: es lo que ofrece el correo y a quién se lo mandamos. Menos promoción a toda la base, más recordatorios de algo empezado.',
-    fuente=f'{FUENTE_E1}; {len(fa)} campañas con 1 M o más de correos ({fa.env.sum():.0f} M de {tot.env:.0f} M correos). Apertura sobre entregados; incluye aperturas automáticas de algunos clientes de correo, por eso la de 75 % es dudosa. Separar asunto de oferta pide una prueba A/B que hoy no existe.',
+    causa='Se manda la misma oferta a listas enormes que no la pidieron: el asunto atrae la apertura, el contenido no sirve.',
+    sowhat='No es el asunto ni la entrega: es lo que ofrece el correo y a quién. Más recordatorios, menos promoción.',
+    fuente=f'{FUENTE_E1}; {len(fa)} campañas con 1 M o más de correos. La apertura incluye aperturas automáticas; la de 75 % es dudosa.',
     svg=svg,
 ))
