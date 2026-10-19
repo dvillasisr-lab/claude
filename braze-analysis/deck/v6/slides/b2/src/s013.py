@@ -8,6 +8,9 @@ c = d[d.product_service == 'Cash']
 cpc = lambda g: g.costo.sum() / max(1, g.conversiones_fraccional.sum())
 w, e = c[c.canal == 'whatsapp'], c[c.canal == 'email']
 TOT = dict(wa=cpc(w), em=cpc(e))
+cps = lambda g: g.costo.sum() / max(1, g.solicitudes_filas.sum())  # MXN por solicitud registrada (no viene repartida)
+TOS = dict(wa=cps(w), em=cps(e))
+print('por solicitud', TOS)
 g = c[c.canal.isin(['whatsapp', 'email'])].groupby(['fam', 'canal']).agg(env=('envios', 'sum'), cost=('costo', 'sum'),
                                                                           cv=('conversiones_fraccional', 'sum'), team=('equipo', 'first')).reset_index()
 g = g[(g.env >= 3e4) & (g.cv >= 3)]
@@ -88,12 +91,12 @@ save(13, dict(
     quien='Marketing pone 73 % del WhatsApp de Cash y Product Growth 27 %.',
     a_quien='Leads rezagados y recientes, ex clientes, registrados sin préstamo y clientes activos.',
     lecturas=[
-        f'Todo Cash: {TOT["wa"]:.0f} MXN por conversión en WhatsApp y {TOT["em"]:.0f} en correo, {TOT["wa"]/TOT["em"]:.1f} veces.',
+        f'Todo Cash: {TOT["wa"]:.0f} MXN por conversión en WhatsApp y {TOT["em"]:.0f} en correo ({TOT["wa"]/TOT["em"]:.1f} veces); {TOS["wa"]:.0f} y {TOS["em"]:.1f} MXN por solicitud.',
         f'Campaña por campaña la mitad cuesta más de {p.r.median():.0f} veces; Tasa 0 a rezagados: {top.iloc[0].whatsapp:.0f} contra {top.iloc[0].email:.0f} MXN.',
         f'El recordatorio de Installments a activos: {top[top.nm.str.startswith("Recordatorio de Installments a activos")].iloc[0].r:.0f} veces; ahí el correo basta.',
     ],
     causa='WhatsApp es el canal por defecto para Cash aun con quien responde al correo; nadie compara costo por conversión entre canales.',
     sowhat='Para Cash, primero correo, push e in-app; WhatsApp solo donde esos no llegan o el préstamo lo paga.',
-    fuente=f'{FUENTE_E1}; producto Cash. Campañas con 30 mil o más mensajes en cada canal. Conversión a 7 días repartida; no prueba causa.',
+    fuente=f'Fuente: Braze, envíos por campaña, mes y canal, ene a sep 2026; producto Cash. Campañas con 30 mil o más mensajes en cada canal. Conversión a 7 días repartida; solicitud: solicitudes registradas. No prueba causa.',
     svg=svg,
 ))

@@ -58,6 +58,7 @@ for (g, c), d in x.groupby(['g', 'canal']):
     gc[f'{g}|{c}'] = dict(env=float(d.envios.sum()), costo=float(d.costo.sum()), conv=float(d.conversiones_fraccional.sum()),
                           base=float(d[b].sum()), resp=float(100 * d[r].sum() / max(d[b].sum(), 1)),
                           mxn_conv=float(d.costo.sum() / max(d.conversiones_fraccional.sum(), 1e-9)),
+                          sol=float(d.solicitudes_filas.sum()), mxn_sol=float(d.costo.sum() / max(d.solicitudes_filas.sum(), 1e-9)),
                           conv_mil=float(1000 * d.conversiones_fraccional.sum() / max(d.envios.sum(), 1)),
                           entrega=float(100 * d.whatsapp_delivery.sum() / max(d.whatsapp_send.sum(), 1)) if c == 'whatsapp' else None,
                           wsend=float(d.whatsapp_send.sum()))

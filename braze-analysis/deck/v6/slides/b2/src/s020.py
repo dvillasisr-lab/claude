@@ -6,6 +6,7 @@ w = d[d.canal == 'whatsapp']
 WT, CT = w.costo.sum() / 1e6, d.costo.sum() / 1e6
 fr = w[w.aud == 'frios']
 cpc = lambda g: g.costo.sum() / max(1, g.conversiones_fraccional.sum())
+cps = lambda g: g.costo.sum() / max(1, g.solicitudes_filas.sum())  # MXN por solicitud registrada (no viene repartida)
 mix = d.groupby(['equipo', 'canal']).envios.sum().unstack().fillna(0)
 inapp_max = (100 * mix['in-app'] / mix.sum(axis=1)).max()
 # promoción debajo del mínimo
@@ -36,7 +37,7 @@ save(20, dict(
     kind='cierre',
     titulo='Por qué pasa: el canal lo elige cada equipo por costumbre, no por quién responde ni por lo que cuesta',
     porques=[
-        f'WhatsApp es {100*WT/CT:.0f} % del gasto y la mitad va a bases frías, a {cpc(fr):.0f} MXN por conversión.',
+        f'WhatsApp: {100*WT/CT:.0f} % del gasto; mitad a bases frías: {cpc(fr):.0f} MXN por conversión, {cps(fr):.0f} por solicitud.',
         f'{pct_otro:.0f} % de los mensajes van por un canal al que esa persona nunca respondió.',
         f'In-app es el que más convierte y ningún equipo le da más de {inapp_max:.0f} % de sus mensajes.',
         'Nadie compara costo por conversión entre canales ni mide cada campaña contra un mínimo.',
@@ -55,5 +56,5 @@ save(20, dict(
     ],
     impacto=f'Canal por persona: {q_msgs:.0f} M mensajes menos por trimestre y 0.34 M MXN al mes, parte de los 2.34 M MXN del plan.',
     sowhat='Elegir el canal por persona y por costo baja el gasto sin dejar de buscar a los ex clientes.',
-    fuente='Fuente: láminas 11 a 19; Braze, envíos por campaña y respuesta por persona, enero a septiembre 2026. Los ahorros se traslapan y no se suman.',
+    fuente='Fuente: láminas 11 a 19; Braze, envíos por campaña y respuesta por persona, enero a septiembre 2026. Solicitud: solicitudes registradas. Los ahorros se traslapan y no se suman.',
 ))

@@ -12,6 +12,9 @@ wa_fr = GC['ex|whatsapp']['costo'] + GC['nunca|whatsapp']['costo']
 conv_fr = GC['ex|whatsapp']['conv'] + GC['nunca|whatsapp']['conv']
 mf, mr = med(list(w[w.fr].mxn_conv)), med(list(w[~w.fr].mxn_conv))
 ma = med(list(w[w.g == 'activos'].mxn_conv))
+# MXN por solicitud registrada (no viene repartida); campaña sin solicitudes = costo infinito por solicitud
+w['ms'] = w.mxn_sol.fillna(float('inf'))
+sf, sa = med(list(w[w.fr].ms)), med(list(w[w.g == 'activos'].ms))
 S = Svg('Arriba, tres cifras del WhatsApp a ex clientes y leads que nunca activaron. Abajo, cada punto es una campaña de WhatsApp: mensajes entregados contra pesos por conversión, con la mediana de cada grupo.')
 kpis(S, [(f'{100*wa_fr/T["wa"]:.0f} %', 'del gasto de WhatsApp va', 'a ex clientes y leads fríos'),
           (f'{M(wa_fr)} M', 'MXN en nueve meses,', 'por mensaje entregado'),
@@ -53,13 +56,13 @@ guarda(50, dict(
     quien='Marketing (rescate Tasa 0 a leads) y Product Growth (inactivos y churn)',
     a_quien='Ex clientes que dejaron KCash o KPay y leads que se registraron y nunca tomaron crédito',
     lecturas=[
-        f'Mediana por campaña: {fmt(mf)} MXN por conversión en ex clientes y leads fríos; {fmt(ma)} MXN en activos.',
+        f'Mediana por campaña: {fmt(mf)} MXN por conversión en bases frías y {fmt(ma)} en activos; {sf:.0f} y {sa:.0f} por solicitud.',
         f'Rescate Tasa 0 a rezagados (Marketing): {M(w[w.familia == "Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0-N/A"].base.sum())} M WhatsApp entregados a {fmt(w[w.familia=="Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0-N/A"].mxn_conv.iloc[0])} MXN por conversión.',
-        f'Ex clientes: {GC["ex|email"]["mxn_conv"]:.0f} MXN por conversión por correo contra {GC["ex|whatsapp"]["mxn_conv"]:.0f} por WhatsApp; push e in-app no cuestan.',
+        f'Ex clientes: {GC["ex|email"]["mxn_conv"]:.0f} MXN por conversión por correo contra {GC["ex|whatsapp"]["mxn_conv"]:.0f} por WhatsApp; {GC["ex|email"]["mxn_sol"]:.0f} contra {GC["ex|whatsapp"]["mxn_sol"]:.0f} por solicitud.',
     ],
     causa='WhatsApp es lo que más se lee y se usa para insistir; en bases frías la lectura casi no se vuelve préstamo.',
     sowhat='WhatsApp para recuperar solo a quien leyó uno en 90 días; al resto, correo, push o in-app.',
-    fuente='Fuente: Braze E1 (campaña, canal y mes), enero a septiembre 2026. WhatsApp a 1.00 MXN por entregado. Campañas con 50 mil o más entregados. Ex clientes sin Sales B0335 (promos a todo el portafolio).',
+    fuente='Fuente: Braze E1 (campaña, canal y mes), ene a sep 2026. WhatsApp a 1.00 MXN por entregado. Solicitud: solicitudes registradas. Campañas con 50 mil o más entregados. Ex clientes sin Sales B0335 (promos a todo el portafolio).',
     svg=SVG,
 ))
-print(mf, mr, ma, len(w), w.fr.sum())
+print(mf, mr, ma, sf, sa, len(w), w.fr.sum())

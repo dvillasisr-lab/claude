@@ -15,11 +15,12 @@ rows = []
 for (f, c), d in e1.groupby(['familia', 'canal']):
     b, r = RESP[c]
     rows.append(dict(familia=f, canal=c, g=grupo(f), equipo=TEAM.get(str(d.team.iloc[0]), 'Others'), env=d.envios.sum(), costo=d.costo.sum(),
-                     conv=d.conversiones_fraccional.sum(), base=d[b].sum(), r=d[r].sum(), wsend=d.whatsapp_send.sum(), meses=d.mes.nunique(),
+                     conv=d.conversiones_fraccional.sum(), sol=d.solicitudes_filas.sum(), base=d[b].sum(), r=d[r].sum(), wsend=d.whatsapp_send.sum(), meses=d.mes.nunique(),
                      usr=d.usuarios_aprox.sum()))
 t = pd.DataFrame(rows)
 t['resp'] = 100 * t.r / t.base.replace(0, np.nan)
 t['mxn_conv'] = t.costo / t.conv.replace(0, np.nan)
+t['mxn_sol'] = t.costo / t.sol.replace(0, np.nan)  # MXN por solicitud registrada (no viene repartida)
 t['conv_mil'] = 1000 * t.conv / t.env.replace(0, np.nan)
 m = pd.read_csv(R / 'hallazgos/muestra_m_ventanas.csv')
 t = t.merge(m[['familia', 'canal', 'abrieron', 'no_abrieron', 'ab_conv_90', 'no_conv_90', 'ca_90', 'cn_90', 'muestra']], on=['familia', 'canal'], how='left')

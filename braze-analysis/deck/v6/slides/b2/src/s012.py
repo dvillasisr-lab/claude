@@ -7,7 +7,9 @@ d = load_b()
 w = d[d.canal == 'whatsapp']
 e = d[d.canal == 'email']
 cpc = lambda g: g.costo.sum() / max(1, g.conversiones_fraccional.sum())
+cps = lambda g: g.costo.sum() / max(1, g.solicitudes_filas.sum())  # MXN por solicitud registrada (no viene repartida)
 A = {a: cpc(w[w.aud == a]) for a in ('activos', 'leads', 'frios')}
+AS = {a: cps(w[w.aud == a]) for a in ('activos', 'leads', 'frios')}
 fr = w[w.aud == 'frios']
 # ex clientes: Dormant, Inactiv o Churn en el nombre, sin Sales B0335 (promos de comercios a todo el portafolio,
 # 'PortafolioActivoEInactivo'), igual que la lámina 50
@@ -22,7 +24,7 @@ fa = fa[(fa.c >= 5e4) & (fa.cv >= 1)].copy()
 fa['y'] = fa.c / fa.cv
 fa['ent'] = 100 * fa.dl / fa.s
 fa['a3'] = np.where(fa.aud.isin(['activos', 'frios']), fa.aud, 'otro')
-print('A', A, 'n', len(fa), fa.c.sum() / w.costo.sum(), 'ex', cpc(ex), 'email ex', cpc(eex))
+print('A', A, 'AS', AS, 'n', len(fa), fa.c.sum() / w.costo.sum(), 'ex', cpc(ex), cps(ex), 'email ex', cpc(eex), cps(eex))
 print(fa.groupby('a3').y.median().round(0).to_dict(), fa.groupby('a3').size().to_dict())
 COL = {'activos': GREEN, 'frios': BLUE, 'otro': G2}
 S = Svg('Cada punto es una campaña de WhatsApp: gasto contra MXN por conversión. Las de clientes activos cuestan 48 MXN por conversión '
@@ -51,7 +53,7 @@ for q in fa.sort_values('c', ascending=False).itertuples():
 for k, lab in (('activos', 'Clientes activos'), ('frios', 'Bases frías')):
     y = sy(A[k])
     S.line(X0, y, X1, y, COL[k], 1.4, ' stroke-dasharray="5 4"')
-    S.t(X0 + 6, y - 6, f'{lab}: {A[k]:.0f} MXN por conversión en promedio', 11.5, COL[k], 'start', 700, halo=True)
+    S.t(X0 + 6, y - 6, f'{lab}: {A[k]:.0f} MXN por conversión y {AS[k]:.0f} por solicitud, en promedio', 11.5, COL[k], 'start', 700, halo=True)
 NAMES = [('ClienteKPayCompraKPay-ReferralProgram', 'Referidos a clientes KPay (Marketing)', 12, 14, 'start'),
          ('ClienteKCashCompraKCash-ReferralProgram', 'Referidos a clientes KCash (Marketing)', -12, 16, 'end'),
          ('Active-Retargeting_Installments_SP', 'Recordatorio de Installments (Product Growth)', -12, 16, 'end'),
@@ -75,12 +77,12 @@ save(12, dict(
     quien='Marketing y Product Growth en las dos puntas; Sales solo a clientes y leads de KPay.',
     a_quien='Bases frías: ex clientes (dormants, inactivos, churn) y leads que nunca activaron.',
     lecturas=[
-        f'{A["activos"]:.0f} MXN por conversión con clientes activos y {A["frios"]:.0f} con bases frías; ahí va 48 % del WhatsApp (19.7 M MXN).',
-        f'A ex clientes el correo recupera más barato: {cpc(eex):.0f} MXN por conversión contra {cpc(ex):.0f} por WhatsApp.',
+        f'{A["activos"]:.0f} MXN por conversión con activos y {A["frios"]:.0f} con bases frías ({AS["activos"]:.0f} y {AS["frios"]:.0f} por solicitud); ahí va 48 % del WhatsApp (19.7 M MXN).',
+        f'A ex clientes el correo sale más barato: {cpc(eex):.0f} contra {cpc(ex):.0f} MXN por conversión y {cps(eex):.0f} contra {cps(ex):.0f} por solicitud.',
         f'De julio a septiembre, {wa90:.1f} M MXN de WhatsApp llegaron a quien no leyó ninguno en 90 días.',
     ],
     causa='WhatsApp se usa para buscar en volumen a quien ya no lo lee: no hay regla de lectura reciente ni presupuesto con límite.',
     sowhat='A ex clientes, primero correo y app; WhatsApp solo a quien lo leyó en 90 días, con límite y grupo sin envío.',
-    fuente=f'{FUENTE_E1}; E9b. {len(fa)} campañas con 50 mil MXN o más. Conversión: préstamo otorgado en 7 días, repartido. 19.7 M MXN con el corte de la lámina 50.',
+    fuente=f'Fuente: Braze, envíos por campaña, mes y canal, ene a sep 2026; E9b. {len(fa)} campañas con 50 mil MXN o más. Conversión: préstamo otorgado en 7 días, repartido; solicitud: solicitudes registradas. 19.7 M MXN: lámina 50.',
     svg=svg,
 ))
