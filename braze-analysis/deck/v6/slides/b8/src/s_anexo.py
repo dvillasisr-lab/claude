@@ -31,13 +31,13 @@ for e, fs, q, g in EX:
     h.append(f'<tr><td><b>{e}</b></td><td>{q}</td><td>{g}</td>' + NUM(' + '.join(f'{filas(f):,}' for f in fs)) + '</tr>')
 h.append('</table>')
 save(104, dict(kind='html',
-    titulo=f'Método y fuentes: 18 extracciones agregadas de Databricks y {n_ver} verificaciones que cruzan los totales',
-    lecturas=[f'Periodo: 1 de enero a 30 de septiembre de 2026. {m(d1.envios.sum(), 1)} M mensajes de {d1.communication_id.nunique():,} comunicaciones. Todo agregado: ningún dato personal.',
-              f'Las 18 extracciones se guardaron en {n_files} archivos (algunas tienen partes a, b y c). Cada una se pegó en el Sheets v4 con fórmulas vivas.',
-              f'La pestaña Verificación tiene {n_ver} comprobaciones: compara cada total del Sheets contra el mismo cálculo hecho aparte sobre los archivos.'],
-    causa='Equipo, audiencia y mensaje se leen del nombre de la campaña, porque Braze no los guarda como campos. Por eso nombrar bien es la regla 1.',
-    sowhat='Cualquiera puede rehacer cada cifra del deck con estos archivos, sin acceso a Braze; cambiar un costo o un mínimo recalcula el plan.',
-    fuente=f'Fuente: carpeta data del proyecto (E1 a E18b) y Sheets braze_auditoria_v4, pestañas Léeme y Verificación ({n_ver} filas de comprobación más el encabezado; el guion decía 471).',
+    titulo=f'Método y fuentes: 18 extracciones agregadas de Databricks y {n_ver} verificaciones de los totales',
+    lecturas=[f'{m(d1.envios.sum(), 1)} M mensajes de {d1.communication_id.nunique():,} comunicaciones, enero a septiembre de 2026; sin datos personales.',
+              f'Las 18 extracciones están en {n_files} archivos y se pegaron en el Sheets v4 con fórmulas vivas.',
+              f'{n_ver} comprobaciones cruzan cada total del Sheets con el mismo cálculo hecho aparte.'],
+    causa='Equipo, audiencia y mensaje se leen del nombre de la campaña: Braze no los guarda como campos.',
+    sowhat='Cualquiera puede rehacer cada cifra con estos archivos, sin acceso a Braze.',
+    fuente=f'Fuente: carpeta data (E1 a E18b) y Sheets braze_auditoria_v4, pestaña Verificación ({n_ver} filas más el encabezado; el guion decía 471).',
     html=''.join(h)))
 
 # ------------------------------------------------------------------ 105. Definiciones
@@ -60,7 +60,7 @@ h.append('</table>')
 save(105, dict(kind='html', ancho_completo=True,
     titulo='Definiciones: responder, canal sin respuesta, campaña con todas sus versiones, bloqueados y conversión',
     sowhat='Con estas definiciones, dos equipos que miran la misma campaña llegan a la misma cifra.',
-    fuente='Fuente: definiciones del análisis (Sheets v4, Léeme y Parámetros); audiencia leída del nombre de la campaña. E7a, E7b y E9b, enero a septiembre 2026.',
+    fuente='Fuente: definiciones del análisis (Sheets v4, Léeme y Parámetros); audiencia según el nombre de la campaña.',
     html=''.join(h)))
 
 # ------------------------------------------------------------------ 106. Los 24 estándares
@@ -99,8 +99,8 @@ for sub, rr in ((1, STD[:12]), (2, STD[12:])):
     h.append('</table>')
     save(106, dict(kind='html', ancho_completo=True,
         titulo='Los 24 estándares y su fuente: ocho son de canal y vienen de la industria; el resto son reglas internas' if sub == 1 else 'Los 24 estándares y su fuente (continuación): bajas, audiencia, envíos a toda la base, medición y nombres',
-        sowhat='Los estándares son el mínimo de la industria o una regla interna, no una meta de Kueski; cada uno se mide con una extracción.' if sub == 1 else 'El grupo de control (23) no se puede medir con las extracciones actuales: se mide en Braze en cuanto se prenda.',
-        fuente='Fuente: Sheets braze_auditoria_v4, pestaña Estándares (estándar propuesto, de dónde sale y extracción de origen). "Sin dato": no se mide con las extracciones actuales.',
+        sowhat='Son el mínimo de la industria o una regla interna, no una meta de Kueski.' if sub == 1 else 'El grupo de control (23) se mide en Braze en cuanto se prenda.',
+        fuente='Fuente: Sheets braze_auditoria_v4, pestaña Estándares. "Sin dato": no se mide con las extracciones actuales.',
         html=''.join(h)), sub=sub)
 
 # ------------------------------------------------------------------ 107. Detalle mensual, semanal y por día
@@ -121,9 +121,9 @@ h.append(f'<tr><td><b>Total</b></td>' + NUM(f'<b>{tt.env / 1e6:.1f} M</b>') + ''
          + NUM(f'{1000 * tt.r / tt.env:.0f}') + NUM(f'<b>{tt.cost / 1e6:.1f} M MXN</b>') + NUM(f'{pd.read_csv(D + "e5_cohorte_baja.csv").usuarios_baja.sum() / 1e3:.0f} mil únicas') + '</tr></table>')
 print('107 mes', (mon.env / 1e6).round(1).to_dict(), (1000 * mon.r / mon.env).round(0).to_dict(), (mon.cost / 1e6).round(2).to_dict())
 save(107, dict(kind='html', ancho_completo=True,
-    titulo=f'Detalle mensual: junio fue el mes con más mensajes ({mon.env.max() / 1e6:.0f} M mensajes) y septiembre el más barato ({mon.cost.iloc[-1] / 1e6:.2f} M MXN)',
-    sowhat='Septiembre es el mes base del ahorro porque es el más reciente y el más barato: la cifra de ahorro es conservadora.',
-    fuente=f'Fuente: Braze, envíos por comunicación, mes y canal (E1), enero a septiembre 2026; personas con baja de correo por mes (E4a; se cuentan una vez por mes) y únicas en nueve meses (E5). Respuesta = clic de correo, apertura de push, lectura de WhatsApp (incluye las registradas el mes siguiente) y clic in-app; {COSTOS}.',
+    titulo=f'Detalle mensual: junio fue el mes con más mensajes ({mon.env.max() / 1e6:.0f} M) y septiembre el más barato',
+    sowhat='Septiembre es el mes base del ahorro por ser el más reciente y el más barato.',
+    fuente='Fuente: E1 por mes y canal; personas con baja por mes (E4a) y únicas (E5), enero a septiembre 2026. Respuesta: clic, apertura, lectura y clic in-app.',
     html=''.join(h)), sub=1)
 # por día de la semana
 e10 = pd.read_csv(D + 'e10_dia_semana.csv')
@@ -138,9 +138,9 @@ h.append('</table>')
 best = dw.assign(rpm=1000 * dw.r / dw.env).sort_values('rpm', ascending=False).iloc[0]
 print('107 dia', dw.assign(rpm=(1000 * dw.r / dw.env).round(0), bm=(1000 * dw.b / dw.ee).round(2))[['dia_semana', 'env', 'rpm', 'bm']].to_string())
 save(107, dict(kind='html', ancho_completo=True,
-    titulo=f'Detalle por día de la semana: el {ES[best.dia_semana].lower()} trae más respuestas por cada mil mensajes ({1000 * best.r / best.env:.0f}); el fin de semana se manda la mitad',
-    sowhat='El día importa menos que a quién y por qué canal: la diferencia entre días es chica comparada con la de audiencia y canal.',
-    fuente='Fuente: Braze, envíos por día de la semana, canal y equipo (E10), enero a septiembre 2026. Respuestas como en E10 (clic de correo, apertura de push, lectura de WhatsApp, clic in-app); bajas = eventos de baja de correo.',
+    titulo=f'Detalle por día: el {ES[best.dia_semana].lower()} trae más respuestas ({1000 * best.r / best.env:.0f} por mil mensajes); el fin de semana se manda la mitad',
+    sowhat='El día importa menos que a quién y por qué canal se escribe.',
+    fuente='Fuente: Braze, envíos por día de la semana, canal y equipo (E10), enero a septiembre 2026; bajas = eventos de baja de correo.',
     html=''.join(h)), sub=2)
 # semanal
 wk = e4[e4.grano == 'semana'].copy()
@@ -165,9 +165,9 @@ h.append('</table>')
 top = ws.sort_values('env', ascending=False).iloc[0]
 print('107 sem', len(ws), lab(top.periodo), top.env)
 save(107, dict(kind='html', ancho_completo=True,
-    titulo=f'Detalle semanal: la semana con más mensajes fue la del {lab(top.periodo).replace(" ", " de ", 1).replace("jun", "junio")} ({top.env / 1e6:.0f} M mensajes), con el lanzamiento de BillPay',
-    sowhat='Las semanas con más volumen no traen más respuestas por cada mil mensajes: el volumen extra fue a gente que no responde.',
-    fuente='Fuente: Braze, serie semanal por canal (E4a), semanas de lunes a domingo, enero a septiembre 2026 (la primera y la última están incompletas). Resp. por mil = clic de correo, apertura de push, lectura de WhatsApp y clic in-app por cada mil mensajes de la semana.',
+    titulo=f'Detalle semanal: la semana del {lab(top.periodo).replace(" ", " de ", 1).replace("jun", "junio")} tuvo más mensajes ({top.env / 1e6:.0f} M), por BillPay',
+    sowhat='Las semanas con más volumen no traen más respuestas por cada mil mensajes.',
+    fuente='Fuente: serie semanal por canal (E4a), enero a septiembre 2026; la primera y la última semana están incompletas.',
     html=''.join(h)), sub=3)
 
 # ------------------------------------------------------------------ 108. Fichas de 15 campañas
@@ -199,8 +199,8 @@ for sub, rr in ((1, range(0, 8)), (2, range(8, 15))):
     h.append('</table>')
     save(108, dict(kind='html', ancho_completo=True,
         titulo=f'Fichas de las 15 campañas con más ahorro: juntas suman {m(top.tot.sum())} M MXN al mes, {sh15 * 100:.0f} % del total' if sub == 1 else 'Fichas de las 15 campañas con más ahorro (continuación): Marketing aparece por canal y recuperación, no por campañas para apagar',
-        sowhat='Empezar por las tres primeras: dos ofertas a ex clientes de KPay por WhatsApp (se miden) y Tasa 0 por correo a registrados (se quita ya).' if sub == 1 else 'En Marketing la mayor parte del ahorro es mandar por el canal al que la persona responde y medir la recuperación, no apagar campañas.',
-        fuente=f'Fuente: E1 por campaña y canal, septiembre 2026 (incluye lecturas registradas el mes siguiente); acciones del Sheets v4, E9b y E7a; {COSTOS}. Ahorro = las palancas de la lámina 92 en esa campaña. Respuesta de enero a septiembre.',
+        sowhat='Empezar por las tres primeras: dos ofertas a ex clientes de KPay y Tasa 0 a registrados.' if sub == 1 else 'En Marketing el ahorro es de canal y de recuperación, no de apagar.',
+        fuente='Fuente: E1 por campaña y canal, septiembre 2026; Sheets v4, E9b y E7a. Ahorro = palancas de la lámina 92; respuesta de enero a septiembre.',
         html=''.join(h)), sub=sub)
 
 # ------------------------------------------------------------------ 109. Supuestos de costo
@@ -224,8 +224,8 @@ for a, b, c_ in SUP:
 h.append('</table>')
 print('109', g9, c_env, SEPc, AVG, nodel, sh_wa, sh_em)
 save(109, dict(kind='html', ancho_completo=True,
-    titulo='Supuestos de costo: WhatsApp por entregado, correo por enviado, septiembre como mes base y el costo fijo de Braze como X',
-    sowhat=f'Si WhatsApp se cobrara por enviado, el gasto de nueve meses subiría de {m(g9, 1)} a {m(c_env, 1)} M MXN; por eso todo el deck usa el cobro por entregado.',
+    titulo='Supuestos de costo: WhatsApp por entregado, correo por enviado, septiembre como base y Braze fijo como X',
+    sowhat=f'Cobrar WhatsApp por enviado subiría el gasto de nueve meses de {m(g9, 1)} a {m(c_env, 1)} M MXN.',
     fuente=f'Fuente: Braze, envíos por comunicación, mes y canal (E1) y respuesta en 90 días (E9b), enero a septiembre 2026; parámetros del Sheets v4.',
     html=''.join(h)))
 
@@ -280,11 +280,11 @@ for i, (k, lab, v, note) in enumerate(ST):
 o.append('</svg>')
 save(110, dict(kind='grafica',
     titulo=f'Por qué había dos cifras de ahorro: de {m(v_c, 1)} y {m(v_deck, 1)} M a una sola de {m(ST[-1][2], 1)} M MXN al mes',
-    lecturas=[f'{m(v_c)} M MXN al mes (nota de campañas): cobraba WhatsApp por enviado y no contaba lecturas registradas en meses sin envío. Corregido, queda {m(v_deck)} M, la cifra del deck anterior.',
-              f'Con las lecturas tardías, cuatro WhatsApp pasan de 60 % de lectura y dejan de ser para apagar; el mayor es el rescate Tasa 0 a leads rezagados de Marketing. Por eso Product Growth subió a {pg_d * 100:.0f} %.',
-              f'La cifra única usa septiembre, cuenta solo lo que va a quien no responde y suma bloqueados, canal preferido, sin respuesta en 90 días, pruebas y duplicados, sin contar dos veces.'],
-    causa='Cada cifra se hizo con supuestos distintos de cobro, de mes y de qué contar. La propuesta los fija una sola vez para todo el deck.',
-    sowhat=f'Usar solo {m(ST[-1][2])} M MXN al mes ({ST[-1][2] * 12 / 1e6:.0f} M al año) en adelante; las cifras de {m(v_c, 1)} y {m(v_deck, 1)} M quedan reemplazadas.',
-    fuente=f'Fuente: nota de campañas (hallazgos/muestra_c_familias.csv), Sheets v4 (Plan_accion, {int(ap.sum())} campañas en un canal con ahorro) y E1 de septiembre 2026; {COSTOS}. Duplicados de E6b ({DUP / 1e6:.2f} M, mínimo). Los 582 del deck anterior eran campañas con alguna acción, no las que ahorran.',
+    lecturas=[f'{m(v_c)} M MXN al mes cobraba WhatsApp por enviado y no contaba lecturas tardías: corregido da {m(v_deck)} M.',
+              f'Con las lecturas tardías cuatro WhatsApp leen 60 % o más; Product Growth sube a {pg_d * 100:.0f} %.',
+              'La cifra única usa septiembre, cuenta solo a quien no responde y suma otras palancas sin doble conteo.'],
+    causa='Cada cifra usó supuestos distintos de cobro, de mes y de qué contar; la propuesta los fija una vez.',
+    sowhat=f'Usar solo {m(ST[-1][2])} M MXN al mes ({ST[-1][2] * 12 / 1e6:.0f} M al año); las otras dos cifras quedan reemplazadas.',
+    fuente=f'Fuente: nota de campañas (muestra C), Sheets v4 (Plan_accion) y E1 de septiembre 2026; WhatsApp por entregado. Duplicados de E6b, un mínimo.',
     svg=''.join(o)))
 print('ok anexo')
