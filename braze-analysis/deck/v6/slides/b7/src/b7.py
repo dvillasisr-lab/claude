@@ -69,7 +69,25 @@ def etapa(name):
 
 
 def load_c():
+    """muestra_c con la lectura de WhatsApp recalculada de E1 (lecturas totales sobre entregados, incluye las registradas el mes
+    siguiente al envío, SPEC2 regla 7). Si con esa lectura la campaña llega a 60 %, deja de contar como 'responde poco'."""
     c = pd.read_csv(H + "muestra_c_familias.csv")
+    e = pd.read_csv(D + "e1_comunicacion_mes_canal.csv", low_memory=False, usecols=["communication_name", "canal", "whatsapp_delivery", "whatsapp_read"])
+    e = e[e.canal == "whatsapp"]; e["fam"] = e.communication_name.fillna("").map(_fam)
+    g = e.groupby("fam").agg(d=("whatsapp_delivery", "sum"), r=("whatsapp_read", "sum"))
+    lw = (100 * g.r / g.d.replace(0, np.nan)).to_dict()
+    wa = c.canal.eq("whatsapp")
+    c["lectura_mes_envio"] = np.where(wa, c.respuesta_pct, np.nan)
+    nueva = c.familia.map(lw)
+    c.loc[wa & nueva.notna(), "respuesta_pct"] = nueva[wa & nueva.notna()]
+    # misma regla de muestra_c para WhatsApp con volumen: debajo de 60 % = apagar o rehacer; de 60 % a la mediana del canal = revisar; arriba, sin señal
+    vol = wa & c.senal.isin(["apagar o rehacer", "revisar"]) & c.motivo.eq("respuesta baja")
+    antes = c.senal.copy()
+    med = c.loc[wa, "mediana_canal_resp"].iloc[0]
+    c.loc[vol & (c.respuesta_pct < MIN["whatsapp"]), "senal"] = "apagar o rehacer"
+    c.loc[vol & (c.respuesta_pct >= MIN["whatsapp"]) & (c.respuesta_pct < med), "senal"] = "revisar"
+    c.loc[vol & (c.respuesta_pct >= med), ["senal", "motivo"]] = np.nan
+    c["reclasificada_wa"] = vol & antes.eq("apagar o rehacer") & c.senal.ne("apagar o rehacer")
     c["costo_ent"] = np.where(c.canal == "whatsapp", c.envios * c.entrega_pct.fillna(0) / 100, c.costo_mxn)
     c["equipo"] = c.team.map(team_of); c["tema"] = c.familia.map(tema); c["etapa"] = c.familia.map(etapa)
     return c

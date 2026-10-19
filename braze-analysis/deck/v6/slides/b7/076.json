@@ -3,14 +3,14 @@
  "kind": "cierre",
  "titulo": "Por qué pasa: nadie compara volumen contra respuesta, y copiar una campaña es más fácil que medirla",
  "porques": [
-  "293 M mensajes, casi la mitad del año, salieron de campañas que no responden lo mínimo.",
+  "282 M mensajes, cuatro de cada diez, salieron de campañas que no responden lo mínimo.",
   "Son promociones a listas grandes; Product Growth y Marketing ponen 77 % de ese volumen.",
   "Una campaña se detiene cuando acaba la promoción, no cuando deja de responder.",
   "Si no funciona, se copia con otra fecha: 74 campañas sacaron cinco o más versiones.",
   "Causa raíz: se juzga cuánto sale y no cuánto responde, y nadie es dueño de ese número."
  ],
  "hipotesis": {
-  "A": "89 campañas activas no responden lo mínimo y gastan 2.1 M MXN al mes.",
+  "A": "85 campañas activas no responden lo mínimo y gastan 1.8 M MXN al mes.",
   "O": "Duplicar un Canvas es más rápido que leer cómo le fue, y la versión vieja sigue encendida.",
   "G": "No hay revisión mensual de respuesta ni una regla que diga quién apaga."
  },
@@ -20,7 +20,7 @@
   "Semana 3: en Braze, al lanzar una versión nueva se archiva la anterior.",
   "Cada mes: revisión con dueños; dos meses debajo de lo mínimo, se rehace o se apaga."
  ],
- "impacto": "Las 89 campañas activas que no responden costaron 2.1 M MXN y 28 M mensajes en septiembre.",
+ "impacto": "Las 85 campañas activas que no responden costaron 1.8 M MXN y 27 M mensajes en septiembre.",
  "sowhat": "Medir antes de copiar: revisión mensual, una versión viva por campaña y regla de apagado.",
  "fuente": "Fuente: láminas 66 a 75. Braze, envíos por campaña, mes y canal y catálogo, ene a sep 2026. WhatsApp a 1.00 MXN por entregado."
 }

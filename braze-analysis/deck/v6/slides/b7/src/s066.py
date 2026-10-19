@@ -47,17 +47,17 @@ for k, ch, lab, lx, ly in LAB:
 S.t(X1 - 4, Y0 + 14, "Arriba de la línea: responde lo mínimo o más", 10.5, SEC, "end", halo=True)
 S.t(X1 - 4, Y1 - 8, f"Azul: {no.envios.sum()/1e6:.0f} M mensajes ({100*no.envios.sum()/TOT:.0f} % del año) y {no.costo_ent.sum()/1e6:.1f} M MXN", 11, BLUE, "end", 700, halo=True)
 J = dict(
-    titulo="Casi la mitad de los mensajes salió de campañas que no responden lo mínimo: Tasa 0, comercios y referidos",
+    titulo="Cuatro de cada diez mensajes salieron de campañas que no responden lo mínimo: comercios, Tasa 0 y referidos",
     que="Promociones: Tasa 0, comercios KPay, referidos, BillPay y ofertas para volver.",
     quien=f"Marketing y Product Growth ({eq.loc['Product Growth','pc']:.0f} % del gasto); Others y Sales, menos.",
     a_quien="Leads, registrados sin crédito, ex clientes inactivos y toda la base.",
     lecturas=[
-        f"Tasa 0 suma {tg['Tasa 0']/1e6:.0f} M mensajes debajo de lo mínimo; comercios KPay {tg['Promociones de comercios KPay']/1e6:.0f} M y referidos {tg['Referidos']/1e6:.0f} M.",
+        f"Debajo de lo mínimo: comercios KPay {tg['Promociones de comercios KPay']/1e6:.0f} M mensajes, Tasa 0 {tg['Tasa 0']/1e6:.0f} M y referidos {tg['Referidos']/1e6:.0f} M.",
         f"{len(pa)} de estas campañas seguían en septiembre: {pa.env9.sum()/1e6:.0f} M mensajes y {pa.c9.sum()/1e6:.1f} M MXN ese mes.",
         f"Product Growth pone {eq.loc['Product Growth','pc']:.0f} % del gasto, por el WhatsApp a ex clientes y registrados.",
     ],
     causa="Las promociones salen a listas grandes y nadie revisa si responden; se detienen cuando acaba la promoción.",
     sowhat="El desperdicio está en pocas campañas grandes a quien aún no es cliente o ya se fue.",
-    fuente="Fuente: Braze, envíos por campaña y canal, ene a sep 2026; campañas con 100 mil mensajes o más. Mínimo: 3 clics por mil correos, 7.5 aperturas por mil push, 60 % de WhatsApp leídos, 10 % de in-app con clic.",
+    fuente="Fuente: Braze, envíos por campaña, ene a sep 2026; campañas de 100 mil mensajes o más; WhatsApp leído con el mes siguiente. Mínimo: 3 clics por mil correos, 7.5 aperturas por mil push, 60 % WhatsApp leído, 10 % in-app.",
     svg=S.out())
 write(66, J)

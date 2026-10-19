@@ -14,16 +14,17 @@ NOM = {"B0171": ("Rescate Tasa 0 a leads rezagados", "Marketing", "leads que no 
        "B0211": ("Tasa 0 a registrados de KPay sin crédito", "Product Growth", "registrados sin crédito"),
        "B0333": ("Oferta a ex clientes KPay, 12 meses", "Product Growth", "ex clientes (churn)"),
        "B0209": ("Descuento a clientes KCash inactivos", "Product Growth", "ex clientes inactivos"),
-       "B0223": ("Crédito en plazos a quien nunca lo activó", "Product Growth", "registrados sin crédito")}
+       "B0223": ("Crédito en plazos a quien nunca lo activó", "Product Growth", "registrados sin crédito"),
+       "BillPay_Intro": ("Lanzamiento de BillPay", "Others", "toda la base")}
 rows = []
 for _, r in top.iterrows():
     k = [k for k in NOM if k in r.familia][0]
     f = e[e.fam == r.familia].groupby("canal").agg(costo=("costo", "sum"), conv=("conversiones_filas", "sum"), ws=("whatsapp_send", "sum"), wd=("whatsapp_delivery", "sum"), wr=("whatsapp_read", "sum"))
     cpc = (f.costo / f.conv).to_dict()
     w = f.loc["whatsapp"] if "whatsapp" in f.index else None
-    rows.append(dict(k=k, nom=NOM[k][0], eq=NOM[k][1], aq=NOM[k][2], canal=r.canal, anual=r.costo_ent, sep=r.c9,
+    rows.append(dict(k=k, nom=NOM[k][0], eq=NOM[k][1], aq=NOM[k][2], canal=r.canal, anual=r.costo_ent, sep=r.c9 if r.c9 == r.c9 else 0,
                      cpe=cpc.get("email"), cpw=cpc.get("whatsapp"), ent=100 * w.wd / w.ws if w is not None else None, lec=100 * w.wr / w.wd if w is not None else None))
-    print(k, r.canal, round(r.costo_ent), round(r.c9), {kk: round(v, 1) for kk, v in cpc.items()}, rows[-1]["ent"], rows[-1]["lec"])
+    print(k, r.canal, round(r.costo_ent), round(r.c9 if r.c9 == r.c9 else 0), {kk: round(v, 1) for kk, v in cpc.items()}, rows[-1]["ent"], rows[-1]["lec"])
 otras9 = T9 - top.c9.sum(); print("otras sep", otras9)
 
 import math
@@ -54,20 +55,21 @@ for i, r in enumerate(rows):
     S.t(506, y, f"{i+1}. {r['nom']}", 10.5, INK, w=700)
     S.t(506, y + 14, f"{r['eq']} · {'WhatsApp' if r['canal']=='whatsapp' else 'Email'} · {r['anual']/1e6:.1f} M MXN", 10.5, col, w=600)
     if r.get("cpw"): S.t(506, y + 28, f"por conversión: email {r['cpe']:,.0f} · WhatsApp {r['cpw']:,.0f} MXN", 10.5, SEC)
-    else: S.t(506, y + 28, f"por conversión: email {r['cpe']:,.0f} MXN", 10.5, SEC)
+    elif r.get("cpe") and r["cpe"] < 1e6: S.t(506, y + 28, f"por conversión: email {r['cpe']:,.0f} MXN", 10.5, SEC)
+    else: S.t(506, y + 28, "sin conversiones registradas", 10.5, SEC)
 R = {r["k"]: r for r in rows}
 J = dict(
-    titulo="Cinco campañas son 40 % del gasto que no responde; cuatro son WhatsApp para recuperar a quien se fue",
-    que="Tasa 0 a rezagados, ofertas a ex clientes, descuentos y crédito en plazos.",
-    quien="Marketing (rescate Tasa 0) y Product Growth (las otras cuatro).",
-    a_quien="Leads rezagados, ex clientes KPay y KCash, registrados sin crédito.",
+    titulo=f"Cinco campañas son {100*top.costo_ent.sum()/TA:.0f} % del gasto que no responde, y cuatro de ellas son de Product Growth",
+    que="Tasa 0, crédito en plazos, oferta a ex clientes KPay y lanzamiento de BillPay.",
+    quien="Product Growth (cuatro) y Others (BillPay).",
+    a_quien="Registrados sin crédito, ex clientes KPay con 12 meses sin compra y toda la base.",
     lecturas=[
         f"En septiembre las cinco gastaron {top.c9.sum()/1e6:.2f} M MXN de {T9/1e6:.2f} M ({100*top.c9.sum()/T9:.0f} %) entre {len(a)} campañas activas.",
         f"Ex clientes KPay: {R['B0333']['cpw']:,.0f} MXN por conversión por WhatsApp contra {R['B0333']['cpe']:.0f} por email.",
-        f"Del WhatsApp se entrega {min(r['ent'] for r in rows if r['ent'])/10:.0f} a {max(r['ent'] for r in rows if r['ent'])/10:.0f} de cada 10 y se lee {min(r['lec'] for r in rows if r['lec']):.0f} a {max(r['lec'] for r in rows if r['lec']):.0f} %, alrededor del mínimo.",
+        "Con las lecturas del mes siguiente, el rescate Tasa 0 y el descuento a inactivos llegan a 60 % y salen de la lista.",
     ],
-    causa="Se recupera por WhatsApp a toda la lista, sin límite de gasto ni grupo sin mensajes que mida.",
-    sowhat="Recuperar sí, pero primero por email o in-app y WhatsApp solo a quien lo lee.",
-    fuente=f"Fuente: Braze, envíos por campaña y canal, ene a sep 2026; {len(no)} campañas por canal debajo de lo mínimo. WhatsApp a 1.00 MXN por entregado. Conversión: solicitud o préstamo en 7 días.",
+    causa="Se promueve a listas grandes por correo y WhatsApp, sin límite de gasto ni grupo sin mensajes.",
+    sowhat="Rehacer estas cinco primero: a ex clientes por email o in-app, y WhatsApp solo a quien lo lee.",
+    fuente=f"Fuente: Braze, envíos por campaña y canal, ene a sep 2026; {len(no)} campañas por canal debajo de lo mínimo. WhatsApp a 1.00 MXN por entregado; lectura con las del mes siguiente.",
     svg=S.out())
 write(68, J)

@@ -16,7 +16,7 @@ J = dict(
     kind="cierre",
     titulo="Por qué pasa: nadie compara volumen contra respuesta, y copiar una campaña es más fácil que medirla",
     porques=[
-        f"{no.envios.sum()/1e6:.0f} M mensajes, casi la mitad del año, salieron de campañas que no responden lo mínimo.",
+        f"{no.envios.sum()/1e6:.0f} M mensajes, cuatro de cada diez, salieron de campañas que no responden lo mínimo.",
         f"Son promociones a listas grandes; Product Growth y Marketing ponen {100*share_pm:.0f} % de ese volumen.",
         "Una campaña se detiene cuando acaba la promoción, no cuando deja de responder.",
         f"Si no funciona, se copia con otra fecha: {(vv>=5).sum()} campañas sacaron cinco o más versiones.",
