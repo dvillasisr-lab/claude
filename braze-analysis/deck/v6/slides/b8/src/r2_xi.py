@@ -49,7 +49,7 @@ o.append(t(sx(30), sy(2.4) - 2, f'{n_acc - 2} Canvas más con 1 a 14 personas: m
 o.append('</svg>')
 save(86, dict(kind='grafica',
     titulo=f'Solo uno de {n_can:,} Canvas apartó un grupo de control de verdad: nadie puede decir cuánto vende Braze',
-    que='Toda la promoción: Tasa 0, referidos, recordatorios de registro, venta cruzada, reactivación',
+    que='Toda la promoción: Tasa 0, referidos, recordatorios, venta cruzada, reactivación',
     quien='Todos los equipos; el único control real es de Product Growth',
     a_quien='En el único caso medido, clientes activos de Cash (B0301)',
     lecturas=[f'{n_can - n_ctl:,} Canvas no apartaron a nadie; {n_acc} marcaron de 1 a {acc_max} personas por accidente.',
