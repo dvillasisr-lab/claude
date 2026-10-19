@@ -62,7 +62,7 @@ guarda(50, dict(
     ],
     causa='WhatsApp es lo que más se lee y se usa para insistir; en bases frías la lectura casi no se vuelve préstamo.',
     sowhat='WhatsApp para recuperar solo a quien leyó uno en 90 días; al resto, correo, push o in-app.',
-    fuente='Fuente: Braze E1 (campaña, canal y mes), ene a sep 2026. WhatsApp a 1.00 MXN por entregado. Solicitud: solicitudes registradas. Campañas con 50 mil o más entregados. Ex clientes sin Sales B0335 (promos a todo el portafolio).',
+    fuente='Fuente: Braze E1 (campaña, canal y mes), ene a sep 2026. WhatsApp a 1.00 MXN por entregado. Solicitud: solicitudes registradas. Campañas con 50 mil o más entregados. Ex clientes sin Sales B0335 (promos a todos).',
     svg=SVG,
 ))
 print(mf, mr, ma, sf, sa, len(w), w.fr.sum())

@@ -110,7 +110,7 @@ save(87, dict(kind='grafica',
               f'Veriff por correo: {ve.ca:.1f} % contra {ve.cn:.1f} % a 7 días; la cifra del equipo da 1.3 veces.',
               'El nivel cambia por la definición: aquí es crédito otorgado en 7 días por día de envío.'],
     causa='No hay una definición única de conversión: cada equipo mide otro paso u otra ventana.',
-    sowhat='Fijar con Datos una sola definición (qué paso y en cuántos días) antes de comparar campañas.',
+    sowhat='Comparar campañas con una sola definición: crédito otorgado en 7 días, y mostrar también la solicitud.',
     fuente='Fuente: Braze, abren contra no abren por campaña a 7 días (E9a), enero a septiembre 2026; campañas con 2 mil o más personas en cada grupo. 22 contra 17 viene del equipo.',
     svg=''.join(o)))
 
@@ -187,8 +187,8 @@ save(89, dict(kind='html',
     lecturas=[f'{uniq / 1e3:.0f} mil personas se dieron de baja del correo en nueve meses, con fecha y campaña.',
               f'Push y WhatsApp solo tienen una bandera de hoy, sin fecha: {m(wa_baja, 1)} M WhatsApp fueron a marcados como baja.',
               'Por eso el push parece gratis: cuesta el permiso de notificaciones y no lo vemos.'],
-    causa='Braze solo manda a Databricks la baja de correo; nadie pidió la de push ni la de WhatsApp.',
-    sowhat='Pedir a Datos la baja de push y WhatsApp con fecha y campaña (Currents).',
+    causa='Braze solo manda a Databricks la baja de correo; la de push y la de WhatsApp no están configuradas.',
+    sowhat='Prender Currents en Braze para que la baja de push y WhatsApp quede con fecha y campaña.',
     fuente='Fuente: Braze, envíos por canal (E1), personas con baja de correo (E5) y banderas del golden dataset (E17), enero a septiembre 2026. La bandera de WhatsApp no es confiable.',
     html=''.join(h)))
 

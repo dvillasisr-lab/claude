@@ -38,7 +38,7 @@ save(104, dict(kind='html',
               f'{n_ver} comprobaciones cruzan cada total del Sheets con el mismo cálculo hecho aparte.'],
     causa='Equipo, audiencia y mensaje se leen del nombre de la campaña: Braze no los guarda como campos.',
     sowhat='Cualquiera puede rehacer cada cifra con estos archivos, sin acceso a Braze.',
-    fuente=f'Fuente: carpeta data (E1 a E18b) y Sheets braze_auditoria_v4, pestaña Verificación ({n_ver} comprobaciones). Todo agregado: sin datos personales.',
+    fuente=f'Fuente: carpeta data (E1 a E18b) y Sheets braze_auditoria_v4, pestaña Verificación ({n_ver} comprobaciones). Sin datos personales. App: no hay dato; se aproxima con quien abrió un push o un in-app.',
     html=''.join(h)))
 
 # ------------------------------------------------------------------ 105. Definiciones
@@ -50,7 +50,8 @@ DEF = [('Responder', 'Clic en correo, abrir push, leer WhatsApp o clic en in-app
        ('Bloqueados', 'Tarjeta KPay congelada, REUS o ARCO y lista negra'),
        ('Ex clientes', 'Churn, dormants e inactivos: se buscan recuperar, no se apagan'),
        ('Leads y registrados', 'Personas que nunca tomaron crédito'),
-       ('Conversión', 'Crédito otorgado en 7 días; referencia, no prueba de venta'),
+       ('Conversión', 'Métrica principal: crédito otorgado en 7 días, repartido entre los mensajes del día; referencia, no prueba de venta'),
+       ('Solicitud', 'También se muestra el costo por solicitud registrada; no viene repartida y puede contar en varias campañas'),
        ('Grupo de control', '5 a 10 % de la audiencia al azar que no recibe el mensaje')]
 h = ['<table><tr><th style="width:24%">Término</th><th>Qué significa en este deck</th></tr>']
 for a, b in DEF:
@@ -59,7 +60,7 @@ h.append('</table>')
 save(105, dict(kind='html', ancho_completo=True,
     titulo='Definiciones: responder, canal sin respuesta, campaña con todas sus versiones, bloqueados y conversión',
     sowhat='Con estas definiciones, dos equipos que miran la misma campaña llegan a la misma cifra.',
-    fuente='Fuente: definiciones del análisis (Sheets v4, Léeme y Parámetros); audiencia según el nombre de la campaña.',
+    fuente='Fuente: definiciones del análisis (Sheets v4, Léeme y Parámetros); audiencia según el nombre de la campaña. Solicitud: solicitudes registradas en E1.',
     html=''.join(h)))
 
 # ------------------------------------------------------------------ 106. Los 24 estándares
@@ -100,7 +101,7 @@ for sub, rr in ((1, STD[:12]), (2, STD[12:])):
     save(106, dict(kind='html', ancho_completo=True,
         titulo='Los 24 estándares y su fuente: ocho son de canal y seis vienen de la industria' if sub == 1 else 'Los 24 estándares y su fuente (continuación): bajas, audiencia, medición y nombres',
         sowhat='Son el mínimo de la industria o una regla interna, no una meta de Kueski.' if sub == 1 else 'Grupo de control (23): hoy 1 de 3,228; se mide en Braze en cuanto se prenda.',
-        fuente='Fuente: Sheets braze_auditoria_v4, pestaña Estándares. "Sin dato": no se mide con las extracciones actuales.',
+        fuente='Fuente: Sheets braze_auditoria_v4, pestaña Estándares; la columna Dato dice de qué extracción sale cada cifra.',
         html=''.join(h)), sub=sub)
 
 # ------------------------------------------------------------------ 107. Detalle mensual, semanal y por día
@@ -223,7 +224,7 @@ SUP = [('Correo', '0.05 MXN por enviado', 'Se cobra todo lo que sale'),
        ('Ahorro por campaña', 'Costo de septiembre', 'Palancas en orden, sin doble conteo'),
        ('Lecturas de WhatsApp', 'Cuentan las del mes siguiente', 'Se suman a la campaña que las mandó'),
        ('A quien no responde', f'{sh_wa * 100:.0f} % del WhatsApp, {sh_em * 100:.0f} % del correo', 'Proporción de E9b en 90 días'),
-       ('Costo fijo de Braze', 'X, editable', '7,020 USD al mes y 32,474 créditos sin explicar')]
+       ('Costo fijo de Braze', 'X, editable', 'No entra en el gasto ni en el ahorro: solo se cuentan las tarifas por mensaje')]
 h = ['<table><tr><th style="width:20%">Supuesto</th><th style="width:26%">Valor</th><th>Qué implica</th></tr>']
 for a, b, c_ in SUP:
     h.append(f'<tr><td><b>{a}</b></td><td><b>{b}</b></td><td>{c_}</td></tr>')

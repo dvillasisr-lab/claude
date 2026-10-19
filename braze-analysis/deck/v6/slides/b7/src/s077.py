@@ -40,8 +40,9 @@ put("ticket", e[e.communication_id.isin(ids_sd)])
 # datos del "por qué"
 bp = e[e.fam.str.contains("BillPay_Intro") & (e.canal == "email")]; bp_cpm = 1000 * bp.email_click.sum() / bp.email_delivery.sum(); bp_uns = bp.email_unsubscribe.sum()
 b211 = RI[RI.fam.str.contains("B0211-CANVAS-Nuevos_RegistradosPay") & (RI.canal == "email")].iloc[0]
-b333 = e[e.fam == "Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta-N/A"].groupby("canal").agg(c=("costo", "sum"), v=("conversiones_fraccional", "sum"))
+b333 = e[e.fam == "Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta-N/A"].groupby("canal").agg(c=("costo", "sum"), v=("conversiones_fraccional", "sum"), so=("solicitudes_filas", "sum"))
 b333w, b333e = b333.loc["whatsapp", "c"] / b333.loc["whatsapp", "v"], b333.loc["email", "c"] / b333.loc["email", "v"]
+b333sw, b333se = b333.loc["whatsapp", "c"] / b333.loc["whatsapp", "so"], b333.loc["email", "c"] / b333.loc["email", "so"]  # por solicitud registrada
 qa = e[e.fam.str.startswith("QA-KPay-B001")]; qa_o = 1000 * qa.pn_open.sum() / qa.pn_send.sum()
 r326 = a[a.fam.str.contains("B0326-Canvas-Recurrentes_Dormants")]
 ab = a.groupby("etapa").envios.sum()
@@ -93,11 +94,11 @@ J = dict(
     a_quien="Leads, registrados sin crédito, ex clientes, toda la base y bloqueados.",
     lecturas=[
         f"Seguir con lo que no responde: {P['insiste']['msgs']/1e6:.0f} M mensajes y {P['insiste']['mxn']/1e6:.1f} M MXN; Product Growth pone la mitad.",
-        f"WhatsApp a quien no lo lee: {P['wa']['msgs']/1e6:.0f} M mensajes pero {P['wa']['mxn']/1e6:.1f} M MXN, casi todo de Product Growth.",
+        f"WhatsApp a quien no lo lee: {P['wa']['msgs']/1e6:.0f} M mensajes pero {P['wa']['mxn']/1e6:.1f} M MXN; ex clientes KPay, {b333sw:.0f} MXN por solicitud contra {b333se:.0f} por email.",
         f"Others encabeza envíos a toda la base, pruebas y promociones sin ticket, sobre todo BillPay.",
     ],
     causa="Nadie revisa respuesta contra volumen por campaña, y las reglas de envío no existen o no se cumplen.",
     sowhat="No es una campaña mala: son hábitos que se repiten en los mismos equipos y tienen dueño.",
-    fuente="Fuente: Braze, envíos, catálogo, etapa (golden dataset) y pasos de Canvas, ene a sep 2026. Se traslapan: no se suman. Conversión: crédito de Cash otorgado en 7 días, repartido.",
+    fuente="Fuente: Braze, envíos, catálogo, etapa (golden dataset) y pasos de Canvas, ene a sep 2026. Se traslapan: no se suman. Conversión: crédito de Cash otorgado en 7 días, repartido; solicitudes registradas.",
     svg=S.out())
 write(77, J)

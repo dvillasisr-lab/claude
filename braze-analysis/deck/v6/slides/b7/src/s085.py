@@ -19,7 +19,8 @@ gm = Pm.groupby("trig").agg(d=("email_delivery", "sum"), c=("email_click", "sum"
 cm, sm = 1000 * gm.loc[True, "c"] / gm.loc[True, "d"], 1000 * gm.loc[False, "c"] / gm.loc[False, "d"]
 # 2. WhatsApp por etapa
 w = e[e.canal == "whatsapp"].copy(); w["et"] = w.fam.map(etapa)
-gw = w.groupby("et").agg(d=("whatsapp_delivery", "sum"), conv=("conversiones_fraccional", "sum")); gw["cpc"] = gw.d / gw.conv
+gw = w.groupby("et").agg(d=("whatsapp_delivery", "sum"), conv=("conversiones_fraccional", "sum"), sol=("solicitudes_filas", "sum")); gw["cpc"] = gw.d / gw.conv
+gw["cps"] = gw.d / gw.sol  # MXN por solicitud registrada (no viene repartida)
 # 3. correos por persona al mes
 x = e[(e.canal == "email") & (e.usuarios_aprox > 0) & (e.email_delivery > 0)].copy(); x["t"] = x.email_sent / x.usuarios_aprox
 x["b"] = pd.cut(x.t, [0, 1.5, 2.5, 4.5, 1e9], labels=["1", "2", "3 a 4", "5+"])
@@ -36,7 +37,7 @@ ctl = lc[(lc.grupo == "control") & (lc.usuarios >= 1000)]
 print(cm, sm, gw.cpc.round(0).to_dict(), gt.pm.round(1).to_dict(), (sp >= 2).sum(), ncv, nctl, sinT / 1e6)
 CARDS = [
  ("1", "¿Qué hizo la persona para recibirla?", "Registro, compra, pago, cancelación o días sin volver.", f"{cm:.0f} contra {sm:.1f}", "clics por mil correos en promedio, con motivo y sin motivo"),
- ("2", "¿Va por el canal que usa y cuesta menos?", "WhatsApp solo a quien leyó uno en 90 días.", f"{gw.loc['Clientes activos y recurrentes','cpc']:.0f} contra {gw.loc['Ex clientes inactivos','cpc']:.0f}", "MXN por conversión por WhatsApp: activos contra ex clientes"),
+ ("2", "¿Va por el canal que usa y cuesta menos?", "WhatsApp solo a quien leyó uno en 90 días.", f"{gw.loc['Clientes activos y recurrentes','cpc']:.0f} contra {gw.loc['Ex clientes inactivos','cpc']:.0f}", f"MXN por conversión por WhatsApp, activos contra ex clientes; por solicitud, {gw.loc['Clientes activos y recurrentes','cps']:.0f} contra {gw.loc['Ex clientes inactivos','cps']:.0f}"),
  ("3", "¿Cuántos mensajes le llegan?", "Máximo dos al mes; el segundo solo a quien no abrió.", "1.8 contra 3.9", "bajas por mil personas con 1 correo al mes y con 3 o 4 (lámina 63)"),
  ("4", "¿Le llega otra versión o campaña el mismo día?", "Revisar el calendario común antes de activar.", f"{(sp>=2).sum()}", "campañas con dos versiones a la vez en septiembre"),
  ("5", "¿Tiene un grupo sin mensajes?", "10 %; si va a más de un millón, prueba al 10 % antes.", f"{nctl} de {ncv:,}", f"Canvas con grupo de control real (B0301, {ctl.usuarios.sum()/1e3:.1f} mil personas)"),
@@ -56,6 +57,6 @@ J = dict(
     quien="El equipo dueño la llena; CRM la revisa antes de activar.",
     a_quien="Todos los segmentos; ex clientes con presupuesto con límite y grupo sin mensajes.",
     sowhat="Seis preguntas antes de activar y una regla para apagar evitan casi todo lo que vimos.",
-    fuente="Fuente: láminas 63, 69, 74, 81 y 88; Braze, envíos por campaña, canal y mes, y grupos de control por Canvas, ene a sep 2026.",
+    fuente="Fuente: láminas 63, 69, 74, 81 y 88; Braze, envíos por campaña, canal y mes, y grupos de control por Canvas, ene a sep 2026. Solicitud: solicitudes registradas.",
     html=html)
 write(85, J)

@@ -186,7 +186,7 @@ TT = [('Product Growth', ['Apaga correo de Tasa 0 e Installments', 'Venta cruzad
       ('Others', ['Equipo y ticket a 39 promociones', 'BillPay y Shopping: prueba al 10 %', '', ''], EQ['Others']),
       ('Collections', ['Archiva Canvas de prueba', 'Cobranza no se toca', '', ''], EQ['Collections']),
       ('MarTech', ['Excluye bloqueados; pausa pruebas', 'Control nativo; ticket obligatorio', 'Quita duplicados', 'Reentrada apagada; límites en el mes 2'], None),
-      ('CRM y Datos', ['Datos: definición de conversión', 'Datos: grupo aparte de ex clientes', 'CRM: arranca la medición y el comité', 'CRM: tablero de control'], None)]
+      ('CRM y Datos', ['Datos: mide crédito otorgado y solicitud', 'Datos: grupo aparte de ex clientes', 'CRM: arranca la medición y el comité', 'CRM: tablero de control'], None)]
 h = ['<table><tr><th style="width:11%">Equipo</th><th style="width:20%">Semana 1</th><th style="width:20%">Semana 2</th><th style="width:20%">Semana 3</th><th style="width:19%">Semana 4</th><th class="num" style="width:10%">Ahorro al mes</th></tr>']
 for eq, ws, v in TT:
     vv = f'<b>{m(v)} M MXN</b>' if v is not None else '<span style="color:#6B7484">Habilita</span>'
@@ -204,21 +204,21 @@ save(102, dict(kind='html', ancho_completo=True,
 # ------------------------------------------------------------------ 103. Lo que no sabemos
 app_push = e7[e7.resp_push == 1].usuarios.sum(); app_any = e7[(e7.resp_push == 1) | (e7.resp_inapp == 1)].usuarios.sum()
 UN = [('¿La recuperación trae clientes?', f'Decide hasta {m(V["medir"])} M MXN al mes', '10 % sin mensajes, 8 semanas', 'CRM y Product Growth'),
-      ('¿Quién tiene la app?', f'Solo {m(app_any, 1)} M de personas respondieron a push o in-app', 'Bandera de app con fecha', 'Datos'),
-      ('¿Cuánto cuesta Braze fijo?', 'Saber si baja al escribir a menos gente', 'Contrato', 'Finanzas'),
-      ('¿Qué reciben los 14.2 M de personas sin respuesta?', 'Saber qué apagar primero', 'Extracción por campaña y segmento', 'Datos'),
-      ('¿Qué es conversión?', 'Dos equipos concluyen lo contrario', 'Una definición: paso y días', 'Datos'),
-      ('¿Hora, teléfono y bajas de push?', 'Silencio, canal preferido, calidad', 'Eventos de Braze a Databricks (Currents)', 'Datos y MarTech')]
-h = ['<table><tr><th style="width:30%">Lo que no sabemos</th><th style="width:30%">Por qué importa</th><th style="width:25%">Dato que lo resuelve</th><th style="width:15%">Equipo</th></tr>']
+      ('¿Quién tiene la app?', f'No hay dato; se aproxima: {m(app_any, 1)} M de personas abrieron un push o un in-app', 'Crear en Braze el atributo de app con esa regla', 'MarTech'),
+      ('¿Cuánto cuesta Braze fijo?', 'Saber si baja al escribir a menos gente', 'Queda como X, editable en el Sheets', 'Finanzas'),
+      ('¿Qué reciben los 14.2 M de personas sin respuesta?', 'Saber qué apagar primero', 'Segmento en Braze de quien no responde en 90 días; CRM revisa qué le llega', 'MarTech y CRM'),
+      ('¿Cómo se mide la conversión?', 'Dos equipos concluían lo contrario', 'Crédito otorgado en 7 días; también la solicitud (lámina 105)', 'CRM'),
+      ('¿Hora, teléfono y bajas de push?', 'Silencio, canal preferido, calidad', 'Prender Currents: eventos de Braze a Databricks', 'MarTech')]
+h = ['<table><tr><th style="width:30%">Lo que no sabemos</th><th style="width:30%">Por qué importa</th><th style="width:25%">Cómo se resuelve</th><th style="width:15%">Equipo</th></tr>']
 for r in UN:
     h.append('<tr>' + ''.join(f'<td>{"<b>" + x + "</b>" if i == 0 else x}</td>' for i, x in enumerate(r)) + '</tr>')
 h.append('</table>')
 save(103, dict(kind='html', ancho_completo=True,
-    titulo=f'Lo que todavía no sabemos y qué dato lo resuelve: la primera pregunta decide hasta {m(V["medir"])} M MXN al mes',
+    titulo=f'Lo que todavía no sabemos y cómo se resuelve: la primera pregunta decide hasta {m(V["medir"])} M MXN al mes',
     que='Preguntas abiertas del análisis',
-    quien='Datos, Finanzas, MarTech y CRM',
+    quien='MarTech, CRM, Product Growth y Finanzas',
     a_quien='Ex clientes, personas sin respuesta y quien tiene la app',
     sowhat='Ninguna frena lo que se quita ya; todas se resuelven en 90 días con un dueño.',
-    fuente='Fuente: E7b, E13, E16 y E17, enero a septiembre 2026. Costo fijo de Braze: 7,020 USD al mes y 32,474 créditos sin explicar (X).',
+    fuente='Fuente: E7b, E13, E16 y E17, enero a septiembre 2026. Costo fijo de Braze: X, editable.',
     html=''.join(h)))
 print('ok XIII')

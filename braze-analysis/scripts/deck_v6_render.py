@@ -11,6 +11,7 @@ SL = ROOT / "deck" / "v6" / "slides"
 OUT = ROOT / "deck" / "v6" / "DECK_v6.html"
 
 CSS = BASE_CSS + """
+.slide.oculta{outline:2px dashed #A3AAB5;outline-offset:-8px}
 .slide.portada .s{justify-content:center;gap:2cqi;background:#FFFFFF}
 .portada .brand{font-size:1.1cqi;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);font-weight:700}
 .portada h1{margin:0;font-size:4.6cqi;line-height:1.05;letter-spacing:-.02em;max-width:70cqi}
@@ -59,7 +60,8 @@ def ctx(d):
 
 def foot(d, i):
     sw = f'<div class="sw"><b>So what</b><span>{E(d["sowhat"])}</span></div>' if d.get("sowhat") else ""
-    return sw + f'<div class="src"><span>{E(d.get("fuente",""))}</span><span>{i}</span></div>'
+    num = f"{i}a · lámina oculta" if d.get("oculta") else i
+    return sw + f'<div class="src"><span>{E(d.get("fuente",""))}</span><span>{num}</span></div>'
 
 def side(d):
     if not d.get("lecturas") and not d.get("causa"):
@@ -89,7 +91,8 @@ def slide(d, i):
     body_l = d["svg"] if k == "grafica" else f'<div class="hx">{d.get("html","")}</div>'
     sd = side(d)
     full = " full" if (not sd or d.get("ancho_completo")) else ""
-    return (f'<section class="slide" id="l{i}"><div class="s"><h2>{E(d["titulo"])}</h2>{ctx(d)}'
+    sid = f"{i}{'a' * d.get('sub', 0)}" if d.get("oculta") else i
+    return (f'<section class="slide{' oculta' if d.get('oculta') else ''}" id="l{sid}"><div class="s"><h2>{E(d["titulo"])}</h2>{ctx(d)}'
             f'<div class="body{full}"><div class="ex">{body_l}</div>{"" if full else sd}</div>{foot(d, i)}</div></section>')
 
 def page(ds, title="Braze en Kueski · Deck v6", note=""):

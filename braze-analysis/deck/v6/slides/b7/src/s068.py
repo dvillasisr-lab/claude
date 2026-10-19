@@ -19,11 +19,12 @@ NOM = {"B0171": ("Rescate Tasa 0 a leads rezagados", "Marketing", "leads que no 
 rows = []
 for _, r in top.iterrows():
     k = [k for k in NOM if k in r.familia][0]
-    f = e[e.fam == r.familia].groupby("canal").agg(costo=("costo", "sum"), conv=("conversiones_fraccional", "sum"), ws=("whatsapp_send", "sum"), wd=("whatsapp_delivery", "sum"), wr=("whatsapp_read", "sum"))
+    f = e[e.fam == r.familia].groupby("canal").agg(costo=("costo", "sum"), conv=("conversiones_fraccional", "sum"), sol=("solicitudes_filas", "sum"), ws=("whatsapp_send", "sum"), wd=("whatsapp_delivery", "sum"), wr=("whatsapp_read", "sum"))
     cpc = (f.costo / f.conv).to_dict()
+    cps = (f.costo / f.sol).to_dict()  # MXN por solicitud registrada (no viene repartida)
     w = f.loc["whatsapp"] if "whatsapp" in f.index else None
     rows.append(dict(k=k, nom=NOM[k][0], eq=NOM[k][1], aq=NOM[k][2], canal=r.canal, anual=r.costo_ent, sep=r.c9 if r.c9 == r.c9 else 0,
-                     cpe=cpc.get("email"), cpw=cpc.get("whatsapp"), ent=100 * w.wd / w.ws if w is not None else None, lec=100 * w.wr / w.wd if w is not None else None))
+                     cpe=cpc.get("email"), cpw=cpc.get("whatsapp"), cse=cps.get("email"), csw=cps.get("whatsapp"), ent=100 * w.wd / w.ws if w is not None else None, lec=100 * w.wr / w.wd if w is not None else None))
     print(k, r.canal, round(r.costo_ent), round(r.c9 if r.c9 == r.c9 else 0), {kk: round(v, 1) for kk, v in cpc.items()}, rows[-1]["ent"], rows[-1]["lec"])
 otras9 = T9 - top.c9.sum(); print("otras sep", otras9)
 
@@ -67,11 +68,11 @@ J = dict(
     a_quien="Registrados sin crédito, ex clientes KPay con 12 meses sin compra y toda la base.",
     lecturas=[
         f"En septiembre estas cuatro gastaron {top.c9.sum()/1e6:.2f} M MXN de {T9/1e6:.2f} M ({100*top.c9.sum()/T9:.0f} %) entre {len(a)} campañas activas.",
-        f"Ex clientes KPay: {R['B0333']['cpw']:,.0f} MXN por conversión por WhatsApp contra {R['B0333']['cpe']:.0f} por email.",
+        f"Ex clientes KPay: {R['B0333']['cpw']:,.0f} MXN por conversión por WhatsApp contra {R['B0333']['cpe']:.0f} por email; {R['B0333']['csw']:.0f} contra {R['B0333']['cse']:.0f} por solicitud.",
         f"Rescate Tasa 0 ({lw171:.0f} % leído) y descuento a inactivos ({lw209:.0f} %) sí llegan al mínimo de WhatsApp.",
     ],
     causa="Se promueve a listas grandes por correo y WhatsApp, sin límite de gasto ni grupo sin mensajes.",
     sowhat="Rehacer estas cinco primero: a ex clientes por email o in-app, y WhatsApp solo a quien lo lee.",
-    fuente=f"Fuente: Braze, envíos por campaña y canal, ene a sep 2026; {len(no)} campañas por canal debajo de lo mínimo. WhatsApp leído con el mes siguiente. Conversión: crédito de Cash otorgado en 7 días, repartido.",
+    fuente=f"Fuente: Braze, envíos por campaña y canal, ene a sep 2026; {len(no)} campañas por canal bajo lo mínimo. WhatsApp leído con el mes siguiente. Conversión: crédito de Cash otorgado en 7 días, repartido; solicitudes registradas.",
     svg=S.out())
 write(68, J)

@@ -56,8 +56,8 @@ guarda(54, dict(
         f'Ex clientes: de cada 100 con correo, a {MED[("ex","rp")]:.0f} les llega el push y {MED[("ex","ri")]:.0f} ven el in-app (mediana por campaña).',
         f'Leads que nunca activaron: {MED[("nunca","rp")]:.0f} y {MED[("nunca","ri")]:.0f}; activos: {MED[("activos","rp")]:.0f} y {MED[("activos","ri")]:.0f}.',
     ],
-    causa=f'No hay dato confiable de app: el push a quien aparece con la app desinstalada abre {ap_un[True]:.2f} %, como el resto.',
-    sowhat='Pedir a Datos tres atributos diarios en Braze: tiene app, entró en 30 días y tiene push activado.',
+    causa=f'No existe el dato de app instalada; la bandera de app desinstalada no sirve: ese push abre {ap_un[True]:.2f} %, como el resto.',
+    sowhat='Crear en Braze el atributo de app con esta regla: abrió un push o un in-app; hoy ese dato no existe.',
     fuente='Fuente: Braze E7b (respuesta por persona), E4a (personas por canal al mes), E1 (personas por campaña y mes, sumadas: es proporción, no conteo) y E17, enero a septiembre 2026.',
     svg=SVG,
 ))

@@ -81,6 +81,6 @@ J = dict(
     ],
     causa="Al copiar un Canvas, Braze le pone 'Copy of' y nadie lo renombra antes de usarlo con clientes.",
     sowhat="El problema no es probar con clientes: es que el nombre no dice qué es. Renombrar antes de activar.",
-    fuente=f"Fuente: Braze, envíos por comunicación y canal, ene a sep 2026; {len(g)} comunicaciones con nombre de prueba o copia. Falta el tipo de push para confirmar si era silencioso.",
+    fuente=f"Fuente: Braze, envíos por comunicación y canal, ene a sep 2026; {len(g)} comunicaciones con nombre de prueba o copia. Límite: los datos no traen el tipo de push, así que no se confirma cuál era silencioso.",
     svg=S.out())
 write(80, J)
