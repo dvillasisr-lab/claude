@@ -92,7 +92,7 @@ STD = [(1, 'Entrega', 'Correos que llegan a la bandeja', '95 % o más', 'Referen
 assert len(est) == 24 and list(est['#'].astype(int)) == [s[0] for s in STD]
 FE = dict(zip(est['#'].astype(int), est['fuente (E)'].fillna('').astype(str)))
 for sub, rr in ((1, STD[:12]), (2, STD[12:])):
-    h = ['<table><tr><th style="width:4%">#</th><th style="width:12%">Tema</th><th style="width:38%">Indicador</th><th style="width:14%">Estándar</th><th style="width:26%">De dónde sale</th><th style="width:6%">Dato</th></tr>']
+    h = ['<table><tr><th style="width:3%">#</th><th style="width:10%">Tema</th><th style="width:36%">Indicador</th><th style="width:12%">Estándar</th><th style="width:33%">De dónde sale</th><th style="width:6%">Dato</th></tr>']
     for n, tm, ind, st, src in rr:
         fe = FE[n] if FE[n] and FE[n] != 'nan' else 'sin dato'
         h.append(f'<tr><td>{n}</td><td>{tm}</td><td><b>{ind}</b></td><td><b>{st}</b></td><td>{src}</td><td>{fe[:4] if len(fe) < 6 else "sin dato"}</td></tr>')
@@ -165,9 +165,9 @@ h.append('</table>')
 top = ws.sort_values('env', ascending=False).iloc[0]
 print('107 sem', len(ws), lab(top.periodo), top.env)
 save(107, dict(kind='html', ancho_completo=True,
-    titulo=f'Detalle semanal: la semana con más mensajes fue la del {lab(top.periodo)} ({top.env / 1e6:.0f} M), con el lanzamiento de BillPay',
+    titulo=f'Detalle semanal: la semana con más mensajes fue la del {lab(top.periodo).replace(" ", " de ", 1).replace("jun", "junio")} ({top.env / 1e6:.0f} M mensajes), con el lanzamiento de BillPay',
     sowhat='Las semanas con más volumen no traen más respuestas por cada mil mensajes: el volumen extra fue a gente que no responde.',
-    fuente='Fuente: Braze, serie semanal por canal (E4a), semanas de lunes a domingo, enero a septiembre 2026. Resp. por mil = clic de correo, apertura de push, lectura de WhatsApp y clic in-app por cada mil mensajes de la semana.',
+    fuente='Fuente: Braze, serie semanal por canal (E4a), semanas de lunes a domingo, enero a septiembre 2026 (la primera y la última están incompletas). Resp. por mil = clic de correo, apertura de push, lectura de WhatsApp y clic in-app por cada mil mensajes de la semana.',
     html=''.join(h)), sub=3)
 
 # ------------------------------------------------------------------ 108. Fichas de 15 campañas
@@ -183,19 +183,19 @@ def nombre(f, cn):
     if tk == 'B0171': return 'Rescate Tasa 0 a leads ' + ('rezagados' if 'Rezagada' in f else 'calientes')
     return NOMB.get((tk, cn), f)
 AUD = {'recup': 'Ex clientes', 'activ': 'Leads y registrados', 'clien': 'Clientes activos', 'otros': 'Clientes KPay'}
-QUE = {'b_cortar': 'Se quita ya', 'b_medir': 'Se mide con grupo sin mensajes', 'b_pref': 'Solo a quien responde por este canal', 'b_desp': 'Excluir bloqueados'}
+QUE = {'b_cortar': 'Se quita ya', 'b_medir': 'Se mide antes de cortar', 'b_pref': 'Solo a quien responde por este canal', 'b_desp': 'Excluir bloqueados'}
 top = c.sort_values('tot', ascending=False).head(15).reset_index(drop=True)
 top['main'] = top[['b_desp', 'b_cortar', 'b_pref', 'b_medir']].idxmax(axis=1)
 sh15 = top.tot.sum() / R['total']
 print('108', [(nombre(r.fam, r.canal), r.canal, round(r.tot)) for _, r in top.iterrows()], round(sh15, 3))
 for sub, rr in ((1, range(0, 8)), (2, range(8, 15))):
-    h = ['<table><tr><th style="width:3%">#</th><th style="width:27%">Campaña</th><th style="width:11%">Equipo</th><th style="width:8%">Canal</th><th style="width:13%">A quién</th>'
-         '<th class="num" style="width:9%">Mensajes en sept.</th><th class="num" style="width:10%">Respuesta</th><th class="num" style="width:9%">Ahorro al mes</th><th style="width:10%;padding-left:1.2cqi">Qué se hace</th></tr>']
+    h = ['<table><tr><th style="width:3%">#</th><th style="width:26%">Campaña</th><th style="width:10%">Equipo</th><th style="width:7%">Canal</th><th style="width:12%">A quién</th>'
+         '<th class="num" style="width:8%">Mensajes en sept.</th><th class="num" style="width:11%">Respuesta</th><th class="num" style="width:9%">Ahorro al mes</th><th style="width:14%;padding-left:1.2cqi">Qué se hace</th></tr>']
     for i in rr:
         r = top.loc[i]
         resp = f'{r.resp * 1000:.1f} clics por mil' if r.canal == 'email' else f'{r.resp * 100:.0f} de cada 100 leídos'
         h.append(f'<tr><td>{i + 1}</td><td><b>{nombre(r.fam, r.canal)}</b> ({datos.ticket(r.fam)})</td><td>{r.equipo}</td><td>{"Correo" if r.canal == "email" else "WhatsApp"}</td>'
-                 f'<td>{AUD[r.aud[:5]]}</td>' + NUM(f'{r.env_sep / 1e6:.2f} M') + NUM(resp) + NUM(f'<b>{r.tot / 1e3:.0f} mil MXN</b>') + f'<td style="padding-left:1.2cqi">{QUE[r.main]}</td></tr>')
+                 f'<td>{AUD[r.aud[:5]]}</td>' + NUM(f'{r.env_sep / 1e6:.2f} M') + NUM(resp) + NUM(f'<b>{r.tot / 1e3:.0f} mil MXN</b>') + f'<td style="padding-left:1.2cqi">{"Solo a quien lee WhatsApp" if r.accion == "Limpiar base de WhatsApp" and r.main == "b_cortar" else QUE[r.main]}</td></tr>')
     h.append('</table>')
     save(108, dict(kind='html', ancho_completo=True,
         titulo=f'Fichas de las 15 campañas con más ahorro: juntas suman {m(top.tot.sum())} M MXN al mes, {sh15 * 100:.0f} % del total' if sub == 1 else 'Fichas de las 15 campañas con más ahorro (continuación): Marketing aparece por canal y recuperación, no por campañas para apagar',
@@ -280,7 +280,7 @@ for i, (k, lab, v, note) in enumerate(ST):
 o.append('</svg>')
 save(110, dict(kind='grafica',
     titulo=f'Por qué había dos cifras de ahorro: de {m(v_c, 1)} y {m(v_deck, 1)} M a una sola de {m(ST[-1][2], 1)} M MXN al mes',
-    lecturas=[f'{m(v_c)} M (nota de campañas): cobraba WhatsApp por enviado y no contaba lecturas registradas en meses sin envío. Al corregir ambas cosas queda {m(v_deck)} M, la cifra del deck anterior.',
+    lecturas=[f'{m(v_c)} M MXN al mes (nota de campañas): cobraba WhatsApp por enviado y no contaba lecturas registradas en meses sin envío. Corregido, queda {m(v_deck)} M, la cifra del deck anterior.',
               f'Con las lecturas tardías, cuatro WhatsApp pasan de 60 % de lectura y dejan de ser para apagar; el mayor es el rescate Tasa 0 a leads rezagados de Marketing. Por eso Product Growth subió a {pg_d * 100:.0f} %.',
               f'La cifra única usa septiembre, cuenta solo lo que va a quien no responde y suma bloqueados, canal preferido, sin respuesta en 90 días, pruebas y duplicados, sin contar dos veces.'],
     causa='Cada cifra se hizo con supuestos distintos de cobro, de mes y de qué contar. La propuesta los fija una sola vez para todo el deck.',

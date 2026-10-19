@@ -142,3 +142,24 @@ def M(v, d=1):
 def num(v, d=0):
     return f"{v:,.{d}f}"
 fam_of = _fam
+
+
+def insisten(e=None):
+    """Por campaña (nombre sin fecha) y canal: primer mes con 50 mil o más de base y respuesta debajo de lo mínimo; lo enviado en meses
+    posteriores con 20 mil o más de base cuenta como 'después de caer debajo'. Misma regla que deck_data.insisten, WhatsApp por entregado."""
+    e = load_e1() if e is None else e
+    rows = []
+    for canal, mn in MIN.items():
+        x = e[e.canal == canal].groupby(["fam", "m"]).agg(base=("base", "sum"), resp=("resp", "sum"), env=("envios", "sum"), costo=("costo", "sum"), equipo=("equipo", "first")).reset_index()
+        for fam, gr in x.groupby("fam"):
+            gr = gr.sort_values("m"); bad = False; fm = None; frate = None; after = acost = am = 0; after2 = acost2 = 0
+            for _, q in gr.iterrows():
+                if bad and q.base >= 20000:
+                    after += q.env; acost += q.costo; am += 1
+                    if q.m >= fm + 2: after2 += q.env; acost2 += q.costo
+                if (not bad) and q.base >= 50000 and 100 * q.resp / q.base < mn:
+                    bad = True; fm = q.m; frate = 100 * q.resp / q.base
+            rows.append(dict(fam=fam, canal=canal, equipo=gr.equipo.iloc[0], env=gr.env.sum(), fail=fm, frate=frate, after=after, acost=acost, am=am,
+                             after2=after2, acost2=acost2, lastm=gr[gr.env > 0].m.max()))
+    R = pd.DataFrame(rows); R["tema"] = R.fam.map(tema); R["etapa"] = R.fam.map(etapa)
+    return R

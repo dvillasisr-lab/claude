@@ -30,6 +30,8 @@ def save(n, d, sub=None):
     for k in ('lecturas', 'porques', 'como'):
         if k in o: o[k] = [x.replace(' %', '\u00a0%') for x in o[k]]
     if 'hipotesis' in o: o['hipotesis'] = {a: b.replace(' %', '\u00a0%') for a, b in o['hipotesis'].items()}
+    if o.get('kind') == 'html' and o.get('ancho_completo') and not o['html'].startswith('<div style="width:91.6cqi'):
+        o['html'] = '<div style="width:91.6cqi;max-width:100%">' + o['html'] + '</div>'
     name = f'{n:03d}' + (f'_{sub}' if sub else '') + '.json'
     for k in ('titulo', 'que', 'quien', 'a_quien', 'causa', 'sowhat', 'fuente'):
         if k in o and any(ch in str(o[k]) for ch in '—–→'):
