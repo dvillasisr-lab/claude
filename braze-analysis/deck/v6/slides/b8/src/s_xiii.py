@@ -191,9 +191,9 @@ save(102, dict(kind='html', ancho_completo=True,
 # ------------------------------------------------------------------ 103. Lo que no sabemos
 app_push = e7[e7.resp_push == 1].usuarios.sum(); app_any = e7[(e7.resp_push == 1) | (e7.resp_inapp == 1)].usuarios.sum()
 UN = [('¿La recuperación de ex clientes recupera?', f'Decide hasta {m(V["medir"])} M MXN al mes', 'Grupo de control de 10 % durante 8 semanas en B0333 y B0332', 'Braze, control nativo', 'CRM con Product Growth'),
-      ('¿Quién tiene la app?', f'Sin app no hay push ni in-app. Hoy solo sabemos que {m(app_push, 2)} M abrieron un push en 9 meses y {m(app_any, 1)} M respondieron a push o in-app', 'Bandera de app instalada con fecha', 'Golden dataset', 'Datos'),
+      ('¿Quién tiene la app?', f'Sin app no hay push ni in-app. Hoy solo sabemos que {m(app_push, 2)} M de personas abrieron un push en 9 meses y {m(app_any, 1)} M respondieron a push o in-app', 'Bandera de app instalada con fecha', 'Golden dataset', 'Datos'),
       ('¿Cuánto cuesta Braze fijo y cómo se factura?', 'Saber si baja al dejar de escribir a quien no responde', 'Contrato: usuarios activos y puntos de datos', 'Finanzas', 'Finanzas con MarTech'),
-      ('¿A qué campañas y segmentos van los 14.2 M que nunca responden?', 'Saber qué apagar primero', 'Extracción de personas sin respuesta con campaña, segmento y etapa', 'Databricks', 'Datos'),
+      ('¿A qué campañas y segmentos van los 14.2 M de personas que nunca responden?', 'Saber qué apagar primero', 'Extracción de personas sin respuesta con campaña, segmento y etapa', 'Databricks', 'Datos'),
       ('¿Qué es conversión?', 'Dos equipos miran la misma campaña y concluyen lo contrario', 'Una definición: paso del registro o crédito, y en cuántos días', 'Tablero de CRM', 'Datos'),
       ('¿A qué hora, en qué teléfono y quién se dio de baja de push o WhatsApp?', 'Horas de silencio, canal preferido y calidad del número', 'Currents de Braze a Databricks', 'Braze y Databricks', 'Datos y MarTech')]
 h = ['<table><tr><th style="width:24%">Lo que no sabemos</th><th style="width:28%">Por qué importa</th><th style="width:24%">Dato que lo resuelve</th><th style="width:12%">Dónde está</th><th style="width:12%">Equipo</th></tr>']

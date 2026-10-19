@@ -43,40 +43,32 @@ print(bp_cpm, bp_uns, b211.fail, b211.frate, b211.after, b333w, b333e, qa_o, qa.
 TEAMC = ["Product Growth", "Marketing", "Sales", "Others", "Collections"]
 TL = {"Product Growth": "Product Growth", "Marketing": "Marketing", "Sales": "Sales", "Others": "Others", "Collections": "Collec&shy;tions"}
 NAMES = [
- ("masivo", "Mandar la misma promoción a más de un millón de personas en un mes, sin fijarse en lo que hizo cada quien",
-  "Lanzamiento de BillPay a toda la base (Others)", f"{bp_cpm:.0f} clic por cada mil correos y {bp_uns/1e3:.0f} mil bajas: la campaña con más bajas del año"),
- ("insiste", "Seguir mandando una campaña después de que ya no respondió lo mínimo",
-  "Tasa 0 a registrados de KPay sin crédito (Product Growth)", f"Cayó debajo de lo mínimo en febrero ({10*b211.frate:.1f} clics por mil) y mandó {b211.after/1e6:.0f} M correos más en {int(b211.am)} meses"),
- ("wa", "Mandar WhatsApp, a 1 MXN cada uno, a gente que no lo lee (menos de 6 de cada 10)",
-  "Oferta a ex clientes KPay con 12 meses sin compra (Product Growth)", f"Cada conversión cuesta {b333w:,.0f} MXN por WhatsApp contra {b333e:.0f} MXN por correo"),
- ("copiar", "Copiar la campaña con otra fecha cada mes en vez de medir la anterior",
-  f"Tasa 0 a quien nunca usó KCash: {vv.max()} versiones (Product Growth); referidos y rescate Tasa 0 (Marketing)", "Cada copia empieza de cero y la vieja sigue enviando: nadie sabe cuál funciona"),
- ("pruebas", "Probar con clientes reales o dejar copias con nombre de prueba enviando",
-  "Recordatorio de registro QA-KPay (Others)", f"{qa.envios.sum()/1e6:.1f} M push a clientes reales con {qa_o:.1f} aperturas por mil; nadie puede auditarlo por el nombre"),
- ("bloq", "Mandar promociones a quien tiene la tarjeta KPay congelada, está en lista negra o pidió no recibir publicidad",
-  "Referidos a ex clientes de KPay (Marketing); promociones de comercios (Sales)", f"{ab.get('4.Kpay CC Freeze',0)/1e6:.0f} M mensajes a tarjetas congeladas: no pueden comprar; con lista negra y REUS o ARCO hay riesgo legal"),
- ("largos", "Armar Canvas de más de 20 pasos con una rama por oferta y por canal",
-  "Recuperación de ex clientes KPay y Cuesta de Enero (Product Growth)", "Hasta 120 mensajes distintos; casi la mitad de sus push no llega a lo mínimo"),
- ("ticket", "Mandar promociones sin ticket, es decir, sin un dueño que responda por ellas",
-  "Lanzamiento de BillPay y recomendaciones semanales de Shopping (Others)", "Nadie las revisa ni las apaga: no hay a quién preguntarle si funcionan"),
+ ("masivo", "Mandar la misma promoción a más de un millón de personas al mes", "Lanzamiento de BillPay a toda la base", f"{bp_cpm:.0f} clic por mil correos y {bp_uns/1e3:.0f} mil bajas"),
+ ("insiste", "Seguir mandando lo que ya no respondió lo mínimo", "Tasa 0 a registrados de KPay sin crédito", f"Debajo de lo mínimo desde febrero y {b211.after/1e6:.0f} M correos más"),
+ ("wa", "Mandar WhatsApp (1 MXN cada uno) a quien no lo lee", "Oferta a ex clientes KPay, 12 meses sin compra", f"{b333w:,.0f} MXN por conversión contra {b333e:.0f} por correo"),
+ ("copiar", "Copiar la campaña cada mes en vez de medir la anterior", f"Tasa 0 a quien nunca usó KCash ({vv.max()} versiones)", "La copia vieja sigue enviando; nadie sabe cuál funciona"),
+ ("pruebas", "Probar con clientes o dejar copias con nombre de prueba", "Recordatorio de registro QA-KPay", f"{qa.envios.sum()/1e6:.1f} M push con {qa_o:.1f} aperturas por mil"),
+ ("bloq", "Promociones a tarjeta KPay congelada, lista negra o a quien pidió no recibir", "Referidos a ex clientes de KPay", f"{ab.get('4.Kpay CC Freeze',0)/1e6:.0f} M a tarjetas que no pueden comprar; riesgo legal"),
+ ("largos", "Canvas de más de 20 pasos, una rama por oferta y canal", "Recuperación de ex clientes KPay y Cuesta de Enero", "Hasta 120 mensajes distintos; la mitad del push bajo lo mínimo"),
+ ("ticket", "Promociones sin ticket, sin un dueño que responda", "BillPay y recomendaciones semanales de Shopping", "Nadie las revisa ni las apaga"),
 ]
-fm = lambda v: "" if v < 0.05e6 else f"{v/1e6:.1f}"
+fm = lambda v: "" if v < 0.05e6 else f"{v/1e6:.1f} M"
 rows = []
 for i, (k, que, quien, porque) in enumerate(NAMES, 1):
     t = P[k]["t"].msgs; lead = t.idxmax()
     cells = "".join(f'<td class="num" style="{"background:#1F4FD8;color:#FFFFFF;font-weight:700" if tm == lead else "color:#3B4556"}">{fm(t.get(tm, 0))}</td>' for tm in TEAMC)
-    rows.append(f'<tr><td style="width:27%"><b>{i}.</b> {que}</td><td class="num" style="width:8%"><b>{P[k]["msgs"]/1e6:.0f} M</b><br><span style="color:#6B7484">{P[k]["mxn"]/1e6:.1f} M MXN</span></td>{cells}'
-                f'<td style="width:18%">{quien}</td><td style="width:22%;color:#3B4556">{porque}</td></tr>')
-html = ('<table><tr><th>Qué se hace mal</th><th class="num">Mensajes y gasto</th>' + "".join(f'<th class="num" style="width:5%">{TL[tm]}</th>' for tm in TEAMC) +
-        '<th>Quién más y con qué campaña</th><th>Por qué cuesta</th></tr>' + "".join(rows) + '</table>'
-        '<div style="margin-top:.5cqi;font-size:.82cqi;color:#6B7484">Celdas: millones de mensajes de cada equipo en esa práctica; en azul, el equipo que más pesa. Las prácticas se traslapan (una campaña puede estar en varias): no se suman.</div>')
+    rows.append(f'<tr><td style="width:25%"><b>{i}.</b> {que}</td><td class="num" style="width:12%;white-space:nowrap"><b>{P[k]["msgs"]/1e6:.0f} M</b> · {P[k]["mxn"]/1e6:.1f} M MXN</td>{cells}'
+                f'<td style="width:18%">{quien}</td><td style="width:20%;color:#3B4556">{porque}</td></tr>')
+html = ('<table style="font-size:.9cqi"><tr><th>Qué se hace mal</th><th class="num">Mensajes · gasto</th>' + "".join(f'<th class="num" style="width:5%">{TL[tm]}</th>' for tm in TEAMC) +
+        '<th>Campaña que más pesa</th><th>Por qué cuesta</th></tr>' + "".join(rows) + '</table>'
+        '')
 J = dict(
     kind="html", ancho_completo=True,
     titulo="Ocho hábitos que cuestan dinero y clientes: Product Growth y Marketing encabezan cinco, y Others los envíos a toda la base, las pruebas y lo que no tiene dueño",
     que="Promociones en las ocho prácticas; cobranza y avisos de pago no se cuentan.",
-    quien="Product Growth en insistir, WhatsApp que no se lee y Canvas largos; Marketing en copiar y en promociones a bloqueados; Others en envíos a toda la base, pruebas y sin ticket; Sales sigue en bloqueados.",
-    a_quien="Leads, registrados que nunca tomaron crédito, ex clientes inactivos, toda la base y gente con la tarjeta KPay congelada, en lista negra o que pidió no recibir publicidad.",
-    sowhat="No es una campaña mala: son hábitos que se repiten en los mismos equipos. Cada uno tiene un dueño claro y una regla que lo corrige en la sección siguiente.",
-    fuente="Fuente: Braze, envíos por comunicación, mes y canal; catálogo (versiones y ticket); etapa del usuario según el golden dataset (cubre 37 % de los envíos); embudo por paso de Canvas. Enero a septiembre 2026. Más de un millón = personas de una versión en un mes. Ya no respondió = lo enviado después del primer mes con 50 mil personas o más debajo de lo mínimo. WhatsApp a 1.00 MXN por entregado; email a 0.05 por enviado.",
+    quien="Product Growth en insistir, WhatsApp que no se lee y Canvas largos; Marketing en copiar y en promociones a bloqueados; Others en envíos a toda la base, pruebas y sin ticket.",
+    a_quien="Leads, registrados sin crédito, ex clientes inactivos, toda la base y gente que no puede o no quiere recibir promociones.",
+    sowhat="No es una campaña mala: son hábitos que se repiten en los mismos equipos, y cada uno tiene un dueño que puede corregirlo.",
+    fuente="Celdas: millones de mensajes de cada equipo; en azul, el que más pesa. Las prácticas se traslapan: no se suman. Fuente: Braze, envíos por comunicación, mes y canal, catálogo, etapa del usuario (golden dataset, 37 % de los envíos) y pasos de Canvas, enero a septiembre 2026. WhatsApp a 1.00 MXN por entregado; email a 0.05 por enviado.",
     html=html)
 write(77, J)

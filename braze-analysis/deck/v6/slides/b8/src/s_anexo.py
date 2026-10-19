@@ -121,7 +121,7 @@ h.append(f'<tr><td><b>Total</b></td>' + NUM(f'<b>{tt.env / 1e6:.1f} M</b>') + ''
          + NUM(f'{1000 * tt.r / tt.env:.0f}') + NUM(f'<b>{tt.cost / 1e6:.1f} M MXN</b>') + NUM(f'{pd.read_csv(D + "e5_cohorte_baja.csv").usuarios_baja.sum() / 1e3:.0f} mil únicas') + '</tr></table>')
 print('107 mes', (mon.env / 1e6).round(1).to_dict(), (1000 * mon.r / mon.env).round(0).to_dict(), (mon.cost / 1e6).round(2).to_dict())
 save(107, dict(kind='html', ancho_completo=True,
-    titulo=f'Detalle mensual: junio fue el mes con más mensajes ({mon.env.max() / 1e6:.0f} M) y septiembre el más barato ({mon.cost.iloc[-1] / 1e6:.2f} M MXN)',
+    titulo=f'Detalle mensual: junio fue el mes con más mensajes ({mon.env.max() / 1e6:.0f} M mensajes) y septiembre el más barato ({mon.cost.iloc[-1] / 1e6:.2f} M MXN)',
     sowhat='Septiembre es el mes base del ahorro porque es el más reciente y el más barato: la cifra de ahorro es conservadora.',
     fuente=f'Fuente: Braze, envíos por comunicación, mes y canal (E1), enero a septiembre 2026; personas con baja de correo por mes (E4a; se cuentan una vez por mes) y únicas en nueve meses (E5). Respuesta = clic de correo, apertura de push, lectura de WhatsApp (incluye las registradas el mes siguiente) y clic in-app; {COSTOS}.',
     html=''.join(h)), sub=1)
@@ -212,8 +212,8 @@ sh_wa = e9[e9.resp_wa == 0].msgs_wa_entregados.sum() / e9.msgs_wa_entregados.sum
 SUP = [('Correo', '0.05 MXN por enviado', 'Se cobra todo lo que sale, llegue o no.'),
        ('WhatsApp', '1.00 MXN por entregado', f'Meta no cobra lo no entregado: {m(nodel, 1)} M WhatsApp sin entregar en nueve meses no se pagaron.'),
        ('Push e in-app', '0 MXN por mensaje', 'Sin costo por mensaje; su costo es el permiso de notificaciones, que no se ve.'),
-       ('Gasto de nueve meses', f'{m(g9, 1)} M MXN', f'{m(c_env, 1)} M si WhatsApp se cobrara por enviado.'),
-       ('Mes base del ahorro', f'Septiembre: {m(SEPc)} M MXN', f'El promedio de enero a septiembre es {m(AVG)} M al mes; septiembre fue el más barato, así que el ahorro es conservador.'),
+       ('Gasto de nueve meses', f'{m(g9, 1)} M MXN', f'{m(c_env, 1)} M MXN si WhatsApp se cobrara por enviado.'),
+       ('Mes base del ahorro', f'Septiembre: {m(SEPc)} M MXN', f'El promedio de enero a septiembre es {m(AVG)} M MXN al mes; septiembre fue el más barato, así que el ahorro es conservador.'),
        ('Ahorro por campaña', 'Costo de septiembre', 'No el promedio de los meses en que mandó. Palancas en orden: cada una toma lo que deja la anterior, sin doble conteo.'),
        ('Lecturas de WhatsApp', 'Cuentan las del mes siguiente', 'Lecturas registradas en un mes sin envíos se suman a la campaña.'),
        ('A quien no responde', f'{sh_wa * 100:.0f} % del WhatsApp y {sh_em * 100:.0f} % del correo', 'Parte de lo entregado que va a quien no respondió por ese canal en 90 días (E9b); se aplica igual a cada campaña.'),
