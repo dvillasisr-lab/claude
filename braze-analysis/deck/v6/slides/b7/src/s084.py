@@ -43,7 +43,7 @@ for i, (c, nm, vcol, rcol, bcol, rn) in enumerate(CH):
     km = int(np.argmax(vi)); S.t(X(km), Y(vi[km]) - 6, f"{vi[km]:.0f}", 10.5, INK, "middle", 700, halo=True)
 S.t(40, 412, "Índice: promedio de las semanas de enero = 100, por canal. Más de 300 se dibuja en 300. 38 semanas completas.", 10.5, SEC)
 J = dict(
-    titulo="Al terminar los envíos de junio a toda la base, el push bajó a la mitad y su apertura se duplicó frente a junio",
+    titulo="Al terminar los envíos de junio a toda la base, el push bajó a la mitad y su apertura se duplicó contra junio",
     que="Lo que se dejó de mandar: BillPay, Día del Padre, Mundial, AnotayGana y referidos.",
     quien=f"Marketing bajó de {pt.loc['Marketing',6]/1e6:.0f} M push en junio a {pt.loc['Marketing',9]/1e6:.0f} M en septiembre; Others de {pt.loc['Others',6]/1e6:.0f} M a {pt.loc['Others',9]/1e6:.1f} M.",
     a_quien="Toda la base y leads, que recibieron los envíos de junio.",
