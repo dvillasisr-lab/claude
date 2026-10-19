@@ -30,18 +30,18 @@ S.t(215, 18, 'Abre 1 o más de cada 100', 11.5, TXT)
 S.t(0, 36, 'Cada punto es una campaña con todas sus versiones; el tamaño es el número de push enviados.', 10.5, SEC)
 EQ = ['Marketing', 'Others', 'Product Growth', 'Sales', 'Collections']
 X0, X1 = 112, 560
-LO, HI = math.log10(0.2), math.log10(20)
-sx = lambda v: X0 + (X1 - X0) * (math.log10(min(max(v, 0.2), 20)) - LO) / (HI - LO)
+LO, HI = math.log10(0.1), math.log10(20)
+sx = lambda v: X0 + (X1 - X0) * (math.log10(min(max(v, 0.1), 20)) - LO) / (HI - LO)
 Y0, RH = 86, 54
 YB = Y0 + RH * len(EQ)
-for v in (0.2, 0.5, 1, 2, 5, 10, 20):
+for v in (0.1, 0.2, 0.5, 1, 2, 5, 10, 20):
     S.line(sx(v), Y0 - 10, sx(v), YB - 6, GRID)
-    S.t(sx(v), YB + 10, f'{v:g} %', 11, SEC, 'middle')
+    S.t(sx(v), YB + 10, '0.1 % o menos' if v == 0.1 else f'{v:g} %', 11, SEC, 'middle')
 S.t(X1, YB + 28, 'Personas que abren de cada cien que reciben el push (escala que crece por múltiplos)', 11, SEC, 'end')
 S.line(sx(1), Y0 - 18, sx(1), YB - 6, INK, 1.2)
 S.t(sx(1) + 4, Y0 - 20, '1 de cada 100', 11, INK, 'start', 600, halo=True)
 S.line(sx(0.75), Y0 - 10, sx(0.75), YB - 6, INK, 1, ' stroke-dasharray="3 3" opacity="0.6"')
-S.t(sx(0.75) - 4, Y0 - 20, 'Mínimo aceptable 0.75', 10.5, SEC, 'end', halo=True)
+S.t(sx(0.75) - 4, Y0 - 20, 'Mínimo aceptable: 0.75', 10.5, SEC, 'end', halo=True)
 r = lambda env: 1.8 + 1.15 * math.sqrt(env / 1e5)
 rng = np.random.default_rng(7)
 C1, C2 = 690, 778
@@ -58,7 +58,7 @@ for k, e_ in enumerate(EQ):
     for q in g.itertuples():
         jit = rng.uniform(-13, 13)
         S.circle(sx(q.ab), yc + jit, r(q.env), BLUE if q.bajo else G1, ' fill-opacity="0.75" stroke="#FFFFFF" stroke-width="0.8"')
-    S.t(C1, yc - 2, f'{eq.loc[e_, "bajo"]:.0f} M de {eq.loc[e_, "env"]:.0f} M', 11.5, INK if hi else TXT, 'end', 600 if hi else 400)
+    S.t(C1, yc - 2, (f'{eq.loc[e_, "bajo"]:.1f}' if eq.loc[e_, "bajo"] < 1 else f'{eq.loc[e_, "bajo"]:.0f}') + f' M de {eq.loc[e_, "env"]:.0f} M', 11.5, INK if hi else TXT, 'end', 600 if hi else 400)
     S.t(C1, yc + 12, f'{eq.loc[e_, "share_bajo"]:.0f} % del total', 10.5, SEC, 'end')
     S.t(C2, yc + 4, f'{eq.loc[e_, "pct"]:.0f} %', 12, BLUE if eq.loc[e_, 'pct'] >= 50 else INK, 'end', 700)
 S.t(0, 404, f'Total: {B:.0f} M de {T:.0f} M push ({100*B/T:.0f} %) en campañas que abre menos de 1 de cada 100.', 11.5, INK, w=600)

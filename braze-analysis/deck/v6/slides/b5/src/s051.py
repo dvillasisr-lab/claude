@@ -73,7 +73,7 @@ guarda(51, dict(
     ],
     causa='No hay exclusiones de cuenta en Braze para bloqueados: cada equipo arma su segmento con su propia lista y nadie revisa que salga quien no puede comprar o pidió no recibir publicidad.',
     sowhat='Excluir de una vez: línea KPay congelada de toda promoción de KPay, y REUS, ARCO y lista negra de toda promoción. Riesgo decide sobre KCash.',
-    fuente=f'Fuente: Braze E7a (campaña, canal y etapa del golden dataset) y E3 (personas por etapa), enero a septiembre 2026. Promocional según el catálogo de campañas; tema por el nombre. La etapa cubre 37 % de los envíos: las cifras son un piso. El WhatsApp a bloqueados ({M(F["canal"]["whatsapp"])} M enviados a congelados) se cobra solo si se entregó. Personas en REUS o ARCO: {mil(E3["6.Reus or Arco"]["u"])} mil en E3; el guion decía 104 mil.',
+    fuente=f'Fuente: Braze E7a (campaña, canal y etapa del golden dataset) y E3 (personas por etapa), enero a septiembre 2026. Promocional según el catálogo de campañas; tema por el nombre. La etapa cubre 37 % de los envíos: las cifras son lo mínimo. El WhatsApp a bloqueados ({M(F["canal"]["whatsapp"])} M enviados a congelados) se cobra solo si se entregó. Personas en REUS o ARCO: {mil(E3["6.Reus or Arco"]["u"])} mil en E3; el guion decía 104 mil.',
     svg=SVG,
 ))
 print(round(ex_min / 1e6, 2), round(ex_all / 1e6, 2), {e: round(F['eq'][e] / 1e6, 2) for e in EQS})

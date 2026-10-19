@@ -4,7 +4,7 @@ import os, subprocess, sys, json, re
 import pandas as pd, numpy as np
 ROOT = '/home/user/claude/braze-analysis/'
 W = '/tmp/claude-0/-home-user-claude/e114ba4f-39d4-57f8-9f24-b0f0c0cbef51/scratchpad/v6parts/p6work/'
-S3J = '/tmp/claude-0/-home-user-claude/e114ba4f-39d4-57f8-9f24-b0f0c0cbef51/scratchpad/muestras/s3_datos.json'
+S3J = '/home/user/claude/braze-analysis/deck/v6/muestras/s3_datos.json'
 P = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'pipeline')
 
 def _run(s):

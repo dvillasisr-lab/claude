@@ -13,7 +13,8 @@ def camp(f, eq, pat, canal):
     d = f[(f.equipo == eq) & f.familia.str.contains(pat, regex=True) & (f.canal == canal)]
     if not len(d): raise SystemExit(f'sin campaña {eq} {pat} {canal}')
     r = d.sort_values('env', ascending=False).iloc[0]
-    return dict(familia=r.familia, canal=canal, env=r.env, resp=r.resp_pct, costo=r.costo, convf=r.convf, bajas=r.bajas_mil, pasa=r.vs_min >= 1)
+    return dict(familia=r.familia, canal=canal, env=r.env, resp=r.resp_pct, costo=r.costo, convf=r.convf, bajas=r.bajas_mil, pasa=r.vs_min >= 1,
+                entrega=100 * r.wdel / r.wsend if r.wsend else float('nan'))
 def linea(c):
     n, m = CN[c['canal']]
     return f"{n.lower() if n != 'WhatsApp' else n} · {pct(c['resp'])} % de {m} · {c['env']/1e6:.1f} M mensajes"
@@ -25,7 +26,9 @@ def build(eq, filas, mejores, peores, titulo_graf):
     for lab, fn in reversed(filas):
         asign[d.familia.map(fn)] = lab
     d['fila'] = asign
-    labs = [l for l, _ in filas] + (['Resto'] if (d.fila == 'Resto').any() else [])
+    resto = d[d.fila == 'Resto'].env.sum()
+    labs = [l for l, _ in filas] + (['Resto'] if resto >= 0.03 * d.env.sum() else [])
+    print('Resto %.1f M (%.1f %%)%s' % (resto / 1e6, 100 * resto / d.env.sum(), '' if 'Resto' in labs else ' fuera de la matriz'))
     cel = d.groupby(['fila', 'canal']).agg(env=('env', 'sum'), base=('base', 'sum'), resp=('resp', 'sum'), costo=('costo', 'sum')).reset_index()
     cel['r'] = 100 * cel.resp / cel.base; cel['pasa'] = cel.r >= cel.canal.map(MIN)
     tot = d.groupby('fila').agg(env=('env', 'sum'), costo=('costo', 'sum'))
@@ -33,7 +36,10 @@ def build(eq, filas, mejores, peores, titulo_graf):
     S.t(0, 16, titulo_graf, 12.5, INK, w=600)
     S.c(6, 34, 5.5, GREEN, stroke='none'); S.t(15, 38, 'Responde lo mínimo aceptable', 11.5)
     S.c(200, 34, 5.5, BLUE, stroke='none'); S.t(209, 38, 'No lo responde', 11.5)
-    S.t(310, 38, 'Tamaño: mensajes. Número: respuesta (%).', 11.5, SEC)
+    S.t(306, 38, 'Mensajes:', 11.5, SEC)
+    lx = 362
+    for v, lab in [(1e6, '1 M'), (10e6, '10 M'), (40e6, '40 M')]:
+        S.c(lx + rad(v), 34, rad(v), '#FFFFFF', stroke=MRK, sw=1); S.t(lx + 2 * rad(v) + 4, 38, lab, 11, SEC); lx += 2 * rad(v) + 36
     LX, CW, TOP = 120, 74, 72
     nrow = len(labs); RH = min(58, (372 - TOP) / nrow)
     for j, (c, n, m) in enumerate(CANALES):
@@ -48,8 +54,9 @@ def build(eq, filas, mejores, peores, titulo_graf):
             if len(cur + ' ' + w_) > 17 and cur: lines.append(cur); cur = w_
             else: cur = (cur + ' ' + w_).strip()
         lines.append(cur)
-        for q, ln in enumerate(lines[:3]): S.t(0, y0 + 16 + 13 * q, ln, 11, INK, w=600)
-        S.t(0, y0 + 16 + 13 * min(len(lines), 3), f"{tot.loc[lab, 'env']/1e6:.1f} M mensajes", 10.5, SEC)
+        if len(lines) > 2: raise SystemExit('etiqueta larga: ' + lab)
+        for q, ln in enumerate(lines): S.t(0, y0 + 15 + 13 * q, ln, 11, INK, w=600)
+        S.t(0, y0 + 15 + 13 * len(lines), f"{tot.loc[lab, 'env']/1e6:.1f} M mensajes", 10.5, SEC)
         cy = y0 + RH / 2 - 5
         for j, (c, n, m) in enumerate(CANALES):
             z = cel[(cel.fila == lab) & (cel.canal == c)]
@@ -58,7 +65,7 @@ def build(eq, filas, mejores, peores, titulo_graf):
                 S.t(cx, cy + 4, '·', 11, MRK2, 'middle'); continue
             z = z.iloc[0]
             S.c(cx, cy, rad(z.env), GREEN if z.pasa else BLUE, op=0.9)
-            S.t(cx, y0 + RH - 7, f'{pct(z.r)} % · {z.env/1e6:.1f} M', 10.5, INK, 'middle', halo=True)
+            S.t(cx, y0 + RH - 6, f'{pct(z.r)} %', 10.5, INK, 'middle', w=600, halo=True)
         cst = tot.loc[lab, 'costo']
         S.t(GX + 40, cy + 4, f'{cst/1e6:.1f} M MXN' if cst >= 0.05e6 else 'casi 0', 10.5, INK, 'middle', w=600)
     S.l(0, TOP + RH * nrow, GX + 76, TOP + RH * nrow, GRID)
@@ -78,7 +85,9 @@ def build(eq, filas, mejores, peores, titulo_graf):
             if ex: S.t(PX + 9, y + 26, ex, 10.5, SEC); y += 13
             y += 34
         y += 6
-    S.t(0, 412, 'Mínimo aceptable: 3 clics por cada mil correos, 7.5 aperturas por cada mil push, 6 de cada 10 WhatsApp leídos, 1 de cada 10 in-app con clic.', 10.5, SEC)
+    S.t(0, 412, 'Número: respuesta (clic, apertura o lectura). Mínimo aceptable: 0.3 % en correo, 0.75 % en push, 60 % en WhatsApp, 10 % en in-app.', 10.5, SEC)
     return S.done(), cel, tot, detalle, d
 def mxn_conv(c):
-    return f"{c['costo']/1e6:.2f} M MXN · {c['costo']/c['convf']:,.0f} MXN por préstamo o solicitud".replace(',', ' ') if c['convf'] > 0 and c['costo'] > 0 else None
+    return f"{c['costo']/1e6:.2f} M MXN · {c['costo']/c['convf']:,.0f} MXN por préstamo" if c['convf'] > 0 and c['costo'] > 0 else None
+def mxn_wa(c):
+    return f"{c['costo']/1e6:.2f} M MXN · llega {c['entrega']:.0f} % de los WhatsApp"

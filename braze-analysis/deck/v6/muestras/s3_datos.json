@@ -1,0 +1,186 @@
+{
+ "T": [
+  {
+   "k": "bloqueados",
+   "lab": "Excluir bloqueados",
+   "cert": "seguro",
+   "mxn": 171267.6495249675,
+   "top": "Product Growth",
+   "top_sh": 0.6342528869375398,
+   "eq": {
+    "Product Growth": 108627.0011502174,
+    "Marketing": 37402.39023617263,
+    "Sales": 21303.997350278805,
+    "Others": 3934.2607882986845,
+    "Collections": 0.0
+   }
+  },
+  {
+   "k": "duplicados",
+   "lab": "Quitar duplicados del mismo día",
+   "cert": "seguro",
+   "mxn": 23491.03901120653,
+   "top": "Product Growth",
+   "top_sh": 1.0,
+   "eq": {
+    "Product Growth": 23491.03901120653,
+    "Marketing": 0.0,
+    "Sales": 0.0,
+    "Others": 0.0,
+    "Collections": 0.0
+   }
+  },
+  {
+   "k": "pruebas",
+   "lab": "Pruebas internas a clientes",
+   "cert": "seguro",
+   "mxn": 13319.350000000002,
+   "top": "Collections",
+   "top_sh": 0.9599867861419663,
+   "eq": {
+    "Product Growth": 0.0,
+    "Marketing": 35.7,
+    "Sales": 0.0,
+    "Others": 497.25,
+    "Collections": 12786.400000000001
+   }
+  },
+  {
+   "k": "ap_act",
+   "lab": "Apagar canal caro: leads y registrados",
+   "cert": "seguro",
+   "mxn": 762231.4035851144,
+   "top": "Product Growth",
+   "top_sh": 0.9456348822613515,
+   "eq": {
+    "Product Growth": 720792.6035851144,
+    "Marketing": 41438.8,
+    "Sales": 0.0,
+    "Others": 0.0,
+    "Collections": 0.0
+   }
+  },
+  {
+   "k": "rehacer_em",
+   "lab": "Rehacer email",
+   "cert": "seguro",
+   "mxn": 134571.241970168,
+   "top": "Sales",
+   "top_sh": 0.5746143053545663,
+   "eq": {
+    "Product Growth": 6989.7761616621765,
+    "Marketing": 30283.673634542272,
+    "Sales": 77326.56072538932,
+    "Others": 19971.23144857423,
+    "Collections": 0.0
+   }
+  },
+  {
+   "k": "limpiar_wa",
+   "lab": "Limpiar WhatsApp",
+   "cert": "seguro",
+   "mxn": 42106.98507287212,
+   "top": "Product Growth",
+   "top_sh": 1.0,
+   "eq": {
+    "Product Growth": 42106.98507287212,
+    "Marketing": 0.0,
+    "Sales": 0.0,
+    "Others": 0.0,
+    "Collections": 0.0
+   }
+  },
+  {
+   "k": "canal_preferido",
+   "lab": "Canal preferido",
+   "cert": "seguro",
+   "mxn": 337565.7882362165,
+   "top": "Marketing",
+   "top_sh": 0.5069628793158044,
+   "eq": {
+    "Product Growth": 110356.36526680466,
+    "Marketing": 171133.32396274144,
+    "Sales": 37067.280532337165,
+    "Others": 19008.818474333293,
+    "Collections": 0.0
+   }
+  },
+  {
+   "k": "ap_rec",
+   "lab": "Apagar canal caro: ex clientes",
+   "cert": "medir",
+   "mxn": 552634.0590043924,
+   "top": "Product Growth",
+   "top_sh": 0.8772606541704283,
+   "eq": {
+    "Product Growth": 484804.11611905234,
+    "Marketing": 67829.94288533999,
+    "Sales": 0.0,
+    "Others": 0.0,
+    "Collections": 0.0
+   }
+  },
+  {
+   "k": "sin_respuesta_90d",
+   "lab": "Sin respuesta en 90 días",
+   "cert": "medir",
+   "mxn": 299314.30462014227,
+   "top": "Marketing",
+   "top_sh": 0.4956433970413604,
+   "eq": {
+    "Product Growth": 95661.70191787771,
+    "Marketing": 148353.15872499987,
+    "Sales": 40474.870479291894,
+    "Others": 14824.573497972828,
+    "Collections": 0.0
+   }
+  }
+ ],
+ "R": {
+  "sep": 4233201.6,
+  "avg": 6406973.111111111,
+  "seguro": 1484553.457400545,
+  "medir": 851948.3636245346,
+  "total": 2336501.8210250796,
+  "resultante": 1896699.77897492,
+  "tras_seguro": 2748648.1425994546,
+  "pct_sep": 0.5519467395611586,
+  "pct_avg": 0.3646810717799124,
+  "anual": 28038021.852300957,
+  "anual_seg": 17814641.48880654,
+  "anual_med": 10223380.363494415,
+  "seg_pct_sep": 0.3506928319691992,
+  "seg_pct_avg": 0.23170901947848047,
+  "desperdicio": 208078.03853617405,
+  "cortar30": 938909.6306281545,
+  "eq": {
+   "Product Growth": 1592829.5882848073,
+   "Marketing": 496476.9894437962,
+   "Sales": 176172.70908729717,
+   "Others": 58236.134209179036,
+   "Collections": 12786.400000000001
+  },
+  "eq_sh": {
+   "Product Growth": 0.6817155347159091,
+   "Marketing": 0.21248731114875818,
+   "Sales": 0.07540020191809907,
+   "Others": 0.02492449767645781,
+   "Collections": 0.005472454540775962
+  },
+  "eq_medir": {
+   "Product Growth": 580465.81803693,
+   "Marketing": 216183.10161033986,
+   "Sales": 40474.870479291894,
+   "Others": 14824.573497972828,
+   "Collections": 0.0
+  },
+  "msgs": 31619512.51946804,
+  "msgs_sep": 65579568.0,
+  "verif": {
+   "camp_wr_igual_a_todas_las_filas_E1": true,
+   "filas_wa_sin_envio": 763,
+   "lecturas_en_filas_sin_envio": 1297509,
+   "familias_wa_que_salen_de_apagar_por_lecturas_tardias": 18
+  }
+ }
+}

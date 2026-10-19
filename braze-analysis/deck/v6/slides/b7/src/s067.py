@@ -11,6 +11,7 @@ for canal in ["email", "push notification"]:
     x["rate"] = 100 * x.resp / x.base; x["pb"] = 100 * x.base / TB; x["pr"] = 100 * x.resp / TR
     res[canal] = (x, TB, TR)
 x, TB, TR = res["email"]; t = x.head(10).copy()
+xp, TBp, TRp = res["push notification"]
 NOM = {"B0211": ("Tasa 0 a registrados de KPay sin crédito", "registrados que nunca tomaron crédito", "promo"),
        "BillPay_Intro": ("Lanzamiento de BillPay", "toda la base", "promo"),
        "B0223": ("Crédito en plazos a quien nunca lo activó", "registrados que nunca tomaron crédito", "promo"),
@@ -32,32 +33,48 @@ print("top10", t.pb.sum(), t.pr.sum(), "promo", len(P), P.pb.sum(), P.pr.sum(), 
 xp, TBp, TRp = res["push notification"]; tp = xp.head(10)
 print("push top10", tp.pb.sum(), tp.pr.sum(), tp.equipo.value_counts().to_dict())
 
-S = SVG("Las diez campañas de email con más correos: porcentaje del email entregado y porcentaje de los clics de cada una")
-X0, X1, VM = 330, 640, 12
-xs = lambda v: X0 + (X1 - X0) * v / VM
-S.legend([("% de los correos entregados", MARK2, "sq"), ("% de los clics (promociones)", BLUE, "sq"), ("% de los clics (recordatorio y aviso)", GREEN, "sq"), ("cobranza", MARK, "sq")], 0, 14, 18, 11.5)
-TOP, RH = 64, 29
-S.t(0, TOP - 14, "Campaña · equipo · a quién va", 11, SEC, w=600)
-S.t(780, TOP - 14, "Clics por mil", 11, SEC, "end", 600)
-for v in (0, 4, 8, 12):
-    S.line(xs(v), TOP - 8, xs(v), TOP + RH * 10 - 4, GRID)
-    S.t(xs(v), TOP + RH * 10 + 10, f"{v} %", 11, SEC, "middle")
+import math
+S = SVG("Pareto de campañas de email y de push: porcentaje acumulado de los mensajes contra porcentaje acumulado de las respuestas, de la campaña más grande a la más chica")
+S.legend([("% acumulado de los mensajes", BLUE, "ln"), ("% acumulado de las respuestas (clics o aperturas)", GREEN, "ln")], 0, 14, 18)
+def panel(x0, w, y0, h, xx, title, sub):
+    n = len(xx)
+    X = lambda i: x0 + w * math.log10(i) / math.log10(n)
+    Y = lambda v: y0 + h - h * v / 100
+    cv = 100 * xx.base.cumsum() / xx.base.sum(); cr = 100 * xx.resp.cumsum() / xx.resp.sum()
+    S.t(x0, y0 - 22, title, 12, INK, w=700); S.t(x0, y0 - 8, sub, 10.5, SEC)
+    for v in (0, 25, 50, 75, 100):
+        S.line(x0, Y(v), x0 + w, Y(v), GRID); S.t(x0 - 6, Y(v) + 4, f"{v} %", 10.5, SEC, "end")
+    for v in (1, 3, 10, 30, 100, 300, 1000):
+        if v <= n: S.t(X(v), y0 + h + 14, f"{v}", 10.5, SEC, "middle")
+    pv = [(X(i + 1), Y(v)) for i, v in enumerate(cv)]; pr = [(X(i + 1), Y(v)) for i, v in enumerate(cr)]
+    area = "M" + " L".join(f"{x:.1f},{y:.1f}" for x, y in pv) + " L" + " L".join(f"{x:.1f},{y:.1f}" for x, y in reversed(pr)) + " Z"
+    S.raw(f'<path d="{area}" fill="{BLUE}" fill-opacity="0.08"/>')
+    S.raw('<path d="M' + " L".join(f"{x:.1f},{y:.1f}" for x, y in pv) + f'" fill="none" stroke="{BLUE}" stroke-width="2.5"/>')
+    S.raw('<path d="M' + " L".join(f"{x:.1f},{y:.1f}" for x, y in pr) + f'" fill="none" stroke="{GREEN}" stroke-width="2.5"/>')
+    S.line(X(10), y0, X(10), y0 + h, INK, 1, ' stroke-dasharray="4 4" opacity="0.6"')
+    S.t(X(10) + 5, Y(cv.iloc[9]) - 8, f"Las 10 primeras: {cv.iloc[9]:.0f} % del volumen", 11, BLUE, w=700, halo=True)
+    S.t(X(10) + 5, Y(cr.iloc[9]) + 16, f"{cr.iloc[9]:.0f} % de las respuestas", 11, GREEN, w=700, halo=True)
+    for i in range(10):
+        pass
+    return X, Y, cv, cr
+X, Y, cv, cr = panel(44, 330, 64, 170, x, f"Email: {len(x):,} campañas", "De la que más correos mandó a la que menos")
 for i, (f, r) in enumerate(t.iterrows()):
-    y = TOP + RH * i
-    col = {"promo": BLUE, "bueno": GREEN, "cobranza": MARK}[r.cl]
-    S.t(0, y + 7, r.nom, 11.5, INK, w=600)
-    S.t(0, y + 20, f"{r.equipo} · {r.aq}", 10.5, SEC)
-    S.rect(X0, y - 2, xs(r.pb) - X0, 10, MARK2)
-    S.rect(X0, y + 10, max(xs(r.pr) - X0, 1.5), 10, col)
-    S.t(xs(r.pb) + 4, y + 7, f"{r.pb:.1f} %", 10.5, SEC)
-    S.t(xs(r.pr) + 4, y + 19, f"{r.pr:.1f} %", 10.5, INK, w=600)
-    S.t(780, y + 13, f"{10*r.rate:.1f}" if r.rate < 1 else f"{10*r.rate:.0f}", 12, col if r.cl != "cobranza" else TXT, "end", 700)
-S.line(0, TOP + RH * 10 + 20, 780, TOP + RH * 10 + 20, MARK)
-yy = TOP + RH * 10 + 38
-S.tspans(0, yy, [(f"Las siete promociones: ", INK, 600), (f"{P.pb.sum():.0f} % de los correos entregados y {P.pr.sum():.0f} % de los clics. ", BLUE, 600),
-                 (f"El correo promedio da {1000*TR/TB:.0f} clics por mil.", TXT, 400)], 11.5)
-S.t(0, yy + 16, f"Las diez juntas son {t.pb.sum():.0f} % de los correos y {t.pr.sum():.0f} % de los clics, entre {len(x):,} campañas de email.", 11, SEC)
-
+    col = BLUE if r.cl == "promo" else (GREEN if r.cl == "bueno" else MARK)
+    S.circle(X(i + 1), Y(cv.iloc[i]), 4, col, "#FFFFFF", 1.2)
+for i in (0, 1, 2):
+    S.t(X(i + 1), Y(cv.iloc[i]) - 8, f"{i+1}", 10.5, INK, "middle", 700, halo=True)
+Xp, Yp, cvp, crp = panel(436, 330, 64, 170, xp, f"Push: {len(xp):,} campañas", "De la que más push mandó a la que menos")
+for i in range(10):
+    S.circle(Xp(i + 1), Yp(cvp.iloc[i]), 4, BLUE if xp.index[i].split("-")[0] == "Marketing" else MARK, "#FFFFFF", 1.2)
+S.t(436, 268, f"{int((tp.equipo=='Marketing').sum())} de las 10 más grandes son de Marketing (punto azul).", 10.5, SEC)
+# lista de las 10 de email
+S.line(0, 284, 780, 284, GRID)
+S.t(0, 300, "Las 10 campañas de email con más correos: % de los correos del año y % de los clics", 11, INK, w=600)
+for i, (f, r) in enumerate(t.iterrows()):
+    col = BLUE if r.cl == "promo" else (GREEN if r.cl == "bueno" else TXT)
+    cx, cy = (0 if i < 5 else 396), 318 + 18 * (i % 5)
+    S.tspans(cx, cy, [(f"{i+1}. {r.nom}", col, 600), (f" · {r.equipo} · ", SEC, 400), (f"{r.pb:.1f} % / {r.pr:.1f} %", INK, 600)], 10.5)
+S.t(0, 412, f"Azul: las siete promociones, {P.pb.sum():.0f} % de los correos y {P.pr.sum():.0f} % de los clics. Verde: recordatorio y aviso de pago. Gris: cobranza.", 10.5, SEC)
 J = dict(
     titulo=f"Siete de los diez correos con más envíos son promociones a listas grandes: se llevan {P.pb.sum():.0f} % del email y solo {P.pr.sum():.0f} % de los clics",
     que="Promociones: Tasa 0, lanzamiento de BillPay, crédito en plazos, referidos, descuento para volver, sorteo AnotayGana y recomendaciones de Shopping. Además, cobranza, el recordatorio de Veriff y la confirmación de pago.",

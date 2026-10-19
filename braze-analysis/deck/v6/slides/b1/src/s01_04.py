@@ -31,7 +31,7 @@ bloq = c[c.tipo == 'promocional o lifecycle'].envios_etapa_bloqueada.sum()
 e13 = pd.read_csv(ROOT / 'data/e13_lift_control.csv')
 canv = e13.canvas_id.nunique(); ctl = e13[e13.grupo == 'control']; ctl_n = ctl.canvas_id.nunique(); ctl_big = int((ctl.usuarios > 1000).sum())
 # Ahorros (caso de negocio aprobado). s3_datos.json lo escribe muestras/s3_datos.py.
-SD = pathlib.Path('/tmp/claude-0/-home-user-claude/e114ba4f-39d4-57f8-9f24-b0f0c0cbef51/scratchpad/muestras/s3_datos.json')
+SD = pathlib.Path('/home/user/claude/braze-analysis/deck/v6/muestras/s3_datos.json')
 S = json.loads(SD.read_text(encoding='utf-8'))
 T = {r['k']: r['mxn'] / 1e6 for r in S['T']}; R = S['R']
 d1 = T['bloqueados'] + T['duplicados'] + T['pruebas']

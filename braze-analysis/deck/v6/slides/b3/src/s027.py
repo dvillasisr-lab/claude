@@ -3,10 +3,10 @@ import re
 from ficha import *
 x = e1(); t = x[(x.equipo == 'Product Growth') & (x.canal != 'banner')]
 T = lambda n: tema_of(n)
-FILAS = [('Installments a quien ya lo empezó', lambda n: 'B0301' in n),
+FILAS = [('Installments a quien lo empezó', lambda n: 'B0301' in n),
          ('Crédito a quien nunca activó', lambda n: bool(re.search('neveractive|nevercash', n.lower())) and T(n) == 'Oferta de crédito e Installments'),
          ('Otras ofertas de crédito', lambda n: T(n) == 'Oferta de crédito e Installments'),
-         ('Tasa 0 a registrados sin crédito', lambda n: T(n) == 'Tasa 0 y rescate de leads'),
+         ('Tasa 0 a registrados', lambda n: T(n) == 'Tasa 0 y rescate de leads'),
          ('Recuperar inactivos y churn', lambda n: T(n) == 'Recuperar inactivos y churn'),
          ('Concursos y temporada', lambda n: T(n) == 'Temporada y concursos')]
 MEJ = [('Recordatorio de Installments a activos', 'B0301-CANVAS-Active-Retargeting_Installments', 'push notification', None),
@@ -14,7 +14,7 @@ MEJ = [('Recordatorio de Installments a activos', 'B0301-CANVAS-Active-Retargeti
        ('Anota y gana por in-app', 'KCash-B0440-CANVAS-Todos-AnotayGana', 'in-app', None)]
 PEO = [('Tasa 0 a registrados sin crédito', 'B0211-CANVAS-Nuevos_RegistradosPay', 'email', mxn_conv),
        ('Installments a quien nunca activó', 'B0223-CANVAS-Nuevos_NeverActive', 'email', mxn_conv),
-       ('Churn de KPay por WhatsApp', 'B0333-CANVAS-Churn', 'whatsapp', lambda c: f"{c['costo']/1e6:.2f} M MXN; solo llega {100*0+0:.0f}" if False else f"{c['costo']/1e6:.2f} M MXN en nueve meses")]
+       ('Churn de KPay por WhatsApp', 'B0333-CANVAS-Churn', 'whatsapp', mxn_wa)]
 svg, cel, tot, det, d = build('Product Growth', FILAS, MEJ, PEO, 'Product Growth: qué manda, por qué canal y cuánto le responden')
 print(tot.assign(env=tot.env / 1e6, costo=tot.costo / 1e6).round(2))
 print(cel.assign(env=cel.env / 1e6).round(2)[['fila', 'canal', 'env', 'r', 'pasa']].to_string())

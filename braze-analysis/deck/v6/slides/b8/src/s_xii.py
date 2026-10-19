@@ -243,7 +243,7 @@ o = svg_open('Izquierda: gasto acumulado en 12 meses desde octubre, sin plan y c
 # panel izquierdo
 o.append(t(0, 16, 'Gasto acumulado en mensajes desde octubre', 13, INK, 600))
 o.append(t(0, 32, 'millones de MXN, al ritmo de septiembre', 11.5, SEC))
-LX0, LX1, LY0, LY1, VM = 34, 330, 52, 372, 55e6
+LX0, LX1, LY0, LY1, VM = 34, 310, 52, 372, 55e6
 sx = lambda i: LX0 + (LX1 - LX0) * i / 11; sy = lambda v: LY1 - (LY1 - LY0) * v / VM
 for v in range(0, 51, 10):
     o.append(f'<line x1="{LX0}" y1="{sy(v * 1e6):.1f}" x2="{LX1}" y2="{sy(v * 1e6):.1f}" stroke="{GRID}" stroke-width="1"/>')
@@ -258,9 +258,11 @@ for k_, col, wd, lab in (('sin', MARK, 2, 'Sin plan'), ('seg', BLUE_L, 2.5, 'Sol
 ends = [('sin', 'Sin plan', MARK), ('seg', 'Solo lo seguro', BLUE_L), ('tod', 'Todo el plan', BLUE)]
 for k_, lab, col in ends:
     v = cum[k_][-1]; o.append(f'<circle cx="{sx(11):.1f}" cy="{sy(v):.1f}" r="3.5" fill="{col}"/>')
-o.append(t(sx(11) - 4, sy(cum['sin'][-1]) - 9, f'Sin plan {cum["sin"][-1] / 1e6:.1f}', 11.5, INK, 600, 'end', True))
-o.append(t(sx(11) - 4, sy(cum['seg'][-1]) - 9, f'Solo lo seguro {cum["seg"][-1] / 1e6:.1f}', 11.5, TXT, 400, 'end', True))
-o.append(t(sx(11) - 4, sy(cum['tod'][-1]) + 18, f'Todo el plan {cum["tod"][-1] / 1e6:.1f}', 11.5, BLUE, 600, 'end', True))
+for k_, lab, col, w_ in (('sin', 'Sin plan', SEC, 400), ('seg', 'Solo lo', BLUE_L, 600), ('tod', 'Todo el', BLUE, 600)):
+    yv = sy(cum[k_][-1])
+    l2 = {'sin': '', 'seg': 'seguro', 'tod': 'plan'}[k_]
+    o.append(t(sx(11) + 8, yv - 2, lab + (' ' + f'{cum[k_][-1] / 1e6:.1f}' if not l2 else ''), 11.5, INK if k_ == 'sin' else col, w_))
+    if l2: o.append(t(sx(11) + 8, yv + 12, f'{l2} {cum[k_][-1] / 1e6:.1f}', 11.5, col, w_))
 # panel derecho
 RX0, RX1, RY0, RY1, VMB = 430, 780, 52, 372, 180e3
 o.append(t(400, 16, 'Bajas de correo por mes, 2026', 13, INK, 600))

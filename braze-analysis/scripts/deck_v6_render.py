@@ -103,9 +103,14 @@ def page(ds, title="Braze en Kueski · Deck v6", note=""):
     o.append("</div>")
     return "".join(o)
 
+LISTOS = SL / "LISTOS.txt"   # bloques terminados y revisados (uno por línea); si no existe, se cargan todos
+
 def load_all():
     ds = []
+    ok = set(LISTOS.read_text().split()) if LISTOS.exists() else None
     for p in sorted(SL.rglob("*.json")):
+        if ok is not None and p.relative_to(SL).parts[0] not in ok:
+            continue
         try:
             d = json.loads(p.read_text(encoding="utf-8"))
         except Exception as e:

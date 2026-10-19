@@ -10,7 +10,7 @@ guarda(55, dict(
     titulo='Por qué pasa: Braze no sabe quién es cada persona ni qué hizo hace poco, y nadie mide si recuperar recupera',
     porques=[
         f'Tres de cada cuatro personas no respondieron en nueve meses, y {100*fr_costo/T["costo"]:.0f} % del gasto ({M(fr_costo)} M MXN) va a ex clientes y a leads que nunca activaron.',
-        f'Les escribimos igual a todos: las mismas promociones y el canal más caro, WhatsApp ({M(wa_fr)} M MXN), aunque lleven un año sin usar el producto o ya no les llegue.',
+        f'Les escribimos igual a todos: las mismas promociones y WhatsApp, que cuesta 1 MXN por mensaje entregado ({M(wa_fr)} M MXN en nueve meses), aunque lleven un año sin usar el producto o ya no les llegue.',
         'Cada equipo arma su lista por el nombre de la campaña y usa su canal de costumbre; nadie quita a quien no puede comprar con KPay, pidió no recibir publicidad o se dio de baja.',
         f'Nadie mide si recuperar recupera: de {C["canvas"]} Canvas de recuperación, {C["con_control"]} dejan a un grupo sin mensajes y ninguno de ex clientes.',
         'Causa raíz: Braze no tiene la etapa de cada persona, sus meses sin usar el producto, su última respuesta por canal ni si tiene la app, y ningún programa tiene dueño con límite de gasto y grupo sin mensajes.',

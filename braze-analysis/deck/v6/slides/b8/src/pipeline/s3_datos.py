@@ -66,4 +66,4 @@ R = dict(sep=SEP, avg=AVG, seguro=seg, medir=med, total=tot, resultante=SEP - to
          msgs_sep=c.env_sep.sum(), verif=verif)
 print(T[['lab', 'cert', 'mxn', 'top', 'top_sh']].round(3).to_string())
 for k, v in R.items(): print(k, v if isinstance(v, dict) else round(v / 1e6, 3) if v > 10 else round(v, 4))
-json.dump(dict(T=T.to_dict('records'), R=R), open('/tmp/claude-0/-home-user-claude/e114ba4f-39d4-57f8-9f24-b0f0c0cbef51/scratchpad/muestras/s3_datos.json', 'w'), default=float, ensure_ascii=False, indent=1)
+json.dump(dict(T=T.to_dict('records'), R=R), open('/home/user/claude/braze-analysis/deck/v6/muestras/s3_datos.json', 'w'), default=float, ensure_ascii=False, indent=1)
