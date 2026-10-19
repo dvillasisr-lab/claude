@@ -3,7 +3,7 @@
  "kind": "cierre",
  "titulo": "Por qué pasa: Braze no tiene dueño ni reglas comunes, y cada equipo lo opera a su manera",
  "porques": [
-  "No sabemos cuánto vende Braze: 1 de 3,228 Canvas tuvo grupo de control.",
+  "No sabemos cuánto vende Braze: solo 1 de 3,228 Canvas tuvo un grupo de control real.",
   "No hay control porque no es obligatorio ni hay una sola definición de conversión.",
   "Nadie es dueño: activar no exige equipo ni ticket (748 comunicaciones sin ellos).",
   "Solo el correo registra bajas: en push y WhatsApp no vemos a quién perdemos.",
@@ -15,7 +15,7 @@
   "G": "Un comité quincenal de 30 minutos decide con datos y no con opiniones."
  },
  "como": [
-  "Semana 1: MarTech prende el control nativo (10 %) en toda promoción. Meta: 100 % en 90 días.",
+  "Semana 2: MarTech prende el control nativo (10 %) en toda promoción. Meta: 100 % en 90 días.",
   "Semana 2: Datos fija la definición de conversión: crédito otorgado en 7 días.",
   "Semana 2: MarTech bloquea activar sin equipo ni ticket. Meta: 0 comunicaciones sin dueño.",
   "Semana 3: CRM arranca el comité quincenal con el calendario de todos los equipos."

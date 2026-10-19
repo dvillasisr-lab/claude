@@ -6,22 +6,22 @@
  "porques": [
   "439 mil personas dejaron el correo; nueve de cada diez, con una promoción.",
   "La persona recibe ofertas de varios equipos: el nuevo, de 4.2 campañas.",
-  "Cada campaña nace de lo que queremos vender: recordatorio 3.0 %, oferta 0.5 %.",
+  "Cada campaña nace de lo que queremos vender: recordatorio 2.9 %, oferta 0.3 % de clic.",
   "Braze no sabe qué empezó la persona ni si tiene la app, y no hay límite por persona.",
   "Causa raíz: nadie es dueño del recorrido completo ni mide con un grupo sin mensajes."
  ],
  "hipotesis": {
-  "A": "Si cada promoción sale por algo que hizo la persona, el clic se acerca al del recordatorio (3.0 %).",
+  "A": "Si cada promoción sale por algo que hizo la persona, el clic se acerca al del recordatorio (2.9 %).",
   "O": "Una sola bienvenida, un correo al día y salida a los 90 días sin abrir bajan las bajas de nuevos.",
   "G": "Un dueño del recorrido, con calendario común y grupo sin mensajes, evita apilar ofertas."
  },
  "como": [
-  "Semanas 1 y 2: Datos carga en Braze registro a medias, compra y app. Métrica: % de campañas.",
-  "Semanas 2 a 4: Marketing y Acquisition, un solo Canvas de registro. Métrica: bajas de nuevos.",
-  "Semanas 2 a 6: dos mensajes por campaña al mes, salida a 90 días. Métrica: bajas por persona.",
-  "Semanas 4 a 8: grupo sin mensajes de 10 % en cada promoción. Métrica: conversión a 7 y 90 días."
+  "Semanas 1 a 4: un solo Canvas de registro (Marketing y Acquisition), con 10 % sin mensajes.",
+  "Mes 2: MarTech y Datos ponen límites de mensajes por persona, canal preferido y horas de silencio.",
+  "Desde la semana 3 y por 8 semanas: medir la recuperación de ex clientes con 10 % sin mensajes.",
+  "Mes 3: decidir con la conversión contra el grupo sin mensajes y las bajas de nuevos por mes."
  ],
- "impacto": "20 mil nuevos al mes se dan de baja, 57 % con BillPay o el registro; 1.1 M MXN al mes de WhatsApp solo adelanta compras.",
+ "impacto": "20 mil nuevos al mes se dan de baja, 53 % con BillPay o el registro; 69 M envíos solo adelantan compras.",
  "sowhat": "Escribir por lo que la persona hizo, por su canal y con pocos mensajes; medir contra un grupo sin mensajes.",
  "fuente": "Fuente: Braze, E7b (patrón de respuesta), E8 (días hasta la baja), E1 (envíos por campaña) y E9a (quien abre contra quien no), enero a septiembre 2026."
 }

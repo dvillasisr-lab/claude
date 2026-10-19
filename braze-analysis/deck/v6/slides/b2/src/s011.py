@@ -75,7 +75,7 @@ save(11, dict(
     kind='grafica',
     titulo=f'Siete de cada diez pesos van a WhatsApp, y la mitad de ese gasto se concentra en {N50} campañas',
     que='Promociones: Tasa 0, referidos, descuentos y ofertas de comercios de KPay.',
-    quien=f'Marketing y Product Growth ponen {mkpg:.0f} % del gasto de WhatsApp; Sales el resto.',
+    quien=f'Marketing y Product Growth ponen {mkpg:.0f} % del gasto de WhatsApp; Sales y Others el resto.',
     a_quien='Leads rezagados, ex clientes, leads recientes y clientes activos de KPay y KCash.',
     lecturas=[
         f'{100*WT/CT:.0f} % del gasto ({WT:.1f} M MXN) por {100*WV/VT:.0f} % de los mensajes: un WhatsApp cuesta 20 veces un correo.',

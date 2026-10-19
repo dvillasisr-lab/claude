@@ -54,7 +54,7 @@ write(64, dict(
     a_quien='Personas que acaban de registrarse y no terminaron.',
     lecturas=[
         f'A nuevos: {n.clic:.2f} % de clic y {n.baja:.1f} bajas por cada mil correos; a activos, {ac.clic:.2f} % y {ac.baja:.1f}.',
-        f'{arr} de {len(rg)} campañas de registro responden y pierden más que la mediana; Veriff, datos y NIP, 1 de cada 5 nuevos.',
+        f'{arr} de {len(rg)} campañas de registro responden y pierden más que la mediana; Veriff, datos y NIP: 1 de cada 5 bajas de nuevos.',
         f'Por antigüedad la baja es pareja ({a.b.min():.1f} a {a.b.max():.1f} por mil): pesa la campaña de registro, no ser nuevo.',
     ],
     causa='Marketing y Acquisition tienen cada uno su secuencia de registro, con uno o dos correos al día.',

@@ -95,10 +95,10 @@ save(18, dict(
     lecturas=[
         f'{a.otro.sum()/1e6:.0f} M de {M/1e6:.0f} M mensajes ({100*a.otro.sum()/M:.0f} %) por un canal sin respuesta: {a.otro_costo.sum()/1e6:.1f} M MXN.',
         f'Quien solo lee WhatsApp recibió {sw.msgs_email/1e6:.0f} M correos y {sw.msgs_push/1e6:.0f} M push que nunca abrió.',
-        f'Mandar solo por el canal de los últimos 90 días quita {br.otro.sum()/1e6:.0f} M mensajes y {br.otro_costo.sum()/1e6:.1f} M MXN por trimestre.',
+        f'Mandar solo por el canal de los últimos 90 días quita {br.otro.sum()/1e6:.0f} M mensajes por trimestre; en el plan vale 0.34 M MXN al mes.',
     ],
     causa='Braze no guarda por qué canal responde cada persona, así que cada equipo manda por el canal que acostumbra.',
     sowhat='Guardar en Braze el canal al que cada persona respondió en 90 días y mandar por ese.',
-    fuente='Fuente: Braze, mensajes y respuesta por persona, enero a septiembre y julio a septiembre 2026. Mensajes enviados; WhatsApp a 1.00 MXN por entregado.',
+    fuente='Fuente: Braze, mensajes y respuesta por persona, enero a septiembre y julio a septiembre 2026. Mensajes enviados (E7b suma 670 M; E1, 667 M); WhatsApp a 1.00 MXN por entregado.',
     svg=svg,
 ))

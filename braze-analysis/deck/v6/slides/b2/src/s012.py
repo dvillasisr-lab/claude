@@ -9,8 +9,13 @@ e = d[d.canal == 'email']
 cpc = lambda g: g.costo.sum() / max(1, g.conversiones_fraccional.sum())
 A = {a: cpc(w[w.aud == a]) for a in ('activos', 'leads', 'frios')}
 fr = w[w.aud == 'frios']
-ex = fr[fr.fam.str.contains('Dormant|Inactiv|Churn', case=False)]
-eex = e[(e.aud == 'frios') & e.fam.str.contains('Dormant|Inactiv|Churn', case=False)]
+# ex clientes: Dormant, Inactiv o Churn en el nombre, sin Sales B0335 (promos de comercios a todo el portafolio,
+# 'PortafolioActivoEInactivo'), igual que la lámina 50
+# (misma regla que b5: también Lazaro y SoftnActive; fuera cobranza, avisos y MPNeverCash)
+EXRX, NOT = 'dormant|inactiv|churn|lazaro|softnactive', 'portafolioactivoeinactivo|mpnevercash|^collections|cobranza|bkt|^transaccional|payment|contracts|disbursed'
+isex = lambda df: df.fam.str.lower().str.contains(EXRX) & ~df.fam.str.lower().str.contains(NOT)
+ex = w[isex(w)]
+eex = e[isex(e)]
 fa = w.groupby('fam').agg(c=('costo', 'sum'), cv=('conversiones_fraccional', 'sum'), aud=('aud', 'first'), team=('equipo', 'first'),
                           s=('whatsapp_send', 'sum'), dl=('whatsapp_delivery', 'sum')).reset_index()
 fa = fa[(fa.c >= 5e4) & (fa.cv >= 1)].copy()
@@ -70,12 +75,12 @@ save(12, dict(
     quien='Marketing y Product Growth en las dos puntas; Sales solo a clientes y leads de KPay.',
     a_quien='Bases frías: ex clientes (dormants, inactivos, churn) y leads que nunca activaron.',
     lecturas=[
-        f'{A["activos"]:.0f} MXN por conversión con clientes activos y {A["frios"]:.0f} con bases frías, donde se fueron {fr.costo.sum()/1e6:.1f} M MXN.',
+        f'{A["activos"]:.0f} MXN por conversión con clientes activos y {A["frios"]:.0f} con bases frías; ahí va 48 % del WhatsApp (19.7 M MXN).',
         f'A ex clientes el correo recupera más barato: {cpc(eex):.0f} MXN por conversión contra {cpc(ex):.0f} por WhatsApp.',
         f'De julio a septiembre, {wa90:.1f} M MXN de WhatsApp llegaron a quien no leyó ninguno en 90 días.',
     ],
     causa='WhatsApp se usa para buscar en volumen a quien ya no lo lee: no hay regla de lectura reciente ni presupuesto con límite.',
     sowhat='A ex clientes, primero correo y app; WhatsApp solo a quien lo leyó en 90 días, con límite y grupo sin envío.',
-    fuente=f'{FUENTE_E1}; E9b. {len(fa)} campañas con 50 mil MXN o más. Conversión a 7 días repartida entre los mensajes del día; no prueba causa.',
+    fuente=f'{FUENTE_E1}; E9b. {len(fa)} campañas con 50 mil MXN o más. Conversión: préstamo otorgado en 7 días, repartido. 19.7 M MXN con el corte de la lámina 50.',
     svg=svg,
 ))

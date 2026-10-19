@@ -42,34 +42,36 @@ for v in (1, 3, 10, 30, 100, 300):
 S.t(X1, Y1 + 30, f"{N} campañas por canal que no responden, de la más cara a la más barata", 10.5, SEC, "end")
 S.raw('<path d="M' + " L".join(f"{X(i+1):.1f},{Y(v):.1f}" for i, v in enumerate(cum)) + f'" fill="none" stroke="{BLUE}" stroke-width="2.5"/>')
 S.line(X(5), Y0, X(5), Y1, INK, 1, ' stroke-dasharray="4 4" opacity="0.6"')
-S.t(X(5) + 6, Y(cum[4]) + 16, f"Las 5 primeras: {cum[4]:.0f} % del gasto ({nos.costo_ent[:5].sum()/1e6:.1f} M MXN)", 11, BLUE, w=700, halo=True)
+S.t(X(5) + 6, Y(cum[4]) + 16, f"Las 5 primeras por canal: {cum[4]:.0f} % del gasto ({nos.costo_ent[:5].sum()/1e6:.1f} M MXN)", 11, BLUE, w=700, halo=True)
 for i in range(10):
     S.circle(X(i + 1), Y(cum[i]), 4.5 if i < 5 else 3, BLUE if nos.canal[i] == "whatsapp" else MARK, "#FFFFFF", 1.2)
 for i in range(5): S.t(X(i + 1), Y(cum[i]) - 9, f"{i+1}", 10.5, INK, "middle", 700, halo=True)
 # lista de las cinco a la derecha
-S.t(506, 60, "Las cinco campañas más caras", 12, INK, w=700)
+S.t(506, 60, "Las cinco más caras: cuatro campañas", 12, INK, w=700)
 S.t(506, 76, "Gasto del año y MXN por cada conversión", 10.5, SEC)
 for i, r in enumerate(rows):
     y = 104 + 52 * i
     col = BLUE if r["canal"] == "whatsapp" else TXT
     S.t(506, y, f"{i+1}. {r['nom']}", 10.5, INK, w=700)
     S.t(506, y + 14, f"{r['eq']} · {'WhatsApp' if r['canal']=='whatsapp' else 'Email'} · {r['anual']/1e6:.1f} M MXN", 10.5, col, w=600)
-    if r.get("cpw"): S.t(506, y + 28, f"por conversión: email {r['cpe']:,.0f} · WhatsApp {r['cpw']:,.0f} MXN", 10.5, SEC)
+    if r.get("cpw") and r["canal"] == "whatsapp": S.t(506, y + 28, f"por conversión: email {r['cpe']:,.0f} · WhatsApp {r['cpw']:,.0f} MXN", 10.5, SEC)
     elif r.get("cpe") and r["cpe"] < 1e6: S.t(506, y + 28, f"por conversión: email {r['cpe']:,.0f} MXN", 10.5, SEC)
     else: S.t(506, y + 28, "sin conversiones registradas", 10.5, SEC)
 R = {r["k"]: r for r in rows}
+_cw = load_c().set_index(["familia", "canal"]).respuesta_pct
+lw171 = _cw[("Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0-N/A", "whatsapp")]; lw209 = _cw[("Lending-KCash-B0209-CANVAS-Recurrentes_Inactivos-DescuentoDirecto-N/A", "whatsapp")]
 J = dict(
-    titulo=f"Cinco campañas son {100*top.costo_ent.sum()/TA:.0f} % del gasto que no responde, y cuatro de ellas son de Product Growth",
+    titulo=f"Cuatro campañas son {100*top.costo_ent.sum()/TA:.0f} % del gasto que no responde, y tres son de Product Growth",
     que="Tasa 0, crédito en plazos, oferta a ex clientes KPay y lanzamiento de BillPay.",
     quien="Product Growth (cuatro) y Others (BillPay).",
     a_quien="Registrados sin crédito, ex clientes KPay con 12 meses sin compra y toda la base.",
     lecturas=[
-        f"En septiembre las cinco gastaron {top.c9.sum()/1e6:.2f} M MXN de {T9/1e6:.2f} M ({100*top.c9.sum()/T9:.0f} %) entre {len(a)} campañas activas.",
+        f"En septiembre estas cuatro gastaron {top.c9.sum()/1e6:.2f} M MXN de {T9/1e6:.2f} M ({100*top.c9.sum()/T9:.0f} %) entre {len(a)} campañas activas.",
         f"Ex clientes KPay: {R['B0333']['cpw']:,.0f} MXN por conversión por WhatsApp contra {R['B0333']['cpe']:.0f} por email.",
-        "Con las lecturas del mes siguiente, el rescate Tasa 0 y el descuento a inactivos llegan a 60 % y salen de la lista.",
+        f"Rescate Tasa 0 ({lw171:.0f} % leído) y descuento a inactivos ({lw209:.0f} %) sí llegan al mínimo de WhatsApp.",
     ],
     causa="Se promueve a listas grandes por correo y WhatsApp, sin límite de gasto ni grupo sin mensajes.",
     sowhat="Rehacer estas cinco primero: a ex clientes por email o in-app, y WhatsApp solo a quien lo lee.",
-    fuente=f"Fuente: Braze, envíos por campaña y canal, ene a sep 2026; {len(no)} campañas por canal debajo de lo mínimo. WhatsApp a 1.00 MXN por entregado; lectura con las del mes siguiente.",
+    fuente=f"Fuente: Braze, envíos por campaña y canal, ene a sep 2026; {len(no)} campañas por canal debajo de lo mínimo. WhatsApp leído con el mes siguiente. Conversión: crédito de Cash otorgado en 7 días, repartido.",
     svg=S.out())
 write(68, J)

@@ -4,7 +4,7 @@
  "kind": "cierre",
  "titulo": "Por qué pasa: el canal lo elige cada equipo por costumbre, no por quién responde ni por lo que cuesta",
  "porques": [
-  "WhatsApp se lleva 71 % del gasto y 39 % va a bases frías, a 629 MXN por conversión.",
+  "WhatsApp es 71 % del gasto y la mitad va a bases frías, a 629 MXN por conversión.",
   "59 % de los mensajes van por un canal al que esa persona nunca respondió.",
   "In-app es el que más convierte y ningún equipo le da más de 5 % de sus mensajes.",
   "Nadie compara costo por conversión entre canales ni mide cada campaña contra un mínimo.",
@@ -19,9 +19,9 @@
   "Semanas 1 y 2: atributo de canal preferido y segmentos por lectura reciente en Braze; Marketing.",
   "Semana 3: en los Canvas, WhatsApp solo a ese segmento, con límite y 10 % sin envío.",
   "Semana 4: quitar números de WhatsApp sin entrega en 90 días; meta de entrega 80 % (hoy 74 %).",
-  "Cada mes: rehacer o quitar campañas debajo del mínimo; hoy son 47 % del volumen de promoción."
+  "Cada mes: rehacer o quitar campañas debajo del mínimo; hoy son 4 de cada 10 mensajes del año."
  ],
- "impacto": "Canal por persona: 75 M mensajes y 3.1 M MXN menos por trimestre, dentro de los 2.34 M MXN al mes del plan.",
+ "impacto": "Canal por persona: 75 M mensajes menos por trimestre y 0.34 M MXN al mes, parte de los 2.34 M MXN del plan.",
  "sowhat": "Elegir el canal por persona y por costo baja el gasto sin dejar de buscar a los ex clientes.",
  "fuente": "Fuente: láminas 11 a 19; Braze, envíos por campaña y respuesta por persona, enero a septiembre 2026. Los ahorros se traslapan y no se suman."
 }

@@ -81,7 +81,8 @@ for i, (k, que, caso, porque) in enumerate(NAMES):
         S.circle(xs(r.msgs), yc + 6 + jy, 2.8, BLUE if r["eq"] == lead else MARK2, "#FFFFFF", 0.5, ' fill-opacity="0.85"')
     w0 = d.iloc[0]
     S.circle(xs(w0.msgs), yc + 6, 5, BLUE if w0["eq"] == lead else MARK, "#FFFFFF", 1.4)
-    S.tspans(516, yc - 4, [(f"{lead} {t.max()/1e6:.0f} M", BLUE, 700), (f" de {P[k]['msgs']/1e6:.0f} M", SEC, 400)], 11)
+    fmm = lambda v: f"{v/1e6:.1f}" if v < 1e8 else f"{v/1e6:.0f}"
+    S.tspans(516, yc - 4, [(f"{lead} {fmm(t.max())} M", BLUE, 700), (f" de {fmm(P[k]['msgs'])} M", SEC, 400)], 11)
     S.t(516, yc + 9, caso, 10.5, INK, w=600)
     S.t(516, yc + 22, porque, 10.5, TXT)
     if i < len(NAMES) - 1: S.line(0, yc + 29, 780, yc + 29, GRID)

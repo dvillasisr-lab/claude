@@ -36,7 +36,7 @@ save(20, dict(
     kind='cierre',
     titulo='Por qué pasa: el canal lo elige cada equipo por costumbre, no por quién responde ni por lo que cuesta',
     porques=[
-        f'WhatsApp se lleva {100*WT/CT:.0f} % del gasto y {100*fr.costo.sum()/1e6/WT:.0f} % va a bases frías, a {cpc(fr):.0f} MXN por conversión.',
+        f'WhatsApp es {100*WT/CT:.0f} % del gasto y la mitad va a bases frías, a {cpc(fr):.0f} MXN por conversión.',
         f'{pct_otro:.0f} % de los mensajes van por un canal al que esa persona nunca respondió.',
         f'In-app es el que más convierte y ningún equipo le da más de {inapp_max:.0f} % de sus mensajes.',
         'Nadie compara costo por conversión entre canales ni mide cada campaña contra un mínimo.',
@@ -51,9 +51,9 @@ save(20, dict(
         'Semanas 1 y 2: atributo de canal preferido y segmentos por lectura reciente en Braze; Marketing.',
         'Semana 3: en los Canvas, WhatsApp solo a ese segmento, con límite y 10 % sin envío.',
         f'Semana 4: quitar números de WhatsApp sin entrega en 90 días; meta de entrega 80 % (hoy {ent:.0f} %).',
-        f'Cada mes: rehacer o quitar campañas debajo del mínimo; hoy son {pv:.0f} % del volumen de promoción.',
+        'Cada mes: rehacer o quitar campañas debajo del mínimo; hoy son 4 de cada 10 mensajes del año.',
     ],
-    impacto=f'Canal por persona: {q_msgs:.0f} M mensajes y {q_mxn:.1f} M MXN menos por trimestre, dentro de los 2.34 M MXN al mes del plan.',
+    impacto=f'Canal por persona: {q_msgs:.0f} M mensajes menos por trimestre y 0.34 M MXN al mes, parte de los 2.34 M MXN del plan.',
     sowhat='Elegir el canal por persona y por costo baja el gasto sin dejar de buscar a los ex clientes.',
     fuente='Fuente: láminas 11 a 19; Braze, envíos por campaña y respuesta por persona, enero a septiembre 2026. Los ahorros se traslapan y no se suman.',
 ))

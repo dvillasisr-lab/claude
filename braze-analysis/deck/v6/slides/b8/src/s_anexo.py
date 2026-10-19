@@ -25,19 +25,20 @@ EX = [('E1', ['e1_comunicacion_mes_canal.csv'], 'Envíos, entregas, respuesta, b
 ver = pd.read_excel(ROOT + 'sheets/braze_auditoria_v4.xlsx', 'Verificación')
 n_ver = len(ver)
 n_files = sum(len(f) for _, f, _, _ in EX)
-print('104', n_files, n_ver, d1.envios.sum(), d1.communication_id.nunique())
+n_com = int((d1.groupby('communication_id').envios.sum() > 0).sum())
+print('104', n_com, n_files, n_ver, d1.envios.sum(), d1.communication_id.nunique())
 h = ['<table><tr><th style="width:12%">Extracción</th><th style="width:44%">Qué trae</th><th style="width:26%">Una fila por</th><th class="num" style="width:18%">Filas</th></tr>']
 for e, fs, q, g in EX:
     h.append(f'<tr><td><b>{e}</b></td><td>{q}</td><td>{g}</td>' + NUM(' + '.join(f'{filas(f):,}' for f in fs)) + '</tr>')
 h.append('</table>')
 save(104, dict(kind='html',
     titulo=f'Método y fuentes: 18 extracciones agregadas de Databricks y {n_ver} verificaciones de los totales',
-    lecturas=[f'{m(d1.envios.sum(), 1)} M mensajes de {d1.communication_id.nunique():,} comunicaciones, enero a septiembre de 2026; sin datos personales.',
+    lecturas=[f'{m(d1.envios.sum(), 1)} M mensajes de {n_com:,} comunicaciones que mandaron algo, enero a septiembre de 2026.',
               f'Las 18 extracciones están en {n_files} archivos y se pegaron en el Sheets v4 con fórmulas vivas.',
               f'{n_ver} comprobaciones cruzan cada total del Sheets con el mismo cálculo hecho aparte.'],
     causa='Equipo, audiencia y mensaje se leen del nombre de la campaña: Braze no los guarda como campos.',
     sowhat='Cualquiera puede rehacer cada cifra con estos archivos, sin acceso a Braze.',
-    fuente=f'Fuente: carpeta data (E1 a E18b) y Sheets braze_auditoria_v4, pestaña Verificación ({n_ver} filas más el encabezado; el guion decía 471).',
+    fuente=f'Fuente: carpeta data (E1 a E18b) y Sheets braze_auditoria_v4, pestaña Verificación ({n_ver} comprobaciones). Todo agregado: sin datos personales.',
     html=''.join(h)))
 
 # ------------------------------------------------------------------ 105. Definiciones
@@ -74,7 +75,7 @@ STD = [(1, 'Entrega', 'Correos que llegan a la bandeja', '95 % o más', 'Referen
        (9, 'Frecuencia', 'Mensajes de la misma campaña por persona al mes', '2 o menos', 'Interno: con 3 o más cae la respuesta y suben las bajas'),
        (10, 'Frecuencia', 'Mensajes por persona al mes, todos los canales', '20 o menos', 'Interno: unos 5 promocionales a la semana'),
        (11, 'Frecuencia', 'Personas con 41 o más mensajes al mes', '5 % o menos', 'Propuesta interna'),
-       (12, 'Mismo día', 'Días-persona con 3 o más campañas distintas', '10 % o menos', 'Interno: máximo 2 campañas por persona al día'),
+       (12, 'Mismo día', 'Días en que una persona recibe 3 o más campañas', '10 % o menos', 'Interno: máximo 2 campañas por persona al día'),
        (13, 'Bajas', 'Días hasta la baja de una persona nueva (mediana)', '90 o más', 'Propuesta interna'),
        (14, 'Bajas', 'Correos antes de la baja, persona nueva (mediana)', '10 o más', 'Interno: si se va antes, es el contenido o la audiencia'),
        (15, 'Bajas', 'Personas nuevas que se van el día del primer correo', '5 % o menos', 'Propuesta interna'),
@@ -90,14 +91,15 @@ STD = [(1, 'Entrega', 'Correos que llegan a la bandeja', '95 % o más', 'Referen
 assert len(est) == 24 and list(est['#'].astype(int)) == [s[0] for s in STD]
 FE = dict(zip(est['#'].astype(int), est['fuente (E)'].fillna('').astype(str)))
 for sub, rr in ((1, STD[:12]), (2, STD[12:])):
-    h = ['<table><tr><th style="width:3%">#</th><th style="width:10%">Tema</th><th style="width:36%">Indicador</th><th style="width:12%">Estándar</th><th style="width:33%">De dónde sale</th><th style="width:6%">Dato</th></tr>']
+    h = ['<table><tr><th style="width:3%">#</th><th style="width:10%">Tema</th><th style="width:36%">Indicador</th><th style="width:12%">Estándar</th><th style="width:29%">De dónde sale</th><th style="width:10%">Dato</th></tr>']
     for n, tm, ind, st, src in rr:
         fe = FE[n] if FE[n] and FE[n] != 'nan' else 'sin dato'
-        h.append(f'<tr><td>{n}</td><td>{tm}</td><td><b>{ind}</b></td><td><b>{st}</b></td><td>{src}</td><td>{fe[:4] if len(fe) < 6 else "sin dato"}</td></tr>')
+        fe = 'E13: hoy 1 de 3,228' if n == 23 else (fe[:4] if len(fe) < 6 else 'sin dato')
+        h.append(f'<tr><td>{n}</td><td>{tm}</td><td><b>{ind}</b></td><td><b>{st}</b></td><td>{src}</td><td>{fe}</td></tr>')
     h.append('</table>')
     save(106, dict(kind='html', ancho_completo=True,
-        titulo='Los 24 estándares y su fuente: ocho son de canal y vienen de la industria' if sub == 1 else 'Los 24 estándares y su fuente (continuación): bajas, audiencia, medición y nombres',
-        sowhat='Son el mínimo de la industria o una regla interna, no una meta de Kueski.' if sub == 1 else 'El grupo de control (23) se mide en Braze en cuanto se prenda.',
+        titulo='Los 24 estándares y su fuente: ocho son de canal y seis vienen de la industria' if sub == 1 else 'Los 24 estándares y su fuente (continuación): bajas, audiencia, medición y nombres',
+        sowhat='Son el mínimo de la industria o una regla interna, no una meta de Kueski.' if sub == 1 else 'Grupo de control (23): hoy 1 de 3,228; se mide en Braze en cuanto se prenda.',
         fuente='Fuente: Sheets braze_auditoria_v4, pestaña Estándares. "Sin dato": no se mide con las extracciones actuales.',
         html=''.join(h)), sub=sub)
 
@@ -171,8 +173,8 @@ save(107, dict(kind='html', ancho_completo=True,
 # ------------------------------------------------------------------ 108. Fichas de 15 campañas
 NOMB = {('B0333', 'whatsapp'): 'Oferta a clientes KPay sin compra en un año', ('B0211', 'email'): 'Tasa 0 a registrados de KPay sin Cash',
         ('B0332', 'whatsapp'): 'Oferta a clientes KPay sin compra en 6 meses', ('B0223', 'email'): 'Installments a registrados que nunca activaron',
-        ('B0223', 'whatsapp'): 'Installments a registrados que nunca activaron', ('B0619', 'whatsapp'): 'Cross sell de KPay a Cash, Fiestas Patrias',
-        ('B0620', 'whatsapp'): 'Cross sell de Cash a leads de KPay', ('B0331', 'whatsapp'): 'Oferta a clientes KPay poco activos',
+        ('B0223', 'whatsapp'): 'Installments a registrados que nunca activaron', ('B0619', 'whatsapp'): 'Venta cruzada de KPay a Cash, Fiestas Patrias',
+        ('B0620', 'whatsapp'): 'Venta cruzada de Cash a leads de KPay', ('B0331', 'whatsapp'): 'Oferta a clientes KPay poco activos',
         ('B0000', 'email'): 'Recordatorio de terminar la verificación', ('B0209', 'email'): 'Descuento a clientes inactivos de Cash',
         ('B0301', 'whatsapp'): 'Cash a plazos a clientes activos'}
 def nombre(f, cn):
@@ -183,17 +185,23 @@ def nombre(f, cn):
 AUD = {'recup': 'Ex clientes', 'activ': 'Leads y registrados', 'clien': 'Clientes activos', 'otros': 'Clientes KPay'}
 QUE = {'b_cortar': 'Se quita ya', 'b_medir': 'Se mide antes de cortar', 'b_pref': 'Solo a quien responde por este canal', 'b_desp': 'Excluir bloqueados'}
 top = c.sort_values('tot', ascending=False).head(15).reset_index(drop=True)
+def que(r):
+    ya = r.b_desp + r.b_cortar + r.b_pref
+    if r.accion == 'Bajar frecuencia': return f'Bajar frecuencia; {r.b_pref / 1e3:.0f} mil por canal preferido'
+    if ya >= 0.1 * r.tot and r.b_medir >= 0.1 * r.tot: return f'{r.b_medir / 1e3:.0f} mil se miden; {ya / 1e3:.0f} mil se quitan ya'
+    if r.accion == 'Limpiar base de WhatsApp' and r.main == 'b_cortar': return 'Solo a quien lee WhatsApp'
+    return QUE[r.main]
 top['main'] = top[['b_desp', 'b_cortar', 'b_pref', 'b_medir']].idxmax(axis=1)
 sh15 = top.tot.sum() / R['total']
 print('108', [(nombre(r.fam, r.canal), r.canal, round(r.tot)) for _, r in top.iterrows()], round(sh15, 3))
 for sub, rr in ((1, range(0, 8)), (2, range(8, 15))):
-    h = ['<table><tr><th style="width:3%">#</th><th style="width:26%">Campaña</th><th style="width:10%">Equipo</th><th style="width:7%">Canal</th><th style="width:12%">A quién</th>'
-         '<th class="num" style="width:8%">Mensajes en sept.</th><th class="num" style="width:11%">Respuesta</th><th class="num" style="width:9%">Ahorro al mes</th><th style="width:14%;padding-left:1.2cqi">Qué se hace</th></tr>']
+    h = ['<table><tr><th style="width:3%">#</th><th style="width:24%">Campaña</th><th style="width:10%">Equipo</th><th style="width:7%">Canal</th><th style="width:10%">A quién</th>'
+         '<th class="num" style="width:8%">Mensajes en sept.</th><th class="num" style="width:11%">Respuesta</th><th class="num" style="width:9%">Ahorro al mes</th><th style="width:18%;padding-left:1.2cqi">Qué se hace</th></tr>']
     for i in rr:
         r = top.loc[i]
         resp = f'{r.resp * 1000:.1f} clics por mil' if r.canal == 'email' else f'{r.resp * 100:.0f} de cada 100 leídos'
         h.append(f'<tr><td>{i + 1}</td><td><b>{nombre(r.fam, r.canal)}</b> ({datos.ticket(r.fam)})</td><td>{r.equipo}</td><td>{"Correo" if r.canal == "email" else "WhatsApp"}</td>'
-                 f'<td>{AUD[r.aud[:5]]}</td>' + NUM(f'{r.env_sep / 1e6:.2f} M') + NUM(resp) + NUM(f'<b>{r.tot / 1e3:.0f} mil MXN</b>') + f'<td style="padding-left:1.2cqi">{"Solo a quien lee WhatsApp" if r.accion == "Limpiar base de WhatsApp" and r.main == "b_cortar" else QUE[r.main]}</td></tr>')
+                 f'<td>{AUD[r.aud[:5]]}</td>' + NUM(f'{r.env_sep / 1e6:.2f} M') + NUM(resp) + NUM(f'<b>{r.tot / 1e3:.0f} mil MXN</b>') + f'<td style="padding-left:1.2cqi">{que(r)}</td></tr>')
     h.append('</table>')
     save(108, dict(kind='html', ancho_completo=True,
         titulo=f'Fichas de las 15 campañas con más ahorro: juntas suman {m(top.tot.sum())} M MXN al mes, {sh15 * 100:.0f} % del total' if sub == 1 else 'Fichas de las 15 campañas con más ahorro (continuación): Marketing aparece por canal y recuperación',
@@ -277,12 +285,12 @@ for i, (k, lab, v, note) in enumerate(ST):
     if note: o.append(t(780, yc + 4.3, note, 11.5, INK if k == 'total' else SEC, 600 if k == 'total' else 400, 'end'))
 o.append('</svg>')
 save(110, dict(kind='grafica',
-    titulo=f'Por qué había dos cifras de ahorro: de {m(v_c, 1)} y {m(v_deck, 1)} M a una sola de {m(ST[-1][2], 1)} M MXN al mes',
+    titulo=f'Por qué había dos cifras de ahorro: de {m(v_c, 1)} y {m(v_deck, 1)} M a una sola de {m(ST[-1][2])} M MXN al mes',
     lecturas=[f'{m(v_c)} M MXN al mes cobraba WhatsApp por enviado y no contaba lecturas tardías: corregido da {m(v_deck)} M.',
               f'Con las lecturas tardías cuatro WhatsApp leen 60 % o más; Product Growth sube a {pg_d * 100:.0f} %.',
               'La cifra única usa septiembre, cuenta solo a quien no responde y suma otras palancas sin doble conteo.'],
     causa='Cada cifra usó supuestos distintos de cobro, de mes y de qué contar; la propuesta los fija una vez.',
     sowhat=f'Usar solo {m(ST[-1][2])} M MXN al mes ({ST[-1][2] * 12 / 1e6:.0f} M al año); las otras dos cifras quedan reemplazadas.',
-    fuente=f'Fuente: nota de campañas (muestra C), Sheets v4 (Plan_accion) y E1 de septiembre 2026; WhatsApp por entregado. Duplicados de E6b, un mínimo.',
+    fuente=f'Fuente: nota de campañas (muestra C), Sheets v4 y E1 de septiembre 2026. Montos incrementales en el orden de esta cascada; por palanca, ver lámina 92.',
     svg=''.join(o)))
 print('ok anexo')

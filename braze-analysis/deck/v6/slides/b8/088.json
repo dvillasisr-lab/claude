@@ -3,11 +3,11 @@
  "kind": "grafica",
  "titulo": "Uno de cada ocho mensajes sale de comunicaciones sin equipo dueño ni ticket; casi la mitad es promoción",
  "que": "Avisos de pago y desembolso, lanzamientos de BillPay, recomendaciones de Shopping",
- "quien": "Nadie: dice Not Tracked (NewProducts, Shopping, avisos de KPay y KCash, QA)",
+ "quien": "Nadie: sin equipo (Not Tracked en Braze); por el nombre, NewProducts, Shopping, QA",
  "a_quien": "Clientes de KPay y Cash en avisos; casi toda la base en BillPay",
  "lecturas": [
   "748 comunicaciones no tienen equipo ni ticket; 210 mandaron 84.7 M mensajes en 2026.",
-  "BillPay salió por correo a 16.1 M personas: 1 respuesta por cada mil y 80 mil bajas.",
+  "Lanzamiento de BillPay: 16.1 M correos, 1 clic por mil y 80 mil bajas registradas (jun a sep).",
   "Los avisos sin dueño (43.7 M mensajes) son un riesgo: nadie revisa si dejan de llegar."
  ],
  "causa": "Activar una comunicación no exige equipo ni ticket, así que nadie responde por ella.",

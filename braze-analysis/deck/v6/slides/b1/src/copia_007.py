@@ -5,7 +5,7 @@ src = H.parents[2] / 'muestras' / 's1.json'
 d = json.loads(src.read_text(encoding='utf-8'))
 o = {'n': 7, 'kind': 'grafica', **{k: v for k, v in d.items() if k not in ('n', 'kind')}}
 o.update(  # texto recortado a los límites de ESTANDAR.md; el SVG aprobado no se toca
-    que='Junio: lanzamiento de BillPay y push de Mundial, Comercio del día y AnotayGana.',
+    que='Junio: lanzamiento de BillPay y push de Mundial, Comercio del día y Anota y Gana.',
     quien='En junio contra enero, Marketing sumó 28 M mensajes y Others 25 M.',
     a_quien='Casi toda la base: el correo de BillPay llegó a 16 M personas.',
     lecturas=['Septiembre mandó 66 M mensajes, casi como enero (59 M), pero trajo 54 respuestas por cada mil contra 84.',

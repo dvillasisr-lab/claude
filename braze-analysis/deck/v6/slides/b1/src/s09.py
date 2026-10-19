@@ -58,7 +58,7 @@ write(9, dict(kind='grafica',
     quien=f'Marketing sumó {dif["Marketing"]:.0f} M mensajes y Others (BillPay) {dif["Others"]:.0f} M contra enero.',
     a_quien='Casi toda la base: varios push decían "Todos" en la audiencia.',
     lecturas=[
-        f'Correo: la semana del 1 de junio llegó a {D["email"]["vi"][D["email"]["pk"]]:.0f} (enero = 100), con {bi.envios.sum() / 1e6:.0f} M correos de presentación de BillPay.',
+        f'Correo: la semana del 1 de junio llegó a {D["email"]["vi"][D["email"]["pk"]]:.0f} (enero = 100), con {bi.envios.sum() / 1e6:.0f} M correos de lanzamiento de BillPay.',
         f'Push: Marketing pasó de {mk_push[1]:.1f} M push en enero a {mk_push[6]:.0f} M en junio; su respuesta en junio fue {D["push notification"]["jr"]:.0f}.',
         f'WhatsApp quedó en {D["whatsapp"]["jr"]:.0f} e in-app en {D["in-app"]["jr"]:.0f}: el golpe fue en correo y push, los canales que se saturaron.'],
     causa='No hay calendario común ni límite de mensajes por persona a la semana: tres equipos sumaron envíos a toda la base el mismo mes.',
