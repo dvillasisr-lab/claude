@@ -27,7 +27,7 @@ def panel(x0, c, fit, fit2, xmax, xt, ymax, yt, title, xlab, labels):
     X0, X1, Y0, Y1 = x0 + 38, x0 + 362, 78, 350
     sx = lambda v: X0 + (X1 - X0) * v / xmax; sy = lambda v: Y1 - (Y1 - Y0) * v / ymax
     S.t(x0, 46, title, 12, INK, w=700)
-    S.t(x0, 62, f'Cada millón más en la semana: {fit["b"]:.2f} puntos. R² {fit["r2"]:.2f}; sin junio, R² {fit2["r2"]:.2f}', 10.5, SEC)
+    S.t(x0, 62, f'Cada millón más en la semana baja {abs(fit["b"]):.2f} puntos. R² {fit["r2"]:.2f}; sin junio, {fit2["r2"]:.2f}', 10.5, SEC)
     for v in yt:
         S.line(X0, sy(v), X1, sy(v)); S.t(X0 - 6, sy(v) + 4, f'{v:g} %', 10.5, SEC, 'end')
     for v in xt:
@@ -44,20 +44,21 @@ def panel(x0, c, fit, fit2, xmax, xt, ymax, yt, title, xlab, labels):
             S.raw(f'<path d="M {x:.1f} {y-6:.1f} L {x+6:.1f} {y:.1f} L {x:.1f} {y+6:.1f} L {x-6:.1f} {y:.1f} Z" fill="{BLUE}" stroke="#FFFFFF" stroke-width="1.5"/>')
         else:
             S.circle(x, y, 4, G1, '#FFFFFF', 1.5)
-    for lab, dx, dy, anchor, l1, l2 in labels:
+    for lab, lx, ly, anchor, l1, l2 in labels:
         q = next(p for p in reg[c]['pts'] if p['lab'] == lab); x, y = sx(q['x']), sy(q['y'])
-        S.t(x + dx, y + dy, l1, 10.5, INK, anchor, 700, halo=True)
-        if l2: S.t(x + dx, y + dy + 13, l2, 10.5, TXT, anchor, 400, halo=True)
+        tx, ty = sx(lx), sy(ly)
+        S.line(x, y, tx + (4 if anchor == 'start' else -4) * 0, ty + 16, SEC, 0.8)
+        S.t(tx, ty, l1, 10.5, INK, anchor, 700, halo=True)
+        if l2: S.t(tx, ty + 13, l2, 10.5, TXT, anchor, 400, halo=True)
 
 panel(0, 'email', fe, fe2, 27, (5, 10, 15, 20, 25), 1.6, (0, 0.5, 1, 1.5), 'Correo: enviados en la semana contra clic',
       'Millones de correos enviados en la semana', [
-       ('06/01', -8, -26, 'end', '1 jun: 25 M correos, 0.36 %', 'BillPay Intro a 16.1 M'),
-       ('05/25', 4, 22, 'start', '25 may: 0.73 %', 'Hot Sale y Referidos')])
+       ('06/01', 25.5, 0.95, 'end', '1 jun: 25 M correos, 0.36 %', 'BillPay Intro a 16.1 M'),
+       ('05/25', 13.5, 1.38, 'start', '25 may: 12 M correos, 0.73 %', 'Hot Sale y Referidos')])
 panel(400, 'push notification', fp, fp2, 14, (2, 4, 6, 8, 10, 12), 3.0, (0, 1, 2, 3), 'Push: enviados en la semana contra apertura',
       'Millones de push enviados en la semana', [
-       ('06/15', -4, -40, 'end', '15 jun: 13 M push, 0.92 %', 'Billpayments, Día del Padre'),
-       ('07/20', -6, 26, 'end', '20 jul: 1.35 %', 'Comercio del día'),
-       ('08/10', 4, -22, 'start', '10 ago:', 'prueba de QA')])
+       ('06/15', 13.8, 2.85, 'end', '15 jun: 13 M push, 0.92 %', 'Billpayments y Día del Padre'),
+       ('08/10', 13.8, 2.35, 'end', '10 ago: 12 M push, 1.22 %', 'prueba de QA y Billpayments')])
 
 write(40, dict(kind='grafica', seccion='V. El ritmo lo marcan los lanzamientos, no el cliente',
  titulo=f'Las semanas con más mensajes son semanas de lanzamientos, y en ellas la respuesta cae: cada millón de correos de más baja el clic {abs(fe["b"]):.2f} puntos',
