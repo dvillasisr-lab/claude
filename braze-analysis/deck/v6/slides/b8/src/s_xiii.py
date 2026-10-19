@@ -22,12 +22,12 @@ for w in range(13):
 for w in range(12):
     o.append(t(sx(w) + wk / 2, 42, f'S{w + 1}', 11, SEC, 400, 'middle'))
 o.append(f'<line x1="0" y1="50" x2="780" y2="50" stroke="{INK}" stroke-width="1.2"/>')
-FR = [('Limpiar', 'MarTech con Legal y Riesgo', 0, 2, BLUE, 'Excluir bloqueados, archivar pruebas, quitar duplicados'),
-      ('Cortar', 'Cada equipo con su lista', 0, 4, BLUE, 'Apagar correo y WhatsApp sin respuesta, con 10 % sin mensajes'),
-      ('Configurar', 'MarTech y Datos', 4, 8, BLUE, 'Canal preferido, límites por semana y día, horas de silencio'),
-      ('Medir recuperación', 'CRM con Product Growth y Marketing', 2, 10, GREEN_L, '8 semanas con 10 % sin mensajes en ex clientes'),
-      ('Decidir', 'Comité de CRM', 10, 12, GREEN_L, 'Se corta solo lo que no recupera'),
-      ('Gobierno', 'CRM, comité quincenal', 2, 12, MARK2, 'Calendario común; equipo y ticket para activar')]
+FR = [('Limpiar', 'MarTech, Legal y Riesgo', 0, 2, BLUE, 'Bloqueados, pruebas, duplicados'),
+      ('Cortar', 'Cada equipo', 0, 4, BLUE, 'Correo y WhatsApp sin respuesta'),
+      ('Configurar', 'MarTech y Datos', 4, 8, BLUE, 'Canal preferido, límites, silencio'),
+      ('Medir', 'CRM y Product Growth', 2, 10, GREEN_L, 'Ex clientes, 10 % sin mensajes'),
+      ('Decidir', 'Comité de CRM', 10, 12, GREEN_L, 'Cortar lo que no recupera'),
+      ('Gobierno', 'CRM, cada 15 días', 2, 12, MARK2, 'Calendario común')]
 for i, (fr, eq, a, b, col, txt) in enumerate(FR):
     y = 62 + i * 51
     o.append(t(0, y + 14, fr, 13, INK, 600) + t(0, y + 30, eq, 11.5, SEC))
@@ -47,16 +47,16 @@ for w, v, lab, col in ((4, S1, '', BLUE), (8, S2, '', BLUE), (12, TOT, 'hasta ',
     o.append(t(sx(w) - 8, 398, f'{lab}{m(v)} M MXN', 13, col, 700, 'end'))
 o.append('</svg>')
 save(98, dict(kind='html',
-    titulo='Plan a 90 días: limpiar y cortar en 30, configurar en 60 y medir en 90, con un equipo dueño de cada frente',
-    que='Las campañas promocionales que el plan toca. Cobranza y avisos de servicio quedan fuera, salvo sus pruebas internas.',
-    quien='Cada equipo con sus campañas; MarTech (administra Braze) configura; CRM lleva calendario y comité; Datos, el canal preferido y la medición; Legal y Riesgo validan exclusiones.',
-    a_quien='Personas bloqueadas, registrados sin crédito, leads, ex clientes y quien no responde por un canal.',
-    lecturas=[f'Semanas 1 a 4: MarTech excluye bloqueados y archiva pruebas; cada equipo apaga el correo o WhatsApp de sus campañas sin respuesta. Libera {m(S1)} M MXN al mes.',
-              f'Mes 2: MarTech y Datos configuran canal preferido, límite de mensajes por persona a la semana y al día, horas de silencio y nombre con ticket. Suma {m(V["pref"])} M.',
-              f'Mes 3: la recuperación de ex clientes corre 8 semanas con 10 % sin mensajes; se corta solo lo que no recupera. Hasta {m(V["medir"])} M más.'],
-    causa='Hoy nadie coordina: cada equipo activa, mide y apaga por su cuenta. El plan pone un dueño, una fecha y una métrica a cada frente.',
-    sowhat='El ahorro empieza en la semana 1 sin configurar nada; lo que tiene riesgo de perder clientes se decide con datos al final.',
-    fuente='Fuente: ' + FUENTE_AH + ' Los equipos de soporte (MarTech, CRM, Datos, Legal y Riesgo) son los que usa el deck; no se nombran personas. S = semana.',
+    titulo='Plan a 90 días: limpiar y cortar en 30, configurar en 60 y medir en 90, con un dueño por frente',
+    que='Las campañas promocionales que el plan toca; cobranza y avisos quedan fuera',
+    quien='Cada equipo; MarTech configura, CRM lleva el comité, Datos mide',
+    a_quien='Bloqueados, registrados sin crédito, leads, ex clientes',
+    lecturas=[f'Mes 1: {m(S1)} M MXN al mes. MarTech limpia bloqueados y pruebas; cada equipo apaga lo que no responde.',
+              f'Mes 2: {m(V["pref"])} M más. MarTech y Datos configuran canal preferido, límites y horas de silencio.',
+              f'Mes 3: hasta {m(V["medir"])} M más. Se corta solo la recuperación que no trae clientes de vuelta.'],
+    causa='Hoy cada equipo activa, mide y apaga por su cuenta; nadie coordina.',
+    sowhat='El ahorro empieza en la semana 1; lo que arriesga clientes se decide con datos al final.',
+    fuente='Fuente: ahorro de la lámina 92 (E1 de septiembre 2026, Sheets v4, E9b, E7a, E6b). S = semana.',
     html=''.join(o)))
 
 # ------------------------------------------------------------------ 99. Qué hacer con cada campaña
@@ -81,12 +81,12 @@ for k, lab, q, ej in ACC:
 h.append('</table>')
 cost4 = A.loc[['Apagar', 'Limpiar base de WhatsApp', 'Rehacer o re-segmentar', 'Bajar frecuencia']].cs.sum()
 save(99, dict(kind='html', ancho_completo=True,
-    titulo=f'Cada una de las {len(c):,} campañas en un canal tiene una acción: cuatro de ellas concentran {m(cost4, 1)} M MXN del gasto de septiembre',
-    que=f'Las {len(c):,} campañas en un canal que mandaron algo en 2026 (una campaña con todas sus versiones, en un canal).',
-    quien='Cada equipo dueño recibe su lista con la acción y el porqué.',
-    a_quien='Según la campaña. Apagar es solo el canal que no responde: si la misma campaña responde por in-app o push, ese canal se queda.',
-    sowhat=f'Apagar, limpiar WhatsApp, rehacer y bajar frecuencia cuestan {m(cost4)} M MXN en septiembre; el ahorro realista es menor ({m(TOT)} M al mes, lámina 92) porque solo cuenta lo que va a quien no responde.',
-    fuente='Fuente: clasificación de la pestaña Campañas del Sheets v4, recalculada con E1 (incluye lecturas de WhatsApp registradas el mes siguiente); gasto de septiembre con ' + COSTOS + '. Gasto = costo de la campaña, no ahorro. Ejemplos de E1, enero a septiembre 2026.',
+    titulo=f'Cada campaña tiene una acción, y cuatro acciones concentran {m(cost4, 1)} M MXN del gasto de septiembre',
+    que=f'Las {len(c):,} campañas en un canal que mandaron algo en 2026',
+    quien='Cada equipo recibe su lista con la acción',
+    a_quien='Apagar quita solo el canal que no responde; los demás se quedan',
+    sowhat=f'El ahorro realista es {m(TOT)} M MXN al mes: solo cuenta lo que va a quien no responde.',
+    fuente='Fuente: pestaña Campañas del Sheets v4 recalculada con E1, septiembre 2026. Gasto = costo de la campaña, no ahorro.',
     html=''.join(h)))
 
 # ------------------------------------------------------------------ 100. Doce reglas
@@ -108,20 +108,33 @@ REG = [('Nombre con equipo, producto, ticket, audiencia y mensaje. Sin ticket no
        ('A las 4 semanas se revisa: si no responde lo mínimo aceptable, se apaga o se rehace.', f'{int(A.loc["Apagar"].act)} campañas por apagar seguían activas en septiembre ({A.loc["Apagar"].env / 1e6:.1f} M mensajes)', 'Tablero mensual por campaña', 'CRM'),
        ('Toda campaña promocional lleva 10 % de grupo de control (5 % si pasa de 1 M de personas).', 'Hoy, 1 de 3,228 Canvas', 'Grupo de control nativo de Braze', 'MarTech; CRM lee el resultado'),
        ('Un Canvas tiene máximo 8 pasos y la persona entra una sola vez.', 'Una persona recibe la misma campaña hasta 17 a 31 veces (playbook)', 'Entrada única del Canvas', 'MarTech')]
+REGC = [('Sin ticket no se activa', f'{sin_t} comunicaciones sin ticket', 'Nombre obligatorio', 'MarTech'),
+        ('Nada de promoción a bloqueados ni dados de baja', f'{m(pg_blq)} M MXN al mes a bloqueados', 'Exclusión global', 'MarTech y Legal'),
+        ('2 mensajes de la misma campaña al mes', 'Con 3 o más cae el clic (playbook)', 'Reentrada del Canvas', 'Cada equipo'),
+        ('5 promocionales a la semana, 1 push al día', '9 % de días con 3 o más campañas (playbook)', 'Límite global', 'MarTech'),
+        ('Por el canal al que la persona responde', f'{m(c.canal_preferido.sum())} M MXN al mes en otro canal', 'Atributo de canal', 'Datos y MarTech'),
+        ('WhatsApp solo a quien ya respondió', f'A quien nunca responde le llega {wa_ent_n * 100:.0f} %', 'Filtro de audiencia', 'Cada equipo'),
+        ('Más de 1 M de personas: prueba al 10 %', f'BillPay: {bp.email_unsubscribe.sum() / 1e3:.0f} mil bajas en un envío', 'Aprobación de MarTech', 'MarTech y CRM'),
+        ('Recordar algo que la persona empezó', 'Verificación: 30 clics por mil; Tasa 0: 2.8', 'Solicitud de campaña', 'Cada equipo'),
+        ('Referidos y lanzamientos por in-app', 'Referidos por correo: 2.3 clics por mil', 'Canal del Canvas', 'Marketing'),
+        ('A las 4 semanas: apagar o rehacer', f'{int(A.loc["Apagar"].act)} campañas por apagar seguían activas', 'Tablero mensual', 'CRM'),
+        ('10 % de grupo de control en toda promoción', 'Hoy, 1 de 3,228 Canvas', 'Control nativo', 'MarTech y CRM'),
+        ('Máximo 8 pasos; se entra una vez', 'Misma campaña hasta 17 a 31 veces (playbook)', 'Entrada del Canvas', 'MarTech')]
+def card(i, a, b, c_, d):
+    return (f'<div style="border-top:2px solid {BLUE};padding-top:.7cqi"><div style="font-size:1.7cqi;font-weight:700;color:{BLUE};line-height:1">{i}</div>'
+            f'<div style="font-size:1.12cqi;font-weight:600;color:{INK};margin-top:.4cqi;line-height:1.25">{a}</div>'
+            f'<div style="font-size:.98cqi;color:{TXT};margin-top:.3cqi">{b}</div>'
+            f'<div style="font-size:.85cqi;color:{SEC};margin-top:.25cqi">{c_} · {d}</div></div>')
 for sub, rr in ((1, range(0, 6)), (2, range(6, 12))):
-    h = ['<table><tr><th style="width:3%">#</th><th style="width:37%">Regla</th><th style="width:28%">Dato que la respalda</th><th style="width:20%">Dónde vive en Braze</th><th style="width:12%">Equipo</th></tr>']
-    for i in rr:
-        a, b, c_, d = REG[i]
-        h.append(f'<tr><td><b>{i + 1}</b></td><td><b>{a}</b></td><td>{b}</td><td>{c_}</td><td>{d}</td></tr>')
-    h.append('</table>')
+    h = '<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2.2cqi 2.6cqi">' + ''.join(card(i + 1, *REGC[i]) for i in rr) + '</div>'
     save(100, dict(kind='html', ancho_completo=True,
-        titulo='Doce reglas comunes para todos los equipos: se cargan en Braze una vez y protegen las 1,913 campañas sin revisarlas una por una' if sub == 1 else 'Doce reglas comunes para todos los equipos (continuación): medir, revisar a las 4 semanas y no mandar a toda la base',
-        que='Todo lo promocional. Cobranza y avisos de servicio solo excluyen lista negra.',
-        quien='MarTech las carga en Braze; cada equipo las cumple; el comité de CRM revisa excepciones.',
-        a_quien='Toda la base. La recuperación de ex clientes no se excluye: va por el canal más barato, con límite de mensajes y grupo sin mensajes.',
-        sowhat='Las reglas que viven en Braze (exclusiones, límites, grupo de control) no dependen de que cada equipo se acuerde: se configuran una vez.' if sub == 1 else 'Con grupo de control y revisión a las 4 semanas, ninguna campaña sigue activa solo porque nadie la miró.',
-        fuente=f'Fuente: Playbook de Braze para Kueski (12 reglas, secciones 2, 3 y 11); datos de E1, E2, E7b y E13, enero a septiembre 2026; {COSTOS}. Las cifras marcadas "playbook" vienen de ese documento.',
-        html=''.join(h)), sub=sub)
+        titulo='Doce reglas comunes: las seis primeras se cargan en Braze una vez y protegen todas las campañas' if sub == 1 else 'Doce reglas comunes (continuación): probar, medir y revisar a las 4 semanas',
+        que='Todo lo promocional; cobranza y avisos solo excluyen lista negra',
+        quien='MarTech las carga en Braze; cada equipo las cumple',
+        a_quien='Toda la base; ex clientes por el canal más barato, con grupo sin mensajes',
+        sowhat='Las reglas que viven en Braze no dependen de que cada equipo se acuerde.' if sub == 1 else 'Con control y revisión a las 4 semanas, nada sigue activo solo porque nadie lo miró.',
+        fuente='Fuente: Playbook de Braze para Kueski (12 reglas); E1, E2, E7b y E13, enero a septiembre 2026. "Playbook": cifra de ese documento.',
+        html=h), sub=sub)
 
 # ------------------------------------------------------------------ 101. Matriz 2x2 de ajustes
 e17 = pd.read_csv(D + 'e17_contactable.csv')
@@ -129,7 +142,7 @@ push_off = e17[(e17.canal == 'push notification') & (e17.notifications_enabled =
 wa_no = d1.whatsapp_send.sum() - d1.whatsapp_delivery.sum()
 bajas_mil = d1.email_unsubscribe.sum() / d1.email_delivery.sum() * 1000
 Q = {('alto', 'bajo'): [('Límite global de mensajes', '5 a la semana, 2 al día, 1 push'), ('Grupo de control nativo', 'hoy 1 de 3,228 Canvas'),
-                        ('Horas de silencio', '21:00 a 9:00'), ('Salida del Canvas al convertir', ''), ('Reentrada apagada en ofertas', 'hoy hasta 17 a 31 veces'),
+                        ('Horas de silencio', '21:00 a 9:00'), ('Salida del Canvas al convertir', ''), ('Reentrada apagada en ofertas', ''),
                         ('Nombre y etiquetas obligatorios', f'{sin_t} sin ticket'), ('Roles: quien crea no activa', '')],
      ('alto', 'alto'): [('Calidad del número de WhatsApp', f'{m(wa_no, 1)} M sin entregar'), ('Currents a Databricks', 'hora, dispositivo y rebotes'),
                         ('Centro de preferencias de correo', f'{bajas_mil:.1f} bajas por cada mil'), ('Permiso de notificaciones', f'{m(push_off, 1)} M push sin permiso'),
@@ -154,58 +167,58 @@ o.append(t(18, 311, 'Menos impacto', 11.5, SEC, 600, 'middle', extra=' transform
 o.append(t(217, 416, 'Menos esfuerzo', 11.5, SEC, 600, 'middle') + t(595, 416, 'Más esfuerzo', 11.5, SEC, 600, 'middle'))
 o.append('</svg>')
 save(101, dict(kind='html',
-    titulo='Dieciocho ajustes de Braze se configuran una vez y protegen todas las campañas: siete son de alto impacto y poco esfuerzo',
-    que='Configuración de la cuenta de Braze, no campañas.',
-    quien='MarTech, con Datos (atributos y Currents) y Legal (grupos de suscripción y exclusiones).',
-    a_quien='Toda la base.',
-    lecturas=['Hacer ya: límite global de mensajes por persona, grupo de control nativo, horas de silencio, salida del Canvas al convertir y reentrada apagada. Ninguno de los 18 está activo hoy.',
-              f'Junto con ellos se cargan una vez las exclusiones globales ({m(c.bloqueados.sum())} M MXN al mes) y el canal preferido ({m(c.canal_preferido.sum())} M) sin tocar ninguna campaña.',
-              'Más esfuerzo: calidad del número de WhatsApp, Currents a Databricks y centro de preferencias. Sin Currents no hay hora, dispositivo ni bajas de push.'],
-    causa='Cada equipo configura sus campañas por separado y nadie administra la cuenta: las protecciones que Braze trae de fábrica están apagadas.',
-    sowhat='MarTech configura los siete de alto impacto en el mes 1 y los cinco de más esfuerzo en el mes 2; desde ahí protegen toda campaña nueva.',
-    fuente=f'Fuente: Playbook de Braze para Kueski, sección 11 (18 ajustes; posición en la matriz: criterio del análisis). Cifras de E1, E2, E13 y E17, enero a septiembre 2026 (sin entregar = WhatsApp enviados no entregados); "17 a 31 veces" del playbook.',
+    titulo='Dieciocho ajustes de Braze se configuran una vez; siete son de alto impacto y poco esfuerzo',
+    que='Configuración de la cuenta de Braze, no campañas',
+    quien='MarTech, con Datos y Legal',
+    a_quien='Toda la base',
+    lecturas=['Ninguno de los 18 está activo hoy; los siete de arriba a la izquierda se hacen en el mes 1.',
+              f'Con ellos se cargan las exclusiones ({m(c.bloqueados.sum())} M MXN al mes) y el canal preferido ({m(c.canal_preferido.sum())} M).',
+              'Sin Currents a Databricks no hay hora de envío, dispositivo ni bajas de push.'],
+    causa='Nadie administra la cuenta: las protecciones que Braze trae de fábrica están apagadas.',
+    sowhat='MarTech configura siete ajustes en el mes 1 y cinco en el mes 2.',
+    fuente='Fuente: Playbook de Braze para Kueski, sección 11 (posición: criterio del análisis); E1, E2, E13 y E17, enero a septiembre 2026.',
     html=''.join(o)))
 
 # ------------------------------------------------------------------ 102. Qué hace cada equipo en 4 semanas
-TT = [('Product Growth', ['Apaga el correo de Tasa 0 (B0211) e Installments (B0223) a registrados', 'Ex clientes KPay (B0333, B0332) al canal barato, 10 % sin mensajes', 'Rehace el cross sell (B0619, B0620) sin WhatsApp a quien no lee', 'Primera lectura de respuesta y bajas con CRM'], EQ['Product Growth']),
-      ('Marketing', ['Referidos a dormants (B0326) pasan a in-app', 'Recordatorio de verificación (B0000): máximo un correo al día', 'Rescate Tasa 0 (B0171) solo a quien leyó WhatsApp en 90 días', 'Primera lectura con CRM'], EQ['Marketing']),
-      ('Sales', ['Arma su lista de campañas a rehacer', 'Correos a recurrentes solo para quien hizo clic en 90 días', 'Une Comercio del día con Marketing', 'Primera lectura con CRM'], EQ['Sales']),
-      ('Others', ['Equipo y ticket a sus 39 comunicaciones de promoción', 'BillPay y Shopping: prueba al 10 % antes de más de 1 M', '', ''], EQ['Others']),
-      ('Collections', ['Archiva los Canvas de prueba que llegaron a clientes', 'Cobranza y avisos de servicio no se tocan', '', ''], EQ['Collections']),
-      ('MarTech', ['Exclusión global de bloqueados; pausa de pruebas', 'Grupo de control nativo; sin ticket no se activa', 'Límite global de mensajes y horas de silencio', 'Reentrada apagada; salida al convertir'], None),
-      ('CRM y Datos', ['Datos: una sola definición de conversión', 'Datos: atributo de último canal con respuesta', 'CRM: primer comité, calendario de noviembre', 'CRM: tablero de respuesta, bajas y control'], None)]
+TT = [('Product Growth', ['Apaga correo de Tasa 0 e Installments', 'Ex clientes KPay: canal barato y control', 'Cross sell sin WhatsApp a quien no lee', 'Primera lectura con CRM'], EQ['Product Growth']),
+      ('Marketing', ['Referidos a dormants por in-app', 'Verificación: un correo al día', 'Rescate Tasa 0 solo a quien lee', 'Primera lectura con CRM'], EQ['Marketing']),
+      ('Sales', ['Lista de campañas a rehacer', 'Correo solo a quien hizo clic', 'Comercio del día con Marketing', 'Primera lectura con CRM'], EQ['Sales']),
+      ('Others', ['Equipo y ticket a 39 promociones', 'BillPay y Shopping: prueba al 10 %', '', ''], EQ['Others']),
+      ('Collections', ['Archiva Canvas de prueba', 'Cobranza no se toca', '', ''], EQ['Collections']),
+      ('MarTech', ['Excluye bloqueados; pausa pruebas', 'Control nativo; ticket obligatorio', 'Límites y horas de silencio', 'Reentrada apagada'], None),
+      ('CRM y Datos', ['Datos: definición de conversión', 'Datos: atributo de canal', 'CRM: primer comité', 'CRM: tablero de control'], None)]
 h = ['<table><tr><th style="width:11%">Equipo</th><th style="width:20%">Semana 1</th><th style="width:20%">Semana 2</th><th style="width:20%">Semana 3</th><th style="width:19%">Semana 4</th><th class="num" style="width:10%">Ahorro al mes</th></tr>']
 for eq, ws, v in TT:
     vv = f'<b>{m(v)} M MXN</b>' if v is not None else '<span style="color:#6B7484">Habilita</span>'
     h.append(f'<tr><td><b>{eq}</b></td>' + ''.join(f'<td>{w}</td>' for w in ws) + f'<td class="num">{vv}</td></tr>')
 h.append('</table>')
 save(102, dict(kind='html', ancho_completo=True,
-    titulo=f'Qué hace cada equipo en las próximas cuatro semanas: Product Growth y Marketing mueven {m(EQ["Product Growth"] + EQ["Marketing"])} M de los {m(TOT)} M MXN al mes',
-    que='Las campañas de cada equipo con acción en el plan.',
-    quien='Product Growth, Marketing, Sales, Others y Collections; MarTech, CRM y Datos como soporte.',
-    a_quien='Según la campaña: registrados sin crédito, leads, ex clientes de KPay y clientes recurrentes.',
-    sowhat='Cada equipo sale de esta reunión con su lista, su semana y su métrica; el comité de la semana 3 revisa avance y bajas.',
-    fuente='Fuente: ' + FUENTE_AH + ' Ahorro por equipo incluye su parte a medir (recuperación); MarTech, CRM y Datos no tienen ahorro propio: lo habilitan.',
+    titulo=f'Qué hace cada equipo en cuatro semanas: Product Growth y Marketing mueven {m(EQ["Product Growth"] + EQ["Marketing"])} M MXN al mes',
+    que='Las campañas de cada equipo con acción en el plan',
+    quien='Los cinco equipos; MarTech, CRM y Datos como soporte',
+    a_quien='Registrados sin crédito, leads, ex clientes y recurrentes',
+    sowhat='Cada equipo sale con su lista, su semana y su métrica; el comité revisa en la semana 3.',
+    fuente='Fuente: ahorro de la lámina 92 por equipo, incluida su parte a medir. MarTech, CRM y Datos no tienen ahorro propio: lo habilitan.',
     html=''.join(h)))
 
 # ------------------------------------------------------------------ 103. Lo que no sabemos
 app_push = e7[e7.resp_push == 1].usuarios.sum(); app_any = e7[(e7.resp_push == 1) | (e7.resp_inapp == 1)].usuarios.sum()
-UN = [('¿La recuperación de ex clientes recupera?', f'Decide hasta {m(V["medir"])} M MXN al mes', 'Grupo de control de 10 % durante 8 semanas en B0333 y B0332', 'Braze, control nativo', 'CRM con Product Growth'),
-      ('¿Quién tiene la app?', f'Sin app no hay push ni in-app. Hoy solo sabemos que {m(app_push, 2)} M de personas abrieron un push en 9 meses y {m(app_any, 1)} M respondieron a push o in-app', 'Bandera de app instalada con fecha', 'Golden dataset', 'Datos'),
-      ('¿Cuánto cuesta Braze fijo y cómo se factura?', 'Saber si baja al dejar de escribir a quien no responde', 'Contrato: usuarios activos y puntos de datos', 'Finanzas', 'Finanzas con MarTech'),
-      ('¿A qué campañas y segmentos van los 14.2 M de personas que nunca responden?', 'Saber qué apagar primero', 'Extracción de personas sin respuesta con campaña, segmento y etapa', 'Databricks', 'Datos'),
-      ('¿Qué es conversión?', 'Dos equipos miran la misma campaña y concluyen lo contrario', 'Una definición: paso del registro o crédito, y en cuántos días', 'Tablero de CRM', 'Datos'),
-      ('¿A qué hora, en qué teléfono y quién se dio de baja de push o WhatsApp?', 'Horas de silencio, canal preferido y calidad del número', 'Currents de Braze a Databricks', 'Braze y Databricks', 'Datos y MarTech')]
-h = ['<table><tr><th style="width:24%">Lo que no sabemos</th><th style="width:28%">Por qué importa</th><th style="width:24%">Dato que lo resuelve</th><th style="width:12%">Dónde está</th><th style="width:12%">Equipo</th></tr>']
+UN = [('¿La recuperación trae clientes?', f'Decide hasta {m(V["medir"])} M MXN al mes', '10 % sin mensajes, 8 semanas', 'CRM y Product Growth'),
+      ('¿Quién tiene la app?', f'Solo {m(app_any, 1)} M de personas respondieron a push o in-app', 'Bandera de app con fecha', 'Datos'),
+      ('¿Cuánto cuesta Braze fijo?', 'Saber si baja al escribir a menos gente', 'Contrato', 'Finanzas'),
+      ('¿Qué reciben los 14.2 M de personas sin respuesta?', 'Saber qué apagar primero', 'Extracción por campaña y segmento', 'Datos'),
+      ('¿Qué es conversión?', 'Dos equipos concluyen lo contrario', 'Una definición: paso y días', 'Datos'),
+      ('¿Hora, teléfono y bajas de push?', 'Silencio, canal preferido, calidad', 'Currents a Databricks', 'Datos y MarTech')]
+h = ['<table><tr><th style="width:30%">Lo que no sabemos</th><th style="width:30%">Por qué importa</th><th style="width:25%">Dato que lo resuelve</th><th style="width:15%">Equipo</th></tr>']
 for r in UN:
     h.append('<tr>' + ''.join(f'<td>{"<b>" + x + "</b>" if i == 0 else x}</td>' for i, x in enumerate(r)) + '</tr>')
 h.append('</table>')
 save(103, dict(kind='html', ancho_completo=True,
-    titulo=f'Lo que todavía no sabemos y qué dato lo resuelve: la primera respuesta decide hasta {m(V["medir"])} M MXN al mes',
-    que='No aplica: son preguntas abiertas del análisis.',
-    quien='Datos, Finanzas, MarTech y CRM.',
-    a_quien='Ex clientes, personas que nunca responden y quien tiene o no la app.',
-    sowhat='Ninguna de estas preguntas frena lo que se quita ya; todas se resuelven en 90 días con un dueño y un dato concreto.',
-    fuente=f'Fuente: E7b (personas por canal al que responden), E13 (grupos de control), E16 y E17, enero a septiembre 2026. Costo fijo de Braze: 7,020 USD al mes y 32,474 créditos sin explicar, queda como X.',
+    titulo=f'Lo que todavía no sabemos y qué dato lo resuelve: la primera pregunta decide hasta {m(V["medir"])} M MXN al mes',
+    que='Preguntas abiertas del análisis',
+    quien='Datos, Finanzas, MarTech y CRM',
+    a_quien='Ex clientes, personas sin respuesta y quien tiene la app',
+    sowhat='Ninguna frena lo que se quita ya; todas se resuelven en 90 días con un dueño.',
+    fuente='Fuente: E7b, E13, E16 y E17, enero a septiembre 2026. Costo fijo de Braze: 7,020 USD al mes y 32,474 créditos sin explicar (X).',
     html=''.join(h)))
 print('ok XIII')

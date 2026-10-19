@@ -22,7 +22,7 @@ for j, (ch, nm) in enumerate(PAN):
     Y = lambda v: Y0 + HH - HH * (min(max(v, 1), VM) - 1) / (VM - 1)
     d = w[w.canal == ch]; ds = d[d.equipo == "Sales"]
     S.t(x0 - 28, Y0 - 24, nm, 12, INK, w=700)
-    S.t(x0 - 28, Y0 - 10, f"Sales: {len(ds)} campañas; mediana {ds.l7.median():.1f} a 7 días y {ds.l90.median():.1f} a 90", 10.5, BLUE, w=600)
+    S.t(x0 - 28, Y0 - 10, f"Sales, {len(ds)} campañas: {ds.l7.median():.1f} a 7 días, {ds.l90.median():.1f} a 90", 10.5, BLUE, w=600)
     for v in (1, 2, 3, 4, 5):
         S.line(x0, Y(v), x0 + ww, Y(v), GRID); S.line(X(v), Y0, X(v), Y0 + HH, GRID)
         S.t(X(v), Y0 + HH + 14, f"{v}", 10.5, SEC, "middle")
@@ -34,11 +34,11 @@ for j, (ch, nm) in enumerate(PAN):
     for k, lab in LBL[ch]:
         q = ds[ds.familia.str.contains(k)].sort_values("envios_usuario_dia").iloc[-1]
         S.t(X(q.l7) - 5, Y(q.l90) - 7, lab, 10.5, INK, "end", 600, halo=True)
-    if j == 0: S.t(x0 + ww, Y(2) - 4, "2 veces a 90 días", 10.5, BLUE, "end", 600, halo=True)
+    if j == 0: S.t(x0 + 4, Y(2) - 4, "2 veces a 90 días", 10.5, BLUE, "start", 600, halo=True)
 S.t(780, Y0 + HH + 30, "Veces que convierte más quien abre, a 7 días (abajo) y a 90 días (izquierda)", 10.5, SEC, "end")
 S.t(0, 412, "Conversión: solicitud o préstamo, sobre todo de KCash; no confirma la compra en el comercio.", 10.5, SEC)
 J = dict(
-    titulo="Las promociones de comercios a clientes de KPay sí mueven a quien las abre, aunque a 90 días la ventaja se achica",
+    titulo="Las promociones de comercios a clientes KPay sí mueven a quien las abre, pero a 90 días la ventaja se achica",
     que="Comercio del día, Hot Sale, Amazon, Cuponera, Privalia y Venta Azul Aeroméxico.",
     quien=f"Sales: {se.envios.sum()/1e6:.0f} M mensajes en el año, {100*se[se.canal=='push notification'].envios.sum()/se.envios.sum():.0f} % por push.",
     a_quien=f"Clientes recurrentes de KPay ({100*se_et.get('Clientes activos y recurrentes',0)/se.envios.sum():.0f} % de los mensajes) y leads.",

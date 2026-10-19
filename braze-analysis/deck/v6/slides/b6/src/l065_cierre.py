@@ -39,7 +39,7 @@ write(65, dict(
         'Semanas 2 a 6: dos mensajes por campaña al mes, salida a 90 días. Métrica: bajas por persona.',
         'Semanas 4 a 8: grupo sin mensajes de 10 % en cada promoción. Métrica: conversión a 7 y 90 días.',
     ],
-    impacto=f'Hoy {nmes/1e3:.0f} mil nuevos al mes se dan de baja, {bp_reg:.0f} % con BillPay o el registro; y {wa/1e6:.1f} M MXN al mes de WhatsApp solo adelantan.',
+    impacto=f'{nmes/1e3:.0f} mil nuevos al mes se dan de baja, {bp_reg:.0f} % con BillPay o el registro; {wa/1e6:.1f} M MXN al mes de WhatsApp solo adelanta compras.',
     sowhat='Escribir por lo que la persona hizo, por su canal y con pocos mensajes; medir contra un grupo sin mensajes.',
     fuente='Fuente: Braze, E7b (patrón de respuesta), E8 (días hasta la baja), E1 (envíos por campaña) y E9a (quien abre contra quien no), enero a septiembre 2026.',
 ))
