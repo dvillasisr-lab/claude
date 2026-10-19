@@ -28,8 +28,8 @@ write(60, dict(
     a_quien=f'{tot/1e3:.0f} mil personas que ya recibían correo en enero y se dieron de baja del email entre enero y septiembre.',
     lecturas=[
         f'La mitad aguantó {res.dias_mediana:.0f} días y {res.emails_mediana:.0f} correos antes de irse; {p180:.0f} % más de 180 días. Es lo mínimo: su historia empieza el 1 de enero.',
-        f'Lo que la cansa es repetir el mismo tema: la Tasa 0 a registrados sin crédito de Product Growth (B0211) se llevó {b211.usuarios/1e3:.0f} mil a los {b211.dias_mediana} días y {b211.emails_prom:.0f} correos; los referidos de Marketing (B0326), {b326.usuarios/1e3:.0f} mil a los {b326.dias_mediana}.',
-        f'Recuperar ex clientes también cuesta suscripciones: {rec/1e3:.1f} mil se dieron de baja con el descuento a inactivos (B0209, {b209.emails_prom:.0f} correos) y los referidos a dormants de KCash y KPay (B0326).',
+        f'Lo que la cansa es repetir el mismo tema: la Tasa 0 a registrados sin crédito de Product Growth (B0211) se llevó {b211.usuarios/1e3:.0f} mil personas a los {b211.dias_mediana} días y {b211.emails_prom:.0f} correos; los referidos de Marketing (B0326), {b326.usuarios/1e3:.0f} mil a los {b326.dias_mediana} días.',
+        f'Recuperar ex clientes también cuesta suscripciones: {rec/1e3:.1f} mil personas se dieron de baja con el descuento a inactivos (B0209, {b209.emails_prom:.0f} correos) y los referidos a dormants de KCash y KPay (B0326).',
     ],
     causa=f'Las campañas por calendario no tienen fin: siguen escribiendo aunque la persona no abra nada en meses. {100*m30/tot:.0f} % se fue después de más de 30 correos.',
     sowhat='Límite mensual de promociones por persona y salida automática de la campaña si no abre nada en 90 días, también en las de recuperación.',

@@ -98,7 +98,7 @@ save(17, dict(
     kind='grafica',
     titulo='Uno de cada cuatro WhatsApp no llega, y la mitad de los que no llegan iban a ex clientes y a leads que nunca activaron',
     que=f'Lo que no llega es sobre todo Tasa 0 ({gt["tasa0"]:.0f} % de lo no entregado), descuentos ({gt["descuento"]:.0f} %) y referidos ({gt["referidos"]:.0f} %).',
-    quien=f'Marketing {ne["Marketing"]:.1f} M no entregados ({100*ne["Marketing"]/NT:.0f} %), Product Growth {ne["Product Growth"]:.1f} M ({100*ne["Product Growth"]/NT:.0f} %), Sales {ne["Sales"]:.1f} M ({100*ne["Sales"]/NT:.0f} %). Llega: Sales {ee["Sales"]:.0f} %, Marketing {ee["Marketing"]:.0f} %, Product Growth {ee["Product Growth"]:.0f} %.',
+    quien=f'Marketing {ne["Marketing"]:.1f} M WhatsApp no entregados ({100*ne["Marketing"]/NT:.0f} %), Product Growth {ne["Product Growth"]:.1f} M WhatsApp ({100*ne["Product Growth"]/NT:.0f} %), Sales {ne["Sales"]:.1f} M WhatsApp ({100*ne["Sales"]/NT:.0f} %). Llega: Sales {ee["Sales"]:.0f} %, Marketing {ee["Marketing"]:.0f} %, Product Growth {ee["Product Growth"]:.0f} %.',
     a_quien=f'Pesa más la base que el equipo: Marketing entrega {ent.loc["Marketing","frios"]:.0f} % a bases frías y {ent.loc["Marketing","activos"]:.0f} % a clientes activos; Sales {ent.loc["Sales","leads"]:.0f} % a leads y {ent.loc["Sales","activos"]:.0f} % a activos.',
     lecturas=[
         f'{NT:.1f} M de {ST:.1f} M WhatsApp no llegaron: {100*NT/ST:.0f} %. Diez campañas explican {100*top10:.0f} %; la mayor es el rescate de Tasa 0 a leads rezagados de Marketing, {resc.nod/1e6:.1f} M sin llegar.',
@@ -107,6 +107,6 @@ save(17, dict(
     ],
     causa='Las listas de ex clientes y leads viejos no se limpian: se manda a números que dejaron de existir o de usar WhatsApp, y nadie revisa la entrega antes de volver a mandar.',
     sowhat='Limpiar la base de WhatsApp de ex clientes y leads viejos antes de mandar más: quitar a quien no recibió en 90 días.',
-    fuente=f'{FUENTE_E1}; personas por respuesta en nueve meses. No entregado = enviado menos entregado. El motivo (número inválido, sin WhatsApp, bloqueo) y la calidad del número ante Meta necesitan el evento de falla con su razón, que no está en los datos.',
+    fuente=f'{FUENTE_E1}; personas por respuesta en nueve meses. No entregado = enviado menos entregado. El motivo (número inválido, sin WhatsApp, bloqueo) y la calidad del número ante Meta necesitan el registro de por qué no se entregó cada WhatsApp, que no está en los datos.',
     svg=svg,
 ))

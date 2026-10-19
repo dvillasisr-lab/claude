@@ -94,10 +94,10 @@ save(15, dict(
     lecturas=[
         f'Las promociones se llevan {bytipo.loc["promocional","env"]:.0f} M de {tot.env:.0f} M correos. Las abre {bytipo.loc["promocional","ab"]:.0f} % y de cada cien que abren, {bytipo.loc["promocional","ctor"]:.1f} hacen clic.',
         f'El mismo canal hace {bycl.loc["record","ctor"]:.0f} clics por cada cien aperturas cuando recuerda algo que la persona empezó, y {bygan.loc["referidos","ctor"]:.1f} cuando la invita a traer a un amigo.',
-        f'Mientras más grande el envío del mes, menos clic: {bk["10 a 100 mil"]:.1f} por cada cien que abren con 10 a 100 mil personas y {bk["más de 1 M"]:.1f} con más de 1 M.',
+        f'Mientras más grande el envío del mes, menos clic: {bk["10 a 100 mil"]:.1f} por cada cien que abren con 10 a 100 mil personas y {bk["más de 1 M"]:.1f} con más de 1 M personas.',
     ],
     causa='Se manda la misma oferta a listas enormes que no la pidieron; el asunto atrae la apertura, pero el contenido no le sirve a quien lo abre.',
     sowhat='No es la entrega ni el asunto: es lo que ofrece el correo y a quién se lo mandamos. Menos promoción a toda la base, más recordatorios de algo empezado.',
-    fuente=f'{FUENTE_E1}; {len(fa)} campañas con 1 M o más de correos ({fa.env.sum():.0f} M de {tot.env:.0f} M). Apertura sobre entregados; incluye aperturas automáticas de algunos clientes de correo, por eso la de 75 % es dudosa. Separar asunto de oferta pide una prueba A/B que hoy no existe.',
+    fuente=f'{FUENTE_E1}; {len(fa)} campañas con 1 M o más de correos ({fa.env.sum():.0f} M de {tot.env:.0f} M correos). Apertura sobre entregados; incluye aperturas automáticas de algunos clientes de correo, por eso la de 75 % es dudosa. Separar asunto de oferta pide una prueba A/B que hoy no existe.',
     svg=svg,
 ))

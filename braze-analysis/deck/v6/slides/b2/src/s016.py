@@ -74,12 +74,12 @@ save(16, dict(
     quien=f'Parte del push de cada equipo debajo de 1 %: Marketing {eq.loc["Marketing","pct"]:.0f} %, Others {eq.loc["Others","pct"]:.0f} %, Product Growth {eq.loc["Product Growth","pct"]:.0f} %, Sales {eq.loc["Sales","pct"]:.0f} %, Collections {eq.loc["Collections","pct"]:.0f} %.',
     a_quien=f'Leads: {aud["leads"]:.0f} % de su push debajo de 1 %; bases frías {aud["frios"]:.0f} %; clientes activos {aud["activos"]:.0f} %; cartera en cobranza {aud["cobranza"]:.0f} %.',
     lecturas=[
-        f'Marketing manda {eq.loc["Marketing","env"]:.0f} M push, la mitad del canal, y {eq.loc["Marketing","bajo"]:.0f} M van en campañas que abre menos de 1 de cada 100. El rescate de fin de semana a leads: {rf.env/1e6:.1f} M push y {rf.ab:.2f} % de apertura.',
+        f'Marketing manda {eq.loc["Marketing","env"]:.0f} M push, la mitad del canal, y {eq.loc["Marketing","bajo"]:.0f} M push van en campañas que abre menos de 1 de cada 100. El rescate de fin de semana a leads: {rf.env/1e6:.1f} M push y {rf.ab:.2f} % de apertura.',
         f'Lo que se abre es lo que la persona espera: el aviso de pago recibido ({pr.ab:.0f} %), el recordatorio de Installments a clientes activos ({ai.ab:.0f} %) y la precobranza ({pc.ab:.1f} %).',
         f'La apertura de todo el push es {100*fa.op.sum()/fa.env.sum():.2f} % y ningún mes pasó de {mes.max():.1f} %.',
     ],
     causa='El push se usa para mandar ofertas a toda la lista de leads y de ex clientes porque no cuesta, sin fijarse en si esa persona abrió un push en meses.',
     sowhat='Push solo a quien abrió uno en los últimos 60 días y con una razón para esa persona; para el resto, otro canal o ninguno.',
-    fuente=f'{FUENTE_E1}. Apertura directa de push sobre enviados; la apertura influida no está en los datos. Puntos: {len(sel)} campañas con 100 mil o más push ({100*sel.env.sum()/fa.env.sum():.0f} % del canal). {B:.0f} M por campaña con todas sus versiones; contando cada versión mensual aparte son 146 M.',
+    fuente=f'{FUENTE_E1}. Apertura directa de push sobre enviados; la apertura influida no está en los datos. Puntos: {len(sel)} campañas con 100 mil o más push ({100*sel.env.sum()/fa.env.sum():.0f} % del canal). {B:.0f} M push contando cada campaña con todas sus versiones; contando cada versión mensual aparte son 146 M push.',
     svg=svg,
 ))

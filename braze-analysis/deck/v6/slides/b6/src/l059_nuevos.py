@@ -33,9 +33,9 @@ write(59, dict(
     lecturas=[
         f'{100*mes1/tot:.0f} % se va en el primer mes: {p0:.0f} % el mismo día del primer correo, {p17:.0f} % en la primera semana y {p830:.0f} % entre el día 8 y el 30. La mitad había recibido {res.emails_mediana:.0f} correos.',
         f'Uno de cada tres ({100*uno/tot:.0f} %) se fue con el primer correo que recibió, casi siempre el lanzamiento de BillPay de junio: {bp.usuarios/1e3:.0f} mil bajas de nuevos, que habían recibido {bp.emails_prom:.1f} correos.',
-        f'Los recordatorios de registro de Marketing llegan uno o dos al día: {reg.usuarios.sum()/1e3:.0f} mil bajas a los {min(reg.dias_mediana)} o {max(reg.dias_mediana)} días. Los de KPay (Acquisition), {kp.usuarios.sum()/1e3:.1f} mil a los 1 o 2 días.',
+        f'Los recordatorios de registro de Marketing llegan uno o dos al día: {reg.usuarios.sum()/1e3:.0f} mil bajas a los {min(reg.dias_mediana)} o {max(reg.dias_mediana)} días. Los de KPay (Acquisition), {kp.usuarios.sum()/1e3:.1f} mil bajas a los 1 o 2 días.',
     ],
     causa=f'Cada equipo le escribe al nuevo por su lado: antes de irse ya había recibido correos de {res.familias_prom:.1f} campañas distintas, y nadie cuida cuántos correos le llegan en su primera semana.',
     sowhat='Una sola secuencia de bienvenida, máximo un correo al día y tres en la primera semana; nada de envíos a toda la base a quien no ha abierto ningún correo.',
-    fuente=f'Fuente: Braze, días y correos hasta la baja del email por persona (E8), primer correo de febrero a septiembre 2026. La campaña del día de la baja cuenta dos veces si ese día llegaron dos. BillPay: {bp.usuarios/1e3:.0f} mil bajas de nuevos más {bp0/1e3:.0f} mil de la base anterior; el conteo por campaña (E1) le atribuye {bpe1j/1e3:.0f} mil en junio y {bpe1/1e3:.0f} mil con las bajas registradas de julio a septiembre.',
+    fuente=f'Fuente: Braze, días y correos hasta la baja del email por persona (E8), primer correo de febrero a septiembre 2026. La campaña del día de la baja cuenta dos veces si ese día llegaron dos. BillPay: {bp.usuarios/1e3:.0f} mil bajas de nuevos más {bp0/1e3:.0f} mil de la base anterior; el conteo por campaña (E1) le atribuye {bpe1j/1e3:.0f} mil bajas en junio y {bpe1/1e3:.0f} mil con las bajas registradas de julio a septiembre.',
     svg=s.svg()))

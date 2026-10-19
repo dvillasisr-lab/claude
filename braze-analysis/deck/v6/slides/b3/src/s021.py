@@ -75,7 +75,7 @@ for t in ['Marketing', 'Product Growth']:
 mk = x[(x.equipo == 'Marketing')]; g = mk.groupby('tema').agg(c=('costo', 'sum'), v=('conversiones_fraccional', 'sum'))
 print('Mkt MXN/conv', (g.c / g.v).round(1).to_dict(), 'equipo', round(mk.costo.sum() / mk.conversiones_fraccional.sum(), 1))
 save(21, dict(kind='grafica',
-  titulo='Marketing y Product Growth ponen dos de cada tres mensajes, y siete de cada diez van a gente que no ha hecho nada reciente',
+  titulo='Marketing y Product Growth ponen dos de cada tres mensajes, y la mayoría van a gente que no ha hecho nada reciente',
   que='Marketing: Tasa 0 a leads, referidos y promociones de comercios que aceptan KPay (Comercio del día, Amazon, Hot Sale). Product Growth: oferta de crédito e Installments, Tasa 0 a registrados, recuperar inactivos y concursos.',
   quien='Marketing y Product Growth (en Braze aparece como Lending) juntos: 77 % del gasto en mensajes, 44.5 M MXN en nueve meses (Marketing 27.2 M, Product Growth 17.3 M).',
   a_quien='Marketing: leads, leads fríos (rezagados y anónimos) y clientes. Product Growth: registrados que nunca pidieron crédito, clientes, ex clientes inactivos y envíos a toda la base.',

@@ -141,3 +141,4 @@ def M(v, d=1):
 
 def num(v, d=0):
     return f"{v:,.{d}f}"
+fam_of = _fam

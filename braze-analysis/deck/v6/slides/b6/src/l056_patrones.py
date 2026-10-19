@@ -72,13 +72,13 @@ write(56, dict(
     titulo='Quien responde por varios canales es el cliente activo; quien solo lee el correo es el que más se da de baja',
     que='Todo lo que mandamos. Lo que más abre quien usa varios canales: el recordatorio de pagar su compra a meses (push 11.0 % de apertura) y el aviso de pago recibido (push 14.2 %).',
     quien='Todos los equipos. Others es BillPay de NewProducts, avisos de KPay y KCash, recomendaciones de Shopping y pruebas de QA.',
-    a_quien=f'19.5 M personas que recibieron algo en nueve meses, según por qué canales responden: {mil(dos.u.sum())} por dos o más, {mil(ne.usuarios)} solo por email y {mil(wa.usuarios)} solo por WhatsApp.',
+    a_quien=f'19.5 M personas que recibieron algo en nueve meses, según por qué canales responden: {mil(dos.u.sum())} personas por dos o más, {mil(ne.usuarios)} solo por email y {mil(wa.usuarios)} solo por WhatsApp.',
     lecturas=[
-        f'Quien responde por los cuatro canales ({mil(n4.usuarios)}) convirtió {n4.convierten_pct:.0f} % y solo {n4.baja_pct:.1f} % se dio de baja del email. Son clientes que usan la app.',
-        f'Quien solo responde al email ({mil(ne.usuarios)}) convirtió {ne.convierten_pct:.0f} % y {ne.baja_pct:.1f} % se dio de baja; con email y WhatsApp, {ewa.baja_pct:.1f} %. Es el lector de correo que se cansa.',
+        f'Quien responde por los cuatro canales ({mil(n4.usuarios)} personas) convirtió {n4.convierten_pct:.0f} % y solo {n4.baja_pct:.1f} % se dio de baja del email. Son clientes que usan la app.',
+        f'Quien solo responde al email ({mil(ne.usuarios)} personas) convirtió {ne.convierten_pct:.0f} % y {ne.baja_pct:.1f} % se dio de baja; con email y WhatsApp, {ewa.baja_pct:.1f} %. Es el lector de correo que se cansa.',
         f'Solo WhatsApp: {mil(wa.usuarios)} personas, {wa.convierten_pct:.0f} % convirtió, {wa.msgs_por_usuario:.0f} mensajes por persona y {wa.pct_costo:.0f} % del gasto.',
     ],
     causa='Mandamos los mismos mensajes por todos los canales a todos, sin mirar por cuál responde cada persona. Por eso el lector de correo recibe correo de más y quien solo lee WhatsApp lo recibe aunque no compre.',
     sowhat='Un trato por patrón: al que responde por varios canales, pocos mensajes y bien elegidos; al lector de correo, menos correos; al que solo lee WhatsApp, pasarlo a push o in-app si tiene la app.',
-    fuente=f'Fuente: Braze, patrón de respuesta por persona (E7b), enero a septiembre 2026: {T/1e6:.1f} M personas, {TB/1e3:.0f} mil se dieron de baja del email. Gasto: WhatsApp a 1.00 MXN por entregado, email a 0.05 MXN por enviado. No hay cruce de tema por patrón; se pide en la extracción E7d.',
+    fuente=f'Fuente: Braze, patrón de respuesta por persona (E7b), enero a septiembre 2026: {T/1e6:.1f} M personas, {TB/1e3:.0f} mil personas se dieron de baja del email. Gasto: WhatsApp a 1.00 MXN por entregado, email a 0.05 MXN por enviado. No hay cruce de tema por patrón; se pide en la extracción E7d.',
     svg=s.svg()))

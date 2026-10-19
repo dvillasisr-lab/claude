@@ -18,7 +18,7 @@ def camp(f, eq, pat, canal):
 def linea(c):
     n, m = CN[c['canal']]
     return f"{n.lower() if n != 'WhatsApp' else n} · {pct(c['resp'])} % de {m} · {c['env']/1e6:.1f} M mensajes"
-def build(eq, filas, mejores, peores, titulo_graf):
+def build(eq, filas, mejores, peores, titulo_graf, resto_lab='Resto'):
     """filas: [(etiqueta, función familia->bool)]; mejores/peores: [(nombre, patrón, canal, extra(c)->str o None)]"""
     f = fam()
     d = f[f.equipo == eq].copy()
@@ -27,8 +27,9 @@ def build(eq, filas, mejores, peores, titulo_graf):
         asign[d.familia.map(fn)] = lab
     d['fila'] = asign
     resto = d[d.fila == 'Resto'].env.sum()
-    labs = [l for l, _ in filas] + (['Resto'] if resto >= 0.03 * d.env.sum() else [])
-    print('Resto %.1f M (%.1f %%)%s' % (resto / 1e6, 100 * resto / d.env.sum(), '' if 'Resto' in labs else ' fuera de la matriz'))
+    d.loc[d.fila == 'Resto', 'fila'] = resto_lab
+    labs = [l for l, _ in filas] + ([resto_lab] if resto >= 0.03 * d.env.sum() else [])
+    print('Resto %.1f M (%.1f %%)%s' % (resto / 1e6, 100 * resto / d.env.sum(), '' if resto_lab in labs else ' fuera de la matriz'))
     cel = d.groupby(['fila', 'canal']).agg(env=('env', 'sum'), base=('base', 'sum'), resp=('resp', 'sum'), costo=('costo', 'sum')).reset_index()
     cel['r'] = 100 * cel.resp / cel.base; cel['pasa'] = cel.r >= cel.canal.map(MIN)
     tot = d.groupby('fila').agg(env=('env', 'sum'), costo=('costo', 'sum'))

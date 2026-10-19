@@ -26,6 +26,7 @@ wa_msgs = 100 * ve.whatsapp / ve.sum(axis=1)
 wa_cost = 100 * ce.whatsapp / ce.sum(axis=1)
 tema_pct = 100 * w.groupby('tema').costo.sum() / w.costo.sum()
 mkpg = ct.loc[['Marketing', 'Product Growth']].sum().sum()
+au_ = w.groupby('aud').costo.sum() / 1e6
 print('canal msgs %', vs.round(1).to_dict(), 'gasto %', cs.round(1).to_dict(), 'M MXN', cm.round(1).to_dict())
 print(ct.round(2)); print('total WA', round(WT, 1), 'MK+PG', round(mkpg, 1), round(100 * mkpg / WT, 1))
 print('WA en mensajes del equipo', wa_msgs.round(1).to_dict(), 'en gasto', wa_cost.round(1).to_dict())
@@ -126,7 +127,7 @@ save(11, dict(
     titulo='Siete de cada diez pesos del gasto en mensajes se van en WhatsApp, y Marketing y Product Growth ponen casi todo en promociones',
     que='Casi solo promociones (99.5 % del gasto de WhatsApp): Tasa 0, ofertas de comercios de KPay, referidos y descuentos. Recordatorios de algo que la persona empezó: 5 %.',
     quien=f'Marketing {ct.loc["Marketing"].sum():.1f} M MXN, Product Growth {ct.loc["Product Growth"].sum():.1f} M MXN, Sales {ct.loc["Sales"].sum():.1f} M MXN y Others {ct.loc["Others"].sum():.1f} M MXN en nueve meses. Collections no usa WhatsApp.',
-    a_quien='Ex clientes y leads que nunca activaron (bases frías) 15.8 M MXN, 38 % del gasto de WhatsApp; clientes activos 12.2 M MXN (30 %); leads 11.3 M MXN (28 %).',
+    a_quien=f'Ex clientes y leads que nunca activaron (bases frías) {au_["frios"]:.1f} M MXN, {100*au_["frios"]/WT:.0f} % del gasto de WhatsApp; clientes activos {au_["activos"]:.1f} M MXN ({100*au_["activos"]/WT:.0f} %); leads {au_["leads"]:.1f} M MXN ({100*au_["leads"]/WT:.0f} %).',
     lecturas=[
         f'Un WhatsApp entregado cuesta 1.00 MXN y un correo 0.05 MXN, veinte veces menos. Por eso WhatsApp es {vs["WhatsApp"]:.0f} % de los mensajes y {cs["WhatsApp"]:.0f} % del gasto: {WT:.1f} M de {CT/1e6:.1f} M MXN.',
         f'Marketing y Product Growth ponen {mkpg:.1f} M MXN, {100*mkpg/WT:.0f} % del gasto de WhatsApp. El bloque más grande es Tasa 0 de Marketing, {ct.loc["Marketing","Tasa 0"]:.1f} M MXN, todo a leads que no han pedido crédito.',
