@@ -18,7 +18,7 @@ tot = res.usuarios
 e8 = pd.read_csv(D / 'e8_dias_hasta_baja.csv')
 uno = e8[(e8.bloque == 'banda_emails') & (e8.cohorte_limpia == 1) & (e8.clave == '01')].usuarios.iloc[0]
 bp = l.set_index('clave').loc['NewProducts-Kueski-T0000-E-Portfolio_BillPay_Intro_Full_Rollout']
-reg = l[l.clave.str.contains('LeftFunnel')]
+reg = l[l.clave.str.contains(r'LeftFunnel-Retargeting_(?:Veriff|PersonalInfo|NIP)$')]  # misma regla que la lámina 79
 p17 = 100 * bd.loc[['0 mismo día', '1 a 7'], 'usuarios'].sum() / tot
 write(59, dict(
     titulo='El nuevo se va pronto y por dos golpes: BillPay enviado a toda la base y el recordatorio diario de registro',
@@ -27,8 +27,8 @@ write(59, dict(
     a_quien=f'{tot/1e3:.0f} mil personas con primer correo de febrero en adelante que se dieron de baja.',
     lecturas=[
         f'{p17:.0f} % se va en la primera semana; la mitad recibió {res.emails_mediana:.0f} correos antes de irse.',
-        f'{100*uno/tot:.0f} % se fue con su primer correo, casi siempre BillPay: {bp.usuarios/1e3:.0f} mil bajas de nuevos.',
-        f'Los recordatorios de registro de Marketing se llevan {reg.usuarios.sum()/1e3:.0f} mil a los {min(reg.dias_mediana)} o {max(reg.dias_mediana)} días.',
+        f'{100*uno/tot:.0f} % se fue con un solo correo recibido, casi siempre BillPay: {bp.usuarios/1e3:.0f} mil personas nuevas.',
+        f'Verificar identidad, datos y NIP: {reg.usuarios.sum()/1e3:.0f} mil personas nuevas, una de cada cinco, a los {min(reg.dias_mediana)} o {max(reg.dias_mediana)} días.',
     ],
     causa=f'Cada equipo le escribe al nuevo por su lado: antes de irse ya recibió correos de {res.familias_prom:.1f} campañas.',
     sowhat='Una sola bienvenida, máximo un correo al día y tres en la primera semana.',

@@ -83,10 +83,10 @@ def med(v):
 
 
 NOMBRES = [(r'B0171.*Anonim', 'Rescate Tasa 0 a anónimos'), (r'B0171.*Narrativa', 'Tasa 0 a rezagados, narrativa'),
-           (r'B0171.*HotLead', 'Rescate Tasa 0 a hot leads'), (r'B0171', 'Rescate Tasa 0 a rezagados'),
+           (r'B0171.*HotLead', 'Rescate Tasa 0 a leads recientes'), (r'B0171', 'Rescate Tasa 0 a rezagados'),
            (r'B0209', 'Descuento a inactivos'), (r'B0326.*Dormant', 'Referidos a dormants'), (r'B0326.*Leads', 'Referidos a leads'),
            (r'B0326', 'Referidos a clientes'), (r'B0333|B0207', 'Churn 12 meses'), (r'B0332|B0206', 'Inactivos 6 meses'),
-           (r'B0331', 'Inactivos 3 meses'), (r'B0208', 'Inactivos 30 a 90 días'), (r'B0223', 'Installments a never active'),
+           (r'B0331', 'Inactivos 3 meses'), (r'B0208', 'Inactivos 30 a 90 días'), (r'B0223', 'Installments a quien nunca activó'),
            (r'B0211', 'Tasa 0 a registrados de Pay'), (r'B0224', 'Segunda oportunidad'), (r'B0335', 'Promos de comercios a todo el portafolio'),
            (r'Comerciodel', 'Comercio del día'), (r'S0004', 'Recomendaciones semanales'), (r'B0301', 'Installments a activos'),
            (r'B0391', 'Rescate de fin de semana a leads'), (r'B0493', 'Hot Sale'), (r'BillPay', 'BillPay'), (r'Veriff', 'Recordatorio Veriff'),

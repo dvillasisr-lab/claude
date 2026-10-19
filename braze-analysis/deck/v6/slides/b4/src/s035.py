@@ -37,8 +37,8 @@ def nm(k1, k2, row, tx, ty, l1, l2, anc='end'):
     yc = RY + RH * row + RH / 2
     S.circle(sx(q.usuarios_aprox), yc, 4.5, BLUE if row == 0 else INK, '#FFFFFF', 1.5)
     lab(S, sx(q.usuarios_aprox), yc, tx, ty, l1, l2, anc)
-nm('PushFelicitiacionDiaPadres', 'B00527', 0, 640, 52, '21 jun: Día del Padre y Billpayments', f'Marketing con Marketing, 1.54 M personas')
-nm('B001-CANVAS-Todos-ReminderRegistroTelefono', 'B00527', 3, 640, RY + RH * 3 + 8, '11 ago: prueba de QA y Billpayments', 'Others con Marketing, 1.45 M')
+nm('PushFelicitiacionDiaPadres', 'B00527', 0, 640, 52, '21 jun: Día del Padre y pagos de servicios (BillPay)', f'Marketing con Marketing, 1.54 M personas')
+nm('B001-CANVAS-Todos-ReminderRegistroTelefono', 'B00527', 3, 640, RY + RH * 3 + 8, '11 ago: prueba de QA y pagos de servicios (BillPay)', 'Others con Marketing, 1.45 M')
 write(35, dict(kind='grafica', seccion='IV. La misma persona, demasiadas veces',
  titulo=f'Cada mes hasta {pers.max():.1f} M personas reciben tres o más campañas el mismo día, casi siempre con Marketing',
  que='Hot Sale, Comercio del día, BillPay, Anota y Gana, Mundial, Día del Padre y Tasa 0',

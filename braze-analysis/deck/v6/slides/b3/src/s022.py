@@ -12,5 +12,6 @@ d.update(
   causa='Las campañas se arman para listas grandes y no a partir de algo que la persona acaba de hacer.',
   sowhat='Dejar de mandar esos 173 M mensajes a quien no responde y escribir cuando la persona hace algo.',
   fuente='Fuente: Braze, envíos por campaña, mes y canal, enero a septiembre 2026; campañas con 50 mil o más entregados (657 M mensajes). A quién, según el nombre de la campaña.')
+d['svg'] = d['svg'].replace('email · 16.1 M mensajes · 0.11 % de clic', 'email · 16.1 M mensajes · 1 clic por cada mil')
 p.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding='utf-8')
 check(22)

@@ -19,7 +19,7 @@ NOM = {"B0171": ("Rescate Tasa 0 a leads rezagados", "Marketing", "leads que no 
 rows = []
 for _, r in top.iterrows():
     k = [k for k in NOM if k in r.familia][0]
-    f = e[e.fam == r.familia].groupby("canal").agg(costo=("costo", "sum"), conv=("conversiones_filas", "sum"), ws=("whatsapp_send", "sum"), wd=("whatsapp_delivery", "sum"), wr=("whatsapp_read", "sum"))
+    f = e[e.fam == r.familia].groupby("canal").agg(costo=("costo", "sum"), conv=("conversiones_fraccional", "sum"), ws=("whatsapp_send", "sum"), wd=("whatsapp_delivery", "sum"), wr=("whatsapp_read", "sum"))
     cpc = (f.costo / f.conv).to_dict()
     w = f.loc["whatsapp"] if "whatsapp" in f.index else None
     rows.append(dict(k=k, nom=NOM[k][0], eq=NOM[k][1], aq=NOM[k][2], canal=r.canal, anual=r.costo_ent, sep=r.c9 if r.c9 == r.c9 else 0,

@@ -11,7 +11,7 @@ tot = em.groupby('m').email_unsubscribe.sum()
 e8 = pd.read_csv(D + 'e8_dias_hasta_baja.csv'); bi_p = e8[(e8.bloque == 'familia_dia_baja') & e8.clave.str.contains('BillPay_Intro')].usuarios.sum()
 PAN = [('BillPay_Intro_Full_Rollout', 'BillPay Intro', 'NewProducts, a toda la base', GREEN),
        ('B0308-CANVAS-Todos_BBDDAn', 'No Tasa 0', 'Marketing, salió en diciembre', BLUE),
-       ('B0312-CANVAS-Nuevos_Eligibles-Christmas', 'Christmas', 'Product Growth', BLUE),
+       ('B0312-CANVAS-Nuevos_Eligibles-Christmas', 'Navidad', 'Product Growth', BLUE),
        ('B0337-CANVAS-Leads_Eligibles-CuestaEnero', 'Cuesta de enero', 'Product Growth', BLUE),
        ('B0211-CANVAS-Nuevos_RegistradosPay-Tasa0', 'Tasa 0 a registrados', 'Product Growth', G1),
        ('B0171-CANVAS-Leads_BBDDRezagada-NarrativaTasa0', 'Narrativa Tasa 0', 'Marketing, base rezagada', G1),
@@ -50,7 +50,7 @@ write(42, dict(kind='grafica', seccion='V. El ritmo lo marcan los lanzamientos, 
  lecturas=[
   f'Enero: {pers[1]:.0f} mil personas se dieron de baja; junio: {pers[6]:.0f} mil. El mes promedio, {prom:.0f} mil.',
   'Enero es la cola de diciembre: No Tasa 0 dejó 18 mil bajas en enero sin mandar correos ese mes.',
-  f'BillPay Intro salió una vez y siguió sumando bajas en julio y agosto: {bi_p/1e3:.0f} mil personas en total.',
+  'El correo de lanzamiento de BillPay salió una vez y siguió sumando bajas: 80 mil en total (37 mil en junio).',
  ],
  causa='Las temporadas y los lanzamientos salen a toda la base sin límite de audiencia ni de toques.',
  sowhat='Las temporadas y los lanzamientos necesitan un límite de audiencia y de toques, no solo una fecha.',

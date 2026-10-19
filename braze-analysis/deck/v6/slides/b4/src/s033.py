@@ -62,7 +62,7 @@ write(33, dict(kind='grafica', seccion='IV. La misma persona, demasiadas veces',
  a_quien=f'{top.usuarios/1e6:.1f} M personas con 41 o más mensajes en 9 meses, unos 14 al mes',
  lecturas=[
   f'{sh["usuarios"]:.0f} % de las personas recibe {sh["msgs"]:.0f} % de los mensajes y {sh["costo"]:.0f} % del gasto, y es {sh["usuarios_con_conversion"]:.0f} % de quienes compraron.',
-  f'Por correo se dan de baja menos: {bm_hi:.1f} bajas por mil correos, contra {bm_lo:.1f} en quien recibe 1 a 5.',
+  f'En nueve meses se dan de baja menos: {bm_hi:.1f} por mil correos, contra {bm_lo:.1f} en quien recibió 1 a 5 mensajes.',
   f'{nb} de {nh} campañas que mandan 4 o más al mes por persona no llegan al mínimo: Rescate Tasa 0, Tasa 0 a registrados.',
  ],
  causa='Se corta por lista y no por respuesta: la misma persona recibe campañas que abre y otras que ignora desde hace meses.',

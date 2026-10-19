@@ -2,7 +2,7 @@
  "n": 46,
  "kind": "cierre",
  "seccion": "V. El ritmo lo marcan los lanzamientos, no el cliente",
- "titulo": "Por qué pasa: no hay un límite semanal de mensajes ni una revisión semanal, y los lanzamientos no se coordinan",
+ "titulo": "Qué lo explica: no hay límite semanal de mensajes ni revisión semanal, y los lanzamientos no se coordinan",
  "porques": [
   "El 1 de junio el clic cayó a 0.36 %; en junio salieron 43 M push nuevos.",
   "Los picos son lanzamientos y temporadas a toda la base que caen la misma semana.",
@@ -16,12 +16,12 @@
   "G": "Con un solo dueño del calendario no caen tres lanzamientos a toda la base la misma semana."
  },
  "como": [
-  "Semana 1, Braze: límite semanal por canal y un solo envío a toda la base por semana. CRM.",
   "Semana 2: calendario único de lanzamientos de los cuatro equipos, con fecha aprobada. CRM.",
   "Semana 3, Braze: todo envío de más de 1 M sale primero a 10 % con grupo sin mensajes.",
-  "Semana 4: lectura semanal por campaña con alerta; el día se cambia solo con prueba."
+  "Semana 4: lectura semanal por campaña con alerta; el día se cambia solo con prueba.",
+  "Mes 2, Braze: límite semanal por canal y un solo envío a toda la base por semana. MarTech y Datos."
  ],
- "impacto": "Evitar semanas como la del 1 de junio: un correo de 0.8 M MXN y 58 mil personas dadas de baja.",
+ "impacto": "Evitar semanas como la del 1 de junio: un correo de 0.8 M MXN; 58 mil personas se dieron de baja el día que les llegó.",
  "sowhat": "Coordinar las fechas vale más que elegir el día.",
  "fuente": "Fuente: Braze, enero a septiembre 2026: E4a (serie semanal), E1 (campañas por mes), E8 (bajas desde BillPay Intro) y E10 (día de la semana)."
 }

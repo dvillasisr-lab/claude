@@ -54,12 +54,12 @@ guarda(50, dict(
     a_quien='Ex clientes que dejaron KCash o KPay y leads que se registraron y nunca tomaron crédito',
     lecturas=[
         f'Mediana por campaña: {fmt(mf)} MXN por conversión en ex clientes y leads fríos; {fmt(ma)} MXN en activos.',
-        f'Rescate Tasa 0 a rezagados (Marketing): {M(w[w.familia.str.contains("B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0")].base.sum())} M WhatsApp entregados a {fmt(w[w.familia=="Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0-N/A"].mxn_conv.iloc[0])} MXN por conversión.',
+        f'Rescate Tasa 0 a rezagados (Marketing): {M(w[w.familia == "Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0-N/A"].base.sum())} M WhatsApp entregados a {fmt(w[w.familia=="Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0-N/A"].mxn_conv.iloc[0])} MXN por conversión.',
         f'Ex clientes: {GC["ex|email"]["mxn_conv"]:.0f} MXN por conversión por correo contra {GC["ex|whatsapp"]["mxn_conv"]:.0f} por WhatsApp; push e in-app no cuestan.',
     ],
     causa='WhatsApp es lo que más se lee y se usa para insistir; en bases frías la lectura casi no se vuelve préstamo.',
     sowhat='WhatsApp para recuperar solo a quien leyó uno en 90 días; al resto, correo, push o in-app.',
-    fuente='Fuente: Braze E1 (campaña, canal y mes), enero a septiembre 2026. WhatsApp a 1.00 MXN por entregado. Campañas con 50 mil o más entregados. La versión anterior cobraba por enviado (23 M MXN).',
+    fuente='Fuente: Braze E1 (campaña, canal y mes), enero a septiembre 2026. WhatsApp a 1.00 MXN por entregado. Campañas con 50 mil o más entregados. Ex clientes sin Sales B0335 (promos a todo el portafolio).',
     svg=SVG,
 ))
 print(mf, mr, ma, len(w), w.fr.sum())

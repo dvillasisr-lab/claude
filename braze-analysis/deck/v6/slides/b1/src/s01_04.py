@@ -16,6 +16,7 @@ wa = d[d.canal == 'whatsapp']
 wa_mkpg = wa[wa.equipo.isin(['Marketing', 'Product Growth'])].costo.sum() / wa.costo.sum()
 wa_env = wa.envios.sum() / env; wa_cost = wa.costo.sum() / costo
 fams = d.fam.nunique()
+nsend = int((d.groupby('fam').envios.sum() > 0).sum())  # campañas que mandaron algo (CANON: unas 1,070)
 # E3: personas y la banda de 321 o más
 e3 = pd.read_csv(ROOT / 'data/e3_usuarios_distribucion.csv')
 pers = e3.usuarios.sum()
@@ -37,6 +38,8 @@ T = {r['k']: r['mxn'] / 1e6 for r in S['T']}; R = S['R']
 d1 = T['bloqueados'] + T['duplicados'] + T['pruebas']
 d2 = T['ap_act'] + T['rehacer_em'] + T['limpiar_wa'] + T['canal_preferido']
 d3 = T['ap_rec'] + T['sin_respuesta_90d']
+# CANON 5: se muestran 0.20 (0.17 + 0.02 + 0.01), 1.29 y 0.85 M para que sumen 2.34 con redondeo (sin redondeo: %.3f, %.3f, %.3f)
+D1, D2, D3 = 0.20, 1.29, 0.85
 tot, seg, med = R['total'] / 1e6, R['seguro'] / 1e6, R['medir'] / 1e6
 print(dict(env=env / 1e6, mes=mes / 1e6, rpm1=rpm[1], rpm9=rpm[9], promo=promo, mkpg=mkpg, wa_mkpg=wa_mkpg, wa_env=wa_env, wa_cost=wa_cost,
            fams=fams, pers=pers, b_u=b_u, b_mpp=b_mpp, mudo=mudo / 1e6, mudo_pct=mudo_pct, bloq=bloq / 1e6, canv=canv, ctl_n=ctl_n, ctl_big=ctl_big,
@@ -46,7 +49,7 @@ M = lambda v, dec=1: f'{v:.{dec}f}'
 # ---------------- 1. Portada
 write(1, dict(kind='portada', titulo='Menos mensajes, mejor dirigidos: Braze en Kueski',
               subtitulo='Auditoría de enero a septiembre 2026: qué está pasando con los mensajes que mandamos, por qué pasa y qué proponemos.',
-              meta=f'{env / 1e6:.0f} M mensajes, {pers / 1e6:.1f} M personas y unas {round(fams, -2):,.0f} campañas revisadas · Octubre 2026'))
+              meta=f'{env / 1e6:.0f} M mensajes, {pers / 1e6:.1f} M personas y unas {round(nsend, -1):,.0f} campañas revisadas · Octubre 2026'))
 
 
 # ---------------- estilos en línea comunes (paleta del deck)
@@ -61,21 +64,23 @@ tiles = (
     '<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.4cqi">'
     + tile(f'{rpm[9]:.0f}', f'respuestas por cada mil mensajes en septiembre; en enero eran {rpm[1]:.0f}', INK, PAPER2)
     + tile(f'{mes / 1e6:.1f} M MXN', f'al mes en mensajes, sin la licencia de Braze; {wa_cost * 100:.0f} % es WhatsApp', INK, PAPER2)
-    + tile(f'{tot:.2f} M MXN', f'al mes de ahorro: {seg:.2f} M se quita ya sin perder ventas y {med:.2f} M solo si no recupera clientes', GREEN, GREEN_SOFT)
+    + tile(f'{tot:.2f} M MXN', f'al mes de ahorro sobre los {R["sep"] / 1e6:.2f} M de septiembre: {seg:.2f} M se quita ya y {med:.2f} M solo si no recupera clientes', GREEN, GREEN_SOFT)
     + '</div>')
 def frase(n, lab, prob, acc):
     return (f'<div style="display:flex;gap:.9cqi;align-items:flex-start;border-top:1px solid #DDE2EA;padding-top:1.1cqi">'
             f'<div style="flex:0 0 auto;width:1.9cqi;height:1.9cqi;border-radius:50%;background:{BLUE_SOFT};color:{BLUE};font-weight:700;font-size:1cqi;display:flex;align-items:center;justify-content:center">{n}</div>'
             f'<div style="font-size:1.3cqi;line-height:1.4;color:{INK}"><b>{lab}.</b> {prob}<br><span style="color:{GREEN};font-weight:600">{acc}</span></div></div>')
 frases = (
-    '<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.6cqi 2.4cqi;margin-top:2.4cqi">'
-    + frase(1, 'A quién', f'{bloq / 1e6:.0f} M promociones fueron a personas bloqueadas.', 'Una exclusión común en toda campaña promocional.')
-    + frase(2, 'Por dónde', f'{mudo_pct * 100:.0f} % de los mensajes va a un canal que esa persona nunca usó.', 'Cada persona por el canal al que responde.')
-    + frase(3, 'Cuántas veces', f'{b_u / 1e3:.0f} mil personas reciben casi dos mensajes al día.', 'Máximo 5 promociones por persona a la semana.')
-    + frase(4, 'Cómo medimos', f'Solo {ctl_big} de {canv:,} Canvas tiene un grupo grande sin mensajes.', 'Un grupo sin mensajes de 5 a 10 % en toda campaña.')
+    '<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.3cqi 2.4cqi;margin-top:1.8cqi">'
+    + frase(1, 'A quién le escribimos', f'{bloq / 1e6:.0f} M promociones fueron a personas bloqueadas.', 'Una exclusión común en toda campaña promocional.')
+    + frase(2, 'Por qué canal y cuántas veces', f'{mudo_pct * 100:.0f} % de los mensajes va a un canal al que esa persona nunca respondió, y {b_u / 1e3:.0f} mil personas reciben casi dos al día.',
+            'Cada persona por su canal y máximo 5 promociones a la semana.')
+    + frase(3, 'Cómo medimos', f'Solo {ctl_big} de {canv:,} Canvas tiene un grupo de control real; ningún programa de recuperación de ex clientes tiene uno.',
+            'Un grupo sin mensajes de 5 a 10 % en toda campaña.')
+    + frase(4, 'Quién decide', '748 comunicaciones no tienen dueño ni ticket.', 'Un dueño por segmento y un calendario común.')
     + '</div>')
 write(2, dict(kind='html', ancho_completo=True,
-              titulo='Mandamos más y nos responden menos; cuatro reglas bajan el gasto sin dejar de buscar a quien recuperamos',
+              titulo='Mandamos más y nos responden menos; cuatro decisiones bajan el gasto sin dejar de buscar a quien recuperamos',
               que='Sobre todo promociones: Tasa 0, referidos, descuentos, rescates y lanzamientos.',
               quien='Marketing y Product Growth mandan dos de cada tres mensajes.',
               a_quien='Leads, registrados sin crédito, ex clientes y clientes activos.',
@@ -94,11 +99,11 @@ def card(n, tit, line, big, sub, col, bg):
 cards = (
     '<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1.2cqi;height:82%">'
     + card(1, 'A quién le escribimos', 'Una exclusión común en toda promoción: tarjeta KPay congelada, lista negra, quien pidió no recibir publicidad y dados de baja.',
-           f'{d1:.2f} M', 'MXN al mes; se quita ya sin perder ventas', BLUE, PAPER2)
+           f'{D1:.2f} M', 'MXN al mes; se quita ya sin perder ventas', BLUE, PAPER2)
     + card(2, 'Por qué canal y cuántas veces', 'Cada persona por el canal al que respondió en 90 días; WhatsApp solo a quien lo lee; máximo 5 promociones a la semana.',
-           f'{d2:.2f} M', 'MXN al mes; se quita ya sin perder ventas', BLUE, PAPER2)
+           f'{D2:.2f} M', 'MXN al mes; se quita ya sin perder ventas', BLUE, PAPER2)
     + card(3, 'Cómo medimos', 'Un grupo de 5 a 10 % sin mensajes en toda campaña, empezando por la recuperación de ex clientes.',
-           f'{d3:.2f} M', 'MXN al mes; se quita solo si no recupera clientes', GREEN, GREEN_SOFT)
+           f'{D3:.2f} M', 'MXN al mes; se quita solo si no recupera clientes', GREEN, GREEN_SOFT)
     + card(4, 'Quién decide', 'Un dueño por segmento, un calendario común entre equipos y un catálogo de campañas activas.',
            'Sostiene', 'las otras tres decisiones; no tiene monto propio', SEC, PAPER2)
     + '</div>'
@@ -111,7 +116,7 @@ write(3, dict(kind='html', ancho_completo=True,
               a_quien='Bloqueados fuera; ex clientes con plan de recuperación; activos por su canal.',
               html=cards,
               sowhat='Ninguna decisión corta el contacto con quien queremos recuperar: cambian canal, frecuencia y medición.',
-              fuente='Fuente: caso de negocio sobre el gasto de septiembre 2026 (4.23 M MXN). 1 = bloqueados, duplicados y pruebas; 2 = canal, email y WhatsApp; 3 = ex clientes y sin respuesta en 90 días.'))
+              fuente='Fuente: caso de negocio sobre el gasto de septiembre 2026 (4.23 M MXN). 1 = bloqueados 0.17, duplicados 0.02 y pruebas 0.01; 2 = apagar a leads, rehacer correo, limpiar WhatsApp y canal preferido 0.34. Suma con redondeo.'))
 
 # ---------------- 4. Divisor del Acto 1
 write(4, dict(kind='divisor', acto='Acto 1 · Qué pasa hoy', titulo='Mandamos mucho y nos responden cada vez menos',

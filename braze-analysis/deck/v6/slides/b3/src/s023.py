@@ -61,9 +61,10 @@ for i, (eq, (nb, b), (nw, w)) in enumerate(PARES):
         S.c(xs(r.vs_min), cy, 5.5, col, sw=1.5)
         ch, m = CAN[r.canal]
         rp = f'{r.resp_pct:.2f}' if r.resp_pct < 10 else f'{r.resp_pct:.0f}'
+        rt = '1 clic por cada mil' if ('BillPay_Intro' in r.familia and r.canal == 'email') else f'{rp} % de {m}'
         x = xs(r.vs_min) + (5 if anc == 'start' else -5)
         S.t(x, y0 + 13, nm, 11, INK, anc, w=600, halo=True)
-        S.t(x, y0 + 26, f'{ch} · {rp} % de {m} · {r.env/1e6:.1f} M', 10.5, TXT, anc, halo=True)
+        S.t(x, y0 + 26, f'{ch} · {rt} · {r.env/1e6:.1f} M', 10.5, TXT, anc, halo=True)
     S.t(780, cy - 2, f'{med:.1f} veces', 11, INK, 'end', w=600)
     S.t(780, cy + 12, f'par: {b.vs_min / w.vs_min:.0f} veces', 10.5, SEC, 'end')
 svg = S.done()
@@ -74,7 +75,7 @@ save(23, dict(kind='grafica',
   a_quien='La que responde va a quien ya empezó algo o llega por in-app; la otra, a toda la base.',
   lecturas=[
    'Installments: 2.78 % de clic a quien ya lo empezó y 0.10 % a quien nunca activó, en el mismo correo.',
-   'BillPay: 85 % de clic por in-app y 0.11 % por correo. Anota y gana: 76 % y 0.19 %.',
+   'BillPay: 85 % de clic por in-app y 1 clic por cada mil correos. Anota y Gana: 76 % y 0.19 %.',
    'A quién va explica 54 % de la diferencia de respuesta entre correos; el equipo que lo manda, 12 %.'],
   causa='Cada equipo usa la misma lista y el mismo canal para casi todo; el resultado lo decide a quién y por dónde.',
   sowhat='No hace falta cambiar de dueño las campañas: hay que llevar cada tema a quien y por donde ya responde.',

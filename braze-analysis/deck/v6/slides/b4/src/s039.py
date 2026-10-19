@@ -10,9 +10,9 @@ c = pd.read_csv(R + 'hallazgos/muestra_c_familias.csv'); act = c[c.activo_sep ==
 menos = act[act.accion_tipo.isin(['Rehacer o re-segmentar', 'Bajar frecuencia'])].envios_mes_prom.sum() / 1e6
 print(sep, js.round(2).to_dict(), menos)
 write(39, dict(kind='cierre', seccion='IV. La misma persona, demasiadas veces',
- titulo='Por qué pasa: no hay un límite de mensajes por persona ni un calendario común entre equipos',
+ titulo='Qué lo explica: no hay un límite de mensajes por persona ni un calendario común entre equipos',
  porques=[
-  f'Un cuarto de la base recibe 86 % de los mensajes; {sep:.1f} M tienen días de 3 o más campañas.',
+  f'Un cuarto de la base recibe 86 %; hasta 2.3 M al mes tienen días de 3 o más campañas.',
   'Le llegan promociones de dos o tres equipos el mismo día, y a veces la misma dos veces.',
   'Cada equipo nombra su audiencia y nadie excluye a quien ya recibió la de otro equipo.',
   'Las versiones viejas siguen activas y el push sigue saliendo a quien ya no lo abre.',
@@ -24,11 +24,11 @@ write(39, dict(kind='cierre', seccion='IV. La misma persona, demasiadas veces',
   'G': 'Con un solo dueño del calendario, los lanzamientos de cuatro equipos no caen en la misma persona.',
  },
  como=[
-  'Semana 1, Braze: máximo 2 promocionales y 1 push promocional al día por persona. CRM.',
-  'Semana 2, Braze: no repetir campaña el mismo día; apagar versiones viejas. Cada equipo.',
-  'Semana 3, segmentos: push solo a quien abrió uno en 90 días; una sola serie de bienvenida.',
-  'Semana 4: calendario único para envíos de más de 1 M; medir personas con 3 o más campañas al día.',
+  'Semanas 1 a 4, Braze: no repetir campaña el mismo día; apagar versiones viejas. Cada equipo.',
+  'Semanas 1 a 4: apagar el push que no se abre, con 10 % sin mensajes; una sola bienvenida.',
+  'Mes 2, Braze: máximo 2 promocionales y 1 push promocional al día por persona. MarTech y Datos.',
+  'Mes 2: calendario único para envíos de más de 1 M; medir personas con 3 o más campañas al día.',
  ],
- impacto=f'Unos {menos:.0f} M mensajes menos al mes, 83 mil MXN al mes de WhatsApp repetido y menos bajas en días saturados.',
+ impacto=f'Unos {menos:.0f} M mensajes menos al mes, 0.02 M MXN al mes de WhatsApp repetido y menos bajas en días saturados.',
  sowhat='Se corrige con reglas en Braze y un dueño del calendario, no campaña por campaña.',
  fuente='Fuente: Braze, enero a septiembre 2026: E3, E6a, E6b y E12. Mensajes menos al mes: campañas activas en septiembre marcadas para rehacer o bajar frecuencia (MUESTRA_C).'))

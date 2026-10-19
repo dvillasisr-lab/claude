@@ -51,9 +51,10 @@ def build(eq, casos):
         anc = 'start' if dx >= 0 else 'end'
         c, m = CN[ch]
         S.t(lx + (3 if dx >= 0 else -3), ly, nm, 10.5, INK, anc, w=600, halo=True)
-        sub = f'{c} · {pct(z.resp_pct)} % de {m} · {z.env/1e6:.1f} M' + (f' · {extra(z)}' if extra else '')
+        rt = '1 clic por cada mil' if ('BillPay_Intro' in z.familia and ch == 'email') else f'{pct(z.resp_pct)} % de {m}'
+        sub = f'{c} · {rt} · {z.env/1e6:.1f} M' + (f' · {extra(z)}' if extra else '')
         S.t(lx + (3 if dx >= 0 else -3), ly + 12, sub, 10.5, TXT, anc, halo=True)
     return S.done(), d, det
 
-def porpres(z): return f"{z.costo/max(z.convf,1):,.0f} MXN por préstamo"
+def porpres(z): return f"{z.costo/max(z.convf,1):,.0f} MXN por préstamo otorgado"
 def costo(z): return f"{z.costo/1e6:.2f} M MXN"

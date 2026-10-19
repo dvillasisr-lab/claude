@@ -12,7 +12,8 @@ rg = g[g.reg]; arr = int(((rg.resp > mc) & (rg.baja > mb)).sum())
 gr = e[e.canal == 'email'].groupby('grupo').agg(d=('email_delivery', 'sum'), c=('email_click', 'sum'), u=('email_unsubscribe', 'sum'))
 gr['clic'] = 100 * gr.c / gr.d; gr['baja'] = 1000 * gr.u / gr.d
 _, res, l = datos(1)
-preg = 100 * l[l.clave.str.contains(REG)].usuarios.sum() / res.usuarios
+kc = l[l.clave.str.contains(r'LeftFunnel-Retargeting_(?:Veriff|PersonalInfo|NIP)$')]  # misma regla que las láminas 59 y 79
+preg = 100 * kc.usuarios.sum() / res.usuarios
 e12 = pd.read_csv(D / 'e12_antiguedad.csv')
 a = e12[(e12.canal == 'email') & ~e12.banda_antiguedad.str.startswith('0. alta')].groupby('banda_antiguedad')[['envios', 'bajas_email_eventos']].sum()
 a['b'] = 1000 * a.bajas_email_eventos / a.envios
@@ -53,7 +54,7 @@ write(64, dict(
     a_quien='Personas que acaban de registrarse y no terminaron.',
     lecturas=[
         f'A nuevos: {n.clic:.2f} % de clic y {n.baja:.1f} bajas por cada mil correos; a activos, {ac.clic:.2f} % y {ac.baja:.1f}.',
-        f'{arr} de {len(rg)} campañas de registro responden y pierden más que la mediana; son {preg:.0f} % de las bajas de nuevos.',
+        f'{arr} de {len(rg)} campañas de registro responden y pierden más que la mediana; Veriff, datos y NIP, 1 de cada 5 nuevos.',
         f'Por antigüedad la baja es pareja ({a.b.min():.1f} a {a.b.max():.1f} por mil): pesa la campaña de registro, no ser nuevo.',
     ],
     causa='Marketing y Acquisition tienen cada uno su secuencia de registro, con uno o dos correos al día.',

@@ -52,9 +52,9 @@ write(62, dict(
     quien='Recordatorios de Marketing, Acquisition y Product Growth; ofertas de todos los equipos.',
     a_quien='Recordatorios a quien empezó algo; ofertas a listas completas de leads y clientes.',
     lecturas=[
-        f'Por correo el recordatorio responde {tem["recordatorio"]:.2f} %; las ofertas, de {min(v for k, v in tem.items() if k != "recordatorio"):.2f} a {max(v for k, v in tem.items() if k != "recordatorio"):.2f} %.',
+        f'Por correo, mediana por campaña: el recordatorio tiene {med[("email", True)]:.2f} % de clic y la oferta {med[("email", False)]:.2f} %.',
         f'Por push, la mediana del recordatorio abre {med[("push notification", True)]:.1f} % y la de la oferta {med[("push notification", False)]:.1f} %.',
-        f'Referidos no funciona por correo ({tem["referidos"]:.2f} %) pero sí en la app: {ia["referidos"]:.0f} % de clic en in-app.',
+        f'Referidos no funciona por correo (promedio {tem["referidos"]:.2f} %) pero sí en la app: {ia["referidos"]:.0f} % de clic en in-app.',
     ],
     causa='Las campañas nacen de lo que queremos vender este mes, no de lo que cada persona dejó a medias.',
     sowhat='El gancho es lo que la persona dejó a medias; Tasa 0 y novedades solo a un grupo claro.',

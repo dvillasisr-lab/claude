@@ -7,7 +7,7 @@ pat = r"(?i)prueba|test|\bqa\b|qa_|copy of|copia|dummy|demo"
 p = e[e.communication_name.str.contains(pat) & (e.envios > 0)].copy()
 g = p.groupby("communication_id").agg(name=("communication_name", "first"), env=("envios", "sum"), usu=("usuarios_aprox", "max"), pn=("pn_send", "sum"), pno=("pn_open", "sum"),
                                       ed=("email_delivery", "sum"), ec=("email_click", "sum"), wd=("whatsapp_delivery", "sum"), wr=("whatsapp_read", "sum"), costo=("costo", "sum"),
-                                      conv=("conversiones_filas", "sum"), team=("team", "first"))
+                                      conv=("conversiones_fraccional", "sum"), team=("team", "first"))
 g["po"] = 1000 * g.pno / g.pn.replace(0, np.nan)
 def cl(r):
     if r.usu < 1000: return "chica"

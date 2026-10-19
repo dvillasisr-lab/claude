@@ -33,7 +33,7 @@ put("ticket", e[e.communication_id.isin(st) & promo])
 # datos del "por qué"
 bp = e[e.fam.str.contains("BillPay_Intro") & (e.canal == "email")]; bp_cpm = 1000 * bp.email_click.sum() / bp.email_delivery.sum(); bp_uns = bp.email_unsubscribe.sum()
 b211 = RI[RI.fam.str.contains("B0211-CANVAS-Nuevos_RegistradosPay") & (RI.canal == "email")].iloc[0]
-b333 = e[e.fam == "Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta-N/A"].groupby("canal").agg(c=("costo", "sum"), v=("conversiones_filas", "sum"))
+b333 = e[e.fam == "Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta-N/A"].groupby("canal").agg(c=("costo", "sum"), v=("conversiones_fraccional", "sum"))
 b333w, b333e = b333.loc["whatsapp", "c"] / b333.loc["whatsapp", "v"], b333.loc["email", "c"] / b333.loc["email", "v"]
 qa = e[e.fam.str.startswith("QA-KPay-B001")]; qa_o = 1000 * qa.pn_open.sum() / qa.pn_send.sum()
 r326 = a[a.fam.str.contains("B0326-Canvas-Recurrentes_Dormants")]

@@ -9,8 +9,8 @@ TOT, SEG, MED = R['total'], R['seguro'], R['medir']
 c['seg'] = c.b_desp + c.b_cortar + c.b_pref
 FU = 'Fuente: E1 de septiembre 2026, acciones del Sheets v4, E9b, E7a y E6b; WhatsApp a 1.00 MXN por entregado, email a 0.05 por enviado.'
 NOM = {('B0333', 'whatsapp'): 'Ex clientes KPay, 12 meses', ('B0211', 'email'): 'Tasa 0 a registrados', ('B0332', 'whatsapp'): 'Ex clientes KPay, 6 meses',
-       ('B0223', 'email'): 'Installments a registrados', ('B0223', 'whatsapp'): 'Installments a registrados', ('B0619', 'whatsapp'): 'Cross sell KPay a Cash',
-       ('B0620', 'whatsapp'): 'Cross sell a leads KPay', ('B0331', 'whatsapp'): 'Ex clientes KPay, 3 meses', ('B0000', 'email'): 'Recordatorio de verificación',
+       ('B0223', 'email'): 'Installments a registrados', ('B0223', 'whatsapp'): 'Installments a registrados', ('B0619', 'whatsapp'): 'Venta cruzada KPay a Cash',
+       ('B0620', 'whatsapp'): 'Venta cruzada a leads KPay', ('B0331', 'whatsapp'): 'Ex clientes KPay, 3 meses', ('B0000', 'email'): 'Recordatorio de verificación',
        ('B0209', 'email'): 'Descuento a inactivos de Cash', ('B0301', 'whatsapp'): 'Cash a plazos a activos', ('B0335', 'email'): 'Promociones de comercios',
        ('B0603', 'email'): 'Cuponera', ('B0598', 'email'): 'Privalia', ('S0004', 'email'): 'Recomendaciones Shopping', ('B0615', 'whatsapp'): 'Comercio del día',
        ('T2778', 'whatsapp'): 'Aviso a adultos mayores', ('B0541', 'email'): 'Amazon', ('B0337', 'email'): 'Cuesta de enero'}
@@ -23,13 +23,13 @@ CN = {'email': 'correo', 'whatsapp': 'WhatsApp'}
 
 # ------------------------------------------------------------------ 91. Divisor
 save(91, dict(kind='divisor', acto='Acto 3 · Cómo lo resolvemos',
-    titulo=f'Corregirlo vale hasta {m(TOT, 1)} M MXN al mes: limpiar en 30 días, configurar en 60 y medir en 90',
-    subtitulo=f'{m(SEG)} M MXN al mes se quitan ya sin perder ventas. Los otros {m(MED)} M son para recuperar clientes: se quitan solo si no los recuperan.'))
+    titulo=f'Corregirlo vale hasta {m(TOT)} M MXN al mes: limpiar en 30 días, configurar en 60 y medir en 90',
+    subtitulo=f'{m(SEG)} M MXN al mes se quitan ya sin perder ventas. Los otros {m(MED)} M son ex clientes y personas sin respuesta: se quitan solo si un grupo sin mensajes muestra que no recuperan.'))
 
 # ------------------------------------------------------------------ 92. Aprobada: mismo SVG, menos texto
 p92 = OUT + '092.json'; d92 = json.load(open(p92))
 d92.update(
-    titulo='Podemos gastar hasta 2.3 M MXN menos al mes en mensajes, y 1.5 M se quita ya sin perder ventas',
+    titulo='Podemos gastar hasta 2.34 M MXN menos al mes en mensajes, y 1.48 M se quita ya sin perder ventas',
     que='Mensajes a bloqueados, repetidos, pruebas y campañas que nadie responde; cobranza no',
     quien='Product Growth 67 %, Marketing 21 %, Sales 8 %, Others 2 %',
     a_quien='Leads y registrados sin crédito, ex clientes, bloqueados y quien no responde',
@@ -59,7 +59,8 @@ for k_, col, lab in (('seg', BLUE, 'Se quita ya'), ('b_medir', GREEN, 'Se mide a
         dot(o, sx(i + 1), sy(v), 2.6 if i >= 10 else 3.6, col, '#fff', None, 0.8)
     stats[k_] = (len(s), cs.iloc[-1], cs.iloc[9] / cs.iloc[-1], s)
     o.append(t(sx(len(s)) + 8, sy(cs.iloc[-1]) + 4, f'{lab}', 12, col, 700))
-    o.append(t(sx(len(s)) + 8, sy(cs.iloc[-1]) + 19, f'{m(cs.iloc[-1])} M, {len(s)} campañas', 11, SEC))
+    o.append(t(sx(len(s)) + 8, sy(cs.iloc[-1]) + 19, f'{m(cs.iloc[-1])} M en {len(s)} campañas', 11, SEC))
+    if k_ == 'seg': o.append(t(sx(len(s)) + 8, sy(cs.iloc[-1]) + 33, f'más {DUP / 1e6:.2f} M de duplicados', 11, SEC) + t(sx(len(s)) + 8, sy(cs.iloc[-1]) + 47, f'= {m(SEG)} M', 11, BLUE, 700))
     o.append(f'<line x1="{sx(10):.1f}" y1="{sy(cs.iloc[9]):.1f}" x2="{sx(10):.1f}" y2="{Y1}" stroke="{col}" stroke-width="0.8"/>')
 sg, md = stats['seg'][3], stats['b_medir'][3]
 cs_s, cs_m = sg.seg.cumsum(), md.b_medir.cumsum()
@@ -178,7 +179,7 @@ save(95, dict(kind='grafica',
 # ------------------------------------------------------------------ 96. KCash | KPay: gasto de septiembre contra ahorro como % del gasto
 pr = c.tipo == 'promocional o lifecycle'; psep = c[pr].groupby('p2').c_sep.sum()
 o = svg_open('Un punto por campaña en un canal: ahorro al mes por tipo de acción, KCash y KPay en paneles con la misma escala.')
-BK = [('b_desp', 'No debería salir', 'semana 1', BLUE), ('b_cortar', 'Cortar', 'en 30 días', BLUE), ('b_pref', 'Canal preferido', 'en 60 días', BLUE), ('b_medir', 'Recuperar clientes', 'se mide', GREEN)]
+BK = [('b_desp', 'Bloqueados y pruebas', 'semana 1', BLUE), ('b_cortar', 'Cortar', 'en 30 días', BLUE), ('b_pref', 'Canal preferido', 'en 60 días', BLUE), ('b_medir', 'Recuperar clientes', 'se mide', GREEN)]
 LX = 128; PW = 300; GAP = 22
 pk = {}
 rnd = random.Random(5)
@@ -249,7 +250,7 @@ o.append('</svg>')
 print('97', round(n10b, 1), round(n10e, 1), n10p, em.eu[:5].tolist())
 uniq = pd.read_csv(D + 'e5_cohorte_baja.csv').usuarios_baja.sum()
 save(97, dict(kind='grafica',
-    titulo=f'Esperar cuesta {m(TOT, 1)} M MXN al mes, y las 10 campañas con más bajas de correo están todas en el plan',
+    titulo=f'Esperar cuesta {m(TOT)} M MXN al mes, y las 10 campañas con más bajas de correo están todas en el plan',
     que='Tasa 0, referidos, lanzamientos y el recordatorio de terminar el registro',
     quien='Product Growth, Marketing y NewProducts (Others)',
     a_quien='Registrados, leads y casi toda la base en BillPay',

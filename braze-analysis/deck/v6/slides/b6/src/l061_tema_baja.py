@@ -8,6 +8,8 @@ g = por_campana(e, ('email',)); g = g[(g.env >= 50000) & (g.dl > 0) & g.tipo.not
 g['promo'] = g.tipo == 'promocional o lifecycle'
 med = g.groupby('promo').baja.median()
 pu = g.groupby('promo').u.sum(); pshare = 100 * pu[True] / pu.sum()
+bpq = g[g.familia.str.contains('BillPay_Intro')].iloc[0]; bpu = bpq.u
+pcq = g[g.familia.str.contains('Payment-Confirmation')].sort_values('env').iloc[-1]; pcv, pcu = pcq.env, pcq.u
 co = {}
 for k in (1, 0):
     _, res, l = datos(k)
@@ -46,8 +48,8 @@ write(61, dict(
     a_quien='Toda persona que recibe correo; 439 mil se dieron de baja en nueve meses.',
     lecturas=[
         f'{co[1]["promocional o lifecycle"]:.0f} % de las bajas de nuevos y {co[0]["promocional o lifecycle"]:.0f} % de la base vieja llegan el día de una promoción.',
-        f'Una promoción típica pierde {med[True]:.1f} personas por cada mil correos; un aviso o cobranza, {med[False]:.1f}.',
-        'BillPay a toda la base perdió 80 mil personas; la confirmación de pago, con 9 M correos, 3 mil.',
+        f'Mediana por campaña: {med[True]:.1f} bajas por cada mil correos en promociones; {med[False]:.1f} en avisos y cobranza.',
+        f'El lanzamiento de BillPay a toda la base sumó {bpu/1e3:.0f} mil bajas; la confirmación de pago, con {pcv/1e6:.0f} M correos, {pcu/1e3:.0f} mil.',
     ],
     causa='Las promociones salen a listas completas y se repiten sin límite; los avisos llegan solo a quien hizo algo.',
     sowhat='La baja se decide en las promociones: ahí van el límite por persona y la salida si no abre en 90 días.',

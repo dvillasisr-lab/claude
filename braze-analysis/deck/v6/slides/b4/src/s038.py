@@ -41,7 +41,7 @@ cell(0, 50, 'push notification', 'Push', 'abre', True); cell(410, 50, 'email', '
 cell(0, 222, 'whatsapp', 'WhatsApp', 'lee', False); cell(410, 222, 'in-app', 'In-app', 'clic', False)
 pm, r, *_ = DAT['push notification']
 write(38, dict(kind='grafica', seccion='IV. La misma persona, demasiadas veces',
- titulo='Después del tercer mes casi nadie abre el push, y le seguimos mandando unos diez al mes',
+ titulo='Después del sexto mes casi nadie abre el push, y le seguimos mandando de 7 a 10 al mes',
  que='Push promocional: Comercio del día, Hot Sale, referidos y rescates de fin de semana',
  quien='Sales y Marketing a recurrentes de KPay; Marketing a leads de bases viejas',
  a_quien=f'Personas con más de 6 meses en la base: reciben {sh_push:.0f} % del push',

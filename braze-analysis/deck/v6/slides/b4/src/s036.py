@@ -31,7 +31,7 @@ for i, (k, l) in enumerate(ROWS):
         S.circle(sx(q.usuarios_aprox), yc + rng.uniform(-14, 14), 2.8, BLUE if q.same else G1, '#FFFFFF', 0.6)
     v, M, n = st[k]
     S.t(X1 + 14, yc + 2, f'{v:.0f} %', 15, BLUE if v >= 50 else INK, 'start', 700)
-    S.t(X1 + 14, yc + 16, f'{M:.1f} M personas-día', 10.5, SEC)
+    S.t(X1 + 14, yc + 16, f'{n} parejas', 10.5, SEC)
 q = x[x.familia_a.str.contains('B0211') & x.familia_b.str.contains('B0171-CANVAS-Anonimos')].sort_values('usuarios_aprox').iloc[-1]
 yc = RY + RH * 1.5
 S.circle(sx(q.usuarios_aprox), yc, 4.5, INK, '#FFFFFF', 1.5)
@@ -42,9 +42,9 @@ write(36, dict(kind='grafica', seccion='IV. La misma persona, demasiadas veces',
  quien='Marketing, Sales, Product Growth y NewProducts (en Others)',
  a_quien='Recurrentes de KPay; registrados, anónimos, inactivos y dormants de KCash',
  lecturas=[
-  f'{100*C/P:.0f} % del choque promocional es entre equipos distintos: {C/1e6:.0f} M de {P/1e6:.0f} M personas-día.',
   f'Marketing y Sales usan el mismo nombre en {st["Marketing + Sales"][0]:.0f} % de sus choques: recurrentes de KPay.',
   f'Marketing y Product Growth, solo {st["Marketing + Product Growth"][0]:.0f} %: "anónimos" de uno son "registrados" del otro.',
+  f'Con Others casi nunca coincide el nombre: {st["Marketing + Others"][0]:.0f} % con Marketing y {st["Others + Product Growth"][0]:.0f} % con Product Growth.',
  ],
  causa='Cada equipo arma y nombra su audiencia por su cuenta y nadie excluye a quien ya recibió la campaña de otro equipo.',
  sowhat='Un dueño por audiencia y exclusiones entre equipos para no mandar la misma oferta dos veces.',

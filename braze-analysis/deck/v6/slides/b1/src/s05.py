@@ -4,9 +4,11 @@ import numpy as np
 from comun import load, write, Svg, INK, TXT, SEC, GRID, BLUE, GREEN, G1, FUENTE_E1
 
 d = load()
-f = d.groupby('fam').agg(cost=('costo', 'sum'), conv=('conversiones_fraccional', 'sum'), env=('envios', 'sum'), eq=('equipo', 'first')).sort_values('cost', ascending=False)
+f = d.groupby('fam').agg(cost=('costo', 'sum'), conv=('conversiones_fraccional', 'sum'), env=('envios', 'sum'), eq=('equipo', 'first'))
+f = f[f.env > 0].sort_values(['cost', 'env'], ascending=False)  # solo campañas que mandaron algo (CANON: unas 1,070)
 f['cc'] = f.cost.cumsum() / f.cost.sum(); f['cv'] = f.conv.cumsum() / f.conv.sum(); f['ce'] = f.env.cumsum() / f.env.sum()
-N = len(f); n50 = int((f.cc < 0.5).sum()) + 1; npay = int((f.cost > 0).sum())
+N = len(f); NR = int(round(N, -1)); n50 = int((f.cc < 0.5).sum()) + 1; npay = int((f.cost > 0).sum())
+wa2 = d[d.fam.isin(f.index[:2]) & (d.canal == 'whatsapp')].costo.sum()
 mes = d.costo.sum() / 9; wa = d[d.canal == 'whatsapp'].costo.sum() / d.costo.sum()
 r50 = f.iloc[n50 - 1]
 print(N, n50, npay, r50.cc, r50.cv, r50.ce, mes, wa)
@@ -16,7 +18,7 @@ NOM = {'Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-NarrativaTasa0-N/A': 'Ta
 
 S = Svg('Campañas ordenadas de mayor a menor gasto: porcentaje acumulado del gasto, de las conversiones atribuidas y de los mensajes')
 # cifras grandes
-STATS = [(f'{mes / 1e6:.1f} M MXN', 'al mes en mensajes, sin licencia'), (f'{n50} campañas', f'de {N:,} se llevan la mitad del gasto'),
+STATS = [(f'{mes / 1e6:.1f} M MXN', 'al mes en mensajes, sin licencia'), (f'{n50} campañas', f'de unas {NR:,} se llevan la mitad del gasto'),
          (f'{r50.cv * 100:.0f} %', f'de las conversiones vienen de esas {n50}')]
 for i, (b, l) in enumerate(STATS):
     x = i * 262
@@ -35,7 +37,7 @@ for v in (0, .25, .5, .75, 1):
     S.line(X0, yy(v), X1, yy(v), GRID); S.t(X0 - 6, yy(v) + 4, f'{v * 100:.0f} %', 11, SEC, 'end')
 for t in (1, 3, 10, 30, 100, 300, 1000):
     S.line(xx(t), Y1, xx(t), Y1 + 4, G1); S.t(xx(t), Y1 + 17, f'{t:,}', 11, SEC, 'middle')
-S.t(X1, Y1 + 33, f'Campañas ordenadas de mayor a menor gasto ({N:,}; escala logarítmica)', 10.5, SEC, 'end')
+S.t(X1, Y1 + 33, f'Campañas que mandaron algo, de mayor a menor gasto ({N:,}; escala logarítmica)', 10.5, SEC, 'end')
 idx = np.unique(np.round(np.logspace(0, lmax, 400)).astype(int))
 for k, lab, col, w in SER[::-1]:
     S.poly([(xx(i), yy(f[k].iloc[i - 1])) for i in idx], col, w)
@@ -51,16 +53,16 @@ for i in range(3):
     S.t(xx(1) + 4, Y0 + 14 + i * 15, f'{i + 1}. {NOM[f.index[i]]}: {r.cost / 1e6:.1f} M MXN', 11, INK if i == 0 else TXT, 'start', 600 if i == 0 else 400)
 for i in range(3):
     S.t(xx(i + 1), yy(f.iloc[i].cc) + 16, f'{i + 1}', 10.5, SEC, 'middle', 600, halo=True)
-S.t(xx(npay), yy(1) - 6, f'Desde la {npay}: solo push e in-app, sin costo', 10.5, SEC, 'end', 400, halo=True)
+S.t(xx(npay) - 4, yy(1) + 16, f'Desde la {npay}: solo push e in-app, sin costo', 10.5, SEC, 'end', 400, halo=True)
 
 write(5, dict(kind='grafica',
-    titulo=f'Braze nos cuesta {mes / 1e6:.1f} M MXN al mes solo en mensajes, y la mitad se va en unas pocas campañas de WhatsApp',
+    titulo=f'Braze nos cuesta {mes / 1e6:.1f} M MXN al mes solo en mensajes, y la mitad se va en {n50} campañas, sobre todo de WhatsApp',
     que='Rescates de Tasa 0, descuentos a inactivos y referidos, casi todo por WhatsApp.',
     quien='Marketing y Product Growth: son dueños de las campañas que más gastan.',
     a_quien='Leads rezagados, ex clientes inactivos y registrados sin crédito.',
     lecturas=[
-        f'{n50} de {N:,} campañas se llevan {r50.cc * 100:.0f} % del gasto y traen {r50.cv * 100:.0f} % de las conversiones atribuidas.',
-        f'Las dos de Tasa 0 a leads rezagados de Marketing suman {(f.cost.iloc[0] + f.cost.iloc[1]) / 1e6:.1f} M MXN en nueve meses.',
+        f'{n50} de unas {NR:,} campañas se llevan {r50.cc * 100:.0f} % del gasto y traen {r50.cv * 100:.0f} % de las conversiones atribuidas.',
+        f'Las dos de Tasa 0 a leads rezagados de Marketing suman {(f.cost.iloc[0] + f.cost.iloc[1]) / 1e6:.1f} M MXN en nueve meses, {wa2 / 1e6:.1f} M de ellos por WhatsApp.',
         f'WhatsApp es {wa * 100:.0f} % del gasto. Desde la campaña {npay} todo es push e in-app, sin costo.'],
     causa='No hay presupuesto de mensajes por equipo ni por campaña: cada equipo ve sus clics, nadie ve el gasto total.',
     sowhat='Revisar unas 20 campañas mueve la mitad del gasto: ahí empieza el plan.',

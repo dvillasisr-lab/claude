@@ -19,7 +19,7 @@ def ex(fm, mes):
 print(len(o), len(x) - len(o), md.round(2).to_dict(), fc, fb, mr.round(2).to_dict())
 
 s = SVG('Cada punto es una campaña de correo en un mes: mensajes por persona contra clic y contra bajas por cada mil personas')
-s.legend([(M1, f'Oferta ({len(o)} campaña-mes)', 'dot'), (GREEN, f'Recordatorio de algo empezado ({len(x)-len(o)})', 'dot'), (INK, 'Mediana de las ofertas', 'line')], 0, 4, size=11)
+s.legend([(M1, f'Oferta: {len(o)} campañas en un mes', 'dot'), (GREEN, f'Recordatorio de algo empezado ({len(x)-len(o)})', 'dot'), (INK, 'Mediana de las ofertas', 'line')], 0, 4, size=11)
 PAN = [('clic', 'Clic del correo', logmap(0.01, 20, 362, 56), (0.01, 0.03, 0.1, 0.3, 1, 3, 10), ' %', fc, 0),
        ('bmp', 'Bajas por cada mil personas', logmap(0.05, 100, 362, 56), (0.1, 0.3, 1, 3, 10, 30, 100), '', fb, 400)]
 for col, h, ys, ticks, u, fit, x0 in PAN:

@@ -9,7 +9,7 @@ CORTO = [(r'BillPay', 'Lanzamiento BillPay'), (r'Retargeting_Veriff', 'Verificar
          (r'Retargeting_NIP$', 'Poner NIP'), (r'NIPconCupon', 'NIP con cupón'), (r'AccountCreation', 'Crear cuenta KPay'),
          (r'B0211', 'Tasa 0 a registrados'), (r'FraudRisk', 'Rechazo por fraude'), (r'B0171.*RescateTasa0', 'Rescate Tasa 0'),
          (r'NarrativaTasa0', 'Tasa 0 a leads'), (r'ValueProp', 'Beneficios a leads'), (r'Installments_SP', 'Compra a meses'),
-         (r'Dormants-Referral', 'Referidos a dormants'), (r'Referral', 'Referidos'), (r'AnotayGana', 'AnotayGana'),
+         (r'Dormants-Referral', 'Referidos a dormants'), (r'Referral', 'Referidos'), (r'AnotayGana', 'Anota y Gana'),
          (r'B0223', 'Meses sin Cash'), (r'CuestaEnero', 'Cuesta de enero'), (r'B0209', 'Descuento a inactivos'),
          (r'Newsletter', 'Boletín'), (r'Payment-Confirmation', 'Confirmación de pago'), (r'WeeklyRecommendations', 'Recomendaciones'),
          (r'B0335', 'Promos de comercios'), (r'Christmas', 'Navidad'), (r'B0333', 'Recuperar churn'), (r'Precobranza', 'Precobranza'),
@@ -73,7 +73,7 @@ def grafica(coh, equipos, resalta, label, etiquetas, sub):
             s.circle(xs(q.dias_mediana), y, 3 + 13 * math.sqrt(q.usuarios / umax), BLUE if resalta(q.clave) else M1, extra=' fill-opacity="0.85"')
             if q.clave in etiquetas:
                 dx, dy, an = etiquetas[q.clave]
-                etiqueta(s, xs(q.dias_mediana), y, corto(q.clave), dx, dy, an, sub=f'{q.usuarios/1e3:.0f} mil, día {q.dias_mediana}')
+                etiqueta(s, xs(q.dias_mediana), y, corto(q.clave), dx, dy, an, sub=f'{q.usuarios/1e3:.0f} mil personas, día {q.dias_mediana}')
         md = wmed(le)
         s.rect(xs(md) - 1.5, yc - 14, 3, 28, INK)
         s.t(780, yc + 4, f'{100*le.usuarios.sum()/tot:.0f} %', 13, INK, 'end', 600)

@@ -10,7 +10,7 @@ e8 = pd.read_csv(D + 'e8_dias_hasta_baja.csv'); bi_p = e8[(e8.bloque == 'familia
 cj = dd.culpables_push_junio()
 print(clic['2026-06-01'], clic['2026-06-08'], bi_p, cj['new_env'] / 1e6, fe)
 write(46, dict(kind='cierre', seccion='V. El ritmo lo marcan los lanzamientos, no el cliente',
- titulo='Por qué pasa: no hay un límite semanal de mensajes ni una revisión semanal, y los lanzamientos no se coordinan',
+ titulo='Qué lo explica: no hay límite semanal de mensajes ni revisión semanal, y los lanzamientos no se coordinan',
  porques=[
   f'El 1 de junio el clic cayó a {clic["2026-06-01"]:.2f} %; en junio salieron {cj["new_env"]/1e6:.0f} M push nuevos.',
   'Los picos son lanzamientos y temporadas a toda la base que caen la misma semana.',
@@ -24,11 +24,11 @@ write(46, dict(kind='cierre', seccion='V. El ritmo lo marcan los lanzamientos, n
   'G': 'Con un solo dueño del calendario no caen tres lanzamientos a toda la base la misma semana.',
  },
  como=[
-  'Semana 1, Braze: límite semanal por canal y un solo envío a toda la base por semana. CRM.',
   'Semana 2: calendario único de lanzamientos de los cuatro equipos, con fecha aprobada. CRM.',
   'Semana 3, Braze: todo envío de más de 1 M sale primero a 10 % con grupo sin mensajes.',
   'Semana 4: lectura semanal por campaña con alerta; el día se cambia solo con prueba.',
+  'Mes 2, Braze: límite semanal por canal y un solo envío a toda la base por semana. MarTech y Datos.',
  ],
- impacto=f'Evitar semanas como la del 1 de junio: un correo de 0.8 M MXN y {bi_p/1e3:.0f} mil personas dadas de baja.',
+ impacto=f'Evitar semanas como la del 1 de junio: un correo de 0.8 M MXN; {bi_p/1e3:.0f} mil personas se dieron de baja el día que les llegó.',
  sowhat='Coordinar las fechas vale más que elegir el día.',
  fuente='Fuente: Braze, enero a septiembre 2026: E4a (serie semanal), E1 (campañas por mes), E8 (bajas desde BillPay Intro) y E10 (día de la semana).'))

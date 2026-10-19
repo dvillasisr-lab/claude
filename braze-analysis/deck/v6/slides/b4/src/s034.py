@@ -42,7 +42,7 @@ for _, q in f.sort_values('cohorte_limpia').iterrows():
 def nm(key, c, tx, ty, l1, l2, anc='start'):
     q = f[f.clave.str.contains(key) & (f.cohorte_limpia == c)].iloc[0]
     lab(S, sx(max(q.emails_mediana, 0.9)), sy(q.usuarios / 1e3), sx(tx), sy(ty), f'{l1}: {q.usuarios/1e3:.0f} mil', l2, anc)
-nm('BillPay_Intro', 1, 1.6, 47, 'BillPay Intro', 'NewProducts, 1.er correo')
+nm('BillPay_Intro', 1, 1.6, 47, 'BillPay Intro', 'NewProducts, 1 correo recibido')
 nm('Retargeting_Veriff', 1, 1.6, 36, 'Recordatorio de registro', 'Marketing, al 6.º correo')
 nm('B0211-CANVAS-Nuevos_RegistradosPay-Tasa0', 0, 75, 39, 'Tasa 0 a registrados', 'Product Growth, al 26.º', 'end')
 nm('B0326-Canvas-Leads-ReferralProgram', 0, 75, 20, 'Referidos', 'Marketing, al 18.º', 'end')
@@ -71,9 +71,9 @@ write(34, dict(kind='grafica', seccion='IV. La misma persona, demasiadas veces',
  quien='NewProducts y Marketing en los nuevos; Marketing y Product Growth en la base antigua',
  a_quien=f'{res.loc[1,"usuarios"]/1e3:.0f} mil nuevos y {res.loc[0,"usuarios"]/1e3:.0f} mil de la base antigua que se dieron de baja',
  lecturas=[
-  f'{p1:.0f} % de los nuevos que se van lo hace con el primer correo; BillPay Intro se llevó 49 mil personas así.',
+  f'{p1:.0f} % de los nuevos que se van recibió un solo correo; el lanzamiento de BillPay se llevó 49 mil así.',
   f'Por día: de julio a septiembre, 8 o más campañas traen {js["8+"]:.2f} bajas por mil contra {js["1"]:.2f} con una.',
-  f'Por mes es al revés: {m_lo:.1f} bajas por mil correos con 1 a 5 mensajes, {m_hi:.1f} con 41 o más.',
+  f'En el mes también: {m_lo:.1f} bajas por mil correos con 1 a 5 mensajes al mes, {m_hi:.1f} con 41 o más.',
  ],
  causa='Escribimos igual a quien no nos conoce que al cliente, y en días de lanzamiento se juntan campañas sin que nadie lo vea.',
  sowhat='El límite con datos es por día y para el nuevo: dos promocionales al día y una sola serie de bienvenida.',

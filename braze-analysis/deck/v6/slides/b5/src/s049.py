@@ -52,6 +52,8 @@ S.t(W, Y1 + 32, 'Vertical: MXN por conversión (log)', 10.5, SEC, 'end')
 SVG = S.done()
 
 re_, rw = STATS['email'], STATS['whatsapp']
+q8 = r[r.familia.str.contains('B0208') & (r.canal == 'email')].sort_values('env').iloc[-1]
+q33 = r[r.familia.str.contains('B0333') & (r.canal == 'whatsapp')].sort_values('env').iloc[-1]
 guarda(49, dict(
     kind='grafica',
     titulo='Recuperar sale barato si llegamos pronto: mientras más fría la base, más cara cada conversión',
@@ -59,13 +61,13 @@ guarda(49, dict(
     quien='Product Growth (ex clientes) y Marketing (referidos a dormants, rescate Tasa 0 a leads)',
     a_quien='Ex clientes con 1 a 12 meses sin usar KCash o KPay, dormants y leads que nunca activaron',
     lecturas=[
-        f'Inactivos 30 a 90 días: 26 % vuelve aunque no abra y la conversión cuesta 11 MXN por correo.',
-        f'Churn 12 meses: 2 % vuelve sin abrir y su WhatsApp cuesta 2,255 MXN por conversión; R² {re_[0]:.2f} en correo.',
-        f'Sin grupo sin mensajes no sabemos cuánto es efecto del mensaje: de {C["canvas"]} Canvas, {C["con_control"]} lo tienen.',
+        f'Inactivos 30 a 90 días: {q8.cn_90:.0f} % vuelve aunque no abra y la conversión cuesta {q8.mxn_conv:.0f} MXN por correo.',
+        f'Churn 12 meses: {q33.cn_90:.0f} % vuelve sin abrir y su WhatsApp cuesta {fmt(q33.mxn_conv)} MXN por conversión; R² {re_[0]:.2f} en correo.',
+        f'Sin grupo sin mensajes no sabemos cuánto recupera el mensaje: de {C["canvas"]} Canvas, ninguno tiene uno de verdad.',
     ],
     causa='La recuperación se arma por oferta, no por meses sin uso, y ningún programa de ex clientes deja un grupo sin mensajes.',
     sowhat='Ordenar, no dejar de buscar: primero quien se fue hace poco, con límite de gasto y un grupo sin mensajes.',
-    fuente=f'Fuente: Braze E1 y E9a (conversión a 90 días de quien abre y quien no), E13 (control), enero a septiembre 2026. Recta sobre log10; n = {re_[1]} y {rw[1]}. El guion decía 673 Canvas; salen {C["canvas"]}.',
+    fuente=f'Fuente: Braze E1 y E9a (conversión a 90 días de quien abre y quien no), E13 (control), enero a septiembre 2026. Recta sobre log10; n = {re_[1]} y {rw[1]}.',
     svg=SVG,
 ))
 print(STATS)

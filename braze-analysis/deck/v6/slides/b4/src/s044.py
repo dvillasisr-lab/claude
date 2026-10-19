@@ -66,7 +66,7 @@ write(44, dict(kind='grafica', seccion='V. El ritmo lo marcan los lanzamientos, 
  quien='Product Growth, NewProducts (Others), Marketing, Collections y Sales',
  a_quien='Registrados sin crédito, inactivos, nunca activos y toda la base',
  lecturas=[
-  f'Lunes: {d.loc["Monday","clic"]:.2f} % de clic; sin BillPay Intro, {lun_sin:.2f} %, como el martes ({d.loc["Tuesday","clic"]:.2f} %).',
+  f'Lunes: {d.loc["Monday","clic"]:.2f} % de clic; sin el lanzamiento de BillPay, {lun_sin:.2f} %, como el martes ({d.loc["Tuesday","clic"]:.2f} %).',
   f'El tamaño de cada envío explica {100*fit["r2"]:.0f} % del clic en Product Growth, Marketing y Sales.',
   f'Product Growth manda el lunes {P[("Lun","Product Growth")]["x"]/1e3:.0f} mil por campaña y su clic baja a {P[("Lun","Product Growth")]["y"]:.2f} %.',
  ],

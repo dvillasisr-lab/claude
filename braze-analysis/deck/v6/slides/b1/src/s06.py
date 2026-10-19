@@ -10,7 +10,7 @@ TIP = [('promocional', 'Promoción', BLUE2, BLUE), ('transaccional', 'Aviso de s
 CAN = [('email', 'Correo: clic de cada 100 correos entregados', 'email_delivery', 'email_click'),
        ('push notification', 'Push: apertura de cada 100 push enviados', 'pn_send', 'pn_open')]
 NOM = {('email', 'Lending-KCash-B0211-CANVAS-Nuevos_RegistradosPay-Tasa0-N/A'): 'Tasa 0 a nuevos registrados',
-       ('email', 'NewProducts-Kueski-T0000-E-Portfolio_BillPay_Intro_Full_Rollout'): 'Presentación de BillPay',
+       ('email', 'NewProducts-Kueski-T0000-E-Portfolio_BillPay_Intro_Full_Rollout'): 'Lanzamiento de BillPay',
        ('email', 'Transaccional-KPay-Mail-Payment-Confirmation-20240821'): 'Confirmación de pago KPay',
        ('push notification', 'Marketing-KCash-B0391-CANVAS-Leads_BDDMarketing-RescateFinesDeSemana-N/A'): 'Rescate de fin de semana a leads',
        ('push notification', 'Payment Received - Push'): 'Pago recibido',
@@ -23,6 +23,7 @@ for c, _, b, r in CAN:
     g = g[g.b >= 100000].copy(); g['rr'] = 100 * g.r / g.b
     w = d[d.canal == c].groupby('tipo')[[b, r]].sum(); w = 100 * w[r] / w[b]
     P[c] = (g, w)
+t0_env = d[d.fam.str.contains('Nuevos_RegistradosPay-Tasa0') & (d.canal == 'email')].email_sent.sum()
 ratio = {c: P[c][1]['transaccional'] / P[c][1]['promocional'] for c in P}
 print(sh.round(3), ratio, {c: P[c][0].groupby('tipo').rr.agg(['count', 'median']).round(2).to_dict() for c in P})
 
@@ -57,8 +58,9 @@ for c, ctit, _, _ in CAN:
                 z = gg[gg.fam == fam].iloc[0]; px = xx(z.rr)
                 anchor = 'end' if px > 560 else 'start'
                 dy = -14
-                if nm == 'Presentación de BillPay': anchor = 'end'
-                S.t(px + (-8 if anchor == 'end' else 8), yc + dy, f'{nm} {z.rr:.2f} %' if z.rr < 1 else f'{nm} {z.rr:.1f} %', 10.5, INK, anchor, 600, halo=True)
+                if nm == 'Lanzamiento de BillPay': anchor = 'end'
+                lbl = f'{nm}: 1 clic por mil' if 'BillPay' in nm else (f'{nm} {z.rr:.2f} %' if z.rr < 1 else f'{nm} {z.rr:.1f} %')  # BillPay: 0.10 % en todo el deck
+                S.t(px + (-8 if anchor == 'end' else 8), yc + dy, lbl, 10.5, INK, anchor, 600, halo=True)
     y = y0 + 3 * ROWH + 6
     for v, lab in ((0.01, '0.01 %'), (0.1, '0.1 %'), (1, '1 %'), (10, '10 %')):
         S.t(xx(v), y + 6, lab, 10.5, SEC, 'middle')
@@ -74,7 +76,7 @@ write(6, dict(kind='grafica',
     lecturas=[
         f'Promociones: {sh.loc["promocional", "env"] * 100:.0f} % de los mensajes, {sh.loc["promocional", "cost"] * 100:.0f} % del gasto y {sh.loc["promocional", "conv"] * 100:.0f} % de las conversiones.',
         f'Correo: promoción {e["promocional"]:.2f} % de clic contra {e["transaccional"]:.2f} % del aviso. Push: {p["promocional"]:.2f} % contra {p["transaccional"]:.2f} %.',
-        'Tasa 0 a nuevos registrados: 33 M correos con 0.28 % de clic, debajo de casi todos los avisos.'],
+        f'Tasa 0 a nuevos registrados: {t0_env / 1e6:.1f} M correos con 0.28 % de clic, debajo de casi todos los avisos.'],
     causa='Las promociones salen a listas grandes sin que la persona haya hecho nada; el aviso sale porque pagó o firmó, y lo espera.',
     sowhat='La mejora está en las promociones; avisos y cobranza quedan fuera del límite de mensajes por persona.',
     fuente=f'{FUENTE_E1}. Tipo por regla del Sheets: Collections = cobranza; "Transaccional" o sin ticket = aviso; lo demás, promoción. Clic sobre entregados.',

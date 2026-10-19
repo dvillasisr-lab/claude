@@ -61,7 +61,8 @@ for c, tit, X0, X1 in PAN:
         for (k, cc), (nm, pos) in NOM.items():
             if k in r.clave and cc == c:
                 cx, cy, rr = lx(r.dias_mediana), ly(r.emails_prom), rad(r.usuarios)
-                sub = f'{r.usuarios/1e3:.1f} mil · {r.dias_mediana} días · {r.emails_prom:.0f} correos'
+                sub = (f'{r.usuarios/1e3:.1f} mil · {r.dias_mediana} días · {r.emails_mediana:.0f} correo (mediana)' if 'BillPay' in r.clave
+                       else f'{r.usuarios/1e3:.1f} mil · {r.dias_mediana} días · {r.emails_prom:.0f} correos')
                 if pos == 'r': ax, ay, an = cx + rr + 4, cy - 2, 'start'
                 elif pos == 'l': ax, ay, an = cx - rr - 4, cy - 2, 'end'
                 elif pos == 'b': ax, ay, an = cx, cy + rr + 12, 'middle'

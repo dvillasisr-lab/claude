@@ -72,7 +72,7 @@ svg = S.done()
 save(25, dict(kind='grafica',
   titulo='Lo que más explica las bajas es a quién le escribimos y con qué oferta, no cuántas veces llega la campaña',
   que='Más bajas: recordatorio de registro, Tasa 0, BillPay, referidos. Menos: avisos y cobranza.',
-  quien='Marketing (2.6 bajas por mil) y Product Growth (1.5) suman 73 % de las bajas medidas.',
+  quien='Marketing (5.9 bajas por mil correos) y Product Growth (3.2) suman 77 % de las bajas.',
   a_quien='Registro a medias y leads fríos se van más; clientes, avisos y cobranza, menos.',
   lecturas=[
    f"A quién se escribe explica {ETA['seg']*100:.0f} % de la diferencia en bajas entre campañas; el tema {ETA['tema']*100:.0f} %.",
@@ -80,6 +80,6 @@ save(25, dict(kind='grafica',
    'Registro a medias: 4.1 bajas por mil correos; cobranza: 0.25, aunque recibe muchos correos.'],
   causa='Mandamos ofertas a gente sin relación reciente o recién registrada, que no las pidió.',
   sowhat='Para perder menos gente hay que cambiar a quién y qué se manda; el límite ayuda en el primer mes.',
-  fuente='Fuente: Braze, correo por campaña y mes (E1), 866 campañas por mes con 20 mil o más entregados, enero a septiembre 2026. Diferencia explicada: varianza ponderada por entregados.',
+  fuente='Fuente: Braze, correo por campaña y mes (E1), 866 campañas por mes con 20 mil o más entregados, enero a septiembre 2026. Diferencia explicada: varianza ponderada. Bajas por equipo: E1, totales del periodo.',
   svg=svg))
 check(25)

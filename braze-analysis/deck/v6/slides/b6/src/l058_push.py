@@ -10,8 +10,9 @@ g = g[(g.b >= 5e4) & (g.tipo == 'promocional o lifecycle')]
 G = [('nuevos', 'Nuevos'), ('activos', 'Activos y recurrentes'), ('leads', 'Leads y registrados'), ('ex clientes', 'Ex clientes inactivos'), ('nunca activaron', 'Leads que nunca activaron')]
 x = e[e.canal.isin(['email', 'push notification'])]
 pv = x.pivot_table(index=['grupo', 'familia', 'mes'], columns='canal', values='usuarios_aprox', aggfunc='sum').fillna(0)
-both = pv[(pv['email'] > 1000) & (pv['push notification'] > 0)]
-al = both.groupby('grupo')[['email', 'push notification']].sum(); al['push'] = 100 * al['push notification'] / al.email
+both = pv[(pv['email'] >= 20000) & (pv['push notification'] > 0)].copy()   # misma regla que la lámina 54: mediana por campaña y mes
+both['push'] = 100 * both['push notification'] / both.email
+al = both.groupby('grupo')[['push']].median()
 pp = e[e.canal == 'push notification'].groupby(['grupo', 'tema']).agg(env=('pn_send', 'sum'), op=('pn_open', 'sum')); pp['ap'] = 100 * pp.op / pp.env
 k = pd.read_csv(H / 'muestra_k_abren_vs_no_abren.csv').set_index(['fam', 'canal'])
 b211 = k.loc[('Lending-KCash-B0211-CANVAS-Nuevos_RegistradosPay-Tasa0-N/A', 'push notification')]
@@ -24,7 +25,7 @@ s.legend([(GREEN, 'Recordatorio de algo empezado', 'dot'), (BLUE, 'Tasa 0', 'dot
 X0, X1 = 170, 660
 xs = logmap(0.05, 30, X0, X1)
 TOP, RH = 74, 60
-s.t(780, 62, 'Reciben push', 10.5, SEC, 'end'); s.t(780, 50, 'De cada 100 con correo', 10.5, SEC, 'end')
+s.t(780, 62, 'reciben push', 10.5, SEC, 'end'); s.t(780, 50, 'Mediana: de cada 100 con correo,', 10.5, SEC, 'end')
 for v in (0.1, 0.3, 1, 3, 10, 30):
     s.line(xs(v), TOP - 8, xs(v), TOP + RH * 5 - 8); s.t(xs(v), TOP + RH * 5 + 8, f'{fmt(v)} %', 11, SEC, 'middle')
 s.line(xs(0.75), TOP - 8, xs(0.75), TOP + RH * 5 - 8, INK, 1); s.t(xs(0.75) + 3, TOP - 12, 'mínimo 0.75 %', 10.5, INK)
@@ -57,7 +58,7 @@ write(58, dict(
     lecturas=[
         f'Mismo grupo, otro mensaje: en leads el recordatorio abre {L.loc["Recordatorio de algo empezado","ap"]:.1f} % y la Tasa 0 {L.loc["Tasa 0","ap"]:.2f} %.',
         f'Sin app no hay push: de cada 100 leads que nunca activaron con correo, {al.loc["nunca activaron","push"]:.0f} reciben push; en activos, {al.loc["activos","push"]:.0f}.',
-        f'La Tasa 0 a registrados mueve a quien la abre ({b211.conv_abren:.1f} % contra {b211.conv_no_abren:.2f} %), pero la abre 1 de cada 200.',
+        f'La Tasa 0 a registrados mueve a quien la abre (convierte {b211.conv_abren:.1f} % contra {b211.conv_no_abren:.2f} %); la abre 1 de cada 200.',
     ],
     causa='Usamos el push para ofertas a listas enteras, aunque muchos no tienen la app, y no para recordar lo empezado.',
     sowhat='Push solo a quien tiene la app y como recordatorio de lo empezado, no como oferta repetida.',

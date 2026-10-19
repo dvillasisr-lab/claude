@@ -1,7 +1,7 @@
 """Lámina 32: cierre de la sección III (ronda 2, textos cortos). Cifras de las láminas 21 a 31 y del caso de negocio (muestras/s3.json)."""
 from svgk import save, check
 save(32, dict(kind='cierre',
-  titulo='Por qué pasa: cada equipo persigue su meta con su canal, sin ver el costo ni lo que mandan los demás',
+  titulo='Qué lo explica: cada equipo persigue su meta con su canal, sin ver el costo ni lo que mandan los demás',
   porques=[
    'Marketing y Product Growth mandan dos de cada tres mensajes, casi todos ofertas.',
    'A quien no ha hecho nada le responde lo mínimo 39 % de los mensajes; a quien sí, 79 %.',

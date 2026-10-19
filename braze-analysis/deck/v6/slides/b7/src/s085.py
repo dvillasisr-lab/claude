@@ -19,7 +19,7 @@ gm = Pm.groupby("trig").agg(d=("email_delivery", "sum"), c=("email_click", "sum"
 cm, sm = 1000 * gm.loc[True, "c"] / gm.loc[True, "d"], 1000 * gm.loc[False, "c"] / gm.loc[False, "d"]
 # 2. WhatsApp por etapa
 w = e[e.canal == "whatsapp"].copy(); w["et"] = w.fam.map(etapa)
-gw = w.groupby("et").agg(d=("whatsapp_delivery", "sum"), conv=("conversiones_filas", "sum")); gw["cpc"] = gw.d / gw.conv
+gw = w.groupby("et").agg(d=("whatsapp_delivery", "sum"), conv=("conversiones_fraccional", "sum")); gw["cpc"] = gw.d / gw.conv
 # 3. correos por persona al mes
 x = e[(e.canal == "email") & (e.usuarios_aprox > 0) & (e.email_delivery > 0)].copy(); x["t"] = x.email_sent / x.usuarios_aprox
 x["b"] = pd.cut(x.t, [0, 1.5, 2.5, 4.5, 1e9], labels=["1", "2", "3 a 4", "5+"])

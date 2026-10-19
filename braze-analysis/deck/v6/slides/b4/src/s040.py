@@ -57,8 +57,8 @@ panel(0, 'email', fe, fe2, 27, (5, 10, 15, 20, 25), 1.6, (0, 0.5, 1, 1.5), 'Corr
        ('05/25', 13.5, 1.38, 'start', '25 may: 12 M correos, 0.73 %', 'Hot Sale y Referidos')])
 panel(400, 'push notification', fp, fp2, 14, (2, 4, 6, 8, 10, 12), 3.0, (0, 1, 2, 3), 'Push: enviados en la semana contra apertura',
       'Millones de push enviados en la semana', [
-       ('06/15', 13.8, 2.85, 'end', '15 jun: 13 M push, 0.92 %', 'Billpayments y Día del Padre'),
-       ('08/10', 13.8, 2.35, 'end', '10 ago: 12 M push, 1.22 %', 'prueba de QA y Billpayments')])
+       ('06/15', 13.8, 2.85, 'end', '15 jun: 13 M push, 0.92 %', 'pagos de servicios y Día del Padre'),
+       ('08/10', 13.8, 2.35, 'end', '10 ago: 12 M push, 1.22 %', 'prueba de QA y pagos de servicios')])
 
 write(40, dict(kind='grafica', seccion='V. El ritmo lo marcan los lanzamientos, no el cliente',
  titulo=f'Las semanas con más mensajes son semanas de lanzamientos, y en ellas la respuesta cae',
@@ -68,7 +68,7 @@ write(40, dict(kind='grafica', seccion='V. El ritmo lo marcan los lanzamientos, 
  lecturas=[
   f'Cada millón de correos de más en la semana baja el clic {abs(fe["b"]):.2f} puntos (R² {fe["r2"]:.2f}); sin junio, R² {fe2["r2"]:.2f}.',
   f'En las 5 semanas de lanzamientos el push abrió {pk_p:.2f} % contra {ot_p:.2f} % el resto.',
-  f'1 de junio: BillPay Intro a 16.1 M personas dejó la semana en 0.36 % de clic.',
+  f'1 de junio: el correo de lanzamiento de BillPay a 16.1 M personas dejó la semana en 0.36 % de clic.',
  ],
  causa='Cada equipo fija la fecha de su lanzamiento sin ver la de los demás.',
  sowhat='El volumen se acumula porque nadie ve el calendario completo de lanzamientos.',

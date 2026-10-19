@@ -42,7 +42,7 @@ for k, tit, X0, X1 in PAN:
 for i, (g, lab) in enumerate(ORD):
     yc = TOP + RH * i + 14
     S.t(150, yc + 2, lab, 11.5, INK, 'end', 600 if g in ('ex', 'nunca') else 400)
-    S.t(150, yc + 16, f'{(b.g == g).sum()} campañas-mes', 10.5, SEC, 'end')
+    S.t(150, yc + 16, f'{(b.g == g).sum()} campañas en un mes', 10.5, SEC, 'end')
 SVG = S.done()
 
 guarda(54, dict(

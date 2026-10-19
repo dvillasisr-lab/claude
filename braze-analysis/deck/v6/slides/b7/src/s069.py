@@ -12,7 +12,7 @@ gs = k.groupby("st").agg(u=("usuarios", "sum"), c=("usuarios_convirtieron", "sum
 print(g.round(2)); print(gs.round(2))
 e = load_e1()
 w = e[e.canal == "whatsapp"].copy(); w["et"] = w.fam.map(etapa)
-gw = w.groupby("et").agg(d=("whatsapp_delivery", "sum"), conv=("conversiones_filas", "sum")); gw["cpc"] = gw.d / gw.conv
+gw = w.groupby("et").agg(d=("whatsapp_delivery", "sum"), conv=("conversiones_fraccional", "sum")); gw["cpc"] = gw.d / gw.conv
 f = e[e.fam.str.contains("B0331|B0332|B0333") & e.fam.str.contains("KPay")]
 print(gw.round(1), f.envios.sum() / 1e6, f.costo.sum() / 1e6)
 

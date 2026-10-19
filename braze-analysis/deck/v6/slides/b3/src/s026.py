@@ -38,7 +38,7 @@ NOMB = {'Product Growth + Sales': 'Product Growth y Sales', 'Marketing + Product
 CASOS = [('B0211-CANVAS-Nuevos_RegistradosPay', 'B0171-CANVAS-Anonimos-RescateTasa0', 'push notification', 'Tasa 0 de los dos, por push'),
          ('B0209-CANVAS-Recurrentes_Inactivos', 'B0326-Canvas-Recurrentes_Dormants', 'email', 'Descuento y referidos al mismo ex cliente'),
          ('B0492-CANVAS-Recurrentes-HotSale', 'B0493-CANVAS-Recurrentes-HotSaleKUESKI', 'push notification', 'Hot Sale de los dos, por push'),
-         ('B0440-CANVAS-Todos-AnotayGana', 'BillPay_Intro_Full', 'push notification', 'Anota y gana y BillPay el mismo día')]
+         ('B0440-CANVAS-Todos-AnotayGana', 'BillPay_Intro_Full', 'push notification', 'Anota y Gana y BillPay el mismo día')]
 rnd = random.Random(5)
 S = Svg('Pares de campañas de dos equipos que le llegan a la misma persona el mismo día, por par de equipos')
 S.t(0, 16, 'Cada punto es un par de promociones de dos equipos que llegan a la misma persona el mismo día', 12.5, INK, w=600)
@@ -52,7 +52,7 @@ YB = TOP + RH * len(PARS)
 for v, lab in [(3e4, '30 mil'), (1e5, '100 mil'), (3e5, '300 mil'), (1e6, '1 M')]:
     S.l(xs(v), TOP - 4, xs(v), YB - 4, GRID); S.t(xs(v), YB + 10, lab, 10.5, SEC, 'middle')
 S.t(X1, YB + 24, 'Personas que reciben las dos el mismo día (escala logarítmica)', 10.5, SEC, 'end')
-S.t(780, TOP - 8, 'Usuario-días · mismo tema', 10.5, SEC, 'end')
+S.t(780, TOP - 8, 'Personas por día · mismo tema', 10.5, SEC, 'end')
 for i, pp in enumerate(PARS):
     d = bt[bt.par == pp]
     y0 = TOP + RH * i; cy = y0 + 32
@@ -82,8 +82,8 @@ save(26, dict(kind='grafica',
   a_quien='Registrados y anónimos, ex clientes dormidos, clientes recurrentes de KPay.',
   lecturas=[
    f'{100*BTW/TOT:.0f} % de las veces que alguien recibe dos promociones el mismo día vienen de dos equipos distintos.',
-   f'Marketing y Sales: {M[("Marketing","Sales")]/1e6:.1f} M usuario-días, {msame:.0f} % con promociones de KPay en las dos campañas.',
-   f'Con una campaña al día se dan de baja {g.loc["1","bpm"]:.2f} por mil usuario-días; con ocho o más, {g.loc["8+","bpm"]:.2f}.'],
+   f'Marketing y Sales: {M[("Marketing","Sales")]/1e6:.1f} M personas por día, {msame:.0f} % con promociones de KPay en las dos campañas.',
+   f'Con una campaña al día se dan de baja {g.loc["1","bpm"]:.2f} por cada mil personas por día; con ocho o más, {g.loc["8+","bpm"]:.2f}.'],
   causa='Nadie es dueño de la gente que no ha hecho nada ni de las promociones de KPay, y no hay calendario común.',
   sowhat='Un dueño por oferta y por grupo de personas, y un calendario que impida dos promociones el mismo día.',
   fuente='Fuente: Braze, pares de campañas que coinciden el mismo día (E6b, los mil pares con más coincidencias) y campañas por persona y día (E6a), enero a septiembre 2026.',

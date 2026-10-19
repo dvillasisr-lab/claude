@@ -15,7 +15,7 @@ save(31, dict(kind='grafica',
   quien='BillPay (NewProducts), avisos de KPay y KCash, Shopping, CX y QA: 98 M mensajes.',
   a_quien='Avisos por algo que la persona hizo 52 %, envíos a toda la base 35 %.',
   lecturas=[
-   'Lanzamiento de BillPay: 85 % de clic en in-app y 0.11 % en 16.1 M correos; 58 mil bajas el día que llegó.',
+   'BillPay: 85 % de clic en in-app y 1 por cada mil en 16.1 M correos; 58 mil personas se dieron de baja ese día.',
    'Sus avisos responden lo mínimo en 92 % de los mensajes: el rechazo de KPay tiene 18.6 % de clic.',
    'Recomendaciones de Shopping: 7.0 M correos con 0.12 % de clic; una prueba QA llegó a 1.9 M clientes.'],
   causa='Lanzamientos y recomendaciones salen por correo a toda la base sin probar antes con un grupo chico.',
