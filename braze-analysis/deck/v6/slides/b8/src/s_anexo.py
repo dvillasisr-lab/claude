@@ -115,7 +115,7 @@ h = ['<table><tr><th>Mes de 2026</th><th class="num">Mensajes</th><th class="num
 for i, mm in enumerate(mon.index):
     r = mon.loc[mm]
     h.append(f'<tr><td><b>{MN[i]}</b></td>' + NUM(f'{r.env / 1e6:.1f} M') + ''.join(NUM(f'{ch.loc[mm].get(k, 0) / 1e6:.1f} M') for k in ('email', 'push notification', 'whatsapp', 'in-app'))
-             + NUM(f'{1000 * r.r / r.env:.0f}') + NUM(f'{r.cost / 1e6:.2f} M MXN') + NUM(f'{bm.get(mm, 0) / 1e3:.1f} mil') + '</tr>')
+             + NUM(f'{1000 * r.r / r.env:.0f}') + NUM(f'{r.cost / 1e6:.2f} M MXN') + NUM(f'{bm.get(mm[:7], 0) / 1e3:.1f} mil') + '</tr>')
 tt = mon.sum()
 h.append(f'<tr><td><b>Total</b></td>' + NUM(f'<b>{tt.env / 1e6:.1f} M</b>') + ''.join(NUM(f'{ch[k].sum() / 1e6:.1f} M') for k in ('email', 'push notification', 'whatsapp', 'in-app'))
          + NUM(f'{1000 * tt.r / tt.env:.0f}') + NUM(f'<b>{tt.cost / 1e6:.1f} M MXN</b>') + NUM(f'{pd.read_csv(D + "e5_cohorte_baja.csv").usuarios_baja.sum() / 1e3:.0f} mil únicas') + '</tr></table>')
