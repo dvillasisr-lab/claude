@@ -16,14 +16,14 @@ guarda(55, dict(
     ],
     hipotesis={
         'A': f'Con meses sin uso en Braze, el gasto va a quien se fue hace poco: {P["30a90"]["mxn_conv"]:.0f} MXN por conversión contra {P["12m"]["mxn_conv"]:.0f}.',
-        'O': 'WhatsApp solo a quien leyó uno en 90 días baja el gasto y se conserva la conversión por correo e in-app.',
+        'O': 'WhatsApp solo a quien leyó uno en 90 días: baja el gasto y la conversión sigue por correo e in-app.',
         'G': 'Con dueño, límite de gasto y 10 % sin mensajes, en dos meses sabemos qué programa recupera.',
     },
     como=[
         f'Semana 1, MarTech con Legal y Riesgo: exclusiones de cuenta en Braze ({M(D["excl_min"])} M promociones menos).',
-        'Semanas 2 a 4, Datos: etapa, meses sin uso, última respuesta por canal y si tiene app, diario en Braze.',
+        'Semanas 2 a 4, Datos: etapa, meses sin uso, última respuesta y si tiene app, diario en Braze.',
         'Semana 4, Product Growth y Marketing: recuperar por meses sin uso, máximo tres mensajes en 30 días.',
-        'Desde semana 4: límite de gasto y 10 % sin mensajes por programa; métrica, costo por cliente recuperado.',
+        'Desde semana 4: límite de gasto y 10 % sin mensajes por programa; métrica: costo por recuperado.',
     ],
     impacto=f'Hasta 0.85 M MXN al mes, solo si el grupo sin mensajes muestra que no recupera, y {M(D["excl_min"])} M promociones menos.',
     sowhat='Recuperar sí, sabiendo quién es la persona, por el canal que usa y con un grupo sin mensajes.',
