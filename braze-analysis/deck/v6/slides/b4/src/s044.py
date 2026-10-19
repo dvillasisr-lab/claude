@@ -37,9 +37,9 @@ for v, lab in ((5000, '5 mil'), (10000, '10 mil'), (25000, '25 mil'), (50000, '5
 S.line(X0, Y1, X1, Y1, SEC)
 S.t((X0 + X1) / 2, Y1 + 34, 'Correos enviados por campaña ese día (escala logarítmica)', 10.5, SEC, 'middle')
 S.t(X0 + 4, Y0 - 4, 'Clic de email', 11, SEC)
-xa, xb = 4000, 120000
+xa, xb = 4000, 55000
 S.line(sx(xa), sy(fit['a'] + fit['b'] * math.log10(xa)), sx(xb), sy(fit['a'] + fit['b'] * math.log10(xb)), INK, 1.6)
-S.t(sx(xb) + 6, sy(fit['a'] + fit['b'] * math.log10(xb)) + 4, f'Recta de Product Growth, Marketing y Sales: R² {fit["r2"]:.2f}', 10.5, INK, 'start', 600, halo=True)
+S.t(sx(xa), sy(fit['a'] + fit['b'] * math.log10(xa)) - 14, f'Recta de Product Growth, Marketing y Sales: R² {fit["r2"]:.2f}', 10.5, INK, 'start', 600, halo=True)
 for q in sorted(r['pts'], key=lambda q: q['dia'] == 'Lun'):
     x, y = sx(q['x']), sy(min(q['y'], 3.45)); c = COL[q['g']]
     if q['mk'] == 'd':
@@ -50,10 +50,10 @@ for q in sorted(r['pts'], key=lambda q: q['dia'] == 'Lun'):
 P = {(q['dia'], q['g']): q for q in r['pts']}
 def lab(dia, g, dx, dy, txt, anchor='start'):
     q = P[(dia, g)]; S.t(sx(q['x']) + dx, sy(q['y']) + dy, txt, 10.5, INK, anchor, 700, halo=True)
-lab('Lun', 'Product Growth', 9, 14, f'Lun Product Growth: {P[("Lun","Product Growth")]["x"]/1e3:.0f} mil por campaña, {P[("Lun","Product Growth")]["y"]:.2f} %')
+lab('Lun', 'Product Growth', 9, -6, f'Lun Product Growth: {P[("Lun","Product Growth")]["x"]/1e3:.0f} mil por campaña, {P[("Lun","Product Growth")]["y"]:.2f} %')
 lab('Lun', 'Marketing', -9, -8, f'Lun Marketing: {P[("Lun","Marketing")]["y"]:.2f} %', 'end')
-lab('Lun', 'Others', 9, -8, f'Lun Others con BillPay: {P[("Lun","Others")]["y"]:.2f} %')
-lab('Dom', 'Product Growth', 9, 4, f'Dom Product Growth: {P[("Dom","Product Growth")]["x"]/1e3:.0f} mil, {P[("Dom","Product Growth")]["y"]:.2f} %')
+lab('Lun', 'Others', -9, 18, f'Lun Others con BillPay: {P[("Lun","Others")]["x"]/1e3:.0f} mil, {P[("Lun","Others")]["y"]:.2f} %', 'end')
+lab('Dom', 'Product Growth', -2, 20, f'Dom Product Growth: {P[("Dom","Product Growth")]["x"]/1e3:.0f} mil, {P[("Dom","Product Growth")]["y"]:.2f} %')
 # lunes de Others sin BillPay
 x2, y2 = sx(o_x), sy(o_y); x1, y1 = sx(P[('Lun', 'Others')]['x']), sy(P[('Lun', 'Others')]['y'])
 S.line(x1, y1, x2, y2, BLUE2, 1.2)
