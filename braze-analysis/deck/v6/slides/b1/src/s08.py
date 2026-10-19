@@ -67,5 +67,5 @@ write(8, dict(kind='grafica',
         f'Ese {p_top * 100:.1f} % entra a {cw:.0f} campañas distintas y pone {v_top["usuarios_con_conversion"] * 100:.0f} % de las personas que convierten.'],
     causa='Cada campaña decide sola a quién entra y no hay límite de mensajes por persona a la semana: al más activo le llegan todas.',
     sowhat='Saturamos a los mejores clientes: un límite de 5 promociones a la semana los protege sin dejar de escribirles.',
-    fuente=f'Fuente: Braze, mensajes por persona (E3), enero a septiembre 2026: {U_all / 1e6:.1f} M personas y {M_all / 1e6:.0f} M mensajes. Bajas = eventos de baja de correo. E3 no trae equipo.',
+    fuente=f'Fuente: Braze, mensajes por persona (E3), enero a septiembre 2026: {U_all / 1e6:.1f} M personas y 667 M mensajes (E3 suma {M_all / 1e6:.0f} M). Bajas = eventos de baja de correo. E3 no trae equipo.',
     svg=S.done()))

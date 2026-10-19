@@ -3,6 +3,7 @@ con qué campaña y por qué cuesta. Las prácticas se traslapan: no se suman.
 Fuentes: E1 (envíos, costo, respuesta), E2 (versiones y ticket), E7a (etapa del usuario: tarjeta KPay congelada, lista negra, REUS o ARCO),
 E15 (pasos de Canvas), regla insisten() de b7.py."""
 from b7 import *
+import re, sys
 
 e = load_e1(); e["tema"] = e.communication_name.map(tema)
 promo = ~e.tema.isin(["Cobranza", "Transaccional"])
@@ -21,15 +22,21 @@ vv = c2[(c2.fs >= "2026-01-01") & (c2.fs < "2026-10-01")].groupby("fam").communi
 put("copiar", e[e.fam.isin(F5)])
 pat = r"(?i)prueba|test|\bqa\b|qa_|copy of|copia|dummy|demo"
 put("pruebas", e[e.communication_name.str.contains(pat)])
-a = pd.read_csv(D + "e7a_familia_canal_etapa.csv"); a["familia"] = a.familia.fillna(""); a["fam"] = a.familia.map(fam_of); a["tema"] = a.familia.map(tema); a["equipo"] = a.equipo.fillna("").map(team_of)
-a = a[a.etapa.isin(["3.Blacklist", "4.Kpay CC Freeze", "6.Reus or Arco"]) & ~a.tema.isin(["Cobranza", "Transaccional"])].copy()
+# bloqueados: misma regla que la lámina 51 (b5_datos.py): tipo promocional de muestra_c, nombre sin fecha
+tipo_c = pd.read_csv(H + "muestra_c_familias.csv").groupby("familia").tipo.first()
+a = pd.read_csv(D + "e7a_familia_canal_etapa.csv"); a["familia"] = a.familia.fillna("(sin nombre)"); a["fam"] = a.familia.map(lambda s_: re.sub(r"-\d{8,9}-", "-", str(s_)))
+a["tipo"] = a.fam.map(tipo_c).fillna("?"); a["equipo"] = a.equipo.fillna("").map(team_of)
+a = a[a.etapa.isin(["3.Blacklist", "4.Kpay CC Freeze", "6.Reus or Arco"]) & (a.tipo == "promocional o lifecycle")].copy()
 wd = e[e.canal == "whatsapp"].groupby("fam").apply(lambda g: g.whatsapp_delivery.sum() / max(1, g.whatsapp_send.sum()), include_groups=False)
 a["costo"] = np.where(a.canal == "whatsapp", a.envios * a.fam.map(wd).fillna(0.75), np.where(a.canal == "email", 0.05 * a.envios, 0))
 put("bloq", a)
 s = pd.read_csv(D + "e15_embudo_pasos.csv", low_memory=False); pc = s.groupby("canvas_id").canvas_step_id.nunique(); ids = set(pc[pc > 20].index)
 put("largos", e[e.communication_id.isin(ids)])
-c2["sin"] = c2.tiene_ticket.astype(str) != "1"; st = set(c2[c2.sin].communication_id)
-put("ticket", e[e.communication_id.isin(st) & promo])
+# sin dueño ni ticket: misma regla que la lámina 88 (b8/src/sin_dueno.py): equipo 'Not Tracked' y tema promocional
+sys.path.insert(0, "/home/user/claude/braze-analysis/deck/v6/slides/b8/src")
+from sin_dueno import datos as _sd
+gsd, _ = _sd(); ids_sd = set(gsd[gsd.tema == "promocional"].communication_id); n_sd = int(_["nt"])
+put("ticket", e[e.communication_id.isin(ids_sd)])
 # datos del "por qué"
 bp = e[e.fam.str.contains("BillPay_Intro") & (e.canal == "email")]; bp_cpm = 1000 * bp.email_click.sum() / bp.email_delivery.sum(); bp_uns = bp.email_unsubscribe.sum()
 b211 = RI[RI.fam.str.contains("B0211-CANVAS-Nuevos_RegistradosPay") & (RI.canal == "email")].iloc[0]
@@ -42,14 +49,14 @@ print({k: (round(v["msgs"] / 1e6, 1), round(v["mxn"] / 1e6, 2)) for k, v in P.it
 print(bp_cpm, bp_uns, b211.fail, b211.frate, b211.after, b333w, b333e, qa_o, qa.envios.sum(), r326.envios.sum(), ab.to_dict(), vv.max())
 import math
 NAMES = [
- ("masivo", "A más de un millón al mes", "BillPay a toda la base", f"{bp_cpm:.0f} clic por mil y {bp_uns/1e3:.0f} mil bajas"),
+ ("masivo", "A más de un millón al mes", "BillPay a toda la base", f"{bp_cpm:.0f} clic por mil y {bp_uns/1e3:.0f} mil bajas registradas"),
  ("insiste", "Seguir con lo que no responde", "Tasa 0 a registrados sin crédito", f"debajo desde febrero; {b211.after/1e6:.0f} M correos más"),
  ("wa", "WhatsApp a quien no lo lee", "Ex clientes KPay, 12 meses", f"{b333w:,.0f} MXN por conversión contra {b333e:.0f} por email"),
  ("copiar", "Copiar en vez de medir", "Rescate Tasa 0 a leads rezagados", f"{vv.get('Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0-N/A', 0)} versiones; la vieja sigue enviando"),
  ("pruebas", "Pruebas y copias a clientes", "QA-KPay recordatorio", f"{qa.envios.sum()/1e6:.1f} M push, {qa_o:.1f} aperturas por mil"),
- ("bloq", "Promociones a bloqueados", "Referidos a ex clientes KPay", f"{ab.get('4.Kpay CC Freeze',0)/1e6:.0f} M a tarjetas congeladas"),
+ ("bloq", "Promociones a bloqueados", "Referidos a ex clientes KPay", f"{ab.get('4.Kpay CC Freeze',0)/1e6:.1f} M a tarjetas congeladas"),
  ("largos", "Canvas de más de 20 pasos", "Recuperación KPay, Cuesta de Enero", "hasta 120 mensajes distintos"),
- ("ticket", "Promociones sin ticket ni dueño", "BillPay y Shopping semanal", "nadie las revisa ni las apaga"),
+ ("ticket", "Promociones sin equipo ni ticket", "BillPay y Shopping semanal", f"{n_sd} comunicaciones sin dueño que las revise"),
 ]
 S = SVG("Ocho malas prácticas: cada punto es una campaña en esa práctica según sus mensajes; en azul las del equipo que más pesa")
 S.legend([("Campaña del equipo que más pesa en la práctica", BLUE, "ci"), ("Campaña de otro equipo", MARK2, "ci")], 0, 14, 16)
@@ -67,7 +74,7 @@ for i, (k, que, caso, porque) in enumerate(NAMES):
     yc = TOP + RH * i + 8
     t = P[k]["t"].msgs; lead = t.idxmax(); tp = P[k]["top"]
     S.t(0, yc + 2, f"{i+1}. {que}", 11, INK, w=700)
-    S.t(0, yc + 16, f"{P[k]['msgs']/1e6:.0f} M mensajes · {P[k]['mxn']/1e6:.1f} M MXN", 10.5, SEC)
+    S.t(0, yc + 16, (f"{P[k]['msgs']/1e6:.1f}" if P[k]['msgs'] < 1e8 else f"{P[k]['msgs']/1e6:.0f}") + f" M mensajes · {P[k]['mxn']/1e6:.1f} M MXN", 10.5, SEC)
     d = tp[tp.msgs > 0]
     for j, (f, r) in enumerate(d.sort_values("msgs").iterrows()):
         jy = ((j * 7) % 9 - 4) * 2.2
@@ -90,6 +97,6 @@ J = dict(
     ],
     causa="Nadie revisa respuesta contra volumen por campaña, y las reglas de envío no existen o no se cumplen.",
     sowhat="No es una campaña mala: son hábitos que se repiten en los mismos equipos y tienen dueño.",
-    fuente="Fuente: Braze, envíos, catálogo, etapa del usuario (golden dataset) y pasos de Canvas, ene a sep 2026. Las prácticas se traslapan: no se suman. WhatsApp a 1.00 MXN por entregado.",
+    fuente="Fuente: Braze, envíos, catálogo, etapa (golden dataset) y pasos de Canvas, ene a sep 2026. Se traslapan: no se suman. Conversión: crédito de Cash otorgado en 7 días, repartido.",
     svg=S.out())
 write(77, J)
