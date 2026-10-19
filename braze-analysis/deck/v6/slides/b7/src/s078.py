@@ -49,7 +49,7 @@ for i, (_, c) in enumerate(cells.iterrows()):
     for m in range(1, 10):
         if m % 2 == 1 or m == 9: S.t(X_(m), y0 + h + 13, MESES[m - 1], 10.5, SEC, "middle")
     S.t(x0 - 12, y0 + h + 31, f"{c.after/1e6:.1f} M mensajes después" + (f" · {c.acost/1e6:.1f} M MXN" if c.acost > 5e4 else ""), 11, BLUE, w=700)
-    S.t(x0 - 12, y0 + h + 45, f"{un}; la línea punteada es lo mínimo ({mn:g})", 10.5, SEC)
+    S.t(x0 - 12, y0 + h + 45, f"{un}; punteada: mínimo {mn:g}", 10.5, SEC)
 J = dict(
     titulo="Uno de cada cinco mensajes salió de campañas que un mes antes ya habían respondido menos de lo mínimo",
     que=f"Promociones: Tasa 0 ({tx.get('Tasa 0',0)/1e6:.0f} M mensajes), referidos ({tx.get('Referidos',0)/1e6:.0f} M mensajes), ofertas para que vuelva el ex cliente ({tx.get('Oferta para volver',0)/1e6:.0f} M) y crédito en plazos ({tx.get('Uso y recompra del crédito',0)/1e6:.0f} M).",
