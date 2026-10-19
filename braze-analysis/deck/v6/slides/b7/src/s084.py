@@ -15,10 +15,10 @@ cc = p[p.fam.isin(cont) & p.m.isin([6, 9])].groupby("m").agg(s=("pn_send", "sum"
 print(pm.round(2)); print((pt[[6, 9]] / 1e6).round(1)); print(len(cont), cc.r.round(2).to_dict())
 S = SVG("Índice semanal de volumen y de respuesta por canal, promedio de enero igual a 100")
 S.legend([("Volumen de la semana", BLUE, "ln"), ("Respuesta (apertura, clic o lectura)", MARK, "ln"), ("Junio", "#EEF2FB", "sq")], 0, 14, 18)
-CW, CHh = 390, 180
+CW, CHh = 380, 180
 YM = 300
 for i, (c, nm, vcol, rcol, bcol, rn) in enumerate(CH):
-    x0 = 40 + (i % 2) * CW; y0 = 50 + (i // 2) * CHh; ww, hh = CW - 110, 112
+    x0 = 40 + (i % 2) * CW; y0 = 50 + (i // 2) * CHh; ww, hh = CW - 122, 112
     g = w[w.canal == c].sort_values("periodo")
     vol = g[vcol].values; resp = g[rcol].values / np.maximum(g[bcol].values, 1)
     jan = g.periodo.str[5:7] == "01"
@@ -32,7 +32,7 @@ for i, (c, nm, vcol, rcol, bcol, rn) in enumerate(CH):
         S.line(x0, Y(v), x0 + ww, Y(v), INK if v == 100 else GRID, 1, ' stroke-dasharray="3 3" opacity="0.5"' if v == 100 else "")
         S.t(x0 - 6, Y(v) + 4, f"{v}", 10.5, SEC, "end")
     for k, pp in enumerate(g.periodo):
-        if pp[8:10] <= "07" and pp[5:7] in ("01", "03", "05", "07", "09"): S.t(X(k), y0 + hh + 30, MESES[int(pp[5:7]) - 1], 10.5, SEC, "middle")
+        if pp[8:10] <= "07" and pp[5:7] in ("01", "03", "05", "07", "09"): S.t(X(k) + 4, y0 + hh + 33, MESES[int(pp[5:7]) - 1], 10.5, SEC, "middle")
     for vals, col, sw in ((ri, MARK, 1.8), (vi, BLUE if c == "push notification" else INK, 2.4)):
         S.raw('<path d="M' + " L".join(f"{X(k):.1f},{Y(v):.1f}" for k, v in enumerate(vals)) + f'" fill="none" stroke="{col}" stroke-width="{sw}" stroke-linejoin="round"/>')
     ev, er = vi[-1], ri[-1]
