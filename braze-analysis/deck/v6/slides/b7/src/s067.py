@@ -35,7 +35,7 @@ print("push top10", tp.pb.sum(), tp.pr.sum(), tp.equipo.value_counts().to_dict()
 S = SVG("Las diez campañas de email con más correos: porcentaje del email entregado y porcentaje de los clics de cada una")
 X0, X1, VM = 330, 640, 12
 xs = lambda v: X0 + (X1 - X0) * v / VM
-S.legend([("% de todos los correos entregados", MARK2, "sq"), ("% de todos los clics (promociones)", BLUE, "sq"), ("% de los clics (recordatorio y aviso)", GREEN, "sq")], 0, 14, 18, 11.5)
+S.legend([("% de los correos entregados", MARK2, "sq"), ("% de los clics (promociones)", BLUE, "sq"), ("% de los clics (recordatorio y aviso)", GREEN, "sq"), ("cobranza", MARK, "sq")], 0, 14, 18, 11.5)
 TOP, RH = 64, 29
 S.t(0, TOP - 14, "Campaña · equipo · a quién va", 11, SEC, w=600)
 S.t(780, TOP - 14, "Clics por mil", 11, SEC, "end", 600)
@@ -51,11 +51,11 @@ for i, (f, r) in enumerate(t.iterrows()):
     S.rect(X0, y + 10, max(xs(r.pr) - X0, 1.5), 10, col)
     S.t(xs(r.pb) + 4, y + 7, f"{r.pb:.1f} %", 10.5, SEC)
     S.t(xs(r.pr) + 4, y + 19, f"{r.pr:.1f} %", 10.5, INK, w=600)
-    S.t(780, y + 13, f"{10*r.rate:.0f}", 12, col if r.cl != "cobranza" else TXT, "end", 700)
+    S.t(780, y + 13, f"{10*r.rate:.1f}" if r.rate < 1 else f"{10*r.rate:.0f}", 12, col if r.cl != "cobranza" else TXT, "end", 700)
 S.line(0, TOP + RH * 10 + 20, 780, TOP + RH * 10 + 20, MARK)
 yy = TOP + RH * 10 + 38
 S.tspans(0, yy, [(f"Las siete promociones: ", INK, 600), (f"{P.pb.sum():.0f} % de los correos entregados y {P.pr.sum():.0f} % de los clics. ", BLUE, 600),
-                 (f"El correo promedio da {10*TR/TB:.0f} clics por mil.", TXT, 400)], 11.5)
+                 (f"El correo promedio da {1000*TR/TB:.0f} clics por mil.", TXT, 400)], 11.5)
 S.t(0, yy + 16, f"Las diez juntas son {t.pb.sum():.0f} % de los correos y {t.pr.sum():.0f} % de los clics, entre {len(x):,} campañas de email.", 11, SEC)
 
 J = dict(

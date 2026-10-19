@@ -4,9 +4,9 @@ from datos import *
 from svgk import *
 f = fam()
 x = e1(); x = x[x.canal != 'banner']
-TEMA = {'Tasa 0 y rescate de leads': 'Tasa 0', 'Referidos': 'Referidos', 'Promos de comercios KPay': 'Promociones KPay',
+TEMA = {'Tasa 0 y rescate de leads': 'Tasa 0', 'Referidos': 'Referidos', 'Promos de comercios KPay': 'Promos KPay',
         'Oferta de crédito e Installments': 'Crédito e Installments', 'Recuperar inactivos y churn': 'Recuperar inactivos',
-        'Temporada y concursos': 'Concursos', 'Recordatorio de registro': 'Recordatorio de registro',
+        'Temporada y concursos': 'Concursos', 'Recordatorio de registro': 'Registro',
         'Lanzamiento BillPay y recargas': 'Lanzamiento BillPay', 'Boletín y contenido': 'Boletín', 'Aviso transaccional': 'Avisos de pago y cuenta',
         'Cobranza': 'Cobranza'}
 ORD = ['Marketing', 'Product Growth', 'Others', 'Sales', 'Collections']
@@ -45,16 +45,17 @@ for r in rows:
         ws = w * b['sin'] / b['env']
         if ws > 0.5: S.r(xx, y, max(ws - (2 if ws >= w - 0.5 else 0), 0.5), h, BLUE)
         if w - ws > 0.5: S.r(xx + ws, y, max(w - ws - 2, 0.5), h, MRK2)
-        l1 = f"{b['tema']} {100*b['env']/r['env']:.0f} %"
-        l2 = f"{b['costo']/1e6:.1f} M MXN" if b['costo'] >= 0.05e6 else 'sin costo'
+        l1 = b['tema']
+        l2 = f"{100*b['env']/r['env']:.0f} % · " + (f"{b['costo']/1e6:.1f} M MXN" if b['costo'] >= 0.05e6 else 'sin costo')
         one = h < 34
-        if one: l1 = l1 + ' · ' + l2
-        need = tw(l1, 11)
+        if one: l1 = l1 + ' ' + l2
+        need = max(tw(l1, 11), tw(l2, 10.5))
         if ws >= need + 8: lx, col = xx + 5, '#FFFFFF'
         elif (w - ws) >= need + 8: lx, col = xx + ws + 5, INK
         else:
             l1 = b['tema'] if tw(b['tema'], 11) < max(ws, w - ws) - 8 else ''
-            l2 = ''
+            sp = max(ws, w - ws) - 8
+            l2 = f"{100*b['env']/r['env']:.0f} %" if l1 and not one else ''
             lx, col = (xx + 5, '#FFFFFF') if ws >= w - ws else (xx + ws + 5, INK)
         if l1:
             if one: S.t(lx, y + h / 2 + 4, l1, 11, col, w=600)

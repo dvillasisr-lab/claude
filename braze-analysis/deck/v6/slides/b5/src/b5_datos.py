@@ -103,7 +103,8 @@ OUT['ex_email_noabre'] = {c: dict(ca90=float(100 * q.ab_conv_90.sum() / q.abrier
 # WhatsApp por programa (lámina 50)
 OUT['wa_prog'] = {}
 for k, rx in [('b0171', '-B0171-'), ('b0333', '-B0333-'), ('b0209', '-B0209-')]:
-    d = x[x.familia.str.contains(rx) & (x.canal == 'whatsapp')]; de = x[x.familia.str.contains(rx) & (x.canal == 'email')]
+    xf = x[x.g.isin(['ex', 'nunca'])]
+    d = xf[xf.familia.str.contains(rx) & (xf.canal == 'whatsapp')]; de = xf[xf.familia.str.contains(rx) & (xf.canal == 'email')]
     OUT['wa_prog'][k] = dict(send=float(d.whatsapp_send.sum()), costo=float(d.costo.sum()), mxn=float(d.costo.sum() / d.conversiones_fraccional.sum()),
                              email_mxn=float(de.costo.sum() / de.conversiones_fraccional.sum()))
 

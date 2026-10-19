@@ -17,7 +17,7 @@ def per(ms):
     d = a[a.m.isin(ms)].groupby('banda_familias_dia')[['usuario_dias', 'usuario_dias_con_baja']].sum()
     return 1000 * d.usuario_dias_con_baja / d.usuario_dias
 em, js = per(range(1, 6)), per(range(7, 10))
-B6 = ['1', '2', '3 a 4', '5 a 7', '8+']
+B6 = ['1', '2', '3 a 4', '5 a 7', '8+']; B6L = ['1', '2', '3 a 4', '5 a 7', '8 o más']
 # nuevos (E8, cohorte limpia = primer correo dentro del periodo)
 e8 = pd.read_csv(D + 'e8_dias_hasta_baja.csv')
 n8 = e8[(e8.bloque == 'banda_emails') & (e8.cohorte_limpia == 1)].set_index('clave').usuarios
@@ -45,14 +45,14 @@ def panel(x0, y0, title, sub, cats, series, vmax, fmtv, ticks, unit):
         S.t(cx, Y1 + 14, c, 10.5, TXT, 'middle')
     pass
 # fila 1
-panel(0, 14, 'Nueve meses: a más correos, menos bajas por correo', 'Bajas por mil correos, según mensajes recibidos en 9 meses',
+panel(0, 14, 'Nueve meses: quien recibe mucho se va menos por correo', 'Bajas por mil correos, según mensajes recibidos en 9 meses',
       [l for l, *_ in p3], [([v for _, v, _ in p3], G1)], 16, lambda v: f'{v:.1f}', (0, 5, 10, 15), 'Mensajes en 9 meses')
 panel(410, 14, 'Un mes: igual, quien recibe poco se va más', 'Bajas por mil correos, según mensajes recibidos en el mes',
       [l for l, *_ in p4], [([v for _, v, _ in p4], G1)], 4, lambda v: f'{v:.1f}', (0, 1, 2, 3, 4), 'Mensajes en el mes')
 # fila 2
 S.rect(0, 222, 10, 10, G1); S.t(14, 231, 'Enero a mayo', 10.5, TXT); S.rect(96, 222, 10, 10, BLUE); S.t(110, 231, 'Julio a septiembre', 10.5, TXT)
 panel(0, 214 + 34, 'Un día: desde junio, el día saturado sí trae bajas', 'Bajas por mil personas-día, según campañas distintas ese día',
-      B6, [([em[k] for k in B6], G1), ([js[k] for k in B6], BLUE)], 1.2, lambda v: f'{v:.2f}', (0, 0.4, 0.8, 1.2), 'Campañas el mismo día')
+      B6L, [([em[k] for k in B6], G1), ([js[k] for k in B6], BLUE)], 1.2, lambda v: f'{v:.2f}', (0, 0.4, 0.8, 1.2), 'Campañas el mismo día')
 panel(410, 214 + 34, 'Nuevos: uno de cada tres se va con el primer correo', '% de los nuevos que se dieron de baja, según correos que llevaban',
       [l for l, _ in p8], [([v for _, v in p8], [BLUE] + [G1] * 4)], 40, lambda v: f'{v:.0f} %', (0, 10, 20, 30, 40), 'Correos recibidos al darse de baja')
 svg = S.svg()
