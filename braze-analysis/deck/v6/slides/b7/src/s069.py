@@ -59,6 +59,6 @@ J = dict(
     ],
     causa="Se manda la misma secuencia sin importar cuánto lleva la persona sin comprar, y sin grupo sin mensajes.",
     sowhat="Más esfuerzo a 3 meses; a 6 y 12, canal barato, pocos toques y presupuesto con límite.",
-    fuente=f"Fuente: Braze, embudo por paso de Canvas (B0331 a B0333) y envíos por canal, ene a sep 2026. Conversión: solicitud o préstamo, sobre todo de KCash; no mide la compra en KPay.",
+    fuente=f"Fuente: Braze, embudo por paso de Canvas (B0331 a B0333) y envíos por canal, ene a sep 2026. Por paso: solicitud o préstamo. Costo: crédito de Cash otorgado en 7 días, repartido.",
     svg=S.out())
 write(69, J)

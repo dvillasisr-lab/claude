@@ -26,7 +26,7 @@ for v in (0, 10, 20, 30, 40, 50):
 S.t(X1, Y1 + 32, "Clics por cada mil correos", 11, SEC, "end")
 S.t(X0 - 44, Y0 - 12, "Bajas por cada mil correos", 11, SEC)
 S.line(X0, ys(MEDB), X1, ys(MEDB), INK, 1, ' stroke-dasharray="4 4" opacity="0.6"')
-S.t(X0 + 6, ys(MEDB) + 14, f"Campaña típica: {MEDB:.1f} bajas por mil", 11, INK, "start", halo=True)
+S.t(X0 + 6, ys(MEDB) + 14, f"Mediana de las campañas, bajas del mes del envío: {MEDB:.1f} por mil", 11, INK, "start", halo=True)
 rr = lambda v: 2.5 + 11 * (v / 10e6) ** 0.5
 for _, q in x[~x.familia.isin(r.familia)].iterrows():
     S.circle(xs(10 * q.clic_pct), ys(q.bajas_por_mil), 2.6, MARK2, sw=0)
@@ -48,15 +48,16 @@ for q, lab, lx, ly, an in pts:
 S.t(0, 410, f"Tamaño = correos entregados. Bajas contadas en los meses en que la campaña envió. Más de {XM} clics o {YM} bajas por mil se dibuja en el borde.", 10.5, SEC)
 V = r[r.familia.str.contains("Retargeting_Veriff")].iloc[0]
 rec = r[r.tema == "Recordatorio de registro"]
+_e = load_e1(); _v = _e[(_e.canal == "email") & _e.fam.str.endswith("Retargeting_Veriff") & (_e.usuarios_aprox > 0)]; vmax = (_v.email_sent / _v.usuarios_aprox).max()
 J = dict(
     titulo="Hay correos que la gente sí toca pero causan muchas bajas: la mitad viene de recordatorios repetidos",
     que="Recordatorios de registro, Tasa 0 contada como historia, boletines y avisos.",
     quien=f"Marketing {eqr.loc['Marketing','n']:.0f} de {len(r)} campañas, Others {eqr.loc['Others','n']:.0f} y Product Growth {eqr.loc['Product Growth','n']:.0f}.",
     a_quien="Sobre todo leads que acaban de empezar su registro.",
     lecturas=[
-        f"{len(r)} campañas reciben {10*(r.clic_pct*r.envios).sum()/r.envios.sum():.0f} clics por mil correos y causan 2.5 bajas por mil o más; la típica, {MEDB:.1f}.",
+        f"{len(r)} campañas reciben {10*(r.clic_pct*r.envios).sum()/r.envios.sum():.0f} clics por mil correos y causan 2.5 bajas por mil o más; la mediana, {MEDB:.1f}.",
         f"Las {hi.sum()} que llegan dos o más veces al mes a la misma persona causan {100*r[hi].uns.sum()/r.uns.sum():.0f} % de esas bajas.",
-        f"Veriff: {V.toques_usuario_mes:.1f} correos al mes por persona, {10*V.clic_pct:.0f} clics y {V.bajas_por_mil:.1f} bajas por mil.",
+        f"Veriff: hasta {vmax:.1f} correos al mes por persona, {10*V.clic_pct:.0f} clics y {V.bajas_por_mil:.1f} bajas por mil.",
     ],
     causa="Cada paso pendiente manda su correo y no hay límite de mensajes por persona a la semana.",
     sowhat="El mensaje sirve; lo que molesta es la repetición: dos correos al mes y no a quien no abre.",

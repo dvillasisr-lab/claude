@@ -43,7 +43,7 @@ for i, (c, nm, vcol, rcol, bcol, rn) in enumerate(CH):
     km = int(np.argmax(vi)); S.t(X(km), Y(vi[km]) - 6, f"{vi[km]:.0f}", 10.5, INK, "middle", 700, halo=True)
 S.t(40, 412, "Índice: promedio de las semanas de enero = 100, por canal. Más de 300 se dibuja en 300. 38 semanas completas.", 10.5, SEC)
 J = dict(
-    titulo="Cuando terminaron los envíos de junio a toda la base, el push bajó a la mitad y su apertura se duplicó",
+    titulo="Al terminar los envíos de junio a toda la base, el push bajó a la mitad y su apertura se duplicó frente a junio",
     que="Lo que se dejó de mandar: BillPay, Día del Padre, Mundial, AnotayGana y referidos.",
     quien=f"Marketing bajó de {pt.loc['Marketing',6]/1e6:.0f} M push en junio a {pt.loc['Marketing',9]/1e6:.0f} M en septiembre; Others de {pt.loc['Others',6]/1e6:.0f} M a {pt.loc['Others',9]/1e6:.1f} M.",
     a_quien="Toda la base y leads, que recibieron los envíos de junio.",
@@ -52,7 +52,7 @@ J = dict(
         f"Abrieron {pm.loc[6,'o']/1e3:.0f} mil push en junio y {pm.loc[9,'o']/1e3:.0f} mil en septiembre: mandar menos no costó aperturas.",
         f"Las {len(cont)} campañas que siguieron de junio a septiembre subieron de {cc.loc[6,'r']:.2f} % a {cc.loc[9,'r']:.2f} % de apertura.",
     ],
-    causa="No fue una decisión: se acabaron los lanzamientos. Es la prueba natural de que menos volumen funciona.",
+    causa="No fue decisión: acabaron los lanzamientos. Sugiere que menos volumen no cuesta aperturas, aunque el push sigue al doble de enero.",
     sowhat="Mandar menos push no costó aperturas: un límite por persona a la semana es seguro.",
     fuente="Fuente: Braze, serie semanal por canal y envíos por campaña y mes, ene a sep 2026. No es un experimento: también cambió la mezcla de campañas.",
     svg=S.out())

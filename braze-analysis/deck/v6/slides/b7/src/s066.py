@@ -49,7 +49,7 @@ S.t(X1 - 4, Y1 - 8, f"Azul: {no.envios.sum()/1e6:.0f} M mensajes ({100*no.envios
 J = dict(
     titulo="Cuatro de cada diez mensajes salieron de campañas que no responden lo mínimo: comercios, Tasa 0 y referidos",
     que="Promociones: Tasa 0, comercios KPay, referidos, BillPay y ofertas para volver.",
-    quien=f"Marketing y Product Growth ({eq.loc['Product Growth','pc']:.0f} % del gasto); Others y Sales, menos.",
+    quien=f"Product Growth ({eq.loc['Product Growth','pc']:.0f} % del gasto) y Marketing; Others y Sales, menos.",
     a_quien="Leads, registrados sin crédito, ex clientes inactivos y toda la base.",
     lecturas=[
         f"Debajo de lo mínimo: comercios KPay {tg['Promociones de comercios KPay']/1e6:.0f} M mensajes, Tasa 0 {tg['Tasa 0']/1e6:.0f} M y referidos {tg['Referidos']/1e6:.0f} M.",

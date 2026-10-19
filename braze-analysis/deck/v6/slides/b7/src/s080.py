@@ -73,7 +73,7 @@ J = dict(
     titulo="Lo que parecían pruebas a clientes son sobre todo push que nadie abrió y campañas reales mal nombradas",
     que="Comunicaciones con QA, Test, Prueba o 'Copy of' en el nombre que sí mandaron.",
     quien="Others (QA, Acquisition, Compliance) casi todo; Sales y Collections, poco.",
-    a_quien="Clientes reales: hasta 1.8 M personas en un solo envío.",
+    a_quien="Clientes reales: hasta 1.9 M push en un solo envío.",
     lecturas=[
         f"{int(G.loc['push','n'])} push mandaron {G.loc['push','env']/1e6:.1f} M mensajes con menos de 1 apertura por mil; varios son silenciosos.",
         f"{int(G.loc['real','n'])} campañas reales mal nombradas mandaron {G.loc['real','env']/1e6:.1f} M mensajes y responden como cualquier campaña.",

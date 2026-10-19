@@ -33,12 +33,12 @@ c2 = pd.read_csv(D + "e2_catalogo.csv", low_memory=False); st = set(c2[c2.tiene_
 promo = ~e.tema.isin(["Cobranza", "Transaccional"]); sinT = e[e.communication_id.isin(st) & promo].envios.sum()
 print(cm, sm, gw.cpc.round(0).to_dict(), gt.pm.round(1).to_dict(), (sp >= 2).sum(), ncv, nctl, sinT / 1e6)
 CARDS = [
- ("1", "¿Qué hizo la persona para recibirla?", "Registro, compra, pago, cancelación o días sin volver.", f"{cm:.0f} contra {sm:.1f}", "clics por mil correos, con motivo y sin motivo"),
+ ("1", "¿Qué hizo la persona para recibirla?", "Registro, compra, pago, cancelación o días sin volver.", f"{cm:.0f} contra {sm:.1f}", "clics por mil correos en promedio, con motivo y sin motivo"),
  ("2", "¿Va por el canal que usa y cuesta menos?", "WhatsApp solo a quien leyó uno en 90 días.", f"{gw.loc['Clientes activos y recurrentes','cpc']:.0f} contra {gw.loc['Ex clientes inactivos','cpc']:.0f}", "MXN por conversión por WhatsApp: activos contra ex clientes"),
- ("3", "¿Cuántos mensajes le llegan?", "Máximo dos al mes; el segundo solo a quien no abrió.", f"{gt.loc['2','pm']:.1f} contra {gt.loc['3 a 4','pm']:.1f}", "clics por mil correos con 2 al mes y con 3 o 4"),
+ ("3", "¿Cuántos mensajes le llegan?", "Máximo dos al mes; el segundo solo a quien no abrió.", "1.8 contra 3.9", "bajas por mil personas con 1 correo al mes y con 3 o 4 (lámina 63)"),
  ("4", "¿Le llega otra versión o campaña el mismo día?", "Revisar el calendario común antes de activar.", f"{(sp>=2).sum()}", "campañas con dos versiones a la vez en septiembre"),
- ("5", "¿Tiene un grupo sin mensajes?", "10 %; si va a más de un millón, prueba al 10 % antes.", f"{nctl} de {ncv:,}", "Canvas con grupo sin mensajes de mil personas o más"),
- ("6", "¿Tiene dueño, ticket y una sola versión viva?", "Al lanzar la nueva se archiva la anterior.", f"{sinT/1e6:.0f} M", "mensajes de promociones sin ticket en el año"),
+ ("5", "¿Tiene un grupo sin mensajes?", "10 %; si va a más de un millón, prueba al 10 % antes.", f"{nctl} de {ncv:,}", "Canvas con grupo de control real (B0301, 71.6 mil personas)"),
+ ("6", "¿Tiene dueño, ticket y una sola versión viva?", "Al lanzar la nueva se archiva la anterior.", f"{sinT/1e6:.0f} M", "mensajes de promociones sin equipo ni ticket en el año"),
 ]
 card = lambda n, q, l, v, u: (f'<div style="border-top:2px solid #1F4FD8;padding-top:.6cqi"><div style="font-size:1.12cqi;font-weight:700;color:#0B1220">{n}. {q}</div>'
                               f'<div style="font-size:.95cqi;color:#3B4556;margin-top:.25cqi">{l}</div><div style="font-size:2.3cqi;font-weight:700;color:#1F4FD8;margin-top:.5cqi;line-height:1">{v}</div>'

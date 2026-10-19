@@ -75,7 +75,7 @@ J = dict(
     a_quien="Quien se registró, compró, tiene un pago, canceló o lleva tiempo sin volver.",
     lecturas=[
         f"Son {100*volev['Con motivo']/volev.sum():.0f} % de los mensajes y {100*clk_share:.0f} % de los clics de correo.",
-        f"Correo: {10*R[('Con motivo','email')][0]:.0f} clics por mil contra {10*R[('Sin motivo','email')][0]:.1f}; push: {10*R[('Con motivo','push notification')][0]:.0f} aperturas por mil contra {10*R[('Sin motivo','push notification')][0]:.0f}.",
+        f"Correo, en promedio: {10*R[('Con motivo','email')][0]:.0f} clics por mil contra {10*R[('Sin motivo','email')][0]:.1f}; push: {10*R[('Con motivo','push notification')][0]:.0f} aperturas por mil contra {10*R[('Sin motivo','push notification')][0]:.0f}.",
         "No todo motivo funciona igual: aniversario y compra en comercio responden poco por correo.",
     ],
     causa="La mayoría de las promociones nace de una lista y no de algo que hizo la persona.",

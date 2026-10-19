@@ -48,6 +48,6 @@ J = dict(
     ],
     causa="Lo que funciona nació chico y nadie lo escala: no hay revisión que busque a los mejores.",
     sowhat="Ampliar no es mandar a toda la base: es usar el mismo motivo en más productos, con 10 % sin mensajes.",
-    fuente="Fuente: Braze, envíos por campaña y canal, ene a sep 2026; promociones con mil mensajes o más. Chica: debajo de la mediana de mensajes de su canal. Típica: mediana de respuesta del canal.",
+    fuente="Fuente: Braze, envíos por campaña y canal, ene a sep 2026; promociones con mil mensajes o más. Chica: debajo de la mediana de mensajes de su canal. Típica: mediana del canal. La lámina 99 cuenta 154 (otro corte).",
     svg=S.out())
 write(82, J)

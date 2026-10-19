@@ -31,7 +31,7 @@ for v, l in ((0.3e6, "0.3 M"), (1e6, "1 M"), (3e6, "3 M"), (10e6, "10 M"), (30e6
 S.t(X1, Y1 + 32, "Correos entregados en el año (escala que multiplica)", 11, SEC, "end")
 S.t(X0 - 44, Y0 - 14, "Bajas por cada mil correos", 11, SEC)
 S.line(X0, ys(MED), X1, ys(MED), INK, 1, ' stroke-dasharray="4 4" opacity="0.6"')
-S.t(X0 + 4, ys(MED) + 14, f"Campaña típica: {MED:.1f} bajas por mil", 11, INK, "start", halo=True)
+S.t(X0 + 4, ys(MED) + 14, f"Mediana de las campañas, con todas sus bajas: {MED:.1f} por mil", 11, INK, "start", halo=True)
 rr = lambda u: 3 + 15 * (u / 80000) ** 0.5
 for f, r in big.drop(t8.index).iterrows():
     S.circle(xs(r.deliv), ys(r.bpm), 3, MARK2, sw=0)
@@ -47,6 +47,7 @@ for f, r in t8.iterrows():
     S.t(xx, yy + 13, f"{n2} · {r.uns/1e3:.0f} mil bajas · {r.cpm:.0f} {'clic' if round(r.cpm)==1 else 'clics'} por mil", 10.5, TXT, an, halo=True)
 S.t(0, 408, f"Tamaño del círculo = bajas en el año. Más de {YM} bajas por mil se dibuja en {YM}.", 10.5, SEC)
 pg = t8[t8.equipo == "Product Growth"]; mk = t8[t8.equipo == "Marketing"]
+bp6 = e[e.fam.str.contains("BillPay_Intro") & (e.canal == "email") & (e.m == 6)].email_unsubscribe.sum()
 J = dict(
     titulo="Ocho campañas de email causan un tercio de las bajas del correo, y seis casi no reciben clics",
     que="BillPay, Tasa 0, referidos, AnotayGana, Cuesta de Enero, crédito en plazos y Veriff.",
@@ -54,8 +55,8 @@ J = dict(
     a_quien="Toda la base, leads y registrados que nunca tomaron crédito.",
     lecturas=[
         f"Las ocho suman {t8.uns.sum()/1e3:.0f} mil de {T/1e6:.2f} M bajas ({t8.pct.sum():.0f} %); seis reciben menos de 10 clics por mil.",
-        f"Tasa 0 contada como historia a rezagados: {t8.loc[[i for i in t8.index if 'NarrativaTasa0' in i][0],'bpm']:.0f} bajas por mil correos; la típica, {MED:.1f}.",
-        f"BillPay se mandó una vez a toda la base y causó {t8.loc[[i for i in t8.index if 'BillPay' in i][0],'uns']/1e3:.0f} mil bajas.",
+        f"Tasa 0 contada como historia a rezagados: {t8.loc[[i for i in t8.index if 'NarrativaTasa0' in i][0],'bpm']:.0f} bajas por mil correos; la mediana, {MED:.1f}.",
+        f"El lanzamiento de BillPay salió una vez y sumó {t8.loc[[i for i in t8.index if 'BillPay' in i][0],'uns']/1e3:.0f} mil bajas registradas ({bp6/1e3:.0f} mil en junio).",
     ],
     causa="Se manda la misma promoción a listas enteras sin ver si abren; a quien no le interesa, se da de baja.",
     sowhat="Quien se da de baja ya no recibe correos: achicar estos ocho envíos protege el contacto.",
