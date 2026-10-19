@@ -41,18 +41,16 @@ save(104, dict(kind='html',
     html=''.join(h)))
 
 # ------------------------------------------------------------------ 105. Definiciones
-DEF = [('Responder', 'Clic en un correo, abrir un push, leer un WhatsApp o clic en un in-app. Abrir un correo no cuenta: lo inflan las aperturas automáticas.'),
-       ('Responde lo mínimo aceptable', '3 clics por cada mil correos, 7.5 aperturas por cada mil push, 6 de cada 10 WhatsApp leídos o 1 de cada 10 in-app con clic.'),
-       ('Canal sin respuesta', 'Canal por el que una persona nunca respondió, aunque responda por otro (en 90 días, E9b).'),
-       ('Nunca respondió', 'No respondió por ningún canal: en nueve meses (E7b, 14.2 M personas) o en 90 días (E9b).'),
-       ('Campaña con todas sus versiones', 'Una comunicación con sus versiones de cada mes (el nombre sin la fecha). En el análisis se llamó familia. En un canal: 1,913.'),
-       ('Bloqueados', 'Tarjeta KPay congelada, REUS o ARCO (pidieron no recibir publicidad) y lista negra, según la etapa del cliente (E7a).'),
-       ('Ex clientes', 'Audiencia con Churn, Dormant, Inactiv, Medium_active, Winback o Reactiv en el nombre. Se buscan recuperar, no se apagan.'),
-       ('Leads y registrados sin crédito', 'Audiencia con Lead, Anónimos, Registrados, NeverActive, NeverCash, Rezagados, LeftFunnel, Nuevos o Prospect.'),
-       ('Conversión', 'Crédito otorgado en 7 días por día de envío. Es referencia, no prueba de venta: para eso hace falta grupo de control.'),
-       ('Grupo de control', 'Parte de la audiencia (5 a 10 %) apartada al azar que no recibe el mensaje; la diferencia con quien sí lo recibió es lo que vendió.'),
-       ('Mensaje porque la persona hizo algo', 'Sale cuando la persona dejó el registro a medias, pidió un préstamo o tiene un pago por vencer.'),
-       ('Envío a toda la base', 'A millones de personas a la vez, sin fijarse en lo que hizo cada quien.')]
+DEF = [('Responder', 'Clic en correo, abrir push, leer WhatsApp o clic en in-app'),
+       ('Lo mínimo aceptable', '3 clics por mil correos, 7.5 aperturas por mil push, 6 de 10 WhatsApp leídos, 1 de 10 in-app'),
+       ('Canal sin respuesta', 'Canal al que la persona nunca respondió, aunque responda por otro'),
+       ('Nunca respondió', 'Ningún canal en nueve meses: 14.2 M de personas'),
+       ('Campaña con todas sus versiones', 'La comunicación con sus versiones de cada mes; en un canal hay 1,913'),
+       ('Bloqueados', 'Tarjeta KPay congelada, REUS o ARCO y lista negra'),
+       ('Ex clientes', 'Churn, dormants e inactivos: se buscan recuperar, no se apagan'),
+       ('Leads y registrados', 'Personas que nunca tomaron crédito'),
+       ('Conversión', 'Crédito otorgado en 7 días; referencia, no prueba de venta'),
+       ('Grupo de control', '5 a 10 % de la audiencia al azar que no recibe el mensaje')]
 h = ['<table><tr><th style="width:24%">Término</th><th>Qué significa en este deck</th></tr>']
 for a, b in DEF:
     h.append(f'<tr><td><b>{a}</b></td><td>{b}</td></tr>')
@@ -98,7 +96,7 @@ for sub, rr in ((1, STD[:12]), (2, STD[12:])):
         h.append(f'<tr><td>{n}</td><td>{tm}</td><td><b>{ind}</b></td><td><b>{st}</b></td><td>{src}</td><td>{fe[:4] if len(fe) < 6 else "sin dato"}</td></tr>')
     h.append('</table>')
     save(106, dict(kind='html', ancho_completo=True,
-        titulo='Los 24 estándares y su fuente: ocho son de canal y vienen de la industria; el resto son reglas internas' if sub == 1 else 'Los 24 estándares y su fuente (continuación): bajas, audiencia, envíos a toda la base, medición y nombres',
+        titulo='Los 24 estándares y su fuente: ocho son de canal y vienen de la industria' if sub == 1 else 'Los 24 estándares y su fuente (continuación): bajas, audiencia, medición y nombres',
         sowhat='Son el mínimo de la industria o una regla interna, no una meta de Kueski.' if sub == 1 else 'El grupo de control (23) se mide en Braze en cuanto se prenda.',
         fuente='Fuente: Sheets braze_auditoria_v4, pestaña Estándares. "Sin dato": no se mide con las extracciones actuales.',
         html=''.join(h)), sub=sub)
@@ -198,7 +196,7 @@ for sub, rr in ((1, range(0, 8)), (2, range(8, 15))):
                  f'<td>{AUD[r.aud[:5]]}</td>' + NUM(f'{r.env_sep / 1e6:.2f} M') + NUM(resp) + NUM(f'<b>{r.tot / 1e3:.0f} mil MXN</b>') + f'<td style="padding-left:1.2cqi">{"Solo a quien lee WhatsApp" if r.accion == "Limpiar base de WhatsApp" and r.main == "b_cortar" else QUE[r.main]}</td></tr>')
     h.append('</table>')
     save(108, dict(kind='html', ancho_completo=True,
-        titulo=f'Fichas de las 15 campañas con más ahorro: juntas suman {m(top.tot.sum())} M MXN al mes, {sh15 * 100:.0f} % del total' if sub == 1 else 'Fichas de las 15 campañas con más ahorro (continuación): Marketing aparece por canal y recuperación, no por campañas para apagar',
+        titulo=f'Fichas de las 15 campañas con más ahorro: juntas suman {m(top.tot.sum())} M MXN al mes, {sh15 * 100:.0f} % del total' if sub == 1 else 'Fichas de las 15 campañas con más ahorro (continuación): Marketing aparece por canal y recuperación',
         sowhat='Empezar por las tres primeras: dos ofertas a ex clientes de KPay y Tasa 0 a registrados.' if sub == 1 else 'En Marketing el ahorro es de canal y de recuperación, no de apagar.',
         fuente='Fuente: E1 por campaña y canal, septiembre 2026; Sheets v4, E9b y E7a. Ahorro = palancas de la lámina 92; respuesta de enero a septiembre.',
         html=''.join(h)), sub=sub)
@@ -209,15 +207,15 @@ c_env = d1.email_sent.sum() * 0.05 + d1.whatsapp_send.sum() * 1.0
 g9 = d1.costo.sum(); SEPc = R['sep']; AVG = g9 / 9
 e9 = pd.read_csv(D + 'e9b_patron_respuesta_90d.csv')
 sh_wa = e9[e9.resp_wa == 0].msgs_wa_entregados.sum() / e9.msgs_wa_entregados.sum(); sh_em = e9[e9.resp_email == 0].msgs_email.sum() / e9.msgs_email.sum()
-SUP = [('Correo', '0.05 MXN por enviado', 'Se cobra todo lo que sale, llegue o no.'),
-       ('WhatsApp', '1.00 MXN por entregado', f'Meta no cobra lo no entregado: {m(nodel, 1)} M WhatsApp sin entregar en nueve meses no se pagaron.'),
-       ('Push e in-app', '0 MXN por mensaje', 'Sin costo por mensaje; su costo es el permiso de notificaciones, que no se ve.'),
-       ('Gasto de nueve meses', f'{m(g9, 1)} M MXN', f'{m(c_env, 1)} M MXN si WhatsApp se cobrara por enviado.'),
-       ('Mes base del ahorro', f'Septiembre: {m(SEPc)} M MXN', f'El promedio de enero a septiembre es {m(AVG)} M MXN al mes; septiembre fue el más barato, así que el ahorro es conservador.'),
-       ('Ahorro por campaña', 'Costo de septiembre', 'No el promedio de los meses en que mandó. Palancas en orden: cada una toma lo que deja la anterior, sin doble conteo.'),
-       ('Lecturas de WhatsApp', 'Cuentan las del mes siguiente', 'Lecturas registradas en un mes sin envíos se suman a la campaña.'),
-       ('A quien no responde', f'{sh_wa * 100:.0f} % del WhatsApp y {sh_em * 100:.0f} % del correo', 'Parte de lo entregado que va a quien no respondió por ese canal en 90 días (E9b); se aplica igual a cada campaña.'),
-       ('Costo fijo de Braze', 'X, editable', 'Contrato con Finanzas: 7,020 USD al mes y 32,474 créditos sin explicar. No está en el ahorro.')]
+SUP = [('Correo', '0.05 MXN por enviado', 'Se cobra todo lo que sale'),
+       ('WhatsApp', '1.00 MXN por entregado', f'{m(nodel, 1)} M sin entregar no se pagaron'),
+       ('Push e in-app', '0 MXN por mensaje', 'Su costo es el permiso, que no se ve'),
+       ('Gasto de nueve meses', f'{m(g9, 1)} M MXN', f'{m(c_env, 1)} M MXN si WhatsApp se cobrara por enviado'),
+       ('Mes base', f'Septiembre: {m(SEPc)} M MXN', f'Promedio: {m(AVG)} M MXN al mes; ahorro conservador'),
+       ('Ahorro por campaña', 'Costo de septiembre', 'Palancas en orden, sin doble conteo'),
+       ('Lecturas de WhatsApp', 'Cuentan las del mes siguiente', 'Se suman a la campaña que las mandó'),
+       ('A quien no responde', f'{sh_wa * 100:.0f} % del WhatsApp, {sh_em * 100:.0f} % del correo', 'Proporción de E9b en 90 días'),
+       ('Costo fijo de Braze', 'X, editable', '7,020 USD al mes y 32,474 créditos sin explicar')]
 h = ['<table><tr><th style="width:20%">Supuesto</th><th style="width:26%">Valor</th><th>Qué implica</th></tr>']
 for a, b, c_ in SUP:
     h.append(f'<tr><td><b>{a}</b></td><td><b>{b}</b></td><td>{c_}</td></tr>')

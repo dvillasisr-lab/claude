@@ -45,7 +45,7 @@ for i, (f, r) in enumerate(top.iterrows()):
             S.t(cx, y + 13, f"{k}", 10.5, "#FFFFFF", "middle", 700)
     S.t(780, y + 18, f"{int(r.n)} · {mm.sum()/1e6:.1f} M", 11.5, INK, "end", 700)
 yy = TOP + RH * 10 + 12
-S.t(0, yy, f"Barra gris: de 0 a {BMAX/1e6:.0f} M mensajes al mes (más se dibuja al tope).", 10.5, SEC)
+S.t(0, yy, f"Barra gris: de 0 a {BMAX/1e6:.0f} M mensajes al mes (más se dibuja en el máximo).", 10.5, SEC)
 S.t(0, yy + 15, "Cada versión es una copia con otra fecha en el nombre; casi todas son Canvas que mandan por varios canales.", 10.5, SEC)
 J = dict(
     titulo=f"En vez de medir una campaña la copiamos cada mes: {len(G)} campañas sacaron cinco o más versiones",
