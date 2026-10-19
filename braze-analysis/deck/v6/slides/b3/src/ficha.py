@@ -36,10 +36,7 @@ def build(eq, filas, mejores, peores, titulo_graf):
     S.t(0, 16, titulo_graf, 12.5, INK, w=600)
     S.c(6, 34, 5.5, GREEN, stroke='none'); S.t(15, 38, 'Responde lo mínimo aceptable', 11.5)
     S.c(200, 34, 5.5, BLUE, stroke='none'); S.t(209, 38, 'No lo responde', 11.5)
-    S.t(306, 38, 'Mensajes:', 11.5, SEC)
-    lx = 362
-    for v, lab in [(1e6, '1 M'), (10e6, '10 M'), (40e6, '40 M')]:
-        S.c(lx + rad(v), 34, rad(v), '#FFFFFF', stroke=MRK, sw=1); S.t(lx + 2 * rad(v) + 4, 38, lab, 11, SEC); lx += 2 * rad(v) + 36
+    S.t(320, 38, 'Círculo: mensajes de enero a septiembre', 11.5, SEC)
     LX, CW, TOP = 120, 74, 72
     nrow = len(labs); RH = min(58, (372 - TOP) / nrow)
     for j, (c, n, m) in enumerate(CANALES):
@@ -85,6 +82,10 @@ def build(eq, filas, mejores, peores, titulo_graf):
             if ex: S.t(PX + 9, y + 26, ex, 10.5, SEC); y += 13
             y += 34
         y += 6
+    S.t(PX, 384, 'Tamaño', 10.5, SEC)
+    lx = PX + 44
+    for v, lab in [(1e6, '1 M'), (10e6, '10 M'), (40e6, '40 M')]:
+        S.c(lx + rad(v), 380, rad(v), '#FFFFFF', stroke=MRK, sw=1); S.t(lx + 2 * rad(v) + 4, 384, lab, 10.5, SEC); lx += 2 * rad(v) + 34
     S.t(0, 412, 'Número: respuesta (clic, apertura o lectura). Mínimo aceptable: 0.3 % en correo, 0.75 % en push, 60 % en WhatsApp, 10 % en in-app.', 10.5, SEC)
     return S.done(), cel, tot, detalle, d
 def mxn_conv(c):
