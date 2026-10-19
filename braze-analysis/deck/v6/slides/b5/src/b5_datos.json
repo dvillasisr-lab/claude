@@ -1,0 +1,1541 @@
+{
+ "grupos": {
+  "activos": {
+   "env": 170547670.0,
+   "costo": 15371946.25,
+   "conv": 1531013.95,
+   "wa": 12636421.0,
+   "p_env": 25.552729342961808,
+   "p_costo": 26.65836119617574,
+   "p_conv": 45.23912165349085,
+   "p_wa": 30.829359228872065,
+   "mxn_conv": 10.040369815049694
+  },
+  "cobranza": {
+   "env": 44972200.0,
+   "costo": 1632263.2,
+   "conv": 268667.4,
+   "wa": 0.0,
+   "p_env": 6.738071851450957,
+   "p_costo": 2.8307060957115717,
+   "p_conv": 7.938710939196269,
+   "p_wa": 0.0,
+   "mxn_conv": 6.07540475695972
+  },
+  "ex": {
+   "env": 54520499.0,
+   "costo": 7828839.95,
+   "conv": 73652.32,
+   "wa": 6216319.0,
+   "p_env": 8.168669525594925,
+   "p_costo": 13.576943331697533,
+   "p_conv": 2.176313458503652,
+   "p_wa": 15.166092640650605,
+   "mxn_conv": 106.29454645827856
+  },
+  "leads": {
+   "env": 183174138.0,
+   "costo": 11724776.200000001,
+   "conv": 244550.07,
+   "wa": 6945415.0,
+   "p_env": 27.444521352559875,
+   "p_costo": 20.333360122432435,
+   "p_conv": 7.226080707559655,
+   "p_wa": 16.944884475485303,
+   "mxn_conv": 47.944276605604735
+  },
+  "nuevos": {
+   "env": 10431622.0,
+   "costo": 952748.8,
+   "conv": 57692.43,
+   "wa": 650107.0,
+   "p_env": 1.562943742204663,
+   "p_costo": 1.652277546808557,
+   "p_conv": 1.7047231080131602,
+   "p_wa": 1.586080603060339,
+   "mxn_conv": 16.514277523064987
+  },
+  "nunca": {
+   "env": 77202514.0,
+   "costo": 15191431.8,
+   "conv": 52956.85,
+   "wa": 13433817.0,
+   "p_env": 11.567058904048467,
+   "p_costo": 26.345309138162655,
+   "p_conv": 1.5647939586283108,
+   "p_wa": 32.774784102866505,
+   "mxn_conv": 286.86433955191825
+  },
+  "todos": {
+   "env": 83862463.0,
+   "costo": 3249207.9,
+   "conv": 354409.49,
+   "wa": 946174.0,
+   "p_env": 12.564902347086589,
+   "p_costo": 5.634846517868072,
+   "p_conv": 10.472258618715818,
+   "p_wa": 2.3084018915655626,
+   "mxn_conv": 9.16794835262453
+  },
+  "transaccional": {
+   "env": 42723154.0,
+   "costo": 1711543.7,
+   "conv": 801327.33,
+   "wa": 160017.0,
+   "p_env": 6.401102934092715,
+   "p_costo": 2.9681960511434293,
+   "p_conv": 23.677997555892293,
+   "p_wa": 0.3903970574996212,
+   "mxn_conv": 2.1358858433045085
+  }
+ },
+ "tot": {
+  "env": 667434260.0,
+  "costo": 57662757.800000004,
+  "conv": 3384269.8400000003,
+  "wa": 40988270.0
+ },
+ "gc": {
+  "activos|email": {
+   "env": 54710505.0,
+   "costo": 2735525.25,
+   "conv": 465099.01,
+   "base": 52763725.0,
+   "resp": 0.6594378998071118,
+   "mxn_conv": 5.881597662398808,
+   "conv_mil": 8.501091517981784,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "activos|in-app": {
+   "env": 11839000.0,
+   "costo": 0.0,
+   "conv": 329503.68000000005,
+   "base": 11839000.0,
+   "resp": 30.660815947292846,
+   "mxn_conv": 0.0,
+   "conv_mil": 27.83205338288707,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "activos|push notification": {
+   "env": 88517164.0,
+   "costo": 0.0,
+   "conv": 481739.30000000005,
+   "base": 88517164.0,
+   "resp": 1.7283258193857183,
+   "mxn_conv": 0.0,
+   "conv_mil": 5.442326417055115,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "activos|whatsapp": {
+   "env": 15481001.0,
+   "costo": 12636421.0,
+   "conv": 254671.96000000002,
+   "base": 12636421.0,
+   "resp": 69.5665964278968,
+   "mxn_conv": 49.61842285267683,
+   "conv_mil": 16.45061323876925,
+   "entrega": 81.62534838670962,
+   "wsend": 15481001.0
+  },
+  "cobranza|email": {
+   "env": 32645264.0,
+   "costo": 1632263.2,
+   "conv": 179173.61,
+   "base": 31299806.0,
+   "resp": 1.0954285147965455,
+   "mxn_conv": 9.109953190093117,
+   "conv_mil": 5.4885024057394665,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "cobranza|in-app": {
+   "env": 85336.0,
+   "costo": 0.0,
+   "conv": 4014.58,
+   "base": 85336.0,
+   "resp": 13.418721289959688,
+   "mxn_conv": 0.0,
+   "conv_mil": 47.04438923783632,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "cobranza|push notification": {
+   "env": 12241600.0,
+   "costo": 0.0,
+   "conv": 85479.20999999998,
+   "base": 12241600.0,
+   "resp": 3.6063341393281925,
+   "mxn_conv": 0.0,
+   "conv_mil": 6.982682819239312,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "ex|email": {
+   "env": 32250419.0,
+   "costo": 1612520.9499999997,
+   "conv": 21919.11,
+   "base": 30778207.0,
+   "resp": 0.2663832886691548,
+   "mxn_conv": 73.56689892974667,
+   "conv_mil": 0.6796534953545875,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "ex|in-app": {
+   "env": 1824158.0,
+   "costo": 0.0,
+   "conv": 26034.39,
+   "base": 1824158.0,
+   "resp": 13.360246206743057,
+   "mxn_conv": 0.0,
+   "conv_mil": 14.272003850543648,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "ex|push notification": {
+   "env": 11733280.0,
+   "costo": 0.0,
+   "conv": 12415.32,
+   "base": 11733280.0,
+   "resp": 0.9488991995418161,
+   "mxn_conv": 0.0,
+   "conv_mil": 1.0581286733121513,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "ex|whatsapp": {
+   "env": 8712642.0,
+   "costo": 6216319.0,
+   "conv": 13283.5,
+   "base": 6216319.0,
+   "resp": 57.91736234900429,
+   "mxn_conv": 467.9729739902887,
+   "conv_mil": 1.5246236445845014,
+   "entrega": 71.3482661172122,
+   "wsend": 8712642.0
+  },
+  "leads|email": {
+   "env": 95587224.0,
+   "costo": 4779361.200000001,
+   "conv": 72484.77999999998,
+   "base": 90019127.0,
+   "resp": 0.7806107695312353,
+   "mxn_conv": 65.93606547471072,
+   "conv_mil": 0.758310336536188,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "leads|in-app": {
+   "env": 5084920.0,
+   "costo": 0.0,
+   "conv": 67769.34000000001,
+   "base": 5084920.0,
+   "resp": 25.324075894999332,
+   "mxn_conv": 0.0,
+   "conv_mil": 13.327513510537042,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "leads|push notification": {
+   "env": 73562793.0,
+   "costo": 0.0,
+   "conv": 55627.34,
+   "base": 73562793.0,
+   "resp": 0.9511180468637181,
+   "mxn_conv": 0.0,
+   "conv_mil": 0.7561885259033055,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "leads|whatsapp": {
+   "env": 8939201.0,
+   "costo": 6945415.0,
+   "conv": 48668.61,
+   "base": 6945415.0,
+   "resp": 77.77109071236204,
+   "mxn_conv": 142.70830829152507,
+   "conv_mil": 5.444402693260841,
+   "entrega": 77.69614980130774,
+   "wsend": 8939201.0
+  },
+  "nuevos|email": {
+   "env": 6052836.0,
+   "costo": 302641.8,
+   "conv": 27584.079999999998,
+   "base": 5807649.0,
+   "resp": 1.2469073113750504,
+   "mxn_conv": 10.97161116122053,
+   "conv_mil": 4.55721582411947,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "nuevos|in-app": {
+   "env": 432369.0,
+   "costo": 0.0,
+   "conv": 13616.59,
+   "base": 432369.0,
+   "resp": 63.84731560310753,
+   "mxn_conv": 0.0,
+   "conv_mil": 31.492984002090807,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "nuevos|push notification": {
+   "env": 3106766.0,
+   "costo": 0.0,
+   "conv": 12810.98,
+   "base": 3106766.0,
+   "resp": 3.1799627007634306,
+   "mxn_conv": 0.0,
+   "conv_mil": 4.123574160397017,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "nuevos|whatsapp": {
+   "env": 839651.0,
+   "costo": 650107.0,
+   "conv": 3680.7799999999993,
+   "base": 650107.0,
+   "resp": 67.50211888196866,
+   "mxn_conv": 176.62207466895606,
+   "conv_mil": 4.383702276302891,
+   "entrega": 77.4258590771642,
+   "wsend": 839651.0
+  },
+  "nunca|email": {
+   "env": 35152296.0,
+   "costo": 1757614.8,
+   "conv": 6091.57,
+   "base": 33132598.0,
+   "resp": 0.6424096293324176,
+   "mxn_conv": 288.53231597108794,
+   "conv_mil": 0.17329081434680682,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "nunca|in-app": {
+   "env": 758517.0,
+   "costo": 0.0,
+   "conv": 12404.739999999998,
+   "base": 758517.0,
+   "resp": 26.56604927773537,
+   "mxn_conv": 0.0,
+   "conv_mil": 16.35393801325481,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "nunca|push notification": {
+   "env": 21401257.0,
+   "costo": 0.0,
+   "conv": 9839.779999999999,
+   "base": 21401257.0,
+   "resp": 0.7227612845357635,
+   "mxn_conv": 0.0,
+   "conv_mil": 0.45977579728143997,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "nunca|whatsapp": {
+   "env": 19890444.0,
+   "costo": 13433817.0,
+   "conv": 24620.760000000002,
+   "base": 13433817.0,
+   "resp": 68.6261842036407,
+   "mxn_conv": 545.6296637471792,
+   "conv_mil": 1.237818522301463,
+   "entrega": 67.53905041033775,
+   "wsend": 19890444.0
+  },
+  "todos|email": {
+   "env": 46060678.0,
+   "costo": 2303033.9000000004,
+   "conv": 151907.94,
+   "base": 43149932.0,
+   "resp": 0.4959196691202202,
+   "mxn_conv": 15.160721026168877,
+   "conv_mil": 3.2979961779980744,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "todos|in-app": {
+   "env": 5964235.0,
+   "costo": 0.0,
+   "conv": 97461.35000000002,
+   "base": 5964235.0,
+   "resp": 79.85672932069242,
+   "mxn_conv": 0.0,
+   "conv_mil": 16.340964096820468,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "todos|push notification": {
+   "env": 30670938.0,
+   "costo": 0.0,
+   "conv": 98343.63,
+   "base": 30670938.0,
+   "resp": 1.2192193143881025,
+   "mxn_conv": 0.0,
+   "conv_mil": 3.2064109027249184,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "todos|whatsapp": {
+   "env": 1166612.0,
+   "costo": 946174.0,
+   "conv": 6696.570000000001,
+   "base": 946174.0,
+   "resp": 69.32223882710791,
+   "mxn_conv": 141.2923332392553,
+   "conv_mil": 5.740186111577801,
+   "entrega": 81.10442889323957,
+   "wsend": 1166612.0
+  },
+  "transaccional|email": {
+   "env": 31030534.0,
+   "costo": 1551526.7000000002,
+   "conv": 736634.77,
+   "base": 30158845.0,
+   "resp": 3.217377853826962,
+   "mxn_conv": 2.106236038790295,
+   "conv_mil": 23.73902975694843,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "transaccional|in-app": {
+   "env": 1443805.0,
+   "costo": 0.0,
+   "conv": 15756.97,
+   "base": 1443805.0,
+   "resp": 4.179581037605494,
+   "mxn_conv": 0.0,
+   "conv_mil": 10.913502862228626,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "transaccional|push notification": {
+   "env": 9850228.0,
+   "costo": 0.0,
+   "conv": 41512.82,
+   "base": 9850228.0,
+   "resp": 4.404212775582454,
+   "mxn_conv": 0.0,
+   "conv_mil": 4.2144019407469555,
+   "entrega": null,
+   "wsend": 0.0
+  },
+  "transaccional|whatsapp": {
+   "env": 181664.0,
+   "costo": 160017.0,
+   "conv": 2195.6099999999997,
+   "base": 160017.0,
+   "resp": 73.79590918464913,
+   "mxn_conv": 72.88042958448906,
+   "conv_mil": 12.08610401620574,
+   "entrega": 88.0840452703893,
+   "wsend": 181664.0
+  }
+ },
+ "frio_equipo": {
+  "ex|Marketing": {
+   "env": 17471043.0,
+   "costo": 1602434.75
+  },
+  "ex|Others": {
+   "env": 764651.0,
+   "costo": 186774.0
+  },
+  "ex|Product Growth": {
+   "env": 36284805.0,
+   "costo": 6039631.2
+  },
+  "nunca|Marketing": {
+   "env": 60411436.0,
+   "costo": 13481197.75
+  },
+  "nunca|Others": {
+   "env": 15673.0,
+   "costo": 5341.4
+  },
+  "nunca|Product Growth": {
+   "env": 16355178.0,
+   "costo": 1684150.9
+  },
+  "nunca|Sales": {
+   "env": 420227.0,
+   "costo": 20741.75
+  }
+ },
+ "prog": {
+  "30a90": {
+   "lab": "30 a 90 días sin usar",
+   "env": 2125580.0,
+   "costo": 63265.3,
+   "conv": 11163.440000000002,
+   "mxn_conv": 5.6671868169668125,
+   "equipo": "Product Growth",
+   "ca7": 13.36079128833973,
+   "cn7": 5.542523618079321,
+   "ca90": 43.81649973478112,
+   "cn90": 28.295898816050325,
+   "familias": [
+    "Lending-KCash-B0208-CANVAS-Recurrentes-Inactivos30a90dias-SinYConDescuentoEscalonado-N/A",
+    "Lending-KCash-B0208-CANVAS-Recurrentes_Inactivos30a90dias-SinYConDescuentoEscalonado-Dcto",
+    "Lending-KCash-B0208-CANVAS-Recurrentes_Inactivos30a90dias-SinYConDescuentoEscalonado-N/A"
+   ],
+   "b0208": {
+    "env": 2192900.0,
+    "costo": 117981.3,
+    "conv": 12958.279999999999
+   }
+  },
+  "3m": {
+   "lab": "3 meses",
+   "env": 1230879.0,
+   "costo": 214761.99999999997,
+   "conv": 4299.780000000001,
+   "mxn_conv": 49.94720660126796,
+   "equipo": "Product Growth",
+   "ca7": 6.903182386309009,
+   "cn7": 4.0208339701573355,
+   "ca90": 26.702314126600253,
+   "cn90": 20.706241457460884,
+   "familias": [
+    "Lending-KPay-B0331-CANVAS-Softnactive_3MesesInactividad-ConSinOferta-N/A",
+    "Lending-KPay-B0331-Whatsapp-Softnactive_3MesesInactividad-ConSinOferta-N/A"
+   ]
+  },
+  "6m": {
+   "lab": "6 meses",
+   "env": 6126873.0,
+   "costo": 1261147.55,
+   "conv": 11771.6,
+   "mxn_conv": 107.13476078018282,
+   "equipo": "Product Growth",
+   "ca7": 3.7291039905560046,
+   "cn7": 2.1961610235183193,
+   "ca90": 16.451585223475817,
+   "cn90": 12.22827368831743,
+   "familias": [
+    "Copy of Lending-KPay-B0332-CANVAS-HardInactive_6MesesInactividad-ConSinOferta-N/A",
+    "Lending-KPay--B0206-CANVAS-HardInactive_6MesesInactividad-SinOferta-N/A",
+    "Lending-KPay-B0206-CANVAS-HardInactive_6MesesInactividad-ConOferta-N/A",
+    "Lending-KPay-B0206-CANVAS-HardInactive_6MesesInactividad-SinOferta-N/A",
+    "Lending-KPay-B0206-CANVAS-HardInactive_6MesesInactividad-SoloAmazon-N/A",
+    "Lending-KPay-B0332-CANVAS-HardInactive_6MesesInactividad-ConSinOferta-N/A",
+    "Lending-KPay-B0332-CANVAS-HardInactive_6MesesInactividad-ConSinOferta_NEW-N/A",
+    "Lending-KPay-B0332-Whatsapp-HardInactive_6MesesInactividad-ConSinOferta-N/A"
+   ]
+  },
+  "12m": {
+   "lab": "12 meses (churn)",
+   "env": 8494870.0,
+   "costo": 2247697.25,
+   "conv": 3809.23,
+   "mxn_conv": 590.0660369681011,
+   "equipo": "Product Growth",
+   "ca7": 0.9000758208865848,
+   "cn7": 0.5495291465089502,
+   "ca90": 4.4816220209920825,
+   "cn90": 3.4060484722546294,
+   "familias": [
+    "Copy of Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta-N/A",
+    "Lending-KPay-B0207-CANVAS-Churn_12MesesInactividad-ConOferta-N/A",
+    "Lending-KPay-B0207-CANVAS-Churn_12MesesInactividad-SinOferta-N/A",
+    "Lending-KPay-B0207-CANVAS-Churn_12MesesInactividad-SoloAmazon-N/A",
+    "Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta-N/A",
+    "Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta_30%interes-N/A",
+    "Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta_35%interes-N/A",
+    "Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta_NEW-N/A",
+    "Lending-KPay-B0333-Whatsapp-Churn_12MesesInactividad-ConSinOferta-N/A"
+   ],
+   "b0333_mxn": 665.6661455894082,
+   "b0333_env": 7663139.0,
+   "b0333_costo": 2103584.9000000004,
+   "b0333_conv": 3160.12
+  },
+  "inact": {
+   "lab": "Inactivos sin plazo",
+   "env": 15063077.0,
+   "costo": 1926987.7000000002,
+   "conv": 23123.8,
+   "mxn_conv": 83.33352217196136,
+   "equipo": "Product Growth",
+   "ca7": 3.3140234868044405,
+   "cn7": 1.544835211114553,
+   "ca90": 12.556550531412649,
+   "cn90": 8.617683382955095,
+   "familias": [
+    "Lending-KCash-B0209-CANVAS-Recurrentes_Inactivos-DescuentoDirecto-1",
+    "Lending-KCash-B0209-CANVAS-Recurrentes_Inactivos-DescuentoDirecto-2",
+    "Lending-KCash-B0209-CANVAS-Recurrentes_Inactivos-DescuentoDirecto-N/A"
+   ]
+  },
+  "dorm": {
+   "lab": "Dormants, referidos",
+   "env": 17471043.0,
+   "costo": 1602434.75,
+   "conv": 14863.38,
+   "mxn_conv": 107.81092524042312,
+   "equipo": "Marketing",
+   "ca7": 2.2623300070129186,
+   "cn7": 0.9602866445481626,
+   "ca90": 9.871971286081777,
+   "cn90": 5.656261146369488,
+   "familias": [
+    "Marketing-KCash-B0326-Canvas-Recurrentes_Dormants-ReferralProgram-N/A",
+    "Marketing-KPay-B0326-Canvas-Recurrentes_Dormants-ReferralProgram-N/A"
+   ]
+  },
+  "b0171": {
+   "lab": "Leads: rescate Tasa 0",
+   "env": 59066721.0,
+   "costo": 13426603.85,
+   "conv": 51238.29000000001,
+   "mxn_conv": 262.04238763627745,
+   "equipo": "Marketing",
+   "ca7": 1.4097116218463808,
+   "cn7": 0.730662024689565,
+   "ca90": 4.962571793735445,
+   "cn90": 3.2611503754178415,
+   "familias": [
+    "Marketing-KCash-B0171-CANVAS-Anonimos-RescateTasa0-N/A",
+    "Marketing-KCash-B0171-CANVAS-Leads-BBDDHotLeads-N/A",
+    "Marketing-KCash-B0171-CANVAS-Leads-BBDDHotLeadsNoTocadosWA-N/A",
+    "Marketing-KCash-B0171-CANVAS-Leads-BBDDHotLeadsTocadosWA-N/A",
+    "Marketing-KCash-B0171-CANVAS-Leads-BBDDHotLeadsW1RescateTasa0-N/A",
+    "Marketing-KCash-B0171-CANVAS-Leads-BBDDHotLeadsW1RescateTasa0-v2",
+    "Marketing-KCash-B0171-CANVAS-Leads-BBDDHotLeadsW2RescateTasa0-N/A",
+    "Marketing-KCash-B0171-CANVAS-Leads-BBDDHotLeadsW3RescateTasa0-N/A",
+    "Marketing-KCash-B0171-CANVAS-Leads-BBDDHotLeadsW4RescateTasa0-N/A",
+    "Marketing-KCash-B0171-CANVAS-Leads-BBDDHotLeadsW5RescateTasa0-N/A",
+    "Marketing-KCash-B0171-CANVAS-Leads-BBDDRezagada180360DiasNoReaccionanWA-N/A",
+    "Marketing-KCash-B0171-CANVAS-Leads-BBDDRezagada180360DiasReaccionanWA-N/A"
+   ]
+  },
+  "b0223": {
+   "lab": "Nunca activaron: Installments",
+   "env": 16355178.0,
+   "costo": 1684144.9000000001,
+   "conv": 840.3100000000001,
+   "mxn_conv": 2004.1947614570813,
+   "equipo": "Product Growth",
+   "ca7": 0.14153651686643492,
+   "cn7": 0.040167020511036475,
+   "ca90": 0.8018919011143404,
+   "cn90": 0.34045090887905616,
+   "familias": [
+    "Lending-KCash-B0223-CANVAS-Nuevos_NeverActive-InstallmentsNoCash-N/A",
+    "Lending-KCash-B0223-CANVAS-Treatment_NeverActive-InstallmentsNoCash-N/A"
+   ]
+  }
+ },
+ "abre": {
+  "b0209_email": {
+   "ca90": 15.747975378198227,
+   "cn90": 6.526782876214694
+  },
+  "b0326kcash_email": {
+   "ca90": 12.343633619090506,
+   "cn90": 4.3656635868450495
+  }
+ },
+ "ex_email_noabre": {
+  "email": {
+   "ca90": 13.064206498389426,
+   "cn90": 5.887700760924295,
+   "ca7": 3.3206226812023547,
+   "cn7": 1.0091345870337347
+  },
+  "push notification": {
+   "ca90": 34.673500886034944,
+   "cn90": 14.737374645802227,
+   "ca7": 11.446047140870029,
+   "cn7": 2.820649253946035
+  },
+  "whatsapp": {
+   "ca90": 9.669263871918012,
+   "cn90": 5.09420301067041,
+   "ca7": 2.1805271639009147,
+   "cn7": 0.7978016367109368
+  }
+ },
+ "wa_prog": {
+  "b0171": {
+   "send": 18333448.0,
+   "costo": 12646383.0,
+   "mxn": 506.3667504179221,
+   "email_mxn": 175.8807998584321
+  },
+  "b0333": {
+   "send": 2602178.0,
+   "costo": 1920851.0,
+   "mxn": 2243.486842873661,
+   "email_mxn": 255.43970253155712
+  },
+  "b0209": {
+   "send": 2320993.0,
+   "costo": 1477503.0,
+   "mxn": 296.5015893656986,
+   "email_mxn": 70.36237465052426
+  }
+ },
+ "control": {
+  "canvas": 698,
+  "con_control": 7,
+  "personas": 134,
+  "min": 1,
+  "max": 96,
+  "ex_con_control": 0,
+  "todos_b0171": true
+ },
+ "e7b": {
+  "no": {
+   "usuarios": 14241672.0,
+   "msgs": 159530057.0,
+   "email": 108932371.0,
+   "push": 42635163.0,
+   "wa": 7648855.0,
+   "wa_ent": 2586214.0,
+   "inapp": 313668.0,
+   "conv": 11940.0,
+   "bajas": 202227.0,
+   "costo": 8032832.550000001
+  },
+  "si": {
+   "usuarios": 5296506.0,
+   "msgs": 510655546.0,
+   "email": 225333219.0,
+   "push": 209284284.0,
+   "wa": 48113739.0,
+   "wa_ent": 38955232.0,
+   "inapp": 27924304.0,
+   "conv": 1173184.0,
+   "bajas": 237042.0,
+   "costo": 50221892.95
+  },
+  "tot": {
+   "usuarios": 19538178.0,
+   "msgs": 670185603.0,
+   "email": 334265590.0,
+   "push": 251919447.0,
+   "wa": 55762594.0,
+   "wa_ent": 41541446.0,
+   "inapp": 28237972.0,
+   "conv": 1185124.0,
+   "bajas": 439269.0,
+   "costo": 58254725.5
+  },
+  "abre_push": 1153171.0,
+  "push_o_inapp": 3176876.0,
+  "push_o_inapp_conv": 1093656.0
+ },
+ "e9b": {
+  "no": {
+   "usuarios": 4097740.0,
+   "msgs": 77640326.0,
+   "email": 46260013.0,
+   "push": 28059466.0,
+   "wa": 2986679.0,
+   "wa_ent": 1263729.0,
+   "inapp": 334168.0,
+   "conv": 15300.0,
+   "bajas": 78275.0,
+   "costo": 3576729.65
+  },
+  "si": {
+   "usuarios": 2973666.0,
+   "msgs": 138373662.0,
+   "email": 56346004.0,
+   "push": 62994789.0,
+   "wa": 9511971.0,
+   "wa_ent": 8254755.0,
+   "inapp": 9520898.0,
+   "conv": 531083.0,
+   "bajas": 58019.0,
+   "costo": 11072055.2
+  },
+  "tot": {
+   "usuarios": 7071406.0,
+   "msgs": 216013988.0,
+   "email": 102606017.0,
+   "push": 91054255.0,
+   "wa": 12498650.0,
+   "wa_ent": 9518484.0,
+   "inapp": 9855066.0,
+   "conv": 546383.0,
+   "bajas": 136294.0,
+   "costo": 14648784.850000001
+  },
+  "abre_push": 646431.0,
+  "push_o_inapp": 1992617.0,
+  "push_o_inapp_conv": 480229.0
+ },
+ "e4a": {
+  "email": {
+   "01": 4795087.0,
+   "02": 4836818.0,
+   "03": 5248668.0,
+   "04": 4649704.0,
+   "05": 5190594.0,
+   "06": 17564955.0,
+   "07": 4508598.0,
+   "08": 4683952.0,
+   "09": 5088995.0
+  },
+  "in-app": {
+   "01": 801168.0,
+   "02": 927648.0,
+   "03": 1012291.0,
+   "04": 798532.0,
+   "05": 1075928.0,
+   "06": 1183682.0,
+   "07": 1147357.0,
+   "08": 1151014.0,
+   "09": 962378.0
+  },
+  "push notification": {
+   "01": 1500434.0,
+   "02": 1720928.0,
+   "03": 1798765.0,
+   "04": 1789977.0,
+   "05": 1937764.0,
+   "06": 1898018.0,
+   "07": 1938141.0,
+   "08": 2281545.0,
+   "09": 1669398.0
+  },
+  "whatsapp": {
+   "01": 2468681.0,
+   "02": 2745501.0,
+   "03": 2763872.0,
+   "04": 2770485.0,
+   "05": 2507402.0,
+   "06": 2239205.0,
+   "07": 1945292.0,
+   "08": 1951297.0,
+   "09": 1698563.0
+  }
+ },
+ "alcance": {
+  "activos": {
+   "push": 67.71420429107144,
+   "inapp": 23.650498677496483,
+   "abre": 3.660310288220034
+  },
+  "cobranza": {
+   "push": 64.1824188687214,
+   "inapp": 1.531105503785316,
+   "abre": 8.19197392012072
+  },
+  "ex": {
+   "push": 33.665107080638656,
+   "inapp": 9.362066731570733,
+   "abre": 0.8496421279565015
+  },
+  "leads": {
+   "push": 36.981662507419074,
+   "inapp": 9.303604157594659,
+   "abre": 1.2158113404378772
+  },
+  "nuevos": {
+   "push": 20.303472567194106,
+   "inapp": 7.221625340639678,
+   "abre": 1.6967268212055124
+  },
+  "nunca": {
+   "push": 30.60535834372737,
+   "inapp": 2.8678086556114875,
+   "abre": 0.5981229599274445
+  },
+  "todos": {
+   "push": 195.71903507074364,
+   "inapp": 37.750104931183046,
+   "abre": 2.1094506834806634
+  }
+ },
+ "alcance3": {
+  "activos": {
+   "push": 59.92128059120382,
+   "inapp": 30.34703848056252,
+   "abre": 3.6685609656524534
+  },
+  "cobranza": {
+   "push": 63.79404428797939,
+   "inapp": 4.165141754951693,
+   "abre": 7.094638082291219
+  },
+  "ex": {
+   "push": 32.20768849382497,
+   "inapp": 11.079669005803883,
+   "abre": 0.9497690455530414
+  },
+  "leads": {
+   "push": 33.722023464234084,
+   "inapp": 10.460716976451723,
+   "abre": 1.2557646657255284
+  },
+  "nuevos": {
+   "push": 20.303472567194106,
+   "inapp": 7.221625340639678,
+   "abre": 1.6967268212055124
+  },
+  "nunca": {
+   "push": 30.713038888876195,
+   "inapp": 2.88780794420721,
+   "abre": 0.6010565231508243
+  },
+  "todos": {
+   "push": 198.02082739514032,
+   "inapp": 38.44088829676564,
+   "abre": 2.088353367168856
+  }
+ },
+ "alc_fam": {
+  "b0209": {
+   "push": 28.634430566047882,
+   "inapp": 8.013154324021036
+  },
+  "b0223": {
+   "push": 1.101557236394891,
+   "inapp": 0.5838255863106983
+  }
+ },
+ "b0171_anon_push": {
+  "env": 8930936.0,
+  "usr": 1848598.0,
+  "ap": 0.5579594344870459
+ },
+ "bloq": {
+  "freeze": {
+   "total": 56634390.0,
+   "promo": 43349527.0,
+   "eq": {
+    "Marketing": 16516446.0,
+    "Others": 2602885.0,
+    "Product Growth": 11373618.0,
+    "Sales": 12856578.0
+   },
+   "tema": {
+    "Bienvenida y activación": 525724.0,
+    "Cobranza y pagos": 520520.0,
+    "Descuento, cupón u oferta": 16096316.0,
+    "Lanzamiento y novedades": 5673223.0,
+    "Otro": 8986745.0,
+    "Recordatorio de algo empezado": 2417717.0,
+    "Referidos": 7272860.0,
+    "Tasa 0": 1856422.0
+   },
+   "canal": {
+    "email": 14549359.0,
+    "in-app": 3018954.0,
+    "push notification": 22012773.0,
+    "whatsapp": 3768441.0
+   },
+   "prod": {
+    "ecosistema": 1720656.0,
+    "kcash": 9829237.0,
+    "kpay": 30111011.0,
+    "kueski": 1573450.0,
+    "marketing": 2291.0,
+    "sales": 112882.0
+   },
+   "eq_tema": {
+    "Marketing|Bienvenida y activación": 24879.0,
+    "Marketing|Cobranza y pagos": 520520.0,
+    "Marketing|Descuento, cupón u oferta": 3716382.0,
+    "Marketing|Lanzamiento y novedades": 1625187.0,
+    "Marketing|Otro": 1864194.0,
+    "Marketing|Recordatorio de algo empezado": 383859.0,
+    "Marketing|Referidos": 7225279.0,
+    "Marketing|Tasa 0": 1156146.0,
+    "Others|Descuento, cupón u oferta": 742007.0,
+    "Others|Lanzamiento y novedades": 612648.0,
+    "Others|Otro": 257522.0,
+    "Others|Recordatorio de algo empezado": 989650.0,
+    "Others|Referidos": 1058.0,
+    "Product Growth|Bienvenida y activación": 500845.0,
+    "Product Growth|Descuento, cupón u oferta": 5369939.0,
+    "Product Growth|Lanzamiento y novedades": 1869626.0,
+    "Product Growth|Otro": 2094137.0,
+    "Product Growth|Recordatorio de algo empezado": 1044208.0,
+    "Product Growth|Tasa 0": 494863.0,
+    "Sales|Descuento, cupón u oferta": 6267988.0,
+    "Sales|Lanzamiento y novedades": 1565762.0,
+    "Sales|Otro": 4770892.0,
+    "Sales|Referidos": 46523.0,
+    "Sales|Tasa 0": 205413.0
+   },
+   "eq_prod": {
+    "Marketing|ecosistema": 388184.0,
+    "Marketing|kcash": 5302588.0,
+    "Marketing|kpay": 10825674.0,
+    "Others|ecosistema": 72779.0,
+    "Others|kpay": 841483.0,
+    "Others|kueski": 1573450.0,
+    "Others|marketing": 2291.0,
+    "Others|sales": 112882.0,
+    "Product Growth|ecosistema": 1259693.0,
+    "Product Growth|kcash": 4526649.0,
+    "Product Growth|kpay": 5587276.0,
+    "Sales|kpay": 12856578.0
+   },
+   "top": [
+    [
+     "Marketing-KPay-B0326-Canvas-Recurrentes_Dormants-ReferralProgram-N/A",
+     "email",
+     "Marketing",
+     1959533.0
+    ],
+    [
+     "Sales-KPay-B0335-CANVAS-Recurrentes_PortafolioActivoEInactivo-PromocionesMerchantsAmplificacion-N/A",
+     "email",
+     "Sales",
+     1272767.0
+    ],
+    [
+     "Sales-KPay-B0367-CANVAS-Recurrentes-Comerciodeldía-N/A",
+     "push notification",
+     "Sales",
+     630988.0
+    ],
+    [
+     "Marketing-KPay-B0326-Canvas-Recurrentes_Activos-ReferralProgram-N/A",
+     "push notification",
+     "Marketing",
+     570886.0
+    ],
+    [
+     "Marketing-KCash-B0391-CANVAS-Leads_BDDMarketing-RescateFinesDeSemana-N/A",
+     "push notification",
+     "Marketing",
+     563529.0
+    ],
+    [
+     "Sales-KPay-B0493-CANVAS-Recurrentes-HotSaleKUESKIPROMOEnterprise-N/A",
+     "push notification",
+     "Sales",
+     559905.0
+    ],
+    [
+     "Sales-KPay-B0417-CANVAS-Recurrentes-ComerciodeldiaMarzo-N/A",
+     "push notification",
+     "Sales",
+     531154.0
+    ],
+    [
+     "Shopping-KPay-S0004-CAMPAIGN-WeeklyRecommendations",
+     "email",
+     "Others",
+     530902.0
+    ],
+    [
+     "Marketing-KPay-B0326-Canvas-Recurrentes_Dormants-ReferralProgram-N/A",
+     "push notification",
+     "Marketing",
+     485878.0
+    ],
+    [
+     "Marketing-KCash-B0326-Canvas-Leads-ReferralProgram-N/A",
+     "push notification",
+     "Marketing",
+     462627.0
+    ],
+    [
+     "Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta-N/A",
+     "email",
+     "Product Growth",
+     461142.0
+    ],
+    [
+     "Marketing-KPay-B0441-CANVAS-Recurrentes-ComerciodeldiaAbril-N/A",
+     "push notification",
+     "Marketing",
+     447071.0
+    ],
+    [
+     "Lending-Ecosistema-B0440-CANVAS-Todos-AnotayGana-N/A",
+     "email",
+     "Product Growth",
+     424501.0
+    ],
+    [
+     "NewProducts-Kueski-T0000-Push-Portfolio_BillPay_Reminder_Full_Rollout",
+     "push notification",
+     "Others",
+     421472.0
+    ],
+    [
+     "Marketing-KPay-B0561-CANVAS-Recurrentes-Comerciodeldia-N/A",
+     "push notification",
+     "Marketing",
+     395091.0
+    ]
+   ]
+  },
+  "reus": {
+   "total": 490424.0,
+   "promo": 248565.0,
+   "eq": {
+    "Marketing": 26838.0,
+    "Others": 67047.0,
+    "Product Growth": 104008.0,
+    "Sales": 50672.0
+   },
+   "tema": {
+    "Descuento, cupón u oferta": 145690.0,
+    "Lanzamiento y novedades": 69353.0,
+    "Otro": 17848.0,
+    "Recordatorio de algo empezado": 10063.0,
+    "Referidos": 2168.0,
+    "Tasa 0": 3443.0
+   },
+   "canal": {
+    "email": 111291.0,
+    "in-app": 1400.0,
+    "push notification": 101581.0,
+    "whatsapp": 34293.0
+   },
+   "prod": {
+    "kcash": 15275.0,
+    "kpay": 228869.0,
+    "kueski": 4421.0
+   },
+   "eq_tema": {
+    "Marketing|Descuento, cupón u oferta": 17014.0,
+    "Marketing|Lanzamiento y novedades": 2565.0,
+    "Marketing|Otro": 3900.0,
+    "Marketing|Referidos": 2168.0,
+    "Marketing|Tasa 0": 1191.0,
+    "Others|Lanzamiento y novedades": 60001.0,
+    "Others|Recordatorio de algo empezado": 7046.0,
+    "Product Growth|Descuento, cupón u oferta": 92933.0,
+    "Product Growth|Otro": 8058.0,
+    "Product Growth|Recordatorio de algo empezado": 3017.0,
+    "Sales|Descuento, cupón u oferta": 35743.0,
+    "Sales|Lanzamiento y novedades": 6787.0,
+    "Sales|Otro": 5890.0,
+    "Sales|Tasa 0": 2252.0
+   },
+   "eq_prod": {
+    "Marketing|kcash": 4691.0,
+    "Marketing|kpay": 22147.0,
+    "Others|kpay": 62626.0,
+    "Others|kueski": 4421.0,
+    "Product Growth|kcash": 10584.0,
+    "Product Growth|kpay": 93424.0,
+    "Sales|kpay": 50672.0
+   },
+   "top": [
+    [
+     "Shopping-KPay-S0004-CAMPAIGN-WeeklyRecommendations",
+     "email",
+     "Others",
+     57515.0
+    ],
+    [
+     "Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta-N/A",
+     "whatsapp",
+     "Product Growth",
+     18949.0
+    ],
+    [
+     "Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta-N/A",
+     "email",
+     "Product Growth",
+     16310.0
+    ],
+    [
+     "Lending-KPay-B0332-CANVAS-HardInactive_6MesesInactividad-ConSinOferta-N/A",
+     "push notification",
+     "Product Growth",
+     11816.0
+    ],
+    [
+     "Lending-KPay-B0333-CANVAS-Churn_12MesesInactividad-ConSinOferta-N/A",
+     "push notification",
+     "Product Growth",
+     11804.0
+    ],
+    [
+     "Sales-KPay-B0335-CANVAS-Recurrentes_PortafolioActivoEInactivo-PromocionesMerchantsAmplificacion-N/A",
+     "email",
+     "Sales",
+     6217.0
+    ],
+    [
+     "Sales-KPay-B0367-CANVAS-Recurrentes-Comerciodeldía-N/A",
+     "push notification",
+     "Sales",
+     6173.0
+    ],
+    [
+     "Lending-KPay-B0332-CANVAS-HardInactive_6MesesInactividad-ConSinOferta-N/A",
+     "email",
+     "Product Growth",
+     5312.0
+    ],
+    [
+     "QA-KPay-B001-CANVAS-Todos-ReminderRegistroTelefono-N/A",
+     "push notification",
+     "Others",
+     5111.0
+    ],
+    [
+     "Lending-KPay-B0332-CANVAS-HardInactive_6MesesInactividad-ConSinOferta-N/A",
+     "whatsapp",
+     "Product Growth",
+     4872.0
+    ],
+    [
+     "Marketing-KPay-B0324-CANVAS-Todos_NuevosRecurrentes-CashbackAfiliados-N/A",
+     "push notification",
+     "Marketing",
+     4186.0
+    ],
+    [
+     "Sales-KPay-B0417-CANVAS-Recurrentes-ComerciodeldiaMarzo-N/A",
+     "push notification",
+     "Sales",
+     3868.0
+    ],
+    [
+     "Sales-KPay-B0496-CANVAS-Recurrentes-ComerciodeldiaMayo-N/A",
+     "push notification",
+     "Sales",
+     3691.0
+    ],
+    [
+     "Sales-KPay-B0359-CANVAS-Recurrentes-CashbackAfiliados-N/A",
+     "push notification",
+     "Sales",
+     3604.0
+    ],
+    [
+     "Lending-KPay-B0333-Whatsapp-Churn_12MesesInactividad-ConSinOferta-N/A",
+     "whatsapp",
+     "Product Growth",
+     3532.0
+    ]
+   ]
+  },
+  "negra": {
+   "total": 425887.0,
+   "promo": 145865.0,
+   "eq": {
+    "Marketing": 36999.0,
+    "Others": 11733.0,
+    "Product Growth": 39541.0,
+    "Sales": 57592.0
+   },
+   "tema": {
+    "Cobranza y pagos": 1034.0,
+    "Descuento, cupón u oferta": 84144.0,
+    "Lanzamiento y novedades": 11437.0,
+    "Otro": 17091.0,
+    "Recordatorio de algo empezado": 15387.0,
+    "Referidos": 14007.0,
+    "Tasa 0": 2765.0
+   },
+   "canal": {
+    "email": 51021.0,
+    "in-app": 1899.0,
+    "push notification": 89691.0,
+    "whatsapp": 3254.0
+   },
+   "prod": {
+    "kcash": 13463.0,
+    "kpay": 132402.0
+   },
+   "eq_tema": {
+    "Marketing|Cobranza y pagos": 1034.0,
+    "Marketing|Descuento, cupón u oferta": 17134.0,
+    "Marketing|Lanzamiento y novedades": 2792.0,
+    "Marketing|Otro": 2032.0,
+    "Marketing|Referidos": 14007.0,
+    "Others|Lanzamiento y novedades": 3176.0,
+    "Others|Recordatorio de algo empezado": 8557.0,
+    "Product Growth|Descuento, cupón u oferta": 27720.0,
+    "Product Growth|Otro": 4991.0,
+    "Product Growth|Recordatorio de algo empezado": 6830.0,
+    "Sales|Descuento, cupón u oferta": 39290.0,
+    "Sales|Lanzamiento y novedades": 5469.0,
+    "Sales|Otro": 10068.0,
+    "Sales|Tasa 0": 2765.0
+   },
+   "eq_prod": {
+    "Marketing|kcash": 4342.0,
+    "Marketing|kpay": 32657.0,
+    "Others|kpay": 11733.0,
+    "Product Growth|kcash": 9121.0,
+    "Product Growth|kpay": 30420.0,
+    "Sales|kpay": 57592.0
+   },
+   "top": [
+    [
+     "Lending-KPay-B0152-CANVAS-Recurrentes_CumpleañosAutomatizado-SinOferta-N/A",
+     "email",
+     "Product Growth",
+     12725.0
+    ],
+    [
+     "QA-KPay-B001-CANVAS-Todos-ReminderRegistroTelefono-N/A",
+     "push notification",
+     "Others",
+     8557.0
+    ],
+    [
+     "Sales-KPay-B0335-CANVAS-Recurrentes_PortafolioActivoEInactivo-PromocionesMerchantsAmplificacion-N/A",
+     "email",
+     "Sales",
+     8199.0
+    ],
+    [
+     "Sales-KPay-B0367-CANVAS-Recurrentes-Comerciodeldía-N/A",
+     "push notification",
+     "Sales",
+     7981.0
+    ],
+    [
+     "Lending-KPay-B0153-CANVAS-Recurrentes_AniversarioAutomatizado-SinOferta-N/A",
+     "email",
+     "Product Growth",
+     6308.0
+    ],
+    [
+     "Marketing-KPay-B0326-Canvas-Recurrentes_Activos-ReferralProgram-N/A",
+     "push notification",
+     "Marketing",
+     5618.0
+    ],
+    [
+     "Marketing-KPay-B0324-CANVAS-Todos_NuevosRecurrentes-CashbackAfiliados-N/A",
+     "push notification",
+     "Marketing",
+     5339.0
+    ],
+    [
+     "Sales-KPay-B0417-CANVAS-Recurrentes-ComerciodeldiaMarzo-N/A",
+     "push notification",
+     "Sales",
+     4598.0
+    ],
+    [
+     "Sales-KPay-B0359-CANVAS-Recurrentes-CashbackAfiliados-N/A",
+     "push notification",
+     "Sales",
+     4542.0
+    ],
+    [
+     "Lending-KPay-B0152-CANVAS-Recurrentes_CumpleañosAutomatizado-SinOferta-N/A",
+     "push notification",
+     "Product Growth",
+     4500.0
+    ],
+    [
+     "Marketing-KPay-B0441-CANVAS-Recurrentes-ComerciodeldiaAbril-N/A",
+     "push notification",
+     "Marketing",
+     3912.0
+    ],
+    [
+     "Shopping-KPay-S0004-CAMPAIGN-WeeklyRecommendations",
+     "email",
+     "Others",
+     3176.0
+    ],
+    [
+     "Lending-KCash-B0301-CANVAS-Active-Retargeting_Installments_SP",
+     "email",
+     "Product Growth",
+     2934.0
+    ],
+    [
+     "Sales-KPay-B0496-CANVAS-Recurrentes-ComerciodeldiaMayo-N/A",
+     "push notification",
+     "Sales",
+     2767.0
+    ],
+    [
+     "Sales-KPay-B0345-CANVAS-Recurrentes-QuincenasSinIntereses-N/A",
+     "push notification",
+     "Sales",
+     2765.0
+    ]
+   ]
+  }
+ },
+ "excl_min": 30505441.0,
+ "excl_kcash": 40334678.0,
+ "e3": {
+  "3.Blacklist": {
+   "u": 24526.0,
+   "m": 708640.0,
+   "c": 1502.0
+  },
+  "4.Kpay CC Freeze": {
+   "u": 552224.0,
+   "m": 57928902.0,
+   "c": 115306.0
+  },
+  "6.Reus or Arco": {
+   "u": 10450.0,
+   "m": 815650.0,
+   "c": 2265.0
+  },
+  "7.Prospects": {
+   "u": 705768.0,
+   "m": 192787951.0,
+   "c": 293584.0
+  },
+  "sin_golden": {
+   "u": 18245210.0,
+   "m": 418161402.0,
+   "c": 772467.0
+  }
+ },
+ "baja": {
+  "total": 1422980.0,
+  "promo": 79312.0,
+  "tipo": {
+   "?": 682.0,
+   "cobranza": 781420.0,
+   "promocional o lifecycle": 79312.0,
+   "transaccional u operativa": 561566.0
+  },
+  "tema": {
+   "Descuento, cupón u oferta": 9698.0,
+   "Lanzamiento y novedades": 11267.0,
+   "Otro": 5059.0,
+   "Recordatorio de algo empezado": 7066.0,
+   "Referidos": 11114.0,
+   "Tasa 0": 35108.0
+  },
+  "equipo": {
+   "Acquisition": 1393.0,
+   "Marketing": 58306.0,
+   "Others": 4550.0,
+   "Product Growth": 10119.0,
+   "Sales": 4944.0
+  },
+  "usuarios": 44670.0,
+  "abiertos": 7670.0,
+  "clics": 658.0,
+  "top": [
+   {
+    "familia": "Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0-N/A",
+    "equipo": "Marketing",
+    "e": 5807.0,
+    "meses": 1,
+    "tema": "Tasa 0",
+    "usr": 1738.0
+   },
+   {
+    "familia": "Marketing-KCash-B0171-CANVAS-Leads_BBDDHotLeadsW1-RescateTasa0-N/A",
+    "equipo": "Marketing",
+    "e": 4757.0,
+    "meses": 1,
+    "tema": "Tasa 0",
+    "usr": 1089.0
+   },
+   {
+    "familia": "Marketing-KCash-B0326-Canvas-Leads-ReferralProgram-N/A",
+    "equipo": "Marketing",
+    "e": 4717.0,
+    "meses": 1,
+    "tema": "Referidos",
+    "usr": 3008.0
+   },
+   {
+    "familia": "Marketing-KCash-B0171-CANVAS-Leads_BBDDRezagada-RescateTasa0-N/A",
+    "equipo": "Marketing",
+    "e": 4530.0,
+    "meses": 1,
+    "tema": "Tasa 0",
+    "usr": 1142.0
+   },
+   {
+    "familia": "Marketing-KCash-B0000-CANVAS-Leads_LeftFunnel-Retargeting_Veriff",
+    "equipo": "Marketing",
+    "e": 4409.0,
+    "meses": 9,
+    "tema": "Recordatorio de algo empezado",
+    "usr": 1320.0
+   },
+   {
+    "familia": "NewProducts-Kueski-T0000-E-Portfolio_BillPay_Intro_Full_Rollout",
+    "equipo": "Others",
+    "e": 3050.0,
+    "meses": 1,
+    "tema": "Descuento, cupón u oferta",
+    "usr": 3016.0
+   },
+   {
+    "familia": "Marketing-KCash-B0171-CANVAS-Leads_BBDDHotLeadsW1-RescateTasa0-N/A",
+    "equipo": "Marketing",
+    "e": 2928.0,
+    "meses": 1,
+    "tema": "Tasa 0",
+    "usr": 1834.0
+   },
+   {
+    "familia": "Marketing-KCash-B0366-CANVAS-Leads-Newsletter-N/A",
+    "equipo": "Marketing",
+    "e": 2432.0,
+    "meses": 1,
+    "tema": "Lanzamiento y novedades",
+    "usr": 2392.0
+   },
+   {
+    "familia": "Lending-KCash-B0211-CANVAS-Nuevos_RegistradosPay-Tasa0-N/A",
+    "equipo": "Product Growth",
+    "e": 2319.0,
+    "meses": 1,
+    "tema": "Tasa 0",
+    "usr": 365.0
+   },
+   {
+    "familia": "Marketing-KCash-B0171-CANVAS-Leads_BBDDHotLeadsW1-RescateTasa0-N/A",
+    "equipo": "Marketing",
+    "e": 2313.0,
+    "meses": 1,
+    "tema": "Tasa 0",
+    "usr": 1657.0
+   },
+   {
+    "familia": "Marketing-KCash-B0171-CANVAS-Leads-BBDDHotLeadsW1RescateTasa0-N/A",
+    "equipo": "Marketing",
+    "e": 1757.0,
+    "meses": 1,
+    "tema": "Tasa 0",
+    "usr": 315.0
+   },
+   {
+    "familia": "Marketing-KCash-B0326-Canvas-Leads-ReferralProgram-N/A",
+    "equipo": "Marketing",
+    "e": 1736.0,
+    "meses": 1,
+    "tema": "Referidos",
+    "usr": 718.0
+   },
+   {
+    "familia": "Marketing-KCash-B0437-CANVAS-Leads-NewsletterMayo-N/A",
+    "equipo": "Marketing",
+    "e": 1708.0,
+    "meses": 1,
+    "tema": "Lanzamiento y novedades",
+    "usr": 1699.0
+   },
+   {
+    "familia": "Marketing-KCash-B0326-Canvas-Leads-ReferralProgram-N/A",
+    "equipo": "Marketing",
+    "e": 1681.0,
+    "meses": 1,
+    "tema": "Referidos",
+    "usr": 622.0
+   }
+  ]
+ }
+}
