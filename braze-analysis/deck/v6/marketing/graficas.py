@@ -49,7 +49,11 @@ HA = ROOT / 'hallazgos'
 fam = lambda x: re.sub(r'-\d{8,9}-', '-', str(x))
 
 
-AMIGO = [('BillPay_Intro', 'Lanzamiento de BillPay'), ('BKT1', 'Cobranza KCash, primer atraso'), ('Mail-Payment', 'Confirmación de pago KPay'),
+AMIGO = [('BBDDRezagada-RescateTasa0', 'Rescate Tasa 0 a rezagados'), ('HotLeads', 'Rescate Tasa 0 a leads recientes'),
+         ('InsigniaAdultosMayores', 'Adultos mayores'), ('MPNeverCash', 'Tasa 0 a KPay sin Cash'), ('NeverActive-InstallmentsNoCash', 'Installments, nunca activó'),
+         ('Churn_12Meses', 'Ex clientes KPay 12 meses'), ('HardInactive_6Meses', 'Ex clientes KPay 6 meses'), ('MPTemuCashi', 'Usuarios Temu y Cashi'),
+         ('50%descuento', '50 % de descuento'), ('HotSale', 'Hot Sale'), ('Inactivos-DescuentoDirecto', 'Descuento a inactivos'),
+         ('InstallmentsSíCash', 'Monto preaprobado Installments'), ('BillPay_Intro', 'Lanzamiento de BillPay'), ('BKT1', 'Cobranza KCash, primer atraso'), ('Mail-Payment', 'Confirmación de pago KPay'),
          ('ReminderRegistroTelefono', 'Prueba QA: recordatorio de teléfono'), ('RegistradosPay-Tasa0', 'Tasa 0 a registrados de KPay'),
          ('CuestaEnero', 'Cuesta de enero'), ('PortafolioActivoEInactivo', 'Comercios a todo el portafolio'), ('WeeklyRecommendations', 'Recomendaciones semanales'), ('Cumplea', 'Cumpleaños automático'),
          ('NarrativaTasa0', 'Tasa 0 a leads rezagados'), ('RescateTasa0', 'Rescate Tasa 0'), ('ReferralProgram', 'Referidos')]
@@ -318,3 +322,128 @@ def pareto_no_deberiamos():
         S.t(sx(i + 1), sy(cum.iloc[i]) - 8, f'{i + 1}', 10, INK, 'middle', 700)
     mkp = 100 * t[[eqf(f) == 'Marketing' for f in t.index]].sum() / t.sum()
     return S.done(), dict(n=N, top10=cum.iloc[k - 1], mk=mkp)
+
+
+def pareto_marketing():
+    """Lámina 2: campañas de Marketing ordenadas por gasto; acumulado del gasto (azul) y de las conversiones (verde).
+    La distancia entre las dos curvas es dinero que no trae conversiones."""
+    import sys
+    sys.path.insert(0, str(ROOT / 'deck' / 'v6' / 'slides' / 'b2' / 'src'))
+    from b2base import load_b
+    d = load_b()
+    m = d[d.equipo == 'Marketing']
+    g = m.groupby('fam').agg(c=('costo', 'sum'), v=('conversiones_fraccional', 'sum')).sort_values('c', ascending=False)
+    g = g[g.c > 0]
+    cc = (100 * g.c.cumsum() / g.c.sum()).tolist(); cv = (100 * g.v.cumsum() / g.v.sum()).tolist()
+    N = len(g)
+    W, H = 640, 256
+    X0, X1, Y0, Y1 = 50, 620, 34, 214
+    sx = lambda r: _log(r, 1, N, X0, X1)
+    sy = lambda v: Y1 - (Y1 - Y0) * v / 100
+    S = Svg(W, H, 'Campañas de Marketing ordenadas por gasto: acumulado del gasto y de las conversiones')
+    S.l(X1 - 250, 12, X1 - 230, 12, BLUE, 3); S.t(X1 - 224, 16, 'Gasto acumulado', 12, INK, w=600)
+    S.l(X1 - 100, 12, X1 - 80, 12, GREEN, 3); S.t(X1 - 74, 16, 'Conversiones', 12, INK, w=600)
+    for v in (0, 25, 50, 75, 100):
+        S.l(X0, sy(v), X1, sy(v), GRID); S.t(X0 - 6, sy(v) + 4, f'{v} %', 11, SEC, 'end')
+    for r in (1, 3, 10, 30, 100, 200):
+        if r <= N:
+            S.l(sx(r), Y1, sx(r), Y1 + 4, G1); S.t(sx(r), Y1 + 16, f'{r}', 11, SEC, 'middle')
+    S.t(X1, Y1 + 34, f'Campañas de Marketing, de la que más gasta a la que menos ({N}; escala que crece por múltiplos)', 10.5, SEC, 'end')
+    pa = ' '.join(f'{sx(i + 1):.1f},{sy(v):.1f}' for i, v in enumerate(cc))
+    pb = ' '.join(f'{sx(i + 1):.1f},{sy(v):.1f}' for i, v in reversed(list(enumerate(cv))))
+    S.o.append(f'<polygon points="{pa} {pb}" fill="{BLUE}" fill-opacity="0.10"/>')
+    S.o.append(f'<polyline points="{pa}" fill="none" stroke="{BLUE}" stroke-width="3"/>')
+    S.o.append(f'<polyline points="{" ".join(f"{sx(i + 1):.1f},{sy(v):.1f}" for i, v in enumerate(cv))}" fill="none" stroke="{GREEN}" stroke-width="3"/>')
+    k = 5
+    S.l(sx(k), sy(cv[k - 1]), sx(k), sy(cc[k - 1]), INK, 1.2, ' stroke-dasharray="3 3"')
+    S.o.append(f'<text x="{sx(k) - 8:.1f}" y="{sy(cc[k - 1]) - 8:.1f}" font-size="11.5" font-weight="700" fill="{BLUE}" text-anchor="end" '
+               f'stroke="#FFFFFF" stroke-width="3.5" stroke-linejoin="round" paint-order="stroke">5 campañas: {cc[k - 1]:.0f} % del gasto</text>')
+    S.t(sx(k) + 8, sy(cv[k - 1]) + 14, f'y {cv[k - 1]:.0f} % de las conversiones', 11.5, GREEN, 'start', 700)
+    S.t(X0 + 10, Y0 + 14, f'1. Tasa 0 a leads rezagados: {cc[0]:.0f} % del gasto, {cv[0]:.1f} % de las conversiones', 10.5, INK, 'start', 600)
+    return S.done(), dict(n=N, k5=(cc[4], cv[4]), k10=(cc[9], cv[9]), top=(cc[0], cv[0]))
+
+
+def mapa_versiones(n=13):
+    """Lámina 12: las campañas con más versiones, una fila cada una; cada celda es un mes. Tono = versiones que mandaron ese mes;
+    contorno azul = ese mes se estrenó una versión nueva. Muestra que se copia en vez de medir."""
+    e = pd.read_csv(DATA / 'e1_comunicacion_mes_canal.csv')
+    c = pd.read_csv(DATA / 'e2_catalogo.csv')
+    e = e[e.envios > 0].copy()
+    e['f'] = e.communication_name.map(fam); e['m'] = e.mes.str[:7]
+    cr = c.set_index('communication_id').created_at.astype(str).str[:7]
+    tot = e.groupby('f').communication_id.nunique().sort_values(ascending=False).head(n)
+    meses = [f'2026-{i:02d}' for i in range(1, 10)]
+    MES = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep']
+    W, rh = 640, 16
+    H = 40 + rh * n + 26
+    LW = 260
+    cw = (W - LW - 70) / 9
+    S = Svg(W, H, 'Las campañas con más versiones: una fila por campaña, una celda por mes; tono = versiones que mandaron ese mes')
+    for j, mm_ in enumerate(MES):
+        S.t(LW + j * cw + cw / 2, 30, mm_, 11, SEC, 'middle')
+    S.t(W - 4, 30, 'Versiones', 11, SEC, 'end', 600)
+    tonos = {0: '#F1F3F7', 1: '#C9D6F7', 2: '#8FA8EE', 3: '#4F74E0'}
+    for i, (f, nv) in enumerate(tot.items()):
+        y = 38 + i * rh
+        eq = equipo(re.sub(r'^Copy of ', '', f).split('-')[0].replace('Lending', 'Product Growth'))
+        S.t(LW - 10, y + 12, f'{nice(f, 26)} · {eq}', 10.5, INK if eq == 'Marketing' else TXT, 'end', 700 if eq == 'Marketing' else 400)
+        q = e[e.f == f]
+        for j, m_ in enumerate(meses):
+            ids = q[q.m == m_].communication_id.unique()
+            k = len(ids)
+            fill = tonos.get(min(k, 3), '#1F4FD8') if k < 4 else BLUE
+            x = LW + j * cw
+            S.r(x + 1.5, y + 1.5, cw - 3, rh - 3, fill, 2)
+            if any(cr.get(x_) == m_ for x_ in ids):
+                S.o.append(f'<rect x="{x + 1.5:.1f}" y="{y + 1.5:.1f}" width="{cw - 3:.1f}" height="{rh - 3:.1f}" rx="2" fill="none" stroke="{INK}" stroke-width="1.6"/>')
+        S.t(W - 4, y + 12, f'{nv}', 11, INK, 'end', 700)
+    yl = 38 + n * rh + 16
+    lx = LW
+    for k, lab in ((1, '1 versión'), (2, '2'), (3, '3 o más')):
+        S.r(lx, yl - 9, 14, 11, tonos[k], 2); S.t(lx + 18, yl, lab, 10.5, SEC); lx += 30 + len(lab) * 6
+    S.o.append(f'<rect x="{lx + 10:.1f}" y="{yl - 9:.1f}" width="14" height="11" rx="2" fill="none" stroke="{INK}" stroke-width="1.6"/>')
+    S.t(lx + 30, yl, 'versión nueva ese mes', 10.5, SEC)
+    return S.done()
+
+
+def barras_no_deberiamos(k=30):
+    """Lámina 13: las 30 campañas que más promociones mandaron a quien no debía recibirlas (barras, azul = Marketing) y,
+    encima, el acumulado sobre las 502 campañas (línea)."""
+    tipo = pd.read_csv(HA / 'muestra_c_familias.csv').groupby('familia').tipo.first()
+    a = pd.read_csv(DATA / 'e7a_familia_canal_etapa.csv')
+    a['familia'] = a.familia.fillna('(sin nombre)').map(fam)
+    a = a[(a.familia.map(tipo) == 'promocional o lifecycle') & a.etapa.isin(['4.Kpay CC Freeze', '6.Reus or Arco', '3.Blacklist'])]
+    b = pd.read_csv(DATA / 'e5b_comms_despues_baja.csv')
+    b['familia'] = b.familia.map(fam)
+    b = b[b.familia.map(tipo) == 'promocional o lifecycle']
+    t = pd.concat([a.groupby('familia').envios.sum(), b.groupby('familia').emails_despues_de_baja.sum()]).groupby(level=0).sum()
+    t = t[t > 0].sort_values(ascending=False)
+    eqf = lambda f: equipo(re.sub(r'^Copy of ', '', f).split('-')[0].replace('Lending', 'Product Growth'))
+    cum = 100 * t.cumsum() / t.sum()
+    W, H = 640, 236
+    X0, X1, Y0, Y1 = 50, 590, 34, 196
+    bw = (X1 - X0) / k
+    vmax = t.iloc[0]
+    sy = lambda v: Y1 - (Y1 - Y0) * v / vmax
+    sp = lambda p: Y1 - (Y1 - Y0) * p / 50
+    S = Svg(W, H, f'Las {k} campañas que más promociones mandaron a quien no debía recibirlas; línea = acumulado sobre todas')
+    S.r(X1 - 330, 7, 12, 11, BLUE, 2); S.t(X1 - 314, 16, 'Marketing', 12, INK, w=600)
+    S.r(X1 - 236, 7, 12, 11, G1, 2); S.t(X1 - 220, 16, 'Otros equipos', 12, TXT)
+    S.l(X1 - 116, 12, X1 - 96, 12, INK, 2); S.t(X1 - 90, 16, 'Acumulado', 12, INK, w=600)
+    for v in (0, 1e6, 2e6, 3e6):
+        if v <= vmax:
+            S.l(X0, sy(v), X1, sy(v), GRID); S.t(X0 - 6, sy(v) + 4, mm(v) if v else '0', 11, SEC, 'end')
+    for p in (10, 20, 30, 40, 50):
+        S.t(X1 + 6, sp(p) + 4, f'{p} %', 10.5, SEC)
+    for i, (f, v) in enumerate(t.head(k).items()):
+        S.r(X0 + i * bw + 2, sy(v), bw - 4, Y1 - sy(v), BLUE if eqf(f) == 'Marketing' else G1, 2)
+    pts = ' '.join(f'{X0 + i * bw + bw / 2:.1f},{sp(cum.iloc[i]):.1f}' for i in range(k))
+    S.o.append(f'<polyline points="{pts}" fill="none" stroke="{INK}" stroke-width="2"/>')
+    S.t(X0 + (k - 1) * bw + bw / 2, sp(cum.iloc[k - 1]) - 8, f'{k} de {len(t)} campañas: {cum.iloc[k - 1]:.0f} %', 11.5, INK, 'end', 700)
+    S.t(X0, Y1 + 18, f'Campañas, de la que más mandó a la que menos (las {k} primeras de {len(t)})', 10.5, SEC)
+    for i in range(3):
+        f = t.index[i]
+        nm = {'Marketing-KPay-B0326-Canvas-Recurrentes_Dormants-ReferralProgram-N/A': 'Referidos KPay a ex clientes'}.get(f, nice(f, 30))
+        S.t(X0 + 3 * bw + 8, Y0 + 14 + i * 15, f'{i + 1}. {nm} ({eqf(f)}): {mm(t.iloc[i])}', 10.5, INK, 'start', 600)
+        S.t(X0 + i * bw + bw / 2, sy(t.iloc[i]) - 4, f'{i + 1}', 10, INK, 'middle', 700)
+    return S.done(), dict(n=len(t), cumk=cum.iloc[k - 1])
