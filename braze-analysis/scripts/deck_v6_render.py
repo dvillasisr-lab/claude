@@ -52,6 +52,10 @@ CSS = BASE_CSS + """
 }
 """
 
+def eyebrow(d):
+    return (f'<div style="font-size:.95cqi;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);font-weight:700;margin-bottom:-.3cqi">'
+            f'{E(d["eyebrow"])}</div>') if d.get("eyebrow") else ""
+
 def ctx(d):
     if not any(d.get(k) for k in ("que", "quien", "a_quien")):
         return ""
@@ -92,7 +96,7 @@ def slide(d, i):
     sd = side(d)
     full = " full" if (not sd or d.get("ancho_completo")) else ""
     sid = f"{i}{'a' * d.get('sub', 0)}" if d.get("oculta") else i
-    return (f'<section class="slide{' oculta' if d.get('oculta') else ''}" id="l{sid}"><div class="s"><h2>{E(d["titulo"])}</h2>{ctx(d)}'
+    return (f'<section class="slide{' oculta' if d.get('oculta') else ''}" id="l{sid}"><div class="s">{eyebrow(d)}<h2>{E(d["titulo"])}</h2>{ctx(d)}'
             f'<div class="body{full}"><div class="ex">{body_l}</div>{"" if full else sd}</div>{foot(d, i)}</div></section>')
 
 def page(ds, title="Braze en Kueski · Deck v6", note=""):
