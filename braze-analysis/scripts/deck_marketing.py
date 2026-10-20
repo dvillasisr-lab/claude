@@ -60,7 +60,7 @@ portada = dict(kind='portada', titulo='Braze en Marketing: qué está pasando y 
                subtitulo='Diagnóstico de enero a septiembre 2026 de los mensajes que manda Marketing, comparado con los demás equipos.',
                meta='262 M mensajes de Marketing, 27.2 M MXN en nueve meses · Octubre 2026')
 
-SVG_EQ, EQ = graficas.costo_campanas()
+SVG_EQ, EQ = graficas.costo_dispersion()
 resumen = dict(kind='html', ancho_completo=True,
     titulo='Marketing pone 39 % de los mensajes y 47 % del gasto de Braze, y trae 25 % de las conversiones',
     que='Tasa 0, referidos, rescates a leads y recordatorios de registro.',
@@ -69,8 +69,8 @@ resumen = dict(kind='html', ancho_completo=True,
     html=grid(3, cardS('3.0 M MXN', 'al mes en mensajes; 84 % se va en WhatsApp')
               + cardS('32 MXN', 'por conversión; Product Growth 21 y el resto de 4 a 17')
               + cardS('5.9', 'bajas por cada mil correos; el resto de los equipos, 2.6', '#1F4FD8', '#E8EEFC'), '0')
-         + dos(gtitle('Cada punto es una campaña con 20 mil MXN o más: MXN por conversión, por equipo') + SVG_EQ,
-               itemS(1, 'A quién.', 'La campaña típica de Marketing paga 128 MXN por conversión; la de Product Growth, 47. Tasa 0 a rezagados, 460.')
+         + dos(gtitle('Cada punto es una campaña con 20 mil MXN o más: gasto contra MXN por conversión') + SVG_EQ,
+               itemS(1, 'A quién.', 'La campaña típica de Marketing paga 128 MXN por conversión; la del resto, 34. Gastar más no la abarata (R² 0.03).')
                + itemS(2, 'Por qué canal.', 'Dos terceras partes del push que abre menos de 1 de cada 100 personas son de Marketing.')
                + itemS(3, 'Cuántas veces.', 'Hasta 2.3 M personas al mes reciben tres o más campañas el mismo día, casi siempre con Marketing.')
                + itemS(4, 'Qué sí funciona.', 'El recordatorio de registro: 21 MXN por préstamo; lo que nace de algo que hizo la persona responde siete veces más.')),
@@ -144,7 +144,7 @@ no_deberiamos = dict(kind='html', ancho_completo=True,
           + cardS('146 mil', 'promociones a personas en lista negra', '#1F4FD8', '#E8EEFC')
           + cardS('79 mil', 'promociones a quien ya se dio de baja del correo', '#1F4FD8', '#E8EEFC')
           + '</div>'
-          + dos(gtitle('Cada punto es una campaña que mandó promociones a un grupo que no debería recibirlas') + graficas.no_deberiamos(),
+          + dos(gtitle('502 campañas mandaron promociones a quien no debía recibirlas; las 10 primeras suman solo 24 %') + graficas.pareto_no_deberiamos()[0],
                 itemS(1, 'KPay congelado.', 'Su línea de KPay está bloqueada y no puede comprar; 30.1 M de esas promociones ofrecían justo KPay.')
                 + itemS(2, 'REUS o ARCO.', 'REUS: registro de CONDUSEF para no recibir publicidad. ARCO: pidió cancelar u oponerse al uso de sus datos.')
                 + itemS(3, 'Baja de correo.', 'De 79 mil promociones a quien ya se dio de baja, 58 mil son de Marketing; la mayor, rescate de Tasa 0.'),
