@@ -68,11 +68,39 @@ causas = dict(kind='html', ancho_completo=True,
     fuente='Fuente: láminas de diagnóstico del deck v6 (Braze E1, E7b, E13, enero a septiembre 2026).')
 
 
+def tile(tema, big, txt, alert=False):
+    c = '#1F4FD8' if alert else '#0B1220'
+    return ('<div style="border-top:2px solid #0B1220;padding-top:.9cqi;display:flex;flex-direction:column;gap:.45cqi">'
+            f'<div style="font-size:.82cqi;letter-spacing:.1em;text-transform:uppercase;color:#6B7484;font-weight:600">{tema}</div>'
+            f'<div class="big" style="color:{c};font-size:3.2cqi">{big}</div>'
+            f'<div style="font-size:1.15cqi;line-height:1.35;color:#3B4556">{txt}</div></div>')
+
+
+gobierno = dict(kind='html', ancho_completo=True,
+    titulo='Braze no tiene dueño ni reglas comunes, y se nota en ocho datos de la cuenta',
+    que='Todo lo que vive en Braze: campañas, Canvas, listas y configuración.',
+    quien='Todos los equipos; nadie es dueño de la cuenta completa.',
+    a_quien='Toda la base, incluidos bloqueados y dados de baja.',
+    html=('<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2.2cqi 2cqi">'
+          + tile('Orden', '6,144', 'comunicaciones guardadas; en septiembre solo 341 mandaron algo')
+          + tile('Orden', '229', 'marcadas como archivadas siguieron enviando en septiembre')
+          + tile('Dueño', '748', 'comunicaciones sin equipo ni ticket; 210 de ellas mandaron 85 M mensajes en 2026')
+          + tile('Dueño', '74', 'campañas se copiaron cinco o más veces en vez de medirse: 667 versiones')
+          + tile('Reglas', '43 M', 'promociones a personas con KPay congelado', True)
+          + tile('Reglas', '9.8 M', 'WhatsApp a personas marcadas como baja', True)
+          + tile('Reglas', '9.9 M', 'veces una persona recibió la misma campaña dos veces el mismo día', True)
+          + tile('Medición', '1 de 3,228', 'Canvas tiene grupo de control real; solo el correo registra bajas por campaña', True)
+          + '</div>'),
+    sowhat='No es una campaña mala: es una cuenta sin dueño, sin reglas comunes y sin forma de medir.',
+    fuente='Fuente: Braze, catálogo de campañas y Canvas, envíos por comunicación (E1, E2), bloqueados (E7a, Sheets v4), grupos de control (E13), enero a septiembre 2026.')
+
+
 def main():
     ds = [portada, resumen]
     for n in ORDEN:
         p = next(SL.glob(f'*/{n}.json'))
         ds.append(json.loads(p.read_text(encoding='utf-8')))
+    ds.append(gobierno)
     ds.append(causas)
     for i, d in enumerate(ds, 1):
         d['n'] = i
