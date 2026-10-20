@@ -6,6 +6,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from deck_v6_render import page
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / 'deck' / 'v6' / 'marketing'))
 import graficas
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / 'deck' / 'v6' / 'marketing' / 'en'))
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SL = ROOT / 'deck' / 'v6' / 'slides'
@@ -152,8 +153,44 @@ no_deberiamos = dict(kind='html', ancho_completo=True,
     sowhat='Es riesgo legal y de marca, no de una campaña: ninguna exclusión es común a toda la cuenta.',
     fuente='Fuente: Braze, envíos por comunicación (E1), banderas de contacto (E7a, E17) y envíos tras la baja (E5b), enero a septiembre 2026.')
 
+def telefono():
+    """Tres casos reales vistos desde el teléfono (mismas cifras que la versión en inglés). Pantallas ilustrativas."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location('ph', ROOT / 'deck' / 'v6' / 'marketing' / 'en' / 'phone_slide.py')
+    ph = importlib.util.module_from_spec(spec); spec.loader.exec_module(ph)
+    p1 = ph.phone([('Email', 'Verifica tu identidad', 'día 1'), ('Email', 'Tu préstamo está a un paso', 'día 2'),
+                   ('Email', 'Verifica tu identidad', 'día 3'), ('Email', 'Tasa 0 en tu 1er préstamo', 'día 4'),
+                   ('Email', 'Verifica tu identidad', 'día 5'), ('Email', 'Te diste de baja', 'día 5')], '10 correos')
+    p2 = ph.phone([('WhatsApp', 'Tu Tasa 0 termina hoy', '9:02'), ('Push', 'Invita a un amigo y ganan', '11:30'),
+                   ('Email', 'Ofertas con Kueski Pay', '13:15'), ('Push', 'Tu crédito te espera', '18:40'),
+                   ('Email', 'Tasa 0: últimas horas', '20:05'), ('WhatsApp', 'No pierdas tu oferta', '21:10')], '2 al día')
+    p3 = ph.phone([('Email', 'Te diste de baja', 'ene'), ('Email', 'Tasa 0 regresa para ti', 'feb'),
+                   ('Email', 'Verifica tu identidad', 'mar'), ('Email', 'Invita a un amigo y ganan', 'may'),
+                   ('Email', 'Verifica tu identidad', 'jul'), ('Email', 'Verifica tu identidad', 'sep')], '9 meses')
+    html = ('<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2cqi;margin-top:.6cqi">'
+            + ph.case('Quien se acaba de registrar', p1, '10 correos', 'antes de darse de baja, hacia el día 5',
+                      '70 mil nuevos se dieron de baja de nuestros correos, típicamente al día 5 y con 10 correos. La mitad, con el '
+                      'recordatorio de registro, que llega casi 6 veces al mes.')
+            + ph.case('Nuestro cliente más activo', p2, '2 al día', 'en 210 de los 273 días',
+                      '339 mil personas (1.7 % de la base) recibieron 482 mensajes cada una en nueve meses. Cuando a alguien le llegan '
+                      'tres campañas el mismo día, Marketing está en 63 % de esos días.')
+            + ph.case('Quien ya nos dijo que no', p3, '58 mil', 'promociones nuestras después de darse de baja',
+                      '45 mil personas dadas de baja recibieron 79 mil promociones; 58 mil eran de Marketing. El recordatorio de '
+                      'verificación les siguió llegando nueve meses.')
+            + '</div>'
+            + '<div style="margin-top:2cqi;background:#E8EEFC;padding:.9cqi 1.3cqi;display:flex;gap:1.3cqi;align-items:baseline">'
+              '<b style="font-size:.85cqi;letter-spacing:.12em;color:#1F4FD8">Y ADEMÁS</b>'
+              '<span style="font-size:1.15cqi;color:#0B1220;line-height:1.35">59 % de los mensajes va por un canal al que esa persona nunca '
+              'respondió: correos a quien solo lee WhatsApp, push a quien nunca abre un push.</span></div>')
+    return dict(kind='html', ancho_completo=True,
+                titulo='Visto desde el teléfono de la persona, así se sienten nuestros mensajes: tres casos reales',
+                html=html,
+                fuente=('Fuente: Braze, enero a septiembre 2026 (deck v6, láminas 8, 18, 24, 35, 52 y 63). Pantallas ilustrativas; '
+                        'las cifras son reales. 58 mil = promociones de Marketing a personas ya dadas de baja.'))
+
+
 def main():
-    ds = [portada, resumen]
+    ds = [portada, resumen, telefono()]
     for n in ORDEN:
         p = next(SL.glob(f'*/{n}.json'))
         ds.append(json.loads(p.read_text(encoding='utf-8')))
