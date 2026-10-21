@@ -1,0 +1,559 @@
+- recHeader:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =0
+      Y: =0
+      Width: =Parent.Width
+      Height: =64
+      Fill: =ColorValue("#202054")
+- lblTitle:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Organization Chart · Sussek Machine Company"
+      X: =24
+      Y: =0
+      Width: =640
+      Height: =64
+      Color: =Color.White
+      Size: =18
+      FontWeight: =FontWeight.Bold
+- btnCollapse:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="⌂ Collapse all"
+      X: =Parent.Width - 480
+      Y: =14
+      Width: =140
+      Height: =36
+      Fill: =ColorValue("#202054")
+      HoverFill: =ColorValue("#4A4A8A")
+      PressedFill: =ColorValue("#4A4A8A")
+      Color: =Color.White
+      HoverColor: =Color.White
+      BorderColor: =Color.White
+      BorderThickness: =1
+      Size: =11
+      RadiusTopLeft: =18
+      RadiusTopRight: =18
+      RadiusBottomLeft: =18
+      RadiusBottomRight: =18
+      OnSelect: |-
+        =ClearCollect(colNiveles, {Nivel: 1, Padre: "ROOT", Sel: varCEO}, {Nivel: 2, Padre: varCEO, Sel: ""}); Set(varVerPanel, false)
+- txtBuscar:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      Default: =""
+      HintText: ="Search name or title..."
+      X: =Parent.Width - 320
+      Y: =12
+      Width: =296
+      Height: =40
+      Size: =12
+      Fill: =Color.White
+      BorderThickness: =0
+      RadiusTopLeft: =20
+      RadiusTopRight: =20
+      RadiusBottomLeft: =20
+      RadiusBottomRight: =20
+- recHint:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =0
+      Y: =64
+      Width: =Parent.Width
+      Height: =40
+      Fill: =Color.White
+      BorderColor: =ColorValue("#E3E3E3")
+      BorderThickness: =1
+- lblHint:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Click a card to expand or collapse its team   ·   Click  Profile ›  to see details"
+      X: =24
+      Y: =64
+      Width: =Parent.Width - 520
+      Height: =40
+      Size: =11
+      Color: =ColorValue("#565656")
+- lblLegendExec:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="●  Executive"
+      X: =Parent.Width - 480
+      Y: =64
+      Width: =140
+      Height: =40
+      Size: =11
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#202054")
+- lblLegendFin:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="●  Finance"
+      X: =Parent.Width - 340
+      Y: =64
+      Width: =140
+      Height: =40
+      Size: =11
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#4A4A8A")
+- lblLegendHR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="●  Human Resources"
+      X: =Parent.Width - 200
+      Y: =64
+      Width: =190
+      Height: =40
+      Size: =11
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#87878F")
+- galNiveles:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =Sort(colNiveles, Nivel)
+      X: =0
+      Y: =112
+      Width: =Parent.Width
+      Height: =Parent.Height - 112
+      TemplateSize: =172
+      TemplatePadding: =0
+      ShowScrollbar: =true
+    Children:
+      - lblNivel:
+          Control: Label@2.5.1
+          Properties:
+            Text: |-
+              =If(ThisItem.Padre = "ROOT", "LEADERSHIP", Upper(LookUp(colPersonas, Correo = ThisItem.Padre).Title) & "'S TEAM") & "   ·   " & CountRows(Filter(colPersonas, If(IsBlank(CorreoJefe), "ROOT", CorreoJefe) = ThisItem.Padre))
+            X: =0
+            Y: =6
+            Width: =Parent.TemplateWidth
+            Height: =24
+            Align: =Align.Center
+            Size: =10
+            FontWeight: =FontWeight.Semibold
+            Color: =ColorValue("#87878F")
+      - galPersonas:
+          Control: Gallery@2.15.0
+          Variant: Horizontal
+          Properties:
+            Items: |-
+              =Sort(Filter(colPersonas, If(IsBlank(CorreoJefe), "ROOT", CorreoJefe) = ThisItem.Padre), Title)
+            X: =(Parent.TemplateWidth - Self.Width) / 2
+            Y: =34
+            Width: |-
+              =Min(CountRows(Filter(colPersonas, If(IsBlank(CorreoJefe), "ROOT", CorreoJefe) = ThisItem.Padre)) * 300, Parent.TemplateWidth - 40)
+            Height: =132
+            TemplateSize: =300
+            TemplatePadding: =0
+            ShowScrollbar: =false
+            ShowNavigation: =true
+            OnSelect: |-
+              =Set(varNivel, LookUp(colNiveles, Padre = If(IsBlank(ThisItem.CorreoJefe), "ROOT", ThisItem.CorreoJefe)).Nivel);
+              RemoveIf(colNiveles, Nivel > varNivel);
+              If(
+                  LookUp(colNiveles, Nivel = varNivel).Sel = ThisItem.Correo,
+                  Patch(colNiveles, LookUp(colNiveles, Nivel = varNivel), {Sel: ""}),
+                  Patch(colNiveles, LookUp(colNiveles, Nivel = varNivel), {Sel: ThisItem.Correo});
+                  If(CountRows(Filter(colPersonas, CorreoJefe = ThisItem.Correo)) > 0, Collect(colNiveles, {Nivel: varNivel + 1, Padre: ThisItem.Correo, Sel: ""}))
+              )
+          Children:
+            - btnCard:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  Text: =""
+                  Tooltip: ="Click to show or hide this person's team"
+                  X: =6
+                  Y: =4
+                  Width: =Parent.TemplateWidth - 12
+                  Height: =122
+                  Fill: =If(ThisItem.Correo in colNiveles.Sel, ColorValue("#EEEEF5"), Color.White)
+                  HoverFill: =ColorValue("#EEEEF5")
+                  PressedFill: =ColorValue("#E2E2EE")
+                  BorderColor: =If(ThisItem.Correo in colNiveles.Sel, ColorValue("#202054"), ColorValue("#E3E3E3"))
+                  HoverBorderColor: =ColorValue("#202054")
+                  BorderThickness: =If(ThisItem.Correo in colNiveles.Sel, 2, 1)
+                  RadiusTopLeft: =14
+                  RadiusTopRight: =14
+                  RadiusBottomLeft: =14
+                  RadiusBottomRight: =14
+                  OnSelect: =Select(Parent)
+            - circAvatar:
+                Control: Circle@2.3.0
+                Properties:
+                  X: =22
+                  Y: =22
+                  Width: =60
+                  Height: =60
+                  Fill: |-
+                    =Switch(ThisItem.Area, "Executive", ColorValue("#202054"), "Dirección", ColorValue("#202054"), "Finance", ColorValue("#4A4A8A"), "Finanzas", ColorValue("#4A4A8A"), "Human Resources", ColorValue("#87878F"), "Recursos Humanos", ColorValue("#87878F"), ColorValue("#616066"))
+                  OnSelect: =Select(Parent)
+            - lblInitials:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =Upper(Concat(FirstN(Split(ThisItem.Title, " "), 2), Left(Value, 1)))
+                  X: =22
+                  Y: =22
+                  Width: =60
+                  Height: =60
+                  Align: =Align.Center
+                  Color: =Color.White
+                  Size: =18
+                  FontWeight: =FontWeight.Bold
+                  OnSelect: =Select(Parent)
+            - lblName:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =ThisItem.Title
+                  X: =96
+                  Y: =20
+                  Width: =Parent.TemplateWidth - 110
+                  Height: =26
+                  Size: =14
+                  FontWeight: =FontWeight.Bold
+                  Color: =ColorValue("#202054")
+                  Wrap: =false
+                  OnSelect: =Select(Parent)
+            - lblJobTitle:
+                Control: Label@2.5.1
+                Properties:
+                  Text: =ThisItem.Puesto
+                  X: =96
+                  Y: =46
+                  Width: =Parent.TemplateWidth - 110
+                  Height: =22
+                  Size: =11
+                  Color: =ColorValue("#565656")
+                  Wrap: =false
+                  OnSelect: =Select(Parent)
+            - btnTeam:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  Text: |-
+                    =With({n: CountRows(Filter(colPersonas, CorreoJefe = ThisItem.Correo))}, If(n = 0, "No reports", If(ThisItem.Correo in colNiveles.Sel, "▾ ", "▸ ") & n & If(n = 1, " report", " reports")))
+                  Tooltip: ="Show or hide team"
+                  X: =96
+                  Y: =82
+                  Width: =108
+                  Height: =28
+                  Fill: =ColorValue("#EEEEF5")
+                  HoverFill: =ColorValue("#E2E2EE")
+                  PressedFill: =ColorValue("#D6D6E6")
+                  Color: |-
+                    =If(CountRows(Filter(colPersonas, CorreoJefe = ThisItem.Correo)) = 0, ColorValue("#87878F"), ColorValue("#202054"))
+                  BorderThickness: =0
+                  Size: =10
+                  RadiusTopLeft: =14
+                  RadiusTopRight: =14
+                  RadiusBottomLeft: =14
+                  RadiusBottomRight: =14
+                  OnSelect: =Select(Parent)
+            - btnProfile:
+                Control: Classic/Button@2.2.0
+                Properties:
+                  Text: ="Profile ›"
+                  Tooltip: ="See profile, job description and location"
+                  X: =210
+                  Y: =82
+                  Width: =78
+                  Height: =28
+                  Fill: =ColorValue("#202054")
+                  HoverFill: =ColorValue("#4A4A8A")
+                  PressedFill: =ColorValue("#4A4A8A")
+                  Color: =Color.White
+                  HoverColor: =Color.White
+                  BorderThickness: =0
+                  Size: =10
+                  RadiusTopLeft: =14
+                  RadiusTopRight: =14
+                  RadiusBottomLeft: =14
+                  RadiusBottomRight: =14
+                  OnSelect: =Set(varPersona, ThisItem); Set(varVerPanel, true)
+- galBuscar:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =Filter(colPersonas, txtBuscar.Text in Title || txtBuscar.Text in Puesto)
+      X: =txtBuscar.X
+      Y: =56
+      Width: =296
+      Height: =Min(CountRows(Filter(colPersonas, txtBuscar.Text in Title || txtBuscar.Text in Puesto)) * 48, 288)
+      TemplateSize: =48
+      TemplatePadding: =0
+      Fill: =Color.White
+      BorderColor: =ColorValue("#E3E3E3")
+      BorderThickness: =1
+      Visible: =!IsBlank(txtBuscar.Text)
+      OnSelect: =Set(varPersona, ThisItem); Set(varVerPanel, true); Reset(txtBuscar)
+    Children:
+      - lblSearchItem:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.Title & "  ·  " & ThisItem.Puesto
+            X: =14
+            Y: =0
+            Width: =Parent.TemplateWidth - 28
+            Height: =48
+            Size: =12
+            Color: =ColorValue("#202054")
+            HoverFill: =ColorValue("#EEEEF5")
+            OnSelect: =Select(Parent)
+- recOverlay:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =0
+      Y: =64
+      Width: =Parent.Width
+      Height: =Parent.Height - 64
+      Fill: =RGBA(32, 32, 84, 0.25)
+      Visible: =varVerPanel
+      OnSelect: =Set(varVerPanel, false)
+- recPanel:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =Parent.Width - 400
+      Y: =64
+      Width: =400
+      Height: =Parent.Height - 64
+      Fill: =Color.White
+      Visible: =varVerPanel
+- recPanelBand:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =Parent.Width - 400
+      Y: =64
+      Width: =400
+      Height: =100
+      Fill: =ColorValue("#202054")
+      Visible: =varVerPanel
+- btnClose:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="✕"
+      Tooltip: ="Close"
+      X: =Parent.Width - 52
+      Y: =76
+      Width: =36
+      Height: =36
+      Fill: =Color.Transparent
+      HoverFill: =RGBA(255, 255, 255, 0.15)
+      PressedFill: =RGBA(255, 255, 255, 0.25)
+      Color: =Color.White
+      HoverColor: =Color.White
+      BorderThickness: =0
+      Size: =14
+      RadiusTopLeft: =18
+      RadiusTopRight: =18
+      RadiusBottomLeft: =18
+      RadiusBottomRight: =18
+      Visible: =varVerPanel
+      OnSelect: =Set(varVerPanel, false)
+- circPanel:
+    Control: Circle@2.3.0
+    Properties:
+      X: =Parent.Width - 260
+      Y: =104
+      Width: =120
+      Height: =120
+      Fill: |-
+        =Switch(varPersona.Area, "Executive", ColorValue("#202054"), "Dirección", ColorValue("#202054"), "Finance", ColorValue("#4A4A8A"), "Finanzas", ColorValue("#4A4A8A"), "Human Resources", ColorValue("#87878F"), "Recursos Humanos", ColorValue("#87878F"), ColorValue("#616066"))
+      BorderColor: =Color.White
+      BorderThickness: =4
+      Visible: =varVerPanel
+- lblPanelInitials:
+    Control: Label@2.5.1
+    Properties:
+      Text: =Upper(Concat(FirstN(Split(varPersona.Title, " "), 2), Left(Value, 1)))
+      X: =Parent.Width - 260
+      Y: =104
+      Width: =120
+      Height: =120
+      Align: =Align.Center
+      Color: =Color.White
+      Size: =34
+      FontWeight: =FontWeight.Bold
+      Visible: =varVerPanel
+- lblPanelName:
+    Control: Label@2.5.1
+    Properties:
+      Text: =varPersona.Title
+      X: =Parent.Width - 400
+      Y: =234
+      Width: =400
+      Height: =34
+      Align: =Align.Center
+      Size: =20
+      FontWeight: =FontWeight.Bold
+      Color: =ColorValue("#202054")
+      Visible: =varVerPanel
+- lblPanelTitle:
+    Control: Label@2.5.1
+    Properties:
+      Text: =varPersona.Puesto & " · " & varPersona.Area
+      X: =Parent.Width - 400
+      Y: =268
+      Width: =400
+      Height: =26
+      Align: =Align.Center
+      Size: =13
+      Color: =ColorValue("#565656")
+      Visible: =varVerPanel
+- recDivider:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =Parent.Width - 370
+      Y: =306
+      Width: =340
+      Height: =1
+      Fill: =ColorValue("#E3E3E3")
+      Visible: =varVerPanel
+- lblJobDescTitle:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="JOB DESCRIPTION"
+      X: =Parent.Width - 370
+      Y: =318
+      Width: =340
+      Height: =22
+      Size: =10
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#87878F")
+      Visible: =varVerPanel
+- lblJobDesc:
+    Control: Label@2.5.1
+    Properties:
+      Text: =varPersona.Descripcion
+      X: =Parent.Width - 370
+      Y: =340
+      Width: =340
+      Height: =100
+      VerticalAlign: =VerticalAlign.Top
+      Size: =12
+      Color: =ColorValue("#1F1F1F")
+      Visible: =varVerPanel
+- lblLocationTitle:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="LOCATION"
+      X: =Parent.Width - 370
+      Y: =448
+      Width: =340
+      Height: =22
+      Size: =10
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#87878F")
+      Visible: =varVerPanel
+- lblLocation:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="⌖  " & Coalesce(varPersona.Location, "Not specified")
+      X: =Parent.Width - 370
+      Y: =470
+      Width: =340
+      Height: =26
+      Size: =12
+      Color: =ColorValue("#1F1F1F")
+      Visible: =varVerPanel
+- lblContactTitle:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="CONTACT"
+      X: =Parent.Width - 370
+      Y: =506
+      Width: =340
+      Height: =22
+      Size: =10
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#87878F")
+      Visible: =varVerPanel
+- lblEmail:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="✉  " & varPersona.Correo
+      X: =Parent.Width - 370
+      Y: =528
+      Width: =340
+      Height: =26
+      Size: =12
+      Color: =ColorValue("#202054")
+      Visible: =varVerPanel
+- lblPhone:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="☎  " & varPersona.Telefono
+      X: =Parent.Width - 370
+      Y: =554
+      Width: =340
+      Height: =26
+      Size: =12
+      Color: =ColorValue("#202054")
+      Visible: |-
+        =varVerPanel && !IsBlank(varPersona.Telefono) && Text(varPersona.Telefono) <> "0"
+- lblReportsTo:
+    Control: Label@2.5.1
+    Properties:
+      Text: |-
+        ="Reports to: " & LookUp(colPersonas, Correo = varPersona.CorreoJefe).Title
+      X: =Parent.Width - 370
+      Y: =580
+      Width: =340
+      Height: =26
+      Size: =12
+      Color: =ColorValue("#565656")
+      Visible: =varVerPanel && !IsBlank(varPersona.CorreoJefe)
+- lblTeamSize:
+    Control: Label@2.5.1
+    Properties:
+      Text: |-
+        ="Direct reports: " & CountRows(Filter(colPersonas, CorreoJefe = varPersona.Correo))
+      X: =Parent.Width - 370
+      Y: =606
+      Width: =340
+      Height: =26
+      Size: =12
+      Color: =ColorValue("#565656")
+      Visible: =varVerPanel
+- btnEmail:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="Send email"
+      X: =Parent.Width - 370
+      Y: =648
+      Width: =165
+      Height: =40
+      Fill: =ColorValue("#202054")
+      HoverFill: =ColorValue("#4A4A8A")
+      PressedFill: =ColorValue("#4A4A8A")
+      Color: =Color.White
+      HoverColor: =Color.White
+      BorderThickness: =0
+      RadiusTopLeft: =20
+      RadiusTopRight: =20
+      RadiusBottomLeft: =20
+      RadiusBottomRight: =20
+      Visible: =varVerPanel
+      OnSelect: |-
+        =Launch("mailto:" & varPersona.Correo)
+- btnTeams:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="Chat in Teams"
+      X: =Parent.Width - 195
+      Y: =648
+      Width: =165
+      Height: =40
+      Fill: =Color.White
+      HoverFill: =ColorValue("#EEEEF5")
+      PressedFill: =ColorValue("#E2E2EE")
+      Color: =ColorValue("#202054")
+      HoverColor: =ColorValue("#202054")
+      BorderColor: =ColorValue("#202054")
+      BorderThickness: =1
+      RadiusTopLeft: =20
+      RadiusTopRight: =20
+      RadiusBottomLeft: =20
+      RadiusBottomRight: =20
+      Visible: =varVerPanel
+      OnSelect: |-
+        =Launch("https://teams.microsoft.com/l/chat/0/0?users=" & varPersona.Correo)
