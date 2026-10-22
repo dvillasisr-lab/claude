@@ -23,10 +23,10 @@
 - lblTitleA:
     Control: Label@2.5.1
     Properties:
-      Text: ="Directory audit"
+      Text: ="Entra ID account inspector"
       X: =56
       Y: =0
-      Width: =320
+      Width: =360
       Height: =64
       Size: =16
       Color: =Color.White
@@ -35,9 +35,9 @@
     Control: Classic/Button@2.2.0
     Properties:
       Text: =If(varAuditando, "Running...", "Run audit")
-      X: =Parent.Width - 400
+      X: =Parent.Width - 560
       Y: =14
-      Width: =170
+      Width: =150
       Height: =36
       Size: =11
       Fill: =Color.White
@@ -52,31 +52,39 @@
       DisplayMode: =If(varAuditando, DisplayMode.Disabled, DisplayMode.Edit)
       OnSelect: |-
         =Set(varAuditando, true);
-        Set(varFiltroA, "");
+        Set(varFiltroA, "All");
+        Set(varVerA, false);
+        Set(varVistaA, "accounts");
         ClearCollect(colAudU, UsuariosdeOffice365.SearchUserV2({isSearchTermRequired: false, top: 999}).value);
-        ClearCollect(colAudAct, ForAll(Filter(colAudU, AccountEnabled = true), {Value: Id}));
-        Refresh(Organigrama);
-        ClearCollect(colAudHide, ForAll(Filter(Organigrama, Hide = true), {Value: Lower(Correo)}));
         ClearCollect(colAudit,
-          ForAll(Filter(colAudU, AccountEnabled = true) As u,
-            With({m: IfError(UsuariosdeOffice365.ManagerV2(u.Id, {'$select': "id,displayName,mail"}), Blank()), svc: Lower(Coalesce(u.Department, "")) = "service account", correo: Lower(Coalesce(u.Mail, u.UserPrincipalName))},
-              With({p: Filter(Table(
-                  {T: "No manager", C: !svc && IsBlank(m.id)},
-                  {T: "Manager is blocked", C: !IsBlank(m.id) && !(m.id in colAudAct.Value)},
-                  {T: "No department", C: IsBlank(u.Department)},
-                  {T: "Department has no code", C: !svc && !IsBlank(u.Department) && !(" - " in u.Department)},
-                  {T: "No job title", C: !svc && IsBlank(u.JobTitle)},
-                  {T: "No company", C: !svc && IsBlank(u.CompanyName)},
-                  {T: "No office location", C: !svc && IsBlank(u.OfficeLocation)},
-                  {T: "Hidden by hand, still active", C: correo in colAudHide.Value},
-                  {T: "Possible duplicate", C: CountIf(colAudU, AccountEnabled = true && Lower(Trim(DisplayName)) = Lower(Trim(u.DisplayName))) > 1},
-                  {T: "Not a person?", C: !svc && IsBlank(u.GivenName) && IsBlank(u.Surname)},
-                  {T: "Service account with manager", C: svc && !IsBlank(m.id)}
-                ), C)},
-                {Id: u.Id, Nombre: u.DisplayName, Correo: correo, Puesto: u.JobTitle, Depto: u.Department, Empresa: u.CompanyName, Oficina: u.OfficeLocation, Jefe: m.displayName, Problemas: Concat(p, T, ", "), N: CountRows(p)}))));
-        ClearCollect(colAudRes, {T: "All issues", N: CountRows(Filter(colAudit, N > 0))});
-        Collect(colAudRes, Sort(Filter(ForAll(["No manager", "Manager is blocked", "No department", "Department has no code", "No job title", "No company", "No office location", "Hidden by hand, still active", "Possible duplicate", "Not a person?", "Service account with manager"] As t, {T: t.Value, N: CountIf(colAudit, t.Value in Problemas)}), N > 0), N, SortOrder.Descending));
+          ForAll(colAudU As u,
+            With({m: IfError(UsuariosdeOffice365.ManagerV2(u.Id, {'$select': "id,displayName,mail"}), Blank())},
+              {Id: u.Id, DisplayName: u.DisplayName, GivenName: u.GivenName, Surname: u.Surname, Mail: u.Mail, UserPrincipalName: u.UserPrincipalName, MailNickname: u.MailNickname, AccountEnabled: u.AccountEnabled, Department: u.Department, JobTitle: u.JobTitle, CompanyName: u.CompanyName, OfficeLocation: u.OfficeLocation, City: u.City, Country: u.Country, MobilePhone: u.MobilePhone,
+               Manager: m.displayName, ManagerMail: m.mail, ManagerEnabled: LookUp(colAudU, Id = m.id).AccountEnabled,
+               Dup: CountIf(colAudU, Lower(Trim(DisplayName)) = Lower(Trim(u.DisplayName))) > 1,
+               Guest: "#EXT#" in u.UserPrincipalName})));
+        ClearCollect(colAudF, {T: "All", N: CountIf(colAudit, true)}, {T: "AccountEnabled = true", N: CountIf(colAudit, AccountEnabled)}, {T: "AccountEnabled = false", N: CountIf(colAudit, !AccountEnabled)}, {T: "Manager = blank", N: CountIf(colAudit, AccountEnabled && IsBlank(Manager))}, {T: "Manager is blocked", N: CountIf(colAudit, AccountEnabled && !IsBlank(Manager) && ManagerEnabled = false)}, {T: "Department = blank", N: CountIf(colAudit, AccountEnabled && IsBlank(Department))}, {T: "JobTitle = blank", N: CountIf(colAudit, AccountEnabled && IsBlank(JobTitle))}, {T: "CompanyName = blank", N: CountIf(colAudit, AccountEnabled && IsBlank(CompanyName))}, {T: "OfficeLocation = blank", N: CountIf(colAudit, AccountEnabled && IsBlank(OfficeLocation))}, {T: "GivenName + Surname = blank", N: CountIf(colAudit, AccountEnabled && IsBlank(GivenName) && IsBlank(Surname))}, {T: "Same DisplayName twice", N: CountIf(colAudit, Dup)}, {T: "Guest (#EXT#)", N: CountIf(colAudit, Guest)});
         Set(varAuditando, false)
+- btnValuesA:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: =If(varVistaA = "values", "☰ Accounts", "≡ Values in use")
+      X: =Parent.Width - 400
+      Y: =14
+      Width: =170
+      Height: =36
+      Size: =11
+      Fill: =ColorValue("#3B3B8F")
+      HoverFill: =ColorValue("#4C5C99")
+      Color: =Color.White
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =0
+      RadiusTopLeft: =18
+      RadiusTopRight: =18
+      RadiusBottomLeft: =18
+      RadiusBottomRight: =18
+      DisplayMode: =If(IsEmpty(colAudit), DisplayMode.Disabled, DisplayMode.Edit)
+      OnSelect: =Set(varVistaA, If(varVistaA = "values", "accounts", "values"))
 - btnMailA:
     Control: Classic/Button@2.2.0
     Properties:
@@ -99,31 +107,19 @@
       OnSelect: |-
         =Office365Outlook.SendEmailV2(
           User().Email,
-          "Directory audit: " & CountRows(Filter(colAudit, N > 0)) & " active accounts need fixes",
+          "Entra ID account audit: " & CountRows(colAudit) & " accounts",
           "<div style='font-family:Arial;font-size:13px;color:#202054'>" &
-          "<h2>Directory audit (Entra ID)</h2>" &
-          "<p>Generated " & Text(Now(), "mmm d, yyyy h:mm AM/PM", "en-US") & " from the Sussek org chart app. Active accounts reviewed: <b>" & CountRows(colAudit) & "</b>. Accounts with at least one issue: <b>" & CountRows(Filter(colAudit, N > 0)) & "</b>.</p>" &
-          "<h3>Summary</h3><table border='1' cellpadding='6' style='border-collapse:collapse;font-size:12px'><tr style='background:#EEEEF5'><th align='left'>Issue</th><th>Accounts</th><th align='left'>How to fix it</th></tr>" &
-          Concat(Filter(colAudRes, T <> "All issues"), "<tr><td>" & T & "</td><td align='center'>" & N & "</td><td>" &
-            Switch(T,
-              "No manager", "Set the Manager field in Entra ID.",
-              "Manager is blocked", "Their manager left. Assign the new manager in Entra ID.",
-              "No department", "Fill in Department in Entra ID.",
-              "Department has no code", "Use one standard name with a code, e.g. QA - Quality.",
-              "No job title", "Fill in Job title in Entra ID.",
-              "No company", "Fill in Company name (Sussek Machine Company, Sussek De Mexico...).",
-              "No office location", "Fill in Office location in Entra ID.",
-              "Hidden by hand, still active", "Hidden manually in the app. If the person left, block sign-in.",
-              "Possible duplicate", "Two active accounts with the same name. Confirm the current one and block the other.",
-              "Not a person?", "If it is a shared or service account, set Department = Service Account and remove the manager.",
-              "Service account with manager", "Remove the manager from the service account.",
-              "") & "</td></tr>") &
+          "<h2>Entra ID account audit</h2>" &
+          "<p>Generated " & Text(Now(), "mmm d, yyyy h:mm AM/PM", "en-US") & ". Raw values read directly from Microsoft 365, nothing typed by hand.<br>" &
+          "Source: <code>UsuariosdeOffice365.SearchUserV2({isSearchTermRequired: false, top: 999}).value</code> and <code>UsuariosdeOffice365.ManagerV2(Id)</code></p>" &
+          "<h3>1. Summary</h3><table border='1' cellpadding='5' style='border-collapse:collapse;font-size:12px'><tr style='background:#EEEEF5'><th align='left'>Check (active accounts unless noted)</th><th>Accounts</th></tr>" &
+          "<tr><td>All</td><td align='center'>" & CountIf(colAudit, true) & "</td></tr>" & "<tr><td>AccountEnabled = true</td><td align='center'>" & CountIf(colAudit, AccountEnabled) & "</td></tr>" & "<tr><td>AccountEnabled = false</td><td align='center'>" & CountIf(colAudit, !AccountEnabled) & "</td></tr>" & "<tr><td>Manager = blank</td><td align='center'>" & CountIf(colAudit, AccountEnabled && IsBlank(Manager)) & "</td></tr>" & "<tr><td>Manager is blocked</td><td align='center'>" & CountIf(colAudit, AccountEnabled && !IsBlank(Manager) && ManagerEnabled = false) & "</td></tr>" & "<tr><td>Department = blank</td><td align='center'>" & CountIf(colAudit, AccountEnabled && IsBlank(Department)) & "</td></tr>" & "<tr><td>JobTitle = blank</td><td align='center'>" & CountIf(colAudit, AccountEnabled && IsBlank(JobTitle)) & "</td></tr>" & "<tr><td>CompanyName = blank</td><td align='center'>" & CountIf(colAudit, AccountEnabled && IsBlank(CompanyName)) & "</td></tr>" & "<tr><td>OfficeLocation = blank</td><td align='center'>" & CountIf(colAudit, AccountEnabled && IsBlank(OfficeLocation)) & "</td></tr>" & "<tr><td>GivenName + Surname = blank</td><td align='center'>" & CountIf(colAudit, AccountEnabled && IsBlank(GivenName) && IsBlank(Surname)) & "</td></tr>" & "<tr><td>Same DisplayName twice</td><td align='center'>" & CountIf(colAudit, Dup) & "</td></tr>" & "<tr><td>Guest (#EXT#)</td><td align='center'>" & CountIf(colAudit, Guest) & "</td></tr>" &
           "</table>" &
-          "<h3>Accounts to fix</h3><table border='1' cellpadding='5' style='border-collapse:collapse;font-size:12px'><tr style='background:#EEEEF5'><th align='left'>Name</th><th align='left'>Email</th><th align='left'>Department</th><th align='left'>Job title</th><th align='left'>Manager</th><th align='left'>Issues</th></tr>" &
-          Concat(Sort(Filter(colAudit, N > 0), Nombre), "<tr><td>" & Nombre & "</td><td>" & Correo & "</td><td>" & Depto & "</td><td>" & Puesto & "</td><td>" & Jefe & "</td><td style='color:#B3261E'>" & Problemas & "</td></tr>") &
-          "</table>" &
-          "<h3>Department names in use</h3><p>Each line is a different spelling in Entra ID. Variants of the same department should be merged into one name.</p><table border='1' cellpadding='5' style='border-collapse:collapse;font-size:12px'><tr style='background:#EEEEF5'><th align='left'>Department</th><th>Accounts</th></tr>" &
-          Concat(Sort(ForAll(Distinct(colAudit, Coalesce(Depto, "(blank)")) As d, {D: d.Value, K: CountIf(colAudit, Coalesce(Depto, "(blank)") = d.Value)}), D), "<tr><td>" & D & "</td><td align='center'>" & K & "</td></tr>") &
+          "<h3>2. Values in use (active accounts). Each line is a different spelling in Entra ID; variants should be standardized.</h3><table><tr>" &
+          "<td valign='top'><b>Department</b><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px;margin-right:16px'>" & Concat(Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(Department, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(Department, "(blank)") = d.Value)}), V), "<tr><td>" & V & "</td><td align='center'>" & K & "</td></tr>") & "</table></td>" & "<td valign='top'><b>CompanyName</b><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px;margin-right:16px'>" & Concat(Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(CompanyName, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(CompanyName, "(blank)") = d.Value)}), V), "<tr><td>" & V & "</td><td align='center'>" & K & "</td></tr>") & "</table></td>" & "<td valign='top'><b>OfficeLocation</b><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px;margin-right:16px'>" & Concat(Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(OfficeLocation, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(OfficeLocation, "(blank)") = d.Value)}), V), "<tr><td>" & V & "</td><td align='center'>" & K & "</td></tr>") & "</table></td>" &
+          "</tr></table>" &
+          "<h3>3. Every account</h3><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px'><tr style='background:#EEEEF5'><th align='left'>DisplayName</th><th align='left'>Mail / UserPrincipalName</th><th align='left'>AccountEnabled</th><th align='left'>Department</th><th align='left'>JobTitle</th><th align='left'>CompanyName</th><th align='left'>OfficeLocation</th><th align='left'>Manager</th></tr>" &
+          Concat(Sort(colAudit, DisplayName), "<tr>" & "<td>" & DisplayName & "</td>" & "<td>" & Coalesce(Mail, UserPrincipalName) & "</td>" & "<td style='color:" & If(AccountEnabled, "#1E7B34", "#B3261E") & "'>" & If(AccountEnabled, "true", "false") & "</td>" & "<td>" & Coalesce(Department, "(blank)") & "</td>" & "<td>" & Coalesce(JobTitle, "(blank)") & "</td>" & "<td>" & Coalesce(CompanyName, "(blank)") & "</td>" & "<td>" & Coalesce(OfficeLocation, "(blank)") & "</td>" & "<td>" & Coalesce(Manager, "(blank)") & If(ManagerEnabled = false && !IsBlank(Manager), " (blocked)", "") & "</td>" & "</tr>") &
           "</table></div>",
           {Importance: "Normal"});
         Notify("Report sent to " & User().Email, NotificationType.Success)
@@ -131,14 +127,15 @@
     Control: Label@2.5.1
     Properties:
       Text: |-
-        =If(varAuditando, "Reviewing every active account and its manager. This can take a minute...",
-          If(IsEmpty(colAudit), "Press Run audit to review every active account in Entra ID.",
-            "Active accounts reviewed: " & CountRows(colAudit) & "     Accounts with issues: " & CountRows(Filter(colAudit, N > 0)) & "     Tap an issue to filter."))
+        =If(varAuditando, "Reading every account and its manager from Entra ID. This can take a minute...",
+          If(IsEmpty(colAudit), "Press Run audit. Source: UsuariosdeOffice365.SearchUserV2({isSearchTermRequired: false, top: 999}).value",
+            "Accounts: " & CountRows(colAudit) & "     AccountEnabled = true: " & CountIf(colAudit, AccountEnabled) & "     AccountEnabled = false: " & CountIf(colAudit, !AccountEnabled) & "     Click a row to see every raw field."))
       X: =24
-      Y: =72
+      Y: =70
       Width: =Parent.Width - 300
-      Height: =36
-      Size: =11
+      Height: =34
+      Size: =10
+      Font: =Font.'Courier New'
       Color: =ColorValue("#616066")
 - txtAudBuscar:
     Control: Classic/TextInput@2.3.2
@@ -146,101 +143,505 @@
       Default: =""
       HintText: ="Search name or email"
       X: =Parent.Width - 270
-      Y: =72
+      Y: =70
       Width: =250
-      Height: =36
+      Height: =34
       Size: =11
       BorderColor: =ColorValue("#C9C9D6")
-      RadiusTopLeft: =18
-      RadiusTopRight: =18
-      RadiusBottomLeft: =18
-      RadiusBottomRight: =18
+      RadiusTopLeft: =17
+      RadiusTopRight: =17
+      RadiusBottomLeft: =17
+      RadiusBottomRight: =17
 - galChipsA:
     Control: Gallery@2.15.0
     Variant: Horizontal
     Properties:
-      Items: =colAudRes
+      Items: =colAudF
       X: =16
-      Y: =116
+      Y: =108
       Width: =Parent.Width - 32
-      Height: =64
-      TemplateSize: =200
-      TemplatePadding: =6
-      ShowScrollbar: =false
+      Height: =52
+      TemplateSize: =235
+      TemplatePadding: =4
+      ShowScrollbar: =true
+      Visible: =varVistaA <> "values"
     Children:
       - btnChipA:
           Control: Classic/Button@2.2.0
           Properties:
             Text: =ThisItem.T & "   " & ThisItem.N
             X: =0
-            Y: =6
+            Y: =2
             Width: =Parent.TemplateWidth
-            Height: =40
+            Height: =34
             Size: =10
-            Fill: =If(varFiltroA = ThisItem.T || (IsBlank(varFiltroA) && ThisItem.T = "All issues"), ColorValue("#202054"), ColorValue("#EEEEF5"))
+            Font: =Font.'Courier New'
+            Fill: =If(varFiltroA = ThisItem.T, ColorValue("#202054"), ColorValue("#EEEEF5"))
             HoverFill: =ColorValue("#C9C9D6")
-            Color: =If(varFiltroA = ThisItem.T || (IsBlank(varFiltroA) && ThisItem.T = "All issues"), Color.White, ColorValue("#202054"))
+            Color: =If(varFiltroA = ThisItem.T, Color.White, ColorValue("#202054"))
             FontWeight: =FontWeight.Semibold
             BorderThickness: =0
-            RadiusTopLeft: =20
-            RadiusTopRight: =20
-            RadiusBottomLeft: =20
-            RadiusBottomRight: =20
-            OnSelect: =Set(varFiltroA, If(ThisItem.T = "All issues", "", ThisItem.T))
+            RadiusTopLeft: =17
+            RadiusTopRight: =17
+            RadiusBottomLeft: =17
+            RadiusBottomRight: =17
+            OnSelect: =Set(varFiltroA, ThisItem.T)
+- lblHdr0A:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="DisplayName"
+      X: =galAud.X + 10 + (galAud.Width - 30) * 0.00
+      Y: =164
+      Width: =(galAud.Width - 30) * 0.16
+      Height: =28
+      Size: =9
+      Font: =Font.'Courier New'
+      FontWeight: =FontWeight.Bold
+      Color: =ColorValue("#202054")
+      Visible: =varVistaA <> "values"
+- lblHdr1A:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Mail / UserPrincipalName"
+      X: =galAud.X + 10 + (galAud.Width - 30) * 0.16
+      Y: =164
+      Width: =(galAud.Width - 30) * 0.21
+      Height: =28
+      Size: =9
+      Font: =Font.'Courier New'
+      FontWeight: =FontWeight.Bold
+      Color: =ColorValue("#202054")
+      Visible: =varVistaA <> "values"
+- lblHdr2A:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="AccountEnabled"
+      X: =galAud.X + 10 + (galAud.Width - 30) * 0.37
+      Y: =164
+      Width: =(galAud.Width - 30) * 0.10
+      Height: =28
+      Size: =9
+      Font: =Font.'Courier New'
+      FontWeight: =FontWeight.Bold
+      Color: =ColorValue("#202054")
+      Visible: =varVistaA <> "values"
+- lblHdr3A:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Department"
+      X: =galAud.X + 10 + (galAud.Width - 30) * 0.47
+      Y: =164
+      Width: =(galAud.Width - 30) * 0.14
+      Height: =28
+      Size: =9
+      Font: =Font.'Courier New'
+      FontWeight: =FontWeight.Bold
+      Color: =ColorValue("#202054")
+      Visible: =varVistaA <> "values"
+- lblHdr4A:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="JobTitle"
+      X: =galAud.X + 10 + (galAud.Width - 30) * 0.61
+      Y: =164
+      Width: =(galAud.Width - 30) * 0.13
+      Height: =28
+      Size: =9
+      Font: =Font.'Courier New'
+      FontWeight: =FontWeight.Bold
+      Color: =ColorValue("#202054")
+      Visible: =varVistaA <> "values"
+- lblHdr5A:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="CompanyName"
+      X: =galAud.X + 10 + (galAud.Width - 30) * 0.74
+      Y: =164
+      Width: =(galAud.Width - 30) * 0.10
+      Height: =28
+      Size: =9
+      Font: =Font.'Courier New'
+      FontWeight: =FontWeight.Bold
+      Color: =ColorValue("#202054")
+      Visible: =varVistaA <> "values"
+- lblHdr6A:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="OfficeLocation"
+      X: =galAud.X + 10 + (galAud.Width - 30) * 0.84
+      Y: =164
+      Width: =(galAud.Width - 30) * 0.07
+      Height: =28
+      Size: =9
+      Font: =Font.'Courier New'
+      FontWeight: =FontWeight.Bold
+      Color: =ColorValue("#202054")
+      Visible: =varVistaA <> "values"
+- lblHdr7A:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Manager"
+      X: =galAud.X + 10 + (galAud.Width - 30) * 0.91
+      Y: =164
+      Width: =(galAud.Width - 30) * 0.09
+      Height: =28
+      Size: =9
+      Font: =Font.'Courier New'
+      FontWeight: =FontWeight.Bold
+      Color: =ColorValue("#202054")
+      Visible: =varVistaA <> "values"
 - galAud:
     Control: Gallery@2.15.0
     Variant: Vertical
     Properties:
       Items: |-
-        =Sort(Filter(colAudit, N > 0 && (IsBlank(varFiltroA) || varFiltroA in Problemas) && (IsBlank(txtAudBuscar.Text) || txtAudBuscar.Text in Nombre || txtAudBuscar.Text in Correo)), N, SortOrder.Descending)
+        =Sort(Filter(colAudit, Switch(varFiltroA, "AccountEnabled = true", AccountEnabled, "AccountEnabled = false", !AccountEnabled, "Manager = blank", AccountEnabled && IsBlank(Manager), "Manager is blocked", AccountEnabled && !IsBlank(Manager) && ManagerEnabled = false, "Department = blank", AccountEnabled && IsBlank(Department), "JobTitle = blank", AccountEnabled && IsBlank(JobTitle), "CompanyName = blank", AccountEnabled && IsBlank(CompanyName), "OfficeLocation = blank", AccountEnabled && IsBlank(OfficeLocation), "GivenName + Surname = blank", AccountEnabled && IsBlank(GivenName) && IsBlank(Surname), "Same DisplayName twice", Dup, "Guest (#EXT#)", Guest, true) && (IsBlank(txtAudBuscar.Text) || txtAudBuscar.Text in DisplayName || txtAudBuscar.Text in Mail || txtAudBuscar.Text in UserPrincipalName)), DisplayName)
       X: =16
-      Y: =188
+      Y: =194
       Width: =Parent.Width - 32
-      Height: =Parent.Height - 196
-      TemplateSize: =84
-      TemplatePadding: =4
+      Height: =Parent.Height - 200
+      TemplateSize: =36
+      TemplatePadding: =0
       ShowScrollbar: =true
+      Visible: =varVistaA <> "values"
     Children:
-      - recRowA:
-          Control: Rectangle@2.3.0
+      - btnRowA:
+          Control: Classic/Button@2.2.0
           Properties:
+            Text: =""
             X: =0
             Y: =0
             Width: =Parent.TemplateWidth
-            Height: =Parent.TemplateHeight - 8
+            Height: =Parent.TemplateHeight - 1
             Fill: =Color.White
+            HoverFill: =ColorValue("#EEEEF5")
+            PressedFill: =ColorValue("#E2E2EE")
             BorderColor: =ColorValue("#E3E3E3")
             BorderThickness: =1
-      - lblNameA:
-          Control: Label@2.5.1
-          Properties:
-            Text: =ThisItem.Nombre & "   ·   " & ThisItem.Correo
-            X: =14
-            Y: =4
-            Width: =Parent.TemplateWidth - 28
-            Height: =26
-            Size: =11
-            Color: =ColorValue("#202054")
-            FontWeight: =FontWeight.Bold
-      - lblDeptA:
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            OnSelect: =Set(varSelA, ThisItem); Set(varVerA, true)
+      - lblCol0A:
           Control: Label@2.5.1
           Properties:
             Text: |-
-              =Coalesce(ThisItem.Puesto, "(no title)") & "   ·   " & Coalesce(ThisItem.Depto, "(no department)") & "   ·   Manager: " & Coalesce(ThisItem.Jefe, "(none)")
-            X: =14
-            Y: =28
-            Width: =Parent.TemplateWidth - 28
-            Height: =22
-            Size: =10
-            Color: =ColorValue("#616066")
-      - lblIssuesA:
+              =ThisItem.DisplayName
+            X: =10 + (Parent.Width - 30) * 0.00
+            Y: =0
+            Width: =(Parent.Width - 30) * 0.16
+            Height: =35
+            Size: =9
+            Color: =ColorValue("#202054")
+            FontWeight: =FontWeight.Bold
+      - lblCol1A:
           Control: Label@2.5.1
           Properties:
-            Text: ="⚠ " & ThisItem.Problemas
-            X: =14
-            Y: =50
-            Width: =Parent.TemplateWidth - 28
-            Height: =22
+            Text: |-
+              =Coalesce(ThisItem.Mail, ThisItem.UserPrincipalName)
+            X: =10 + (Parent.Width - 30) * 0.16
+            Y: =0
+            Width: =(Parent.Width - 30) * 0.21
+            Height: =35
+            Size: =9
+            Color: =ColorValue("#202054")
+            FontWeight: =FontWeight.Normal
+      - lblCol2A:
+          Control: Label@2.5.1
+          Properties:
+            Text: |-
+              =If(ThisItem.AccountEnabled, "true", "false")
+            X: =10 + (Parent.Width - 30) * 0.37
+            Y: =0
+            Width: =(Parent.Width - 30) * 0.10
+            Height: =35
+            Size: =9
+            Color: =If(ThisItem.AccountEnabled, ColorValue("#1E7B34"), ColorValue("#B3261E"))
+            FontWeight: =FontWeight.Bold
+      - lblCol3A:
+          Control: Label@2.5.1
+          Properties:
+            Text: |-
+              =Coalesce(ThisItem.Department, "(blank)")
+            X: =10 + (Parent.Width - 30) * 0.47
+            Y: =0
+            Width: =(Parent.Width - 30) * 0.14
+            Height: =35
+            Size: =9
+            Color: =If(IsBlank(ThisItem.Department), ColorValue("#B3261E"), ColorValue("#202054"))
+            FontWeight: =FontWeight.Normal
+      - lblCol4A:
+          Control: Label@2.5.1
+          Properties:
+            Text: |-
+              =Coalesce(ThisItem.JobTitle, "(blank)")
+            X: =10 + (Parent.Width - 30) * 0.61
+            Y: =0
+            Width: =(Parent.Width - 30) * 0.13
+            Height: =35
+            Size: =9
+            Color: =If(IsBlank(ThisItem.JobTitle), ColorValue("#B3261E"), ColorValue("#202054"))
+            FontWeight: =FontWeight.Normal
+      - lblCol5A:
+          Control: Label@2.5.1
+          Properties:
+            Text: |-
+              =Coalesce(ThisItem.CompanyName, "(blank)")
+            X: =10 + (Parent.Width - 30) * 0.74
+            Y: =0
+            Width: =(Parent.Width - 30) * 0.10
+            Height: =35
+            Size: =9
+            Color: =If(IsBlank(ThisItem.CompanyName), ColorValue("#B3261E"), ColorValue("#202054"))
+            FontWeight: =FontWeight.Normal
+      - lblCol6A:
+          Control: Label@2.5.1
+          Properties:
+            Text: |-
+              =Coalesce(ThisItem.OfficeLocation, "(blank)")
+            X: =10 + (Parent.Width - 30) * 0.84
+            Y: =0
+            Width: =(Parent.Width - 30) * 0.07
+            Height: =35
+            Size: =9
+            Color: =If(IsBlank(ThisItem.OfficeLocation), ColorValue("#B3261E"), ColorValue("#202054"))
+            FontWeight: =FontWeight.Normal
+      - lblCol7A:
+          Control: Label@2.5.1
+          Properties:
+            Text: |-
+              =Coalesce(ThisItem.Manager, "(blank)") & If(ThisItem.ManagerEnabled = false && !IsBlank(ThisItem.Manager), " (blocked)", "")
+            X: =10 + (Parent.Width - 30) * 0.91
+            Y: =0
+            Width: =(Parent.Width - 30) * 0.09
+            Height: =35
+            Size: =9
+            Color: =If(IsBlank(ThisItem.Manager) || ThisItem.ManagerEnabled = false, ColorValue("#B3261E"), ColorValue("#202054"))
+            FontWeight: =FontWeight.Normal
+- lblValH0A:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Department   (active accounts)"
+      X: =16 + (Parent.Width - 32) / 3 * 0
+      Y: =112
+      Width: =(Parent.Width - 32) / 3 - 12
+      Height: =34
+      Size: =11
+      Font: =Font.'Courier New'
+      FontWeight: =FontWeight.Bold
+      Color: =ColorValue("#202054")
+      Visible: =varVistaA = "values"
+- galVal0A:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: |-
+        =Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(Department, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(Department, "(blank)") = d.Value)}), V)
+      X: =16 + (Parent.Width - 32) / 3 * 0
+      Y: =150
+      Width: =(Parent.Width - 32) / 3 - 12
+      Height: =Parent.Height - 156
+      TemplateSize: =30
+      TemplatePadding: =0
+      ShowScrollbar: =true
+      Visible: =varVistaA = "values"
+    Children:
+      - lblValV0A:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.V
+            X: =8
+            Y: =0
+            Width: =Parent.TemplateWidth - 70
+            Height: =29
             Size: =10
-            Color: =ColorValue("#B3261E")
-            FontWeight: =FontWeight.Semibold
+            Color: =If(ThisItem.V = "(blank)", ColorValue("#B3261E"), ColorValue("#202054"))
+            BorderColor: =ColorValue("#E3E3E3")
+      - lblValK0A:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.K
+            X: =Parent.TemplateWidth - 60
+            Y: =0
+            Width: =50
+            Height: =29
+            Size: =10
+            Align: =Align.Right
+            FontWeight: =FontWeight.Bold
+            Color: =ColorValue("#202054")
+- lblValH1A:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="CompanyName   (active accounts)"
+      X: =16 + (Parent.Width - 32) / 3 * 1
+      Y: =112
+      Width: =(Parent.Width - 32) / 3 - 12
+      Height: =34
+      Size: =11
+      Font: =Font.'Courier New'
+      FontWeight: =FontWeight.Bold
+      Color: =ColorValue("#202054")
+      Visible: =varVistaA = "values"
+- galVal1A:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: |-
+        =Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(CompanyName, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(CompanyName, "(blank)") = d.Value)}), V)
+      X: =16 + (Parent.Width - 32) / 3 * 1
+      Y: =150
+      Width: =(Parent.Width - 32) / 3 - 12
+      Height: =Parent.Height - 156
+      TemplateSize: =30
+      TemplatePadding: =0
+      ShowScrollbar: =true
+      Visible: =varVistaA = "values"
+    Children:
+      - lblValV1A:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.V
+            X: =8
+            Y: =0
+            Width: =Parent.TemplateWidth - 70
+            Height: =29
+            Size: =10
+            Color: =If(ThisItem.V = "(blank)", ColorValue("#B3261E"), ColorValue("#202054"))
+            BorderColor: =ColorValue("#E3E3E3")
+      - lblValK1A:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.K
+            X: =Parent.TemplateWidth - 60
+            Y: =0
+            Width: =50
+            Height: =29
+            Size: =10
+            Align: =Align.Right
+            FontWeight: =FontWeight.Bold
+            Color: =ColorValue("#202054")
+- lblValH2A:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="OfficeLocation   (active accounts)"
+      X: =16 + (Parent.Width - 32) / 3 * 2
+      Y: =112
+      Width: =(Parent.Width - 32) / 3 - 12
+      Height: =34
+      Size: =11
+      Font: =Font.'Courier New'
+      FontWeight: =FontWeight.Bold
+      Color: =ColorValue("#202054")
+      Visible: =varVistaA = "values"
+- galVal2A:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: |-
+        =Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(OfficeLocation, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(OfficeLocation, "(blank)") = d.Value)}), V)
+      X: =16 + (Parent.Width - 32) / 3 * 2
+      Y: =150
+      Width: =(Parent.Width - 32) / 3 - 12
+      Height: =Parent.Height - 156
+      TemplateSize: =30
+      TemplatePadding: =0
+      ShowScrollbar: =true
+      Visible: =varVistaA = "values"
+    Children:
+      - lblValV2A:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.V
+            X: =8
+            Y: =0
+            Width: =Parent.TemplateWidth - 70
+            Height: =29
+            Size: =10
+            Color: =If(ThisItem.V = "(blank)", ColorValue("#B3261E"), ColorValue("#202054"))
+            BorderColor: =ColorValue("#E3E3E3")
+      - lblValK2A:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.K
+            X: =Parent.TemplateWidth - 60
+            Y: =0
+            Width: =50
+            Height: =29
+            Size: =10
+            Align: =Align.Right
+            FontWeight: =FontWeight.Bold
+            Color: =ColorValue("#202054")
+- recDimA:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =0
+      Y: =0
+      Width: =Parent.Width
+      Height: =Parent.Height
+      Fill: =RGBA(32, 32, 84, 0.45)
+      Visible: =varVerA
+      OnSelect: =Set(varVerA, false)
+- lblDetailA:
+    Control: Label@2.5.1
+    Properties:
+      Text: |-
+        ="// UsuariosdeOffice365.SearchUserV2(...).value" & Char(10) &
+        "Id                = " & Coalesce(varSelA.Id, "(blank)") & Char(10) &
+        "DisplayName       = " & Coalesce(varSelA.DisplayName, "(blank)") & Char(10) &
+        "GivenName         = " & Coalesce(varSelA.GivenName, "(blank)") & Char(10) &
+        "Surname           = " & Coalesce(varSelA.Surname, "(blank)") & Char(10) &
+        "Mail              = " & Coalesce(varSelA.Mail, "(blank)") & Char(10) &
+        "UserPrincipalName = " & Coalesce(varSelA.UserPrincipalName, "(blank)") & Char(10) &
+        "MailNickname      = " & Coalesce(varSelA.MailNickname, "(blank)") & Char(10) &
+        "AccountEnabled    = " & If(varSelA.AccountEnabled, "true    (can sign in)", "false   (sign-in blocked)") & Char(10) &
+        "Department        = " & Coalesce(varSelA.Department, "(blank)") & Char(10) &
+        "JobTitle          = " & Coalesce(varSelA.JobTitle, "(blank)") & Char(10) &
+        "CompanyName       = " & Coalesce(varSelA.CompanyName, "(blank)") & Char(10) &
+        "OfficeLocation    = " & Coalesce(varSelA.OfficeLocation, "(blank)") & Char(10) &
+        "City              = " & Coalesce(varSelA.City, "(blank)") & Char(10) &
+        "Country           = " & Coalesce(varSelA.Country, "(blank)") & Char(10) &
+        "MobilePhone       = " & Coalesce(varSelA.MobilePhone, "(blank)") & Char(10) &
+        "" & Char(10) &
+        "// UsuariosdeOffice365.ManagerV2(Id)" & Char(10) &
+        "Manager           = " & Coalesce(varSelA.Manager, "(blank)") & Char(10) &
+        "Manager mail      = " & Coalesce(varSelA.ManagerMail, "(blank)") & Char(10) &
+        "Manager enabled   = " & If(IsBlank(varSelA.Manager), "(no manager)", If(varSelA.ManagerEnabled, "true", "false   (manager is blocked)")) & Char(10) &
+        "" & Char(10) &
+        "// Derived checks" & Char(10) &
+        "Same DisplayName   = " & If(varSelA.Dup, "YES, another account has this name", "no") & Char(10) &
+        "Guest (#EXT#)      = " & If(varSelA.Guest, "YES", "no") & Char(10) &
+        "" & Char(10) &
+        "// Not readable with Microsoft 365 connectors (ask IT to export):" & Char(10) &
+        "HiddenFromAddressListsEnabled  (Exchange admin)" & Char(10) &
+        "RecipientTypeDetails           (user / shared mailbox)" & Char(10) &
+        "Last sign-in                   (Entra sign-in logs)"
+      X: =(Parent.Width - 620) / 2
+      Y: =60
+      Width: =620
+      Height: =Parent.Height - 120
+      Size: =10
+      Font: =Font.'Courier New'
+      Color: =Color.White
+      Fill: =ColorValue("#202054")
+      VerticalAlign: =VerticalAlign.Top
+      PaddingTop: =20
+      PaddingBottom: =20
+      PaddingLeft: =22
+      PaddingRight: =22
+      Visible: =varVerA
+- btnCloseA:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="✕"
+      X: =(Parent.Width - 620) / 2 + 620 - 48
+      Y: =68
+      Width: =40
+      Height: =40
+      Size: =14
+      Fill: =Color.Transparent
+      HoverFill: =ColorValue("#3B3B8F")
+      Color: =Color.White
+      BorderThickness: =0
+      Visible: =varVerA
+      OnSelect: =Set(varVerA, false)
