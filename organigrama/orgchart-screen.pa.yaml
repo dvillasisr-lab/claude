@@ -38,7 +38,7 @@
       RadiusBottomLeft: =18
       RadiusBottomRight: =18
       OnSelect: |-
-        =ClearCollect(colNiveles, {Nivel: 1, Padre: "ROOT", Sel: LookUp(colGente, Padre = "ROOT").Id}, {Nivel: 2, Padre: LookUp(colGente, Padre = "ROOT").Id, Sel: ""}); Set(varVerPanel, false)
+        =ClearCollect(colNiveles, {Nivel: 1, Padre: "ROOT", Sel: ""}); Set(varVerPanel, false); Set(varCargando, false)
 - txtBuscar:
     Control: Classic/TextInput@2.3.2
     Properties:
@@ -68,10 +68,10 @@
 - lblHint:
     Control: Label@2.5.1
     Properties:
-      Text: ="Click a card to expand or collapse its team   ·   Click  Profile ›  to see job description, scope, start date, location and backup"
+      Text: ="Click a card to show or hide its team   ·   Click  ⓘ  to see job description, scope, start date, location and backup"
       X: =24
       Y: =64
-      Width: =Parent.Width - 48
+      Width: =Parent.Width - 260
       Height: =40
       Size: =11
       Color: =ColorValue("#565656")
@@ -84,57 +84,158 @@
       Y: =112
       Width: =Parent.Width
       Height: =Parent.Height - 112
-      TemplateSize: =172
+      TemplateSize: =190
       TemplatePadding: =0
       ShowScrollbar: =true
+      Default: =Last(Sort(colNiveles, Nivel))
     Children:
+      - lblRowW:
+          Control: Label@2.5.1
+          Properties:
+            Text: =Min(CountRows(Filter(colGente, Padre = ThisItem.Padre)) * 300, Parent.TemplateWidth - 40)
+            X: =0
+            Y: =0
+            Width: =10
+            Height: =10
+            Size: =8
+            Color: =ColorValue("#87878F")
+            Visible: =false
+      - lblRowX:
+          Control: Label@2.5.1
+          Properties:
+            Text: =(Parent.TemplateWidth - Min(CountRows(Filter(colGente, Padre = ThisItem.Padre)) * 300, Parent.TemplateWidth - 40)) / 2
+            X: =0
+            Y: =0
+            Width: =10
+            Height: =10
+            Size: =8
+            Color: =ColorValue("#87878F")
+            Visible: =false
+      - lblPX:
+          Control: Label@2.5.1
+          Properties:
+            Text: |-
+              =If(ThisItem.Nivel = 1, Parent.TemplateWidth / 2, With({t: Sort(Filter(colGente, Padre = LookUp(colGente, Id = ThisItem.Padre).Padre), Nombre)}, With({w: Min(CountRows(t) * 300, Parent.TemplateWidth - 40)}, (Parent.TemplateWidth - w) / 2 + Min((Max(ForAll(Sequence(CountRows(t)), If(Index(t, Value).Id = ThisItem.Padre, Value)), Value) - 1) * 300, w - 300) + 150)))
+            X: =0
+            Y: =0
+            Width: =10
+            Height: =10
+            Size: =8
+            Color: =ColorValue("#87878F")
+            Visible: =false
+      - lblSelX:
+          Control: Label@2.5.1
+          Properties:
+            Text: |-
+              =With({t: Sort(Filter(colGente, Padre = ThisItem.Padre), Nombre)}, With({w: Min(CountRows(t) * 300, Parent.TemplateWidth - 40)}, (Parent.TemplateWidth - w) / 2 + Min((Max(ForAll(Sequence(CountRows(t)), If(Index(t, Value).Id = ThisItem.Sel, Value)), Value) - 1) * 300, w - 300) + 150))
+            X: =0
+            Y: =0
+            Width: =10
+            Height: =10
+            Size: =8
+            Color: =ColorValue("#87878F")
+            Visible: =false
+      - linUp:
+          Control: Rectangle@2.3.0
+          Properties:
+            X: =Value(lblPX.Text) - 1
+            Y: =0
+            Width: =2
+            Height: =31
+            Fill: =ColorValue("#87878F")
+            Visible: =ThisItem.Nivel > 1
+      - linH:
+          Control: Rectangle@2.3.0
+          Properties:
+            X: =Min(Value(lblPX.Text), Value(lblRowX.Text) + 150) - 1
+            Y: =29
+            Width: =Max(Value(lblPX.Text), Value(lblRowX.Text) + Value(lblRowW.Text) - 150) - Min(Value(lblPX.Text), Value(lblRowX.Text) + 150) + 2
+            Height: =2
+            Fill: =ColorValue("#87878F")
+            Visible: =ThisItem.Nivel > 1
+      - linDown:
+          Control: Rectangle@2.3.0
+          Properties:
+            X: =Value(lblSelX.Text) - 1
+            Y: =166
+            Width: =2
+            Height: =24
+            Fill: =ColorValue("#87878F")
+            Visible: =!IsBlank(ThisItem.Sel) && ThisItem.Nivel < Max(colNiveles, Nivel)
       - lblNivel:
           Control: Label@2.5.1
           Properties:
-            Text: =If(ThisItem.Padre = "ROOT", "LEADERSHIP", Upper(LookUp(colGente, Id = ThisItem.Padre).Nombre) & "'S TEAM") & "   ·   " & CountRows(Filter(colGente, Padre = ThisItem.Padre))
-            X: =0
-            Y: =6
-            Width: =Parent.TemplateWidth
-            Height: =24
+            Text: =If(ThisItem.Padre = "ROOT", "LEADERSHIP", Upper(LookUp(colGente, Id = ThisItem.Padre).Nombre) & "'S TEAM") & "  ·  " & CountRows(Filter(colGente, Padre = ThisItem.Padre))
+            X: =If(Value(lblPX.Text) + 352 > Parent.TemplateWidth, Value(lblPX.Text) - 352, Value(lblPX.Text) + 12)
+            Y: =4
+            Width: =340
+            Height: =22
             Size: =10
             Color: =ColorValue("#87878F")
-            Align: =Align.Center
+            Align: =If(Value(lblPX.Text) + 352 > Parent.TemplateWidth, Align.Right, Align.Left)
             FontWeight: =FontWeight.Semibold
       - galPersonas:
           Control: Gallery@2.15.0
           Variant: Horizontal
           Properties:
             Items: =Sort(Filter(colGente, Padre = ThisItem.Padre), Nombre)
-            X: =(Parent.TemplateWidth - Self.Width) / 2
-            Y: =34
-            Width: =Min(CountRows(Filter(colGente, Padre = ThisItem.Padre)) * 300, Parent.TemplateWidth - 40)
-            Height: =132
+            X: =Value(lblRowX.Text)
+            Y: =30
+            Width: =Value(lblRowW.Text)
+            Height: =140
             TemplateSize: =300
             TemplatePadding: =0
             ShowScrollbar: =false
             ShowNavigation: =true
+            Default: =LookUp(Filter(colGente, Padre = ThisItem.Padre), Id = ThisItem.Sel)
             OnSelect: |-
-              =Set(varNivel, LookUp(colNiveles, Padre = ThisItem.Padre).Nivel);
-              RemoveIf(colNiveles, Nivel > varNivel);
-              If(
-                  LookUp(colNiveles, Nivel = varNivel).Sel = ThisItem.Id,
-                  Patch(colNiveles, LookUp(colNiveles, Nivel = varNivel), {Sel: ""}),
-                  Patch(colNiveles, LookUp(colNiveles, Nivel = varNivel), {Sel: ThisItem.Id});
-                  If(ThisItem.Reportes > 0,
-                      If(IsEmpty(Filter(colGente, Padre = ThisItem.Id)),
-                          Collect(colGente, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(ThisItem.Id).value, !IsBlank(mail)), {Padre: ThisItem.Id, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)}))
-                      );
-                      Collect(colNiveles, {Nivel: varNivel + 1, Padre: ThisItem.Id, Sel: ""})
-                  )
+              =If(!varCargando,
+                  Set(varCargando, true);
+                  Set(varNivel, LookUp(colNiveles, Padre = ThisItem.Padre).Nivel);
+                  RemoveIf(colNiveles, Nivel > varNivel);
+                  If(
+                      LookUp(colNiveles, Nivel = varNivel).Sel = ThisItem.Id,
+                      Patch(colNiveles, LookUp(colNiveles, Nivel = varNivel), {Sel: ""}),
+                      Patch(colNiveles, LookUp(colNiveles, Nivel = varNivel), {Sel: ThisItem.Id});
+                      If(ThisItem.Reportes > 0,
+                          If(IsEmpty(Filter(colGente, Padre = ThisItem.Id)),
+                              ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(ThisItem.Id).value, !IsBlank(mail)), {Padre: ThisItem.Id, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)}));
+                              Collect(colGente, Filter(colTmp, !(Id in colGente.Id)))
+                          );
+                          Collect(colNiveles, {Nivel: varNivel + 1, Padre: ThisItem.Id, Sel: ""})
+                      )
+                  );
+                  Set(varCargando, false)
               )
           Children:
+            - linStub:
+                Control: Rectangle@2.3.0
+                Properties:
+                  X: =Parent.TemplateWidth / 2 - 1
+                  Y: =0
+                  Width: =2
+                  Height: =10
+                  Fill: =ColorValue("#87878F")
+            - lblArrow:
+                Control: Label@2.5.1
+                Properties:
+                  Text: ="▼"
+                  X: =Parent.TemplateWidth / 2 - 8
+                  Y: =2
+                  Width: =16
+                  Height: =12
+                  Size: =7
+                  Color: =ColorValue("#87878F")
+                  Align: =Align.Center
+                  PaddingTop: =0
+                  PaddingBottom: =0
             - btnCard:
                 Control: Classic/Button@2.2.0
                 Properties:
                   Text: =""
                   Tooltip: ="Click to show or hide this person's team"
                   X: =6
-                  Y: =4
+                  Y: =14
                   Width: =Parent.TemplateWidth - 12
                   Height: =122
                   Fill: =If(ThisItem.Id in colNiveles.Sel, ColorValue("#EEEEF5"), Color.White)
@@ -152,7 +253,7 @@
                 Control: Circle@2.3.0
                 Properties:
                   X: =22
-                  Y: =22
+                  Y: =32
                   Width: =60
                   Height: =60
                   Fill: =Switch(ThisItem.Depto, "Executive", ColorValue("#202054"), "Finance", ColorValue("#4A4A8A"), "Human Resources", ColorValue("#87878F"), ColorValue("#4A4A8A"))
@@ -162,7 +263,7 @@
                 Properties:
                   Text: =Upper(Concat(FirstN(Split(ThisItem.Nombre, " "), 2), Left(Value, 1)))
                   X: =22
-                  Y: =22
+                  Y: =32
                   Width: =60
                   Height: =60
                   Size: =18
@@ -175,7 +276,7 @@
                 Properties:
                   Image: =If(ThisItem.Foto, UsuariosdeOffice365.UserPhotoV2(ThisItem.Id))
                   X: =22
-                  Y: =22
+                  Y: =32
                   Width: =60
                   Height: =60
                   ImagePosition: =ImagePosition.Fill
@@ -190,8 +291,8 @@
                 Properties:
                   Text: =ThisItem.Nombre
                   X: =96
-                  Y: =18
-                  Width: =Parent.TemplateWidth - 110
+                  Y: =28
+                  Width: =Parent.TemplateWidth - 150
                   Height: =26
                   Size: =14
                   Color: =ColorValue("#202054")
@@ -203,7 +304,7 @@
                 Properties:
                   Text: =ThisItem.Puesto
                   X: =96
-                  Y: =44
+                  Y: =54
                   Width: =Parent.TemplateWidth - 110
                   Height: =20
                   Size: =11
@@ -215,7 +316,7 @@
                 Properties:
                   Text: =ThisItem.Depto
                   X: =96
-                  Y: =62
+                  Y: =72
                   Width: =Parent.TemplateWidth - 110
                   Height: =18
                   Size: =10
@@ -225,44 +326,66 @@
             - btnTeam:
                 Control: Classic/Button@2.2.0
                 Properties:
-                  Text: =If(ThisItem.Reportes = 0, "No reports", If(ThisItem.Id in colNiveles.Sel, "▾ ", "▸ ") & ThisItem.Reportes & If(ThisItem.Reportes = 1, " report", " reports"))
+                  Text: =If(ThisItem.Reportes = 0, "No direct reports", If(ThisItem.Id in colNiveles.Sel, "▾ Hide ", "▸ Show ") & ThisItem.Reportes & If(ThisItem.Reportes = 1, " report", " reports"))
                   Tooltip: ="Show or hide team"
                   X: =96
-                  Y: =86
-                  Width: =108
-                  Height: =28
-                  Fill: =ColorValue("#EEEEF5")
-                  HoverFill: =ColorValue("#E2E2EE")
-                  PressedFill: =ColorValue("#D6D6E6")
-                  Color: =If(ThisItem.Reportes = 0, ColorValue("#87878F"), ColorValue("#202054"))
+                  Y: =98
+                  Width: =160
+                  Height: =22
+                  Fill: =Color.Transparent
+                  HoverFill: =Color.Transparent
+                  PressedFill: =Color.Transparent
+                  Color: =If(ThisItem.Reportes = 0, ColorValue("#87878F"), ColorValue("#4A4A8A"))
+                  HoverColor: =ColorValue("#202054")
+                  PressedColor: =ColorValue("#202054")
                   BorderThickness: =0
-                  Size: =10
-                  RadiusTopLeft: =14
-                  RadiusTopRight: =14
-                  RadiusBottomLeft: =14
-                  RadiusBottomRight: =14
+                  Size: =9
+                  FontWeight: =FontWeight.Semibold
+                  Align: =Align.Left
+                  PaddingLeft: =0
+                  PaddingRight: =0
                   OnSelect: =Select(Parent)
             - btnProfile:
                 Control: Classic/Button@2.2.0
                 Properties:
-                  Text: ="Profile ›"
-                  Tooltip: ="See job description, scope, start date, location and backup"
-                  X: =210
-                  Y: =86
-                  Width: =78
-                  Height: =28
-                  Fill: =ColorValue("#202054")
-                  HoverFill: =ColorValue("#4A4A8A")
+                  Text: ="i"
+                  Tooltip: ="View profile"
+                  X: =Parent.TemplateWidth - 46
+                  Y: =24
+                  Width: =26
+                  Height: =26
+                  Fill: =ColorValue("#EEEEF5")
+                  HoverFill: =ColorValue("#202054")
                   PressedFill: =ColorValue("#4A4A8A")
-                  Color: =Color.White
+                  Color: =ColorValue("#202054")
                   HoverColor: =Color.White
-                  BorderThickness: =0
+                  PressedColor: =Color.White
+                  BorderColor: =ColorValue("#202054")
+                  BorderThickness: =1
                   Size: =10
-                  RadiusTopLeft: =14
-                  RadiusTopRight: =14
-                  RadiusBottomLeft: =14
-                  RadiusBottomRight: =14
+                  FontWeight: =FontWeight.Bold
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  PaddingBottom: =0
+                  RadiusTopLeft: =13
+                  RadiusTopRight: =13
+                  RadiusBottomLeft: =13
+                  RadiusBottomRight: =13
                   OnSelect: =Set(varPersona, ThisItem); Set(varVerPanel, true)
+- lblLoading:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Loading team…"
+      X: =Parent.Width - 224
+      Y: =64
+      Width: =200
+      Height: =40
+      Size: =11
+      Color: =ColorValue("#4A4A8A")
+      Align: =Align.Right
+      FontWeight: =FontWeight.Semibold
+      Visible: =varCargando
 - galBuscar:
     Control: Gallery@2.15.0
     Variant: Vertical
@@ -280,7 +403,60 @@
       BorderThickness: =1
       Visible: =Len(txtBuscar.Text) >= 2
       OnSelect: |-
-        =With({b: UsuariosdeOffice365.UserProfileV2(ThisItem.Id)}, Set(varPersona, {Padre: "", Id: b.id, Nombre: b.displayName, Puesto: b.jobTitle, Depto: b.department, Correo: Lower(b.mail), Tel: Coalesce(b.mobilePhone, First(b.businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(b.id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(b.id).value)})); Set(varVerPanel, true); Reset(txtBuscar)
+        =Set(varVerPanel, false);
+        Set(varCargando, true);
+        Set(varLocate, ThisItem.Id);
+        Set(varCEOId, LookUp(colGente, Padre = "ROOT").Id);
+        ClearCollect(colPath, {Id: varLocate});
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        Set(varDepth, CountRows(colPath));
+        ClearCollect(colNiveles, {Nivel: 1, Padre: "ROOT", Sel: varCEOId});
+        If(varDepth >= 1, With({n: Index(colPath, varDepth - 1 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            false
+        ));
+        If(varDepth >= 2, With({n: Index(colPath, varDepth - 2 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 2, Padre: Index(colPath, varDepth - 2 + 2).Id, Sel: n})
+        ));
+        If(varDepth >= 3, With({n: Index(colPath, varDepth - 3 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 3, Padre: Index(colPath, varDepth - 3 + 2).Id, Sel: n})
+        ));
+        If(varDepth >= 4, With({n: Index(colPath, varDepth - 4 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 4, Padre: Index(colPath, varDepth - 4 + 2).Id, Sel: n})
+        ));
+        If(varDepth >= 5, With({n: Index(colPath, varDepth - 5 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 5, Padre: Index(colPath, varDepth - 5 + 2).Id, Sel: n})
+        ));
+        If(varDepth >= 6, With({n: Index(colPath, varDepth - 6 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 6, Padre: Index(colPath, varDepth - 6 + 2).Id, Sel: n})
+        ));
+        If(varDepth >= 7, With({n: Index(colPath, varDepth - 7 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 7, Padre: Index(colPath, varDepth - 7 + 2).Id, Sel: n})
+        ));
+        If(varDepth >= 8, With({n: Index(colPath, varDepth - 8 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 8, Padre: Index(colPath, varDepth - 8 + 2).Id, Sel: n})
+        ));
+        If(varDepth >= 9, With({n: Index(colPath, varDepth - 9 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 9, Padre: Index(colPath, varDepth - 9 + 2).Id, Sel: n})
+        ));
+        If(!IsEmpty(Filter(colGente, Padre = varLocate)), Collect(colNiveles, {Nivel: varDepth + 1, Padre: varLocate, Sel: ""}));
+        Set(varCargando, false);
+        Reset(txtBuscar)
     Children:
       - lblSearchItem:
           Control: Label@2.5.1
@@ -582,35 +758,49 @@
       VerticalAlign: =VerticalAlign.Top
       Overflow: =Overflow.Scroll
       Visible: =varVerPanel
-- lblContact:
+- lblEmail:
     Control: Label@2.5.1
     Properties:
-      Text: ="✉  " & varPersona.Correo & If(IsBlank(varPersona.Tel), "", "     ☎  " & varPersona.Tel)
+      Text: ="✉  " & varPersona.Correo
       X: =Parent.Width - 370
-      Y: =628
+      Y: =622
       Width: =340
-      Height: =24
+      Height: =22
       Size: =11
       Color: =ColorValue("#202054")
+      Wrap: =false
       Visible: =varVerPanel
+- lblPhone:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="☎  " & varPersona.Tel
+      X: =Parent.Width - 370
+      Y: =644
+      Width: =340
+      Height: =22
+      Size: =11
+      Color: =ColorValue("#202054")
+      Wrap: =false
+      Visible: =varVerPanel && !IsBlank(varPersona.Tel)
 - btnEmail:
     Control: Classic/Button@2.2.0
     Properties:
       Text: ="Send email"
       X: =Parent.Width - 370
-      Y: =660
+      Y: =676
       Width: =165
-      Height: =38
+      Height: =32
       Fill: =ColorValue("#202054")
       HoverFill: =ColorValue("#4A4A8A")
       PressedFill: =ColorValue("#4A4A8A")
       Color: =Color.White
       HoverColor: =Color.White
       BorderThickness: =0
-      RadiusTopLeft: =19
-      RadiusTopRight: =19
-      RadiusBottomLeft: =19
-      RadiusBottomRight: =19
+      Size: =11
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
       Visible: =varVerPanel
       OnSelect: =Launch("mailto:" & varPersona.Correo)
 - btnTeams:
@@ -618,9 +808,9 @@
     Properties:
       Text: ="Chat in Teams"
       X: =Parent.Width - 195
-      Y: =660
+      Y: =676
       Width: =165
-      Height: =38
+      Height: =32
       Fill: =Color.White
       HoverFill: =ColorValue("#EEEEF5")
       PressedFill: =ColorValue("#E2E2EE")
@@ -628,9 +818,87 @@
       HoverColor: =ColorValue("#202054")
       BorderColor: =ColorValue("#202054")
       BorderThickness: =1
-      RadiusTopLeft: =19
-      RadiusTopRight: =19
-      RadiusBottomLeft: =19
-      RadiusBottomRight: =19
+      Size: =11
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
       Visible: =varVerPanel
       OnSelect: =Launch("https://teams.microsoft.com/l/chat/0/0?users=" & varPersona.Correo)
+- btnShowInChart:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="◎ Show in chart"
+      Tooltip: ="Close the profile and highlight this person in the org chart"
+      X: =Parent.Width - 388
+      Y: =74
+      Width: =130
+      Height: =28
+      Fill: =Color.Transparent
+      HoverFill: =RGBA(255, 255, 255, 0.15)
+      PressedFill: =RGBA(255, 255, 255, 0.25)
+      Color: =Color.White
+      HoverColor: =Color.White
+      PressedColor: =Color.White
+      BorderColor: =Color.White
+      BorderThickness: =1
+      Size: =10
+      RadiusTopLeft: =14
+      RadiusTopRight: =14
+      RadiusBottomLeft: =14
+      RadiusBottomRight: =14
+      Visible: =varVerPanel
+      OnSelect: |-
+        =Set(varVerPanel, false);
+        Set(varCargando, true);
+        Set(varLocate, varPersona.Id);
+        Set(varCEOId, LookUp(colGente, Padre = "ROOT").Id);
+        ClearCollect(colPath, {Id: varLocate});
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        Set(varDepth, CountRows(colPath));
+        ClearCollect(colNiveles, {Nivel: 1, Padre: "ROOT", Sel: varCEOId});
+        If(varDepth >= 1, With({n: Index(colPath, varDepth - 1 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            false
+        ));
+        If(varDepth >= 2, With({n: Index(colPath, varDepth - 2 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 2, Padre: Index(colPath, varDepth - 2 + 2).Id, Sel: n})
+        ));
+        If(varDepth >= 3, With({n: Index(colPath, varDepth - 3 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 3, Padre: Index(colPath, varDepth - 3 + 2).Id, Sel: n})
+        ));
+        If(varDepth >= 4, With({n: Index(colPath, varDepth - 4 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 4, Padre: Index(colPath, varDepth - 4 + 2).Id, Sel: n})
+        ));
+        If(varDepth >= 5, With({n: Index(colPath, varDepth - 5 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 5, Padre: Index(colPath, varDepth - 5 + 2).Id, Sel: n})
+        ));
+        If(varDepth >= 6, With({n: Index(colPath, varDepth - 6 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 6, Padre: Index(colPath, varDepth - 6 + 2).Id, Sel: n})
+        ));
+        If(varDepth >= 7, With({n: Index(colPath, varDepth - 7 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 7, Padre: Index(colPath, varDepth - 7 + 2).Id, Sel: n})
+        ));
+        If(varDepth >= 8, With({n: Index(colPath, varDepth - 8 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 8, Padre: Index(colPath, varDepth - 8 + 2).Id, Sel: n})
+        ));
+        If(varDepth >= 9, With({n: Index(colPath, varDepth - 9 + 1).Id},
+            If(IsEmpty(Filter(colGente, Padre = n)), ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !IsBlank(mail)), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)})); Collect(colGente, Filter(colTmp, !(Id in colGente.Id))));
+            Collect(colNiveles, {Nivel: 9, Padre: Index(colPath, varDepth - 9 + 2).Id, Sel: n})
+        ));
+        If(!IsEmpty(Filter(colGente, Padre = varLocate)), Collect(colNiveles, {Nivel: varDepth + 1, Padre: varLocate, Sel: ""}));
+        Set(varCargando, false)
