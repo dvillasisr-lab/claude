@@ -1,0 +1,574 @@
+- recHeaderC:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =If(Parent.Width < 700, 0, 240)
+      Y: =0
+      Width: =Parent.Width - If(Parent.Width < 700, 0, 240)
+      Height: =64
+      Fill: =Color.White
+      BorderColor: =ColorValue("#E3E3E3")
+      BorderThickness: =1
+- lblTitleC:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Celebrations"
+      X: =If(Parent.Width < 700, 56, 264)
+      Y: =0
+      Width: =420
+      Height: =64
+      Size: =If(Parent.Width < 700, 13, 16)
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+- btnBurgerC:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="☰"
+      X: =8
+      Y: =12
+      Width: =40
+      Height: =40
+      Fill: =Color.Transparent
+      HoverFill: =ColorValue("#EEEEF5")
+      PressedFill: =ColorValue("#E2E2EE")
+      Color: =ColorValue("#202054")
+      HoverColor: =ColorValue("#202054")
+      BorderThickness: =0
+      Size: =16
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Visible: =Parent.Width < 700
+      OnSelect: =Set(varMenu, !varMenu)
+- lblNewTitle:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="🆕  NEW HIRES · LAST 90 DAYS  ·  " & CountRows(Sort(Filter(colInfo, !IsBlank(StartDate) && StartDate >= DateAdd(Today(), -90, TimeUnit.Days) && StartDate <= Today()), StartDate, SortOrder.Descending))
+      X: =If(Parent.Width < 700, 12, 264)
+      Y: =If(Parent.Width < 700, 76, 88)
+      Width: =Parent.Width - 280
+      Height: =28
+      Size: =10
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#87878F")
+- galNew:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =Sort(Filter(colInfo, !IsBlank(StartDate) && StartDate >= DateAdd(Today(), -90, TimeUnit.Days) && StartDate <= Today()), StartDate, SortOrder.Descending)
+      X: =If(Parent.Width < 700, 0, 252)
+      Y: =If(Parent.Width < 700, 76, 88) + 30
+      Width: =Parent.Width - If(Parent.Width < 700, 0, 240) - If(Parent.Width < 700, 0, 24)
+      Height: =200
+      WrapCount: =Max(1, RoundDown((Parent.Width - If(Parent.Width < 700, 0, 240) - If(Parent.Width < 700, 0, 24)) / 240, 0))
+      TemplateSize: =96
+      TemplatePadding: =0
+      ShowScrollbar: =true
+      OnSelect: |-
+        =With({b: UsuariosdeOffice365.UserProfileV2(ThisItem.Correo)}, Set(varPersona, {Padre: "", Id: b.id, Nombre: b.displayName, Puesto: b.jobTitle, Depto: b.department, Correo: Lower(Coalesce(b.mail, b.userPrincipalName)), Tel: IfError(Coalesce(b.mobilePhone, First(b.businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(b.id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})); Set(varVerPanel, true); Set(varSugerir, false); Navigate(scrMain, ScreenTransition.None)
+    Children:
+      - btnCardN:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =""
+            Tooltip: ="Open profile"
+            X: =5
+            Y: =5
+            Width: =Parent.TemplateWidth - 10
+            Height: =86
+            Fill: =Color.White
+            HoverFill: =ColorValue("#EEEEF5")
+            PressedFill: =ColorValue("#E2E2EE")
+            BorderColor: =ColorValue("#E3E3E3")
+            HoverBorderColor: =ColorValue("#202054")
+            BorderThickness: =1
+            RadiusTopLeft: =10
+            RadiusTopRight: =10
+            RadiusBottomLeft: =10
+            RadiusBottomRight: =10
+            OnSelect: =Select(Parent)
+      - circN:
+          Control: Circle@2.3.0
+          Properties:
+            X: =16
+            Y: =27
+            Width: =42
+            Height: =42
+            Fill: =Switch(Upper(Left(Coalesce(ThisItem.Area, ""), 2)), "AM", ColorValue("#202054"), "SA", ColorValue("#3B3B8F"), "OP", ColorValue("#2E5C8A"), "EN", ColorValue("#4F6D7A"), "AC", ColorValue("#6A5A8C"), "HR", ColorValue("#87878F"), "IT", ColorValue("#3E7CB1"), "CS", ColorValue("#616066"), "PD", ColorValue("#34495E"), "QA", ColorValue("#5D5F8A"), "MT", ColorValue("#6E7B8B"), "PC", ColorValue("#4C5C99"), ColorValue("#4A4A8A"))
+            OnSelect: =Select(Parent)
+      - iniN:
+          Control: Label@2.5.1
+          Properties:
+            Text: =Upper(Concat(FirstN(Split(ThisItem.Title, " "), 2), Left(Value, 1)))
+            X: =16
+            Y: =27
+            Width: =42
+            Height: =42
+            Size: =12
+            Color: =Color.White
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            PaddingLeft: =0
+            PaddingRight: =0
+            OnSelect: =Select(Parent)
+      - imgN:
+          Control: Image@2.2.3
+          Properties:
+            Image: =IfError(UsuariosdeOffice365.UserPhotoV2(ThisItem.Correo), Blank())
+            X: =16
+            Y: =27
+            Width: =42
+            Height: =42
+            ImagePosition: =ImagePosition.Fill
+            RadiusTopLeft: =21
+            RadiusTopRight: =21
+            RadiusBottomLeft: =21
+            RadiusBottomRight: =21
+            OnSelect: =Select(Parent)
+      - nameN:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.Title
+            X: =64
+            Y: =16
+            Width: =Parent.TemplateWidth - 76
+            Height: =20
+            Size: =10.5
+            Color: =ColorValue("#202054")
+            FontWeight: =FontWeight.Bold
+            Wrap: =false
+            PaddingLeft: =4
+            OnSelect: =Select(Parent)
+      - titleN:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.Puesto
+            X: =64
+            Y: =35
+            Width: =Parent.TemplateWidth - 76
+            Height: =16
+            Size: =8.5
+            Color: =ColorValue("#565656")
+            Wrap: =false
+            PaddingLeft: =4
+            OnSelect: =Select(Parent)
+      - whenN:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="Joined " & Text(ThisItem.StartDate, "mmm d, yyyy", "en-US")
+            X: =64
+            Y: =54
+            Width: =Parent.TemplateWidth - 76
+            Height: =20
+            Size: =9
+            Color: =ColorValue("#4A4A8A")
+            FontWeight: =FontWeight.Semibold
+            Wrap: =false
+            PaddingLeft: =4
+            OnSelect: =Select(Parent)
+- lblNewEmpty:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="No new hires in the last 90 days, or start dates aren't filled in the SharePoint list yet."
+      X: =If(Parent.Width < 700, 12, 264)
+      Y: =If(Parent.Width < 700, 76, 88) + 34
+      Width: =Parent.Width - 300
+      Height: =30
+      Size: =10
+      Color: =ColorValue("#565656")
+      Visible: =galNew.AllItemsCount = 0
+- lblAnnTitle:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="🎉  WORK ANNIVERSARIES · " & Upper(Text(Today(), "mmmm", "en-US")) & "  ·  " & CountRows(Sort(Filter(colInfo, !IsBlank(StartDate) && Month(StartDate) = Month(Today()) && Year(StartDate) < Year(Today())), Day(StartDate)))
+      X: =If(Parent.Width < 700, 12, 264)
+      Y: =If(Parent.Width < 700, 76, 88) + 244
+      Width: =Parent.Width - 280
+      Height: =28
+      Size: =10
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#87878F")
+- galAnn:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =Sort(Filter(colInfo, !IsBlank(StartDate) && Month(StartDate) = Month(Today()) && Year(StartDate) < Year(Today())), Day(StartDate))
+      X: =If(Parent.Width < 700, 0, 252)
+      Y: =If(Parent.Width < 700, 76, 88) + 274
+      Width: =Parent.Width - If(Parent.Width < 700, 0, 240) - If(Parent.Width < 700, 0, 24)
+      Height: =Parent.Height - If(Parent.Width < 700, 76, 88) - 282
+      WrapCount: =Max(1, RoundDown((Parent.Width - If(Parent.Width < 700, 0, 240) - If(Parent.Width < 700, 0, 24)) / 240, 0))
+      TemplateSize: =96
+      TemplatePadding: =0
+      ShowScrollbar: =true
+      OnSelect: |-
+        =With({b: UsuariosdeOffice365.UserProfileV2(ThisItem.Correo)}, Set(varPersona, {Padre: "", Id: b.id, Nombre: b.displayName, Puesto: b.jobTitle, Depto: b.department, Correo: Lower(Coalesce(b.mail, b.userPrincipalName)), Tel: IfError(Coalesce(b.mobilePhone, First(b.businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(b.id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})); Set(varVerPanel, true); Set(varSugerir, false); Navigate(scrMain, ScreenTransition.None)
+    Children:
+      - btnCardA:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =""
+            Tooltip: ="Open profile"
+            X: =5
+            Y: =5
+            Width: =Parent.TemplateWidth - 10
+            Height: =86
+            Fill: =Color.White
+            HoverFill: =ColorValue("#EEEEF5")
+            PressedFill: =ColorValue("#E2E2EE")
+            BorderColor: =ColorValue("#E3E3E3")
+            HoverBorderColor: =ColorValue("#202054")
+            BorderThickness: =1
+            RadiusTopLeft: =10
+            RadiusTopRight: =10
+            RadiusBottomLeft: =10
+            RadiusBottomRight: =10
+            OnSelect: =Select(Parent)
+      - circA:
+          Control: Circle@2.3.0
+          Properties:
+            X: =16
+            Y: =27
+            Width: =42
+            Height: =42
+            Fill: =Switch(Upper(Left(Coalesce(ThisItem.Area, ""), 2)), "AM", ColorValue("#202054"), "SA", ColorValue("#3B3B8F"), "OP", ColorValue("#2E5C8A"), "EN", ColorValue("#4F6D7A"), "AC", ColorValue("#6A5A8C"), "HR", ColorValue("#87878F"), "IT", ColorValue("#3E7CB1"), "CS", ColorValue("#616066"), "PD", ColorValue("#34495E"), "QA", ColorValue("#5D5F8A"), "MT", ColorValue("#6E7B8B"), "PC", ColorValue("#4C5C99"), ColorValue("#4A4A8A"))
+            OnSelect: =Select(Parent)
+      - iniA:
+          Control: Label@2.5.1
+          Properties:
+            Text: =Upper(Concat(FirstN(Split(ThisItem.Title, " "), 2), Left(Value, 1)))
+            X: =16
+            Y: =27
+            Width: =42
+            Height: =42
+            Size: =12
+            Color: =Color.White
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            PaddingLeft: =0
+            PaddingRight: =0
+            OnSelect: =Select(Parent)
+      - imgA:
+          Control: Image@2.2.3
+          Properties:
+            Image: =IfError(UsuariosdeOffice365.UserPhotoV2(ThisItem.Correo), Blank())
+            X: =16
+            Y: =27
+            Width: =42
+            Height: =42
+            ImagePosition: =ImagePosition.Fill
+            RadiusTopLeft: =21
+            RadiusTopRight: =21
+            RadiusBottomLeft: =21
+            RadiusBottomRight: =21
+            OnSelect: =Select(Parent)
+      - nameA:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.Title
+            X: =64
+            Y: =16
+            Width: =Parent.TemplateWidth - 76
+            Height: =20
+            Size: =10.5
+            Color: =ColorValue("#202054")
+            FontWeight: =FontWeight.Bold
+            Wrap: =false
+            PaddingLeft: =4
+            OnSelect: =Select(Parent)
+      - titleA:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.Puesto
+            X: =64
+            Y: =35
+            Width: =Parent.TemplateWidth - 76
+            Height: =16
+            Size: =8.5
+            Color: =ColorValue("#565656")
+            Wrap: =false
+            PaddingLeft: =4
+            OnSelect: =Select(Parent)
+      - whenA:
+          Control: Label@2.5.1
+          Properties:
+            Text: ="🎉 " & (Year(Today()) - Year(ThisItem.StartDate)) & If(Year(Today()) - Year(ThisItem.StartDate) = 1, " year", " years") & "  ·  " & Text(ThisItem.StartDate, "mmm d", "en-US")
+            X: =64
+            Y: =54
+            Width: =Parent.TemplateWidth - 76
+            Height: =20
+            Size: =9
+            Color: =ColorValue("#4A4A8A")
+            FontWeight: =FontWeight.Semibold
+            Wrap: =false
+            PaddingLeft: =4
+            OnSelect: =Select(Parent)
+- lblAnnEmpty:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="No work anniversaries this month yet."
+      X: =If(Parent.Width < 700, 12, 264)
+      Y: =If(Parent.Width < 700, 76, 88) + 278
+      Width: =Parent.Width - 300
+      Height: =30
+      Size: =10
+      Color: =ColorValue("#565656")
+      Visible: =galAnn.AllItemsCount = 0
+- recMenuOverlayC:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =0
+      Y: =0
+      Width: =Parent.Width
+      Height: =Parent.Height
+      Fill: =RGBA(0, 0, 0, 0.35)
+      Visible: =Parent.Width < 700 && varMenu
+      OnSelect: =Set(varMenu, false)
+- recSideC:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =0
+      Y: =0
+      Width: =240
+      Height: =Parent.Height
+      Fill: =ColorValue("#202054")
+      BorderColor: =ColorValue("#E3E3E3")
+      BorderThickness: =0
+      Visible: =!(Parent.Width < 700) || varMenu
+- imgLogoC:
+    Control: Image@2.2.3
+    Properties:
+      Image: ="https://www.sussek.com/img/logobig2.png?v=2"
+      X: =24
+      Y: =20
+      Width: =192
+      Height: =93
+      ImagePosition: =ImagePosition.Fit
+      Visible: =!(Parent.Width < 700) || varMenu
+- recSideDivC:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =24
+      Y: =132
+      Width: =192
+      Height: =1
+      Fill: =RGBA(255, 255, 255, 0.15)
+      Visible: =!(Parent.Width < 700) || varMenu
+- lblSideSectionC:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="DIRECTORY"
+      X: =26
+      Y: =146
+      Width: =192
+      Height: =20
+      Size: =8
+      FontWeight: =FontWeight.Semibold
+      Color: =RGBA(255, 255, 255, 0.5)
+      Visible: =!(Parent.Width < 700) || varMenu
+- btnMenuOrgC:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="◫  Org chart"
+      X: =12
+      Y: =172
+      Width: =216
+      Height: =40
+      Fill: =Color.Transparent
+      HoverFill: =RGBA(255, 255, 255, 0.08)
+      PressedFill: =RGBA(255, 255, 255, 0.18)
+      Color: =RGBA(255, 255, 255, 0.78)
+      HoverColor: =Color.White
+      PressedColor: =Color.White
+      BorderThickness: =0
+      Size: =10.5
+      FontWeight: =FontWeight.Normal
+      Align: =Align.Left
+      PaddingLeft: =20
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      OnSelect: =Set(varVista, "org"); Set(varVerPanel, false); Set(varMenu, false); Navigate(scrMain, ScreenTransition.None)
+      Visible: =!(Parent.Width < 700) || varMenu
+- recMenuBar1C:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =12
+      Y: =180
+      Width: =3
+      Height: =24
+      Fill: =Color.White
+      Visible: =false
+- btnMenuDeptC:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="▦  Departments"
+      X: =12
+      Y: =218
+      Width: =216
+      Height: =40
+      Fill: =Color.Transparent
+      HoverFill: =RGBA(255, 255, 255, 0.08)
+      PressedFill: =RGBA(255, 255, 255, 0.18)
+      Color: =RGBA(255, 255, 255, 0.78)
+      HoverColor: =Color.White
+      PressedColor: =Color.White
+      BorderThickness: =0
+      Size: =10.5
+      FontWeight: =FontWeight.Normal
+      Align: =Align.Left
+      PaddingLeft: =20
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      OnSelect: |-
+        =If(!varCargando,
+            Set(varCargando, true);
+            Set(varVerPanel, false);
+            Set(varVista, "dept");
+            If(IsEmpty(colTodos), ClearCollect(colTodos, ForAll(Filter(UsuariosdeOffice365.SearchUserV2({isSearchTermRequired: false, top: 999}).value, !(IsBlank(GivenName) && IsBlank(Surname) && IsBlank(JobTitle))), {Id: Id, Nombre: DisplayName, Puesto: JobTitle, Depto: With({d: Trim(Coalesce(Department, ""))}, With({c: If(Len(d) >= 3 && (Mid(d, 3, 1) = "-" || (Mid(d, 3, 1) = " " && Mid(d, 4, 1) = "-")), Upper(Left(d, 2)), Switch(Lower(d), "accounting", "AC", "administration", "AM", "customer service", "CS", "engineering", "EN", "human resources", "HR", "information technology", "IT", "maintenance", "MT", "operations", "OP", "purchasing", "PC", "production", "PD", "quality", "QA", "sales", "SA", "it", "IT", "produccion", "PD", "producción", "PD", "calidad", "QA", "ventas", "SA", "compras", "PC", "mantenimiento", "MT", ""))}, If(IsBlank(d), "No department", Switch(c, "AC", "AC - Accounting", "AM", "AM - Administration", "CS", "CS - Customer Service", "EN", "EN - Engineering", "HR", "HR - Human Resources", "IT", "IT - Information Technology", "MT", "MT - Maintenance", "OP", "OP - Operations", "PC", "PC - Purchasing", "PD", "PD - Production", "QA", "QA - Quality", "SA", "SA - Sales", d)))), Correo: Lower(Coalesce(Mail, UserPrincipalName)), Ubic: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Location, "Not specified"), Hab: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Skills, "")})));
+            Set(varGrupo, ""); Set(varDrop, false);
+            Set(varCargando, false)
+        ); Set(varMenu, false); Navigate(scrMain, ScreenTransition.None)
+      Visible: =!(Parent.Width < 700) || varMenu
+- recMenuBar2C:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =12
+      Y: =226
+      Width: =3
+      Height: =24
+      Fill: =Color.White
+      Visible: =false
+- btnMenuLocC:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="⌖  Locations"
+      X: =12
+      Y: =264
+      Width: =216
+      Height: =40
+      Fill: =Color.Transparent
+      HoverFill: =RGBA(255, 255, 255, 0.08)
+      PressedFill: =RGBA(255, 255, 255, 0.18)
+      Color: =RGBA(255, 255, 255, 0.78)
+      HoverColor: =Color.White
+      PressedColor: =Color.White
+      BorderThickness: =0
+      Size: =10.5
+      FontWeight: =FontWeight.Normal
+      Align: =Align.Left
+      PaddingLeft: =20
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      OnSelect: |-
+        =If(!varCargando,
+            Set(varCargando, true);
+            Set(varVerPanel, false);
+            Set(varVista, "loc");
+            If(IsEmpty(colTodos), ClearCollect(colTodos, ForAll(Filter(UsuariosdeOffice365.SearchUserV2({isSearchTermRequired: false, top: 999}).value, !(IsBlank(GivenName) && IsBlank(Surname) && IsBlank(JobTitle))), {Id: Id, Nombre: DisplayName, Puesto: JobTitle, Depto: With({d: Trim(Coalesce(Department, ""))}, With({c: If(Len(d) >= 3 && (Mid(d, 3, 1) = "-" || (Mid(d, 3, 1) = " " && Mid(d, 4, 1) = "-")), Upper(Left(d, 2)), Switch(Lower(d), "accounting", "AC", "administration", "AM", "customer service", "CS", "engineering", "EN", "human resources", "HR", "information technology", "IT", "maintenance", "MT", "operations", "OP", "purchasing", "PC", "production", "PD", "quality", "QA", "sales", "SA", "it", "IT", "produccion", "PD", "producción", "PD", "calidad", "QA", "ventas", "SA", "compras", "PC", "mantenimiento", "MT", ""))}, If(IsBlank(d), "No department", Switch(c, "AC", "AC - Accounting", "AM", "AM - Administration", "CS", "CS - Customer Service", "EN", "EN - Engineering", "HR", "HR - Human Resources", "IT", "IT - Information Technology", "MT", "MT - Maintenance", "OP", "OP - Operations", "PC", "PC - Purchasing", "PD", "PD - Production", "QA", "QA - Quality", "SA", "SA - Sales", d)))), Correo: Lower(Coalesce(Mail, UserPrincipalName)), Ubic: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Location, "Not specified"), Hab: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Skills, "")})));
+            Set(varGrupo, ""); Set(varDrop, false);
+            Set(varCargando, false)
+        ); Set(varMenu, false); Navigate(scrMain, ScreenTransition.None)
+      Visible: =!(Parent.Width < 700) || varMenu
+- recMenuBar3C:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =12
+      Y: =272
+      Width: =3
+      Height: =24
+      Fill: =Color.White
+      Visible: =false
+- btnMenuSinC:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="⚠  Unassigned" & If(CountRows(colSinJefe) > 0, "  (" & CountRows(colSinJefe) & ")", "")
+      X: =12
+      Y: =310
+      Width: =216
+      Height: =40
+      Fill: =Color.Transparent
+      HoverFill: =RGBA(255, 255, 255, 0.08)
+      PressedFill: =RGBA(255, 255, 255, 0.18)
+      Color: =RGBA(255, 255, 255, 0.78)
+      HoverColor: =Color.White
+      PressedColor: =Color.White
+      BorderThickness: =0
+      Size: =10.5
+      FontWeight: =FontWeight.Normal
+      Align: =Align.Left
+      PaddingLeft: =20
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      OnSelect: |-
+        =If(!varCargando,
+            Set(varCargando, true);
+            Set(varVerPanel, false);
+            Set(varVista, "sin");
+            If(IsEmpty(colTodos), ClearCollect(colTodos, ForAll(Filter(UsuariosdeOffice365.SearchUserV2({isSearchTermRequired: false, top: 999}).value, !(IsBlank(GivenName) && IsBlank(Surname) && IsBlank(JobTitle))), {Id: Id, Nombre: DisplayName, Puesto: JobTitle, Depto: With({d: Trim(Coalesce(Department, ""))}, With({c: If(Len(d) >= 3 && (Mid(d, 3, 1) = "-" || (Mid(d, 3, 1) = " " && Mid(d, 4, 1) = "-")), Upper(Left(d, 2)), Switch(Lower(d), "accounting", "AC", "administration", "AM", "customer service", "CS", "engineering", "EN", "human resources", "HR", "information technology", "IT", "maintenance", "MT", "operations", "OP", "purchasing", "PC", "production", "PD", "quality", "QA", "sales", "SA", "it", "IT", "produccion", "PD", "producción", "PD", "calidad", "QA", "ventas", "SA", "compras", "PC", "mantenimiento", "MT", ""))}, If(IsBlank(d), "No department", Switch(c, "AC", "AC - Accounting", "AM", "AM - Administration", "CS", "CS - Customer Service", "EN", "EN - Engineering", "HR", "HR - Human Resources", "IT", "IT - Information Technology", "MT", "MT - Maintenance", "OP", "OP - Operations", "PC", "PC - Purchasing", "PD", "PD - Production", "QA", "QA - Quality", "SA", "SA - Sales", d)))), Correo: Lower(Coalesce(Mail, UserPrincipalName)), Ubic: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Location, "Not specified"), Hab: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Skills, "")})));
+            If(IsEmpty(colSinJefe), ClearCollect(colSinJefe, Filter(colTodos, IsError(UsuariosdeOffice365.ManagerV2(Id).id) && Id <> LookUp(colGente, Padre = "ROOT").Id)));
+            Set(varGrupo, ""); Set(varDrop, false);
+            Set(varCargando, false)
+        ); Set(varMenu, false); Navigate(scrMain, ScreenTransition.None)
+      Visible: =!(Parent.Width < 700) || varMenu
+- recMenuBar4C:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =12
+      Y: =318
+      Width: =3
+      Height: =24
+      Fill: =Color.White
+      Visible: =false
+- btnMenuCelC:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="🎉  Celebrations"
+      X: =12
+      Y: =356
+      Width: =216
+      Height: =40
+      Fill: =RGBA(255, 255, 255, 0.14)
+      HoverFill: =RGBA(255, 255, 255, 0.08)
+      PressedFill: =RGBA(255, 255, 255, 0.18)
+      Color: =Color.White
+      HoverColor: =Color.White
+      PressedColor: =Color.White
+      BorderThickness: =0
+      Size: =10.5
+      FontWeight: =FontWeight.Bold
+      Align: =Align.Left
+      PaddingLeft: =20
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      OnSelect: =Set(varMenu, false)
+      Visible: =!(Parent.Width < 700) || varMenu
+- lblSideFooterC:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Data from Microsoft 365"
+      X: =26
+      Y: =Parent.Height - 44
+      Width: =192
+      Height: =24
+      Size: =8
+      Color: =RGBA(255, 255, 255, 0.45)
+      Visible: =!(Parent.Width < 700) || varMenu
+- recMenuBar5C:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =12
+      Y: =364
+      Width: =3
+      Height: =24
+      Fill: =Color.White
+      Visible: =!(Parent.Width < 700) || varMenu

@@ -5,6 +5,8 @@ Clear(colTodos);;
 Clear(colSinJefe);;
 Set(varGrupo; "");;
 Set(varDrop; false);;
+Set(varSugerir; false);;
+Set(varMenu; false);;
 ClearCollect(colInfo; Organigrama);;
 With({c: UsuariosdeOffice365.UserProfileV2(varCEO)};
     ClearCollect(colGente; {Padre: "ROOT"; Id: c.id; Nombre: c.displayName; Puesto: c.jobTitle; Depto: c.department; Correo: Lower(Coalesce(c.mail; c.userPrincipalName)); Tel: IfError(Coalesce(c.mobilePhone; First(c.businessPhones).Value); ""); Foto: true; Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(c.id).value; !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))); 0)});;
