@@ -1,9 +1,9 @@
-Set(varCEO; "CEO_EMAIL@sussek.com");;
+Set(varCEO; "CORREO_DE_CHRIS@sussek.com");;
 Set(varVerPanel; false);;
 ClearCollect(colInfo; Organigrama);;
-With({c: Office365Users.UserProfileV2(varCEO)};
-    ClearCollect(colGente; {Padre: "ROOT"; Id: c.id; Nombre: c.displayName; Puesto: c.jobTitle; Depto: c.department; Correo: Lower(c.mail); Tel: Coalesce(c.mobilePhone; First(c.businessPhones).Value); Foto: Office365Users.UserPhotoMetadata(c.id).HasPhoto; Reportes: CountRows(Office365Users.DirectReportsV2(c.id).value)});;
-    Collect(colGente; ForAll(Filter(Office365Users.DirectReportsV2(c.id).value; !IsBlank(mail)); {Padre: c.id; Id: id; Nombre: displayName; Puesto: jobTitle; Depto: department; Correo: Lower(mail); Tel: Coalesce(mobilePhone; First(businessPhones).Value); Foto: Office365Users.UserPhotoMetadata(id).HasPhoto; Reportes: CountRows(Office365Users.DirectReportsV2(id).value)}));;
+With({c: UsuariosdeOffice365.UserProfileV2(varCEO)};
+    ClearCollect(colGente; {Padre: "ROOT"; Id: c.id; Nombre: c.displayName; Puesto: c.jobTitle; Depto: c.department; Correo: Lower(c.mail); Tel: Coalesce(c.mobilePhone; First(c.businessPhones).Value); Foto: UsuariosdeOffice365.UserPhotoMetadata(c.id).HasPhoto; Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(c.id).value)});;
+    Collect(colGente; ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(c.id).value; !IsBlank(mail)); {Padre: c.id; Id: id; Nombre: displayName; Puesto: jobTitle; Depto: department; Correo: Lower(mail); Tel: Coalesce(mobilePhone; First(businessPhones).Value); Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto; Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)}));;
     ClearCollect(colNiveles; {Nivel: 1; Padre: "ROOT"; Sel: c.id}; {Nivel: 2; Padre: c.id; Sel: ""})
 );;
 Set(varPersona; First(colGente))

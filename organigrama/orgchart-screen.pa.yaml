@@ -122,7 +122,7 @@
                   Patch(colNiveles, LookUp(colNiveles, Nivel = varNivel), {Sel: ThisItem.Id});
                   If(ThisItem.Reportes > 0,
                       If(IsEmpty(Filter(colGente, Padre = ThisItem.Id)),
-                          Collect(colGente, ForAll(Filter(Office365Users.DirectReportsV2(ThisItem.Id).value, !IsBlank(mail)), {Padre: ThisItem.Id, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: Office365Users.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(Office365Users.DirectReportsV2(id).value)}))
+                          Collect(colGente, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(ThisItem.Id).value, !IsBlank(mail)), {Padre: ThisItem.Id, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(mail), Tel: Coalesce(mobilePhone, First(businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(id).value)}))
                       );
                       Collect(colNiveles, {Nivel: varNivel + 1, Padre: ThisItem.Id, Sel: ""})
                   )
@@ -173,7 +173,7 @@
             - imgPhoto:
                 Control: Image@2.2.3
                 Properties:
-                  Image: =If(ThisItem.Foto, Office365Users.UserPhotoV2(ThisItem.Id))
+                  Image: =If(ThisItem.Foto, UsuariosdeOffice365.UserPhotoV2(ThisItem.Id))
                   X: =22
                   Y: =22
                   Width: =60
@@ -268,7 +268,7 @@
     Variant: Vertical
     Properties:
       Items: |-
-        =If(Len(txtBuscar.Text) >= 2, Office365Users.SearchUserV2({searchTerm: txtBuscar.Text, top: 6}).value)
+        =If(Len(txtBuscar.Text) >= 2, UsuariosdeOffice365.SearchUserV2({searchTerm: txtBuscar.Text, top: 6}).value)
       X: =txtBuscar.X
       Y: =56
       Width: =296
@@ -280,7 +280,7 @@
       BorderThickness: =1
       Visible: =Len(txtBuscar.Text) >= 2
       OnSelect: |-
-        =With({b: Office365Users.UserProfileV2(ThisItem.Id)}, Set(varPersona, {Padre: "", Id: b.id, Nombre: b.displayName, Puesto: b.jobTitle, Depto: b.department, Correo: Lower(b.mail), Tel: Coalesce(b.mobilePhone, First(b.businessPhones).Value), Foto: Office365Users.UserPhotoMetadata(b.id).HasPhoto, Reportes: CountRows(Office365Users.DirectReportsV2(b.id).value)})); Set(varVerPanel, true); Reset(txtBuscar)
+        =With({b: UsuariosdeOffice365.UserProfileV2(ThisItem.Id)}, Set(varPersona, {Padre: "", Id: b.id, Nombre: b.displayName, Puesto: b.jobTitle, Depto: b.department, Correo: Lower(b.mail), Tel: Coalesce(b.mobilePhone, First(b.businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(b.id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(b.id).value)})); Set(varVerPanel, true); Reset(txtBuscar)
     Children:
       - lblSearchItem:
           Control: Label@2.5.1
@@ -371,7 +371,7 @@
 - imgPanelPhoto:
     Control: Image@2.2.3
     Properties:
-      Image: =If(varPersona.Foto, Office365Users.UserPhotoV2(varPersona.Id))
+      Image: =If(varPersona.Foto, UsuariosdeOffice365.UserPhotoV2(varPersona.Id))
       X: =Parent.Width - 250
       Y: =100
       Width: =100
@@ -480,7 +480,7 @@
 - lblReportsTo:
     Control: Label@2.5.1
     Properties:
-      Text: =Coalesce(LookUp(colGente, Id = varPersona.Padre).Nombre, IfError(Office365Users.ManagerV2(varPersona.Id).displayName, "None"))
+      Text: =Coalesce(LookUp(colGente, Id = varPersona.Padre).Nombre, IfError(UsuariosdeOffice365.ManagerV2(varPersona.Id).displayName, "None"))
       X: =Parent.Width - 370
       Y: =342
       Width: =165
@@ -504,7 +504,7 @@
     Control: Classic/Button@2.2.0
     Properties:
       Text: |-
-        =With({e: LookUp(colInfo, Lower(Correo) = varPersona.Correo).Backup}, If(IsBlank(e), "Not specified", IfError(Office365Users.UserProfileV2(e).displayName, e) & "  ›"))
+        =With({e: LookUp(colInfo, Lower(Correo) = varPersona.Correo).Backup}, If(IsBlank(e), "Not specified", IfError(UsuariosdeOffice365.UserProfileV2(e).displayName, e) & "  ›"))
       Tooltip: ="Open backup profile"
       X: =Parent.Width - 195
       Y: =342
@@ -522,7 +522,7 @@
       PaddingLeft: =0
       Visible: =varVerPanel
       OnSelect: |-
-        =With({e: LookUp(colInfo, Lower(Correo) = varPersona.Correo).Backup}, If(!IsBlank(e), With({b: Office365Users.UserProfileV2(e)}, Set(varPersona, {Padre: "", Id: b.id, Nombre: b.displayName, Puesto: b.jobTitle, Depto: b.department, Correo: Lower(b.mail), Tel: Coalesce(b.mobilePhone, First(b.businessPhones).Value), Foto: Office365Users.UserPhotoMetadata(b.id).HasPhoto, Reportes: CountRows(Office365Users.DirectReportsV2(b.id).value)}))))
+        =With({e: LookUp(colInfo, Lower(Correo) = varPersona.Correo).Backup}, If(!IsBlank(e), With({b: UsuariosdeOffice365.UserProfileV2(e)}, Set(varPersona, {Padre: "", Id: b.id, Nombre: b.displayName, Puesto: b.jobTitle, Depto: b.department, Correo: Lower(b.mail), Tel: Coalesce(b.mobilePhone, First(b.businessPhones).Value), Foto: UsuariosdeOffice365.UserPhotoMetadata(b.id).HasPhoto, Reportes: CountRows(UsuariosdeOffice365.DirectReportsV2(b.id).value)}))))
 - recDivider2:
     Control: Rectangle@2.3.0
     Properties:
