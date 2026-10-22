@@ -338,7 +338,7 @@
 - imgLogoC:
     Control: Image@2.2.3
     Properties:
-      Image: ="https://www.sussek.com/img/logobig2.png?v=2"
+      Image: =logoSussek
       X: =24
       Y: =20
       Width: =192
