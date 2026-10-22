@@ -2,8 +2,8 @@ Set(varCEO; "CORREO_DE_CHRIS@sussek.com");;
 Set(varVerPanel; false);;
 ClearCollect(colInfo; Organigrama);;
 With({c: UsuariosdeOffice365.UserProfileV2(varCEO)};
-    ClearCollect(colGente; {Padre: "ROOT"; Id: c.id; Nombre: c.displayName; Puesto: c.jobTitle; Depto: c.department; Correo: Lower(Coalesce(c.mail; c.userPrincipalName)); Tel: IfError(Coalesce(c.mobilePhone; First(c.businessPhones).Value); ""); Foto: IfError(UsuariosdeOffice365.UserPhotoMetadata(c.id).HasPhoto; false); Reportes: IfError(CountRows(UsuariosdeOffice365.DirectReportsV2(c.id).value); 0)});;
-    Collect(colGente; ForAll(UsuariosdeOffice365.DirectReportsV2(c.id).value; {Padre: c.id; Id: id; Nombre: displayName; Puesto: jobTitle; Depto: department; Correo: Lower(Coalesce(mail; userPrincipalName)); Tel: IfError(Coalesce(mobilePhone; First(businessPhones).Value); ""); Foto: IfError(UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto; false); Reportes: IfError(CountRows(UsuariosdeOffice365.DirectReportsV2(id).value); 0)}));;
+    ClearCollect(colGente; {Padre: "ROOT"; Id: c.id; Nombre: c.displayName; Puesto: c.jobTitle; Depto: c.department; Correo: Lower(Coalesce(c.mail; c.userPrincipalName)); Tel: IfError(Coalesce(c.mobilePhone; First(c.businessPhones).Value); ""); Foto: IfError(UsuariosdeOffice365.UserPhotoMetadata(c.id).HasPhoto; false); Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(c.id).value; accountEnabled <> false)); 0)});;
+    Collect(colGente; ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(c.id).value; accountEnabled <> false); {Padre: c.id; Id: id; Nombre: displayName; Puesto: jobTitle; Depto: department; Correo: Lower(Coalesce(mail; userPrincipalName)); Tel: IfError(Coalesce(mobilePhone; First(businessPhones).Value); ""); Foto: IfError(UsuariosdeOffice365.UserPhotoMetadata(id).HasPhoto; false); Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value; accountEnabled <> false)); 0)}));;
     ClearCollect(colNiveles; {Nivel: 1; Padre: "ROOT"; Sel: c.id}; {Nivel: 2; Padre: c.id; Sel: ""})
 );;
 Set(varPersona; First(colGente))
