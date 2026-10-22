@@ -38,7 +38,7 @@
       RadiusBottomLeft: =18
       RadiusBottomRight: =18
       OnSelect: |-
-        =ClearCollect(colNiveles, {Nivel: 1, Padre: "ROOT", Sel: ""}); Set(varVerPanel, false); Set(varCargando, false)
+        =ClearCollect(colNiveles, {Nivel: 1, Padre: "ROOT", Sel: ""}); Set(varVerPanel, false); Set(varCargando, false); Set(varFoco, false)
 - txtBuscar:
     Control: Classic/TextInput@2.3.2
     Properties:
@@ -199,6 +199,7 @@
       TemplateSize: =140
       TemplatePadding: =0
       ShowScrollbar: =true
+      Default: =If(varFoco, Last(Sort(colNiveles, Nivel)))
     Children:
       - lblRowW:
           Control: Label@2.5.1
@@ -298,10 +299,12 @@
             TemplatePadding: =0
             ShowScrollbar: =false
             ShowNavigation: =true
+            Default: =If(varFoco, LookUp(Filter(colGente, Padre = ThisItem.Padre), Id = ThisItem.Sel))
             OnSelect: |-
               =If(!varCargando,
                   Set(varCargando, true);
                   Set(varClick, ThisItem);
+                  Set(varFoco, false);
                   Set(varNivel, LookUp(colNiveles, Padre = varClick.Padre).Nivel);
                   RemoveIf(colNiveles, Nivel > varNivel);
                   If(
@@ -578,6 +581,7 @@
             ));
             If(!IsEmpty(Filter(colGente, Padre = varLocate)), Collect(colNiveles, {Nivel: varDepth + 1, Padre: varLocate, Sel: ""}))
         );
+        Set(varFoco, Last(colPath).Id = varCEOId);
         Set(varCargando, false);
         Reset(txtBuscar);
         If(IsBlank(LookUp(colGente, Id = varLocate)),
@@ -1032,4 +1036,5 @@
             ));
             If(!IsEmpty(Filter(colGente, Padre = varLocate)), Collect(colNiveles, {Nivel: varDepth + 1, Padre: varLocate, Sel: ""}))
         );
+        Set(varFoco, Last(colPath).Id = varCEOId);
         Set(varCargando, false)
