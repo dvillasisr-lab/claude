@@ -9,6 +9,7 @@ Set(varDrop; false);;
 Set(varSugerir; false);;
 Set(varMenu; false);;
 ClearCollect(colActivos; ForAll(Filter(UsuariosdeOffice365.SearchUserV2({isSearchTermRequired: false; top: 999}).value; AccountEnabled = true); {Value: Id}));;
+Refresh(Organigrama);;
 ClearCollect(colInfo; Organigrama);;
 ClearCollect(colOcultos; ForAll(Filter(colInfo; Hide = true); {Value: Lower(Correo)}));;
 With({c: UsuariosdeOffice365.UserProfileV2(varCEO)};
