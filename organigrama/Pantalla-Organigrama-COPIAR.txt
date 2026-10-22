@@ -43,7 +43,7 @@
     Control: Classic/TextInput@2.3.2
     Properties:
       Default: =""
-      HintText: ="Search anyone in the company..."
+      HintText: =Switch(varVista, "dept", "Search in Departments…", "loc", "Search in Locations…", "sin", "Search in Unassigned…", "Search anyone in the company…")
       X: =Parent.Width - 320
       Y: =12
       Width: =296
@@ -359,7 +359,7 @@
       TemplatePadding: =0
       ShowScrollbar: =true
       Visible: =varVista <> "org"
-      OnSelect: =Set(varGrupo, ThisItem.k)
+      OnSelect: =Set(varGrupo, ThisItem.k); Set(varResaltado, "")
     Children:
       - btnGrupo:
           Control: Classic/Button@2.2.0
@@ -415,6 +415,7 @@
       Width: =Parent.Width - 428
       Height: =Parent.Height - 116
       WrapCount: =Max(1, RoundDown((Parent.Width - 428) / 240, 0))
+      Default: =LookUp(Sort(Filter(If(varVista = "sin", colSinJefe, colTodos), If(varVista = "loc", Ubic, Depto) = varGrupo), Nombre), Id = varResaltado)
       TemplateSize: =96
       TemplatePadding: =0
       ShowScrollbar: =true
@@ -431,12 +432,12 @@
             Y: =5
             Width: =Parent.TemplateWidth - 10
             Height: =86
-            Fill: =Color.White
+            Fill: =If(ThisItem.Id = varResaltado, ColorValue("#EEEEF5"), Color.White)
             HoverFill: =ColorValue("#EEEEF5")
             PressedFill: =ColorValue("#E2E2EE")
-            BorderColor: =ColorValue("#E3E3E3")
+            BorderColor: =If(ThisItem.Id = varResaltado, ColorValue("#202054"), ColorValue("#E3E3E3"))
             HoverBorderColor: =ColorValue("#202054")
-            BorderThickness: =1
+            BorderThickness: =If(ThisItem.Id = varResaltado, 2, 1)
             RadiusTopLeft: =10
             RadiusTopRight: =10
             RadiusBottomLeft: =10
@@ -885,7 +886,7 @@
       Fill: =Color.White
       BorderColor: =ColorValue("#E3E3E3")
       BorderThickness: =1
-      Visible: =Len(txtBuscar.Text) >= 2
+      Visible: =Len(txtBuscar.Text) >= 2 && varVista = "org"
       OnSelect: |-
         =Set(varVerPanel, false);
         Set(varVista, "org");
@@ -963,6 +964,53 @@
             Size: =12
             Color: =ColorValue("#202054")
             HoverFill: =ColorValue("#EEEEF5")
+            OnSelect: =Select(Parent)
+- galBuscarL:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: |-
+        =FirstN(Sort(Filter(If(varVista = "sin", colSinJefe, colTodos), txtBuscar.Text in Nombre || txtBuscar.Text in Puesto), Nombre), 8)
+      X: =txtBuscar.X
+      Y: =56
+      Width: =296
+      Height: =Min(Self.AllItemsCount, 8) * 48
+      TemplateSize: =48
+      TemplatePadding: =0
+      Fill: =Color.White
+      BorderColor: =ColorValue("#E3E3E3")
+      BorderThickness: =1
+      Visible: =Len(txtBuscar.Text) >= 1 && varVista <> "org"
+      OnSelect: |-
+        =Set(varGrupo, If(varVista = "loc", ThisItem.Ubic, ThisItem.Depto));
+        Set(varResaltado, ThisItem.Id);
+        With({b: UsuariosdeOffice365.UserProfileV2(ThisItem.Id)}, Set(varPersona, {Padre: "", Id: b.id, Nombre: b.displayName, Puesto: b.jobTitle, Depto: b.department, Correo: Lower(Coalesce(b.mail, b.userPrincipalName)), Tel: IfError(Coalesce(b.mobilePhone, First(b.businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(b.id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)}));
+        Reset(txtBuscar);
+        Set(varVerPanel, true)
+    Children:
+      - lblSearchItemL:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.Nombre & "  ·  " & ThisItem.Puesto
+            X: =14
+            Y: =0
+            Width: =Parent.TemplateWidth - 28
+            Height: =30
+            Size: =11
+            Color: =ColorValue("#202054")
+            Wrap: =false
+            OnSelect: =Select(Parent)
+      - lblSearchGroupL:
+          Control: Label@2.5.1
+          Properties:
+            Text: =If(varVista = "loc", "⌖ " & ThisItem.Ubic, ThisItem.Depto)
+            X: =14
+            Y: =26
+            Width: =Parent.TemplateWidth - 28
+            Height: =18
+            Size: =8
+            Color: =ColorValue("#87878F")
+            Wrap: =false
             OnSelect: =Select(Parent)
 - recOverlay:
     Control: Rectangle@2.3.0
