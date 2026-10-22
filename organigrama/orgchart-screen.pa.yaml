@@ -226,8 +226,7 @@
       - lblPX:
           Control: Label@2.5.1
           Properties:
-            Text: |-
-              =If(ThisItem.Nivel = 1, Parent.TemplateWidth / 2, With({t: Sort(Filter(colGente, Padre = LookUp(colGente, Id = ThisItem.Padre).Padre), Nombre)}, With({w: Min(CountRows(t) * 230, Parent.TemplateWidth - 40)}, (Parent.TemplateWidth - w) / 2 + Min((Max(ForAll(Sequence(CountRows(t)), If(Index(t, Value).Id = ThisItem.Padre, Value)), Value) - 1) * 230, w - 230) + 115)))
+            Text: =If(ThisItem.Nivel = 1, Parent.TemplateWidth / 2, (Parent.TemplateWidth - Min(CountRows(Filter(colGente, Padre = LookUp(colGente, Id = ThisItem.Padre).Padre)) * 230, Parent.TemplateWidth - 40)) / 2 + 115)
             X: =0
             Y: =0
             Width: =10
@@ -238,8 +237,7 @@
       - lblSelX:
           Control: Label@2.5.1
           Properties:
-            Text: |-
-              =With({t: Sort(Filter(colGente, Padre = ThisItem.Padre), Nombre)}, With({w: Min(CountRows(t) * 230, Parent.TemplateWidth - 40)}, (Parent.TemplateWidth - w) / 2 + Min((Max(ForAll(Sequence(CountRows(t)), If(Index(t, Value).Id = ThisItem.Sel, Value)), Value) - 1) * 230, w - 230) + 115))
+            Text: =Value(lblRowX.Text) + 115
             X: =0
             Y: =0
             Width: =10
@@ -290,7 +288,7 @@
           Control: Gallery@2.15.0
           Variant: Horizontal
           Properties:
-            Items: =Sort(Filter(colGente, Padre = ThisItem.Padre), Nombre)
+            Items: =Sort(Filter(colGente, Padre = ThisItem.Padre), If(Id = ThisItem.Sel, "0", "1") & Nombre)
             X: =Value(lblRowX.Text)
             Y: =26
             Width: =Value(lblRowW.Text)
