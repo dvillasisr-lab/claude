@@ -42,6 +42,7 @@
 - txtBuscar:
     Control: Classic/TextInput@2.3.2
     Properties:
+      Default: =""
       HintText: ="Search anyone in the company..."
       X: =Parent.Width - 320
       Y: =12
@@ -428,7 +429,7 @@
       X: =txtBuscar.X
       Y: =56
       Width: =296
-      Height: =288
+      Height: =Min(Self.AllItemsCount, 6) * 48
       TemplateSize: =48
       TemplatePadding: =0
       Fill: =Color.White
@@ -489,7 +490,12 @@
         ));
         If(!IsEmpty(Filter(colGente, Padre = varLocate)), Collect(colNiveles, {Nivel: varDepth + 1, Padre: varLocate, Sel: ""}));
         Set(varCargando, false);
-        Reset(txtBuscar)
+        Reset(txtBuscar);
+        If(IsBlank(LookUp(colGente, Id = varLocate)),
+            With({b: UsuariosdeOffice365.UserProfileV2(varLocate)}, Set(varPersona, {Padre: "", Id: b.id, Nombre: b.displayName, Puesto: b.jobTitle, Depto: b.department, Correo: Lower(Coalesce(b.mail, b.userPrincipalName)), Tel: IfError(Coalesce(b.mobilePhone, First(b.businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(b.id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})),
+            Set(varPersona, LookUp(colGente, Id = varLocate))
+        );
+        Set(varVerPanel, true)
     Children:
       - lblSearchItem:
           Control: Label@2.5.1
