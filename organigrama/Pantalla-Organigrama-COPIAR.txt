@@ -43,7 +43,7 @@
     Control: Classic/Button@2.2.0
     Properties:
       Text: |-
-        ="⚠ Unassigned" & With({n: CountRows(Filter(colGente, Padre = "UNASSIGNED"))}, If(n > 0, " (" & n & ")", ""))
+        ="⚠ Unassigned" & If(CountRows(colSinJefe) > 0, " (" & CountRows(colSinJefe) & ")", "")
       Tooltip: ="People with no manager in Microsoft 365"
       X: =Parent.Width - 640
       Y: =14
@@ -69,7 +69,9 @@
             Set(varCEOId, LookUp(colGente, Padre = "ROOT").Id);
             If(IsEmpty(Filter(colGente, Padre = "UNASSIGNED")),
                 ClearCollect(colTodos, ForAll(Filter(UsuariosdeOffice365.SearchUserV2({isSearchTermRequired: false, top: 999}).value, !(IsBlank(GivenName) && IsBlank(Surname) && IsBlank(JobTitle))), {Id: Id, Nombre: DisplayName, Puesto: JobTitle, Depto: Department, Correo: Lower(Coalesce(Mail, UserPrincipalName)), SinJefe: IsError(UsuariosdeOffice365.ManagerV2(Id).id)}));
-                Collect(colGente, ForAll(Filter(colTodos, SinJefe && Id <> varCEOId), {Padre: "UNASSIGNED", Id: Id, Nombre: Nombre, Puesto: Puesto, Depto: Depto, Correo: Correo, Tel: "", Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(Id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)}))
+                ClearCollect(colSinJefe, Filter(colTodos, SinJefe && Id <> varCEOId));
+                Collect(colGente, ForAll(Distinct(colSinJefe, Coalesce(Depto, "No department")), {Padre: "UNASSIGNED", Id: "DEPT:" & Value, Nombre: Value, Puesto: "No manager assigned", Depto: Value, Correo: "", Tel: "", Foto: false, Reportes: CountRows(Filter(colSinJefe, Coalesce(Depto, "No department") = Value))}));
+                Collect(colGente, ForAll(colSinJefe, {Padre: "DEPT:" & Coalesce(Depto, "No department"), Id: Id, Nombre: Nombre, Puesto: Puesto, Depto: Depto, Correo: Correo, Tel: "", Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(Id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)}))
             );
             ClearCollect(colNiveles, {Nivel: 1, Padre: "UNASSIGNED", Sel: ""});
             Set(varCargando, false)
@@ -310,7 +312,7 @@
       - lblNivel:
           Control: Label@2.5.1
           Properties:
-            Text: =If(ThisItem.Padre = "ROOT", "LEADERSHIP", ThisItem.Padre = "UNASSIGNED", "NO MANAGER IN MICROSOFT 365", Upper(LookUp(colGente, Id = ThisItem.Padre).Nombre) & "'S TEAM") & "  ·  " & CountRows(Filter(colGente, Padre = ThisItem.Padre))
+            Text: =If(ThisItem.Padre = "ROOT", "LEADERSHIP", ThisItem.Padre = "UNASSIGNED", "NO MANAGER IN MICROSOFT 365 · BY DEPARTMENT", StartsWith(ThisItem.Padre, "DEPT:"), Upper(Mid(ThisItem.Padre, 6)) & " · NO MANAGER", Upper(LookUp(colGente, Id = ThisItem.Padre).Nombre) & "'S TEAM") & "  ·  " & CountRows(Filter(colGente, Padre = ThisItem.Padre))
             X: =If(Value(lblPX.Text) + 352 > Parent.TemplateWidth, Value(lblPX.Text) - 352, Value(lblPX.Text) + 12)
             Y: =2
             Width: =340
@@ -410,7 +412,7 @@
             - lblInitials:
                 Control: Label@2.5.1
                 Properties:
-                  Text: =Upper(Concat(FirstN(Split(ThisItem.Nombre, " "), 2), Left(Value, 1)))
+                  Text: =If(StartsWith(ThisItem.Id, "DEPT:"), Text(ThisItem.Reportes), Upper(Concat(FirstN(Split(ThisItem.Nombre, " "), 2), Left(Value, 1))))
                   X: =14
                   Y: =22
                   Width: =42
@@ -425,7 +427,7 @@
             - imgPhoto:
                 Control: Image@2.2.3
                 Properties:
-                  Image: =IfError(UsuariosdeOffice365.UserPhotoV2(ThisItem.Id), Blank())
+                  Image: =If(StartsWith(ThisItem.Id, "DEPT:"), Blank(), IfError(UsuariosdeOffice365.UserPhotoV2(ThisItem.Id), Blank()))
                   X: =14
                   Y: =22
                   Width: =42
@@ -480,7 +482,7 @@
             - btnTeam:
                 Control: Classic/Button@2.2.0
                 Properties:
-                  Text: =If(ThisItem.Reportes = 0, "No direct reports", If(ThisItem.Id in colNiveles.Sel, "▾ Hide ", "▸ Show ") & ThisItem.Reportes & If(ThisItem.Reportes = 1, " report", " reports"))
+                  Text: =If(ThisItem.Reportes = 0, "No direct reports", If(ThisItem.Id in colNiveles.Sel, "▾ Hide ", "▸ Show ") & ThisItem.Reportes & If(StartsWith(ThisItem.Id, "DEPT:"), If(ThisItem.Reportes = 1, " person", " people"), If(ThisItem.Reportes = 1, " report", " reports")))
                   Tooltip: ="Show or hide team"
                   X: =66
                   Y: =68
@@ -528,6 +530,7 @@
                   RadiusTopRight: =10
                   RadiusBottomLeft: =10
                   RadiusBottomRight: =10
+                  Visible: =!StartsWith(ThisItem.Id, "DEPT:")
                   OnSelect: =Set(varPersona, ThisItem); Set(varVerPanel, true)
 - lblLoading:
     Control: Label@2.5.1
