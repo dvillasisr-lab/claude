@@ -1,0 +1,28 @@
+- lblDebugIT:
+    Control: Label@2.5.1
+    Properties:
+      Text: |-
+        ="ACCOUNT CHECK (for IT)" & Char(10) & Char(10) &
+        "Name:  " & varPersona.Nombre & Char(10) &
+        "Email:  " & varPersona.Correo & Char(10) &
+        "Entra ID (varPersona.Id):  " & varPersona.Id & Char(10) & Char(10) &
+        "1) AccountEnabled in Entra ID:  " & With({u: IfError(LookUp(UsuariosdeOffice365.SearchUserV2({searchTerm: varPersona.Correo, top: 10}).value, Id = varPersona.Id), Blank())}, If(IsBlank(u), "not found", If(u.AccountEnabled, "TRUE (sign-in allowed)", "FALSE (sign-in blocked)"))) & Char(10) &
+        "2) In colActivos (AccountEnabled = true):  " & If(varPersona.Id in colActivos.Value, "YES", "NO") & Char(10) &
+        "3) In colOcultos (Hide = Yes in SharePoint):  " & If(varPersona.Correo in colOcultos.Value, "YES", "NO") & Char(10) &
+        "4) Department = Service Account:  " & If(Lower(Coalesce(varPersona.Depto, "")) = "service account", "YES", "NO") & Char(10) & Char(10) &
+        "RESULT:  " & If(varPersona.Id in colActivos.Value && !(varPersona.Correo in colOcultos.Value) && Lower(Coalesce(varPersona.Depto, "")) <> "service account", "SHOWN in the org chart, because the account is still ACTIVE in Entra ID. Hiding it from the address list (GAL) does not change AccountEnabled. Fix: Block sign-in.", "HIDDEN from the org chart.") & Char(10) & Char(10) &
+        "Active accounts loaded, CountRows(colActivos):  " & CountRows(colActivos)
+      X: =If(Parent.Width < 700, 10, Parent.Width - 400 - 460)
+      Y: =If(Parent.Width < 700, Parent.Height - 380, 120)
+      Width: =If(Parent.Width < 700, Parent.Width - 20, 450)
+      Height: =360
+      Size: =11
+      Font: =Font.'Courier New'
+      Color: =Color.White
+      Fill: =ColorValue("#202054")
+      VerticalAlign: =VerticalAlign.Top
+      PaddingTop: =14
+      PaddingBottom: =14
+      PaddingLeft: =16
+      PaddingRight: =16
+      Visible: =varVerPanel
