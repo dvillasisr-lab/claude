@@ -65,7 +65,7 @@
       TemplatePadding: =0
       ShowScrollbar: =true
       OnSelect: |-
-        =With({b: UsuariosdeOffice365.UserProfileV2(ThisItem.Correo)}, Set(varPersona, {Padre: "", Id: b.id, Nombre: b.displayName, Puesto: b.jobTitle, Depto: b.department, Correo: Lower(Coalesce(b.mail, b.userPrincipalName)), Tel: IfError(Coalesce(b.mobilePhone, First(b.businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(b.id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})); Set(varVerPanel, true); Set(varSugerir, false); Navigate(scrMain, ScreenTransition.None)
+        =With({b: UsuariosdeOffice365.UserProfileV2(ThisItem.Correo)}, Set(varPersona, {Padre: "", Id: b.id, Nombre: b.displayName, Puesto: b.jobTitle, Depto: b.department, Empresa: b.companyName, Correo: Lower(Coalesce(b.mail, b.userPrincipalName)), Tel: IfError(Coalesce(b.mobilePhone, First(b.businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(b.id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})); Set(varVerPanel, true); Set(varSugerir, false); Navigate(scrMain, ScreenTransition.None)
     Children:
       - btnCardN:
           Control: Classic/Button@2.2.0
@@ -202,7 +202,7 @@
       TemplatePadding: =0
       ShowScrollbar: =true
       OnSelect: |-
-        =With({b: UsuariosdeOffice365.UserProfileV2(ThisItem.Correo)}, Set(varPersona, {Padre: "", Id: b.id, Nombre: b.displayName, Puesto: b.jobTitle, Depto: b.department, Correo: Lower(Coalesce(b.mail, b.userPrincipalName)), Tel: IfError(Coalesce(b.mobilePhone, First(b.businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(b.id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})); Set(varVerPanel, true); Set(varSugerir, false); Navigate(scrMain, ScreenTransition.None)
+        =With({b: UsuariosdeOffice365.UserProfileV2(ThisItem.Correo)}, Set(varPersona, {Padre: "", Id: b.id, Nombre: b.displayName, Puesto: b.jobTitle, Depto: b.department, Empresa: b.companyName, Correo: Lower(Coalesce(b.mail, b.userPrincipalName)), Tel: IfError(Coalesce(b.mobilePhone, First(b.businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(b.id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})); Set(varVerPanel, true); Set(varSugerir, false); Navigate(scrMain, ScreenTransition.None)
     Children:
       - btnCardA:
           Control: Classic/Button@2.2.0
@@ -428,7 +428,7 @@
             Set(varCargando, true);
             Set(varVerPanel, false);
             Set(varVista, "dept");
-            If(IsEmpty(colTodos), ClearCollect(colTodos, ForAll(Filter(UsuariosdeOffice365.SearchUserV2({isSearchTermRequired: false, top: 999}).value, !(IsBlank(GivenName) && IsBlank(Surname) && IsBlank(JobTitle))), {Id: Id, Nombre: DisplayName, Puesto: JobTitle, Depto: With({d: Trim(Coalesce(Department, ""))}, With({c: If(Len(d) >= 3 && (Mid(d, 3, 1) = "-" || (Mid(d, 3, 1) = " " && Mid(d, 4, 1) = "-")), Upper(Left(d, 2)), Switch(Lower(d), "accounting", "AC", "administration", "AM", "customer service", "CS", "engineering", "EN", "human resources", "HR", "information technology", "IT", "maintenance", "MT", "operations", "OP", "purchasing", "PC", "production", "PD", "quality", "QA", "sales", "SA", "it", "IT", "produccion", "PD", "producción", "PD", "calidad", "QA", "ventas", "SA", "compras", "PC", "mantenimiento", "MT", ""))}, If(IsBlank(d), "No department", Switch(c, "AC", "AC - Accounting", "AM", "AM - Administration", "CS", "CS - Customer Service", "EN", "EN - Engineering", "HR", "HR - Human Resources", "IT", "IT - Information Technology", "MT", "MT - Maintenance", "OP", "OP - Operations", "PC", "PC - Purchasing", "PD", "PD - Production", "QA", "QA - Quality", "SA", "SA - Sales", d)))), Correo: Lower(Coalesce(Mail, UserPrincipalName)), Ubic: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Location, "Not specified"), Hab: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Skills, "")})));
+            If(IsEmpty(colTodos), ClearCollect(colTodos, ForAll(Filter(UsuariosdeOffice365.SearchUserV2({isSearchTermRequired: false, top: 999}).value, !(IsBlank(GivenName) && IsBlank(Surname) && IsBlank(JobTitle))), {Id: Id, Nombre: DisplayName, Puesto: JobTitle, Depto: With({d: Trim(Coalesce(Department, ""))}, With({c: If(Len(d) >= 3 && (Mid(d, 3, 1) = "-" || (Mid(d, 3, 1) = " " && Mid(d, 4, 1) = "-")), Upper(Left(d, 2)), Switch(Lower(d), "accounting", "AC", "administration", "AM", "customer service", "CS", "engineering", "EN", "human resources", "HR", "information technology", "IT", "maintenance", "MT", "operations", "OP", "purchasing", "PC", "production", "PD", "quality", "QA", "sales", "SA", "it", "IT", "produccion", "PD", "producción", "PD", "calidad", "QA", "ventas", "SA", "compras", "PC", "mantenimiento", "MT", ""))}, If(IsBlank(d), "No department", Switch(c, "AC", "AC - Accounting", "AM", "AM - Administration", "CS", "CS - Customer Service", "EN", "EN - Engineering", "HR", "HR - Human Resources", "IT", "IT - Information Technology", "MT", "MT - Maintenance", "OP", "OP - Operations", "PC", "PC - Purchasing", "PD", "PD - Production", "QA", "QA - Quality", "SA", "SA - Sales", d)))), Correo: Lower(Coalesce(Mail, UserPrincipalName)), Ubic: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Location, "Not specified"), Empresa: Coalesce(CompanyName, "No company"), Hab: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Skills, "")})));
             Set(varGrupo, ""); Set(varDrop, false);
             Set(varCargando, false)
         ); Set(varMenu, false); Navigate(scrMain, ScreenTransition.None)
@@ -470,7 +470,7 @@
             Set(varCargando, true);
             Set(varVerPanel, false);
             Set(varVista, "loc");
-            If(IsEmpty(colTodos), ClearCollect(colTodos, ForAll(Filter(UsuariosdeOffice365.SearchUserV2({isSearchTermRequired: false, top: 999}).value, !(IsBlank(GivenName) && IsBlank(Surname) && IsBlank(JobTitle))), {Id: Id, Nombre: DisplayName, Puesto: JobTitle, Depto: With({d: Trim(Coalesce(Department, ""))}, With({c: If(Len(d) >= 3 && (Mid(d, 3, 1) = "-" || (Mid(d, 3, 1) = " " && Mid(d, 4, 1) = "-")), Upper(Left(d, 2)), Switch(Lower(d), "accounting", "AC", "administration", "AM", "customer service", "CS", "engineering", "EN", "human resources", "HR", "information technology", "IT", "maintenance", "MT", "operations", "OP", "purchasing", "PC", "production", "PD", "quality", "QA", "sales", "SA", "it", "IT", "produccion", "PD", "producción", "PD", "calidad", "QA", "ventas", "SA", "compras", "PC", "mantenimiento", "MT", ""))}, If(IsBlank(d), "No department", Switch(c, "AC", "AC - Accounting", "AM", "AM - Administration", "CS", "CS - Customer Service", "EN", "EN - Engineering", "HR", "HR - Human Resources", "IT", "IT - Information Technology", "MT", "MT - Maintenance", "OP", "OP - Operations", "PC", "PC - Purchasing", "PD", "PD - Production", "QA", "QA - Quality", "SA", "SA - Sales", d)))), Correo: Lower(Coalesce(Mail, UserPrincipalName)), Ubic: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Location, "Not specified"), Hab: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Skills, "")})));
+            If(IsEmpty(colTodos), ClearCollect(colTodos, ForAll(Filter(UsuariosdeOffice365.SearchUserV2({isSearchTermRequired: false, top: 999}).value, !(IsBlank(GivenName) && IsBlank(Surname) && IsBlank(JobTitle))), {Id: Id, Nombre: DisplayName, Puesto: JobTitle, Depto: With({d: Trim(Coalesce(Department, ""))}, With({c: If(Len(d) >= 3 && (Mid(d, 3, 1) = "-" || (Mid(d, 3, 1) = " " && Mid(d, 4, 1) = "-")), Upper(Left(d, 2)), Switch(Lower(d), "accounting", "AC", "administration", "AM", "customer service", "CS", "engineering", "EN", "human resources", "HR", "information technology", "IT", "maintenance", "MT", "operations", "OP", "purchasing", "PC", "production", "PD", "quality", "QA", "sales", "SA", "it", "IT", "produccion", "PD", "producción", "PD", "calidad", "QA", "ventas", "SA", "compras", "PC", "mantenimiento", "MT", ""))}, If(IsBlank(d), "No department", Switch(c, "AC", "AC - Accounting", "AM", "AM - Administration", "CS", "CS - Customer Service", "EN", "EN - Engineering", "HR", "HR - Human Resources", "IT", "IT - Information Technology", "MT", "MT - Maintenance", "OP", "OP - Operations", "PC", "PC - Purchasing", "PD", "PD - Production", "QA", "QA - Quality", "SA", "SA - Sales", d)))), Correo: Lower(Coalesce(Mail, UserPrincipalName)), Ubic: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Location, "Not specified"), Empresa: Coalesce(CompanyName, "No company"), Hab: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Skills, "")})));
             Set(varGrupo, ""); Set(varDrop, false);
             Set(varCargando, false)
         ); Set(varMenu, false); Navigate(scrMain, ScreenTransition.None)
@@ -484,10 +484,10 @@
       Height: =24
       Fill: =Color.White
       Visible: =false
-- btnMenuSinC:
+- btnMenuEmpC:
     Control: Classic/Button@2.2.0
     Properties:
-      Text: ="⚠  Unassigned" & If(CountRows(colSinJefe) > 0, "  (" & CountRows(colSinJefe) & ")", "")
+      Text: ="🏢  Companies"
       X: =12
       Y: =310
       Width: =216
@@ -511,8 +511,50 @@
         =If(!varCargando,
             Set(varCargando, true);
             Set(varVerPanel, false);
+            Set(varVista, "emp");
+            If(IsEmpty(colTodos), ClearCollect(colTodos, ForAll(Filter(UsuariosdeOffice365.SearchUserV2({isSearchTermRequired: false, top: 999}).value, !(IsBlank(GivenName) && IsBlank(Surname) && IsBlank(JobTitle))), {Id: Id, Nombre: DisplayName, Puesto: JobTitle, Depto: With({d: Trim(Coalesce(Department, ""))}, With({c: If(Len(d) >= 3 && (Mid(d, 3, 1) = "-" || (Mid(d, 3, 1) = " " && Mid(d, 4, 1) = "-")), Upper(Left(d, 2)), Switch(Lower(d), "accounting", "AC", "administration", "AM", "customer service", "CS", "engineering", "EN", "human resources", "HR", "information technology", "IT", "maintenance", "MT", "operations", "OP", "purchasing", "PC", "production", "PD", "quality", "QA", "sales", "SA", "it", "IT", "produccion", "PD", "producción", "PD", "calidad", "QA", "ventas", "SA", "compras", "PC", "mantenimiento", "MT", ""))}, If(IsBlank(d), "No department", Switch(c, "AC", "AC - Accounting", "AM", "AM - Administration", "CS", "CS - Customer Service", "EN", "EN - Engineering", "HR", "HR - Human Resources", "IT", "IT - Information Technology", "MT", "MT - Maintenance", "OP", "OP - Operations", "PC", "PC - Purchasing", "PD", "PD - Production", "QA", "QA - Quality", "SA", "SA - Sales", d)))), Correo: Lower(Coalesce(Mail, UserPrincipalName)), Ubic: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Location, "Not specified"), Empresa: Coalesce(CompanyName, "No company"), Hab: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Skills, "")})));
+            Set(varGrupo, ""); Set(varDrop, false);
+            Set(varCargando, false)
+        ); Set(varMenu, false); Navigate(scrMain, ScreenTransition.None)
+      Visible: =!(Parent.Width < 700) || varMenu
+- recMenuBar6C:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =12
+      Y: =318
+      Width: =3
+      Height: =24
+      Fill: =Color.White
+      Visible: =false
+- btnMenuSinC:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="⚠  Unassigned" & If(CountRows(colSinJefe) > 0, "  (" & CountRows(colSinJefe) & ")", "")
+      X: =12
+      Y: =356
+      Width: =216
+      Height: =40
+      Fill: =Color.Transparent
+      HoverFill: =RGBA(255, 255, 255, 0.08)
+      PressedFill: =RGBA(255, 255, 255, 0.18)
+      Color: =RGBA(255, 255, 255, 0.78)
+      HoverColor: =Color.White
+      PressedColor: =Color.White
+      BorderThickness: =0
+      Size: =10.5
+      FontWeight: =FontWeight.Normal
+      Align: =Align.Left
+      PaddingLeft: =20
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      OnSelect: |-
+        =If(!varCargando,
+            Set(varCargando, true);
+            Set(varVerPanel, false);
             Set(varVista, "sin");
-            If(IsEmpty(colTodos), ClearCollect(colTodos, ForAll(Filter(UsuariosdeOffice365.SearchUserV2({isSearchTermRequired: false, top: 999}).value, !(IsBlank(GivenName) && IsBlank(Surname) && IsBlank(JobTitle))), {Id: Id, Nombre: DisplayName, Puesto: JobTitle, Depto: With({d: Trim(Coalesce(Department, ""))}, With({c: If(Len(d) >= 3 && (Mid(d, 3, 1) = "-" || (Mid(d, 3, 1) = " " && Mid(d, 4, 1) = "-")), Upper(Left(d, 2)), Switch(Lower(d), "accounting", "AC", "administration", "AM", "customer service", "CS", "engineering", "EN", "human resources", "HR", "information technology", "IT", "maintenance", "MT", "operations", "OP", "purchasing", "PC", "production", "PD", "quality", "QA", "sales", "SA", "it", "IT", "produccion", "PD", "producción", "PD", "calidad", "QA", "ventas", "SA", "compras", "PC", "mantenimiento", "MT", ""))}, If(IsBlank(d), "No department", Switch(c, "AC", "AC - Accounting", "AM", "AM - Administration", "CS", "CS - Customer Service", "EN", "EN - Engineering", "HR", "HR - Human Resources", "IT", "IT - Information Technology", "MT", "MT - Maintenance", "OP", "OP - Operations", "PC", "PC - Purchasing", "PD", "PD - Production", "QA", "QA - Quality", "SA", "SA - Sales", d)))), Correo: Lower(Coalesce(Mail, UserPrincipalName)), Ubic: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Location, "Not specified"), Hab: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Skills, "")})));
+            If(IsEmpty(colTodos), ClearCollect(colTodos, ForAll(Filter(UsuariosdeOffice365.SearchUserV2({isSearchTermRequired: false, top: 999}).value, !(IsBlank(GivenName) && IsBlank(Surname) && IsBlank(JobTitle))), {Id: Id, Nombre: DisplayName, Puesto: JobTitle, Depto: With({d: Trim(Coalesce(Department, ""))}, With({c: If(Len(d) >= 3 && (Mid(d, 3, 1) = "-" || (Mid(d, 3, 1) = " " && Mid(d, 4, 1) = "-")), Upper(Left(d, 2)), Switch(Lower(d), "accounting", "AC", "administration", "AM", "customer service", "CS", "engineering", "EN", "human resources", "HR", "information technology", "IT", "maintenance", "MT", "operations", "OP", "purchasing", "PC", "production", "PD", "quality", "QA", "sales", "SA", "it", "IT", "produccion", "PD", "producción", "PD", "calidad", "QA", "ventas", "SA", "compras", "PC", "mantenimiento", "MT", ""))}, If(IsBlank(d), "No department", Switch(c, "AC", "AC - Accounting", "AM", "AM - Administration", "CS", "CS - Customer Service", "EN", "EN - Engineering", "HR", "HR - Human Resources", "IT", "IT - Information Technology", "MT", "MT - Maintenance", "OP", "OP - Operations", "PC", "PC - Purchasing", "PD", "PD - Production", "QA", "QA - Quality", "SA", "SA - Sales", d)))), Correo: Lower(Coalesce(Mail, UserPrincipalName)), Ubic: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Location, "Not specified"), Empresa: Coalesce(CompanyName, "No company"), Hab: Coalesce(LookUp(colInfo, Lower(Correo) = Lower(Coalesce(Mail, UserPrincipalName))).Skills, "")})));
             If(IsEmpty(colSinJefe), ClearCollect(colSinJefe, Filter(colTodos, IsError(UsuariosdeOffice365.ManagerV2(Id).id) && Id <> LookUp(colGente, Padre = "ROOT").Id)));
             Set(varGrupo, ""); Set(varDrop, false);
             Set(varCargando, false)
@@ -522,7 +564,7 @@
     Control: Rectangle@2.3.0
     Properties:
       X: =12
-      Y: =318
+      Y: =364
       Width: =3
       Height: =24
       Fill: =Color.White
@@ -532,7 +574,7 @@
     Properties:
       Text: ="🎉  Celebrations"
       X: =12
-      Y: =356
+      Y: =402
       Width: =216
       Height: =40
       Fill: =RGBA(255, 255, 255, 0.14)
@@ -567,7 +609,7 @@
     Control: Rectangle@2.3.0
     Properties:
       X: =12
-      Y: =364
+      Y: =410
       Width: =3
       Height: =24
       Fill: =Color.White
