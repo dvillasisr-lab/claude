@@ -71,36 +71,122 @@
       Text: ="Click a card to show or hide its team  ·  ⓘ  for profile details"
       X: =24
       Y: =64
-      Width: =Parent.Width - 944 - 48
+      Width: =Parent.Width - 607 - 64
       Height: =40
       Size: =10
       Color: =ColorValue("#565656")
-- galLegend:
-    Control: Gallery@2.15.0
-    Variant: Horizontal
+- lblLegend1:
+    Control: Label@2.5.1
     Properties:
-      Items: |-
-        =Table({n: "Administration", c: ColorValue("#202054")}, {n: "Sales", c: ColorValue("#3B3B8F")}, {n: "Operations", c: ColorValue("#2E5C8A")}, {n: "Engineering", c: ColorValue("#4F6D7A")}, {n: "Accounting", c: ColorValue("#6A5A8C")}, {n: "Human Resources", c: ColorValue("#87878F")}, {n: "Info. Technology", c: ColorValue("#3E7CB1")}, {n: "Customer Service", c: ColorValue("#616066")})
-      X: =Parent.Width - 944 - 16
+      Text: ="●  Admin"
+      X: =Parent.Width - 623
       Y: =64
-      Width: =944
+      Width: =61
       Height: =40
-      TemplateSize: =118
-      TemplatePadding: =0
-      ShowScrollbar: =false
-    Children:
-      - lblLegend:
-          Control: Label@2.5.1
-          Properties:
-            Text: ="●  " & ThisItem.n
-            X: =0
-            Y: =0
-            Width: =Parent.TemplateWidth
-            Height: =40
-            Size: =9
-            FontWeight: =FontWeight.Semibold
-            Color: =ThisItem.c
-            Wrap: =false
+      Size: =9
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#202054")
+      Wrap: =false
+      PaddingLeft: =0
+      PaddingRight: =0
+- lblLegend2:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="●  Sales"
+      X: =Parent.Width - 562
+      Y: =64
+      Width: =61
+      Height: =40
+      Size: =9
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#3B3B8F")
+      Wrap: =false
+      PaddingLeft: =0
+      PaddingRight: =0
+- lblLegend3:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="●  Operations"
+      X: =Parent.Width - 501
+      Y: =64
+      Width: =96
+      Height: =40
+      Size: =9
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#2E5C8A")
+      Wrap: =false
+      PaddingLeft: =0
+      PaddingRight: =0
+- lblLegend4:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="●  Engineering"
+      X: =Parent.Width - 405
+      Y: =64
+      Width: =103
+      Height: =40
+      Size: =9
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#4F6D7A")
+      Wrap: =false
+      PaddingLeft: =0
+      PaddingRight: =0
+- lblLegend5:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="●  Accounting"
+      X: =Parent.Width - 302
+      Y: =64
+      Width: =96
+      Height: =40
+      Size: =9
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#6A5A8C")
+      Wrap: =false
+      PaddingLeft: =0
+      PaddingRight: =0
+- lblLegend6:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="●  HR"
+      X: =Parent.Width - 206
+      Y: =64
+      Width: =40
+      Height: =40
+      Size: =9
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#87878F")
+      Wrap: =false
+      PaddingLeft: =0
+      PaddingRight: =0
+- lblLegend7:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="●  IT"
+      X: =Parent.Width - 166
+      Y: =64
+      Width: =40
+      Height: =40
+      Size: =9
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#3E7CB1")
+      Wrap: =false
+      PaddingLeft: =0
+      PaddingRight: =0
+- lblLegend8:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="●  Customer Svc"
+      X: =Parent.Width - 126
+      Y: =64
+      Width: =110
+      Height: =40
+      Size: =9
+      FontWeight: =FontWeight.Semibold
+      Color: =ColorValue("#616066")
+      Wrap: =false
+      PaddingLeft: =0
+      PaddingRight: =0
 - galNiveles:
     Control: Gallery@2.15.0
     Variant: Vertical
