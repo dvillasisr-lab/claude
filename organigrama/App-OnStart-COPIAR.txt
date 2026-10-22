@@ -1,5 +1,6 @@
 Set(varCEO; "CORREO_DE_CHRIS@sussek.com");;
 Set(varVerPanel; false);;
+Set(varCargando; false);;
 Set(varVista; "org");;
 Clear(colTodos);;
 Clear(colSinJefe);;
