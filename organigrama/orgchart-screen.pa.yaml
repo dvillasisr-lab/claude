@@ -340,7 +340,7 @@
       - lblOtherL:
           Control: Label@2.5.1
           Properties:
-            Text: =If(varVista = "loc", ThisItem.Depto, "⌖ " & ThisItem.Ubic) & If(varVista <> "emp" && "Mex" in ThisItem.Empresa, "  · MX", "")
+            Text: =If(varVista = "loc", ThisItem.Depto, "⌖ " & ThisItem.Ubic) & If(varVista <> "emp" && ThisItem.Empresa <> "No company" && ThisItem.Empresa <> LookUp(colGente, Padre = "ROOT").Empresa, "  · " & ThisItem.Empresa, "")
             X: =64
             Y: =55
             Width: =Parent.TemplateWidth - 76
@@ -771,7 +771,7 @@
             - lblDept:
                 Control: Label@2.5.1
                 Properties:
-                  Text: =ThisItem.Depto & If("Mex" in ThisItem.Empresa, "  · MX", "")
+                  Text: =ThisItem.Depto & If(!IsBlank(ThisItem.Empresa) && ThisItem.Empresa <> LookUp(colGente, Padre = "ROOT").Empresa, "  · " & ThisItem.Empresa, "")
                   X: =62
                   Y: =49
                   Width: =Parent.TemplateWidth - 72
