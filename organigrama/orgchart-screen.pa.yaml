@@ -528,53 +528,56 @@
         Set(varLocate, ThisItem.Id);
         Set(varCEOId, LookUp(colGente, Padre = "ROOT").Id);
         ClearCollect(colPath, {Id: varLocate});
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId,
+            Notify("This person has no manager chain up to " & LookUp(colGente, Padre = "ROOT").Nombre & " in Microsoft 365, so they can't be placed in the chart. Ask IT to set their manager.", NotificationType.Warning),
         Set(varDepth, CountRows(colPath));
-        ClearCollect(colNiveles, {Nivel: 1, Padre: "ROOT", Sel: varCEOId});
-        If(varDepth >= 1, With({n: Index(colPath, varDepth - 1 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            false
-        ));
-        If(varDepth >= 2, With({n: Index(colPath, varDepth - 2 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 2, Padre: Index(colPath, varDepth - 2 + 2).Id, Sel: n})
-        ));
-        If(varDepth >= 3, With({n: Index(colPath, varDepth - 3 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 3, Padre: Index(colPath, varDepth - 3 + 2).Id, Sel: n})
-        ));
-        If(varDepth >= 4, With({n: Index(colPath, varDepth - 4 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 4, Padre: Index(colPath, varDepth - 4 + 2).Id, Sel: n})
-        ));
-        If(varDepth >= 5, With({n: Index(colPath, varDepth - 5 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 5, Padre: Index(colPath, varDepth - 5 + 2).Id, Sel: n})
-        ));
-        If(varDepth >= 6, With({n: Index(colPath, varDepth - 6 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 6, Padre: Index(colPath, varDepth - 6 + 2).Id, Sel: n})
-        ));
-        If(varDepth >= 7, With({n: Index(colPath, varDepth - 7 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 7, Padre: Index(colPath, varDepth - 7 + 2).Id, Sel: n})
-        ));
-        If(varDepth >= 8, With({n: Index(colPath, varDepth - 8 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 8, Padre: Index(colPath, varDepth - 8 + 2).Id, Sel: n})
-        ));
-        If(varDepth >= 9, With({n: Index(colPath, varDepth - 9 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 9, Padre: Index(colPath, varDepth - 9 + 2).Id, Sel: n})
-        ));
-        If(!IsEmpty(Filter(colGente, Padre = varLocate)), Collect(colNiveles, {Nivel: varDepth + 1, Padre: varLocate, Sel: ""}));
+            ClearCollect(colNiveles, {Nivel: 1, Padre: "ROOT", Sel: varCEOId});
+            If(varDepth >= 1, With({n: Index(colPath, varDepth - 1 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                false
+            ));
+            If(varDepth >= 2, With({n: Index(colPath, varDepth - 2 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 2, Padre: Index(colPath, varDepth - 2 + 2).Id, Sel: n})
+            ));
+            If(varDepth >= 3, With({n: Index(colPath, varDepth - 3 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 3, Padre: Index(colPath, varDepth - 3 + 2).Id, Sel: n})
+            ));
+            If(varDepth >= 4, With({n: Index(colPath, varDepth - 4 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 4, Padre: Index(colPath, varDepth - 4 + 2).Id, Sel: n})
+            ));
+            If(varDepth >= 5, With({n: Index(colPath, varDepth - 5 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 5, Padre: Index(colPath, varDepth - 5 + 2).Id, Sel: n})
+            ));
+            If(varDepth >= 6, With({n: Index(colPath, varDepth - 6 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 6, Padre: Index(colPath, varDepth - 6 + 2).Id, Sel: n})
+            ));
+            If(varDepth >= 7, With({n: Index(colPath, varDepth - 7 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 7, Padre: Index(colPath, varDepth - 7 + 2).Id, Sel: n})
+            ));
+            If(varDepth >= 8, With({n: Index(colPath, varDepth - 8 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 8, Padre: Index(colPath, varDepth - 8 + 2).Id, Sel: n})
+            ));
+            If(varDepth >= 9, With({n: Index(colPath, varDepth - 9 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 9, Padre: Index(colPath, varDepth - 9 + 2).Id, Sel: n})
+            ));
+            If(!IsEmpty(Filter(colGente, Padre = varLocate)), Collect(colNiveles, {Nivel: varDepth + 1, Padre: varLocate, Sel: ""}))
+        );
         Set(varCargando, false);
         Reset(txtBuscar);
         If(IsBlank(LookUp(colGente, Id = varLocate)),
@@ -979,51 +982,54 @@
         Set(varLocate, varPersona.Id);
         Set(varCEOId, LookUp(colGente, Padre = "ROOT").Id);
         ClearCollect(colPath, {Id: varLocate});
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
-        If(Last(colPath).Id <> varCEOId, Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, varCEOId)}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId && Last(colPath).Id <> "BROKEN", Collect(colPath, {Id: IfError(UsuariosdeOffice365.ManagerV2(Last(colPath).Id).id, "BROKEN")}));
+        If(Last(colPath).Id <> varCEOId,
+            Notify("This person has no manager chain up to " & LookUp(colGente, Padre = "ROOT").Nombre & " in Microsoft 365, so they can't be placed in the chart. Ask IT to set their manager.", NotificationType.Warning),
         Set(varDepth, CountRows(colPath));
-        ClearCollect(colNiveles, {Nivel: 1, Padre: "ROOT", Sel: varCEOId});
-        If(varDepth >= 1, With({n: Index(colPath, varDepth - 1 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            false
-        ));
-        If(varDepth >= 2, With({n: Index(colPath, varDepth - 2 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 2, Padre: Index(colPath, varDepth - 2 + 2).Id, Sel: n})
-        ));
-        If(varDepth >= 3, With({n: Index(colPath, varDepth - 3 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 3, Padre: Index(colPath, varDepth - 3 + 2).Id, Sel: n})
-        ));
-        If(varDepth >= 4, With({n: Index(colPath, varDepth - 4 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 4, Padre: Index(colPath, varDepth - 4 + 2).Id, Sel: n})
-        ));
-        If(varDepth >= 5, With({n: Index(colPath, varDepth - 5 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 5, Padre: Index(colPath, varDepth - 5 + 2).Id, Sel: n})
-        ));
-        If(varDepth >= 6, With({n: Index(colPath, varDepth - 6 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 6, Padre: Index(colPath, varDepth - 6 + 2).Id, Sel: n})
-        ));
-        If(varDepth >= 7, With({n: Index(colPath, varDepth - 7 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 7, Padre: Index(colPath, varDepth - 7 + 2).Id, Sel: n})
-        ));
-        If(varDepth >= 8, With({n: Index(colPath, varDepth - 8 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 8, Padre: Index(colPath, varDepth - 8 + 2).Id, Sel: n})
-        ));
-        If(varDepth >= 9, With({n: Index(colPath, varDepth - 9 + 1).Id},
-            If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
-            Collect(colNiveles, {Nivel: 9, Padre: Index(colPath, varDepth - 9 + 2).Id, Sel: n})
-        ));
-        If(!IsEmpty(Filter(colGente, Padre = varLocate)), Collect(colNiveles, {Nivel: varDepth + 1, Padre: varLocate, Sel: ""}));
+            ClearCollect(colNiveles, {Nivel: 1, Padre: "ROOT", Sel: varCEOId});
+            If(varDepth >= 1, With({n: Index(colPath, varDepth - 1 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                false
+            ));
+            If(varDepth >= 2, With({n: Index(colPath, varDepth - 2 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 2, Padre: Index(colPath, varDepth - 2 + 2).Id, Sel: n})
+            ));
+            If(varDepth >= 3, With({n: Index(colPath, varDepth - 3 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 3, Padre: Index(colPath, varDepth - 3 + 2).Id, Sel: n})
+            ));
+            If(varDepth >= 4, With({n: Index(colPath, varDepth - 4 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 4, Padre: Index(colPath, varDepth - 4 + 2).Id, Sel: n})
+            ));
+            If(varDepth >= 5, With({n: Index(colPath, varDepth - 5 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 5, Padre: Index(colPath, varDepth - 5 + 2).Id, Sel: n})
+            ));
+            If(varDepth >= 6, With({n: Index(colPath, varDepth - 6 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 6, Padre: Index(colPath, varDepth - 6 + 2).Id, Sel: n})
+            ));
+            If(varDepth >= 7, With({n: Index(colPath, varDepth - 7 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 7, Padre: Index(colPath, varDepth - 7 + 2).Id, Sel: n})
+            ));
+            If(varDepth >= 8, With({n: Index(colPath, varDepth - 8 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 8, Padre: Index(colPath, varDepth - 8 + 2).Id, Sel: n})
+            ));
+            If(varDepth >= 9, With({n: Index(colPath, varDepth - 9 + 1).Id},
+                If(IsEmpty(Filter(colGente, Padre = n)), Clear(colTmp); IfError(ClearCollect(colTmp, ForAll(Filter(UsuariosdeOffice365.DirectReportsV2(n).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle))), {Padre: n, Id: id, Nombre: displayName, Puesto: jobTitle, Depto: department, Correo: Lower(Coalesce(mail, userPrincipalName)), Tel: IfError(Coalesce(mobilePhone, First(businessPhones).Value), ""), Foto: true, Reportes: IfError(CountRows(Filter(UsuariosdeOffice365.DirectReportsV2(id).value, !(IsBlank(givenName) && IsBlank(surname) && IsBlank(jobTitle)))), 0)})), Notify("Could not load this team: " & FirstError.Message, NotificationType.Error)); Collect(colGente, colTmp));
+                Collect(colNiveles, {Nivel: 9, Padre: Index(colPath, varDepth - 9 + 2).Id, Sel: n})
+            ));
+            If(!IsEmpty(Filter(colGente, Padre = varLocate)), Collect(colNiveles, {Nivel: varDepth + 1, Padre: varLocate, Sel: ""}))
+        );
         Set(varCargando, false)
