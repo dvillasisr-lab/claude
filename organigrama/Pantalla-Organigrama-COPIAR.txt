@@ -1,21 +1,23 @@
 - recHeader:
     Control: Rectangle@2.3.0
     Properties:
-      X: =0
+      X: =240
       Y: =0
-      Width: =Parent.Width
+      Width: =Parent.Width - 240
       Height: =64
-      Fill: =ColorValue("#202054")
+      Fill: =Color.White
+      BorderColor: =ColorValue("#E3E3E3")
+      BorderThickness: =1
 - lblTitle:
     Control: Label@2.5.1
     Properties:
-      Text: ="Organization Chart · Sussek Machine Company"
-      X: =24
+      Text: =Switch(varVista, "dept", "Departments", "loc", "Locations", "sin", "Unassigned", "Organization chart")
+      X: =264
       Y: =0
-      Width: =640
+      Width: =420
       Height: =64
-      Size: =18
-      Color: =Color.White
+      Size: =16
+      Color: =ColorValue("#202054")
       FontWeight: =FontWeight.Bold
 - btnCollapse:
     Control: Classic/Button@2.2.0
@@ -25,12 +27,12 @@
       Y: =14
       Width: =140
       Height: =36
-      Fill: =ColorValue("#202054")
-      HoverFill: =ColorValue("#4A4A8A")
-      PressedFill: =ColorValue("#4A4A8A")
-      Color: =Color.White
-      HoverColor: =Color.White
-      BorderColor: =Color.White
+      Fill: =Color.White
+      HoverFill: =ColorValue("#EEEEF5")
+      PressedFill: =ColorValue("#E2E2EE")
+      Color: =ColorValue("#202054")
+      HoverColor: =ColorValue("#202054")
+      BorderColor: =ColorValue("#202054")
       BorderThickness: =1
       Size: =11
       RadiusTopLeft: =18
@@ -39,6 +41,7 @@
       RadiusBottomRight: =18
       OnSelect: |-
         =ClearCollect(colNiveles, {Nivel: 1, Padre: "ROOT", Sel: ""}); Set(varVista, "org"); Set(varVerPanel, false); Set(varCargando, false); Set(varFoco, false)
+      Visible: =varVista = "org"
 - txtBuscar:
     Control: Classic/TextInput@2.3.2
     Properties:
@@ -49,18 +52,19 @@
       Width: =296
       Height: =40
       Size: =12
-      Fill: =Color.White
-      BorderThickness: =0
+      Fill: =ColorValue("#F3F3F7")
+      BorderThickness: =1
       RadiusTopLeft: =20
       RadiusTopRight: =20
       RadiusBottomLeft: =20
       RadiusBottomRight: =20
+      BorderColor: =ColorValue("#E3E3E3")
 - recHint:
     Control: Rectangle@2.3.0
     Properties:
-      X: =0
+      X: =240
       Y: =64
-      Width: =Parent.Width
+      Width: =Parent.Width - 240
       Height: =40
       Fill: =Color.White
       BorderColor: =ColorValue("#E3E3E3")
@@ -70,9 +74,9 @@
     Properties:
       Visible: =varVista = "org"
       Text: ="Click a card to show or hide its team  ·  ⓘ  for profile details"
-      X: =184
+      X: =264
       Y: =64
-      Width: =Parent.Width - 607 - 224
+      Width: =Parent.Width - 607 - 304
       Height: =40
       Size: =10
       Color: =ColorValue("#565656")
@@ -80,58 +84,55 @@
     Control: Rectangle@2.3.0
     Properties:
       X: =0
-      Y: =64
-      Width: =160
-      Height: =Parent.Height - 64
-      Fill: =Color.White
+      Y: =0
+      Width: =240
+      Height: =Parent.Height
+      Fill: =ColorValue("#202054")
       BorderColor: =ColorValue("#E3E3E3")
-      BorderThickness: =1
+      BorderThickness: =0
 - btnMenuOrg:
     Control: Classic/Button@2.2.0
     Properties:
-      Text: |-
-        ="◫  Org chart"
-      X: =8
-      Y: =76
-      Width: =144
-      Height: =36
-      Fill: =If(varVista = "org", ColorValue("#EEEEF5"), Color.Transparent)
-      HoverFill: =ColorValue("#EEEEF5")
-      PressedFill: =ColorValue("#E2E2EE")
-      Color: =ColorValue("#202054")
-      HoverColor: =ColorValue("#202054")
-      PressedColor: =ColorValue("#202054")
+      Text: ="◫  Org chart"
+      X: =12
+      Y: =172
+      Width: =216
+      Height: =40
+      Fill: =If(varVista = "org", RGBA(255, 255, 255, 0.14), Color.Transparent)
+      HoverFill: =RGBA(255, 255, 255, 0.08)
+      PressedFill: =RGBA(255, 255, 255, 0.18)
+      Color: =If(varVista = "org", Color.White, RGBA(255, 255, 255, 0.78))
+      HoverColor: =Color.White
+      PressedColor: =Color.White
       BorderThickness: =0
-      Size: =10
+      Size: =10.5
       FontWeight: =If(varVista = "org", FontWeight.Bold, FontWeight.Normal)
       Align: =Align.Left
-      PaddingLeft: =14
+      PaddingLeft: =20
       RadiusTopLeft: =8
       RadiusTopRight: =8
       RadiusBottomLeft: =8
       RadiusBottomRight: =8
-      OnSelect: |-
-        =Set(varVista, "org"); Set(varVerPanel, false)
+      OnSelect: =Set(varVista, "org"); Set(varVerPanel, false)
 - btnMenuDept:
     Control: Classic/Button@2.2.0
     Properties:
-      Text: |-
-        ="▦  Departments"
-      X: =8
-      Y: =120
-      Width: =144
-      Height: =36
-      Fill: =If(varVista = "dept", ColorValue("#EEEEF5"), Color.Transparent)
-      HoverFill: =ColorValue("#EEEEF5")
-      PressedFill: =ColorValue("#E2E2EE")
-      Color: =ColorValue("#202054")
-      HoverColor: =ColorValue("#202054")
-      PressedColor: =ColorValue("#202054")
+      Text: ="▦  Departments"
+      X: =12
+      Y: =218
+      Width: =216
+      Height: =40
+      Fill: =If(varVista = "dept", RGBA(255, 255, 255, 0.14), Color.Transparent)
+      HoverFill: =RGBA(255, 255, 255, 0.08)
+      PressedFill: =RGBA(255, 255, 255, 0.18)
+      Color: =If(varVista = "dept", Color.White, RGBA(255, 255, 255, 0.78))
+      HoverColor: =Color.White
+      PressedColor: =Color.White
       BorderThickness: =0
-      Size: =10
+      Size: =10.5
       FontWeight: =If(varVista = "dept", FontWeight.Bold, FontWeight.Normal)
       Align: =Align.Left
-      PaddingLeft: =14
+      PaddingLeft: =20
       RadiusTopLeft: =8
       RadiusTopRight: =8
       RadiusBottomLeft: =8
@@ -148,23 +149,22 @@
 - btnMenuLoc:
     Control: Classic/Button@2.2.0
     Properties:
-      Text: |-
-        ="⌖  Locations"
-      X: =8
-      Y: =164
-      Width: =144
-      Height: =36
-      Fill: =If(varVista = "loc", ColorValue("#EEEEF5"), Color.Transparent)
-      HoverFill: =ColorValue("#EEEEF5")
-      PressedFill: =ColorValue("#E2E2EE")
-      Color: =ColorValue("#202054")
-      HoverColor: =ColorValue("#202054")
-      PressedColor: =ColorValue("#202054")
+      Text: ="⌖  Locations"
+      X: =12
+      Y: =264
+      Width: =216
+      Height: =40
+      Fill: =If(varVista = "loc", RGBA(255, 255, 255, 0.14), Color.Transparent)
+      HoverFill: =RGBA(255, 255, 255, 0.08)
+      PressedFill: =RGBA(255, 255, 255, 0.18)
+      Color: =If(varVista = "loc", Color.White, RGBA(255, 255, 255, 0.78))
+      HoverColor: =Color.White
+      PressedColor: =Color.White
       BorderThickness: =0
-      Size: =10
+      Size: =10.5
       FontWeight: =If(varVista = "loc", FontWeight.Bold, FontWeight.Normal)
       Align: =Align.Left
-      PaddingLeft: =14
+      PaddingLeft: =20
       RadiusTopLeft: =8
       RadiusTopRight: =8
       RadiusBottomLeft: =8
@@ -181,23 +181,22 @@
 - btnMenuSin:
     Control: Classic/Button@2.2.0
     Properties:
-      Text: |-
-        ="⚠  Unassigned" & If(CountRows(colSinJefe) > 0, "  (" & CountRows(colSinJefe) & ")", "")
-      X: =8
-      Y: =208
-      Width: =144
-      Height: =36
-      Fill: =If(varVista = "sin", ColorValue("#EEEEF5"), Color.Transparent)
-      HoverFill: =ColorValue("#EEEEF5")
-      PressedFill: =ColorValue("#E2E2EE")
-      Color: =ColorValue("#202054")
-      HoverColor: =ColorValue("#202054")
-      PressedColor: =ColorValue("#202054")
+      Text: ="⚠  Unassigned" & If(CountRows(colSinJefe) > 0, "  (" & CountRows(colSinJefe) & ")", "")
+      X: =12
+      Y: =310
+      Width: =216
+      Height: =40
+      Fill: =If(varVista = "sin", RGBA(255, 255, 255, 0.14), Color.Transparent)
+      HoverFill: =RGBA(255, 255, 255, 0.08)
+      PressedFill: =RGBA(255, 255, 255, 0.18)
+      Color: =If(varVista = "sin", Color.White, RGBA(255, 255, 255, 0.78))
+      HoverColor: =Color.White
+      PressedColor: =Color.White
       BorderThickness: =0
-      Size: =10
+      Size: =10.5
       FontWeight: =If(varVista = "sin", FontWeight.Bold, FontWeight.Normal)
       Align: =Align.Left
-      PaddingLeft: =14
+      PaddingLeft: =20
       RadiusTopLeft: =8
       RadiusTopRight: =8
       RadiusBottomLeft: =8
@@ -212,6 +211,80 @@
             Set(varGrupo, First(Sort(ForAll(Distinct(If(varVista = "sin", colSinJefe, colTodos), If(varVista = "loc", Ubic, Depto)), {k: Value, n: CountRows(Filter(If(varVista = "sin", colSinJefe, colTodos), If(varVista = "loc", Ubic, Depto) = Value))}), k)).k);
             Set(varCargando, false)
         )
+- imgLogo:
+    Control: Image@2.2.3
+    Properties:
+      Image: ="https://www.sussek.com/img/logobig2.png?v=2"
+      X: =24
+      Y: =20
+      Width: =192
+      Height: =93
+      ImagePosition: =ImagePosition.Fit
+- recSideDiv:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =24
+      Y: =132
+      Width: =192
+      Height: =1
+      Fill: =RGBA(255, 255, 255, 0.15)
+- lblSideSection:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="DIRECTORY"
+      X: =26
+      Y: =146
+      Width: =192
+      Height: =20
+      Size: =8
+      FontWeight: =FontWeight.Semibold
+      Color: =RGBA(255, 255, 255, 0.5)
+- recMenuBar1:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =12
+      Y: =180
+      Width: =3
+      Height: =24
+      Fill: =Color.White
+      Visible: =varVista = "org"
+- recMenuBar2:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =12
+      Y: =226
+      Width: =3
+      Height: =24
+      Fill: =Color.White
+      Visible: =varVista = "dept"
+- recMenuBar3:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =12
+      Y: =272
+      Width: =3
+      Height: =24
+      Fill: =Color.White
+      Visible: =varVista = "loc"
+- recMenuBar4:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =12
+      Y: =318
+      Width: =3
+      Height: =24
+      Fill: =Color.White
+      Visible: =varVista = "sin"
+- lblSideFooter:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Data from Microsoft 365"
+      X: =26
+      Y: =Parent.Height - 44
+      Width: =192
+      Height: =24
+      Size: =8
+      Color: =RGBA(255, 255, 255, 0.45)
 - lblLegend1:
     Control: Label@2.5.1
     Properties:
@@ -335,11 +408,10 @@
 - lblVistaTitulo:
     Control: Label@2.5.1
     Properties:
-      Text: |-
-        =Switch(varVista, "dept", "DEPARTMENTS", "loc", "LOCATIONS", "sin", "NO MANAGER IN MICROSOFT 365 · BY DEPARTMENT", "") & "  ·  " & CountRows(If(varVista = "sin", colSinJefe, colTodos)) & " people" & If(varVista = "loc" && CountRows(Filter(colTodos, Ubic = "Not specified")) > 0, "   (locations come from the SharePoint list)", "")
-      X: =184
+      Text: =Switch(varVista, "dept", "DEPARTMENTS", "loc", "LOCATIONS", "sin", "NO MANAGER IN MICROSOFT 365 · BY DEPARTMENT", "") & "  ·  " & CountRows(If(varVista = "sin", colSinJefe, colTodos)) & " people" & If(varVista = "loc" && CountRows(Filter(colTodos, Ubic = "Not specified")) > 0, "   (locations come from the SharePoint list)", "")
+      X: =264
       Y: =64
-      Width: =Parent.Width - 200
+      Width: =Parent.Width - 280
       Height: =40
       Size: =10
       FontWeight: =FontWeight.Semibold
@@ -351,7 +423,7 @@
     Properties:
       Items: |-
         =Sort(ForAll(Distinct(If(varVista = "sin", colSinJefe, colTodos), If(varVista = "loc", Ubic, Depto)), {k: Value, n: CountRows(Filter(If(varVista = "sin", colSinJefe, colTodos), If(varVista = "loc", Ubic, Depto) = Value))}), k)
-      X: =172
+      X: =252
       Y: =112
       Width: =236
       Height: =Parent.Height - 120
@@ -408,13 +480,12 @@
     Control: Gallery@2.15.0
     Variant: Vertical
     Properties:
-      Items: |-
-        =Sort(Filter(If(varVista = "sin", colSinJefe, colTodos), If(varVista = "loc", Ubic, Depto) = varGrupo), Nombre)
-      X: =416
+      Items: =Sort(Filter(If(varVista = "sin", colSinJefe, colTodos), If(varVista = "loc", Ubic, Depto) = varGrupo), Nombre)
+      X: =496
       Y: =108
-      Width: =Parent.Width - 428
+      Width: =Parent.Width - 508
       Height: =Parent.Height - 116
-      WrapCount: =Max(1, RoundDown((Parent.Width - 428) / 240, 0))
+      WrapCount: =Max(1, RoundDown((Parent.Width - 508) / 240, 0))
       Default: =LookUp(Sort(Filter(If(varVista = "sin", colSinJefe, colTodos), If(varVista = "loc", Ubic, Depto) = varGrupo), Nombre), Id = varResaltado)
       TemplateSize: =96
       TemplatePadding: =0
@@ -554,9 +625,9 @@
     Variant: Vertical
     Properties:
       Items: =Sort(colNiveles, Nivel)
-      X: =160
+      X: =240
       Y: =112
-      Width: =Parent.Width - 160
+      Width: =Parent.Width - 240
       Height: =Parent.Height - 112
       Visible: =varVista = "org"
       TemplateSize: =140
@@ -862,12 +933,12 @@
     Control: Label@2.5.1
     Properties:
       Text: ="Loading…"
-      X: =26
+      X: =266
       Y: =46
       Width: =200
       Height: =18
       Size: =9
-      Color: =ColorValue("#C9C9E3")
+      Color: =ColorValue("#4A4A8A")
       Align: =Align.Left
       FontWeight: =FontWeight.Semibold
       Visible: =varCargando
@@ -969,8 +1040,7 @@
     Control: Gallery@2.15.0
     Variant: Vertical
     Properties:
-      Items: |-
-        =FirstN(Sort(Filter(If(varVista = "sin", colSinJefe, colTodos), txtBuscar.Text in Nombre || txtBuscar.Text in Puesto), Nombre), 8)
+      Items: =FirstN(Sort(Filter(If(varVista = "sin", colSinJefe, colTodos), txtBuscar.Text in Nombre || txtBuscar.Text in Puesto), Nombre), 8)
       X: =txtBuscar.X
       Y: =56
       Width: =296
