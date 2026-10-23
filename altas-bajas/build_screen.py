@@ -40,7 +40,7 @@ def button(name, text, x, y, w, h, onselect, fill=NAVY, color="Color.White", vis
     if extra: p.update(extra)
     return ctrl(name,"Classic/Button@2.2.0",p)
 def textinput(name, default, hint, x, y, w, h, visible=None, multi=False):
-    p={"Default":default,"HintText":hint,"X":x,"Y":y,"Width":w,"Height":h,"Size":"11","BorderColor":'ColorValue("#C9C9D6")'}
+    p={"Default":default,"HintText":'"' + hint + '"',"X":x,"Y":y,"Width":w,"Height":h,"Size":"11","BorderColor":'ColorValue("#C9C9D6")'}
     p.update(R)
     if multi: p["Mode"]="TextMode.MultiLine"
     if visible: p["Visible"]=visible
