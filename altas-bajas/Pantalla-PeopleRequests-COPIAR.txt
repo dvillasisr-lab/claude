@@ -1,0 +1,1243 @@
+- recHeadR:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =0
+      Y: =0
+      Width: =Parent.Width
+      Height: =64
+      Fill: =ColorValue("#202054")
+- lblTitleR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="People Requests"
+      X: =24
+      Y: =0
+      Width: =300
+      Height: =64
+      Size: =16
+      Color: =Color.White
+      FontWeight: =FontWeight.Bold
+- lblITCapR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Sends to IT:"
+      X: =Parent.Width - 560
+      Y: =0
+      Width: =100
+      Height: =64
+      Size: =10
+      Color: =ColorValue("#C9C9D6")
+- lblITR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="CORREO_DE_IT@sussek.com"
+      X: =Parent.Width - 465
+      Y: =0
+      Width: =260
+      Height: =64
+      Size: =11
+      Color: =Color.White
+      FontWeight: =FontWeight.Bold
+- btnNewR:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="+ New request"
+      X: =Parent.Width - 190
+      Y: =14
+      Width: =170
+      Height: =36
+      Size: =11
+      Fill: =Color.White
+      Color: =ColorValue("#202054")
+      HoverFill: =ColorValue("#C9C9D6")
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =0
+      OnSelect: |-
+        =Set(varModo, "new"); Set(varTipo, "New hire"); Set(varPick, "");
+        Set(varEmp, {N: "", C: ""}); Set(varMgr, {N: "", C: ""}); Set(varMgrAntes, {N: "", C: ""}); Set(varBackup, {N: "", C: ""}); Set(varReasign, {N: "", C: ""}); Set(varMbx, {N: "", C: ""});
+        Set(varF, {Puesto: "", Depto: "", Empresa: "", Loc: "", Desc: "", Scope: "", Skills: ""});
+        Set(varDept, ""); Set(varComp, ""); Set(varLoc, ""); Clear(colEquip);
+        Reset(txtNombreR); Reset(txtCorreoR); Reset(txtFechaR); Reset(txtPuestoR); Reset(txtDescR); Reset(txtScopeR); Reset(txtSkillsR); Reset(txtAccesosR); Reset(txtNotasR); Reset(txtAutoR)
+      RadiusTopLeft: =18
+      RadiusTopRight: =18
+      RadiusBottomLeft: =18
+      RadiusBottomRight: =18
+- recLeftR:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =0
+      Y: =64
+      Width: =380
+      Height: =Parent.Height - 64
+      Fill: =ColorValue("#F6F6FA")
+- galTabsR:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =["All", "Open", "New hire", "Termination", "Change"]
+      X: =12
+      Y: =76
+      Width: =356
+      Height: =64
+      WrapCount: =3
+      TemplateSize: =32
+      TemplatePadding: =0
+      ShowScrollbar: =false
+    Children:
+      - btnTabR:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =ThisItem.Value
+            X: =0
+            Y: =2
+            Width: =Parent.TemplateWidth - 6
+            Height: =26
+            Size: =9
+            Fill: =If(Coalesce(varFiltroT, "All") = ThisItem.Value, ColorValue("#202054"), Color.White)
+            Color: =If(Coalesce(varFiltroT, "All") = ThisItem.Value, Color.White, ColorValue("#202054"))
+            HoverFill: =ColorValue("#C9C9D6")
+            BorderThickness: =0
+            OnSelect: =Set(varFiltroT, ThisItem.Value)
+            RadiusTopLeft: =13
+            RadiusTopRight: =13
+            RadiusBottomLeft: =13
+            RadiusBottomRight: =13
+- galReqR:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =Sort(Filter(PeopleRequests, Coalesce(varFiltroT, "All") = "All" || (varFiltroT = "Open" && Status <> "Done") || RequestType = varFiltroT), Created, SortOrder.Descending)
+      X: =12
+      Y: =146
+      Width: =356
+      Height: =Parent.Height - 156
+      TemplateSize: =88
+      TemplatePadding: =0
+      ShowScrollbar: =true
+    Children:
+      - recRowR:
+          Control: Rectangle@2.3.0
+          Properties:
+            X: =0
+            Y: =0
+            Width: =Parent.TemplateWidth
+            Height: =Parent.TemplateHeight - 6
+            Fill: =If(!IsBlank(varSel) && varSel.ID = ThisItem.ID, ColorValue("#E2E2EE"), Color.White)
+            BorderColor: =ColorValue("#E3E3E3")
+            BorderThickness: =1
+            OnSelect: =Set(varSel, ThisItem); Set(varModo, "view")
+      - lblBadgeR:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.RequestType
+            X: =10
+            Y: =8
+            Width: =96
+            Height: =22
+            Size: =8
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Color: =Color.White
+            Fill: =Switch(ThisItem.RequestType, "New hire", ColorValue("#1E7B34"), "Termination", ColorValue("#B3261E"), ColorValue("#3E7CB1"))
+      - lblStatusR:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.Status
+            X: =Parent.TemplateWidth - 110
+            Y: =8
+            Width: =100
+            Height: =22
+            Size: =8
+            Align: =Align.Right
+            Color: =If(ThisItem.Status = "Done", ColorValue("#1E7B34"), ColorValue("#B36B00"))
+            FontWeight: =FontWeight.Semibold
+      - lblNameRowR:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.Title
+            X: =10
+            Y: =32
+            Width: =Parent.TemplateWidth - 20
+            Height: =24
+            Size: =11
+            FontWeight: =FontWeight.Bold
+            Color: =ColorValue("#202054")
+      - lblDateRowR:
+          Control: Label@2.5.1
+          Properties:
+            Text: =Switch(ThisItem.RequestType, "New hire", "Start ", "Termination", "Last day ", "Effective ") & Text(ThisItem.EffectiveDate, "mmm d, yyyy", "en-US") & "  ·  " & Coalesce(ThisItem.JobTitle, ThisItem.EmployeeEmail)
+            X: =10
+            Y: =54
+            Width: =Parent.TemplateWidth - 20
+            Height: =22
+            Size: =9
+            Color: =ColorValue("#616066")
+- lblEmptyR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Select a request on the left, or press + New request."
+      X: =400
+      Y: =300
+      Width: =(Parent.Width - 420)
+      Height: =40
+      Size: =12
+      Color: =ColorValue("#616066")
+      Visible: =varModo <> "new" && varModo <> "view"
+      Align: =Align.Center
+- lblFormTitleR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="New request"
+      X: =400
+      Y: =72
+      Width: =300
+      Height: =40
+      Size: =15
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new"
+- galTipoR:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =["New hire", "Termination", "Change"]
+      X: =400 + 200
+      Y: =76
+      Width: =480
+      Height: =36
+      WrapCount: =3
+      TemplateSize: =36
+      TemplatePadding: =0
+      ShowScrollbar: =false
+      Visible: =varModo = "new"
+    Children:
+      - btnTipoR:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =ThisItem.Value
+            X: =0
+            Y: =0
+            Width: =Parent.TemplateWidth - 8
+            Height: =34
+            Size: =10
+            Fill: =If(varTipo = ThisItem.Value, Switch(ThisItem.Value, "New hire", ColorValue("#1E7B34"), "Termination", ColorValue("#B3261E"), ColorValue("#3E7CB1")), ColorValue("#EEEEF5"))
+            Color: =If(varTipo = ThisItem.Value, Color.White, ColorValue("#202054"))
+            HoverFill: =ColorValue("#C9C9D6")
+            FontWeight: =FontWeight.Semibold
+            BorderThickness: =0
+            OnSelect: |-
+              =Set(varTipo, ThisItem.Value); Set(varEmp, {N: "", C: ""})
+            RadiusTopLeft: =17
+            RadiusTopRight: =17
+            RadiusBottomLeft: =17
+            RadiusBottomRight: =17
+- lblSec0R:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="WHO"
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =118
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =22
+      Size: =9
+      Color: =ColorValue("#616066")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new"
+- lblSec1R:
+    Control: Label@2.5.1
+    Properties:
+      Text: =If(varTipo = "Termination", "OFFBOARDING", "ROLE")
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 1
+      Y: =118
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =22
+      Size: =9
+      Color: =ColorValue("#616066")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new"
+- lblSec2R:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="DETAILS"
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 2
+      Y: =118
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =22
+      Size: =9
+      Color: =ColorValue("#616066")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- lblCapNombreR:
+    Control: Label@2.5.1
+    Properties:
+      Text: =If(varTipo = "New hire", "Full name", "Employee")
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =146
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new"
+- txtNombreR:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      Default: =""
+      HintText: =First Last
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =166
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =36
+      Size: =11
+      BorderColor: =ColorValue("#C9C9D6")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Visible: =varModo = "new" && varTipo = "New hire"
+- btnEmpR:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: =If(IsBlank(varEmp.N), "Select employee  ▾", varEmp.N)
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =166
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =36
+      Size: =10
+      Fill: =Color.White
+      Color: =ColorValue("#202054")
+      HoverFill: =ColorValue("#C9C9D6")
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =1
+      OnSelect: =Set(varPick, "emp")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Visible: =varModo = "new" && !(varTipo = "New hire")
+      BorderColor: =ColorValue("#C9C9D6")
+      Align: =Align.Left
+      PaddingLeft: =12
+- lblCapCorreoR:
+    Control: Label@2.5.1
+    Properties:
+      Text: =If(varTipo = "New hire", "Email to create", "Email")
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =210
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new"
+- txtCorreoR:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      Default: =""
+      HintText: =jdoe@sussek.com
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =230
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =36
+      Size: =11
+      BorderColor: =ColorValue("#C9C9D6")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Visible: =varModo = "new" && varTipo = "New hire"
+- lblCorreoR:
+    Control: Label@2.5.1
+    Properties:
+      Text: =Coalesce(varEmp.C, "-")
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =230
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =36
+      Size: =11
+      Color: =ColorValue("#616066")
+      Visible: =varModo = "new" && !(varTipo = "New hire")
+- lblCapFechaR:
+    Control: Label@2.5.1
+    Properties:
+      Text: =Switch(varTipo, "New hire", "Start date (MM/DD/YYYY)", "Termination", "Last day (MM/DD/YYYY)", "Effective date (MM/DD/YYYY)")
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =274
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new"
+- txtFechaR:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      Default: =""
+      HintText: =MM/DD/YYYY
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =294
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =36
+      Size: =11
+      BorderColor: =ColorValue("#C9C9D6")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Visible: =varModo = "new"
+- lblCapMgrR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Manager"
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =338
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- btnMgrR:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: =If(IsBlank(varMgr.N), "Select person  ▾", varMgr.N & "  ·  " & varMgr.C)
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =358
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =36
+      Size: =10
+      Fill: =Color.White
+      Color: =ColorValue("#202054")
+      HoverFill: =ColorValue("#C9C9D6")
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =1
+      OnSelect: =Set(varPick, "mgr")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+      BorderColor: =ColorValue("#C9C9D6")
+      Align: =Align.Left
+      PaddingLeft: =12
+- lblCapBackupR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Backup (covers when absent)"
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =402
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- btnBackupR:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: =If(IsBlank(varBackup.N), "Select person  ▾", varBackup.N & "  ·  " & varBackup.C)
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =422
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =36
+      Size: =10
+      Fill: =Color.White
+      Color: =ColorValue("#202054")
+      HoverFill: =ColorValue("#C9C9D6")
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =1
+      OnSelect: =Set(varPick, "backup")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+      BorderColor: =ColorValue("#C9C9D6")
+      Align: =Align.Left
+      PaddingLeft: =12
+- lblCapReasignR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Reassign their team to"
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =338
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && varTipo = "Termination"
+- btnReasignR:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: =If(IsBlank(varReasign.N), "Select person  ▾", varReasign.N & "  ·  " & varReasign.C)
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =358
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =36
+      Size: =10
+      Fill: =Color.White
+      Color: =ColorValue("#202054")
+      HoverFill: =ColorValue("#C9C9D6")
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =1
+      OnSelect: =Set(varPick, "reasign")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Visible: =varModo = "new" && varTipo = "Termination"
+      BorderColor: =ColorValue("#C9C9D6")
+      Align: =Align.Left
+      PaddingLeft: =12
+- lblCapMbxR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Give mailbox access to"
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =402
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && varTipo = "Termination"
+- btnMbxR:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: =If(IsBlank(varMbx.N), "Select person  ▾", varMbx.N & "  ·  " & varMbx.C)
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =422
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =36
+      Size: =10
+      Fill: =Color.White
+      Color: =ColorValue("#202054")
+      HoverFill: =ColorValue("#C9C9D6")
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =1
+      OnSelect: =Set(varPick, "mbx")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Visible: =varModo = "new" && varTipo = "Termination"
+      BorderColor: =ColorValue("#C9C9D6")
+      Align: =Align.Left
+      PaddingLeft: =12
+- lblCapNotasR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Notes for IT"
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =466
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new"
+- txtNotasR:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      Default: =""
+      HintText: =Anything else IT should know
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 0
+      Y: =486
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =90
+      Size: =11
+      BorderColor: =ColorValue("#C9C9D6")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Mode: =TextMode.MultiLine
+      Visible: =varModo = "new"
+- lblCapPuestoR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Job title"
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 1
+      Y: =146
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- txtPuestoR:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      Default: =varF.Puesto
+      HintText: =e.g. Quality Inspector
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 1
+      Y: =166
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =36
+      Size: =11
+      BorderColor: =ColorValue("#C9C9D6")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- lblCapDeptR:
+    Control: Label@2.5.1
+    Properties:
+      Text: |-
+        ="Department" & If(!IsBlank(varDept) && !(varDept in ["AC - Accounting", "AM - Administration", "CS - Customer Service", "EN - Engineering", "HR - Human Resources", "IT - Information Technology", "MT - Maintenance", "OP - Operations", "PC - Production Control", "PD - Production", "QA - Quality", "SA - Sales", "SR - Shipping/Receiving"]), "   (current: " & varDept & ", pick a standard one)", "")
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 1
+      Y: =210
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- galDeptR:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =["AC - Accounting", "AM - Administration", "CS - Customer Service", "EN - Engineering", "HR - Human Resources", "IT - Information Technology", "MT - Maintenance", "OP - Operations", "PC - Production Control", "PD - Production", "QA - Quality", "SA - Sales", "SR - Shipping/Receiving"]
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 1
+      Y: =232
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =196
+      WrapCount: =2
+      TemplateSize: =28
+      TemplatePadding: =0
+      ShowScrollbar: =false
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+    Children:
+      - btnDeptR:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =ThisItem.Value
+            X: =0
+            Y: =2
+            Width: =Parent.TemplateWidth - 6
+            Height: =22
+            Size: =9
+            Fill: =If(varDept = ThisItem.Value, ColorValue("#202054"), ColorValue("#EEEEF5"))
+            HoverFill: =ColorValue("#C9C9D6")
+            Color: =If(varDept = ThisItem.Value, Color.White, ColorValue("#202054"))
+            BorderThickness: =0
+            OnSelect: =Set(varDept, ThisItem.Value)
+            RadiusTopLeft: =12
+            RadiusTopRight: =12
+            RadiusBottomLeft: =12
+            RadiusBottomRight: =12
+- lblCapCompR:
+    Control: Label@2.5.1
+    Properties:
+      Text: |-
+        ="Company" & If(!IsBlank(varComp) && !(varComp in ["Sussek Machine Company", "Sussek De Mexico", "Sussek Metalworking Solutions", "Nelson Numeric Inc.", "Reynold's Machine Company"]), "   (current: " & varComp & ")", "")
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 1
+      Y: =432
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- galCompR:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =["Sussek Machine Company", "Sussek De Mexico", "Sussek Metalworking Solutions", "Nelson Numeric Inc.", "Reynold's Machine Company"]
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 1
+      Y: =452
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =84
+      WrapCount: =2
+      TemplateSize: =28
+      TemplatePadding: =0
+      ShowScrollbar: =false
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+    Children:
+      - btnCompR:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =ThisItem.Value
+            X: =0
+            Y: =2
+            Width: =Parent.TemplateWidth - 6
+            Height: =22
+            Size: =9
+            Fill: =If(varComp = ThisItem.Value, ColorValue("#202054"), ColorValue("#EEEEF5"))
+            HoverFill: =ColorValue("#C9C9D6")
+            Color: =If(varComp = ThisItem.Value, Color.White, ColorValue("#202054"))
+            BorderThickness: =0
+            OnSelect: =Set(varComp, ThisItem.Value)
+            RadiusTopLeft: =12
+            RadiusTopRight: =12
+            RadiusBottomLeft: =12
+            RadiusBottomRight: =12
+- lblCapLocR:
+    Control: Label@2.5.1
+    Properties:
+      Text: |-
+        ="Location" & If(!IsBlank(varLoc) && !(varLoc in ["Waterloo", "New Berlin", "Mexico", "Remote"]), "   (current: " & varLoc & ")", "")
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 1
+      Y: =540
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- galLocR:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =["Waterloo", "New Berlin", "Mexico", "Remote"]
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 1
+      Y: =560
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =56
+      WrapCount: =2
+      TemplateSize: =28
+      TemplatePadding: =0
+      ShowScrollbar: =false
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+    Children:
+      - btnLocR:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =ThisItem.Value
+            X: =0
+            Y: =2
+            Width: =Parent.TemplateWidth - 6
+            Height: =22
+            Size: =9
+            Fill: =If(varLoc = ThisItem.Value, ColorValue("#202054"), ColorValue("#EEEEF5"))
+            HoverFill: =ColorValue("#C9C9D6")
+            Color: =If(varLoc = ThisItem.Value, Color.White, ColorValue("#202054"))
+            BorderThickness: =0
+            OnSelect: =Set(varLoc, ThisItem.Value)
+            RadiusTopLeft: =12
+            RadiusTopRight: =12
+            RadiusBottomLeft: =12
+            RadiusBottomRight: =12
+- lblCapAutoR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Automatic reply for their mailbox"
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 1
+      Y: =146
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && varTipo = "Termination"
+- txtAutoR:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      Default: =If(IsBlank(varEmp.N), "", varEmp.N & " is no longer with Sussek. Please contact " & Coalesce(varReasign.N, "[name]") & " at " & Coalesce(varReasign.C, "[email]") & ". Thank you.")
+      HintText: =Automatic reply text
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 1
+      Y: =166
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =130
+      Size: =11
+      BorderColor: =ColorValue("#C9C9D6")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Mode: =TextMode.MultiLine
+      Visible: =varModo = "new" && varTipo = "Termination"
+- lblCapEqOutR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Equipment to collect"
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 1
+      Y: =304
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && varTipo = "Termination"
+- galEqOutR:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =["Laptop", "Desktop", "Monitor", "Cell phone", "Desk phone", "Badge / keys", "Email & Teams", "VPN", "ERP access", "Shop floor terminal"]
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 1
+      Y: =324
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =150
+      WrapCount: =2
+      TemplateSize: =28
+      TemplatePadding: =0
+      ShowScrollbar: =false
+      Visible: =varModo = "new" && varTipo = "Termination"
+    Children:
+      - btnEqOutR:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =ThisItem.Value
+            X: =0
+            Y: =2
+            Width: =Parent.TemplateWidth - 6
+            Height: =22
+            Size: =9
+            Fill: =If(ThisItem.Value in colEquip.Value, ColorValue("#202054"), ColorValue("#EEEEF5"))
+            HoverFill: =ColorValue("#C9C9D6")
+            Color: =If(ThisItem.Value in colEquip.Value, Color.White, ColorValue("#202054"))
+            BorderThickness: =0
+            OnSelect: |-
+              =If(ThisItem.Value in colEquip.Value, Remove(colEquip, LookUp(colEquip, Value = ThisItem.Value)), Collect(colEquip, {Value: ThisItem.Value}))
+            RadiusTopLeft: =12
+            RadiusTopRight: =12
+            RadiusBottomLeft: =12
+            RadiusBottomRight: =12
+- lblCapDescR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Job description"
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 2
+      Y: =146
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- txtDescR:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      Default: =varF.Desc
+      HintText: =What this person does
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 2
+      Y: =166
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =110
+      Size: =11
+      BorderColor: =ColorValue("#C9C9D6")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Mode: =TextMode.MultiLine
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- lblCapScopeR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Scope"
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 2
+      Y: =282
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- txtScopeR:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      Default: =varF.Scope
+      HintText: =Areas, plants, customers or products they cover
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 2
+      Y: =302
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =70
+      Size: =11
+      BorderColor: =ColorValue("#C9C9D6")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Mode: =TextMode.MultiLine
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- lblCapSkillsR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Skills"
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 2
+      Y: =378
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- txtSkillsR:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      Default: =varF.Skills
+      HintText: =e.g. CNC, GD&T, SAP
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 2
+      Y: =398
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =36
+      Size: =11
+      BorderColor: =ColorValue("#C9C9D6")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- lblCapEqR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Equipment and access needed"
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 2
+      Y: =440
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- galEqR:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =["Laptop", "Desktop", "Monitor", "Cell phone", "Desk phone", "Badge / keys", "Email & Teams", "VPN", "ERP access", "Shop floor terminal"]
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 2
+      Y: =460
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =116
+      WrapCount: =2
+      TemplateSize: =23
+      TemplatePadding: =0
+      ShowScrollbar: =false
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+    Children:
+      - btnEqR:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =ThisItem.Value
+            X: =0
+            Y: =2
+            Width: =Parent.TemplateWidth - 6
+            Height: =17
+            Size: =9
+            Fill: =If(ThisItem.Value in colEquip.Value, ColorValue("#202054"), ColorValue("#EEEEF5"))
+            HoverFill: =ColorValue("#C9C9D6")
+            Color: =If(ThisItem.Value in colEquip.Value, Color.White, ColorValue("#202054"))
+            BorderThickness: =0
+            OnSelect: |-
+              =If(ThisItem.Value in colEquip.Value, Remove(colEquip, LookUp(colEquip, Value = ThisItem.Value)), Collect(colEquip, {Value: ThisItem.Value}))
+            RadiusTopLeft: =12
+            RadiusTopRight: =12
+            RadiusBottomLeft: =12
+            RadiusBottomRight: =12
+- lblCapAccR:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Other systems / permissions"
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 2
+      Y: =580
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =20
+      Size: =9
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- txtAccesosR:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      Default: =""
+      HintText: =Shared folders, software, distribution lists
+      X: =400 + (((Parent.Width - 420) - 40) / 3 + 20) * 2
+      Y: =600
+      Width: =((Parent.Width - 420) - 40) / 3
+      Height: =36
+      Size: =11
+      BorderColor: =ColorValue("#C9C9D6")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Visible: =varModo = "new" && !(varTipo = "Termination")
+- lblValR:
+    Control: Label@2.5.1
+    Properties:
+      Text: |-
+        =If(
+          varTipo = "New hire" && IsBlank(txtNombreR.Text), "Enter the full name.",
+          !(varTipo = "New hire") && IsBlank(varEmp.C), "Select the employee.",
+          varTipo = "New hire" && !IsMatch(txtCorreoR.Text, Match.Email), "Enter the email IT should create.",
+          IsBlank(IfError(DateValue(txtFechaR.Text, "en-US"), Blank())), "Enter the date as MM/DD/YYYY.",
+          !(varTipo = "Termination") && IsBlank(txtPuestoR.Text), "Enter the job title.",
+          !(varTipo = "Termination") && !(varDept in ["AC - Accounting", "AM - Administration", "CS - Customer Service", "EN - Engineering", "HR - Human Resources", "IT - Information Technology", "MT - Maintenance", "OP - Operations", "PC - Production Control", "PD - Production", "QA - Quality", "SA - Sales", "SR - Shipping/Receiving"]), "Pick a department.",
+          !(varTipo = "Termination") && !(varComp in ["Sussek Machine Company", "Sussek De Mexico", "Sussek Metalworking Solutions", "Nelson Numeric Inc.", "Reynold's Machine Company"]), "Pick a company.",
+          !(varTipo = "Termination") && !(varLoc in ["Waterloo", "New Berlin", "Mexico", "Remote"]), "Pick a location.",
+          !(varTipo = "Termination") && IsBlank(varMgr.C), "Select the manager.",
+          "")
+      X: =400
+      Y: =Parent.Height - 56
+      Width: =(Parent.Width - 420) - 240
+      Height: =40
+      Size: =10
+      Color: =ColorValue("#B3261E")
+      FontWeight: =FontWeight.Bold
+      Visible: =varModo = "new"
+- btnSendR:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: =If(varEnviando, "Sending...", "Send to IT")
+      X: =Parent.Width - 220
+      Y: =Parent.Height - 60
+      Width: =200
+      Height: =44
+      Size: =12
+      Fill: =ColorValue("#202054")
+      Color: =Color.White
+      HoverFill: =ColorValue("#3B3B8F")
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =0
+      OnSelect: |-
+        =Set(varEnviando, true);
+        With({fecha: IfError(DateValue(txtFechaR.Text, "en-US"), Blank()), nombre: If(varTipo = "New hire", Trim(txtNombreR.Text), varEmp.N), correo: Lower(Trim(If(varTipo = "New hire", txtCorreoR.Text, varEmp.C))), equipo: Concat(colEquip, Value, ", ")},
+          Patch(PeopleRequests, Defaults(PeopleRequests), {
+            Title: nombre, RequestType: varTipo, Status: "Sent to IT", EmployeeEmail: correo, EffectiveDate: fecha,
+            JobTitle: If(varTipo = "Termination", "", txtPuestoR.Text), Department: If(varTipo = "Termination", "", varDept), Company: If(varTipo = "Termination", "", varComp), Location: If(varTipo = "Termination", "", varLoc),
+            ManagerEmail: If(varTipo = "Termination", "", varMgr.C), ManagerName: If(varTipo = "Termination", "", varMgr.N),
+            JobDescription: If(varTipo = "Termination", "", txtDescR.Text), Scope: If(varTipo = "Termination", "", txtScopeR.Text), Skills: If(varTipo = "Termination", "", txtSkillsR.Text), BackupEmail: If(varTipo = "Termination", "", varBackup.C),
+            Equipment: equipo, SystemsAccess: If(varTipo = "Termination", "", txtAccesosR.Text),
+            PreviousValues: If(varTipo = "Change", "Job title: " & varF.Puesto & " | Department: " & varF.Depto & " | Company: " & varF.Empresa & " | Location: " & varF.Loc & " | Manager: " & varMgrAntes.N, ""),
+            ReassignTo: If(varTipo = "Termination", varReasign.C, ""), MailboxAccessTo: If(varTipo = "Termination", varMbx.C, ""), AutoReply: If(varTipo = "Termination", txtAutoR.Text, ""),
+            Notes: txtNotasR.Text, RequestedBy: User().FullName});
+          Office365Outlook.SendEmailV2(
+            lblITR.Text,
+            "[" & varTipo & "] " & nombre & " · " & Text(fecha, "mmm d, yyyy", "en-US"),
+            "<div style='font-family:Arial;font-size:13px;color:#202054'>" &
+            "<h2 style='color:" & Switch(varTipo, "New hire", "#1E7B34", "Termination", "#B3261E", "#3E7CB1") & "'>" & varTipo & ": " & nombre & "</h2>" &
+            "<p>Requested by " & User().FullName & " (HR) on " & Text(Now(), "mmm d, yyyy", "en-US") & ".</p>" &
+            "<table border='1' cellpadding='6' style='border-collapse:collapse;font-size:13px'>" &
+            "<tr><td style='background:#EEEEF5;width:200px'><b>Employee</b></td><td>" & nombre & "</td></tr>" & "<tr><td style='background:#EEEEF5;width:200px'><b>Email</b></td><td>" & correo & "</td></tr>" &
+            "<tr><td style='background:#EEEEF5;width:200px'><b>" & Switch(varTipo, "New hire", "Start date", "Termination", "Last day", "Effective date") & "</b></td><td>" & Text(fecha, "dddd, mmm d, yyyy", "en-US") & "</td></tr>" &
+            If(varTipo = "Termination",
+              "<tr><td style='background:#EEEEF5;width:200px'><b>Reassign their team to</b></td><td>" & varReasign.N & " (" & varReasign.C & ")" & "</td></tr>" &
+              "<tr><td style='background:#EEEEF5;width:200px'><b>Mailbox access to</b></td><td>" & varMbx.N & " (" & varMbx.C & ")" & "</td></tr>" &
+              "<tr><td style='background:#EEEEF5;width:200px'><b>Automatic reply</b></td><td>" & txtAutoR.Text & "</td></tr>" &
+              "<tr><td style='background:#EEEEF5;width:200px'><b>Equipment to collect</b></td><td>" & equipo & "</td></tr>",
+              "<tr><td style='background:#EEEEF5;width:200px'><b>Job title</b></td><td>" & txtPuestoR.Text & "</td></tr>" & "<tr><td style='background:#EEEEF5;width:200px'><b>Department</b></td><td>" & varDept & "</td></tr>" & "<tr><td style='background:#EEEEF5;width:200px'><b>Company</b></td><td>" & varComp & "</td></tr>" & "<tr><td style='background:#EEEEF5;width:200px'><b>Office location</b></td><td>" & varLoc & "</td></tr>" &
+              "<tr><td style='background:#EEEEF5;width:200px'><b>Manager</b></td><td>" & varMgr.N & " (" & varMgr.C & ")" & "</td></tr>" & "<tr><td style='background:#EEEEF5;width:200px'><b>Backup</b></td><td>" & varBackup.N & "</td></tr>" &
+              "<tr><td style='background:#EEEEF5;width:200px'><b>Equipment and access</b></td><td>" & equipo & "</td></tr>" & "<tr><td style='background:#EEEEF5;width:200px'><b>Other systems</b></td><td>" & txtAccesosR.Text & "</td></tr>") &
+            "<tr><td style='background:#EEEEF5;width:200px'><b>Notes</b></td><td>" & txtNotasR.Text & "</td></tr>" &
+            "</table>" &
+            If(varTipo = "Change", "<h3>Before and after</h3><table border='1' cellpadding='6' style='border-collapse:collapse;font-size:13px'><tr><th></th><th align='left'>Before</th><th align='left'>After</th></tr>" &
+              "<tr><td style='background:#EEEEF5'><b>Job title</b></td><td>" & varF.Puesto & "</td><td" & If(varF.Puesto <> txtPuestoR.Text, " style='color:#B3261E;font-weight:bold'", "") & ">" & txtPuestoR.Text & "</td></tr>" & "<tr><td style='background:#EEEEF5'><b>Department</b></td><td>" & varF.Depto & "</td><td" & If(varF.Depto <> varDept, " style='color:#B3261E;font-weight:bold'", "") & ">" & varDept & "</td></tr>" & "<tr><td style='background:#EEEEF5'><b>Company</b></td><td>" & varF.Empresa & "</td><td" & If(varF.Empresa <> varComp, " style='color:#B3261E;font-weight:bold'", "") & ">" & varComp & "</td></tr>" & "<tr><td style='background:#EEEEF5'><b>Office location</b></td><td>" & varF.Loc & "</td><td" & If(varF.Loc <> varLoc, " style='color:#B3261E;font-weight:bold'", "") & ">" & varLoc & "</td></tr>" & "<tr><td style='background:#EEEEF5'><b>Manager</b></td><td>" & varMgrAntes.N & "</td><td" & If(varMgrAntes.N <> varMgr.N, " style='color:#B3261E;font-weight:bold'", "") & ">" & varMgr.N & "</td></tr>" & "</table>", "") &
+            "<h3>Steps for IT</h3><ol>" &
+            Switch(varTipo,
+              "New hire",
+                "<li>Create the account <b>" & correo & "</b> and assign a Microsoft 365 license.</li>" &
+                "<li>In Entra ID set exactly: Job title = <b>" & txtPuestoR.Text & "</b>, Department = <b>" & varDept & "</b>, Company name = <b>" & varComp & "</b>, Office location = <b>" & varLoc & "</b>, Manager = <b>" & varMgr.N & "</b>.</li>" &
+                "<li>Prepare equipment and access: " & Coalesce(equipo, "none listed") & If(IsBlank(txtAccesosR.Text), "", "; " & txtAccesosR.Text) & ".</li>" &
+                "<li>Everything ready before <b>" & Text(fecha, "mmm d, yyyy", "en-US") & "</b>.</li>",
+              "Termination",
+                "<li>On <b>" & Text(fecha, "mmm d, yyyy", "en-US") & "</b> at end of day, <b>block sign-in</b> (do not delete the account).</li>" &
+                "<li>Convert the mailbox to a <b>shared mailbox</b> and give access to <b>" & varMbx.N & "</b>.</li>" &
+                "<li>Set the automatic reply above.</li>" &
+                "<li><b>Hide from address lists</b> (GAL).</li>" &
+                "<li>In Entra ID, change the Manager of their direct reports to <b>" & varReasign.N & "</b>.</li>" &
+                "<li>Remove licenses.</li>" &
+                "<li>Collect equipment: " & Coalesce(equipo, "none listed") & ".</li>",
+              "<li>On <b>" & Text(fecha, "mmm d, yyyy", "en-US") & "</b>, update Entra ID with the values in the After column (highlighted in red).</li>" &
+              If(IsBlank(equipo) && IsBlank(txtAccesosR.Text), "", "<li>Equipment and access: " & equipo & " " & txtAccesosR.Text & "</li>")) &
+            "</ol><p>Please reply to this email when it's done.</p></div>",
+            {Cc: User().Email, Importance: "Normal"});
+          If(!(varTipo = "Termination"),
+            IfError(
+              With({o: LookUp(Organigrama, Lower(Correo) = correo)},
+                With({r: Patch(Organigrama, If(IsBlank(o), Defaults(Organigrama), o), {Title: nombre, Correo: correo, Puesto: txtPuestoR.Text, Area: varDept, CorreoJefe: varMgr.C, Descripcion: txtDescR.Text, Scope: txtScopeR.Text, Skills: txtSkillsR.Text, Backup: varBackup.C, Location: varLoc})},
+                  If(varTipo = "New hire", Patch(Organigrama, r, {StartDate: fecha})))),
+              Notify("Sent to IT, but the org chart list could not be updated.", NotificationType.Warning)))
+        );
+        Notify("Request sent to IT", NotificationType.Success);
+        Set(varEnviando, false);
+        Set(varModo, "");
+        Set(varFiltroT, "All")
+      RadiusTopLeft: =18
+      RadiusTopRight: =18
+      RadiusBottomLeft: =18
+      RadiusBottomRight: =18
+      Visible: =varModo = "new"
+      DisplayMode: =If(IsBlank(lblValR.Text) && !varEnviando, DisplayMode.Edit, DisplayMode.Disabled)
+- lblDetR:
+    Control: Label@2.5.1
+    Properties:
+      Text: |-
+        =varSel.RequestType & ":  " & varSel.Title & Char(10) & Char(10) & "Status:             " & varSel.Status & Char(10) & "Email:              " & varSel.EmployeeEmail & Char(10) & Switch(varSel.RequestType, "New hire", "Start date:         ", "Termination", "Last day:           ", "Effective date:     ") & Text(varSel.EffectiveDate, "dddd, mmm d, yyyy", "en-US") & Char(10) & "Requested by:       " & varSel.RequestedBy & " on " & Text(varSel.Created, "mmm d, yyyy", "en-US") & Char(10) & Char(10) & If(varSel.RequestType = "Termination", "Reassign team to:   " & varSel.ReassignTo & Char(10) & "Mailbox access to:  " & varSel.MailboxAccessTo & Char(10) & "Automatic reply:    " & varSel.AutoReply & Char(10) & "Equipment:          " & varSel.Equipment, "Job title:          " & varSel.JobTitle & Char(10) & "Department:         " & varSel.Department & Char(10) & "Company:            " & varSel.Company & Char(10) & "Location:           " & varSel.Location & Char(10) & "Manager:            " & varSel.ManagerName & "  (" & varSel.ManagerEmail & ")" & Char(10) & "Backup:             " & varSel.BackupEmail & Char(10) & "Equipment:          " & varSel.Equipment & Char(10) & "Other systems:      " & varSel.SystemsAccess & Char(10) & Char(10) & "Job description:" & Char(10) & varSel.JobDescription & Char(10) & Char(10) & "Scope:" & Char(10) & varSel.Scope & Char(10) & Char(10) & "Skills:  " & varSel.Skills & If(IsBlank(varSel.PreviousValues), "", Char(10) & Char(10) & "Before the change:" & Char(10) & varSel.PreviousValues)) & Char(10) & Char(10) & "Notes:  " & varSel.Notes
+      X: =400
+      Y: =76
+      Width: =(Parent.Width - 420)
+      Height: =Parent.Height - 150
+      Size: =11
+      Color: =ColorValue("#202054")
+      Visible: =varModo = "view"
+      VerticalAlign: =VerticalAlign.Top
+      Fill: =Color.White
+      BorderColor: =ColorValue("#E3E3E3")
+      BorderThickness: =1
+      PaddingTop: =18
+      PaddingLeft: =22
+      PaddingRight: =22
+      PaddingBottom: =18
+- btnDoneR:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: =If(varSel.Status = "Done", "Reopen", "✓ Mark as done")
+      X: =Parent.Width - 220
+      Y: =Parent.Height - 60
+      Width: =200
+      Height: =44
+      Size: =12
+      Fill: =ColorValue("#202054")
+      Color: =Color.White
+      HoverFill: =ColorValue("#3B3B8F")
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =0
+      OnSelect: |-
+        =Patch(PeopleRequests, varSel, {Status: If(varSel.Status = "Done", "Sent to IT", "Done")}); Set(varSel, LookUp(PeopleRequests, ID = varSel.ID))
+      RadiusTopLeft: =18
+      RadiusTopRight: =18
+      RadiusBottomLeft: =18
+      RadiusBottomRight: =18
+      Visible: =varModo = "view"
+- recDimR:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =0
+      Y: =0
+      Width: =Parent.Width
+      Height: =Parent.Height
+      Fill: =RGBA(32, 32, 84, 0.45)
+      Visible: =!IsBlank(varPick)
+      OnSelect: =Set(varPick, "")
+- recPickR:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =(Parent.Width - 520) / 2
+      Y: =90
+      Width: =520
+      Height: =480
+      Fill: =Color.White
+      Visible: =!IsBlank(varPick)
+      RadiusTopLeft: =16
+      RadiusTopRight: =16
+      RadiusBottomLeft: =16
+      RadiusBottomRight: =16
+- lblPickR:
+    Control: Label@2.5.1
+    Properties:
+      Text: =Switch(varPick, "emp", "Select the employee", "mgr", "Select the manager", "backup", "Select the backup", "reasign", "Who takes over their team?", "Who gets access to their mailbox?")
+      X: =(Parent.Width - 520) / 2 + 24
+      Y: =104
+      Width: =400
+      Height: =36
+      Size: =13
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =!IsBlank(varPick)
+- btnPickCloseR:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="✕"
+      X: =(Parent.Width - 520) / 2 + 470
+      Y: =104
+      Width: =36
+      Height: =36
+      Size: =13
+      Fill: =Color.Transparent
+      Color: =ColorValue("#202054")
+      HoverFill: =ColorValue("#C9C9D6")
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =0
+      OnSelect: =Set(varPick, "")
+      RadiusTopLeft: =18
+      RadiusTopRight: =18
+      RadiusBottomLeft: =18
+      RadiusBottomRight: =18
+      Visible: =!IsBlank(varPick)
+- txtPickR:
+    Control: Classic/TextInput@2.3.2
+    Properties:
+      Default: =""
+      HintText: =Type at least 2 letters of the name
+      X: =(Parent.Width - 520) / 2 + 24
+      Y: =146
+      Width: =472
+      Height: =40
+      Size: =11
+      BorderColor: =ColorValue("#C9C9D6")
+      RadiusTopLeft: =8
+      RadiusTopRight: =8
+      RadiusBottomLeft: =8
+      RadiusBottomRight: =8
+      Visible: =!IsBlank(varPick)
+- galPickR:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: |-
+        =If(Len(txtPickR.Text) >= 2, Filter(UsuariosdeOffice365.SearchUserV2({searchTerm: txtPickR.Text, top: 15}).value, AccountEnabled))
+      X: =(Parent.Width - 520) / 2 + 24
+      Y: =196
+      Width: =472
+      Height: =360
+      TemplateSize: =56
+      TemplatePadding: =0
+      ShowScrollbar: =true
+      Visible: =!IsBlank(varPick)
+    Children:
+      - btnPickRowR:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =""
+            X: =0
+            Y: =0
+            Width: =Parent.TemplateWidth
+            Height: =Parent.TemplateHeight - 2
+            Fill: =Color.White
+            HoverFill: =ColorValue("#EEEEF5")
+            PressedFill: =ColorValue("#E2E2EE")
+            BorderThickness: =0
+            OnSelect: |-
+              =With({rec: {N: ThisItem.DisplayName, C: Lower(Coalesce(ThisItem.Mail, ThisItem.UserPrincipalName))}},
+                Switch(varPick,
+                  "emp",
+                    With({m: IfError(UsuariosdeOffice365.ManagerV2(ThisItem.Id, {'$select': "displayName,mail"}), Blank()), o: LookUp(Organigrama, Lower(Correo) = rec.C)},
+                      Set(varEmp, rec);
+                      Set(varMgr, {N: Coalesce(m.displayName, ""), C: Lower(Coalesce(m.mail, ""))});
+                      Set(varMgrAntes, varMgr);
+                      Set(varBackup, {N: Coalesce(o.Backup, ""), C: Coalesce(o.Backup, "")});
+                      Set(varF, {Puesto: Coalesce(ThisItem.JobTitle, ""), Depto: Coalesce(ThisItem.Department, ""), Empresa: Coalesce(ThisItem.CompanyName, ""), Loc: Coalesce(o.Location, ThisItem.OfficeLocation, ""), Desc: Coalesce(o.Descripcion, ""), Scope: Coalesce(o.Scope, ""), Skills: Coalesce(o.Skills, "")});
+                      Set(varDept, varF.Depto); Set(varComp, varF.Empresa); Set(varLoc, varF.Loc)),
+                  "mgr", Set(varMgr, rec),
+                  "backup", Set(varBackup, rec),
+                  "reasign", Set(varReasign, rec),
+                  Set(varMbx, rec)));
+              Set(varPick, ""); Reset(txtPickR)
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+      - lblPickNameR:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.DisplayName
+            X: =12
+            Y: =4
+            Width: =Parent.TemplateWidth - 24
+            Height: =26
+            Size: =11
+            FontWeight: =FontWeight.Bold
+            Color: =ColorValue("#202054")
+      - lblPickInfoR:
+          Control: Label@2.5.1
+          Properties:
+            Text: =Coalesce(ThisItem.JobTitle, "-") & "  ·  " & Coalesce(ThisItem.Department, "-") & "  ·  " & Coalesce(ThisItem.Mail, ThisItem.UserPrincipalName)
+            X: =12
+            Y: =28
+            Width: =Parent.TemplateWidth - 24
+            Height: =22
+            Size: =9
+            Color: =ColorValue("#616066")
