@@ -45,7 +45,7 @@
         ClearCollect(colAudBase,
           ForAll(colAudU As u,
             With({m: IfError(UsuariosdeOffice365.ManagerV2(u.Id, {'$select': "id,displayName,mail"}), Blank())},
-              {Id: u.Id, DisplayName: u.DisplayName, GivenName: u.GivenName, Surname: u.Surname, Mail: u.Mail, UserPrincipalName: u.UserPrincipalName, MailNickname: u.MailNickname, AccountEnabled: u.AccountEnabled, Department: u.Department, JobTitle: u.JobTitle, CompanyName: u.CompanyName, OfficeLocation: u.OfficeLocation, City: u.City, Country: u.Country, MobilePhone: u.MobilePhone,
+              {Id: u.Id, DisplayName: u.DisplayName, GivenName: u.GivenName, Surname: u.Surname, Mail: u.Mail, UserPrincipalName: u.UserPrincipalName, MailNickname: u.MailNickname, AccountEnabled: u.AccountEnabled, Department: u.Department, JobTitle: u.JobTitle, CompanyName: u.CompanyName, OfficeLocation: u.OfficeLocation, City: u.City, Country: u.Country, MobilePhone: u.TelephoneNumber,
                ManagerId: m.id, Manager: m.displayName, ManagerMail: m.mail, ManagerEnabled: LookUp(colAudU, Id = m.id).AccountEnabled,
                Dup: CountIf(colAudU, Lower(Trim(DisplayName)) = Lower(Trim(u.DisplayName))) > 1,
                Guest: "#EXT#" in u.UserPrincipalName})));
@@ -74,12 +74,12 @@
         =Set(varAuditando, true);
         ClearCollect(colAudMT,
           ForAll(Filter(colAudit, !IsBlank(Mail)) As u,
-            With({r: IfError(Office365Outlook.GetMailTipsV2(u.Mail), Blank())},
+            With({r: IfError(First(Office365Outlook.GetMailTipsV2([u.Mail], "automaticReplies,mailboxFullStatus").value), Blank())},
               With({rep: IfError(Trim(PlainText(r.automaticReplies.message)), "")},
                 {Id: u.Id, Fail: IsBlank(r), Reply: rep,
-                 Left: !IsBlank(rep) && CountRows(Filter(["no longer", "has left", "have left", "left the company", "left sussek", "last day", "retired", "not with", "ya no", "no labora", "no trabaja", "dejó de"], Value in Lower(rep))) > 0}))));
+                 SaysLeft: !IsBlank(rep) && CountRows(Filter(["no longer", "has left", "have left", "left the company", "left sussek", "last day", "retired", "not with", "ya no", "no labora", "no trabaja", "dejó de"], Value in Lower(rep))) > 0}))));
         ClearCollect(colAudMTOn, ForAll(Filter(colAudMT, !IsBlank(Reply)), {Value: Id}));
-        ClearCollect(colAudMTLeft, ForAll(Filter(colAudMT, Left), {Value: Id}));
+        ClearCollect(colAudMTLeft, ForAll(Filter(colAudMT, SaysLeft), {Value: Id}));
         ClearCollect(colAudMTFail, ForAll(Filter(colAudMT, Fail), {Value: Id}));
         Set(varAuditando, false)
 - btnValuesA:
