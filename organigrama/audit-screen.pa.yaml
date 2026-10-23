@@ -137,7 +137,7 @@
           "<h3>3. Values in use (active accounts). Each line is a different spelling in Entra ID; variants should be standardized.</h3><table><tr>" &
           "<td valign='top'><b>Department</b><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px;margin-right:16px'>" & Concat(Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(Department, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(Department, "(blank)") = d.Value)}), V), "<tr><td>" & V & "</td><td align='center'>" & K & "</td></tr>") & "</table></td>" & "<td valign='top'><b>JobTitle</b><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px;margin-right:16px'>" & Concat(Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(JobTitle, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(JobTitle, "(blank)") = d.Value)}), V), "<tr><td>" & V & "</td><td align='center'>" & K & "</td></tr>") & "</table></td>" & "<td valign='top'><b>CompanyName</b><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px;margin-right:16px'>" & Concat(Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(CompanyName, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(CompanyName, "(blank)") = d.Value)}), V), "<tr><td>" & V & "</td><td align='center'>" & K & "</td></tr>") & "</table></td>" & "<td valign='top'><b>OfficeLocation</b><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px;margin-right:16px'>" & Concat(Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(OfficeLocation, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(OfficeLocation, "(blank)") = d.Value)}), V), "<tr><td>" & V & "</td><td align='center'>" & K & "</td></tr>") & "</table></td>" &
           "</tr></table>" &
-          "<h3>4. Every account</h3><p>Reports = active direct reports / all direct reports.</p><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px'><tr style='background:#EEEEF5'><th align='left'>DisplayName</th><th align='left'>Mail / UserPrincipalName</th><th align='left'>AccountEnabled</th><th align='left'>Department</th><th align='left'>JobTitle</th><th align='left'>CompanyName</th><th align='left'>OfficeLocation</th><th align='left'>Manager</th><th align='left'>Reports</th><th align='left'>Auto-reply</th></tr>" &
+          "<h3>4. Every account</h3><p>Reports = active direct reports / all direct reports.</p><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px'><tr style='background:#EEEEF5'><th align='left'>DisplayName</th><th align='left'>Mail / UserPrincipalName</th><th align='left'>AccountEnabled</th><th align='left'>Department</th><th align='left'>JobTitle</th><th align='left'>CompanyName</th><th align='left'>OfficeLocation</th><th align='left'>Manager</th><th align='left'>Reps</th><th align='left'>Auto-reply</th></tr>" &
           Concat(Sort(colAudit, DisplayName) As a, "<tr>" & "<td>" & a.DisplayName & "</td>" & "<td>" & Coalesce(a.Mail, a.UserPrincipalName) & "</td>" & "<td style='color:" & If(a.AccountEnabled, "#1E7B34", "#B3261E") & "'>" & If(a.AccountEnabled, "true", "false") & "</td>" & "<td>" & Coalesce(a.Department, "(blank)") & "</td>" & "<td>" & Coalesce(a.JobTitle, "(blank)") & "</td>" & "<td>" & Coalesce(a.CompanyName, "(blank)") & "</td>" & "<td>" & Coalesce(a.OfficeLocation, "(blank)") & "</td>" & "<td>" & Coalesce(a.Manager, "(blank)") & If(a.ManagerEnabled = false && !IsBlank(a.Manager), " (blocked)", "") & "</td>" & "<td>" & a.ActiveReports & "/" & a.Reports & "</td>" & "<td>" & Coalesce(LookUp(colAudMT, Id = a.Id).Reply, If(IsEmpty(colAudMT), "", "-")) & "</td>" & "</tr>") &
           "</table></div>",
           {Importance: "Normal"});
@@ -336,7 +336,7 @@
 - lblHdr8A:
     Control: Label@2.5.1
     Properties:
-      Text: ="Reports"
+      Text: ="Reps"
       X: =galAud.X + 10 + (galAud.Width - 30) * 0.88
       Y: =164
       Width: =(galAud.Width - 30) * 0.04
@@ -512,6 +512,8 @@
             Size: =8
             Color: =If(ThisItem.Id in colAudMTLeft.Value, ColorValue("#B3261E"), ColorValue("#202054"))
             FontWeight: =FontWeight.Normal
+            Wrap: =false
+            Tooltip: =LookUp(colAudMT, Id = ThisItem.Id).Reply
 - lblValH0A:
     Control: Label@2.5.1
     Properties:
