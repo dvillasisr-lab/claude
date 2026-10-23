@@ -166,7 +166,7 @@
     Control: Gallery@2.15.0
     Variant: Vertical
     Properties:
-      Items: =Sort(Filter(colAudit, Id in colAudMTOn.Value), If(Id in colAudMTLeft.Value, 0, 1), SortOrder.Ascending, DisplayName, SortOrder.Ascending)
+      Items: =Sort(Sort(Filter(colAudit, Id in colAudMTOn.Value), DisplayName), If(Id in colAudMTLeft.Value, 0, 1))
       X: =16
       Y: =112
       Width: =Parent.Width - 32
