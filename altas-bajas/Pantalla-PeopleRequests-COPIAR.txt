@@ -129,6 +129,7 @@
       - lblBadgeR:
           Control: Label@2.5.1
           Properties:
+            OnSelect: =Select(recRowR)
             Text: =ThisItem.RequestType
             X: =10
             Y: =8
@@ -142,6 +143,7 @@
       - lblStatusR:
           Control: Label@2.5.1
           Properties:
+            OnSelect: =Select(recRowR)
             Text: =ThisItem.Status
             X: =Parent.TemplateWidth - 110
             Y: =8
@@ -154,6 +156,7 @@
       - lblNameRowR:
           Control: Label@2.5.1
           Properties:
+            OnSelect: =Select(recRowR)
             Text: =ThisItem.Title
             X: =10
             Y: =32
@@ -165,6 +168,7 @@
       - lblDateRowR:
           Control: Label@2.5.1
           Properties:
+            OnSelect: =Select(recRowR)
             Text: =Switch(ThisItem.RequestType, "New hire", "Start ", "Termination", "Last day ", "Effective ") & Text(ThisItem.EffectiveDate, "mmm d, yyyy", "en-US") & "  ·  " & Coalesce(ThisItem.JobTitle, ThisItem.EmployeeEmail)
             X: =10
             Y: =54
@@ -1136,6 +1140,7 @@
       - lblPickNameR:
           Control: Label@2.5.1
           Properties:
+            OnSelect: =Select(btnPickRowR)
             Text: =ThisItem.DisplayName
             X: =12
             Y: =4
@@ -1147,6 +1152,7 @@
       - lblPickInfoR:
           Control: Label@2.5.1
           Properties:
+            OnSelect: =Select(btnPickRowR)
             Text: =Coalesce(ThisItem.JobTitle, "-") & "  ·  " & Coalesce(ThisItem.Department, "-") & "  ·  " & Coalesce(ThisItem.Mail, ThisItem.UserPrincipalName)
             X: =12
             Y: =28

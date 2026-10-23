@@ -86,12 +86,12 @@ A(ctrl("galTabsR","Gallery@2.15.0",{"Items":'["All", "Open", "New hire", "Termin
 rowkids=[
  ctrl("recRowR","Rectangle@2.3.0",{"X":"0","Y":"0","Width":"Parent.TemplateWidth","Height":"Parent.TemplateHeight - 6","Fill":'If(!IsBlank(varSel) && varSel.ID = ThisItem.ID, ColorValue("#E2E2EE"), Color.White)',
    "BorderColor":'ColorValue("#E3E3E3")',"BorderThickness":"1","OnSelect":'Set(varSel, ThisItem); Set(varModo, "view")'},indent=6),
- ctrl("lblBadgeR","Label@2.5.1",{"Text":"ThisItem.RequestType","X":"10","Y":"8","Width":"96","Height":"22","Size":"8","Align":"Align.Center","FontWeight":"FontWeight.Bold","Color":"Color.White",
+ ctrl("lblBadgeR","Label@2.5.1",{"OnSelect":"Select(recRowR)","Text":"ThisItem.RequestType","X":"10","Y":"8","Width":"96","Height":"22","Size":"8","Align":"Align.Center","FontWeight":"FontWeight.Bold","Color":"Color.White",
    "Fill":'Switch(ThisItem.RequestType, "New hire", ColorValue("#1E7B34"), "Termination", ColorValue("#B3261E"), ColorValue("#3E7CB1"))'},indent=6),
- ctrl("lblStatusR","Label@2.5.1",{"Text":"ThisItem.Status","X":"Parent.TemplateWidth - 110","Y":"8","Width":"100","Height":"22","Size":"8","Align":"Align.Right",
+ ctrl("lblStatusR","Label@2.5.1",{"OnSelect":"Select(recRowR)","Text":"ThisItem.Status","X":"Parent.TemplateWidth - 110","Y":"8","Width":"100","Height":"22","Size":"8","Align":"Align.Right",
    "Color":'If(ThisItem.Status = "Done", ColorValue("#1E7B34"), ColorValue("#B36B00"))',"FontWeight":"FontWeight.Semibold"},indent=6),
- ctrl("lblNameRowR","Label@2.5.1",{"Text":"ThisItem.Title","X":"10","Y":"32","Width":"Parent.TemplateWidth - 20","Height":"24","Size":"11","FontWeight":"FontWeight.Bold","Color":NAVY},indent=6),
- ctrl("lblDateRowR","Label@2.5.1",{"Text":'Switch(ThisItem.RequestType, "New hire", "Start ", "Termination", "Last day ", "Effective ") & Text(ThisItem.EffectiveDate, "mmm d, yyyy", "en-US") & "  ·  " & Coalesce(ThisItem.JobTitle, ThisItem.EmployeeEmail)',
+ ctrl("lblNameRowR","Label@2.5.1",{"OnSelect":"Select(recRowR)","Text":"ThisItem.Title","X":"10","Y":"32","Width":"Parent.TemplateWidth - 20","Height":"24","Size":"11","FontWeight":"FontWeight.Bold","Color":NAVY},indent=6),
+ ctrl("lblDateRowR","Label@2.5.1",{"OnSelect":"Select(recRowR)","Text":'Switch(ThisItem.RequestType, "New hire", "Start ", "Termination", "Last day ", "Effective ") & Text(ThisItem.EffectiveDate, "mmm d, yyyy", "en-US") & "  ·  " & Coalesce(ThisItem.JobTitle, ThisItem.EmployeeEmail)',
    "X":"10","Y":"54","Width":"Parent.TemplateWidth - 20","Height":"22","Size":"9","Color":GREY},indent=6)]
 A(ctrl("galReqR","Gallery@2.15.0",{"Items":'Sort(Filter(PeopleRequests, Coalesce(varFiltroT, "All") = "All" || (varFiltroT = "Open" && Status <> "Done") || RequestType = varFiltroT), Created, SortOrder.Descending)',
   "X":"12","Y":"146","Width":"356","Height":"Parent.Height - 156","TemplateSize":"88","TemplatePadding":"0","ShowScrollbar":"true"},variant="Vertical",children=rowkids))
@@ -304,8 +304,8 @@ A(ctrl("galPickR","Gallery@2.15.0",{"Items":'If(Len(txtPickR.Text) >= 2, Filter(
   "X":"(Parent.Width - 520) / 2 + 24","Y":"196","Width":"472","Height":"360","TemplateSize":"56","TemplatePadding":"0","ShowScrollbar":"true","Visible":PV},variant="Vertical",children=[
   ctrl("btnPickRowR","Classic/Button@2.2.0",{"Text":'""',"X":"0","Y":"0","Width":"Parent.TemplateWidth","Height":"Parent.TemplateHeight - 2","Fill":"Color.White","HoverFill":LIGHT,"PressedFill":'ColorValue("#E2E2EE")',
     "BorderThickness":"0","OnSelect":pickset,**pill(0)},indent=6),
-  ctrl("lblPickNameR","Label@2.5.1",{"Text":"ThisItem.DisplayName","X":"12","Y":"4","Width":"Parent.TemplateWidth - 24","Height":"26","Size":"11","FontWeight":"FontWeight.Bold","Color":NAVY},indent=6),
-  ctrl("lblPickInfoR","Label@2.5.1",{"Text":'Coalesce(ThisItem.JobTitle, "-") & "  ·  " & Coalesce(ThisItem.Department, "-") & "  ·  " & Coalesce(ThisItem.Mail, ThisItem.UserPrincipalName)',
+  ctrl("lblPickNameR","Label@2.5.1",{"OnSelect":"Select(btnPickRowR)","Text":"ThisItem.DisplayName","X":"12","Y":"4","Width":"Parent.TemplateWidth - 24","Height":"26","Size":"11","FontWeight":"FontWeight.Bold","Color":NAVY},indent=6),
+  ctrl("lblPickInfoR","Label@2.5.1",{"OnSelect":"Select(btnPickRowR)","Text":'Coalesce(ThisItem.JobTitle, "-") & "  ·  " & Coalesce(ThisItem.Department, "-") & "  ·  " & Coalesce(ThisItem.Mail, ThisItem.UserPrincipalName)',
     "X":"12","Y":"28","Width":"Parent.TemplateWidth - 24","Height":"22","Size":"9","Color":GREY},indent=6)]))
 
 

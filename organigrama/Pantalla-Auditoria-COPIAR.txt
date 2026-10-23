@@ -481,6 +481,7 @@
             Width: =(Parent.Width - 30) * 0.14
             Height: =35
             Size: =8
+            OnSelect: =Select(btnRowA)
             Color: =ColorValue("#202054")
             FontWeight: =FontWeight.Bold
       - lblCol1A:
@@ -493,6 +494,7 @@
             Width: =(Parent.Width - 30) * 0.18
             Height: =35
             Size: =8
+            OnSelect: =Select(btnRowA)
             Color: =ColorValue("#202054")
             FontWeight: =FontWeight.Normal
       - lblCol2A:
@@ -505,6 +507,7 @@
             Width: =(Parent.Width - 30) * 0.08
             Height: =35
             Size: =8
+            OnSelect: =Select(btnRowA)
             Color: =If(ThisItem.AccountEnabled, ColorValue("#1E7B34"), ColorValue("#B3261E"))
             FontWeight: =FontWeight.Bold
       - lblCol3A:
@@ -517,6 +520,7 @@
             Width: =(Parent.Width - 30) * 0.12
             Height: =35
             Size: =8
+            OnSelect: =Select(btnRowA)
             Color: =If(IsBlank(ThisItem.Department), ColorValue("#B3261E"), ColorValue("#202054"))
             FontWeight: =FontWeight.Normal
       - lblCol4A:
@@ -529,6 +533,7 @@
             Width: =(Parent.Width - 30) * 0.11
             Height: =35
             Size: =8
+            OnSelect: =Select(btnRowA)
             Color: =If(IsBlank(ThisItem.JobTitle), ColorValue("#B3261E"), ColorValue("#202054"))
             FontWeight: =FontWeight.Normal
       - lblCol5A:
@@ -541,6 +546,7 @@
             Width: =(Parent.Width - 30) * 0.09
             Height: =35
             Size: =8
+            OnSelect: =Select(btnRowA)
             Color: =If(IsBlank(ThisItem.CompanyName), ColorValue("#B3261E"), ColorValue("#202054"))
             FontWeight: =FontWeight.Normal
       - lblCol6A:
@@ -553,6 +559,7 @@
             Width: =(Parent.Width - 30) * 0.07
             Height: =35
             Size: =8
+            OnSelect: =Select(btnRowA)
             Color: =If(IsBlank(ThisItem.OfficeLocation), ColorValue("#B3261E"), ColorValue("#202054"))
             FontWeight: =FontWeight.Normal
       - lblCol7A:
@@ -565,6 +572,7 @@
             Width: =(Parent.Width - 30) * 0.09
             Height: =35
             Size: =8
+            OnSelect: =Select(btnRowA)
             Color: =If(IsBlank(ThisItem.Manager) || ThisItem.ManagerEnabled = false, ColorValue("#B3261E"), ColorValue("#202054"))
             FontWeight: =FontWeight.Normal
       - lblCol8A:
@@ -577,6 +585,7 @@
             Width: =(Parent.Width - 30) * 0.04
             Height: =35
             Size: =8
+            OnSelect: =Select(btnRowA)
             Color: =If(!ThisItem.AccountEnabled && ThisItem.ActiveReports > 0, ColorValue("#B3261E"), ColorValue("#202054"))
             FontWeight: =FontWeight.Normal
       - lblCol9A:
@@ -589,6 +598,7 @@
             Width: =(Parent.Width - 30) * 0.08
             Height: =35
             Size: =8
+            OnSelect: =Select(btnRowA)
             Color: =If(ThisItem.Id in colAudMTLeft.Value, ColorValue("#B3261E"), ColorValue("#202054"))
             FontWeight: =FontWeight.Normal
             Wrap: =false
