@@ -1,0 +1,439 @@
+- recHeadO:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =0
+      Y: =0
+      Width: =Parent.Width
+      Height: =64
+      Fill: =ColorValue("#202054")
+- btnBackO:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="←"
+      X: =8
+      Y: =12
+      Width: =40
+      Height: =40
+      Size: =16
+      Fill: =Color.Transparent
+      Color: =Color.White
+      HoverFill: =ColorValue("#C9C9D6")
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =0
+      OnSelect: =Back()
+      RadiusTopLeft: =18
+      RadiusTopRight: =18
+      RadiusBottomLeft: =18
+      RadiusBottomRight: =18
+- lblTitleO:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Onboarding & Offboarding"
+      X: =56
+      Y: =0
+      Width: =360
+      Height: =64
+      Size: =16
+      Color: =Color.White
+      FontWeight: =FontWeight.Bold
+- lblEHSCapO:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="EHS email:"
+      X: =Parent.Width - 400
+      Y: =0
+      Width: =90
+      Height: =64
+      Size: =10
+      Color: =ColorValue("#C9C9D6")
+- lblEHSO:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="CORREO_DE_EHS@sussek.com"
+      X: =Parent.Width - 310
+      Y: =0
+      Width: =290
+      Height: =64
+      Size: =11
+      Color: =Color.White
+      FontWeight: =FontWeight.Bold
+- recLeftO:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =0
+      Y: =64
+      Width: =380
+      Height: =Parent.Height - 64
+      Fill: =ColorValue("#F6F6FA")
+- galTabsO:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =["New hire", "Termination"]
+      X: =12
+      Y: =76
+      Width: =356
+      Height: =34
+      WrapCount: =2
+      TemplateSize: =34
+      TemplatePadding: =0
+      ShowScrollbar: =false
+    Children:
+      - btnTabO:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =If(ThisItem.Value = "New hire", "New hires", "Terminations")
+            X: =0
+            Y: =0
+            Width: =Parent.TemplateWidth - 6
+            Height: =30
+            Size: =10
+            Fill: =If(Coalesce(varTabO, "New hire") = ThisItem.Value, ColorValue("#202054"), Color.White)
+            Color: =If(Coalesce(varTabO, "New hire") = ThisItem.Value, Color.White, ColorValue("#202054"))
+            HoverFill: =ColorValue("#C9C9D6")
+            BorderThickness: =0
+            OnSelect: =Set(varTabO, ThisItem.Value)
+            RadiusTopLeft: =15
+            RadiusTopRight: =15
+            RadiusBottomLeft: =15
+            RadiusBottomRight: =15
+- galHiresO:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =Sort(Filter(PeopleRequests, RequestType = Coalesce(varTabO, "New hire")), EffectiveDate, SortOrder.Descending)
+      X: =12
+      Y: =118
+      Width: =356
+      Height: =Parent.Height - 128
+      TemplateSize: =78
+      TemplatePadding: =0
+      ShowScrollbar: =true
+    Children:
+      - recRowO:
+          Control: Rectangle@2.3.0
+          Properties:
+            X: =0
+            Y: =0
+            Width: =Parent.TemplateWidth
+            Height: =Parent.TemplateHeight - 6
+            Fill: =If(!IsBlank(varHire) && varHire.ID = ThisItem.ID, ColorValue("#E2E2EE"), Color.White)
+            BorderColor: =ColorValue("#E3E3E3")
+            BorderThickness: =1
+            OnSelect: =Set(varHire, ThisItem); Set(varOwnerO, "All"); ClearCollect(colTasks, Filter(OnboardingTasks, RequestID = ThisItem.ID))
+      - lblHireNameO:
+          Control: Label@2.5.1
+          Properties:
+            OnSelect: =Select(recRowO)
+            Text: =ThisItem.Title
+            X: =12
+            Y: =6
+            Width: =Parent.TemplateWidth - 24
+            Height: =26
+            Size: =11
+            FontWeight: =FontWeight.Bold
+            Color: =ColorValue("#202054")
+      - lblHireInfoO:
+          Control: Label@2.5.1
+          Properties:
+            OnSelect: =Select(recRowO)
+            Text: |-
+              =If(ThisItem.RequestType = "Termination", "Last day ", "Start ") & Text(ThisItem.EffectiveDate, "mmm d, yyyy", "en-US") & "  ·  " & With({t: CountRows(Filter(OnboardingTasks, RequestID = ThisItem.ID)), d: CountRows(Filter(OnboardingTasks, RequestID = ThisItem.ID && Status = "Done"))}, If(t = 0, "Checklist not started", d & " of " & t & " done"))
+            X: =12
+            Y: =34
+            Width: =Parent.TemplateWidth - 24
+            Height: =30
+            Size: =9
+            Color: =ColorValue("#616066")
+- lblEmptyO:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Select a person on the left."
+      X: =400
+      Y: =300
+      Width: =(Parent.Width - 420)
+      Height: =40
+      Size: =12
+      Color: =ColorValue("#616066")
+      Visible: =IsBlank(varHire)
+      Align: =Align.Center
+- lblHireO:
+    Control: Label@2.5.1
+    Properties:
+      Text: =varHire.Title
+      X: =400
+      Y: =76
+      Width: =(Parent.Width - 420) - 420
+      Height: =36
+      Size: =16
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =!IsBlank(varHire)
+- lblHireSubO:
+    Control: Label@2.5.1
+    Properties:
+      Text: =varHire.RequestType & "  ·  " & If(varHire.RequestType = "Termination", "Last day ", "Start date ") & Text(varHire.EffectiveDate, "dddd, mmm d, yyyy", "en-US") & If(IsBlank(varHire.JobTitle), "", "  ·  " & varHire.JobTitle & "  ·  " & varHire.Department)
+      X: =400
+      Y: =110
+      Width: =(Parent.Width - 420) - 420
+      Height: =24
+      Size: =10
+      Color: =ColorValue("#616066")
+      Visible: =!IsBlank(varHire)
+- btnStartO:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="Start " & If(varHire.RequestType = "Termination", "offboarding", "onboarding") & " checklist"
+      X: =400 + ((Parent.Width - 420) - 320) / 2
+      Y: =260
+      Width: =320
+      Height: =52
+      Size: =13
+      Fill: =ColorValue("#202054")
+      Color: =Color.White
+      HoverFill: =ColorValue("#3B3B8F")
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =0
+      OnSelect: |-
+        =With({tpl: If(varHire.RequestType = "Termination",
+          Table(
+            {Task: "People Request sent to IT", Owner: "HR", Phase: "1. Before last day", Days: -5, Kind: "Task", Filed: ""},
+            {Task: "Exit interview scheduled", Owner: "HR", Phase: "1. Before last day", Days: -5, Kind: "Task", Filed: ""},
+            {Task: "Knowledge transfer to backup", Owner: "Manager", Phase: "1. Before last day", Days: -3, Kind: "Task", Filed: ""},
+            {Task: "Final paycheck and PTO payout calculated", Owner: "HR", Phase: "1. Before last day", Days: -2, Kind: "Document", Filed: "Payroll file"},
+            {Task: "Equipment returned (laptop, phone, tools, PPE)", Owner: "Manager", Phase: "2. Last day", Days: 0, Kind: "Task", Filed: ""},
+            {Task: "Badge / keys returned", Owner: "HR", Phase: "2. Last day", Days: 0, Kind: "Task", Filed: ""},
+            {Task: "Exit interview completed", Owner: "HR", Phase: "2. Last day", Days: 0, Kind: "Document", Filed: "Personnel file"},
+            {Task: "Sign-in blocked and mailbox shared", Owner: "IT", Phase: "2. Last day", Days: 0, Kind: "Task", Filed: ""},
+            {Task: "Final paycheck delivered", Owner: "HR", Phase: "3. After", Days: 7, Kind: "Task", Filed: ""},
+            {Task: "COBRA / benefits termination notice sent", Owner: "HR", Phase: "3. After", Days: 14, Kind: "Document", Filed: "Benefits file (confidential)"},
+            {Task: "Personnel file closed", Owner: "HR", Phase: "3. After", Days: 30, Kind: "Task", Filed: ""}),
+          Table(
+            {Task: "Offer letter signed", Owner: "HR", Phase: "1. Before day 1", Days: -7, Kind: "Document", Filed: "Personnel file"},
+            {Task: "Background check / drug screen results", Owner: "HR", Phase: "1. Before day 1", Days: -3, Kind: "Document", Filed: "Confidential file"},
+            {Task: "People Request sent to IT", Owner: "HR", Phase: "1. Before day 1", Days: -7, Kind: "Task", Filed: ""},
+            {Task: "Workstation, tools and PPE ready", Owner: "Manager", Phase: "1. Before day 1", Days: -1, Kind: "Task", Filed: ""},
+            {Task: "First-week schedule and trainer assigned", Owner: "Manager", Phase: "1. Before day 1", Days: -1, Kind: "Task", Filed: ""},
+            {Task: "Account, computer and phone ready", Owner: "IT", Phase: "1. Before day 1", Days: -1, Kind: "Task", Filed: ""},
+            {Task: "I-9 Section 1 (employee)", Owner: "HR", Phase: "2. Day 1", Days: 0, Kind: "Document", Filed: "I-9 binder (separate)"},
+            {Task: "W-4 federal withholding", Owner: "HR", Phase: "2. Day 1", Days: 0, Kind: "Document", Filed: "Payroll file"},
+            {Task: "State withholding form", Owner: "HR", Phase: "2. Day 1", Days: 0, Kind: "Document", Filed: "Payroll file"},
+            {Task: "Direct deposit form", Owner: "HR", Phase: "2. Day 1", Days: 0, Kind: "Document", Filed: "Payroll file"},
+            {Task: "Emergency contact form", Owner: "HR", Phase: "2. Day 1", Days: 0, Kind: "Document", Filed: "Personnel file"},
+            {Task: "Employee handbook acknowledgment", Owner: "HR", Phase: "2. Day 1", Days: 0, Kind: "Document", Filed: "Personnel file"},
+            {Task: "Confidentiality / NDA", Owner: "HR", Phase: "2. Day 1", Days: 0, Kind: "Document", Filed: "Personnel file"},
+            {Task: "Drug and alcohol policy acknowledgment", Owner: "HR", Phase: "2. Day 1", Days: 0, Kind: "Document", Filed: "Personnel file"},
+            {Task: "Badge / keys issued", Owner: "HR", Phase: "2. Day 1", Days: 0, Kind: "Task", Filed: ""},
+            {Task: "Safety orientation", Owner: "EHS", Phase: "2. Day 1", Days: 0, Kind: "Document", Filed: "Training file"},
+            {Task: "PPE issued (glasses, shoes, gloves, hearing)", Owner: "EHS", Phase: "2. Day 1", Days: 0, Kind: "Document", Filed: "Training file"},
+            {Task: "Welcome and team introduction", Owner: "Manager", Phase: "2. Day 1", Days: 0, Kind: "Task", Filed: ""},
+            {Task: "I-9 Section 2 verified (within 3 business days)", Owner: "HR", Phase: "3. First 2 weeks", Days: 3, Kind: "Document", Filed: "I-9 binder (separate)"},
+            {Task: "Hazard communication (HazCom) training", Owner: "EHS", Phase: "3. First 2 weeks", Days: 5, Kind: "Document", Filed: "Training file"},
+            {Task: "Job-specific training plan started", Owner: "Manager", Phase: "3. First 2 weeks", Days: 5, Kind: "Task", Filed: ""},
+            {Task: "Forklift / equipment certification (if applicable)", Owner: "EHS", Phase: "3. First 2 weeks", Days: 14, Kind: "Document", Filed: "Training file"},
+            {Task: "Benefits enrollment form", Owner: "HR", Phase: "4. 30 days", Days: 30, Kind: "Document", Filed: "Benefits file (confidential)"},
+            {Task: "30-day check-in", Owner: "Manager", Phase: "4. 30 days", Days: 30, Kind: "Task", Filed: ""},
+            {Task: "90-day performance review", Owner: "Manager", Phase: "5. 90 days", Days: 90, Kind: "Document", Filed: "Personnel file"},
+            {Task: "End of probation confirmed", Owner: "HR", Phase: "5. 90 days", Days: 90, Kind: "Task", Filed: ""}))},
+          ForAll(tpl As t,
+            Patch(OnboardingTasks, Defaults(OnboardingTasks), {Title: t.Task, RequestID: varHire.ID, Employee: varHire.Title, Owner: t.Owner, Phase: t.Phase, DueDate: DateAdd(varHire.EffectiveDate, t.Days, TimeUnit.Days), Status: "Pending", DoneBy: "", FiledIn: t.Filed, Kind: t.Kind, Notes: ""})));
+        ClearCollect(colTasks, Filter(OnboardingTasks, RequestID = varHire.ID));
+        Notify("Checklist created", NotificationType.Success)
+      RadiusTopLeft: =18
+      RadiusTopRight: =18
+      RadiusBottomLeft: =18
+      RadiusBottomRight: =18
+      Visible: =!IsBlank(varHire) && IsEmpty(colTasks)
+- lblStartInfoO:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="Creates the task list for HR, the manager, EHS and IT, with due dates based on the " & If(varHire.RequestType = "Termination", "last day.", "start date.")
+      X: =400
+      Y: =320
+      Width: =(Parent.Width - 420)
+      Height: =30
+      Size: =10
+      Color: =ColorValue("#616066")
+      Visible: =!IsBlank(varHire) && IsEmpty(colTasks)
+      Align: =Align.Center
+- recBarBgO:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =400
+      Y: =142
+      Width: =(Parent.Width - 420) - 420
+      Height: =10
+      Fill: =ColorValue("#E2E2EE")
+      Visible: =!IsBlank(varHire) && !IsEmpty(colTasks)
+- recBarO:
+    Control: Rectangle@2.3.0
+    Properties:
+      X: =400
+      Y: =142
+      Width: =((Parent.Width - 420) - 420) * CountRows(Filter(colTasks, Status = "Done")) / Max(1, CountRows(colTasks))
+      Height: =10
+      Fill: =ColorValue("#1E7B34")
+      Visible: =!IsBlank(varHire) && !IsEmpty(colTasks)
+- lblBarO:
+    Control: Label@2.5.1
+    Properties:
+      Text: |-
+        =CountRows(Filter(colTasks, Status = "Done")) & " of " & CountRows(colTasks) & " done" & With({o: CountRows(Filter(colTasks, Status <> "Done" && DueDate < Today()))}, If(o > 0, "   ·   " & o & " overdue", ""))
+      X: =400 + (Parent.Width - 420) - 410
+      Y: =132
+      Width: =400
+      Height: =30
+      Size: =10
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Bold
+      Visible: =!IsBlank(varHire) && !IsEmpty(colTasks)
+- btnMailO:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="✉ Send task lists"
+      X: =Parent.Width - 220
+      Y: =76
+      Width: =200
+      Height: =40
+      Size: =11
+      Fill: =ColorValue("#202054")
+      Color: =Color.White
+      HoverFill: =ColorValue("#3B3B8F")
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =0
+      OnSelect: |-
+        =ForAll(Table({O: "Manager", To: Coalesce(varHire.ManagerEmail, varHire.ReassignTo)}, {O: "EHS", To: lblEHSO.Text}, {O: "IT", To: lblITR.Text}) As r,
+          If(!IsBlank(r.To) && CountRows(Filter(colTasks, Owner = r.O && Status <> "Done")) > 0,
+            Office365Outlook.SendEmailV2(r.To,
+              If(varHire.RequestType = "Termination", "Offboarding: ", "Onboarding: ") & varHire.Title & If(varHire.RequestType = "Termination", ", last day ", ", starts ") & Text(varHire.EffectiveDate, "mmm d", "en-US"),
+              "<div style='font-family:Arial;font-size:13px;color:#202054'><h2>" & If(varHire.RequestType = "Termination", "Offboarding: ", "Onboarding: ") & varHire.Title & "</h2>" &
+              "<p>" & If(varHire.RequestType = "Termination", "Last day: ", "Start date: ") & "<b>" & Text(varHire.EffectiveDate, "dddd, mmm d, yyyy", "en-US") & "</b></p>" &
+              "<p>These tasks are assigned to " & If(r.O = "Manager", "you as the manager", r.O) & ":</p>" &
+              "<table border='1' cellpadding='6' style='border-collapse:collapse;font-size:13px'><tr style='background:#EEEEF5'><th align='left'>Due</th><th align='left'>Task</th></tr>" &
+              Concat(Sort(Filter(colTasks, Owner = r.O && Status <> "Done"), DueDate), "<tr><td>" & Text(DueDate, "mmm d", "en-US") & "</td><td>" & Title & "</td></tr>") &
+              "</table><p>Please let HR know when each one is done. Thank you!</p></div>",
+              {Cc: User().Email})));
+        Notify("Task lists sent", NotificationType.Success)
+      RadiusTopLeft: =18
+      RadiusTopRight: =18
+      RadiusBottomLeft: =18
+      RadiusBottomRight: =18
+      Visible: =!IsBlank(varHire) && !IsEmpty(colTasks)
+- galOwnerO:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =["All", "HR", "Manager", "EHS", "IT", "Overdue"]
+      X: =400
+      Y: =166
+      Width: =660
+      Height: =34
+      WrapCount: =6
+      TemplateSize: =34
+      TemplatePadding: =0
+      ShowScrollbar: =false
+      Visible: =!IsBlank(varHire) && !IsEmpty(colTasks)
+    Children:
+      - btnOwnerO:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =ThisItem.Value & "  " & If(ThisItem.Value = "All", CountRows(colTasks), ThisItem.Value = "Overdue", CountRows(Filter(colTasks, Status <> "Done" && DueDate < Today())), CountRows(Filter(colTasks, Owner = ThisItem.Value && Status <> "Done")))
+            X: =0
+            Y: =0
+            Width: =Parent.TemplateWidth - 6
+            Height: =30
+            Size: =9
+            Fill: =If(Coalesce(varOwnerO, "All") = ThisItem.Value, ColorValue("#202054"), ColorValue("#EEEEF5"))
+            Color: =If(Coalesce(varOwnerO, "All") = ThisItem.Value, Color.White, ColorValue("#202054"))
+            HoverFill: =ColorValue("#C9C9D6")
+            BorderThickness: =0
+            OnSelect: =Set(varOwnerO, ThisItem.Value)
+            RadiusTopLeft: =15
+            RadiusTopRight: =15
+            RadiusBottomLeft: =15
+            RadiusBottomRight: =15
+- galTasksO:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =Sort(Sort(Filter(colTasks, Switch(Coalesce(varOwnerO, "All"), "All", true, "Overdue", Status <> "Done" && DueDate < Today(), Owner = varOwnerO)), DueDate), Phase)
+      X: =400
+      Y: =208
+      Width: =(Parent.Width - 420)
+      Height: =Parent.Height - 214
+      TemplateSize: =62
+      TemplatePadding: =0
+      ShowScrollbar: =true
+      Visible: =!IsBlank(varHire) && !IsEmpty(colTasks)
+    Children:
+      - recTaskO:
+          Control: Rectangle@2.3.0
+          Properties:
+            X: =0
+            Y: =0
+            Width: =Parent.TemplateWidth
+            Height: =Parent.TemplateHeight - 4
+            Fill: =If(ThisItem.Status = "Done", ColorValue("#F3F8F4"), Color.White)
+            BorderColor: =ColorValue("#E3E3E3")
+            BorderThickness: =1
+      - btnChkO:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Text: =If(ThisItem.Status = "Done", "✓", "")
+            X: =14
+            Y: =14
+            Width: =30
+            Height: =30
+            Size: =14
+            FontWeight: =FontWeight.Bold
+            Fill: =If(ThisItem.Status = "Done", ColorValue("#1E7B34"), Color.White)
+            Color: =Color.White
+            HoverFill: =ColorValue("#C9C9D6")
+            BorderColor: =If(ThisItem.Status = "Done", ColorValue("#1E7B34"), ColorValue("#87878F"))
+            BorderThickness: =2
+            OnSelect: |-
+              =With({d: ThisItem.Status <> "Done"},
+                Patch(OnboardingTasks, LookUp(OnboardingTasks, ID = ThisItem.ID), {Status: If(d, "Done", "Pending"), DoneBy: If(d, User().FullName, ""), DoneOn: If(d, Today(), Blank())});
+                Patch(colTasks, ThisItem, {Status: If(d, "Done", "Pending"), DoneBy: If(d, User().FullName, ""), DoneOn: If(d, Today(), Blank())}))
+            RadiusTopLeft: =6
+            RadiusTopRight: =6
+            RadiusBottomLeft: =6
+            RadiusBottomRight: =6
+      - lblTaskO:
+          Control: Label@2.5.1
+          Properties:
+            OnSelect: =Select(btnChkO)
+            Text: =ThisItem.Title
+            X: =58
+            Y: =6
+            Width: =Parent.TemplateWidth - 200
+            Height: =26
+            Size: =11
+            FontWeight: =FontWeight.Semibold
+            Strikethrough: =ThisItem.Status = "Done"
+            Color: =If(ThisItem.Status = "Done", ColorValue("#616066"), ColorValue("#202054"))
+      - lblTaskInfoO:
+          Control: Label@2.5.1
+          Properties:
+            OnSelect: =Select(btnChkO)
+            Text: |-
+              =Mid(ThisItem.Phase, 4) & "  ·  Due " & Text(ThisItem.DueDate, "mmm d", "en-US") & If(ThisItem.Status <> "Done" && ThisItem.DueDate < Today(), " (overdue)", "") & If(ThisItem.Kind = "Document", "  ·  File in: " & ThisItem.FiledIn, "") & If(ThisItem.Status = "Done", "  ·  ✓ " & ThisItem.DoneBy & " " & Text(ThisItem.DoneOn, "mmm d", "en-US"), "")
+            X: =58
+            Y: =30
+            Width: =Parent.TemplateWidth - 200
+            Height: =24
+            Size: =9
+            Color: =If(ThisItem.Status <> "Done" && ThisItem.DueDate < Today(), ColorValue("#B3261E"), ColorValue("#616066"))
+      - lblOwnerO:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.Owner
+            X: =Parent.TemplateWidth - 120
+            Y: =17
+            Width: =100
+            Height: =24
+            Size: =9
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Color: =Color.White
+            Fill: =Switch(ThisItem.Owner, "HR", ColorValue("#6A5A8C"), "Manager", ColorValue("#2E5C8A"), "EHS", ColorValue("#B36B00"), ColorValue("#3E7CB1"))

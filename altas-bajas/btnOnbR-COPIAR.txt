@@ -1,0 +1,19 @@
+- btnOnbR:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: ="✓ Checklists  ›"
+      X: =330
+      Y: =14
+      Width: =170
+      Height: =36
+      Size: =11
+      Fill: =ColorValue("#3B3B8F")
+      HoverFill: =ColorValue("#4C5C99")
+      Color: =Color.White
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =0
+      RadiusTopLeft: =18
+      RadiusTopRight: =18
+      RadiusBottomLeft: =18
+      RadiusBottomRight: =18
+      OnSelect: =Navigate(scrOnboarding)
