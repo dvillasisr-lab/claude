@@ -135,7 +135,7 @@
           If(CountRows(colAudMTLeft) > 0, "<h3>2. Active accounts whose automatic reply says the person left</h3><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px'><tr style='background:#EEEEF5'><th align='left'>Name</th><th align='left'>Mail</th><th>AccountEnabled</th><th align='left'>Automatic reply</th></tr>" &
             Concat(Filter(colAudit, AccountEnabled && Id in colAudMTLeft.Value) As a, "<tr><td>" & a.DisplayName & "</td><td>" & a.Mail & "</td><td style='color:#B3261E'>true</td><td>" & Left(LookUp(colAudMT, Id = a.Id).Reply, 250) & "</td></tr>") & "</table>", "") &
           "<h3>3. Values in use (active accounts). Each line is a different spelling in Entra ID; variants should be standardized.</h3><table><tr>" &
-          "<td valign='top'><b>Department</b><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px;margin-right:16px'>" & Concat(Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(Department, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(Department, "(blank)") = d.Value)}), V), "<tr><td>" & V & "</td><td align='center'>" & K & "</td></tr>") & "</table></td>" & "<td valign='top'><b>CompanyName</b><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px;margin-right:16px'>" & Concat(Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(CompanyName, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(CompanyName, "(blank)") = d.Value)}), V), "<tr><td>" & V & "</td><td align='center'>" & K & "</td></tr>") & "</table></td>" & "<td valign='top'><b>OfficeLocation</b><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px;margin-right:16px'>" & Concat(Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(OfficeLocation, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(OfficeLocation, "(blank)") = d.Value)}), V), "<tr><td>" & V & "</td><td align='center'>" & K & "</td></tr>") & "</table></td>" &
+          "<td valign='top'><b>Department</b><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px;margin-right:16px'>" & Concat(Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(Department, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(Department, "(blank)") = d.Value)}), V), "<tr><td>" & V & "</td><td align='center'>" & K & "</td></tr>") & "</table></td>" & "<td valign='top'><b>JobTitle</b><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px;margin-right:16px'>" & Concat(Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(JobTitle, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(JobTitle, "(blank)") = d.Value)}), V), "<tr><td>" & V & "</td><td align='center'>" & K & "</td></tr>") & "</table></td>" & "<td valign='top'><b>CompanyName</b><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px;margin-right:16px'>" & Concat(Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(CompanyName, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(CompanyName, "(blank)") = d.Value)}), V), "<tr><td>" & V & "</td><td align='center'>" & K & "</td></tr>") & "</table></td>" & "<td valign='top'><b>OfficeLocation</b><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px;margin-right:16px'>" & Concat(Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(OfficeLocation, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(OfficeLocation, "(blank)") = d.Value)}), V), "<tr><td>" & V & "</td><td align='center'>" & K & "</td></tr>") & "</table></td>" &
           "</tr></table>" &
           "<h3>4. Every account</h3><p>Reports = active direct reports / all direct reports.</p><table border='1' cellpadding='4' style='border-collapse:collapse;font-size:11px'><tr style='background:#EEEEF5'><th align='left'>DisplayName</th><th align='left'>Mail / UserPrincipalName</th><th align='left'>AccountEnabled</th><th align='left'>Department</th><th align='left'>JobTitle</th><th align='left'>CompanyName</th><th align='left'>OfficeLocation</th><th align='left'>Manager</th><th align='left'>Reports</th><th align='left'>Auto-reply</th></tr>" &
           Concat(Sort(colAudit, DisplayName) As a, "<tr>" & "<td>" & a.DisplayName & "</td>" & "<td>" & Coalesce(a.Mail, a.UserPrincipalName) & "</td>" & "<td style='color:" & If(a.AccountEnabled, "#1E7B34", "#B3261E") & "'>" & If(a.AccountEnabled, "true", "false") & "</td>" & "<td>" & Coalesce(a.Department, "(blank)") & "</td>" & "<td>" & Coalesce(a.JobTitle, "(blank)") & "</td>" & "<td>" & Coalesce(a.CompanyName, "(blank)") & "</td>" & "<td>" & Coalesce(a.OfficeLocation, "(blank)") & "</td>" & "<td>" & Coalesce(a.Manager, "(blank)") & If(a.ManagerEnabled = false && !IsBlank(a.Manager), " (blocked)", "") & "</td>" & "<td>" & a.ActiveReports & "/" & a.Reports & "</td>" & "<td>" & Coalesce(LookUp(colAudMT, Id = a.Id).Reply, If(IsEmpty(colAudMT), "", "-")) & "</td>" & "</tr>") &
@@ -162,6 +162,7 @@
     Properties:
       Default: =""
       HintText: ="Search name or email"
+      Visible: =varVistaA <> "values"
       X: =Parent.Width - 270
       Y: =70
       Width: =250
@@ -172,6 +173,27 @@
       RadiusTopRight: =17
       RadiusBottomLeft: =17
       RadiusBottomRight: =17
+- btnScopeA:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: |-
+        =If(varTodasA, "Showing: ALL accounts (tap for active only)", "Showing: ACTIVE accounts (tap for all)")
+      X: =Parent.Width - 420
+      Y: =70
+      Width: =400
+      Height: =34
+      Size: =10
+      Fill: =ColorValue("#EEEEF5")
+      HoverFill: =ColorValue("#C9C9D6")
+      Color: =ColorValue("#202054")
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =0
+      RadiusTopLeft: =17
+      RadiusTopRight: =17
+      RadiusBottomLeft: =17
+      RadiusBottomRight: =17
+      Visible: =varVistaA = "values"
+      OnSelect: =Set(varTodasA, !varTodasA)
 - galChipsA:
     Control: Gallery@2.15.0
     Variant: Horizontal
@@ -493,10 +515,10 @@
 - lblValH0A:
     Control: Label@2.5.1
     Properties:
-      Text: ="Department   (active accounts)"
-      X: =16 + (Parent.Width - 32) / 3 * 0
+      Text: ="Department   " & CountRows(galVal0A.AllItems)
+      X: =16 + (Parent.Width - 32) / 4 * 0
       Y: =112
-      Width: =(Parent.Width - 32) / 3 - 12
+      Width: =(Parent.Width - 32) / 4 - 12
       Height: =34
       Size: =11
       Font: =Font.'Courier New'
@@ -508,10 +530,10 @@
     Variant: Vertical
     Properties:
       Items: |-
-        =Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(Department, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(Department, "(blank)") = d.Value)}), V)
-      X: =16 + (Parent.Width - 32) / 3 * 0
+        =Sort(ForAll(Distinct(Filter(colAudit, varTodasA || AccountEnabled), Coalesce(Department, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, (varTodasA || AccountEnabled) && Coalesce(Department, "(blank)") = d.Value)}), V)
+      X: =16 + (Parent.Width - 32) / 4 * 0
       Y: =150
-      Width: =(Parent.Width - 32) / 3 - 12
+      Width: =(Parent.Width - 32) / 4 - 12
       Height: =Parent.Height - 156
       TemplateSize: =30
       TemplatePadding: =0
@@ -543,10 +565,10 @@
 - lblValH1A:
     Control: Label@2.5.1
     Properties:
-      Text: ="CompanyName   (active accounts)"
-      X: =16 + (Parent.Width - 32) / 3 * 1
+      Text: ="JobTitle   " & CountRows(galVal1A.AllItems)
+      X: =16 + (Parent.Width - 32) / 4 * 1
       Y: =112
-      Width: =(Parent.Width - 32) / 3 - 12
+      Width: =(Parent.Width - 32) / 4 - 12
       Height: =34
       Size: =11
       Font: =Font.'Courier New'
@@ -558,10 +580,10 @@
     Variant: Vertical
     Properties:
       Items: |-
-        =Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(CompanyName, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(CompanyName, "(blank)") = d.Value)}), V)
-      X: =16 + (Parent.Width - 32) / 3 * 1
+        =Sort(ForAll(Distinct(Filter(colAudit, varTodasA || AccountEnabled), Coalesce(JobTitle, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, (varTodasA || AccountEnabled) && Coalesce(JobTitle, "(blank)") = d.Value)}), V)
+      X: =16 + (Parent.Width - 32) / 4 * 1
       Y: =150
-      Width: =(Parent.Width - 32) / 3 - 12
+      Width: =(Parent.Width - 32) / 4 - 12
       Height: =Parent.Height - 156
       TemplateSize: =30
       TemplatePadding: =0
@@ -593,10 +615,10 @@
 - lblValH2A:
     Control: Label@2.5.1
     Properties:
-      Text: ="OfficeLocation   (active accounts)"
-      X: =16 + (Parent.Width - 32) / 3 * 2
+      Text: ="CompanyName   " & CountRows(galVal2A.AllItems)
+      X: =16 + (Parent.Width - 32) / 4 * 2
       Y: =112
-      Width: =(Parent.Width - 32) / 3 - 12
+      Width: =(Parent.Width - 32) / 4 - 12
       Height: =34
       Size: =11
       Font: =Font.'Courier New'
@@ -608,10 +630,10 @@
     Variant: Vertical
     Properties:
       Items: |-
-        =Sort(ForAll(Distinct(Filter(colAudit, AccountEnabled), Coalesce(OfficeLocation, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, AccountEnabled && Coalesce(OfficeLocation, "(blank)") = d.Value)}), V)
-      X: =16 + (Parent.Width - 32) / 3 * 2
+        =Sort(ForAll(Distinct(Filter(colAudit, varTodasA || AccountEnabled), Coalesce(CompanyName, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, (varTodasA || AccountEnabled) && Coalesce(CompanyName, "(blank)") = d.Value)}), V)
+      X: =16 + (Parent.Width - 32) / 4 * 2
       Y: =150
-      Width: =(Parent.Width - 32) / 3 - 12
+      Width: =(Parent.Width - 32) / 4 - 12
       Height: =Parent.Height - 156
       TemplateSize: =30
       TemplatePadding: =0
@@ -629,6 +651,56 @@
             Size: =10
             Color: =If(ThisItem.V = "(blank)", ColorValue("#B3261E"), ColorValue("#202054"))
       - lblValK2A:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.K
+            X: =Parent.TemplateWidth - 60
+            Y: =0
+            Width: =50
+            Height: =29
+            Size: =10
+            Align: =Align.Right
+            FontWeight: =FontWeight.Bold
+            Color: =ColorValue("#202054")
+- lblValH3A:
+    Control: Label@2.5.1
+    Properties:
+      Text: ="OfficeLocation   " & CountRows(galVal3A.AllItems)
+      X: =16 + (Parent.Width - 32) / 4 * 3
+      Y: =112
+      Width: =(Parent.Width - 32) / 4 - 12
+      Height: =34
+      Size: =11
+      Font: =Font.'Courier New'
+      FontWeight: =FontWeight.Bold
+      Color: =ColorValue("#202054")
+      Visible: =varVistaA = "values"
+- galVal3A:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: |-
+        =Sort(ForAll(Distinct(Filter(colAudit, varTodasA || AccountEnabled), Coalesce(OfficeLocation, "(blank)")) As d, {V: d.Value, K: CountIf(colAudit, (varTodasA || AccountEnabled) && Coalesce(OfficeLocation, "(blank)") = d.Value)}), V)
+      X: =16 + (Parent.Width - 32) / 4 * 3
+      Y: =150
+      Width: =(Parent.Width - 32) / 4 - 12
+      Height: =Parent.Height - 156
+      TemplateSize: =30
+      TemplatePadding: =0
+      ShowScrollbar: =true
+      Visible: =varVistaA = "values"
+    Children:
+      - lblValV3A:
+          Control: Label@2.5.1
+          Properties:
+            Text: =ThisItem.V
+            X: =8
+            Y: =0
+            Width: =Parent.TemplateWidth - 70
+            Height: =29
+            Size: =10
+            Color: =If(ThisItem.V = "(blank)", ColorValue("#B3261E"), ColorValue("#202054"))
+      - lblValK3A:
           Control: Label@2.5.1
           Properties:
             Text: =ThisItem.K
