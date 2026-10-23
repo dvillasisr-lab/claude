@@ -74,7 +74,7 @@
         =Set(varAuditando, true);
         ClearCollect(colAudMT,
           ForAll(Filter(colAudit, !IsBlank(Mail)) As u,
-            With({r: IfError(First(Office365Outlook.GetMailTipsV2([u.Mail], "automaticReplies,mailboxFullStatus").value), Blank())},
+            With({r: IfError(First(Office365Outlook.GetMailTipsV2("automaticReplies,mailboxFullStatus", [u.Mail]).value), Blank())},
               With({rep: IfError(Trim(PlainText(r.automaticReplies.message)), "")},
                 {Id: u.Id, Fail: IsBlank(r), Reply: rep,
                  SaysLeft: !IsBlank(rep) && CountRows(Filter(["no longer", "has left", "have left", "left the company", "left sussek", "last day", "retired", "not with", "ya no", "no labora", "no trabaja", "dejó de"], Value in Lower(rep))) > 0}))));
