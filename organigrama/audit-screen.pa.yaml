@@ -6,25 +6,11 @@
       Width: =Parent.Width
       Height: =64
       Fill: =ColorValue("#202054")
-- btnBackA:
-    Control: Classic/Button@2.2.0
-    Properties:
-      Text: ="←"
-      X: =8
-      Y: =12
-      Width: =40
-      Height: =40
-      Size: =16
-      Fill: =Color.Transparent
-      HoverFill: =ColorValue("#3B3B8F")
-      Color: =Color.White
-      BorderThickness: =0
-      OnSelect: =Navigate(scrMain)
 - lblTitleA:
     Control: Label@2.5.1
     Properties:
       Text: ="Entra ID account inspector"
-      X: =56
+      X: =24
       Y: =0
       Width: =330
       Height: =64
