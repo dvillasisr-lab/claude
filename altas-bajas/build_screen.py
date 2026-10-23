@@ -236,9 +236,11 @@ With({{fecha: {DATE}, nombre: If({NEW}, Trim(txtNombreR.Text), varEmp.N), correo
     {{Cc: User().Email, Importance: "Normal"}});
   If(!({TERM}),
     IfError(
-      With({{o: LookUp(Organigrama, Lower(Correo) = correo)}},
-        With({{r: Patch(Organigrama, If(IsBlank(o), Defaults(Organigrama), o), {{Title: nombre, Correo: correo, Puesto: txtPuestoR.Text, Area: varDept, CorreoJefe: varMgr.C, Descripcion: txtDescR.Text, Scope: txtScopeR.Text, Skills: txtSkillsR.Text, Backup: varBackup.C, Location: varLoc}})}},
-          If({NEW}, Patch(Organigrama, r, {{StartDate: fecha}})))),
+      If(IsBlank(LookUp(Organigrama, Lower(Correo) = correo)),
+        Patch(Organigrama, Defaults(Organigrama), {{Title: nombre, Correo: correo, Puesto: txtPuestoR.Text, Area: varDept, CorreoJefe: varMgr.C, Descripcion: txtDescR.Text, Scope: txtScopeR.Text, Skills: txtSkillsR.Text, Backup: varBackup.C, Location: varLoc}}),
+        Patch(Organigrama, LookUp(Organigrama, Lower(Correo) = correo), {{Title: nombre, Correo: correo, Puesto: txtPuestoR.Text, Area: varDept, CorreoJefe: varMgr.C, Descripcion: txtDescR.Text, Scope: txtScopeR.Text, Skills: txtSkillsR.Text, Backup: varBackup.C, Location: varLoc}}));
+      If({NEW}, Patch(Organigrama, LookUp(Organigrama, Lower(Correo) = correo), {{StartDate: fecha}}));
+      true,
       Notify("Sent to IT, but the org chart list could not be updated.", NotificationType.Warning)))
 );
 Notify("Request sent to IT", NotificationType.Success);
@@ -300,3 +302,4 @@ A(ctrl("galPickR","Gallery@2.15.0",{"Items":'If(Len(txtPickR.Text) >= 2, Filter(
     "X":"12","Y":"28","Width":"Parent.TemplateWidth - 24","Height":"22","Size":"9","Color":GREY},indent=6)]))
 
 open('/home/user/claude/altas-bajas/Pantalla-PeopleRequests-COPIAR.txt','w').write("\n".join(out)+"\n")
+open('/home/user/claude/altas-bajas/btnSendR-COPIAR.txt','w').write([x for x in out if x.startswith('- btnSendR:')][0]+"\n")

@@ -1046,9 +1046,11 @@
             {Cc: User().Email, Importance: "Normal"});
           If(!(varTipo = "Termination"),
             IfError(
-              With({o: LookUp(Organigrama, Lower(Correo) = correo)},
-                With({r: Patch(Organigrama, If(IsBlank(o), Defaults(Organigrama), o), {Title: nombre, Correo: correo, Puesto: txtPuestoR.Text, Area: varDept, CorreoJefe: varMgr.C, Descripcion: txtDescR.Text, Scope: txtScopeR.Text, Skills: txtSkillsR.Text, Backup: varBackup.C, Location: varLoc})},
-                  If(varTipo = "New hire", Patch(Organigrama, r, {StartDate: fecha})))),
+              If(IsBlank(LookUp(Organigrama, Lower(Correo) = correo)),
+                Patch(Organigrama, Defaults(Organigrama), {Title: nombre, Correo: correo, Puesto: txtPuestoR.Text, Area: varDept, CorreoJefe: varMgr.C, Descripcion: txtDescR.Text, Scope: txtScopeR.Text, Skills: txtSkillsR.Text, Backup: varBackup.C, Location: varLoc}),
+                Patch(Organigrama, LookUp(Organigrama, Lower(Correo) = correo), {Title: nombre, Correo: correo, Puesto: txtPuestoR.Text, Area: varDept, CorreoJefe: varMgr.C, Descripcion: txtDescR.Text, Scope: txtScopeR.Text, Skills: txtSkillsR.Text, Backup: varBackup.C, Location: varLoc}));
+              If(varTipo = "New hire", Patch(Organigrama, LookUp(Organigrama, Lower(Correo) = correo), {StartDate: fecha}));
+              true,
               Notify("Sent to IT, but the org chart list could not be updated.", NotificationType.Warning)))
         );
         Notify("Request sent to IT", NotificationType.Success);
