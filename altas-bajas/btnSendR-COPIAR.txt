@@ -14,7 +14,7 @@
       BorderThickness: =0
       OnSelect: |-
         =Set(varEnviando, true);
-        With({fecha: IfError(DateValue(txtFechaR.Text, "en-US"), Blank()), nombre: If(varTipo = "New hire", Trim(txtNombreR.Text), varEmp.N), correo: Lower(Trim(If(varTipo = "New hire", txtCorreoR.Text, varEmp.C))), equipo: Concat(colEquip, Value, ", ")},
+        With({fecha: IfError(DateValue(txtFechaR.Text, "en-US"), Blank()), nombre: If(varTipo = "New hire", Trim(txtNombreR.Text), varEmp.N), correo: If(varTipo = "New hire", "", Lower(Trim(varEmp.C))), equipo: Concat(colEquip, Value, ", ")},
           Patch(PeopleRequests, Defaults(PeopleRequests), {
             Title: nombre, RequestType: varTipo, Status: "Sent to IT", EmployeeEmail: correo, EffectiveDate: fecha,
             JobTitle: If(varTipo = "Termination", "", txtPuestoR.Text), Department: If(varTipo = "Termination", "", varDept), Company: If(varTipo = "Termination", "", varComp), Location: If(varTipo = "Termination", "", varLoc),
@@ -31,7 +31,7 @@
             "<h2 style='color:" & Switch(varTipo, "New hire", "#1E7B34", "Termination", "#B3261E", "#3E7CB1") & "'>" & varTipo & ": " & nombre & "</h2>" &
             "<p>Requested by " & User().FullName & " (HR) on " & Text(Now(), "mmm d, yyyy", "en-US") & ".</p>" &
             "<table border='1' cellpadding='6' style='border-collapse:collapse;font-size:13px'>" &
-            "<tr><td style='background:#EEEEF5;width:200px'><b>Employee</b></td><td>" & nombre & "</td></tr>" & "<tr><td style='background:#EEEEF5;width:200px'><b>Email</b></td><td>" & correo & "</td></tr>" &
+            "<tr><td style='background:#EEEEF5;width:200px'><b>Employee</b></td><td>" & nombre & "</td></tr>" & "<tr><td style='background:#EEEEF5;width:200px'><b>Email</b></td><td>" & If(varTipo = "New hire", "To be assigned by IT", correo) & "</td></tr>" &
             "<tr><td style='background:#EEEEF5;width:200px'><b>" & Switch(varTipo, "New hire", "Start date", "Termination", "Last day", "Effective date") & "</b></td><td>" & Text(fecha, "dddd, mmm d, yyyy", "en-US") & "</td></tr>" &
             If(varTipo = "Termination",
               "<tr><td style='background:#EEEEF5;width:200px'><b>Reassign their team to</b></td><td>" & varReasign.N & " (" & varReasign.C & ")" & "</td></tr>" &
@@ -48,7 +48,7 @@
             "<h3>Steps for IT</h3><ol>" &
             Switch(varTipo,
               "New hire",
-                "<li>Create the account <b>" & correo & "</b> and assign a Microsoft 365 license.</li>" &
+                "<li>Create the account for <b>" & nombre & "</b> (you choose the email address) and assign a Microsoft 365 license. <b>Please reply with the new email address.</b></li>" &
                 "<li>In Entra ID set exactly: Job title = <b>" & txtPuestoR.Text & "</b>, Department = <b>" & varDept & "</b>, Company name = <b>" & varComp & "</b>, Office location = <b>" & varLoc & "</b>, Manager = <b>" & varMgr.N & "</b>.</li>" &
                 "<li>Prepare equipment and access: " & Coalesce(equipo, "none listed") & If(IsBlank(txtAccesosR.Text), "", "; " & txtAccesosR.Text) & ".</li>" &
                 "<li>Everything ready before <b>" & Text(fecha, "mmm d, yyyy", "en-US") & "</b>.</li>",
@@ -64,12 +64,11 @@
               If(IsBlank(equipo) && IsBlank(txtAccesosR.Text), "", "<li>Equipment and access: " & equipo & " " & txtAccesosR.Text & "</li>")) &
             "</ol><p>Please reply to this email when it's done.</p></div>",
             {Cc: User().Email, Importance: "Normal"});
-          If(!(varTipo = "Termination"),
+          If(varTipo = "Change",
             IfError(
               If(IsBlank(LookUp(Organigrama, Lower(Correo) = correo)),
                 Patch(Organigrama, Defaults(Organigrama), {Title: nombre, Correo: correo, Puesto: txtPuestoR.Text, Area: varDept, CorreoJefe: varMgr.C, Descripcion: txtDescR.Text, Scope: txtScopeR.Text, Skills: txtSkillsR.Text, Backup: varBackup.C, Location: varLoc}),
                 Patch(Organigrama, LookUp(Organigrama, Lower(Correo) = correo), {Title: nombre, Correo: correo, Puesto: txtPuestoR.Text, Area: varDept, CorreoJefe: varMgr.C, Descripcion: txtDescR.Text, Scope: txtScopeR.Text, Skills: txtSkillsR.Text, Backup: varBackup.C, Location: varLoc}));
-              If(varTipo = "New hire", Patch(Organigrama, LookUp(Organigrama, Lower(Correo) = correo), {StartDate: fecha}));
               true,
               Notify("Sent to IT, but the org chart list could not be updated.", NotificationType.Warning)))
         );

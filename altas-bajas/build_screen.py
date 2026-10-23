@@ -73,7 +73,7 @@ A(button("btnNewR",'"+ New request"',"Parent.Width - 190","14","170","36",
 Set(varEmp, {N: "", C: ""}); Set(varMgr, {N: "", C: ""}); Set(varMgrAntes, {N: "", C: ""}); Set(varBackup, {N: "", C: ""}); Set(varReasign, {N: "", C: ""}); Set(varMbx, {N: "", C: ""});
 Set(varF, {Puesto: "", Depto: "", Empresa: "", Loc: "", Desc: "", Scope: "", Skills: ""});
 Set(varDept, ""); Set(varComp, ""); Set(varLoc, ""); Clear(colEquip);
-Reset(txtNombreR); Reset(txtCorreoR); Reset(txtFechaR); Reset(txtPuestoR); Reset(txtDescR); Reset(txtScopeR); Reset(txtSkillsR); Reset(txtAccesosR); Reset(txtNotasR); Reset(txtAutoR)''',
+Set(varLista, ""); Reset(txtNombreR); Reset(txtFechaR); Reset(txtPuestoR); Reset(txtDescR); Reset(txtScopeR); Reset(txtSkillsR); Reset(txtAccesosR); Reset(txtNotasR); Reset(txtAutoR)''',
  fill="Color.White", color=NAVY))
 
 # ---------- left list ----------
@@ -108,70 +108,62 @@ A(ctrl("galTipoR","Gallery@2.15.0",{"Items":'["New hire", "Termination", "Change
    "OnSelect":'Set(varTipo, ThisItem.Value); Set(varEmp, {N: "", C: ""})',**pill(17)},indent=6)]))
 
 # column captions
-for i,(t,vis) in enumerate([('"WHO"',FORM),('If(varTipo = "Termination", "OFFBOARDING", "ROLE")',FORM),('"DETAILS"',f'{FORM} && !({TERM})')]):
+for i,(t,vis) in enumerate([('"WHO"',FORM),('If(varTipo = "Termination", "OFFBOARDING", "ROLE DETAILS")',FORM),('"SELECT FROM LISTS"',FORM)]):
     A(label(f"lblSec{i}R",t,cx(i),"118",CW,"22",9,GREY,True,vis))
 def cap(name, text, i, y, vis): A(label(name,text,cx(i),str(y),CW,"20",9,NAVY,True,vis))
+SEL={"BorderColor":'ColorValue("#C9C9D6")',"BorderThickness":"1","Align":"Align.Left","PaddingLeft":"12"}
+def selbtn(name, text, i, y, onselect, vis, h="36"):
+    A(button(name, text, cx(i), str(y), CW, h, onselect, fill="Color.White", color=NAVY, visible=vis, size=10, extra=SEL, r=8))
 def picker(name, field, title, i, y, vis, key):
     cap("lblCap"+name, f'"{title}"', i, y, vis)
-    A(button("btn"+name, f'If(IsBlank({field}.N), "Select person  ▾", {field}.N & "  ·  " & {field}.C)', cx(i), str(y+20), CW, "36",
-      f'Set(varPick, "{key}")', fill="Color.White", color=NAVY, visible=vis, size=10,
-      extra={"BorderColor":'ColorValue("#C9C9D6")',"BorderThickness":"1","Align":"Align.Left","PaddingLeft":"12"}, r=8))
+    selbtn("btn"+name, f'If(IsBlank({field}.N), "Select person  ▾", {field}.N & "  ·  " & {field}.C & "  ▾")', i, y+20, f'Set(varPick, "{key}")', vis)
+def lista(name, var, title, items, i, y, key, vis):
+    cap("lblCap"+name, f'"{title}" & If(!IsBlank({var}) && !({var} in {items}), "   (current: " & {var} & ", not standard)", "")', i, y, vis)
+    selbtn("btn"+name, f'If(IsBlank({var}) || !({var} in {items}), "Select  ▾", {var} & "  ▾")', i, y+20, f'Set(varLista, "{key}")', vis)
 
-# column 0
+ROLE=f"{FORM} && !({TERM})"; TV=f"{FORM} && {TERM}"
+# column 0: WHO
 cap("lblCapNombreR",'If(varTipo = "New hire", "Full name", "Employee")',0,146,FORM)
 A(textinput("txtNombreR",'""',"First Last",cx(0),"166",CW,"36",f"{FORM} && {NEW}"))
-A(button("btnEmpR",'If(IsBlank(varEmp.N), "Select employee  ▾", varEmp.N)',cx(0),"166",CW,"36",'Set(varPick, "emp")',fill="Color.White",color=NAVY,
-  visible=f"{FORM} && !({NEW})",size=10,extra={"BorderColor":'ColorValue("#C9C9D6")',"BorderThickness":"1","Align":"Align.Left","PaddingLeft":"12"},r=8))
-cap("lblCapCorreoR",'If(varTipo = "New hire", "Email to create", "Email")',0,210,FORM)
-A(textinput("txtCorreoR",'""',"jdoe@sussek.com",cx(0),"230",CW,"36",f"{FORM} && {NEW}"))
-A(label("lblCorreoR",'Coalesce(varEmp.C, "-")',cx(0),"230",CW,"36",11,GREY,False,f"{FORM} && !({NEW})"))
-cap("lblCapFechaR",'Switch(varTipo, "New hire", "Start date (MM/DD/YYYY)", "Termination", "Last day (MM/DD/YYYY)", "Effective date (MM/DD/YYYY)")',0,274,FORM)
-A(textinput("txtFechaR",'""',"MM/DD/YYYY",cx(0),"294",CW,"36",FORM))
-picker("MgrR","varMgr","Manager",0,338,f"{FORM} && !({TERM})","mgr")
-picker("BackupR","varBackup","Backup (covers when absent)",0,402,f"{FORM} && !({TERM})","backup")
-picker("ReasignR","varReasign","Reassign their team to",0,338,f"{FORM} && {TERM}","reasign")
-picker("MbxR","varMbx","Give mailbox access to",0,402,f"{FORM} && {TERM}","mbx")
-cap("lblCapNotasR",'"Notes for IT"',0,466,FORM)
-A(textinput("txtNotasR",'""',"Anything else IT should know",cx(0),"486",CW,"90",FORM,multi=True))
+selbtn("btnEmpR",'If(IsBlank(varEmp.N), "Select employee  ▾", varEmp.N & "  ·  " & varEmp.C)',0,166,'Set(varPick, "emp")',f"{FORM} && !({NEW})")
+cap("lblCapFechaR",'Switch(varTipo, "New hire", "Start date (MM/DD/YYYY)", "Termination", "Last day (MM/DD/YYYY)", "Effective date (MM/DD/YYYY)")',0,210,FORM)
+A(textinput("txtFechaR",'""',"MM/DD/YYYY",cx(0),"230",CW,"36",FORM))
+cap("lblCapPuestoR",'"Job title"',0,274,ROLE)
+A(textinput("txtPuestoR","varF.Puesto","e.g. Quality Inspector",cx(0),"294",CW,"36",ROLE))
+A(label("lblCapNotasR",'"Notes for IT"',cx(0),'If(varTipo = "Termination", 274, 338)',CW,"20",9,NAVY,True,FORM))
+A(textinput("txtNotasR",'""',"Anything else IT should know",cx(0),'If(varTipo = "Termination", 294, 358)',CW,"110",FORM,multi=True))
 
-# column 1 (role)
-ROLE=f"{FORM} && !({TERM})"
-cap("lblCapPuestoR",'"Job title"',1,146,ROLE)
-A(textinput("txtPuestoR","varF.Puesto","e.g. Quality Inspector",cx(1),"166",CW,"36",ROLE))
-cap("lblCapDeptR",'"Department" & If(!IsBlank(varDept) && !(varDept in ' + DEPTS + '), "   (current: " & varDept & ", pick a standard one)", "")',1,210,ROLE)
-A(chips("DeptR",DEPTS,cx(1),"232",CW,"196","varDept = ThisItem.Value","Set(varDept, ThisItem.Value)",ROLE,2,28))
-cap("lblCapCompR",'"Company" & If(!IsBlank(varComp) && !(varComp in ' + COMPS + '), "   (current: " & varComp & ")", "")',1,432,ROLE)
-A(chips("CompR",COMPS,cx(1),"452",CW,"84","varComp = ThisItem.Value","Set(varComp, ThisItem.Value)",ROLE,2,28))
-cap("lblCapLocR",'"Location" & If(!IsBlank(varLoc) && !(varLoc in ' + LOCS + '), "   (current: " & varLoc & ")", "")',1,540,ROLE)
-A(chips("LocR",LOCS,cx(1),"560",CW,"56","varLoc = ThisItem.Value","Set(varLoc, ThisItem.Value)",ROLE,2,28))
-# column 1 (termination)
-TV=f"{FORM} && {TERM}"
+# column 1: ROLE DETAILS
+cap("lblCapDescR",'"Job description"',1,146,ROLE)
+A(textinput("txtDescR","varF.Desc","What this person does",cx(1),"166",CW,"110",ROLE,multi=True))
+cap("lblCapScopeR",'"Scope"',1,282,ROLE)
+A(textinput("txtScopeR","varF.Scope","Areas, plants, customers or products they cover",cx(1),"302",CW,"70",ROLE,multi=True))
+cap("lblCapSkillsR",'"Skills"',1,378,ROLE)
+A(textinput("txtSkillsR","varF.Skills","e.g. CNC, GD&T, SAP",cx(1),"398",CW,"36",ROLE))
+cap("lblCapAccR",'"Other systems / permissions"',1,442,ROLE)
+A(textinput("txtAccesosR",'""',"Shared folders, software, distribution lists",cx(1),"462",CW,"36",ROLE))
+# column 1: OFFBOARDING
 cap("lblCapAutoR",'"Automatic reply for their mailbox"',1,146,TV)
 A(textinput("txtAutoR",'If(IsBlank(varEmp.N), "", varEmp.N & " is no longer with Sussek. Please contact " & Coalesce(varReasign.N, "[name]") & " at " & Coalesce(varReasign.C, "[email]") & ". Thank you.")',
-  "Automatic reply text",cx(1),"166",CW,"130",TV,multi=True))
-cap("lblCapEqOutR",'"Equipment to collect"',1,304,TV)
-A(chips("EqOutR",EQUIP,cx(1),"324",CW,"150","ThisItem.Value in colEquip.Value",
-  "If(ThisItem.Value in colEquip.Value, Remove(colEquip, LookUp(colEquip, Value = ThisItem.Value)), Collect(colEquip, {Value: ThisItem.Value}))",TV,2,28))
+  "Automatic reply text",cx(1),"166",CW,"150",TV,multi=True))
 
-# column 2 (details)
-cap("lblCapDescR",'"Job description"',2,146,ROLE)
-A(textinput("txtDescR","varF.Desc","What this person does",cx(2),"166",CW,"110",ROLE,multi=True))
-cap("lblCapScopeR",'"Scope"',2,282,ROLE)
-A(textinput("txtScopeR","varF.Scope","Areas, plants, customers or products they cover",cx(2),"302",CW,"70",ROLE,multi=True))
-cap("lblCapSkillsR",'"Skills"',2,378,ROLE)
-A(textinput("txtSkillsR","varF.Skills","e.g. CNC, GD&T, SAP",cx(2),"398",CW,"36",ROLE))
-cap("lblCapEqR",'"Equipment and access needed"',2,440,ROLE)
-A(chips("EqR",EQUIP,cx(2),"460",CW,"116","ThisItem.Value in colEquip.Value",
-  "If(ThisItem.Value in colEquip.Value, Remove(colEquip, LookUp(colEquip, Value = ThisItem.Value)), Collect(colEquip, {Value: ThisItem.Value}))",ROLE,2,23))
-cap("lblCapAccR",'"Other systems / permissions"',2,580,ROLE)
-A(textinput("txtAccesosR",'""',"Shared folders, software, distribution lists",cx(2),"600",CW,"36",ROLE))
+# column 2: LISTS
+lista("DeptR","varDept","Department",DEPTS,2,146,"dept",ROLE)
+lista("CompR","varComp","Company",COMPS,2,210,"comp",ROLE)
+lista("LocR","varLoc","Location",LOCS,2,274,"loc",ROLE)
+picker("MgrR","varMgr","Manager",2,338,ROLE,"mgr")
+picker("BackupR","varBackup","Backup (covers when absent)",2,402,ROLE,"backup")
+picker("ReasignR","varReasign","Reassign their team to",2,146,TV,"reasign")
+picker("MbxR","varMbx","Give mailbox access to",2,210,TV,"mbx")
+A(label("lblCapEqR",'If(varTipo = "Termination", "Equipment to collect", "Equipment and access needed")',cx(2),'If(varTipo = "Termination", 274, 466)',CW,"20",9,NAVY,True,FORM))
+A(button("btnEqR",'If(IsEmpty(colEquip), "Select  ▾", Concat(colEquip, Value, ", ") & "  ▾")',cx(2),'If(varTipo = "Termination", 294, 486)',CW,"56",
+  'Set(varLista, "equip")',fill="Color.White",color=NAVY,visible=FORM,size=10,extra={**SEL,"VerticalAlign":"VerticalAlign.Middle"},r=8))
 
 # validation + submit
 DATE='IfError(DateValue(txtFechaR.Text, "en-US"), Blank())'
 val=f'''If(
   {NEW} && IsBlank(txtNombreR.Text), "Enter the full name.",
   !({NEW}) && IsBlank(varEmp.C), "Select the employee.",
-  {NEW} && !IsMatch(txtCorreoR.Text, Match.Email), "Enter the email IT should create.",
   IsBlank({DATE}), "Enter the date as MM/DD/YYYY.",
   !({TERM}) && IsBlank(txtPuestoR.Text), "Enter the job title.",
   !({TERM}) && !(varDept in {DEPTS}), "Pick a department.",
@@ -184,7 +176,7 @@ A(label("lblValR",val,X0,"Parent.Height - 56",f"{W} - 240","40",10,'ColorValue("
 def row(k,v): return f'"<tr><td style=\'background:#EEEEF5;width:200px\'><b>{k}</b></td><td>" & {v} & "</td></tr>"'
 def ba(k,old,new): return f'"<tr><td style=\'background:#EEEEF5\'><b>{k}</b></td><td>" & {old} & "</td><td" & If({old} <> {new}, " style=\'color:#B3261E;font-weight:bold\'", "") & ">" & {new} & "</td></tr>"'
 submit=f'''Set(varEnviando, true);
-With({{fecha: {DATE}, nombre: If({NEW}, Trim(txtNombreR.Text), varEmp.N), correo: Lower(Trim(If({NEW}, txtCorreoR.Text, varEmp.C))), equipo: Concat(colEquip, Value, ", ")}},
+With({{fecha: {DATE}, nombre: If({NEW}, Trim(txtNombreR.Text), varEmp.N), correo: If({NEW}, "", Lower(Trim(varEmp.C))), equipo: Concat(colEquip, Value, ", ")}},
   Patch(PeopleRequests, Defaults(PeopleRequests), {{
     Title: nombre, RequestType: varTipo, Status: "Sent to IT", EmployeeEmail: correo, EffectiveDate: fecha,
     JobTitle: If({TERM}, "", txtPuestoR.Text), Department: If({TERM}, "", varDept), Company: If({TERM}, "", varComp), Location: If({TERM}, "", varLoc),
@@ -201,7 +193,7 @@ With({{fecha: {DATE}, nombre: If({NEW}, Trim(txtNombreR.Text), varEmp.N), correo
     "<h2 style='color:" & Switch(varTipo, "New hire", "#1E7B34", "Termination", "#B3261E", "#3E7CB1") & "'>" & varTipo & ": " & nombre & "</h2>" &
     "<p>Requested by " & User().FullName & " (HR) on " & Text(Now(), "mmm d, yyyy", "en-US") & ".</p>" &
     "<table border='1' cellpadding='6' style='border-collapse:collapse;font-size:13px'>" &
-    {row("Employee","nombre")} & {row("Email","correo")} &
+    {row("Employee","nombre")} & {row("Email",'If(' + NEW + ', "To be assigned by IT", correo)')} &
     {row('" & Switch(varTipo, "New hire", "Start date", "Termination", "Last day", "Effective date") & "',"Text(fecha, \"dddd, mmm d, yyyy\", \"en-US\")")} &
     If({TERM},
       {row("Reassign their team to",'varReasign.N & " (" & varReasign.C & ")"')} &
@@ -218,7 +210,7 @@ With({{fecha: {DATE}, nombre: If({NEW}, Trim(txtNombreR.Text), varEmp.N), correo
     "<h3>Steps for IT</h3><ol>" &
     Switch(varTipo,
       "New hire",
-        "<li>Create the account <b>" & correo & "</b> and assign a Microsoft 365 license.</li>" &
+        "<li>Create the account for <b>" & nombre & "</b> (you choose the email address) and assign a Microsoft 365 license. <b>Please reply with the new email address.</b></li>" &
         "<li>In Entra ID set exactly: Job title = <b>" & txtPuestoR.Text & "</b>, Department = <b>" & varDept & "</b>, Company name = <b>" & varComp & "</b>, Office location = <b>" & varLoc & "</b>, Manager = <b>" & varMgr.N & "</b>.</li>" &
         "<li>Prepare equipment and access: " & Coalesce(equipo, "none listed") & If(IsBlank(txtAccesosR.Text), "", "; " & txtAccesosR.Text) & ".</li>" &
         "<li>Everything ready before <b>" & Text(fecha, "mmm d, yyyy", "en-US") & "</b>.</li>",
@@ -234,12 +226,11 @@ With({{fecha: {DATE}, nombre: If({NEW}, Trim(txtNombreR.Text), varEmp.N), correo
       If(IsBlank(equipo) && IsBlank(txtAccesosR.Text), "", "<li>Equipment and access: " & equipo & " " & txtAccesosR.Text & "</li>")) &
     "</ol><p>Please reply to this email when it's done.</p></div>",
     {{Cc: User().Email, Importance: "Normal"}});
-  If(!({TERM}),
+  If({CHG},
     IfError(
       If(IsBlank(LookUp(Organigrama, Lower(Correo) = correo)),
         Patch(Organigrama, Defaults(Organigrama), {{Title: nombre, Correo: correo, Puesto: txtPuestoR.Text, Area: varDept, CorreoJefe: varMgr.C, Descripcion: txtDescR.Text, Scope: txtScopeR.Text, Skills: txtSkillsR.Text, Backup: varBackup.C, Location: varLoc}}),
         Patch(Organigrama, LookUp(Organigrama, Lower(Correo) = correo), {{Title: nombre, Correo: correo, Puesto: txtPuestoR.Text, Area: varDept, CorreoJefe: varMgr.C, Descripcion: txtDescR.Text, Scope: txtScopeR.Text, Skills: txtSkillsR.Text, Backup: varBackup.C, Location: varLoc}}));
-      If({NEW}, Patch(Organigrama, LookUp(Organigrama, Lower(Correo) = correo), {{StartDate: fecha}}));
       true,
       Notify("Sent to IT, but the org chart list could not be updated.", NotificationType.Warning)))
 );
@@ -265,10 +256,26 @@ det=('varSel.RequestType & ":  " & varSel.Title & Char(10) & Char(10) & '
  '"Job description:" & Char(10) & varSel.JobDescription & Char(10) & Char(10) & "Scope:" & Char(10) & varSel.Scope & Char(10) & Char(10) & "Skills:  " & varSel.Skills & '
  'If(IsBlank(varSel.PreviousValues), "", Char(10) & Char(10) & "Before the change:" & Char(10) & varSel.PreviousValues)) & '
  'Char(10) & Char(10) & "Notes:  " & varSel.Notes')
-A(label("lblDetR",det,X0,"76",f"{W}","Parent.Height - 150",11,NAVY,False,VIEW,
+A(label("lblDetR",det,X0,"76",f"{W}","Parent.Height - 170",11,NAVY,False,VIEW,
   {"VerticalAlign":"VerticalAlign.Top","Fill":"Color.White","BorderColor":'ColorValue("#E3E3E3")',"BorderThickness":"1","PaddingTop":"18","PaddingLeft":"22","PaddingRight":"22","PaddingBottom":"18"}))
-A(button("btnDoneR",'If(varSel.Status = "Done", "Reopen", "✓ Mark as done")',"Parent.Width - 220","Parent.Height - 60","200","44",
-  'Patch(PeopleRequests, varSel, {Status: If(varSel.Status = "Done", "Sent to IT", "Done")}); Set(varSel, LookUp(PeopleRequests, ID = varSel.ID))',visible=VIEW,size=12))
+A(label("lblAsigCapR",'"Email assigned by IT"',"Parent.Width - 520","Parent.Height - 82","280","20",9,NAVY,True,'varModo = "view" && varSel.RequestType = "New hire" && varSel.Status <> "Done"'))
+A(textinput("txtAsigR",'""',"name@sussek.com","Parent.Width - 520","Parent.Height - 60","280","44",'varModo = "view" && varSel.RequestType = "New hire" && varSel.Status <> "Done"'))
+done_fx='''If(varSel.Status = "Done",
+  Patch(PeopleRequests, varSel, {Status: "Sent to IT"}),
+  If(varSel.RequestType = "New hire",
+    With({c: Lower(Trim(txtAsigR.Text))},
+      Patch(PeopleRequests, varSel, {Status: "Done", EmployeeEmail: c});
+      IfError(
+        If(IsBlank(LookUp(Organigrama, Lower(Correo) = c)),
+          Patch(Organigrama, Defaults(Organigrama), {Title: varSel.Title, Correo: c, Puesto: varSel.JobTitle, Area: varSel.Department, CorreoJefe: varSel.ManagerEmail, Descripcion: varSel.JobDescription, Scope: varSel.Scope, Skills: varSel.Skills, Backup: varSel.BackupEmail, Location: varSel.Location, StartDate: varSel.EffectiveDate}),
+          Patch(Organigrama, LookUp(Organigrama, Lower(Correo) = c), {Title: varSel.Title, Correo: c, Puesto: varSel.JobTitle, Area: varSel.Department, CorreoJefe: varSel.ManagerEmail, Descripcion: varSel.JobDescription, Scope: varSel.Scope, Skills: varSel.Skills, Backup: varSel.BackupEmail, Location: varSel.Location, StartDate: varSel.EffectiveDate}));
+        true,
+        Notify("Marked as done, but the org chart list could not be updated.", NotificationType.Warning))),
+    Patch(PeopleRequests, varSel, {Status: "Done"})));
+Reset(txtAsigR);
+Set(varSel, LookUp(PeopleRequests, ID = varSel.ID))'''
+A(button("btnDoneR",'If(varSel.Status = "Done", "Reopen", "✓ Mark as done")',"Parent.Width - 220","Parent.Height - 60","200","44",done_fx,visible=VIEW,size=12,
+  extra={"DisplayMode":'If(varSel.RequestType = "New hire" && varSel.Status <> "Done" && !IsMatch(txtAsigR.Text, Match.Email), DisplayMode.Disabled, DisplayMode.Edit)'}))
 
 # ---------- person picker overlay ----------
 PV='!IsBlank(varPick)'
@@ -300,6 +307,26 @@ A(ctrl("galPickR","Gallery@2.15.0",{"Items":'If(Len(txtPickR.Text) >= 2, Filter(
   ctrl("lblPickNameR","Label@2.5.1",{"Text":"ThisItem.DisplayName","X":"12","Y":"4","Width":"Parent.TemplateWidth - 24","Height":"26","Size":"11","FontWeight":"FontWeight.Bold","Color":NAVY},indent=6),
   ctrl("lblPickInfoR","Label@2.5.1",{"Text":'Coalesce(ThisItem.JobTitle, "-") & "  ·  " & Coalesce(ThisItem.Department, "-") & "  ·  " & Coalesce(ThisItem.Mail, ThisItem.UserPrincipalName)',
     "X":"12","Y":"28","Width":"Parent.TemplateWidth - 24","Height":"22","Size":"9","Color":GREY},indent=6)]))
+
+
+# ---------- list picker overlay ----------
+LV='!IsBlank(varLista)'
+A(ctrl("recDimLR","Rectangle@2.3.0",{"X":"0","Y":"0","Width":"Parent.Width","Height":"Parent.Height","Fill":"RGBA(32, 32, 84, 0.45)","Visible":LV,"OnSelect":'Set(varLista, "")'}))
+A(ctrl("recListaR","Rectangle@2.3.0",{"X":"(Parent.Width - 420) / 2","Y":"80","Width":"420","Height":"Parent.Height - 160","Fill":"Color.White","Visible":LV}))
+A(label("lblListaR",'Switch(varLista, "dept", "Department", "comp", "Company", "loc", "Location", If(varTipo = "Termination", "Equipment to collect (pick all)", "Equipment and access (pick all)"))',
+  "(Parent.Width - 420) / 2 + 24","94","300","36",13,NAVY,True,LV))
+A(button("btnListaOkR",'If(varLista = "equip", "Done", "✕")',"(Parent.Width - 420) / 2 + 420 - 96","94","80","36",'Set(varLista, "")',visible=LV,size=11))
+A(ctrl("galListaR","Gallery@2.15.0",{"Items":f'Switch(varLista, "dept", {DEPTS}, "comp", {COMPS}, "loc", {LOCS}, {EQUIP})',
+  "X":"(Parent.Width - 420) / 2 + 16","Y":"140","Width":"388","Height":"Parent.Height - 236","TemplateSize":"46","TemplatePadding":"0","ShowScrollbar":"true","Visible":LV},variant="Vertical",children=[
+  ctrl("btnListaRowR","Classic/Button@2.2.0",{"Text":'If(Switch(varLista, "dept", varDept, "comp", varComp, "loc", varLoc, "") = ThisItem.Value || (varLista = "equip" && ThisItem.Value in colEquip.Value), "✓   ", "     ") & ThisItem.Value',
+    "X":"0","Y":"0","Width":"Parent.TemplateWidth","Height":"Parent.TemplateHeight - 2","Size":"11","Align":"Align.Left","PaddingLeft":"16",
+    "Fill":'If(Switch(varLista, "dept", varDept, "comp", varComp, "loc", varLoc, "") = ThisItem.Value || (varLista = "equip" && ThisItem.Value in colEquip.Value), ColorValue("#EEEEF5"), Color.White)',
+    "HoverFill":'ColorValue("#E2E2EE")',"Color":NAVY,"BorderThickness":"0",
+    "OnSelect":'''Switch(varLista,
+  "dept", Set(varDept, ThisItem.Value); Set(varLista, ""),
+  "comp", Set(varComp, ThisItem.Value); Set(varLista, ""),
+  "loc", Set(varLoc, ThisItem.Value); Set(varLista, ""),
+  If(ThisItem.Value in colEquip.Value, Remove(colEquip, LookUp(colEquip, Value = ThisItem.Value)), Collect(colEquip, {Value: ThisItem.Value})))''',**pill(0)},indent=6)]))
 
 open('/home/user/claude/altas-bajas/Pantalla-PeopleRequests-COPIAR.txt','w').write("\n".join(out)+"\n")
 open('/home/user/claude/altas-bajas/btnSendR-COPIAR.txt','w').write([x for x in out if x.startswith('- btnSendR:')][0]+"\n")
