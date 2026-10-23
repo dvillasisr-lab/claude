@@ -142,6 +142,85 @@
           "</table></div>",
           {Importance: "Normal"});
         Notify("Report sent to " & User().Email, NotificationType.Success)
+- btnRepliesA:
+    Control: Classic/Button@2.2.0
+    Properties:
+      Text: =If(varVistaA = "replies", "☰ Accounts", "💬 Auto-replies " & CountRows(colAudMTOn))
+      X: =Parent.Width - 900
+      Y: =14
+      Width: =170
+      Height: =36
+      Size: =10
+      Fill: =ColorValue("#3B3B8F")
+      HoverFill: =ColorValue("#4C5C99")
+      Color: =Color.White
+      FontWeight: =FontWeight.Semibold
+      BorderThickness: =0
+      RadiusTopLeft: =18
+      RadiusTopRight: =18
+      RadiusBottomLeft: =18
+      RadiusBottomRight: =18
+      DisplayMode: =If(IsEmpty(colAudMT), DisplayMode.Disabled, DisplayMode.Edit)
+      OnSelect: =Set(varVistaA, If(varVistaA = "replies", "accounts", "replies"))
+- galRepA:
+    Control: Gallery@2.15.0
+    Variant: Vertical
+    Properties:
+      Items: =Sort(Filter(colAudit, Id in colAudMTOn.Value), If(Id in colAudMTLeft.Value, 0, 1), SortOrder.Ascending, DisplayName, SortOrder.Ascending)
+      X: =16
+      Y: =112
+      Width: =Parent.Width - 32
+      Height: =Parent.Height - 118
+      TemplateSize: =118
+      TemplatePadding: =0
+      ShowScrollbar: =true
+      Visible: =varVistaA = "replies"
+    Children:
+      - recRepA:
+          Control: Rectangle@2.3.0
+          Properties:
+            X: =0
+            Y: =0
+            Width: =Parent.TemplateWidth
+            Height: =Parent.TemplateHeight - 8
+            Fill: =If(ThisItem.Id in colAudMTLeft.Value, ColorValue("#FBEDEC"), Color.White)
+            BorderColor: =ColorValue("#E3E3E3")
+            BorderThickness: =1
+      - lblRepNameA:
+          Control: Label@2.5.1
+          Properties:
+            Text: =If(ThisItem.Id in colAudMTLeft.Value, "⚑  ", "") & ThisItem.DisplayName & "   ·   " & Coalesce(ThisItem.Mail, ThisItem.UserPrincipalName)
+            X: =14
+            Y: =6
+            Width: =Parent.TemplateWidth - 300
+            Height: =26
+            Size: =11
+            FontWeight: =FontWeight.Bold
+            Color: =ColorValue("#202054")
+      - lblRepEnA:
+          Control: Label@2.5.1
+          Properties:
+            Text: =If(ThisItem.AccountEnabled, "AccountEnabled = true", "AccountEnabled = false")
+            X: =Parent.TemplateWidth - 280
+            Y: =6
+            Width: =266
+            Height: =26
+            Size: =10
+            Align: =Align.Right
+            Font: =Font.'Courier New'
+            FontWeight: =FontWeight.Bold
+            Color: =If(ThisItem.AccountEnabled, ColorValue("#1E7B34"), ColorValue("#B3261E"))
+      - lblRepMsgA:
+          Control: Label@2.5.1
+          Properties:
+            Text: =LookUp(colAudMT, Id = ThisItem.Id).Reply
+            X: =14
+            Y: =32
+            Width: =Parent.TemplateWidth - 28
+            Height: =74
+            Size: =10
+            VerticalAlign: =VerticalAlign.Top
+            Color: =ColorValue("#616066")
 - lblInfoA:
     Control: Label@2.5.1
     Properties:
@@ -162,7 +241,7 @@
     Properties:
       Default: =""
       HintText: ="Search name or email"
-      Visible: =varVistaA <> "values"
+      Visible: =!(varVistaA in ["values", "replies"])
       X: =Parent.Width - 270
       Y: =70
       Width: =250
@@ -207,7 +286,7 @@
       TemplateSize: =265
       TemplatePadding: =4
       ShowScrollbar: =true
-      Visible: =varVistaA <> "values"
+      Visible: =!(varVistaA in ["values", "replies"])
     Children:
       - btnChipA:
           Control: Classic/Button@2.2.0
@@ -241,7 +320,7 @@
       Font: =Font.'Courier New'
       FontWeight: =FontWeight.Bold
       Color: =ColorValue("#202054")
-      Visible: =varVistaA <> "values"
+      Visible: =!(varVistaA in ["values", "replies"])
 - lblHdr1A:
     Control: Label@2.5.1
     Properties:
@@ -254,7 +333,7 @@
       Font: =Font.'Courier New'
       FontWeight: =FontWeight.Bold
       Color: =ColorValue("#202054")
-      Visible: =varVistaA <> "values"
+      Visible: =!(varVistaA in ["values", "replies"])
 - lblHdr2A:
     Control: Label@2.5.1
     Properties:
@@ -267,7 +346,7 @@
       Font: =Font.'Courier New'
       FontWeight: =FontWeight.Bold
       Color: =ColorValue("#202054")
-      Visible: =varVistaA <> "values"
+      Visible: =!(varVistaA in ["values", "replies"])
 - lblHdr3A:
     Control: Label@2.5.1
     Properties:
@@ -280,7 +359,7 @@
       Font: =Font.'Courier New'
       FontWeight: =FontWeight.Bold
       Color: =ColorValue("#202054")
-      Visible: =varVistaA <> "values"
+      Visible: =!(varVistaA in ["values", "replies"])
 - lblHdr4A:
     Control: Label@2.5.1
     Properties:
@@ -293,7 +372,7 @@
       Font: =Font.'Courier New'
       FontWeight: =FontWeight.Bold
       Color: =ColorValue("#202054")
-      Visible: =varVistaA <> "values"
+      Visible: =!(varVistaA in ["values", "replies"])
 - lblHdr5A:
     Control: Label@2.5.1
     Properties:
@@ -306,7 +385,7 @@
       Font: =Font.'Courier New'
       FontWeight: =FontWeight.Bold
       Color: =ColorValue("#202054")
-      Visible: =varVistaA <> "values"
+      Visible: =!(varVistaA in ["values", "replies"])
 - lblHdr6A:
     Control: Label@2.5.1
     Properties:
@@ -319,7 +398,7 @@
       Font: =Font.'Courier New'
       FontWeight: =FontWeight.Bold
       Color: =ColorValue("#202054")
-      Visible: =varVistaA <> "values"
+      Visible: =!(varVistaA in ["values", "replies"])
 - lblHdr7A:
     Control: Label@2.5.1
     Properties:
@@ -332,7 +411,7 @@
       Font: =Font.'Courier New'
       FontWeight: =FontWeight.Bold
       Color: =ColorValue("#202054")
-      Visible: =varVistaA <> "values"
+      Visible: =!(varVistaA in ["values", "replies"])
 - lblHdr8A:
     Control: Label@2.5.1
     Properties:
@@ -345,7 +424,7 @@
       Font: =Font.'Courier New'
       FontWeight: =FontWeight.Bold
       Color: =ColorValue("#202054")
-      Visible: =varVistaA <> "values"
+      Visible: =!(varVistaA in ["values", "replies"])
 - lblHdr9A:
     Control: Label@2.5.1
     Properties:
@@ -358,7 +437,7 @@
       Font: =Font.'Courier New'
       FontWeight: =FontWeight.Bold
       Color: =ColorValue("#202054")
-      Visible: =varVistaA <> "values"
+      Visible: =!(varVistaA in ["values", "replies"])
 - galAud:
     Control: Gallery@2.15.0
     Variant: Vertical
@@ -372,7 +451,7 @@
       TemplateSize: =36
       TemplatePadding: =0
       ShowScrollbar: =true
-      Visible: =varVistaA <> "values"
+      Visible: =!(varVistaA in ["values", "replies"])
     Children:
       - btnRowA:
           Control: Classic/Button@2.2.0
