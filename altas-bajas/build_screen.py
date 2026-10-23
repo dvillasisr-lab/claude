@@ -271,7 +271,7 @@ A(button("btnDoneR",'If(varSel.Status = "Done", "Reopen", "✓ Mark as done")',"
 # ---------- person picker overlay ----------
 PV='!IsBlank(varPick)'
 A(ctrl("recDimR","Rectangle@2.3.0",{"X":"0","Y":"0","Width":"Parent.Width","Height":"Parent.Height","Fill":"RGBA(32, 32, 84, 0.45)","Visible":PV,"OnSelect":'Set(varPick, "")'}))
-A(ctrl("recPickR","Rectangle@2.3.0",{"X":"(Parent.Width - 520) / 2","Y":"90","Width":"520","Height":"480","Fill":"Color.White","Visible":PV,**{"RadiusTopLeft":"16","RadiusTopRight":"16","RadiusBottomLeft":"16","RadiusBottomRight":"16"}}))
+A(ctrl("recPickR","Rectangle@2.3.0",{"X":"(Parent.Width - 520) / 2","Y":"90","Width":"520","Height":"480","Fill":"Color.White","Visible":PV}))
 A(label("lblPickR",'Switch(varPick, "emp", "Select the employee", "mgr", "Select the manager", "backup", "Select the backup", "reasign", "Who takes over their team?", "Who gets access to their mailbox?")',
   "(Parent.Width - 520) / 2 + 24","104","400","36",13,NAVY,True,PV))
 A(button("btnPickCloseR",'"✕"',"(Parent.Width - 520) / 2 + 470","104","36","36",'Set(varPick, "")',fill="Color.Transparent",color=NAVY,visible=PV,size=13))

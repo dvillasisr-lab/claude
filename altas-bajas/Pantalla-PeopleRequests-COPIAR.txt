@@ -1121,10 +1121,6 @@
       Height: =480
       Fill: =Color.White
       Visible: =!IsBlank(varPick)
-      RadiusTopLeft: =16
-      RadiusTopRight: =16
-      RadiusBottomLeft: =16
-      RadiusBottomRight: =16
 - lblPickR:
     Control: Label@2.5.1
     Properties:
