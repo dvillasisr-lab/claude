@@ -75,7 +75,7 @@
         ClearCollect(colAudMT,
           ForAll(Filter(colAudit, !IsBlank(Mail)) As u,
             With({r: IfError(First(Office365Outlook.GetMailTipsV2("automaticReplies,mailboxFullStatus", [u.Mail]).value), Blank())},
-              With({rep: IfError(Trim(PlainText(r.automaticReplies.message)), "")},
+              With({rep: IfError(Concat(Filter(Split(Substitute(PlainText(r.automaticReplies.message), Char(13), ""), Char(10)), !IsBlank(Trim(Value))), Trim(Value), " "), "")},
                 {Id: u.Id, Fail: IsBlank(r), Reply: rep,
                  SaysLeft: !IsBlank(rep) && CountRows(Filter(["no longer", "has left", "have left", "left the company", "left sussek", "last day", "retired", "not with", "ya no", "no labora", "no trabaja", "dejó de"], Value in Lower(rep))) > 0}))));
         ClearCollect(colAudMTOn, ForAll(Filter(colAudMT, !IsBlank(Reply)), {Value: Id}));
@@ -213,7 +213,7 @@
       - lblRepMsgA:
           Control: Label@2.5.1
           Properties:
-            Text: =LookUp(colAudMT, Id = ThisItem.Id).Reply
+            Text: =Concat(Filter(Split(Substitute(LookUp(colAudMT, Id = ThisItem.Id).Reply, Char(13), ""), Char(10)), !IsBlank(Trim(Value))), Trim(Value), " ")
             X: =14
             Y: =32
             Width: =Parent.TemplateWidth - 28
