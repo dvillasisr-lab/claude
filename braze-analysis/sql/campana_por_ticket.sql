@@ -45,6 +45,9 @@ WITH ids AS (
   UNION
   SELECT canvas_id FROM analytics_engineering_production.braze._dim_braze_canvas
   WHERE ticket_number = 'B0625' OR canvas_name LIKE '%-B0625-%'
+  UNION
+  -- IDs sacados de Braze (por tag), por si el catálogo de Databricks todavía no tiene alguno
+  SELECT * FROM VALUES ('13ac5fb1-dcf3-439c-bb2f-8b832ceb444d'), ('45ed01cc-4b39-4f15-bc04-d047e6fb7f45') AS t(communication_id)
 ),
 usuarios AS (
   -- Solo las personas que recibieron algo del ticket, para que la atribución fraccional vea todo lo que les llegó ese día
