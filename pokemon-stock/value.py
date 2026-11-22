@@ -38,6 +38,7 @@ def load_inventory():
         for r in csv.DictReader(f):
             r["qty"] = int(r["qty"])
             r["paid_each_mxn"] = float(r["paid_each_mxn"])
+            r["collectr_total_mxn"] = float(r["collectr_total_mxn"]) if r.get("collectr_total_mxn") else None
             r["items"] = [(int(g), n) for g, n in (x.split(":", 1) for x in r["tcgplayer"].split("|"))]
             out.append(r)
         return out
@@ -151,7 +152,10 @@ def main():
                 row[f"cambio_{d}d_pct"] = round(100 * (usd / usd_hist[d] - 1), 1)
             else:
                 row[f"cambio_{d}d_pct"] = ""
+        row["collectr_mxn"] = r["collectr_total_mxn"] if r["collectr_total_mxn"] is not None else ""
         row["nota"] = "aprox: suma de 2 productos" if len(r["items"]) > 1 else ""
+        if "Case" in r["tcgplayer"] and r["product"] == "Display":
+            row["nota"] = "aprox: Display valuado con el precio del Case"
         rows.append(row)
 
     out = os.path.join(HERE, "report.csv")
